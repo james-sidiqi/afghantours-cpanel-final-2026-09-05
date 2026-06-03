@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { getHotels } from '../../lib/buildRelations';
+const hotels = getHotels();
+---
+<BaseLayout title="Hotels | AfghanTours" description="Hotel references used for Afghanistan tour planning.">
+  <PageHero eyebrow="Travel Planning" title="Hotels" text="Practical hotel references by city for guided Afghanistan itineraries." image="/assets/images/heroes/hero-hotels.webp" height="min-h-[58vh]" />
+  <section class="bg-[#fbf8f2] py-16 text-stone-950"><div class="mx-auto grid max-w-7xl gap-6 px-6 md:grid-cols-2 lg:grid-cols-3">{hotels.map((hotel) => <article class="overflow-hidden rounded-[1.5rem] bg-white shadow-sm ring-1 ring-stone-200"><img src={hotel.image} alt={hotel.title || hotel.name} class="h-52 w-full object-cover" /><div class="p-6"><p class="text-xs font-black uppercase tracking-[0.22em] text-amber-700">{hotel.city || hotel.location_code || 'Afghanistan'}</p><h2 class="mt-2 text-2xl font-black">{hotel.title || hotel.name}</h2><div class="editorial-prose mt-3 line-clamp-4 text-sm" set:html={hotel.content_html || hotel.description || ''} /></div></article>)}</div></section>
+</BaseLayout>

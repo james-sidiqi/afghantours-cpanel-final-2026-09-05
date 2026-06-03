@@ -1,0 +1,37 @@
+---
+const customTours = [
+  ['Climb Noshaq', 'Mountain Sports', 'High-altitude planning for Afghanistan’s highest peak, with route timing and local coordination.', '/assets/images/attractions/mount-noshaq/hero.webp'],
+  ['Hike the Wakhan', 'Mountain Sports', 'Remote trekking concepts through one of Afghanistan’s most iconic corridors.', '/assets/images/attractions/wakhan-corridor/hero.webp'],
+  ['Camp in Nuristan', 'Overlanding', 'A serious custom expedition concept for forests, valleys, and difficult access areas.', '/assets/images/province/nuristan/hero.webp'],
+  ['Veteran Return Journey', 'Veterans', 'Respectful, carefully planned return visits for former military and civilian personnel.', '/assets/images/people/tourists/tourist-posing-road.webp'],
+  ['Explore Your Roots', 'Diaspora', 'Private family, heritage, and province-focused journeys for Afghan diaspora travelers.', '/assets/images/people/cultural-interactions/tourists-shopping.webp'],
+  ['Design Something Else', 'Other', 'Photography, business visits, research support, cultural study, or a route built around your goals.', '/assets/images/people/guides/guide-james-explaining.webp'],
+];
+---
+<section class="bg-[#f8f1e6] py-20 text-stone-950">
+  <div class="mx-auto max-w-7xl px-6">
+    <div class="mb-10 grid gap-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-end">
+      <div>
+        <p class="text-xs font-black uppercase tracking-[0.28em] text-amber-700">Custom Tours</p>
+        <h2 class="editorial-title mt-3 text-4xl font-black md:text-6xl">Build a private journey</h2>
+      </div>
+      <p class="max-w-3xl leading-8 text-stone-700">Choose the type of journey that matches your goals. Every custom route is checked against real access, seasonality, lodging, security, permits, and local coordination before confirmation.</p>
+    </div>
+
+    <div class="grid gap-4 lg:grid-cols-3">
+      {customTours.map(([title, type, desc, image]) => (
+        <a href={`/contact/?custom=${encodeURIComponent(type)}`} class="group grid min-h-[210px] overflow-hidden rounded-[1.75rem] border border-stone-200 bg-white shadow-sm transition hover:-translate-y-1 hover:border-amber-300 hover:shadow-xl md:grid-cols-[0.48fr_0.52fr] lg:min-h-[190px]">
+          <div class="relative min-h-[160px] overflow-hidden bg-stone-200 md:min-h-full">
+            <img src={image} alt={title} class="h-full w-full object-cover transition duration-700 group-hover:scale-105" loading="lazy" onerror="this.style.display='none'" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent"></div>
+          </div>
+          <div class="p-5">
+            <p class="text-[0.65rem] font-black uppercase tracking-[0.2em] text-amber-700">{type}</p>
+            <h3 class="editorial-title mt-2 text-2xl font-black leading-tight">{title}</h3>
+            <p class="mt-2 text-sm leading-6 text-stone-600">{desc}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

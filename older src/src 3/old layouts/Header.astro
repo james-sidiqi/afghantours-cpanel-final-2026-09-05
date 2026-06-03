@@ -1,0 +1,179 @@
+---
+const navItems = [
+  { label: 'Home', href: '/' },
+  { label: 'Tours', href: '/tours/' },
+  { label: 'Destinations', href: '/destinations/' },
+  { label: 'About', href: '/about/' },
+];
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+
+    <a class="brand" href="/" aria-label="AfghanTours home">
+      <img
+        class="brand__logo"
+        src="/assets/images/logo/header-logo.webp"
+        alt="Afghan Tours"
+        loading="eager"
+      />
+
+      <div class="brand__text">
+        <span class="brand__name">Afghan Tours</span>
+        <span class="brand__tagline">
+          Come for the history, stay for the hospitality
+        </span>
+      </div>
+    </a>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      {navItems.map((item) => (
+        <a href={item.href}>{item.label}</a>
+      ))}
+
+      <a class="main-nav__cta" href="/contact/">
+        Contact
+      </a>
+    </nav>
+
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background:
+      linear-gradient(to bottom, rgba(8, 8, 8, 0.96), rgba(12, 12, 12, 0.94));
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+
+  .site-header__inner {
+    width: min(1320px, calc(100% - 2rem));
+    height: 84px;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    min-width: 0;
+  }
+
+  .brand__logo {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: block;
+  }
+
+  .brand__text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .brand__name {
+    color: #f3e7cf;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.5rem, 2vw, 2.15rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .brand__tagline {
+    margin-top: .22rem;
+    color: rgba(243,231,207,.72);
+    font-size: .76rem;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .main-nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.25rem, 2vw, 2rem);
+  }
+
+  .main-nav a {
+    color: #f5efe4;
+    text-decoration: none;
+    font-size: .92rem;
+    font-weight: 700;
+    transition: color .2s ease;
+  }
+
+  .main-nav a:hover {
+    color: #d6a548;
+  }
+
+  .main-nav__cta {
+    background: linear-gradient(
+      135deg,
+      #e0b85d,
+      #b98525
+    );
+
+    color: #17120c !important;
+
+    padding: .8rem 1.25rem;
+    border-radius: 999px;
+
+    font-weight: 800;
+
+    box-shadow:
+      0 8px 24px rgba(0,0,0,.25),
+      inset 0 1px 0 rgba(255,255,255,.3);
+  }
+
+  .main-nav__cta:hover {
+    background: linear-gradient(
+      135deg,
+      #f0c76d,
+      #c7922f
+    );
+  }
+
+  @media (max-width: 860px) {
+
+    .site-header__inner {
+      height: auto;
+      padding: .9rem 0;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: .9rem;
+    }
+
+    .main-nav {
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: .25rem;
+    }
+
+    .brand__logo {
+      width: 60px;
+      height: 60px;
+    }
+
+    .brand__name {
+      font-size: 1.45rem;
+    }
+
+    .brand__tagline {
+      font-size: .68rem;
+      white-space: normal;
+    }
+  }
+</style>

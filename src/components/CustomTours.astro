@@ -1,0 +1,191 @@
+---
+const cards = [
+  {
+    title: 'Photographers & Filmmakers',
+    image: '/assets/images/tours/custom/photography-tour/hero.webp',
+    href: '/tours/photography-tour/',
+    text: 'Field support, location scouting, permits, fixers, translators, and route planning for visual storytellers.'
+  },
+  {
+    title: 'Veterans & Return Visitors',
+    image: '/assets/images/tours/custom/veteran-return/hero.webp',
+    href: '/tours/veteran-return/',
+    text: 'Private, respectful journeys for people with a personal connection to Afghanistan.'
+  },
+  {
+    title: 'Mountaineers & Expeditions',
+    image: '/assets/images/tours/custom/noshaq-expeditions/hero.webp',
+    href: '/tours/noshaq-expeditions/',
+    text: 'Ground logistics, base camp support, remote routing, and mountain travel planning.'
+  },
+  {
+    title: 'Researchers & Institutions',
+    image: '/assets/images/tours/custom/scientific-expeditions/hero.webp',
+    href: '/tours/scientific-expeditions/',
+    text: 'Custom planning for academic, institutional, cultural, and field research visits.'
+  },
+  {
+    title: 'Afghan Diaspora',
+    image: '/assets/images/tours/custom/custom-expedition/hero.webp',
+    href: '/tours/custom-expedition/',
+    text: 'Family heritage journeys, regional visits, and meaningful reconnection travel.'
+  },
+  {
+    title: 'Journalists & Media',
+    image: '/assets/images/tours/custom/media-support/hero.webp',
+    href: '/tours/media-support/',
+    text: 'Fixers, translators, transport, route planning, and realistic field coordination.'
+  }
+];
+---
+
+<section id="custom-tours" class="custom-tours-section">
+  <div class="custom-wrap">
+    <div class="custom-copy">
+      <p class="section-kicker">Custom Tours</p>
+      <h2>Build a Journey Around Your Goals</h2>
+      <p>
+        Whether you are a photographer, veteran, filmmaker, researcher, mountaineer,
+        or family exploring heritage, we design itineraries around your objectives,
+        timing, access needs, and comfort level.
+      </p>
+      <a href="/contact/?type=custom-tour" class="custom-main-button">Contact Our Team</a>
+    </div>
+
+    <div class="custom-card-grid">
+      {cards.map((card) => (
+        <a href={card.href} class="custom-card">
+          <img src={card.image} alt={card.title} loading="lazy" />
+          <div>
+            <h3>{card.title}</h3>
+            <p>{card.text}</p>
+            <span>View details →</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .custom-tours-section {
+    background: #f7f0e6;
+    color: #101820;
+    padding: clamp(4rem, 7vw, 7rem) 0;
+  }
+
+  .custom-wrap {
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: .8fr 1.2fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .custom-copy h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.5rem, 4.5vw, 4.8rem);
+    line-height: .95;
+    letter-spacing: -.06em;
+    margin: .7rem 0 1.2rem;
+  }
+
+  .custom-copy p {
+    color: #374151;
+    line-height: 1.8;
+    max-width: 46ch;
+  }
+
+  .custom-main-button {
+    display: inline-flex;
+    margin-top: 1.5rem;
+    border-radius: 999px;
+    background: #b77926;
+    color: white;
+    padding: .95rem 1.3rem;
+    text-decoration: none;
+    font-size: .8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+
+  .custom-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .custom-card {
+    display: grid;
+    grid-template-columns: 170px 1fr;
+    min-height: 190px;
+    overflow: hidden;
+    border-radius: 1.4rem;
+    background: white;
+    border: 1px solid rgba(16,24,32,.1);
+    text-decoration: none;
+    color: #101820;
+    box-shadow: 0 14px 34px rgba(20,14,8,.08);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+
+  .custom-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 44px rgba(20,14,8,.13);
+  }
+
+  .custom-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .custom-card div {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .custom-card h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.6rem;
+    line-height: 1;
+    letter-spacing: -.04em;
+    margin: 0 0 .65rem;
+    color: #101820;
+  }
+
+  .custom-card p {
+    color: #4b5563;
+    font-size: .95rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .custom-card span {
+    margin-top: 1rem;
+    color: #b77926;
+    font-weight: 900;
+    font-size: .85rem;
+  }
+
+  @media(max-width: 980px) {
+    .custom-wrap {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media(max-width: 700px) {
+    .custom-card-grid,
+    .custom-card {
+      grid-template-columns: 1fr;
+    }
+
+    .custom-card img {
+      height: 220px;
+    }
+  }
+</style>

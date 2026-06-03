@@ -1,0 +1,37 @@
+---
+// Hero.astro
+interface Props {
+  eyebrow?: string;
+  title?: string;
+  text?: string;
+  image?: string;
+  video?: string;
+  poster?: string;
+  primaryHref?: string;
+  primaryLabel?: string;
+  secondaryHref?: string;
+  secondaryLabel?: string;
+  height?: string;
+}
+
+// 1. Grab the current page's URL path programmatically
+const { pathname } = Astro.url;
+
+// 2. Extract the slug (e.g., if path is '/tours/photography/', slug becomes 'photography')
+const pageSlug = pathname.split('/').filter(Boolean).pop() || 'default-hero';
+
+const {
+  eyebrow = 'AfghanTours',
+  title = 'Afghanistan, planned with care',
+  text = '',
+  // 3. Inject the dynamic pageSlug into your default paths cleanly without the "/public" prefix
+  image = `/assets/images/heroes/${pageSlug}/hero.webp`,
+  video = `/assets/images/heroes/${pageSlug}/hero.mov`,
+  poster = `/assets/images/heroes/${pageSlug}/poster.webp`,
+  primaryHref = '',
+  primaryLabel = '',
+  secondaryHref = '',
+  secondaryLabel = '',
+  height = 'min-h-[76vh]'
+} = Astro.props;
+---

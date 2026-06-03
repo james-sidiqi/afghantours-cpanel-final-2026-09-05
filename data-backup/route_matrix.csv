@@ -1,0 +1,23 @@
+route_id,from_code,to_code,distance_km,drive_hours_low,drive_hours_high,road_class,bus_allowed,armored_allowed,armored_months,notes,is_active
+RT-KBL-MAZ,KBLC,MAZC,425,8.0,10.0,highway/mountain,1,1,"JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC",Primary north corridor via Salang; heavy truck traffic + checkpoints can add time.,1
+RT-MAZ-KBL,MAZC,KBLC,425,8.0,10.0,highway/mountain,1,1,"JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC",Return leg via Salang.,1
+RT-KBL-JBD,KBLC,JBDC,150,3.5,5.0,highway/gorge,1,1,"JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC",Kabul River Gorge route; incidents/convoys can delay.,1
+RT-JBD-KBL,JBDC,KBLC,150,3.5,5.0,highway/gorge,1,1,"JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC",Return leg.,1
+RT-KBL-GHZ,KBLC,GHZC,150,3.0,4.5,highway,1,1,"JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC",Ring Road south segment.,1
+RT-GHZ-KBL,GHZC,KBLC,150,3.0,4.5,highway,1,1,"JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC",Return leg.,1
+RT-KBL-KDR,KBLC,KDRC,485,8.0,11.0,highway,1,1,"JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC",Major southern hub; this is your shared taxi/van corridor.,1
+RT-KDR-KBL,KDRC,KBLC,485,8.0,11.0,highway,1,1,"JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC",Return leg.,1
+RT-KDR-HER,KDRC,HERC,650,10.0,14.0,highway/desert,1,1,"JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC",Ring Road westbound via Farah; long-distance corridor.,1
+RT-HER-KDR,HERC,KDRC,650,10.0,14.0,highway/desert,1,1,"JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC",Return leg.,1
+RT-KBL-HER,KBLC,HERC,820,14.0,18.0,highway/desert,1,1,"JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC",Long ring-road route; central mountains route is shorter but far slower (often multi-day).,1
+RT-HER-KBL,HERC,KBLC,820,14.0,18.0,highway/desert,1,1,"JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC",Return leg.,1
+RT-KBL-BMY,KBLC,BMYC,180,4.0,6.5,mountain,0,1,"MAY,JUN,JUL,AUG,SEP,OCT",4x4 recommended in winter/shoulder seasons; armored allowed May-Oct per your rule.,1
+RT-BMY-KBL,BMYC,KBLC,180,4.0,6.5,mountain,0,1,"MAY,JUN,JUL,AUG,SEP,OCT",Return leg.,1
+RT-BMY-GHZ,BMYC,GHZC,330,7.0,11.0,mountain,0,1,"MAY,JUN,JUL,AUG,SEP,OCT",Via Wardak; conditions vary; plan buffer time.,1
+RT-GHZ-BMY,GHZC,BMYC,330,7.0,11.0,mountain,0,1,"MAY,JUN,JUL,AUG,SEP,OCT",Return leg.,1
+RT-KBL-FAI,KBLC,FAIC,560,12.0,16.0,mountain,0,0,,Rugged mountainous access; typically not a bus/armored corridor in this model.,1
+RT-FAI-KBL,FAIC,KBLC,560,12.0,16.0,mountain,0,0,,Return leg.,1
+RT-MAZ-FAI,MAZC,FAIC,520,11.0,16.0,mountain,0,0,,Common approach is via Kunduz/Takhar; route quality varies significantly.,1
+RT-FAI-MAZ,FAIC,MAZC,520,11.0,16.0,mountain,0,0,,Return leg.,1
+RT-MAZ-JBD,MAZC,JBDC,575,12.0,16.0,via_kabul,1,1,"JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC",Operationally treated as MAZ→KBL + KBL→JBD; distance/time are combined estimates.,1
+RT-JBD-MAZ,JBDC,MAZC,575,12.0,16.0,via_kabul,1,1,"JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC",Return leg via Kabul.,1

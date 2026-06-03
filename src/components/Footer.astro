@@ -1,0 +1,52 @@
+---
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="footer-bg"></div>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <section class="footer-brand" aria-label="Company information">
+        <img src="/assets/images/logo/footer-logo.webp" alt="James Tourist & Travel Agency" class="footer-logo" loading="lazy" />
+        <p class="footer-company">AfghanTours.com is owned and operated by <strong>James Tourist & Travel Agency</strong>, a licensed Afghanistan travel operator based in Kabul.</p>
+        <p class="footer-license">ATO-KBL-1617</p>
+        <p class="footer-motto">Service <span>•</span> Integrity <span>•</span> Excellence</p>
+      </section>
+
+      <nav class="footer-col" aria-label="Explore links">
+        <h3>Explore</h3>
+        <a href="/tours/">Tours</a>
+        <a href="/hubs/">Hubs</a>
+        <a href="/attractions/">Attractions</a>
+        <a href="/food-culture/">Food & Culture</a>
+        <a href="/hotels/">Hotels</a>
+        <a href="/transportation/">Transportation</a>
+      </nav>
+
+      <nav class="footer-col" aria-label="Planning links">
+        <h3>Plan</h3>
+        <a href="/safety/">Safety</a>
+        <a href="/faq/">FAQ</a>
+        <a href="/contact/">Custom Inquiry</a>
+        <a href="/terms/">Terms</a>
+        <a href="/privacy/">Privacy</a>
+      </nav>
+
+      <section class="footer-col footer-contact" aria-label="Contact information">
+        <h3>Contact</h3>
+        <p><strong>WhatsApp</strong><br />+93 78 012 3456</p>
+        <p><strong>Email</strong><br />info@afghantours.com</p>
+        <p><strong>Office Address</strong><br />2nd Floor, Majid Mall<br />Shahr-e-Naw, District 10<br />Kabul, Afghanistan</p>
+      </section>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© {year} AfghanTours.com / James Tourist & Travel Agency</span>
+      <span>Licensed Kabul Operator</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer{position:relative;overflow:hidden;background:#06110d;color:#efe7d8;border-top:1px solid rgba(218,169,77,.25)}.footer-bg{position:absolute;inset:0;background:linear-gradient(rgba(5,14,11,.92),rgba(5,14,11,.96)),url('/assets/images/regions/afghanistan.webp') center/cover no-repeat;opacity:.95}.footer-inner{position:relative;width:min(1180px,calc(100% - 2rem));margin:0 auto;padding:4rem 0 1.3rem}.footer-grid{display:grid;grid-template-columns:1.25fr .8fr .8fr 1fr;gap:3rem;align-items:start}.footer-logo{width:132px;max-width:100%;height:auto;object-fit:contain;margin:0 auto 1rem;display:block}.footer-company{max-width:290px;text-align:center;margin:0 auto;color:rgba(239,231,216,.82);font-size:.95rem;line-height:1.7}.footer-license{text-align:center;margin-top:.9rem;color:#f4dfb5;font-family:Georgia,"Times New Roman",serif;font-size:1rem}.footer-motto{text-align:center;margin-top:.8rem;color:#d6a548;font-family:Georgia,"Times New Roman",serif;font-size:1.35rem;letter-spacing:.02em}.footer-motto span{padding:0 .35rem}.footer-col h3{color:#d6a548;text-transform:uppercase;font-size:.8rem;letter-spacing:.18em;margin:0 0 1.3rem;font-weight:900}.footer-col a{display:block;color:rgba(239,231,216,.78);text-decoration:none;margin:.78rem 0;font-size:.95rem;transition:.2s}.footer-col a:hover{color:#fff;transform:translateX(3px)}.footer-contact p{color:rgba(239,231,216,.78);line-height:1.65;margin:0 0 1rem}.footer-contact strong{color:#fff}.footer-bottom{margin-top:3rem;padding-top:1.2rem;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;gap:1rem;color:rgba(239,231,216,.55);font-size:.82rem}
+  @media(max-width:900px){.footer-grid{grid-template-columns:1fr 1fr}.footer-brand{grid-column:1/-1}.footer-bottom{flex-direction:column}}@media(max-width:560px){.footer-grid{grid-template-columns:1fr}.footer-inner{padding-top:3rem}.footer-motto{font-size:1.15rem}}
+</style>

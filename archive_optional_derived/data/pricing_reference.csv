@@ -1,0 +1,49 @@
+category,item_code,item_name,unit_type,cost_usd,capacity,service_tier,notes,is_active
+transport,LC_STD_OLD,Land Cruiser / 4Runner (Older Standard),per_day,60.0,3.0,budget,,1
+transport,LC_STD_NEW,Land Cruiser / 4Runner (Newer Premium),per_day,100.0,3.0,premium,,1
+transport,LC_ARM_OLD,Land Cruiser (Older Armored),per_day,120.0,3.0,premium,Armored security vehicle,1
+transport,LC_VIP_NEW,Land Cruiser (Newer VIP),per_day,300.0,3.0,luxury,Luxury/VIP vehicle,1
+transport,VAN_NEW,HiAce Van (Newer),per_day,100.0,6.0,premium,,1
+transport,VAN_OLD,HiAce Van (Older),per_day,70.0,6.0,standard,,1
+transport,SEDAN_NEW,Corolla / Sedan (Newer Standard),per_day,60.0,3.0,standard,,1
+transport,SEDAN_OLD,Corolla / Sedan (Older Budget),per_day,40.0,3.0,budget,,1
+transport,TAXI_NEW,Local Taxi (Newer),per_day,40.0,3.0,budget,Urban/local use only,1
+transport,TAXI_OLD,Local Taxi (Older),per_day,20.0,3.0,budget,Urban/local use only,1
+flight,DOMESTIC_FLIGHT,Domestic Flight,per_person_leg,90.0,,,Applies to each passenger and guide,1
+staff_logic,GUIDE_RATIO_1_5,Guide Requirement 1–5 Guests,per_group,1.0,,,1 guide for 1–5 guests,1
+staff_logic,GUIDE_RATIO_6_10,Guide Requirement 6–10 Guests,per_group,2.0,,,2 guides for 6–10 guests,1
+staff_logic,GUIDE_RATIO_11_PLUS,Guide Requirement 11+ Guests,per_group,3.0,,,3 guides for groups above 10,1
+staff,GUIDE_LOCAL_KBLC,Local Guide in Kabul,per_day,50.0,,,KBLC only,1
+staff,GUIDE_LOCAL_NONKBLC,Local Guide outside Kabul,per_day,60.0,,,Outside KBLC,1
+staff,GUIDE_AMERICAN_KBLC,American Guide in Kabul,per_day,125.0,,,KBLC only,1
+staff,GUIDE_AMERICAN_NONKBLC,American Guide outside Kabul,per_day,175.0,,,Outside KBLC,1
+staff,DRIVER_LOCAL_KBLC,Local Driver in Kabul,per_day,16.0,,,KBLC only,1
+staff,DRIVER_LOCAL_NONKBLC,Local Driver outside Kabul,per_day,22.0,,,Outside KBLC,1
+staff,SKI_GUIDE_LOCAL,Local Ski Guide,per_day,50.0,,,Ski-specific guide cost,1
+staff_lodging,GUIDE_ROOM_BASE,Guide Accommodation First Guide,per_night,50.0,,,Applies outside KBLC only,1
+staff_lodging,GUIDE_ROOM_ADDITIONAL,Guide Accommodation Additional Guide,per_night,25.0,,,Each additional guide outside KBLC,1
+staff_food,GUIDE_FOOD_KBLC_BASE,Guide Food in Kabul (First Guide),per_day,20.0,,,KBLC only,1
+staff_food,GUIDE_FOOD_KBLC_ADDITIONAL,Guide Food in Kabul (Additional Guide),per_day,15.0,,,Each additional guide in KBLC,1
+staff_food,GUIDE_FOOD_NONKBLC_BASE,Guide Food outside Kabul (First Guide),per_day,15.0,,,Outside KBLC,1
+staff_food,GUIDE_FOOD_NONKBLC_ADDITIONAL,Guide Food outside Kabul (Additional Guide),per_day,10.0,,,Each additional guide outside KBLC,1
+staff_food,DRIVER_FOOD,Driver Food,per_day,7.5,,,All locations,1
+client_food,SNACK_BUDGET,Client Water & Snacks Budget,per_person_day,0.0,,budget,,1
+client_food,SNACK_STANDARD,Client Water & Snacks Standard,per_person_day,5.0,,standard,,1
+client_food,SNACK_PREMIUM,Client Water & Snacks Premium,per_person_day,7.5,,premium,,1
+client_food,SNACK_LUXURY,Client Water & Snacks Luxury,per_person_day,10.0,,luxury,,1
+client_food,MEAL_CORE_BUDGET,Client Meals KBLC/HERC/KDRC Budget,per_person_day,0.0,,budget,Lunch and dinner in KBLC HERC KDRC,1
+client_food,MEAL_CORE_STANDARD,Client Meals KBLC/HERC/KDRC Standard,per_person_day,15.0,,standard,Lunch and dinner in KBLC HERC KDRC,1
+client_food,MEAL_CORE_PREMIUM,Client Meals KBLC/HERC/KDRC Premium,per_person_day,25.0,,premium,Lunch and dinner in KBLC HERC KDRC,1
+client_food,MEAL_CORE_LUXURY,Client Meals KBLC/HERC/KDRC Luxury,per_person_day,35.0,,luxury,Lunch and dinner in KBLC HERC KDRC,1
+client_food,MEAL_OTHER_BUDGET,Client Meals Other Locations Budget,per_person_day,0.0,,budget,Lunch and dinner outside KBLC HERC KDRC,1
+client_food,MEAL_OTHER_STANDARD,Client Meals Other Locations Standard,per_person_day,10.0,,standard,Lunch and dinner outside KBLC HERC KDRC,1
+client_food,MEAL_OTHER_PREMIUM,Client Meals Other Locations Premium,per_person_day,15.0,,premium,Lunch and dinner outside KBLC HERC KDRC,1
+client_food,MEAL_OTHER_LUXURY,Client Meals Other Locations Luxury,per_person_day,25.0,,luxury,Lunch and dinner outside KBLC HERC KDRC,1
+equipment,SKI_BOOT_RENTAL,Ski & Boot Rentals,per_person_day,50.0,,,Per skier per day,1
+permit,PERMIT_PER_PERSON_PER_PROVINCE,Province Permit Per Tourist,per_person_province,15.75,,,1000 AFN per tourist per province,1
+permit,PERMIT_PROCESSING_PER_PROVINCE,Permit Processing Cost,per_province,15.75,,,"1000 AFN for taxis, printing, and processing time",1
+operations,SATCOM_FLAT,SATCOM Cost,per_tour,20.0,,,Flat cost per tour,1
+operations,SALANG_TUNNEL,Salang Tunnel Road Crossing,per_crossing,1.57,,,100 AFN per crossing,1
+operations,AIRPORT_PARKING,Airport Parking,per_event,0.79,,,50 AFN per pickup or drop-off,1
+retail,AFGHAN_CLOTHES,Tailor-Made Afghan Clothes,per_person,19.69,,,1250 AFN per person optional add-on,1
+service,DXB_ESCORT_FULL,Full Dubai Escort & Visa Assist Package,per_group,1500.0,,premium,Includes flight hotel labor transport and food for escort guide,1

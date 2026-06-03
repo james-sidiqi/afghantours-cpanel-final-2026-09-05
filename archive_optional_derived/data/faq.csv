@@ -1,0 +1,24 @@
+faq_id,page_assignment,category,tour_slug,question,answer,is_active
+LDR-01,home,Leadership,,What makes Afghan Tours unique?,"Our leadership includes a US citizen who has lived and worked in Kabul for 15 years, providing an unmatched local network and safety oversight.",1
+PLN-01,home,Planning,,How flexible is the itinerary?,"We are agile. While we have a planned route, we finalize details close to your arrival to account for the most current security and weather data.",1
+VIS-01,faq;logistics,Visa,,How do I obtain an Afghan visa?,"You need a Letter of Invitation (LOI) from us. You then apply at an Afghan consulate in hubs like Dubai, Islamabad, or Istanbul.",1
+VIS-02,faq;logistics,Visas,,What is the 'Maktub' and do I need it?,"A 'Maktub' is an internal provincial permit. While your visa gets you into the country, the Maktub allows you to pass checkpoints between provinces. We handle all Maktub applications.",1
+MON-01,faq;logistics,Money,,Can I use my credit cards?,"No. Afghanistan is a cash-only economy. You must bring clean, post-2013 USD bills to exchange for Afghanis (AFN).",1
+MON-02,faq;logistics,Money,,What should I do with leftover Afghanis?,The Afghani (AFN) is difficult to exchange outside. We recommend spending it on souvenirs or exchanging it back to USD at Sarai Shahzada.,1
+SAF-01,safety,Insurance,,Is high-risk insurance mandatory?,Yes. Standard travel insurance does not cover Afghanistan. You must have specialized 'High-Risk' insurance including Medical Evacuation.,1
+SAF-02,faq;safety,Safety,,What is the 'Low-Profile' travel policy?,"We use unmarked, standard local vehicles (like Toyota Corollas) rather than luxury SUVs to blend in and reduce unwanted attention.",1
+ETQ-01,faq;safety,Etiquette,,Can I travel as a solo woman?,"Yes, but with caveats. Under 2026 regulations, women must be accompanied by a 'Mahram' for long-distance travel. Our lead guide often fulfills this role.",1
+ETQ-02,faq;safety,Etiquette,,Is music or dancing allowed?,"Public performances are restricted. We ask guests to use headphones. In private traditional settings, some local folk music may be experienced discreetly.",1
+ETQ-03,faq;safety,Etiquette,,Can I bring a drone?,Drones are strictly regulated. Bringing one without a Ministry of Defense permit usually results in confiscation. Permit processes take 3 months.,1
+TEC-01,faq;safety,Connectivity,,Are there restrictions on social media?,Some platforms are intermittently blocked. We recommend a VPN. Avoid posting live locations; it is safer to post after leaving a district.,1
+FOD-01,faq;logistics,Food,,Is vegetarian or vegan food available?,"Vegetarianism is uncommon but 'Borani Banjan' and 'Ashak' are staples. Veganism is harder due to yogurt/ghee, but we can coordinate meals.",1
+HEA-01,faq;safety,Health,,What happens in a medical emergency?,Our protocols rely on your mandatory 'High-Risk' insurance for stabilization and rapid medical evacuation to Dubai or Istanbul.,1
+RAM-01,faq;tour-cultural,Etiquette,,Traveling during Ramadan?,Eating or drinking in public during daylight is illegal. We adjust schedules to provide private dining spaces for guests during the day.,1
+LOG-01,tour,Logistics,bamyan-skiing-tour,Do I need to bring my own skis?,"We recommend bringing your own boots and skins for fit, but we can facilitate local equipment rental if arranged in advance.",1
+FIT-01,tour,Fitness,bamyan-skiing-tour,What is the required skiing ability?,This is backcountry skiing at high altitude. You should be a confident intermediate to advanced off-piste skier.,1
+TIM-01,tour,Timing,buzkashi-expedition,When do Buzkashi matches take place?,Matches usually happen on Fridays during the cooler months. We track local schedules in real-time.,1
+ACS-01,tour,Access,timurid-grandeur-herat-tour,Is the Friday Mosque open to tourists?,"Yes, we coordinate visits outside of prayer times to ensure respectful access to the tile-work and courtyards.",1
+PRE-01,tour,Preparation,trek-the-wakhan-corridor,What kind of training do I need?,"This is a high-altitude trek. You should be capable of walking 6-8 hours a day on rugged terrain above 3,000m.",1
+LOG-02,tour,Logistics,trek-the-wakhan-corridor,How do we sleep during the trek?,Accommodation is a mix of high-quality expedition tents and traditional Pamiri 'guest houses'.,1
+PHO-01,tour,Photography,photography-tour,Are there restrictions on what I can film?,We manage permits for professional gear. Military sites and certain government buildings are strictly off-limits.,1
+CUL-01,tour,Culture,kandahar-durrani-empire-tour,Is Kandahar safe for Westerners?,"With our 15-year network and local guides, we manage a safe, respectful, and high-standard visit to the Pashtun heartland.",1

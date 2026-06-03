@@ -1,0 +1,452 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProvinces, getHubs } from '../../lib/buildRelations';
+
+const provinces = getProvinces().filter((p) => p?.slug);
+const hubs = getHubs().filter((h) => h?.slug);
+
+const regions = [
+  {
+    title: 'Central Afghanistan',
+    slug: 'central',
+    image: '/assets/images/regions/central.webp',
+    text: 'Kabul, Bamyan, Panjshir, Parwan, Wardak, Ghazni, and the highland routes at the heart of many cultural journeys.',
+  },
+  {
+    title: 'North Afghanistan',
+    slug: 'north',
+    image: '/assets/images/regions/north.webp',
+    text: 'Balkh, Mazar-e-Sharif, Samangan, Baghlan, Kunduz, Takhar, Faryab, Jowzjan, and Sar-e-Pol.',
+  },
+  {
+    title: 'West Afghanistan',
+    slug: 'west',
+    image: '/assets/images/regions/west.webp',
+    text: 'Herat, Ghor, Badghis, and Farah: Timurid architecture, Silk Road history, and rugged western routes.',
+  },
+  {
+    title: 'East Afghanistan',
+    slug: 'east',
+    image: '/assets/images/regions/east.webp',
+    text: 'Nangarhar, Laghman, Kunar, Nuristan, Khost, Paktia, Paktika, and eastern mountain corridors.',
+  },
+  {
+    title: 'South Afghanistan',
+    slug: 'south',
+    image: '/assets/images/regions/south.webp',
+    text: 'Kandahar, Helmand, Uruzgan, Zabul, and Nimroz: Durrani history, desert routes, and southern cultural sites.',
+  },
+  {
+    title: 'Wakhan & Northeast',
+    slug: 'wakhan-northeast',
+    image: '/assets/images/province/badakhshan/hero.webp',
+    text: 'Badakhshan, Faizabad, Wakhan access, mountain expeditions, river valleys, and remote frontier routes.',
+  },
+];
+
+const imageForProvince = (p) => p.image || p.cover_image_path || `/assets/images/province/${p.slug}/hero.webp`;
+const imageForHub = (h) => h.image || `/assets/images/hubs/${h.slug}/hero.webp`;
+---
+
+<BaseLayout
+  title="Destinations | AfghanTours"
+  description="Explore Afghanistan by regions, provinces, operational travel hubs, and food and culture context."
+  image="/assets/images/heroes/destinations/hero.webp"
+>
+  <section class="dest-hero">
+    <img src="/assets/images/heroes/destinations/hero.webp" alt="Afghanistan destinations" />
+    <div class="dest-hero-shade"></div>
+    <div class="dest-hero-content">
+      <p>Destination Guide</p>
+      <h1>Explore Afghanistan by region, province, and travel hub.</h1>
+      <span>
+        Browse Afghanistan through the way travel actually works: broad regions, individual
+        provinces, operational cities and hubs, and the food and culture that gives each journey context.
+      </span>
+    </div>
+  </section>
+
+  <main class="dest-page">
+    <nav class="dest-tabs" aria-label="Destination sections">
+      <a href="#regions">Regions</a>
+      <a href="#provinces">Provinces</a>
+      <a href="#hubs">Cities & Hubs</a>
+      <a href="#all-destinations">All Destinations</a>
+    </nav>
+
+    <section id="regions" class="dest-section">
+      <div class="section-heading">
+        <p>Regions</p>
+        <h2>Start with Afghanistan’s major travel regions.</h2>
+        <span>Regions help travelers understand scale, climate, route logic, and broad cultural geography.</span>
+      </div>
+
+      <div class="region-grid">
+        {regions.map((region) => (
+          <a class="region-card" href={`/destinations/?region=${region.slug}`}>
+            <img src={region.image} alt={region.title} loading="lazy" />
+            <div>
+              <p>Region</p>
+              <h3>{region.title}</h3>
+              <span>{region.text}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section id="provinces" class="dest-section">
+      <div class="section-heading">
+        <p>Provinces</p>
+        <h2>Province-by-province destination context.</h2>
+        <span>Use provinces to explore attractions, hotels, routes, food, and tour connections.</span>
+      </div>
+
+      <div class="province-grid">
+        {provinces.map((province) => (
+          <a class="destination-card" href={`/destinations/${province.slug}/`}>
+            <img src={imageForProvince(province)} alt={province.title || province.name} loading="lazy" />
+            <div>
+              <p>{province.region || 'Afghanistan'}</p>
+              <h3>{province.title || province.name}</h3>
+              <span>{province.short_blurb || province.excerpt || province.description || 'Destination profile, attractions, tours, and planning context.'}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section id="hubs" class="dest-section">
+      <div class="section-heading">
+        <p>Cities & Hubs</p>
+        <h2>Operational travel hubs.</h2>
+        <span>
+          These are the cities and access points that connect hotels, transportation, attractions,
+          food and culture, and day-by-day tour movement.
+        </span>
+      </div>
+
+      <div class="hub-grid">
+        {hubs.map((hub) => (
+          <a class="destination-card" href={`/hubs/${hub.slug}/`}>
+            <img src={imageForHub(hub)} alt={hub.title || hub.name} loading="lazy" />
+            <div>
+              <p>Travel Hub</p>
+              <h3>{hub.title || hub.name}</h3>
+              <span>{hub.summary || hub.description || 'Operational hub for routes, hotels, attractions, food, and transport.'}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="food-culture-band">
+      <div>
+        <p>Food & Culture</p>
+        <h2>Food belongs inside destination planning.</h2>
+        <span>
+          Afghan food, tea culture, produce, dried fruits, bakeries, local restaurants, and cultural
+          experiences should be connected to the places where travelers actually encounter them.
+        </span>
+      </div>
+      <a href="/food-culture/">Explore Food & Culture</a>
+    </section>
+
+    <section id="all-destinations" class="dest-section">
+      <div class="section-heading">
+        <p>All Destinations</p>
+        <h2>Browse all provinces and hubs together.</h2>
+        <span>A combined directory for travelers who want to scan everything from one place.</span>
+      </div>
+
+      <div class="all-grid">
+        {provinces.map((province) => (
+          <a href={`/destinations/${province.slug}/`}>
+            <strong>{province.title || province.name}</strong>
+            <span>Province</span>
+          </a>
+        ))}
+        {hubs.map((hub) => (
+          <a href={`/hubs/${hub.slug}/`}>
+            <strong>{hub.title || hub.name}</strong>
+            <span>City & Hub</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .dest-hero {
+    position: relative;
+    min-height: 58vh;
+    display: flex;
+    align-items: end;
+    overflow: hidden;
+    background: #050807;
+    color: #fff;
+  }
+
+  .dest-hero img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .74;
+  }
+
+  .dest-hero-shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(0,0,0,.82), rgba(0,0,0,.52), rgba(0,0,0,.22)),
+      linear-gradient(0deg, rgba(0,0,0,.5), transparent 55%);
+  }
+
+  .dest-hero-content {
+    position: relative;
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 8rem 0 5rem;
+  }
+
+  .dest-hero-content p,
+  .section-heading p,
+  .food-culture-band p,
+  .destination-card p,
+  .region-card p {
+    margin: 0;
+    color: #d6a23a;
+    font-size: .72rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  .dest-hero h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.2rem, 6vw, 6.5rem);
+    line-height: .92;
+    letter-spacing: -.06em;
+    max-width: 1050px;
+    margin: .8rem 0 1.1rem;
+  }
+
+  .dest-hero span {
+    display: block;
+    max-width: 720px;
+    color: rgba(255,255,255,.86);
+    font-size: 1.12rem;
+    line-height: 1.75;
+  }
+
+  .dest-page {
+    background: #fbf6ed;
+    color: #101820;
+    padding-bottom: 5rem;
+  }
+
+  .dest-tabs {
+    position: sticky;
+    top: 76px;
+    z-index: 20;
+    background: rgba(251,246,237,.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(16,24,32,.08);
+    display: flex;
+    justify-content: center;
+    gap: .8rem;
+    padding: .9rem 1rem;
+    overflow-x: auto;
+  }
+
+  .dest-tabs a {
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid #eadfce;
+    color: #101820;
+    text-decoration: none;
+    padding: .75rem 1rem;
+    font-size: .82rem;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+
+  .dest-tabs a:hover {
+    background: #d6a23a;
+  }
+
+  .dest-section,
+  .food-culture-band {
+    width: min(1280px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding-top: clamp(4rem, 7vw, 6rem);
+  }
+
+  .section-heading {
+    max-width: 840px;
+    margin-bottom: 2rem;
+  }
+
+  .section-heading h2,
+  .food-culture-band h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    line-height: .95;
+    letter-spacing: -.06em;
+    margin: .55rem 0 1rem;
+  }
+
+  .section-heading span,
+  .food-culture-band span {
+    display: block;
+    color: #4b5563;
+    line-height: 1.75;
+    font-size: 1.05rem;
+    max-width: 760px;
+  }
+
+  .region-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.2rem;
+  }
+
+  .province-grid,
+  .hub-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.2rem;
+  }
+
+  .region-card,
+  .destination-card {
+    display: block;
+    background: #fff;
+    color: inherit;
+    text-decoration: none;
+    border: 1px solid rgba(16,24,32,.1);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 14px 38px rgba(21,16,9,.08);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+
+  .region-card:hover,
+  .destination-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 50px rgba(21,16,9,.14);
+  }
+
+  .region-card img,
+  .destination-card img {
+    width: 100%;
+    height: 210px;
+    display: block;
+    object-fit: cover;
+  }
+
+  .region-card div,
+  .destination-card div {
+    padding: 1.35rem;
+  }
+
+  .region-card h3,
+  .destination-card h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 2rem;
+    line-height: .95;
+    letter-spacing: -.045em;
+    margin: .45rem 0 .85rem;
+  }
+
+  .region-card span,
+  .destination-card span {
+    color: #4b5563;
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .food-culture-band {
+    margin-top: clamp(4rem, 7vw, 6rem);
+    padding: clamp(2rem, 4vw, 3rem);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: center;
+    background:
+      linear-gradient(90deg, rgba(255,255,255,.96), rgba(255,255,255,.82)),
+      url('/assets/images/food/setting_table/hero.webp') center/cover no-repeat;
+    border: 1px solid rgba(16,24,32,.1);
+    border-radius: 1.5rem;
+    box-shadow: 0 14px 38px rgba(21,16,9,.08);
+  }
+
+  .food-culture-band a {
+    border-radius: 999px;
+    background: #101820;
+    color: #fff;
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+
+  .all-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: .8rem;
+  }
+
+  .all-grid a {
+    background: #fff;
+    border: 1px solid rgba(16,24,32,.1);
+    border-radius: 1rem;
+    padding: 1rem;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .all-grid strong {
+    display: block;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.25rem;
+  }
+
+  .all-grid span {
+    display: block;
+    margin-top: .3rem;
+    color: #b46b00;
+    font-size: .72rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  @media(max-width: 980px) {
+    .region-grid,
+    .province-grid,
+    .hub-grid,
+    .all-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .food-culture-band {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media(max-width: 620px) {
+    .region-grid,
+    .province-grid,
+    .hub-grid,
+    .all-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

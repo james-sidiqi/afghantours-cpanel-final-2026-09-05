@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+__MACOSX/
+*.zip
+public/assets/images/
+current-src/
+deploy/
+older_src/
+src-backup/
+src-backup-before-architecture-fix/

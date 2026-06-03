@@ -1,0 +1,260 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import AttractionPopupGrid from '../../components/cards/AttractionPopupGrid.astro';
+import HotelPopupGrid from '../../components/cards/HotelPopupGrid.astro';
+import TourCardGrid from '../../components/cards/TourCardGrid.astro';
+import { getHubs, getHubBySlug, getAttractions, getHotels, getTours, getFoodItems } from '../../lib/buildRelations';
+
+export function getStaticPaths() {
+  return getHubs().filter((hub) => hub?.slug).map((hub) => ({ params: { slug: hub.slug } }));
+}
+
+const hub = Astro.params.slug ? getHubBySlug(Astro.params.slug) : undefined;
+if (!hub) return Astro.redirect('/hubs/');
+
+const hubName = hub.title || hub.name || hub.location_name || 'Travel Hub';
+const hubSlug = hub.slug;
+const hubCode = hub.location_code || hub.code || hub.destination_code || hub.destination || '';
+const provinceCode = hub.parent_code || hub.province_code || '';
+const provinceName = hub.province || hub.province_name || hubName;
+
+const attractions = getAttractions().filter((a) => {
+  const fields = [
+    a.location_code,
+    a.requires_location_code,
+    a.nearest_hub_code,
+    a.hub_code,
+    a.destination_code,
+  ].map((x) => String(x || '').toLowerCase());
+
+  const provinceFields = [a.province_code, a.province].map((x) => String(x || '').toLowerCase());
+
+  return fields.includes(String(hubCode).toLowerCase())
+    || fields.includes(String(hubSlug).toLowerCase())
+    || provinceFields.includes(String(provinceCode).toLowerCase())
+    || provinceFields.includes(String(provinceName).toLowerCase());
+});
+
+const hotels = getHotels().filter((hotel) => {
+  const fields = [hotel.destination_code, hotel.location_code, hotel.hub_code, hotel.hub_name, hotel.city].map((x) => String(x || '').toLowerCase());
+  return fields.includes(String(hubCode).toLowerCase()) || fields.includes(String(hubName).toLowerCase()) || fields.includes(String(hubSlug).toLowerCase());
+});
+
+const food = getFoodItems().filter((item) => {
+  const fields = [item.destination_code, item.location_code, item.hub_name, item.city, item.province, item.province_code].map((x) => String(x || '').toLowerCase());
+  return fields.includes(String(hubCode).toLowerCase()) || fields.includes(String(hubName).toLowerCase()) || fields.includes(String(provinceCode).toLowerCase()) || fields.includes(String(provinceName).toLowerCase());
+});
+
+const tours = getTours().filter((tour) => {
+  const tourText = [
+    tour.route,
+    tour.route_summary,
+    tour.province,
+    tour.provinces,
+    tour.region,
+    tour.title,
+    tour.name,
+  ].join(' ').toLowerCase();
+
+  return tourText.includes(String(hubName).toLowerCase())
+    || tourText.includes(String(provinceName).toLowerCase())
+    || (Array.isArray(tour.attractions) && tour.attractions.some((a) => attractions.some((x) => x.slug === a.slug)));
+});
+
+const image = hub.image || `/assets/images/hubs/${hubSlug}/hero.webp` || '/assets/images/placeholders/default-hub.webp';
+---
+
+<BaseLayout
+  title={`${hubName} Travel Hub | AfghanTours`}
+  description={hub.summary || hub.description || `Operational travel hub for ${hubName}.`}
+  image={image}
+>
+  <PageHero
+    eyebrow={provinceName}
+    title={`${hubName} Travel Hub`}
+    text={hub.summary || hub.description || `Operational information for routes, attractions, hotels, food, and transportation connected to ${hubName}.`}
+    image={image}
+    height="min-h-[62vh]"
+  />
+
+  <section class="hub-overview">
+    <div class="hub-overview-wrap">
+      <div class="hub-copy">
+        <p class="section-kicker">Operational Summary</p>
+        <h2>How {hubName} functions as a travel hub</h2>
+        <div class="editorial-prose" set:html={hub.content_html || ''} />
+      </div>
+
+      <aside class="hub-facts">
+        <p class="section-kicker">At a glance</p>
+        <div>
+          <span>Province</span>
+          <strong>{provinceName}</strong>
+        </div>
+        {hubCode && (
+          <div>
+            <span>Hub code</span>
+            <strong>{hubCode}</strong>
+          </div>
+        )}
+        <div>
+          <span>Linked attractions</span>
+          <strong>{attractions.length}</strong>
+        </div>
+        <div>
+          <span>Linked hotels</span>
+          <strong>{hotels.length}</strong>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <AttractionPopupGrid
+    attractions={attractions}
+    title={`Attractions accessed from ${hubName}`}
+    intro="These are the main attractions and field sites connected to this operational hub."
+  />
+
+  <HotelPopupGrid
+    hotels={hotels}
+    title={`Hotels used in ${hubName}`}
+    intro="Accommodation references connected to this hub and nearby travel routes."
+  />
+
+  {food.length > 0 && (
+    <section class="simple-section">
+      <div class="simple-wrap">
+        <p class="section-kicker">Food & Culture</p>
+        <h2>Food connected to {hubName}</h2>
+        <div class="simple-grid">
+          {food.slice(0, 8).map((item) => (
+            <a class="simple-card" href={`/food-culture/${item.slug}/`}>
+              <img src={item.image} alt={item.title || item.name} loading="lazy" />
+              <h3>{item.title || item.name}</h3>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <TourCardGrid
+    tours={tours}
+    title={`Tours using ${hubName}`}
+    intro="These journeys either begin from, pass through, or rely on this hub for routing and logistics."
+  />
+</BaseLayout>
+
+<style>
+  .hub-overview,
+  .simple-section {
+    background: #fbf6ed;
+    color: #101820;
+    padding: clamp(4rem, 7vw, 7rem) 0;
+  }
+
+  .hub-overview-wrap,
+  .simple-wrap {
+    width: min(1240px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .hub-overview-wrap {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .hub-copy,
+  .hub-facts,
+  .simple-card {
+    background: #fff;
+    border: 1px solid rgba(16,24,32,.1);
+    border-radius: 2rem;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    box-shadow: 0 14px 38px rgba(21,16,9,.08);
+  }
+
+  .section-kicker {
+    margin: 0;
+    color: #b46b00;
+    font-size: .72rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  .hub-copy h2,
+  .simple-wrap h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 5vw, 4.8rem);
+    line-height: .95;
+    letter-spacing: -.06em;
+    margin: .5rem 0 1.4rem;
+  }
+
+  .hub-facts {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .hub-facts div {
+    border-top: 1px solid rgba(16,24,32,.1);
+    padding-top: 1rem;
+  }
+
+  .hub-facts span {
+    display: block;
+    color: #6b7280;
+    font-size: .76rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+
+  .hub-facts strong {
+    display: block;
+    margin-top: .3rem;
+    font-size: 1.15rem;
+  }
+
+  .simple-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .simple-card {
+    padding: 0;
+    overflow: hidden;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .simple-card img {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .simple-card h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    padding: 1rem;
+    margin: 0;
+    font-size: 1.45rem;
+    line-height: 1;
+  }
+
+  @media (max-width: 900px) {
+    .hub-overview-wrap { grid-template-columns: 1fr; }
+    .simple-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 620px) {
+    .simple-grid { grid-template-columns: 1fr; }
+  }
+</style>

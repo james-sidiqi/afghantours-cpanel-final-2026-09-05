@@ -1,0 +1,284 @@
+:root {
+  --font-display: Georgia, "Times New Roman", serif;
+  --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --ink: #101820;
+  --muted: #4b5563;
+  --gold: #b46b00;
+  --paper: #fbf8f2;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+h1, h2, h3, h4,
+.editorial-title {
+  font-family: var(--font-display);
+  letter-spacing: -0.055em;
+  color: var(--ink);
+}
+
+p {
+  line-height: 1.75;
+}
+
+.prose,
+.editorial-prose,
+.page-content,
+.attraction-content,
+.destination-content,
+.food-content,
+.hotel-content,
+.tour-content {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--muted);
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.editorial-prose h1,
+.editorial-prose h2,
+.editorial-prose h3,
+.page-content h1,
+.page-content h2,
+.page-content h3,
+.attraction-content h1,
+.attraction-content h2,
+.attraction-content h3,
+.destination-content h1,
+.destination-content h2,
+.destination-content h3,
+.food-content h1,
+.food-content h2,
+.food-content h3,
+.hotel-content h1,
+.hotel-content h2,
+.hotel-content h3,
+.tour-content h1,
+.tour-content h2,
+.tour-content h3 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  line-height: 1;
+  letter-spacing: -0.055em;
+  margin: 2.25rem 0 1rem;
+}
+
+.prose h2,
+.editorial-prose h2,
+.page-content h2,
+.attraction-content h2,
+.destination-content h2,
+.food-content h2,
+.hotel-content h2,
+.tour-content h2 {
+  font-size: clamp(2.2rem, 4vw, 4rem);
+}
+
+.prose h3,
+.editorial-prose h3,
+.page-content h3,
+.attraction-content h3,
+.destination-content h3,
+.food-content h3,
+.hotel-content h3,
+.tour-content h3 {
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+}
+
+.prose p,
+.editorial-prose p,
+.page-content p,
+.attraction-content p,
+.destination-content p,
+.food-content p,
+.hotel-content p,
+.tour-content p {
+  margin: 0 0 1.25rem;
+  max-width: 72ch;
+}
+
+.prose ul,
+.editorial-prose ul,
+.page-content ul,
+.attraction-content ul,
+.destination-content ul,
+.food-content ul,
+.hotel-content ul,
+.tour-content ul {
+  margin: 1rem 0 1.5rem;
+  padding-left: 1.25rem;
+}
+
+.prose li,
+.editorial-prose li,
+.page-content li,
+.attraction-content li,
+.destination-content li,
+.food-content li,
+.hotel-content li,
+.tour-content li {
+  margin: .45rem 0;
+}
+
+.section-kicker,
+.eyebrow,
+.kicker {
+  color: var(--gold);
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.5vw, 2.4rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.text-card {
+  background: #fff;
+  border: 1px solid rgba(16,24,32,.1);
+  border-radius: 1.5rem;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  box-shadow: 0 14px 38px rgba(21,16,9,.08);
+}
+
+/* HOMEPAGE + HERO READABILITY */
+.home-hero h1,
+.home-hero .hero-content h1 {
+  color: #fff !important;
+  text-shadow: 0 8px 32px rgba(0,0,0,.75) !important;
+}
+
+.home-hero .lead,
+.home-hero .hero-content .lead {
+  color: rgba(255,255,255,.94) !important;
+}
+
+/* TRUST SECTION */
+.trust-wrap h2 {
+  font-size: clamp(2.4rem, 4.2vw, 4.8rem) !important;
+}
+
+.trust-cards article > span {
+  display: none !important;
+}
+
+/* FEATURED TOURS */
+#featured-section aside {
+  background: #101820 !important;
+  backdrop-filter: none !important;
+}
+
+#featured-section [data-featured-index] {
+  min-height: 250px !important;
+}
+
+#featured-section .overflow-x-auto {
+  padding-bottom: 2rem !important;
+}
+
+/* CUSTOM TOURS */
+#custom-tours article > span,
+#custom-tours article .icon,
+#custom-tours article [class*="icon"] {
+  display: none !important;
+}
+
+/* FOOTER */
+.site-footer .footer-logo {
+  display: block !important;
+  margin: 0 auto 1rem !important;
+}
+
+.site-footer .footer-brand,
+.site-footer .footer-company,
+.site-footer .footer-license,
+.site-footer .footer-motto {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.site-footer .footer-motto {
+  margin-top: .75rem !important;
+}
+
+/* HERO TITLE READABILITY */
+.home-hero h1,
+.info-hero h1,
+section[class*="hero"] h1,
+.editorial-title.text-white,
+.relative.text-white h1 {
+  color: #fff !important;
+  text-shadow: 0 8px 34px rgba(0,0,0,.85) !important;
+}
+
+.info-hero span,
+.info-hero p,
+.relative.text-white p {
+  color: rgba(255,255,255,.94) !important;
+}
+
+/* FEATURED TOURS: prevent bottom cards from being cut */
+#featured-section {
+  overflow: visible !important;
+}
+
+#featured-section > div {
+  min-height: 860px !important;
+  padding-bottom: 4rem !important;
+}
+
+#featured-section aside {
+  background: #101820 !important;
+  backdrop-filter: none !important;
+}
+
+/* WHY SECTION CLEANUP */
+.why-section h2,
+.why-wrap h2,
+section[id*="why"] h2 {
+  font-size: clamp(2.4rem, 4vw, 4.5rem) !important;
+}
+
+.why-section .pillar-icon,
+.why-section article > span,
+.why-section .american-card,
+.why-section [class*="badge"],
+.why-section [class*="trust"] {
+  display: none !important;
+}
+
+/* ABOUT IMPACT SECTION READABILITY */
+section.bg-\[\#0d1d16\] h2,
+section.bg-\[\#06150f\] h2 {
+  color: #fff !important;
+  text-shadow: 0 4px 22px rgba(0,0,0,.5);
+}
+
+/* FOOTER LOGO CENTER */
+.site-footer .footer-logo {
+  display: block !important;
+  margin: 0 auto .65rem !important;
+}
+
+.site-footer .footer-company,
+.site-footer .footer-license,
+.site-footer .footer-motto {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.site-footer .footer-motto {
+  margin-top: .65rem !important;
+}

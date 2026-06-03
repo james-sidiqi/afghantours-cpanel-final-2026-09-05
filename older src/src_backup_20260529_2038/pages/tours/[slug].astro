@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import TourOverview from '../../components/tours/TourOverview.astro';
+import TourItineraryAccordion from '../../components/tours/TourItineraryAccordion.astro';
+import TourGallery from '../../components/tours/TourGallery.astro';
+import TourInclusions from '../../components/tours/TourInclusions.astro';
+import TourCTA from '../../components/tours/TourCTA.astro';
+import { getTours, getTourBySlug } from '../../lib/buildRelations';
+
+export function getStaticPaths() {
+  return getTours().filter((tour) => tour?.slug).map((tour) => ({ params: { slug: tour.slug } }));
+}
+
+const tour = Astro.params.slug ? getTourBySlug(Astro.params.slug) : undefined;
+if (!tour) return Astro.redirect('/tours/');
+
+const heroImage = tour.hero_image || tour.hero_image_path || tour.thumbnail_image_path || '/assets/images/heroes/hero-tour.webp';
+---
+<BaseLayout title={`${tour.title || tour.name} | AfghanTours`} description={tour.summary || tour.description || ''} image={heroImage}>
+  <PageHero
+    eyebrow={tour.season || tour.travel_style || 'Afghanistan Tour'}
+    title={tour.title || tour.name}
+    text={tour.summary || tour.description || 'A guided Afghanistan journey built around realistic logistics, cultural access, and local coordination.'}
+    image={heroImage}
+    primaryHref="#itinerary"
+    primaryLabel="View itinerary"
+    secondaryHref={`/contact/?tour=${encodeURIComponent(tour.title || tour.name || tour.slug)}`}
+    secondaryLabel="Ask about this tour"
+    height="min-h-[78vh]"
+  />
+  <TourOverview tour={tour} />
+  <div id="itinerary"><TourItineraryAccordion itinerary={tour.itinerary || []} /></div>
+  {tour.gallery?.length > 0 && <TourGallery tour={tour} gallery={tour.gallery} />}
+  <TourInclusions tour={tour} />
+  <TourCTA tour={tour} />
+</BaseLayout>

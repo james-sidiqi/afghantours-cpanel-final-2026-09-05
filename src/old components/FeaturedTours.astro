@@ -1,0 +1,63 @@
+---
+interface Props { tours: any[] }
+const { tours = [] } = Astro.props;
+const safeTours = tours.slice(0, 8);
+const img = (t:any) => t.hero_image || t.hero_image_path || t.image || `/assets/images/tours/${t.slug}/hero.webp`;
+const gallery = (t:any) => (Array.isArray(t.gallery) && t.gallery.length ? t.gallery : [img(t), t.overview_image || t.overview_image_path || img(t), `/assets/images/tours/${t.slug}/01.webp`]).slice(0,3);
+const routeFor = (t:any) => (t.route || t.route_summary || [t.start_location,t.end_location].filter(Boolean).join(' → ') || 'Kabul → Regional Hubs → Kabul');
+const attractionsFor = (t:any) => Array.isArray(t.attractions) && t.attractions.length ? t.attractions.slice(0,4).map((a:any)=>a.name||a.title) : ['Band-e-Amir Lakes','Buddha Niches','Blue Mosque','Herat Citadel'];
+const hubsFor = (t:any) => t.hubs || t.hub_names || 'Kabul | Bamyan | Mazar-e-Sharif | Herat';
+const split = (v:any) => Array.isArray(v) ? v : String(v||'').split(/[|,;]/).map(x=>x.trim()).filter(Boolean);
+---
+<section id="featured-tours" class="featured-tours">
+  <div class="bg-stack">{safeTours.map((tour,index)=><img id={`ft-bg-${index}`} src={img(tour)} alt="" class={index===0?'active':''} />)}</div>
+  <div class="ft-overlay"></div>
+  <div class="ft-main">
+    <div class="ft-left">
+      <p class="eyebrow">Featured Tours</p>
+      {safeTours.map((tour,index)=>(
+        <article id={`ft-panel-${index}`} class={`ft-panel ${index===0?'active':''}`}>
+          <h2>{tour.title || tour.name}</h2>
+          <p class="route">{routeFor(tour)}</p>
+          <p class="meta">{tour.duration_days || 'Custom'} Days <span>•</span> {tour.style || 'Cultural'} <span>•</span> {tour.activity_level || 'Private'} <span>•</span> {tour.season || 'Year-round'}</p>
+          <p class="desc">{tour.description || tour.desc_short || 'Curated Afghanistan journey built around real access, local knowledge, seasonal windows, and operational support.'}</p>
+          <div class="ft-actions"><button data-open-preview={index}>Preview Details</button><a href={`/tours/${tour.slug}/`}>View Full Itinerary →</a></div>
+        </article>
+      ))}
+    </div>
+
+    <aside class="tour-preview" data-preview>
+      <button class="close-preview" data-close-preview>×</button>
+      {safeTours.map((tour,index)=>(
+        <div id={`ft-drawer-${index}`} class={`drawer-content ${index===0?'active':''}`}>
+          <p class="eyebrow">Tour Preview</p><h3>{tour.title || tour.name}</h3>
+          <div class="drawer-meta"><span>◷ {tour.duration_days || 'Custom'} Days</span><span>▥ {tour.activity_level || 'Moderate'}</span><span>☼ {tour.season || 'Year-round'}</span></div>
+          <div class="gallery-row">{gallery(tour).map((g)=><button data-lightbox={g}><img src={g} alt="" loading="lazy" onerror="this.style.display='none'" /></button>)}</div>
+          <div class="drawer-grid"><div><h4>Hubs</h4>{split(hubsFor(tour)).map(h=><p>⌖ {h}</p>)}</div><div><h4>Provinces</h4>{split(tour.provinces || tour.province || 'Kabul | Bamyan | Balkh | Herat').map(p=><p>⌖ {p}</p>)}</div></div>
+          <div class="attractions"><h4>Top Attractions</h4><div>{attractionsFor(tour).map((a)=><button data-attraction-popup={a}>▧ {a}</button>)}</div></div>
+          <div class="drawer-actions"><a href={`/tours/${tour.slug}/`}>View Full Itinerary</a><a href={`/contact/?tour=${tour.slug}`}>Inquire Now</a></div>
+        </div>
+      ))}
+    </aside>
+  </div>
+
+  <div class="tour-strip">
+    <button class="side-arrow" data-ft-prev>‹</button>
+    <div class="tour-card-row">{safeTours.map((tour,index)=><button class={`tour-tile ${index===0?'active':''}`} data-tour-index={index}><img src={img(tour)} alt="" loading="lazy" onerror="this.style.display='none'"/><span>{tour.title || tour.name}</span><small>{tour.duration_days || 'Custom'} Days • {tour.style || 'Private'}</small></button>)}</div>
+    <button class="side-arrow" data-ft-next>›</button>
+  </div>
+  <div class="lightbox" data-lightbox-modal><button data-close-lightbox>×</button><img data-lightbox-img alt="Tour gallery image" /></div>
+  <div class="attraction-pop" data-attraction-modal><button data-close-attraction>×</button><h3 data-attraction-title></h3><p>Included in this route. Full attraction details can connect to the attraction page when linked through the tour data.</p></div>
+</section>
+<script>
+  const tiles=[...document.querySelectorAll('[data-tour-index]')]; const panels=[...document.querySelectorAll('.ft-panel')]; const drawers=[...document.querySelectorAll('.drawer-content')]; const bgs=[...document.querySelectorAll('.bg-stack img')]; let active=0;
+  function setTour(i){ active=(i+tiles.length)%tiles.length; [tiles,panels,drawers,bgs].forEach(group=>group.forEach((el,idx)=>el.classList.toggle('active',idx===active))); }
+  tiles.forEach((b,i)=>b.addEventListener('click',()=>setTour(i))); document.querySelector('[data-ft-prev]')?.addEventListener('click',()=>setTour(active-1)); document.querySelector('[data-ft-next]')?.addEventListener('click',()=>setTour(active+1));
+  document.querySelectorAll('[data-open-preview]').forEach(btn=>btn.addEventListener('click',()=>{setTour(Number(btn.getAttribute('data-open-preview')));document.querySelector('[data-preview]')?.classList.add('open')})); document.querySelector('[data-close-preview]')?.addEventListener('click',()=>document.querySelector('[data-preview]')?.classList.remove('open'));
+  const lb=document.querySelector('[data-lightbox-modal]'); const lbImg=document.querySelector('[data-lightbox-img]'); document.querySelectorAll('[data-lightbox]').forEach(b=>b.addEventListener('click',()=>{lbImg.src=b.getAttribute('data-lightbox');lb.classList.add('open')})); document.querySelector('[data-close-lightbox]')?.addEventListener('click',()=>lb.classList.remove('open'));
+  const ap=document.querySelector('[data-attraction-modal]'); const at=document.querySelector('[data-attraction-title]'); document.querySelectorAll('[data-attraction-popup]').forEach(b=>b.addEventListener('click',()=>{at.textContent=b.getAttribute('data-attraction-popup');ap.classList.add('open')})); document.querySelector('[data-close-attraction]')?.addEventListener('click',()=>ap.classList.remove('open'));
+</script>
+<style>
+  .featured-tours{position:relative;background:#080c0f;color:#fff;overflow:hidden}.bg-stack,.bg-stack img,.ft-overlay{position:absolute;inset:0}.bg-stack img{width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.03);transition:opacity 900ms ease,transform 1600ms ease}.bg-stack img.active{opacity:1;transform:scale(1)}.ft-overlay{background:linear-gradient(90deg,rgba(0,0,0,.78),rgba(0,0,0,.42) 55%,rgba(0,0,0,.88));z-index:1}.ft-main{position:relative;z-index:2;min-height:720px;display:grid;grid-template-columns:1.8fr 1fr}.ft-left{padding:7rem 8vw;display:flex;flex-direction:column;justify-content:center}.eyebrow{text-transform:uppercase;letter-spacing:.24em;color:#d6a548;font-weight:900;font-size:.8rem}.ft-panel{display:none;max-width:760px}.ft-panel.active{display:block}.ft-panel h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(3.7rem,6vw,6.8rem);line-height:.92;margin:.9rem 0}.route{color:#f2d6a2;font-weight:800}.meta{text-transform:uppercase;letter-spacing:.12em;font-size:.9rem;font-weight:900}.meta span{color:#d6a548;margin:0 .6rem}.desc{font-size:1.18rem;line-height:1.65;max-width:680px;color:rgba(255,255,255,.88)}.ft-actions{display:flex;gap:1rem;flex-wrap:wrap;margin-top:2rem}.ft-actions button,.ft-actions a,.drawer-actions a{border:1px solid rgba(255,255,255,.35);padding:1rem 1.6rem;border-radius:.25rem;text-transform:uppercase;text-decoration:none;font-weight:900;font-size:.8rem;letter-spacing:.06em;color:#fff;background:transparent}.ft-actions button,.drawer-actions a:first-child{background:#c89548;color:#fff;border-color:#c89548}.tour-preview{position:relative;z-index:3;background:rgba(7,8,10,.94);border-left:1px solid rgba(255,255,255,.12);padding:4rem 2.4rem;transform:none}.close-preview{position:absolute;right:1rem;top:1rem;background:transparent;border:0;color:#fff;font-size:2rem}.drawer-content{display:none}.drawer-content.active{display:block}.drawer-content h3{font-family:Georgia,"Times New Roman",serif;font-size:2.8rem;line-height:.98;margin:.8rem 0 1.4rem}.drawer-meta{display:flex;flex-wrap:wrap;gap:1.1rem;color:#ddd;border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:1.2rem}.gallery-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin:1.4rem 0}.gallery-row button{border:0;padding:0;background:transparent;border-radius:.35rem;overflow:hidden}.gallery-row img{width:100%;height:90px;object-fit:cover}.drawer-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;border-top:1px solid rgba(255,255,255,.12);border-bottom:1px solid rgba(255,255,255,.12);padding:1.2rem 0}.drawer-grid h4,.attractions h4{color:#d6a548;text-transform:uppercase;letter-spacing:.18em;font-size:.78rem}.drawer-grid p{margin:.5rem 0;color:#ddd}.attractions div{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}.attractions button{background:transparent;border:1px solid rgba(255,255,255,.13);color:#eee;text-align:left;border-radius:.35rem;padding:.65rem}.drawer-actions{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem}.tour-strip{position:relative;z-index:3;background:#fbf6ed;padding:2rem 5vw;display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:center}.tour-card-row{display:flex;gap:1.4rem;overflow-x:auto;padding:.3rem}.tour-tile{position:relative;flex:0 0 265px;height:250px;border:1px solid #d7c7ae;border-radius:.7rem;overflow:hidden;background:#12171c;color:#fff;text-align:left;padding:0}.tour-tile.active{outline:3px solid #c89548}.tour-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.tour-tile:after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent,rgba(0,0,0,.84))}.tour-tile span,.tour-tile small{position:absolute;z-index:2;left:1rem;right:1rem}.tour-tile span{bottom:3rem;font-family:Georgia,"Times New Roman",serif;font-size:1.35rem;line-height:1.05}.tour-tile small{bottom:1.2rem;color:#ddd}.side-arrow{width:54px;height:54px;border-radius:50%;border:1px solid #d8cbb9;background:#fff;color:#111;font-size:2rem}.lightbox,.attraction-pop{display:none;position:fixed;z-index:2000}.lightbox.open,.attraction-pop.open{display:grid}.lightbox{inset:0;background:rgba(0,0,0,.86);place-items:center}.lightbox img{max-width:88vw;max-height:84vh;border-radius:.8rem}.lightbox button,.attraction-pop button{position:absolute;right:1rem;top:1rem;background:#111;color:#fff;border:0;border-radius:50%;width:42px;height:42px;font-size:1.5rem}.attraction-pop{right:2rem;bottom:2rem;width:min(420px,calc(100% - 2rem));background:#fff;color:#111;border-radius:1rem;padding:2rem;box-shadow:0 18px 60px rgba(0,0,0,.35)}.attraction-pop h3{font-family:Georgia,"Times New Roman",serif;font-size:2rem;margin:0 0 .8rem}
+  @media(max-width:1000px){.ft-main{grid-template-columns:1fr}.tour-preview{position:fixed;inset:0 0 0 auto;width:min(520px,100%);transform:translateX(100%);transition:.35s;overflow:auto}.tour-preview.open{transform:translateX(0)}.ft-left{padding:5rem 1.25rem}.tour-strip{padding:1.3rem}.ft-panel h2{font-size:3.5rem}}@media(max-width:640px){.drawer-actions,.drawer-grid,.attractions div{grid-template-columns:1fr}.tour-tile{flex-basis:235px}.ft-panel h2{font-size:3rem}}
+</style>

@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import AttractionPopupGrid from '../../components/cards/AttractionPopupGrid.astro';
+import TourCardGrid from '../../components/cards/TourCardGrid.astro';
+import HotelPopupGrid from '../../components/cards/HotelPopupGrid.astro';
+import { getProvinces, getProvinceBySlug, getAttractions, getTours, getHotels } from '../../lib/buildRelations';
+
+export function getStaticPaths() {
+  return getProvinces().filter((p) => p?.slug).map((p) => ({ params: { slug: p.slug } }));
+}
+
+const province = Astro.params.slug ? getProvinceBySlug(Astro.params.slug) : undefined;
+if (!province) return Astro.redirect('/destinations/');
+
+const provinceName = province.title || province.name || province.province_name;
+const provinceCode = province.province_code || province.code || '';
+
+const attractions = getAttractions().filter((a) =>
+  String(a.province_code || '').toLowerCase() === String(provinceCode).toLowerCase()
+  || String(a.province || '').toLowerCase() === String(provinceName || '').toLowerCase()
+);
+
+const tours = getTours().filter((tour) => {
+  const tourText = [tour.province, tour.provinces, tour.route, tour.route_summary, tour.title, tour.name].join(' ').toLowerCase();
+  return tourText.includes(String(provinceName || '').toLowerCase())
+    || tourText.includes(String(provinceCode || '').toLowerCase())
+    || (Array.isArray(tour.attractions) && tour.attractions.some((a) => attractions.some((x) => x.slug === a.slug)));
+});
+
+const hotels = getHotels().filter((hotel) => {
+  const fields = [hotel.province, hotel.province_code, hotel.hub_name, hotel.city, hotel.destination_code].join(' ').toLowerCase();
+  return fields.includes(String(provinceName || '').toLowerCase()) || fields.includes(String(provinceCode || '').toLowerCase());
+});
+
+const image = province.image || province.cover_image_path || '/assets/images/placeholders/default-province.webp';
+---
+
+<BaseLayout title={`${provinceName} | AfghanTours`} description={province.short_blurb || province.excerpt || ''} image={image}>
+  <PageHero
+    eyebrow={province.region || 'Afghanistan'}
+    title={provinceName}
+    text={province.short_blurb || ''}
+    image={image}
+    height="min-h-[64vh]"
+  />
+
+  <section class="destination-overview">
+    <div class="destination-wrap">
+      <article class="destination-copy">
+        <p class="section-kicker">Province Overview</p>
+        <div class="editorial-prose" set:html={province.content_html || ''} />
+      </article>
+    </div>
+  </section>
+
+  <AttractionPopupGrid
+    attractions={attractions}
+    title={`Attractions in ${provinceName}`}
+    intro="Open each card for a quick preview, then continue to the full attraction page if needed."
+  />
+
+  <TourCardGrid
+    tours={tours}
+    title={`Tours connected to ${provinceName}`}
+    intro="Tours that visit this province, pass through it, or include attractions located here."
+  />
+
+  <HotelPopupGrid
+    hotels={hotels}
+    title={`Hotels connected to ${provinceName}`}
+    intro="Accommodation references associated with this province or its operational hubs."
+  />
+</BaseLayout>
+
+<style>
+  .destination-overview {
+    background: #fbf6ed;
+    color: #101820;
+    padding: clamp(4rem, 7vw, 7rem) 0;
+  }
+
+  .destination-wrap {
+    width: min(1240px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .destination-copy {
+    background: #fff;
+    border: 1px solid rgba(16,24,32,.1);
+    border-radius: 2rem;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    box-shadow: 0 14px 38px rgba(21,16,9,.08);
+  }
+
+  .section-kicker {
+    margin: 0 0 1rem;
+    color: #b46b00;
+    font-size: .72rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+</style>

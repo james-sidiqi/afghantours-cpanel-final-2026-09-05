@@ -1,0 +1,35 @@
+---
+const pillars = [
+  ['⌖','Local Operating Network','Hotels, drivers, guides, permits, routes, and timing are coordinated by people working in Afghanistan every day.'],
+  ['〽','Route-Aware Itineraries','Tour days are built around real drive times, flight options, seasonal realities, and current access conditions.'],
+  ['','Hospitality-Led Travel','The goal is not simply to see Afghanistan. The goal is to experience Afghan hospitality with the right support around you.'],
+  ['♧','Private & Small Group Focus','Journeys are designed around people, not bus schedules. Flexibility, privacy, and comfort come standard.'],
+  ['△','Field-Tested Operations','Built on experience from tourism, logistics, mining, diplomatic support, and expedition planning.'],
+  ['◎','Realistic Expectations','We do not sell fantasy itineraries. We build routes that work and communicate clearly so you can travel with confidence.'],
+];
+---
+<section id="why-afghantours" class="why-section">
+  <div class="why-wrap">
+    <div class="why-copy">
+      <p class="eyebrow">Why AfghanTours</p>
+      <h2>A beautiful country requires serious planning.</h2>
+      <div class="ornament"></div>
+      <p>Afghanistan is extraordinary — and it deserves more than guesswork. We combine on-the-ground knowledge, operational experience, and genuine relationships to create journeys that are safe, meaningful, and deeply human.</p>
+      <div class="why-badge">
+        <span><strong>Licensed Kabul Operator</strong><small>ATO-KBL-1617</small></span>
+        <span><strong>Western-Led</strong></span>
+        <span>◴<strong>15+ Years on the Ground</strong></span>
+      </div>
+    </div>
+    <div class="pillar-grid">
+      {pillars.map(([icon,title,text]) => (
+        <article class="pillar-card"><div class="pillar-icon">{icon}</div><h3>{title}</h3><p>{text}</p></article>
+      ))}
+      <article class="american-card"><div><h3>Western-Led, Kabul-Based Operations</h3><p>Unlike agencies operating remotely, AfghanTours is led by Western-led with more than 15 years of continuous experience living and working inside Afghanistan through an established network developed over more than a decade on the ground.</p></div></article>
+    </div>
+  </div>
+</section>
+<style>
+  .why-section{background:#fbf6ed;color:#101820;padding:6.2rem 0 5.4rem;border-top:1px solid #eadfce}.why-wrap{width:min(1240px,calc(100% - 2rem));margin:0 auto;display:grid;grid-template-columns:.78fr 1.22fr;gap:3.5rem;align-items:start}.eyebrow{color:#a86920;text-transform:uppercase;font-size:.78rem;font-weight:900;letter-spacing:.22em;margin:0 0 1.2rem}.why-copy h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(3rem,5vw,5.5rem);line-height:1;letter-spacing:-.065em;margin:0}.ornament{width:88px;height:16px;margin:2rem 0;background:linear-gradient(90deg,#b98237 0 40%,transparent 40% 55%,#b98237 55% 100%);clip-path:polygon(0 47%,35% 47%,43% 0,50% 47%,58% 18%,68% 47%,100% 47%,100% 62%,0 62%)}.why-copy p{font-size:1.03rem;line-height:1.9;color:#363534;max-width:520px}.why-badge{margin-top:3rem;border:1px solid #e1d3bf;border-radius:.5rem;background:rgba(255,255,255,.45);display:grid;grid-template-columns:repeat(3,1fr);overflow:hidden;max-width:530px}.why-badge span{padding:1.25rem 1rem;text-align:center;border-right:1px solid #e1d3bf;color:#b98237;font-size:1.6rem}.why-badge span:last-child{border-right:0}.why-badge strong{display:block;margin-top:.5rem;color:#101820;font-family:Georgia,"Times New Roman",serif;font-size:1rem;line-height:1.15}.why-badge small{display:block;margin-top:.3rem;color:#5d554b;font-size:.8rem}.pillar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.pillar-card,.american-card{background:rgba(255,255,255,.62);border:1px solid #e4d8c8;border-radius:.72rem;box-shadow:0 10px 28px rgba(29,23,15,.08)}.pillar-card{padding:1.7rem 1.35rem 1.55rem;text-align:center;min-height:260px}.pillar-icon{width:78px;height:78px;margin:0 auto 1.15rem;border-radius:50%;display:grid;place-items:center;background:#101820;color:#d6a548;font-size:2rem;border:1px solid rgba(214,165,72,.25)}.pillar-card h3,.american-card h3{font-family:Georgia,"Times New Roman",serif;font-size:1.45rem;line-height:1.07;margin:0 0 .9rem}.pillar-card p,.american-card p{margin:0;color:#373737;line-height:1.7;font-size:.94rem}.american-card{grid-column:1/-1;display:grid;grid-template-columns:105px 1fr;gap:1.4rem;align-items:center;text-align:left;padding:1.6rem}.american-card .pillar-icon{margin:0}
+  @media(max-width:1000px){.why-wrap{grid-template-columns:1fr}.pillar-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:640px){.pillar-grid{grid-template-columns:1fr}.why-badge{grid-template-columns:1fr}.why-badge span{border-right:0;border-bottom:1px solid #e1d3bf}.american-card{grid-template-columns:1fr;text-align:center}.american-card .pillar-icon{margin:0 auto}}
+</style>

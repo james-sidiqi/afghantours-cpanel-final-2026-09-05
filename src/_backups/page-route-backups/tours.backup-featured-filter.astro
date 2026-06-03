@@ -1,0 +1,182 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FeaturedTours from '../components/FeaturedTours.astro';
+import CustomTours from '../components/CustomTours.astro';
+import TourDirectory from '../components/TourDirectory.astro';
+import { getTours } from '../lib/buildRelations';
+
+const tours = getTours().filter((tour) => tour.is_active !== false && tour.slug);
+const featuredTours = tours.slice(0, 8);
+---
+
+<BaseLayout
+  title="Tours | AfghanTours"
+  description="Browse Afghanistan tours, cultural circuits, mountaineering expeditions, and custom journeys built around real access and local knowledge."
+  image="/assets/images/heroes/tours/hero.webp"
+>
+  <FeaturedTours tours={featuredTours} />
+
+  <CustomTours />
+
+  <section class="tour-list-intro">
+    <div>
+      <p>All Tours</p>
+      <h1>Browse Afghanistan Routes</h1>
+      <span>
+        Use the filters below to compare cultural journeys, expedition routes, seasonal programs,
+        and private itineraries.
+      </span>
+    </div>
+  </section>
+
+  <TourDirectory tours={tours} />
+
+  <section class="custom-cta">
+    <div class="cta-icon">⌖</div>
+    <div>
+      <h2>Didn’t Find What You’re Looking For?</h2>
+      <p>
+        Not every journey fits into a predefined itinerary. Whether you are a photographer,
+        filmmaker, veteran, researcher, mountaineer, journalist, or family group, we can develop
+        a private itinerary built around your interests, schedule, and comfort level.
+      </p>
+      <div class="cta-actions">
+        <a href="/contact/?type=custom-tour">Start Custom Inquiry</a>
+        <a href="/contact/">Contact Our Team</a>
+      </div>
+    </div>
+    <div class="cta-tags">
+      <span>Photographers</span>
+      <span>Filmmakers</span>
+      <span>Researchers</span>
+      <span>Veterans</span>
+      <span>Diaspora Travelers</span>
+      <span>Expeditions</span>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .tour-list-intro {
+    background: #fbf6ed;
+    color: #101820;
+    padding: clamp(4rem, 6vw, 6rem) 0 1rem;
+    border-top: 1px solid rgba(16,24,32,.08);
+  }
+
+  .tour-list-intro > div {
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+    max-width: 900px;
+  }
+
+  .tour-list-intro p {
+    margin: 0;
+    color: #b46b00;
+    font-size: .72rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  .tour-list-intro h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    line-height: .95;
+    letter-spacing: -.06em;
+    margin: .5rem 0 1rem;
+  }
+
+  .tour-list-intro span {
+    color: #4b5563;
+    line-height: 1.75;
+    font-size: 1.05rem;
+  }
+
+  .custom-cta {
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto 5rem;
+    background: #fff7ec;
+    border: 1px solid #eadfce;
+    border-radius: .75rem;
+    box-shadow: 0 12px 34px rgba(50,36,18,.08);
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 90px 1fr .95fr;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .cta-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #101820;
+    color: #d6a548;
+    display: grid;
+    place-items: center;
+    font-size: 2rem;
+  }
+
+  .custom-cta h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 2.4rem;
+    line-height: 1;
+    margin: 0 0 .7rem;
+  }
+
+  .custom-cta p {
+    line-height: 1.7;
+    color: #333;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.2rem;
+  }
+
+  .cta-actions a {
+    padding: .95rem 1.25rem;
+    border-radius: .35rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: .78rem;
+    font-weight: 900;
+  }
+
+  .cta-actions a:first-child {
+    background: #b98237;
+    color: #fff;
+  }
+
+  .cta-actions a:last-child {
+    border: 1px solid #101820;
+    color: #101820;
+  }
+
+  .cta-tags {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .8rem;
+  }
+
+  .cta-tags span {
+    border: 1px solid #e3d7c5;
+    border-radius: .45rem;
+    padding: .85rem;
+    color: #5a5146;
+    font-weight: 800;
+    font-size: .88rem;
+  }
+
+  @media(max-width:850px) {
+    .custom-cta { grid-template-columns: 1fr; }
+    .cta-tags { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media(max-width:520px) {
+    .cta-tags { grid-template-columns: 1fr; }
+  }
+</style>

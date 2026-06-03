@@ -1,0 +1,469 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import TourOverview from '../../components/tours/TourOverview.astro';
+import TourItineraryAccordion from '../../components/tours/TourItineraryAccordion.astro';
+import TourGallery from '../../components/tours/TourGallery.astro';
+import TourInclusions from '../../components/tours/TourInclusions.astro';
+import TourCTA from '../../components/tours/TourCTA.astro';
+import AttractionPopupGrid from '../../components/cards/AttractionPopupGrid.astro';
+import { getTours, getTourBySlug } from '../../lib/buildRelations';
+
+export function getStaticPaths() {
+  return getTours()
+    .filter((tour) => tour?.slug)
+    .map((tour) => ({ params: { slug: tour.slug } }));
+}
+
+const tour = Astro.params.slug ? getTourBySlug(Astro.params.slug) : undefined;
+if (!tour) return Astro.redirect('/tours/');
+
+const tourName = tour.title || tour.name || 'Afghanistan Tour';
+
+const heroImage =
+  tour.hero_image ||
+  tour.hero_image_path ||
+  tour.thumbnail_image_path ||
+  '/assets/images/heroes/hero-tour.webp';
+
+const route =
+  tour.route ||
+  tour.route_summary ||
+  tour.route_text ||
+  tour.hubs?.map((hub) => hub.name || hub.title).join(' → ') ||
+  '';
+
+const overviewImage =
+  tour.overview_image ||
+  tour.overview_image_path ||
+  tour.image_path_overview ||
+  heroImage;
+
+const fallbackGallery = [
+  tour.image_path_slide1,
+  tour.image_path_slide2,
+  tour.image_path_slide3,
+  tour.gallery_image_1,
+  tour.gallery_image_2,
+  tour.gallery_image_3,
+].filter(Boolean);
+
+const galleryImages = [
+  overviewImage,
+  ...(Array.isArray(tour.gallery) ? tour.gallery : []),
+  ...fallbackGallery,
+].filter(Boolean).filter((item, index, arr) => arr.indexOf(item) === index);
+
+const hasGallery = galleryImages.length > 0;
+const hasItinerary = Array.isArray(tour.itinerary) && tour.itinerary.length > 0;
+const linkedAttractions = Array.isArray(tour.attractions) ? tour.attractions : [];
+
+const provinceSlugMap = {
+  'badakhshan': 'badakhshan',
+  'badghis': 'badghis',
+  'baghlan': 'baghlan',
+  'balkh': 'balkh',
+  'bamyan': 'bamyan',
+  'daykundi': 'daykundi',
+  'farah': 'farah',
+  'faryab': 'faryab',
+  'ghazni': 'ghazni',
+  'ghor': 'ghor',
+  'helmand': 'helmand',
+  'herat': 'herat',
+  'jowzjan': 'jowzjan',
+  'kabul': 'kabul',
+  'kandahar': 'kandahar',
+  'kapisa': 'kapisa',
+  'khost': 'khost',
+  'kunar': 'kunar',
+  'kunduz': 'kunduz',
+  'laghman': 'laghman',
+  'logar': 'logar',
+  'nangarhar': 'nangarhar',
+  'nimroz': 'nimroz',
+  'nuristan': 'nuristan',
+  'paktia': 'paktia',
+  'paktika': 'paktika',
+  'panjshir': 'panjshir',
+  'parwan': 'parwan',
+  'samangan': 'samangan',
+  'sar-e-pol': 'sar-e-pol',
+  'takhar': 'takhar',
+  'uruzgan': 'uruzgan',
+  'wardak': 'wardak',
+  'zabul': 'zabul',
+};
+
+function cleanProvinceSlug(value) {
+  const raw = typeof value === 'string' ? value : value?.slug || value?.name || value?.title || '';
+  return raw.toLowerCase().trim().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+const provinceItems = (Array.isArray(tour.provinces) ? tour.provinces : String(tour.provinces || '').split(';'))
+  .map((province) => {
+    const label = typeof province === 'string' ? province.trim() : province?.name || province?.title || province?.slug || '';
+    const cleaned = cleanProvinceSlug(label);
+    const slug = provinceSlugMap[cleaned] || cleaned;
+    return label && slug ? {
+      label,
+      slug,
+      map: `/assets/maps/provinces/${slug}-map.webp`,
+    } : null;
+  })
+  .filter(Boolean)
+  .filter((item, index, arr) => arr.findIndex((x) => x.slug === item.slug) === index);
+---
+
+<BaseLayout
+  title={`${tourName} | AfghanTours`}
+  description={tour.summary || tour.description || ''}
+  image={heroImage}
+>
+  <PageHero
+    eyebrow={tour.season || tour.travel_style || 'Afghanistan Tour'}
+    title={tourName}
+    text={tour.summary || tour.description || 'A guided Afghanistan journey built around realistic logistics, cultural access, and local coordination.'}
+    image={heroImage}
+    primaryHref="#itinerary"
+    primaryLabel="View itinerary"
+    secondaryHref={`/contact/?tour=${encodeURIComponent(tourName)}`}
+    secondaryLabel="Ask about this tour"
+    height="min-h-[78vh]"
+  />
+
+  <TourOverview tour={tour} />
+
+  {hasGallery && (
+    <section class="visual-journey">
+      <div class="visual-wrap">
+        <div class="visual-heading">
+          <p>Visual Journey</p>
+          <h2>Images from the route</h2>
+          <span>Overview and gallery images help travelers understand the landscape, routes, cities, and atmosphere of this journey.</span>
+        </div>
+
+        <div class="visual-main">
+          <img src={overviewImage} alt={`${tourName} overview`} loading="lazy" />
+        </div>
+
+        {galleryImages.length > 1 && (
+          <div class="visual-gallery">
+            {galleryImages.slice(1, 7).map((image) => (
+              <img src={image} alt={`${tourName} gallery image`} loading="lazy" />
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  {provinceItems.length > 0 && (
+    <section class="map-section">
+      <div class="map-wrap">
+        <div class="map-heading">
+          <p>Journey Geography</p>
+          <h2>Province maps on this route</h2>
+          <span>These maps help show the provincial geography connected to this itinerary.</span>
+        </div>
+
+        <div class="province-map-grid">
+          {provinceItems.map((province) => (
+            <article>
+              <img src={province.map} alt={`${province.label} map`} loading="lazy" />
+              <h3>{province.label}</h3>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {route && (
+    <section class="route-band">
+      <div>
+        <p>Route</p>
+        <h2>{route}</h2>
+      </div>
+    </section>
+  )}
+
+  <section id="itinerary" class="itinerary-section">
+    <div class="itinerary-wrap">
+      <div class="itinerary-heading">
+        <p>Route & Itinerary</p>
+        <h2>Follow the Journey Day by Day</h2>
+        <span>
+          This itinerary is structured around real routes, drive times, seasonal access,
+          and operational movement between hubs.
+        </span>
+      </div>
+
+      {hasItinerary ? (
+        <div class="itinerary-grid">
+          <div>
+            <TourItineraryAccordion itinerary={tour.itinerary || []} />
+          </div>
+
+          <aside class="route-logic">
+            <p>Route Logic</p>
+            <h3>Built Around Real Movement</h3>
+            <span>
+              Tour days are planned around actual travel conditions, road access,
+              seasonal timing, overnight locations, and available local support.
+            </span>
+
+            <div>
+              <article><strong>Access-aware routing</strong><span>Routes are organized around hubs, drive times, airports, and regional access.</span></article>
+              <article><strong>Day-by-day planning</strong><span>Each day balances movement, site visits, rest, meals, and local coordination.</span></article>
+              <article><strong>Flexible on the ground</strong><span>Weather, road conditions, permits, and local realities are considered throughout the journey.</span></article>
+            </div>
+          </aside>
+        </div>
+      ) : (
+        <div class="empty-card">A detailed day-by-day itinerary is available upon request for this tour.</div>
+      )}
+    </div>
+  </section>
+
+  <AttractionPopupGrid
+    attractions={linkedAttractions}
+    title={`Attractions included in ${tourName}`}
+    intro="Open each attraction card for a quick preview without leaving the tour page."
+  />
+
+
+
+  <section class="practical-section">
+    <div class="practical-wrap">
+      <div class="practical-heading">
+        <p>Practical Details</p>
+        <h2>What to Know Before You Travel</h2>
+        <span>
+          Afghanistan travel requires realistic expectations, flexible planning, and
+          informed coordination before and during the journey.
+        </span>
+      </div>
+
+      <TourInclusions tour={tour} />
+    </div>
+  </section>
+
+  <TourCTA tour={tour} />
+</BaseLayout>
+
+<style>
+  .route-band {
+    background: #06150f;
+    color: #fff;
+    padding: 2.5rem 0;
+  }
+  .route-band > div,
+  .itinerary-wrap,
+  .practical-wrap {
+    width: min(1240px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+  .route-band p,
+  .itinerary-heading p,
+  .route-logic > p,
+  .practical-heading p {
+    margin: 0;
+    color: #d6a23a;
+    font-size: .72rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+  .route-band h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.6rem, 3vw, 3rem);
+    margin: .7rem 0 0;
+    line-height: 1.2;
+  }
+  .itinerary-section,
+  .practical-section {
+    background: #f6efe4;
+    color: #101820;
+    padding: clamp(4rem, 7vw, 7rem) 0;
+  }
+  .practical-section { background: #fff; }
+  .itinerary-heading,
+  .practical-heading {
+    max-width: 760px;
+    margin-bottom: 2rem;
+  }
+  .itinerary-heading h2,
+  .practical-heading h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    line-height: .95;
+    letter-spacing: -.06em;
+    margin: .5rem 0 1rem;
+  }
+  .itinerary-heading span,
+  .practical-heading span {
+    color: #4b5563;
+    line-height: 1.75;
+    font-size: 1.05rem;
+  }
+  .itinerary-grid {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 2rem;
+  }
+  .route-logic,
+  .empty-card {
+    border-radius: 2rem;
+    border: 1px solid rgba(16,24,32,.1);
+    background: #fff;
+    padding: 2rem;
+    box-shadow: 0 14px 38px rgba(21,16,9,.08);
+  }
+  .route-logic h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 2.2rem;
+    line-height: 1;
+    margin: .5rem 0 1rem;
+  }
+  .route-logic > span,
+  .route-logic article span {
+    color: #4b5563;
+    line-height: 1.7;
+  }
+  .route-logic div {
+    display: grid;
+    gap: .9rem;
+    margin-top: 1.5rem;
+  }
+  .route-logic article {
+    background: #f6efe4;
+    border-radius: 1.2rem;
+    padding: 1rem;
+  }
+  .route-logic article span {
+    display: block;
+    margin-top: .35rem;
+  }
+  @media (max-width: 900px) {
+    .itinerary-grid { grid-template-columns: 1fr; }
+  }
+
+  .visual-journey,
+  .map-section {
+    background: #fbf8f2;
+    color: #101820;
+    padding: clamp(4rem, 7vw, 6rem) 0;
+  }
+
+  .map-section {
+    background: #fff;
+  }
+
+  .visual-wrap,
+  .map-wrap {
+    width: min(1240px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .visual-heading,
+  .map-heading {
+    max-width: 760px;
+    margin-bottom: 2rem;
+  }
+
+  .visual-heading p,
+  .map-heading p {
+    margin: 0;
+    color: #d6a23a;
+    font-size: .72rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  .visual-heading h2,
+  .map-heading h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    line-height: .95;
+    letter-spacing: -.06em;
+    margin: .5rem 0 1rem;
+  }
+
+  .visual-heading span,
+  .map-heading span {
+    display: block;
+    color: #4b5563;
+    line-height: 1.75;
+    font-size: 1.05rem;
+  }
+
+  .visual-main img {
+    width: 100%;
+    max-height: 620px;
+    object-fit: cover;
+    display: block;
+    border-radius: 2rem;
+    box-shadow: 0 18px 50px rgba(21,16,9,.14);
+  }
+
+  .visual-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .visual-gallery img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    display: block;
+    border-radius: 1.25rem;
+    box-shadow: 0 12px 30px rgba(21,16,9,.1);
+  }
+
+  .province-map-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .province-map-grid article {
+    background: #fbf8f2;
+    border: 1px solid rgba(16,24,32,.1);
+    border-radius: 1.25rem;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(21,16,9,.08);
+  }
+
+  .province-map-grid img {
+    width: 100%;
+    height: 260px;
+    object-fit: contain;
+    background: #fff;
+    display: block;
+  }
+
+  .province-map-grid h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.6rem;
+    margin: 0;
+    padding: 1rem;
+  }
+
+  @media(max-width: 900px) {
+    .visual-gallery,
+    .province-map-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media(max-width: 620px) {
+    .visual-gallery,
+    .province-map-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

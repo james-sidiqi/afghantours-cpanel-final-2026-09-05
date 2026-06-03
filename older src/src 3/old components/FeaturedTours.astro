@@ -1,0 +1,788 @@
+---
+interface Tour {
+  slug: string;
+  title?: string;
+  name?: string;
+  summary?: string;
+  description?: string;
+  hero_image_path?: string;
+  hero_image?: string;
+  image?: string;
+  overview_image_path?: string;
+  image_path_slide1?: string;
+  image_path_slide2?: string;
+  image_path_slide3?: string;
+  duration_days?: number | string;
+  travel_style?: string;
+  style?: string;
+  activity_level?: string;
+  season?: string;
+  regions?: string;
+  provinces?: string;
+  highlights?: string[];
+}
+
+interface Props {
+  tours: Tour[];
+}
+
+const { tours = [] } = Astro.props;
+const featuredTours = tours.slice(0, 8);
+
+const titleOf = (tour: Tour) => tour.title || tour.name || 'Afghanistan Tour';
+const descOf = (tour: Tour) => tour.description || tour.summary || 'A private Afghanistan journey built around real access, local knowledge, seasonality, and operational support.';
+const heroOf = (tour: Tour) => tour.image || tour.hero_image || tour.hero_image_path || `/assets/images/tours/${tour.slug}/hero.webp`;
+const galleryOf = (tour: Tour) => [
+  tour.overview_image_path,
+  tour.image_path_slide1,
+  tour.image_path_slide2,
+  tour.image_path_slide3,
+  heroOf(tour),
+].filter(Boolean);
+const splitList = (value?: string) => (value || '').split(/[;,]/).map((v) => v.trim()).filter(Boolean);
+const styleOf = (tour: Tour) => tour.travel_style || tour.style || 'Private Journey';
+const seasonOf = (tour: Tour) => tour.season || 'Year-round';
+const durationOf = (tour: Tour) => tour.duration_days ? `${tour.duration_days} Days` : 'Custom Duration';
+const activityOf = (tour: Tour) => tour.activity_level || 'Moderate';
+const routeOf = (tour: Tour) => splitList(tour.provinces).slice(0, 5).join(' → ') || 'Kabul → Regional Afghanistan';
+
+const fallbackAttractions = ['Historic districts', 'Cultural landmarks', 'Local markets', 'Scenic viewpoints'];
+---
+
+<section id="featured-tours" class="featured-tours-section">
+  <div class="ft-backgrounds" aria-hidden="true">
+    {featuredTours.map((tour, index) => (
+      <img
+        id={`ft-bg-${index}`}
+        src={heroOf(tour)}
+        alt=""
+        class={`ft-bg ${index === 0 ? 'is-active' : ''}`}
+      />
+    ))}
+    <div class="ft-bg-overlay"></div>
+  </div>
+
+  <div class="ft-shell">
+    <div class="ft-kicker">Featured Tours</div>
+
+    <div class="ft-stage">
+      <div class="ft-main">
+        {featuredTours.map((tour, index) => {
+          const provinces = splitList(tour.provinces);
+          const gallery = galleryOf(tour);
+          return (
+            <article id={`ft-panel-${index}`} class={`ft-panel ${index === 0 ? 'is-active' : ''}`}>
+              <p class="ft-season">{seasonOf(tour)}</p>
+              <h2>{titleOf(tour)}</h2>
+              <div class="ft-meta-line">
+                <span>{durationOf(tour)}</span>
+                <span>{styleOf(tour)}</span>
+                <span>{activityOf(tour)}</span>
+              </div>
+              <p class="ft-description">{descOf(tour)}</p>
+              <p class="ft-route">{routeOf(tour)}</p>
+              <div class="ft-actions">
+                <button
+                  type="button"
+                  class="ft-btn ft-btn-gold"
+                  data-open-tour-preview
+                  data-index={index}
+                >
+                  Preview Details
+                </button>
+                <a class="ft-btn ft-btn-outline" href={`/tours/${tour.slug}/`}>
+                  View Full Itinerary
+                </a>
+              </div>
+
+              <script type="application/json" id={`ft-data-${index}`} set:html={JSON.stringify({
+                title: titleOf(tour),
+                slug: tour.slug,
+                description: descOf(tour),
+                duration: durationOf(tour),
+                style: styleOf(tour),
+                activity: activityOf(tour),
+                season: seasonOf(tour),
+                route: routeOf(tour),
+                hero: heroOf(tour),
+                gallery,
+                hubs: provinces.slice(0, 5),
+                provinces: provinces.slice(0, 7),
+                attractions: Array.isArray(tour.highlights) && tour.highlights.length ? tour.highlights : fallbackAttractions,
+              })}></script>
+            </article>
+          );
+        })}
+      </div>
+
+      <aside id="ft-preview" class="ft-preview" aria-hidden="true">
+        <button type="button" class="ft-close" data-close-tour-preview aria-label="Close preview">×</button>
+        <p class="ft-preview-kicker">Tour Preview</p>
+        <h3 id="ft-preview-title">Central Afghanistan Discovery</h3>
+
+        <div class="ft-preview-meta">
+          <span id="ft-preview-duration">14 Days</span>
+          <span id="ft-preview-activity">Moderate</span>
+          <span id="ft-preview-season">Apr – Oct</span>
+        </div>
+
+        <p id="ft-preview-route" class="ft-preview-route">Kabul → Bamyan → Herat</p>
+
+        <div class="ft-drawer-section">
+          <div class="ft-drawer-heading">Gallery</div>
+          <div id="ft-gallery" class="ft-gallery"></div>
+        </div>
+
+        <div class="ft-drawer-grid-two">
+          <div class="ft-drawer-section">
+            <div class="ft-drawer-heading">Hubs</div>
+            <div id="ft-hubs" class="ft-mini-list"></div>
+          </div>
+          <div class="ft-drawer-section">
+            <div class="ft-drawer-heading">Provinces</div>
+            <div id="ft-provinces" class="ft-mini-list"></div>
+          </div>
+        </div>
+
+        <div class="ft-drawer-section">
+          <div class="ft-drawer-heading">Top Attractions</div>
+          <div id="ft-attractions" class="ft-attractions"></div>
+        </div>
+
+        <div class="ft-preview-actions">
+          <a id="ft-preview-itinerary" href="#" class="ft-btn ft-btn-gold">View Full Itinerary</a>
+          <a href="/contact/" class="ft-btn ft-btn-outline">Inquire Now</a>
+        </div>
+      </aside>
+    </div>
+
+    <div class="ft-carousel-wrap">
+      <button type="button" class="ft-arrow ft-arrow-left" data-ft-prev aria-label="Previous tour">‹</button>
+      <div class="ft-carousel" id="ft-carousel">
+        {featuredTours.map((tour, index) => (
+          <button
+            type="button"
+            class={`ft-card ${index === 0 ? 'is-active' : ''}`}
+            data-tour-index={index}
+          >
+            <img src={heroOf(tour)} alt={titleOf(tour)} />
+            <div class="ft-card-overlay"></div>
+            <span class="ft-card-pin">⌖</span>
+            <div class="ft-card-body">
+              <h4>{titleOf(tour)}</h4>
+              <p>{durationOf(tour)} · {styleOf(tour)} · {activityOf(tour)}</p>
+            </div>
+          </button>
+        ))}
+      </div>
+      <button type="button" class="ft-arrow ft-arrow-right" data-ft-next aria-label="Next tour">›</button>
+    </div>
+  </div>
+
+  <div id="ft-lightbox" class="ft-lightbox" aria-hidden="true">
+    <button type="button" class="ft-lightbox-close" data-ft-lightbox-close aria-label="Close image">×</button>
+    <img id="ft-lightbox-img" src="" alt="Expanded tour image" />
+  </div>
+</section>
+
+<style>
+  .featured-tours-section {
+    position: relative;
+    overflow: hidden;
+    background: #050505;
+    color: #fff;
+  }
+
+  .ft-backgrounds,
+  .ft-bg,
+  .ft-bg-overlay {
+    position: absolute;
+    inset: 0;
+  }
+
+  .ft-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transform: scale(1.04);
+    transition: opacity 900ms ease, transform 1800ms ease;
+  }
+
+  .ft-bg.is-active {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .ft-bg-overlay {
+    background:
+      linear-gradient(90deg, rgba(0,0,0,.84) 0%, rgba(0,0,0,.50) 48%, rgba(0,0,0,.88) 100%),
+      linear-gradient(0deg, rgba(0,0,0,.60), rgba(0,0,0,.10));
+  }
+
+  .ft-shell {
+    position: relative;
+    z-index: 2;
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 3.5rem 1.25rem 0;
+  }
+
+  .ft-kicker,
+  .ft-season,
+  .ft-preview-kicker,
+  .ft-drawer-heading {
+    color: #d4a437;
+    text-transform: uppercase;
+    letter-spacing: .22em;
+    font-weight: 800;
+    font-size: .74rem;
+  }
+
+  .ft-kicker {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .ft-stage {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(360px, 520px);
+    min-height: 650px;
+    align-items: stretch;
+    gap: 2rem;
+  }
+
+  .ft-main {
+    position: relative;
+    min-height: 560px;
+    display: flex;
+    align-items: center;
+    padding: 2rem 3rem 5rem;
+  }
+
+  .ft-panel {
+    display: none;
+    max-width: 760px;
+  }
+
+  .ft-panel.is-active {
+    display: block;
+    animation: ftFadeUp 500ms ease both;
+  }
+
+  .ft-panel h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(3rem, 6vw, 6.4rem);
+    line-height: .95;
+    letter-spacing: -.04em;
+    margin: .5rem 0 1.5rem;
+    font-weight: 700;
+  }
+
+  .ft-meta-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .13em;
+    font-size: .8rem;
+    font-weight: 800;
+    color: rgba(255,255,255,.88);
+    margin-bottom: 1.6rem;
+  }
+
+  .ft-meta-line span:not(:last-child)::after {
+    content: '•';
+    margin-left: .75rem;
+    color: #d4a437;
+  }
+
+  .ft-description {
+    max-width: 660px;
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+    line-height: 1.65;
+    color: rgba(255,255,255,.86);
+  }
+
+  .ft-route {
+    display: inline-flex;
+    margin-top: 1.4rem;
+    padding: .75rem 1rem;
+    border: 1px solid rgba(212,164,55,.35);
+    border-radius: 999px;
+    background: rgba(0,0,0,.35);
+    color: #f3ddb0;
+    font-size: .88rem;
+    font-weight: 700;
+  }
+
+  .ft-actions,
+  .ft-preview-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .ft-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3.1rem;
+    padding: 0 1.7rem;
+    border-radius: .2rem;
+    text-decoration: none;
+    font-size: .74rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    transition: all 180ms ease;
+    cursor: pointer;
+  }
+
+  .ft-btn-gold {
+    border: 1px solid #d4a437;
+    background: linear-gradient(135deg, #d8ae5b, #b98733);
+    color: #111;
+  }
+
+  .ft-btn-outline {
+    border: 1px solid rgba(255,255,255,.55);
+    background: rgba(0,0,0,.28);
+    color: #fff;
+  }
+
+  .ft-btn:hover { transform: translateY(-1px); }
+
+  .ft-preview {
+    position: relative;
+    background: rgba(5,5,5,.90);
+    border-left: 1px solid rgba(255,255,255,.09);
+    padding: 3.2rem 2rem 2rem;
+    transform: translateX(0);
+    transition: transform 350ms ease;
+    overflow-y: auto;
+    backdrop-filter: blur(14px);
+  }
+
+  .ft-close {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.4rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    font-size: 2.3rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .ft-preview h3 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(2rem, 3vw, 3.6rem);
+    line-height: .95;
+    margin: .7rem 0 1.4rem;
+  }
+
+  .ft-preview-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .8rem;
+    color: rgba(255,255,255,.76);
+    font-size: .9rem;
+    border-bottom: 1px solid rgba(255,255,255,.12);
+    padding-bottom: 1rem;
+  }
+
+  .ft-preview-meta span:not(:last-child)::after {
+    content: '|';
+    margin-left: .8rem;
+    color: rgba(212,164,55,.55);
+  }
+
+  .ft-preview-route {
+    margin-top: 1rem;
+    color: #f2d9a1;
+    font-size: .9rem;
+    line-height: 1.5;
+  }
+
+  .ft-drawer-section {
+    margin-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,.10);
+    padding-top: 1.2rem;
+  }
+
+  .ft-gallery,
+  .ft-attractions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .65rem;
+    margin-top: .9rem;
+  }
+
+  .ft-gallery button,
+  .ft-attraction-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: .55rem;
+    background: rgba(255,255,255,.04);
+    color: #fff;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ft-gallery img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ft-drawer-grid-two {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+
+  .ft-mini-list {
+    display: grid;
+    gap: .5rem;
+    margin-top: .9rem;
+    color: rgba(255,255,255,.80);
+    font-size: .92rem;
+  }
+
+  .ft-mini-list span::before {
+    content: '⌖';
+    color: #d4a437;
+    margin-right: .5rem;
+  }
+
+  .ft-attraction-card {
+    min-height: 5.5rem;
+    padding: .75rem;
+    display: flex;
+    align-items: end;
+    font-size: .82rem;
+    font-weight: 800;
+  }
+
+  .ft-attraction-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 25% 20%, rgba(212,164,55,.32), transparent 38%), linear-gradient(135deg, rgba(255,255,255,.08), rgba(0,0,0,.2));
+  }
+
+  .ft-attraction-card span {
+    position: relative;
+    z-index: 1;
+  }
+
+  .ft-carousel-wrap {
+    position: relative;
+    margin: 0 -1.25rem;
+    padding: 1.8rem 4.5rem 2.2rem;
+    background: #f5efe4;
+  }
+
+  .ft-carousel {
+    display: flex;
+    gap: 1.6rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .ft-carousel::-webkit-scrollbar { display: none; }
+
+  .ft-card {
+    flex: 0 0 280px;
+    height: 235px;
+    border: 1px solid rgba(0,0,0,.12);
+    border-radius: .75rem;
+    overflow: hidden;
+    position: relative;
+    text-align: left;
+    scroll-snap-align: start;
+    cursor: pointer;
+    background: #111;
+    box-shadow: 0 18px 45px rgba(0,0,0,.18);
+    transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+  }
+
+  .ft-card.is-active {
+    border-color: #d4a437;
+    box-shadow: 0 18px 45px rgba(0,0,0,.22), 0 0 0 2px rgba(212,164,55,.35);
+  }
+
+  .ft-card:hover { transform: translateY(-4px); }
+
+  .ft-card img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 600ms ease;
+  }
+
+  .ft-card:hover img { transform: scale(1.07); }
+
+  .ft-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0,0,0,.88), rgba(0,0,0,.08));
+  }
+
+  .ft-card-pin {
+    position: absolute;
+    top: .8rem;
+    right: .8rem;
+    z-index: 2;
+    width: 1.7rem;
+    height: 1.7rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: rgba(0,0,0,.65);
+    color: #fff;
+  }
+
+  .ft-card-body {
+    position: absolute;
+    left: 1.1rem;
+    right: 1.1rem;
+    bottom: 1rem;
+    z-index: 2;
+  }
+
+  .ft-card-body h4 {
+    margin: 0;
+    color: #fff;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.35rem;
+    line-height: 1.05;
+  }
+
+  .ft-card-body p {
+    margin: .65rem 0 0;
+    color: rgba(255,255,255,.75);
+    font-size: .8rem;
+  }
+
+  .ft-arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 5;
+    transform: translateY(-50%);
+    width: 3rem;
+    height: 3rem;
+    border-radius: 999px;
+    border: 1px solid rgba(0,0,0,.12);
+    background: rgba(255,255,255,.85);
+    color: #111;
+    font-size: 2rem;
+    cursor: pointer;
+    box-shadow: 0 12px 35px rgba(0,0,0,.14);
+  }
+
+  .ft-arrow-left { left: 1rem; }
+  .ft-arrow-right { right: 1rem; }
+
+  .ft-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: none;
+    place-items: center;
+    background: rgba(0,0,0,.88);
+    padding: 2rem;
+  }
+
+  .ft-lightbox.is-open { display: grid; }
+
+  .ft-lightbox img {
+    max-width: min(1100px, 94vw);
+    max-height: 86vh;
+    object-fit: contain;
+    border-radius: .75rem;
+  }
+
+  .ft-lightbox-close {
+    position: fixed;
+    top: 1.2rem;
+    right: 1.5rem;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    font-size: 3rem;
+    cursor: pointer;
+  }
+
+  @keyframes ftFadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 1024px) {
+    .ft-stage {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .ft-main {
+      min-height: 600px;
+      padding: 4rem 1rem;
+    }
+
+    .ft-preview {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      padding: 4rem 1.25rem 2rem;
+    }
+
+    .ft-preview.is-open {
+      display: block;
+    }
+
+    .ft-carousel-wrap {
+      padding-left: 3.5rem;
+      padding-right: 3.5rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .ft-shell { padding-top: 2.5rem; }
+    .ft-panel h2 { font-size: 3.1rem; }
+    .ft-actions { flex-direction: column; }
+    .ft-btn { width: 100%; }
+    .ft-drawer-grid-two { grid-template-columns: 1fr; }
+    .ft-gallery, .ft-attractions { grid-template-columns: 1fr 1fr; }
+    .ft-card { flex-basis: 245px; }
+  }
+</style>
+
+<script>
+  const section = document.querySelector('#featured-tours');
+  const buttons = Array.from(document.querySelectorAll('[data-tour-index]'));
+  const panels = Array.from(document.querySelectorAll('.ft-panel'));
+  const backgrounds = Array.from(document.querySelectorAll('.ft-bg'));
+  const carousel = document.querySelector('#ft-carousel');
+  const preview = document.querySelector('#ft-preview');
+  const lightbox = document.querySelector('#ft-lightbox');
+  const lightboxImg = document.querySelector('#ft-lightbox-img');
+  let activeIndex = 0;
+
+  function getTourData(index) {
+    const node = document.querySelector(`#ft-data-${index}`);
+    if (!node) return null;
+    try { return JSON.parse(node.textContent || '{}'); } catch { return null; }
+  }
+
+  function setActiveTour(index) {
+    activeIndex = index;
+    buttons.forEach((button, i) => button.classList.toggle('is-active', i === index));
+    panels.forEach((panel, i) => panel.classList.toggle('is-active', i === index));
+    backgrounds.forEach((bg, i) => bg.classList.toggle('is-active', i === index));
+  }
+
+  function fillList(containerId, items) {
+    const container = document.querySelector(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    (items || []).forEach((item) => {
+      const span = document.createElement('span');
+      span.textContent = item;
+      container.appendChild(span);
+    });
+  }
+
+  function openPreview(index) {
+    const data = getTourData(index);
+    if (!data) return;
+    setActiveTour(index);
+
+    document.querySelector('#ft-preview-title').textContent = data.title;
+    document.querySelector('#ft-preview-duration').textContent = data.duration;
+    document.querySelector('#ft-preview-activity').textContent = data.activity;
+    document.querySelector('#ft-preview-season').textContent = data.season;
+    document.querySelector('#ft-preview-route').textContent = data.route;
+    document.querySelector('#ft-preview-itinerary').setAttribute('href', `/tours/${data.slug}/`);
+
+    const gallery = document.querySelector('#ft-gallery');
+    gallery.innerHTML = '';
+    (data.gallery || []).slice(0, 6).forEach((src) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = data.title;
+      button.appendChild(img);
+      button.addEventListener('click', () => {
+        lightboxImg.src = src;
+        lightbox.classList.add('is-open');
+        lightbox.setAttribute('aria-hidden', 'false');
+      });
+      gallery.appendChild(button);
+    });
+
+    fillList('#ft-hubs', data.hubs);
+    fillList('#ft-provinces', data.provinces);
+
+    const attractions = document.querySelector('#ft-attractions');
+    attractions.innerHTML = '';
+    (data.attractions || []).slice(0, 6).forEach((item) => {
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'ft-attraction-card';
+      card.innerHTML = `<span>${item}</span>`;
+      card.addEventListener('click', () => alert(`${item}\n\nThis can later open a full attraction popup connected to attractions_master.csv.`));
+      attractions.appendChild(card);
+    });
+
+    preview.classList.add('is-open');
+    preview.setAttribute('aria-hidden', 'false');
+  }
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const index = Number(button.getAttribute('data-tour-index')) || 0;
+      setActiveTour(index);
+    });
+  });
+
+  document.querySelectorAll('[data-open-tour-preview]').forEach((button) => {
+    button.addEventListener('click', () => openPreview(Number(button.getAttribute('data-index')) || activeIndex));
+  });
+
+  document.querySelector('[data-close-tour-preview]')?.addEventListener('click', () => {
+    preview.classList.remove('is-open');
+    preview.setAttribute('aria-hidden', 'true');
+  });
+
+  document.querySelector('[data-ft-lightbox-close]')?.addEventListener('click', () => {
+    lightbox.classList.remove('is-open');
+    lightbox.setAttribute('aria-hidden', 'true');
+  });
+
+  document.querySelector('[data-ft-prev]')?.addEventListener('click', () => {
+    carousel?.scrollBy({ left: -320, behavior: 'smooth' });
+  });
+
+  document.querySelector('[data-ft-next]')?.addEventListener('click', () => {
+    carousel?.scrollBy({ left: 320, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key !== 'Escape') return;
+    preview?.classList.remove('is-open');
+    lightbox?.classList.remove('is-open');
+  });
+</script>

@@ -1,0 +1,116 @@
+---
+// TourGallery.astro
+// Ingesting your taxonomy and tour parameters programmatically
+import { getCollection } from 'astro:content';
+
+// Alternate approach if reading directly from your raw CSV data folder:
+// import fs from 'node:fs';
+// import { parse } from 'csv-parse/sync';
+
+interface Props {
+  limit?: number;
+  filterRegion?: string;
+}
+
+const { limit, filterRegion } = Astro.props;
+
+// Fetch your structural taxonomy data
+const allTaxonomy = await getCollection('taxonomy');
+
+// Filter down strictly to active tours
+let activeTours = allTaxonomy.filter(item => 
+  item.data.entity_type === 'tour' && 
+  item.data.is_active === true
+);
+
+// Sort them by your custom weighted sort_order priority metrics
+// Highest priority tiers (like 10 or 0 vs -1) move to the top
+activeTours.sort((a, b) => b.data.sort_order - a.data.sort_order);
+
+// Optional region limit filters (e.g., Central, North, West, South, East)
+if (filterRegion) {
+  activeTours = activeTours.filter(tour => 
+    tour.data.keywords.toLowerCase().includes(filterRegion.toLowerCase())
+  );
+}
+
+// Enforce item limits if displaying a preview panel on the homepage
+if (limit) {
+  activeTours = activeTours.slice(0, limit);
+}
+---
+
+<section class="py-12 bg-gray-50 dark:bg-zinc-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="mb-10 border-l-4 border-emerald-600 pl-4">
+      <h2 class="text-3xl font-extrabold tracking-tight text-zinc-950 dark:text-white sm:text-4xl">
+        Expeditions & Curated Routes
+      </h2>
+      <p class="mt-2 text-lg text-zinc-600 dark:text-zinc-400">
+        Normalize nationwide travel itineraries built on verified multi-modal regional infrastructure layouts.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-x-8">
+      {activeTours.map((tour) => {
+        // Safe URL fallbacks matching your slug rows
+        const tourUrl = tour.data.url || `/tours/${tour.data.slug}`;
+        
+        return (
+          <div class="group relative flex flex-col overflow-hidden rounded-2xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+            
+            <div class="aspect-w-16 aspect-h-10 bg-zinc-200 dark:bg-zinc-700 sm:aspect-none sm:h-56 overflow-hidden">
+              <img
+                src={`/assets/images/tours/${tour.data.code.toLowerCase()}/hero.webp`}
+                alt={tour.data.name}
+                loading="lazy"
+                class="h-full w-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                onerror="this.src='/assets/images/fallback-placeholder.webp';"
+              />
+              
+              {tour.data.sort_order >= 0 && (
+                <span class="absolute top-4 right-4 inline-flex items-center rounded-md bg-emerald-500/90 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-sm tracking-wide shadow-sm">
+                  Signature Tour
+                </span>
+              )}
+            </div>
+
+            <div class="flex flex-1 flex-col p-6">
+              <div class="flex-1">
+                <p class="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">
+                  {tour.data.category || 'Cultural / Scenic'}
+                </p>
+                <a href={tourUrl} class="mt-2 block">
+                  <h3 class="text-xl font-bold tracking-tight text-zinc-900 dark:text-white group-hover:text-emerald-600 transition-colors">
+                    {tour.data.name}
+                  </h3>
+                </a>
+                <p class="mt-3 text-sm text-zinc-500 dark:text-zinc-400 line-clamp-3">
+                  Custom-pacing vector paths built out across provincial nodes including: {tour.data.keywords.split(' ').slice(2).join(', ')}.
+                </p>
+              </div>
+
+              <div class="mt-6 border-t border-zinc-100 dark:border-zinc-700 pt-4 flex items-center justify-between">
+                <span class="text-xs font-medium text-zinc-400 dark:text-zinc-500">
+                  Code: <code class="bg-zinc-100 dark:bg-zinc-900 px-1 py-0.5 rounded font-mono text-[11px] text-zinc-600 dark:text-zinc-400">{tour.data.code}</code>
+                </span>
+                <a
+                  href={tourUrl}
+                  class="inline-flex items-center text-sm font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300"
+                >
+                  Explore Itinerary
+                  <svg class="ml-1 h-4 w-4 transform transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        );
+      })}
+    </div>
+
+  </div>
+</section>

@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FeaturedTours from '../components/FeaturedTours.astro';
+import CustomTours from '../components/CustomTours.astro';
+import HubsSection from '../components/HubsSection.astro';
+import WhySection from '../components/WhySection.astro';
+import { getTours, getHubs, getAttractions, getHotels, getFoodItems } from '../lib/buildRelations';
+
+const tours = getTours().filter((tour) => tour.is_active !== false && tour.slug);
+const hubs = getHubs();
+const attractions = getAttractions();
+const hotels = getHotels();
+const food = getFoodItems();
+---
+<BaseLayout title="AfghanTours | Afghanistan Travel & Private Expeditions" description="Guided Afghanistan tours, cultural expeditions, filming support, mountain adventures, and operationally realistic travel planning." image="/assets/images/heroes/home/hero.webp">
+  <section class="home-hero">
+    <video class="hero-media" autoplay muted loop playsinline poster="/assets/images/heroes/home/hero.webp"><source src="/assets/images/heroes/home/hero.mov" type="video/quicktime" /></video><img class="hero-fallback" src="/assets/images/heroes/home/hero.webp" alt="Afghanistan mountains and traveler" />
+    <div class="hero-shade"></div>
+    <div class="hero-content">
+      <p>Afghanistan Reimagined</p>
+      <h1>Come for the history, stay for the hospitality</h1>
+      <p class="lead">Guided Afghanistan tours, cultural expeditions, filming support, mountain adventures, and operationally realistic travel planning.</p>
+      <div class="hero-actions"><a href="/tours/">Explore Tours</a><a href="/contact/?type=custom-tour">Custom Trip Inquiry</a></div>
+    </div>
+  </section>
+
+  <section class="trust-section">
+    <div class="trust-bg"></div>
+    <div class="trust-wrap">
+      <p class="eyebrow">Licensed Kabul Operator & Ground Specialist</p>
+      <h2>Afghanistan travel built on real access and 15 years of ground operations.</h2>
+      <p class="trust-lead">We are based in Kabul, operating legally in Afghanistan, and supported by a network developed through more than a decade of work and relationships across the country.</p>
+      <div class="trust-cards">
+        <article><span>♢</span><h3>Licensed Afghan Tour Operator</h3><p>AfghanTours.com is owned and operated by James Tourist & Travel Agency, a licensed Afghanistan tour operator based in Kabul. We combine Afghan hospitality, local coordination, and operational experience to create realistic, well-supported journeys throughout Afghanistan.</p><div class="trust-badges"><b>ATO-KBL-1617</b><b>Kabul, Afghanistan</b><b>Licensed</b></div></article>
+        <article><span>🇺🇸</span><h3>American-Led, Kabul-Based Operations</h3><p>Unlike agencies operating remotely from Europe or North America, AfghanTours is led by an American citizen with more than 15 years of continuous experience living and working inside Afghanistan.</p><ul><li>Tourism & cultural travel</li><li>Documentary productions</li><li>Mining expeditions</li><li>Logistics operations</li><li>Embassy support activities</li><li>Local partnerships</li></ul><strong>15+ years on the ground • Real access • Proven experience</strong></article>
+      </div>
+    </div>
+  </section>
+
+  <FeaturedTours tours={tours.slice(0, 8)} />
+  <CustomTours />
+  <HubsSection hubs={hubs} tours={tours} attractions={attractions} hotels={hotels} food={food} />
+  <WhySection />
+</BaseLayout>
+<style>
+  .home-hero{position:relative;min-height:92vh;display:flex;align-items:center;overflow:hidden;background:#050505;color:#fff}.home-hero img,.home-hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.hero-media{z-index:1}.hero-fallback{z-index:0}.hero-shade{z-index:2}.hero-content{z-index:3}.hero-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.76),rgba(0,0,0,.42),rgba(0,0,0,.24))}.hero-content{position:relative;width:min(1120px,calc(100% - 2rem));margin:0 auto;padding-top:4rem}.hero-content>p:first-child,.eyebrow{text-transform:uppercase;letter-spacing:.28em;color:#d6a548;font-size:.78rem;font-weight:900}.home-hero h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(3.4rem,7vw,7.6rem);line-height:.92;letter-spacing:-.07em;max-width:850px;margin:1rem 0}.lead{font-size:1.15rem;line-height:1.7;max-width:650px;color:#eee}.hero-actions{display:flex;gap:1rem;flex-wrap:wrap;margin-top:2rem}.hero-actions a{padding:1rem 1.4rem;border-radius:999px;text-decoration:none;font-weight:900;color:#111;background:#f3b72d}.hero-actions a+ a{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.4)}
+  .trust-section{position:relative;background:#fbf6ed;color:#101820;padding:6rem 0;overflow:hidden}.trust-bg{position:absolute;right:0;top:0;width:55%;height:55%;background:linear-gradient(90deg,#fbf6ed,rgba(251,246,237,.35)),url('/assets/images/hubs/kabul-city/hero.webp') center/cover no-repeat;opacity:.55}.trust-wrap{position:relative;width:min(1180px,calc(100% - 2rem));margin:0 auto}.trust-wrap h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(3rem,5.4vw,6rem);line-height:1;letter-spacing:-.06em;max-width:980px;margin:.8rem 0 1.3rem}.trust-lead{max-width:640px;line-height:1.8;color:#333}.trust-cards{display:grid;grid-template-columns:1fr 1.1fr;gap:1.4rem;margin-top:2rem}.trust-cards article{background:rgba(255,255,255,.66);border:1px solid #e4d8c8;border-radius:.8rem;padding:2rem;box-shadow:0 14px 35px rgba(35,25,14,.08)}.trust-cards span{width:68px;height:68px;border-radius:50%;display:grid;place-items:center;background:#b98237;color:#fff;font-size:2rem;margin-bottom:1rem}.trust-cards h3{font-family:Georgia,"Times New Roman",serif;font-size:2.1rem;line-height:1;margin:0 0 1rem}.trust-cards p{line-height:1.75;color:#262626}.trust-badges{border-top:1px solid #dfd2bf;margin-top:1.4rem;padding-top:1rem;display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;text-align:center}.trust-badges b{font-size:.84rem}.trust-cards ul{display:grid;grid-template-columns:1fr 1fr;gap:.8rem 1.2rem;padding:0;margin:1rem 0 1.4rem;list-style:none}.trust-cards li:before{content:'✓';color:#b98237;margin-right:.45rem}.trust-cards strong{display:block;border-top:1px solid #dfd2bf;padding-top:1rem;text-transform:uppercase;letter-spacing:.08em;font-size:.82rem;color:#2a2117}
+  @media(max-width:900px){.trust-bg{display:none}.trust-cards{grid-template-columns:1fr}.trust-cards ul,.trust-badges{grid-template-columns:1fr}}@media(max-width:600px){.home-hero{min-height:78vh}.trust-section{padding:4rem 0}.trust-cards article{padding:1.4rem}}
+</style>

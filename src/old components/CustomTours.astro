@@ -1,0 +1,55 @@
+---
+const travelerTypes = [
+  { title:'Photographers & Filmmakers', icon:'📷', image:'/assets/images/custom-tours/photographers-filmmakers.webp', bullets:['Documentary support','Location scouting','Permit coordination','Fixer services'] },
+  { title:'Veterans & Return Visitors', icon:'🛡️', image:'/assets/images/custom-tours/veterans-return-visitors.webp', bullets:['Former deployment areas','Unit memorial visits','Historical route planning','Reconnection journeys'] },
+  { title:'Mountaineers & Expeditions', icon:'⛰️', image:'/assets/images/custom-tours/mountaineers-expeditions.webp', bullets:['Noshaq & Koh-e-Baba','High-altitude trekking','Expedition logistics','Base camp support'] },
+  { title:'Researchers & Institutions', icon:'📖', image:'/assets/images/custom-tours/researchers-institutions.webp', bullets:['Academic travel','University programs','Cultural research','Logistics support'] },
+  { title:'Afghan Diaspora', icon:'👥', image:'/assets/images/custom-tours/afghan-diaspora.webp', bullets:['Family visits','Heritage tours','Property visits','Genealogical research'] },
+  { title:'Journalists & Media', icon:'🎙️', image:'/assets/images/custom-tours/journalists-media.webp', bullets:['Fixers & translators','Transportation','Route planning','Security coordination'] },
+];
+---
+<section id="custom-tours" class="custom-section">
+  <div class="custom-wrap">
+    <div class="custom-intro">
+      <p class="eyebrow">Custom Tours</p>
+      <h2>Build a Journey Around Your Goals</h2>
+      <p class="lead">Whether you’re a photographer chasing mountain light, a veteran returning after years away, a filmmaker scouting locations, or a family exploring heritage, we design itineraries around your objectives, timeline, and comfort level. You tell us your goal — we handle the rest.</p>
+      <div class="custom-actions">
+        <a class="btn gold" href="/contact/?type=custom-tour">✉ Start Custom Inquiry</a>
+        <a class="btn ghost" href="/contact/">☎ Speak With Our Team</a>
+      </div>
+      <div class="trust-mini">
+        <span>♢<strong>Licensed Kabul Operator</strong></span>
+        <span>♧<strong>15+ Years on the Ground</strong></span>
+        <span>☆<strong>American Led & Trusted</strong></span>
+      </div>
+    </div>
+
+    <div class="custom-cards">
+      {travelerTypes.map((item) => (
+        <a class="custom-card" href={`/contact/?custom=${encodeURIComponent(item.title)}`}>
+          <img src={item.image} alt={item.title} loading="lazy" onerror="this.style.display='none'" />
+          <div class="shade"></div>
+          <span class="icon">{item.icon}</span>
+          <div class="card-body">
+            <h3>{item.title}</h3>
+            <ul>{item.bullets.map((b) => <li>{b}</li>)}</ul>
+          </div>
+          <span class="arrow">→</span>
+        </a>
+      ))}
+    </div>
+  </div>
+
+  <div class="process-strip">
+    <div><span>✈</span><strong>We Design</strong><p>Tell us your goals, dates, and interests.</p></div>
+    <div><span>⌖</span><strong>We Plan</strong><p>We build the best route, permits, and logistics.</p></div>
+    <div><span>▣</span><strong>We Operate</strong><p>On-the-ground support from people you can trust.</p></div>
+    <div><span>◇</span><strong>You Experience</strong><p>Focus on your journey. We handle the rest.</p></div>
+    <aside><strong>Ready to start?</strong><p>Every custom tour begins with a conversation.</p><a href="/contact/?type=custom-tour">Start Your Inquiry</a></aside>
+  </div>
+</section>
+<style>
+  .custom-section{background:#fbf6ed;color:#101820;padding:6rem 0 0}.custom-wrap{width:min(1320px,calc(100% - 2rem));margin:0 auto;display:grid;grid-template-columns:.92fr 1.85fr;gap:3rem;align-items:start}.eyebrow{color:#a86920;text-transform:uppercase;letter-spacing:.22em;font-size:.78rem;font-weight:900}.custom-intro h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(3rem,5vw,5.6rem);letter-spacing:-.065em;line-height:.95;margin:.8rem 0 1.6rem}.lead{font-size:1.02rem;line-height:1.9;color:#30312f;max-width:520px}.custom-actions{display:flex;flex-wrap:wrap;gap:1rem;margin:2.3rem 0}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:0 1.4rem;border-radius:.42rem;text-transform:uppercase;font-size:.8rem;font-weight:900;letter-spacing:.04em;text-decoration:none}.btn.gold{background:#b98237;color:#fff;box-shadow:0 10px 28px rgba(137,89,37,.22)}.btn.ghost{border:1px solid #c9bca8;color:#111;background:#fff8ee}.trust-mini{margin-top:2.3rem;border-top:1px solid #e3d7c5;display:grid;grid-template-columns:repeat(3,1fr);gap:0;max-width:540px}.trust-mini span{padding:1.8rem .9rem 0;border-right:1px solid #e3d7c5;text-align:center;color:#a07437;font-size:1.7rem}.trust-mini span:last-child{border-right:0}.trust-mini strong{display:block;margin-top:.5rem;color:#20201e;text-transform:uppercase;font-size:.72rem;line-height:1.45;letter-spacing:.03em}.custom-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.custom-card{position:relative;min-height:370px;border-radius:1rem;overflow:hidden;background:#0d151b;text-decoration:none;color:#fff;box-shadow:0 12px 35px rgba(11,20,25,.16);transform:translateY(0);transition:.3s}.custom-card:hover{transform:translateY(-5px);box-shadow:0 18px 45px rgba(11,20,25,.24)}.custom-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:.7s}.custom-card:hover img{transform:scale(1.05)}.shade{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(3,10,16,.05),rgba(3,10,16,.2) 35%,rgba(3,10,16,.9) 100%)}.icon{position:absolute;top:1rem;left:1rem;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#101820;color:#d6a548;font-size:1.2rem;border:1px solid rgba(255,255,255,.1)}.card-body{position:absolute;left:1.3rem;right:1.3rem;bottom:1.55rem}.card-body h3{font-family:Georgia,"Times New Roman",serif;font-size:clamp(1.7rem,2.1vw,2.3rem);line-height:.98;margin:0 0 1rem}.card-body ul{list-style:none;margin:0;padding:0}.card-body li{font-size:.92rem;margin:.55rem 0;color:rgba(255,255,255,.86)}.card-body li:before{content:'✓';color:#d6a548;margin-right:.55rem}.arrow{position:absolute;right:1.1rem;bottom:1.1rem;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#c7913a;color:#fff;font-size:1.4rem}.process-strip{margin-top:5rem;background:linear-gradient(rgba(251,246,237,.84),rgba(251,246,237,.92)),url('/assets/images/heroes/hero-tours.webp') center/cover no-repeat;border-top:1px solid #e5d8c5;width:100%;padding:2.5rem max(1rem,calc((100vw - 1320px)/2));display:grid;grid-template-columns:repeat(4,1fr) 1.25fr;gap:1.6rem;align-items:center}.process-strip div{border-right:1px solid #d8c8b3;min-height:110px;padding-right:1.3rem}.process-strip span{display:block;color:#b98237;font-size:2rem;margin-bottom:.8rem}.process-strip strong,.process-strip aside strong{text-transform:uppercase;letter-spacing:.08em;color:#a86920}.process-strip p{margin:.5rem 0 0;line-height:1.55;color:#222}.process-strip aside{border:1px solid #b98237;border-radius:.75rem;padding:1.5rem;background:rgba(255,255,255,.35)}.process-strip aside a{display:inline-block;margin-top:1rem;background:#101820;color:#fff;text-decoration:none;text-transform:uppercase;font-size:.78rem;font-weight:900;padding:.9rem 1.2rem;border-radius:.35rem}
+  @media(max-width:1100px){.custom-wrap{grid-template-columns:1fr}.custom-cards{grid-template-columns:repeat(2,1fr)}.process-strip{grid-template-columns:repeat(2,1fr)}}@media(max-width:680px){.custom-cards{grid-template-columns:1fr}.trust-mini{grid-template-columns:1fr}.trust-mini span{border-right:0;border-bottom:1px solid #e3d7c5}.process-strip{grid-template-columns:1fr}.process-strip div{border-right:0;border-bottom:1px solid #d8c8b3}.custom-card{min-height:330px}}
+</style>

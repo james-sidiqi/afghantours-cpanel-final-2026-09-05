@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import TourCardGrid from '../../components/cards/TourCardGrid.astro';
+import AttractionPopupGrid from '../../components/cards/AttractionPopupGrid.astro';
+import { getAttractions, getAttractionBySlug, getTours } from '../../lib/buildRelations';
+
+export function getStaticPaths() {
+  return getAttractions().filter((item) => item?.slug).map((item) => ({ params: { slug: item.slug } }));
+}
+
+const item = Astro.params.slug ? getAttractionBySlug(Astro.params.slug) : undefined;
+if (!item) return Astro.redirect('/attractions/');
+
+const allAttractions = getAttractions();
+const relatedAttractions = allAttractions
+  .filter((a) => a.slug !== item.slug && (
+    (a.province_code && item.province_code && String(a.province_code).toLowerCase() === String(item.province_code).toLowerCase())
+    || (a.province && item.province && String(a.province).toLowerCase() === String(item.province).toLowerCase())
+    || (a.region && item.region && String(a.region).toLowerCase() === String(item.region).toLowerCase())
+  ))
+  .slice(0, 8);
+
+const tours = getTours().filter((tour) =>
+  Array.isArray(tour.attractions) && tour.attractions.some((a) => a.slug === item.slug || a.attraction_code === item.attraction_code)
+);
+
+const image = item.image || item.image_path || item.thumbnail_path || '/assets/images/placeholders/default-attraction.webp';
+const facts = [
+  ['Province', item.province || item.province_code],
+  ['Region', item.region],
+  ['Category', item.category],
+  ['Visit duration', item.visit_duration_hours ? `${item.visit_duration_hours} hours` : 'Varies'],
+  ['Access', item.access_difficulty],
+  ['Season', [item.season_start, item.season_end].filter(Boolean).join('–') || 'Year-round / confirm locally'],
+].filter(([, value]) => value);
+---
+
+<BaseLayout title={`${item.title || item.name} | AfghanTours`} description={item.desc_short || item.excerpt || ''} image={image}>
+  <PageHero
+    eyebrow={item.province || item.region || 'Afghanistan'}
+    title={item.title || item.name}
+    text={item.desc_short || ''}
+    image={image}
+    height="min-h-[68vh]"
+  />
+
+  <section class="attraction-detail">
+    <div class="attraction-detail-wrap">
+      <article class="attraction-copy">
+        <p class="section-kicker">Attraction Profile</p>
+        <div class="editorial-prose" set:html={item.content_html || ''} />
+      </article>
+
+      <aside class="snapshot-card">
+        <p class="section-kicker">Visit snapshot</p>
+        <div class="snapshot-list">
+          {facts.map(([label, value]) => (
+            <div>
+              <span>{label}</span>
+              <strong>{value}</strong>
+            </div>
+          ))}
+        </div>
+        {item.notes && <p class="snapshot-note">{item.notes}</p>}
+      </aside>
+    </div>
+  </section>
+
+  <TourCardGrid
+    tours={tours}
+    title={`Tours that include ${item.title || item.name}`}
+    intro="These itineraries currently include or connect to this attraction."
+  />
+
+  <AttractionPopupGrid
+    attractions={relatedAttractions}
+    title="Related nearby attractions"
+    intro="Other attractions in the same province, region, or travel corridor."
+  />
+</BaseLayout>
+
+<style>
+  .attraction-detail {
+    background: #fbf6ed;
+    color: #101820;
+    padding: clamp(4rem, 7vw, 7rem) 0;
+  }
+
+  .attraction-detail-wrap {
+    width: min(1240px, calc(100% - 2rem));
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .attraction-copy,
+  .snapshot-card {
+    background: #fff;
+    border: 1px solid rgba(16,24,32,.1);
+    border-radius: 2rem;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    box-shadow: 0 14px 38px rgba(21,16,9,.08);
+  }
+
+  .section-kicker {
+    margin: 0 0 1rem;
+    color: #b46b00;
+    font-size: .72rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  .snapshot-list {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .snapshot-list div {
+    border-top: 1px solid rgba(16,24,32,.1);
+    padding-top: 1rem;
+  }
+
+  .snapshot-list span {
+    display: block;
+    color: #6b7280;
+    font-size: .76rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+
+  .snapshot-list strong {
+    display: block;
+    margin-top: .3rem;
+    font-size: 1.05rem;
+  }
+
+  .snapshot-note {
+    color: #4b5563;
+    line-height: 1.7;
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .attraction-detail-wrap { grid-template-columns: 1fr; }
+  }
+</style>

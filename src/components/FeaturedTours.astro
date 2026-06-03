@@ -1,0 +1,374 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import { getTours } from '../lib/buildRelations';
+
+interface Tour {
+  slug: string;
+  tour_code?: string;
+  code?: string;
+  title?: string;
+  name?: string;
+  description?: string;
+  summary?: string;
+  duration_days?: number | string;
+  style?: string;
+  travel_style?: string;
+  activity_level?: string;
+  season?: string;
+  is_featured?: string | number | boolean;
+  hero_image?: string;
+  hero_image_path?: string;
+  overview_image?: string;
+  overview_image_path?: string;
+  thumbnail_image_path?: string;
+  image?: string;
+  gallery?: string[];
+  hubs?: any[];
+  provinces?: any[];
+  attractions?: any[];
+}
+
+interface Props {
+  tours?: Tour[];
+}
+
+const { tours = [] } = Astro.props;
+
+function parseCsvLine(line: string) {
+  const cells: string[] = [];
+  let cell = '';
+  let quoted = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    const next = line[i + 1];
+
+    if (char === '"' && quoted && next === '"') {
+      cell += '"';
+      i++;
+    } else if (char === '"') {
+      quoted = !quoted;
+    } else if (char === ',' && !quoted) {
+      cells.push(cell.trim());
+      cell = '';
+    } else {
+      cell += char;
+    }
+  }
+
+  cells.push(cell.trim());
+  return cells;
+}
+
+function getFeaturedIds() {
+  const file = path.resolve('data/tours_featured.csv');
+  if (!fs.existsSync(file)) return { slugs: new Set<string>(), codes: new Set<string>() };
+
+  const raw = fs.readFileSync(file, 'utf8').trim();
+  if (!raw) return { slugs: new Set<string>(), codes: new Set<string>() };
+
+  const lines = raw.split(/\r?\n/).filter(Boolean);
+  const headers = parseCsvLine(lines[0]).map((h) => h.trim().toLowerCase());
+
+  const slugIndex = headers.findIndex((h) => ['slug', 'tour_slug'].includes(h));
+  const codeIndex = headers.findIndex((h) => ['tour_code', 'code'].includes(h));
+
+  const slugs = new Set<string>();
+  const codes = new Set<string>();
+
+  for (const line of lines.slice(1)) {
+    const cells = parseCsvLine(line);
+    if (slugIndex >= 0 && cells[slugIndex]) slugs.add(cells[slugIndex].trim());
+    if (codeIndex >= 0 && cells[codeIndex]) codes.add(cells[codeIndex].trim());
+  }
+
+  return { slugs, codes };
+}
+
+const allTours = getTours().filter((tour: Tour) => tour?.slug);
+const featuredIds = getFeaturedIds();
+
+let safeTours = allTours.filter((tour: Tour) => {
+  const slug = String(tour.slug || '').trim();
+  const code = String(tour.tour_code || tour.code || '').trim();
+  return featuredIds.slugs.has(slug) || featuredIds.codes.has(code);
+});
+
+if (!safeTours.length) {
+  safeTours = tours.filter((tour: Tour) => tour?.slug);
+}
+
+safeTours = safeTours.slice(0, 8);
+
+const titleOf = (tour: Tour) => tour.title || tour.name || 'Afghanistan Tour';
+
+const heroOf = (tour: Tour) =>
+  tour.hero_image ||
+  tour.hero_image_path ||
+  tour.image ||
+  tour.overview_image ||
+  tour.overview_image_path ||
+  tour.thumbnail_image_path ||
+  `/assets/images/tours/featured/${tour.slug}/hero.webp`;
+
+const galleryOf = (tour: Tour) => {
+  const base = `/assets/images/tours/featured/${tour.slug}`;
+  const supplied = Array.isArray(tour.gallery) ? tour.gallery : [];
+  return [...supplied, heroOf(tour), `${base}/01.webp`, `${base}/02.webp`, `${base}/03.webp`]
+    .filter(Boolean)
+    .filter((item, index, arr) => arr.indexOf(item) === index)
+    .slice(0, 4);
+};
+
+const metaOf = (tour: Tour) => [
+  tour.duration_days ? `${tour.duration_days} Days` : 'Private Journey',
+  tour.travel_style || tour.style || 'Cultural',
+  tour.activity_level || 'Route-aware',
+].filter(Boolean);
+
+const routeOf = (tour: Tour) => {
+  const hubs = Array.isArray(tour.hubs) ? tour.hubs.map((h: any) => h.name || h.title || h.slug).filter(Boolean) : [];
+  const provinces = Array.isArray(tour.provinces) ? tour.provinces.map((p: any) => p.name || p.title || p.slug).filter(Boolean) : [];
+  return (hubs.length ? hubs : provinces).slice(0, 5);
+};
+
+const fallbackAttractions = [
+  ['Band-e-Amir', '/assets/images/attractions/band-e-amir-national-park/hero.webp'],
+  ['Buddha Niches', '/assets/images/attractions/buddha-niches-of-bamyan/hero.webp'],
+  ['Herat Citadel', '/assets/images/attractions/herat-citadel-qala-ye-ikhtiyaruddin/hero.webp'],
+  ['Blue Mosque', '/assets/images/attractions/shrine-of-hazrat-ali-blue-mosque/hero.webp'],
+];
+
+const attractionCards = (tour: Tour) => {
+  const items = Array.isArray(tour.attractions) ? tour.attractions : [];
+  const normalized = items.map((a: any) => [
+    a.name || a.title || a.slug || 'Attraction',
+    a.image_path || a.hero_image || a.thumbnail_path || `/assets/images/attractions/${a.slug}/hero.webp`,
+  ]);
+  return (normalized.length ? normalized : fallbackAttractions).slice(0, 4);
+};
+---
+
+<section id="featured-section" class="relative isolate overflow-hidden bg-[#050807] text-white">
+  <div class="absolute inset-0 -z-10">
+    {safeTours.map((tour, index) => (
+      <img
+        id={`featured-bg-${index}`}
+        src={heroOf(tour)}
+        alt=""
+        class={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
+      />
+    ))}
+    <div class="absolute inset-0 bg-gradient-to-r from-black/88 via-black/48 to-black/72"></div>
+    <div class="absolute inset-0 bg-black/18"></div>
+  </div>
+
+  <div class="mx-auto grid min-h-[640px] w-full max-w-[1280px] grid-rows-[1fr_auto] px-5 py-8 sm:px-6 lg:px-8 xl:min-h-[680px] xl:max-h-[760px]">
+    <div class="grid min-w-0 items-center gap-8 xl:grid-cols-[minmax(0,1fr)_330px] 2xl:grid-cols-[minmax(0,1fr)_350px]">
+      <div class="min-w-0 max-w-3xl">
+        <p class="text-xs font-black uppercase tracking-[0.35em] text-[#d6a23a]">Featured Tours</p>
+
+        {safeTours.map((tour, index) => (
+          <div id={`featured-main-${index}`} class={index === 0 ? 'block' : 'hidden'}>
+            <h2 class="mt-5 font-serif text-5xl leading-[0.95] text-white md:text-5xl xl:text-6xl">
+              {titleOf(tour)}
+            </h2>
+            <div class="mt-5 flex flex-wrap gap-x-4 gap-y-2 text-xs font-bold uppercase tracking-[0.18em] text-white/85">
+              {metaOf(tour).map((item) => <span>{item}</span>)}
+            </div>
+            <p class="mt-5 max-w-2xl text-base leading-7 text-white/85 md:text-lg">
+              {tour.summary || tour.description || 'A carefully designed Afghanistan journey built around real access, local knowledge, and operational support.'}
+            </p>
+
+            {routeOf(tour).length > 0 && (
+              <p class="mt-5 max-w-2xl text-sm font-semibold text-[#d6a23a]">
+                {routeOf(tour).join(' → ')}
+              </p>
+            )}
+
+            <div class="mt-7 flex flex-wrap gap-4">
+              <button
+                type="button"
+                data-featured-preview={index}
+                class="rounded-full bg-[#d6a23a] px-6 py-3 text-xs font-black uppercase tracking-wider text-black"
+              >
+                Preview Details
+              </button>
+              <a
+                href={`/tours/${tour.slug}/`}
+                class="rounded-full border border-white/35 px-6 py-3 text-xs font-black uppercase tracking-wider text-white"
+              >
+                View Full Itinerary
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <aside class="hidden max-h-[560px] min-w-0 overflow-y-auto rounded-[1.5rem] border border-white/10 bg-black/76 p-5 shadow-2xl backdrop-blur-xl xl:block">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-xs font-black uppercase tracking-[0.28em] text-[#d6a23a]">Tour Preview</p>
+            <h3 id="featured-preview-title" class="mt-3 font-serif text-3xl leading-none">
+              {safeTours[0] ? titleOf(safeTours[0]) : 'Featured Tour'}
+            </h3>
+          </div>
+        </div>
+
+        <div id="featured-preview-content" class="mt-5"></div>
+      </aside>
+    </div>
+
+    <div class="mt-8 min-w-0">
+      <div class="featured-card-rail flex max-w-full gap-4 overflow-x-auto pb-4">
+        {safeTours.map((tour, index) => (
+          <button
+            type="button"
+            data-featured-index={index}
+            class={`min-w-[170px] max-w-[170px] overflow-hidden rounded-2xl border text-left shadow-xl transition sm:min-w-[185px] sm:max-w-[185px] ${index === 0 ? 'border-[#d6a23a]' : 'border-white/10 hover:border-[#d6a23a]'}`}
+          >
+            <div class="relative h-24">
+              <img src={heroOf(tour)} alt={titleOf(tour)} class="h-full w-full object-cover" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+            </div>
+            <div class="bg-[#101010] p-3">
+              <p class="text-[10px] font-black uppercase tracking-[0.2em] text-[#d6a23a]">{tour.season || 'Year-round'}</p>
+              <h4 class="mt-2 font-serif text-lg leading-tight text-white">{titleOf(tour)}</h4>
+              <p class="mt-2 text-xs text-white/70">{metaOf(tour).slice(0, 2).join(' • ')}</p>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ safeTours, fallbackAttractions }}>
+  const titleOfClient = (tour) => tour.title || tour.name || 'Afghanistan Tour';
+  const heroOfClient = (tour) => tour.hero_image || tour.hero_image_path || tour.image || tour.overview_image || tour.overview_image_path || tour.thumbnail_image_path || `/assets/images/tours/featured/${tour.slug}/hero.webp`;
+  const galleryOfClient = (tour) => {
+    const base = `/assets/images/tours/featured/${tour.slug}`;
+    const supplied = Array.isArray(tour.gallery) ? tour.gallery : [];
+    return [...supplied, heroOfClient(tour), `${base}/01.webp`, `${base}/02.webp`, `${base}/03.webp`]
+      .filter(Boolean)
+      .filter((item, index, arr) => arr.indexOf(item) === index)
+      .slice(0, 4);
+  };
+  const routeOfClient = (tour) => {
+    const hubs = Array.isArray(tour.hubs) ? tour.hubs.map((h) => h.name || h.title || h.slug).filter(Boolean) : [];
+    const provinces = Array.isArray(tour.provinces) ? tour.provinces.map((p) => p.name || p.title || p.slug).filter(Boolean) : [];
+    return (hubs.length ? hubs : provinces).slice(0, 5);
+  };
+  const attractionCardsClient = (tour) => {
+    const items = Array.isArray(tour.attractions) ? tour.attractions : [];
+    const normalized = items.map((a) => [
+      a.name || a.title || a.slug || 'Attraction',
+      a.image_path || a.hero_image || a.thumbnail_path || `/assets/images/attractions/${a.slug}/hero.webp`,
+    ]);
+    return (normalized.length ? normalized : fallbackAttractions).slice(0, 4);
+  };
+
+  let activeIndex = 0;
+  const previewTitle = document.getElementById('featured-preview-title');
+  const previewContent = document.getElementById('featured-preview-content');
+
+  function renderPreview() {
+    const tour = safeTours[activeIndex];
+    if (!tour || !previewContent || !previewTitle) return;
+
+    previewTitle.textContent = titleOfClient(tour);
+    const gallery = galleryOfClient(tour);
+    const route = routeOfClient(tour);
+    const attractions = attractionCardsClient(tour);
+
+    previewContent.innerHTML = `
+      <div class="grid grid-cols-2 gap-3">
+        ${gallery.map((image) => `
+          <button class="overflow-hidden rounded-xl">
+            <img src="${image}" alt="${titleOfClient(tour)}" class="h-20 w-full object-cover transition duration-300 hover:scale-105" />
+          </button>
+        `).join('')}
+      </div>
+
+      <div class="mt-5 grid grid-cols-3 gap-2 text-center text-[11px]">
+        <div class="rounded-xl border border-white/10 bg-white/5 p-3">${tour.duration_days || 'Private'} Days</div>
+        <div class="rounded-xl border border-white/10 bg-white/5 p-3">${tour.activity_level || 'Moderate'}</div>
+        <div class="rounded-xl border border-white/10 bg-white/5 p-3">${tour.season || 'Year-round'}</div>
+      </div>
+
+      ${route.length ? `
+        <div class="mt-5">
+          <p class="text-xs font-black uppercase tracking-[0.24em] text-[#d6a23a]">Route</p>
+          <p class="mt-2 text-sm text-white/85">${route.join(' → ')}</p>
+        </div>
+      ` : ''}
+
+      <div class="mt-5">
+        <p class="text-xs font-black uppercase tracking-[0.24em] text-[#d6a23a]">Top Attractions</p>
+        <div class="mt-3 grid grid-cols-2 gap-3">
+          ${attractions.map(([name, image]) => `
+            <div>
+              <img src="${image}" alt="${name}" class="h-16 w-full rounded-lg object-cover" />
+              <p class="mt-1 text-xs font-semibold leading-tight">${name}</p>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+
+      <div class="mt-5 grid grid-cols-2 gap-3">
+        <a href="/tours/${tour.slug}/" class="rounded-xl bg-[#d6a23a] px-4 py-3 text-center text-xs font-black uppercase tracking-wider text-black">Full Itinerary</a>
+        <a href="/contact/?tour=${encodeURIComponent(titleOfClient(tour))}" class="rounded-xl border border-white/20 px-4 py-3 text-center text-xs font-black uppercase tracking-wider text-white">Inquire</a>
+      </div>
+    `;
+  }
+
+  function setActive(index) {
+    activeIndex = index;
+
+    document.querySelectorAll('[id^="featured-bg-"]').forEach((bg, i) => {
+      bg.classList.toggle('opacity-100', i === index);
+      bg.classList.toggle('opacity-0', i !== index);
+    });
+
+    document.querySelectorAll('[id^="featured-main-"]').forEach((panel, i) => {
+      panel.classList.toggle('block', i === index);
+      panel.classList.toggle('hidden', i !== index);
+    });
+
+    document.querySelectorAll('[data-featured-index]').forEach((button, i) => {
+      button.classList.toggle('border-[#d6a23a]', i === index);
+      button.classList.toggle('border-white/10', i !== index);
+    });
+
+    renderPreview();
+  }
+
+  document.querySelectorAll('[data-featured-index]').forEach((button) => {
+    button.addEventListener('click', () => setActive(Number(button.dataset.featuredIndex)));
+  });
+
+  document.querySelectorAll('[data-featured-preview]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const aside = document.querySelector('#featured-section aside');
+      if (aside) aside.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  });
+
+  renderPreview();
+</script>
+
+<style>
+  .featured-card-rail {
+    scrollbar-width: thin;
+  }
+
+  .featured-card-rail::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .featured-card-rail::-webkit-scrollbar-thumb {
+    background: rgba(214, 162, 58, .7);
+    border-radius: 999px;
+  }
+</style>

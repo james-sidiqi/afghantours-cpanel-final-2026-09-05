@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { getAttractions } from '../../lib/buildRelations';
+
+const attractions = getAttractions().filter((a) => a.slug);
+---
+<BaseLayout title="Attractions | AfghanTours" description="Cultural, historical, natural, and urban attractions across Afghanistan.">
+  <PageHero eyebrow="Explore Afghanistan" title="Attractions" text="Key places, landscapes, shrines, bazaars, ruins, and natural sites used across AfghanTours itineraries." image="/assets/images/heroes/destinations/hero.webp" height="min-h-[58vh]" />
+  <section class="bg-[#fbf8f2] py-16 text-stone-950">
+    <div class="mx-auto grid max-w-7xl gap-6 px-6 md:grid-cols-2 lg:grid-cols-3">
+      {attractions.map((item) => (
+        <a href={`/attractions/${item.slug}/`} class="overflow-hidden rounded-[1.5rem] bg-white shadow-sm ring-1 ring-stone-200 transition hover:-translate-y-1 hover:shadow-xl">
+          <img src={item.image || item.image_path || item.thumbnail_path || '/assets/images/placeholders/default-attraction.webp'} alt={item.title || item.name} class="h-56 w-full object-cover" />
+          <div class="p-6">
+            <p class="text-xs font-black uppercase tracking-[0.22em] text-amber-700">{item.province || item.region || 'Afghanistan'}</p>
+            <h2 class="mt-2 text-2xl font-black">{item.title || item.name}</h2>
+            <p class="mt-3 line-clamp-3 text-sm leading-7 text-stone-600">{item.desc_short || item.excerpt || item.category}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

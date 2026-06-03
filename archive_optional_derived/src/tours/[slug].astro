@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import TourOverview from '../../components/tours/TourOverview.astro';
+import TourItineraryAccordion from '../../components/tours/TourItineraryAccordion.astro';
+import TourGallery from '../../components/tours/TourGallery.astro';
+import TourInclusions from '../../components/tours/TourInclusions.astro';
+import TourCTA from '../../components/tours/TourCTA.astro';
+import { getTours, getTourBySlug } from '../../lib/buildRelations';
+
+export function getStaticPaths() {
+  return getTours().filter((tour) => tour?.slug).map((tour) => ({ params: { slug: tour.slug } }));
+}
+
+const tour = Astro.params.slug ? getTourBySlug(Astro.params.slug) : undefined;
+if (!tour) return Astro.redirect('/tours/');
+
+const heroImage = tour.hero_image || tour.hero_image_path || tour.thumbnail_image_path || '/assets/images/heroes/hero-tour.webp';
+---
+<BaseLayout title={`${tour.title || tour.name} | AfghanTours`} description={tour.summary || tour.description || ''} image={heroImage}>
+  <PageHero
+    eyebrow={tour.season || tour.travel_style || 'Afghanistan Tour'}
+    title={tour.title || tour.name}
+    text={tour.summary || tour.description || 'A guided Afghanistan journey built around realistic logistics, cultural access, and local coordination.'}
+    image={heroImage}
+    primaryHref="#itinerary"
+    primaryLabel="View itinerary"
+    secondaryHref={`/contact/?tour=${encodeURIComponent(tour.title || tour.name || tour.slug)}`}
+    secondaryLabel="Ask about this tour"
+    height="min-h-[78vh]"
+  />
+  <section class="bg-[#fbf8f2] border-b border-stone-200 py-8 text-stone-950">
+    <div class="mx-auto max-w-7xl px-6">
+      <div class="grid grid-cols-2 gap-6 sm:grid-cols-4 sm:divide-x divide-stone-200">
+        <div class="border-b border-stone-200 pb-5 text-center sm:border-b-0 sm:pb-0 sm:text-left">
+          <span class="block text-4xl font-black tracking-tight text-amber-700">{tour.duration_days || tour.duration || 'Private'}</span>
+          <span class="text-xs font-bold uppercase tracking-widest text-stone-500">Days Journey</span>
+        </div>
+        <div class="border-b border-stone-200 pb-5 text-center sm:border-b-0 sm:pb-0 sm:pl-6 sm:text-left">
+          <span class="block text-4xl font-black tracking-tight text-stone-900">{tour.max_group || tour.group_size || 'Private'}</span>
+          <span class="text-xs font-bold uppercase tracking-widest text-stone-500">Group Size</span>
+        </div>
+        <div class="text-center sm:pl-6 sm:text-left">
+          <span class="block text-4xl font-black tracking-tight text-stone-900">{tour.difficulty || tour.activity_level || 'Moderate'}</span>
+          <span class="text-xs font-bold uppercase tracking-widest text-stone-500">Physical Level</span>
+        </div>
+        <div class="text-center sm:pl-6 sm:text-left">
+          <span class="block text-4xl font-black tracking-tight text-stone-900">{tour.start_city || tour.hub || 'Kabul'}</span>
+          <span class="text-xs font-bold uppercase tracking-widest text-stone-500">Starts / Ends</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <TourGallery tour={tour} gallery={tour.gallery || []} />
+  <TourOverview tour={tour} />
+  <div id="itinerary"><TourItineraryAccordion itinerary={tour.itinerary || []} /></div>
+  <TourInclusions tour={tour} />
+  <TourCTA tour={tour} />
+</BaseLayout>

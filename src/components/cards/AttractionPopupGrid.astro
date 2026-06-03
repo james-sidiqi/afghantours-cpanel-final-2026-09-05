@@ -1,0 +1,355 @@
+---
+const { attractions = [], title = "Attractions", intro = "" } = Astro.props;
+
+const clean = (v) => String(v || '').trim();
+const normalized = attractions
+  .filter(Boolean)
+  .map((a) => ({
+    slug: a.slug,
+    title: a.title || a.name || 'Attraction',
+    province: a.province || a.province_name || a.province_code || '',
+    region: a.region || '',
+    category: a.category || 'Attraction',
+    desc: a.desc_short || a.excerpt || a.summary || a.description || a.desc_long || '',
+    long: a.desc_long || a.description || a.content || a.desc_short || '',
+    image: a.image || a.image_path || a.thumbnail_path || `/assets/images/attractions/${a.slug}/hero.webp`,
+    href: `/attractions/${a.slug}/`,
+  }));
+---
+
+<section class="attraction-popup-section">
+  <div class="attraction-popup-wrap">
+    {(title || intro) && (
+      <div class="attraction-popup-heading">
+        <p class="section-kicker">Route Highlights</p>
+        {title && <h2>{title}</h2>}
+        {intro && <p>{intro}</p>}
+      </div>
+    )}
+
+    {normalized.length > 0 ? (
+      <div class="attraction-popup-grid">
+        {normalized.map((item, index) => (
+          <button type="button" class="attraction-popup-card" data-attraction-index={index}>
+            <img src={item.image} alt={item.title} loading="lazy" />
+            <div>
+              <p class="card-kicker">{item.province || item.category}</p>
+              <h3>{item.title}</h3>
+              <p>{item.desc}</p>
+              <span>Preview attraction →</span>
+            </div>
+          </button>
+        ))}
+      </div>
+    ) : (
+      <div class="empty-card">No linked attractions have been added yet.</div>
+    )}
+  </div>
+
+  <div class="attraction-modal" id="attraction-modal" aria-hidden="true">
+    <div class="attraction-modal-backdrop" data-close-attraction></div>
+    <article class="attraction-modal-panel" role="dialog" aria-modal="true" aria-labelledby="attraction-modal-title">
+      <button type="button" class="attraction-modal-close" data-close-attraction>×</button>
+      <img id="attraction-modal-image" src="" alt="" />
+      <div class="attraction-modal-body">
+        <p class="card-kicker" id="attraction-modal-kicker"></p>
+        <h2 id="attraction-modal-title"></h2>
+        <div class="attraction-meta" id="attraction-modal-meta"></div>
+
+        <div class="content-block">
+          <p class="section-label">About this attraction</p>
+          <p id="attraction-modal-desc"></p>
+        </div>
+
+        <div class="attraction-modal-actions">
+          <a id="attraction-modal-link" href="/attractions/">View full attraction</a>
+          <a id="attraction-modal-contact" href="/contact/?type=attraction">Ask about visiting</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<script define:vars={{ attractions: normalized }}>
+  const modal = document.getElementById('attraction-modal');
+  const img = document.getElementById('attraction-modal-image');
+  const kicker = document.getElementById('attraction-modal-kicker');
+  const title = document.getElementById('attraction-modal-title');
+  const meta = document.getElementById('attraction-modal-meta');
+  const desc = document.getElementById('attraction-modal-desc');
+  const link = document.getElementById('attraction-modal-link');
+  const contact = document.getElementById('attraction-modal-contact');
+
+  function escapeHtml(value) {
+    return String(value || '').replace(/[&<>"']/g, (m) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[m]));
+  }
+
+  function openAttraction(index) {
+    const item = attractions[index];
+    if (!item || !modal) return;
+
+    img.src = item.image || '';
+    img.alt = item.title || '';
+    kicker.textContent = item.province || item.category || '';
+    title.textContent = item.title || 'Attraction';
+    desc.textContent = item.long || item.desc || '';
+    link.href = item.href || '/attractions/';
+    contact.href = `/contact/?type=attraction&attraction=${encodeURIComponent(item.title || '')}`;
+    meta.innerHTML = [item.region, item.category].filter(Boolean).map((x) => `<span>${escapeHtml(x)}</span>`).join('');
+
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeAttraction() {
+    if (!modal) return;
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-attraction-index]').forEach((button) => {
+    button.addEventListener('click', () => openAttraction(Number(button.dataset.attractionIndex)));
+  });
+
+  document.querySelectorAll('[data-close-attraction]').forEach((button) => {
+    button.addEventListener('click', closeAttraction);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeAttraction();
+  });
+</script>
+
+<style>
+  .attraction-popup-section {
+    background: #fbf6ed;
+    color: #101820;
+    padding: clamp(4rem, 7vw, 7rem) 0;
+  }
+
+  .attraction-popup-wrap {
+    width: min(1280px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .attraction-popup-heading {
+    max-width: 760px;
+    margin-bottom: 2rem;
+  }
+
+  .section-kicker,
+  .section-label,
+  .card-kicker {
+    margin: 0;
+    color: #b46b00;
+    font-size: .72rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  .attraction-popup-heading h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    line-height: .95;
+    letter-spacing: -.06em;
+    margin: .45rem 0 1rem;
+  }
+
+  .attraction-popup-heading > p:last-child {
+    color: #4b5563;
+    line-height: 1.75;
+  }
+
+  .attraction-popup-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.1rem;
+  }
+
+  .attraction-popup-card {
+    border: 1px solid rgba(16,24,32,.1);
+    background: #fff;
+    padding: 0;
+    text-align: left;
+    border-radius: 1.35rem;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 14px 38px rgba(21,16,9,.08);
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+
+  .attraction-popup-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(180,107,0,.35);
+    box-shadow: 0 22px 50px rgba(21,16,9,.14);
+  }
+
+  .attraction-popup-card img {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .attraction-popup-card > div {
+    padding: 1.2rem;
+  }
+
+  .attraction-popup-card h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.55rem;
+    line-height: 1;
+    letter-spacing: -.04em;
+    margin: .45rem 0 .75rem;
+  }
+
+  .attraction-popup-card p:not(.card-kicker) {
+    color: #4b5563;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .attraction-popup-card span {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #9a5d04;
+    font-size: .83rem;
+    font-weight: 900;
+  }
+
+  .empty-card {
+    border-radius: 1.5rem;
+    border: 1px dashed #d5c7b4;
+    padding: 2rem;
+    background: #fff;
+    color: #4b5563;
+  }
+
+  .attraction-modal[aria-hidden="true"] { display: none; }
+
+  .attraction-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+  }
+
+  .attraction-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(3,7,18,.76);
+    backdrop-filter: blur(8px);
+  }
+
+  .attraction-modal-panel {
+    position: relative;
+    width: min(980px, calc(100% - 2rem));
+    max-height: calc(100vh - 2rem);
+    margin: 1rem auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #fffaf3;
+    border-radius: 2rem;
+    overflow: hidden;
+    box-shadow: 0 35px 90px rgba(0,0,0,.45);
+  }
+
+  .attraction-modal-close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    z-index: 5;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(0,0,0,.72);
+    color: #fff;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+
+  .attraction-modal-panel > img {
+    width: 100%;
+    height: 100%;
+    min-height: 560px;
+    object-fit: cover;
+    background: #111;
+  }
+
+  .attraction-modal-body {
+    padding: clamp(1.6rem, 3vw, 2.6rem);
+    overflow-y: auto;
+  }
+
+  .attraction-modal-body h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    line-height: .92;
+    letter-spacing: -.06em;
+    margin: .6rem 0 .8rem;
+  }
+
+  .attraction-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin: 1rem 0;
+  }
+
+  .attraction-meta span {
+    border-radius: 999px;
+    background: #f4eadc;
+    color: #3b2d1c;
+    padding: .45rem .7rem;
+    font-size: .78rem;
+    font-weight: 900;
+  }
+
+  .content-block {
+    border-top: 1px solid rgba(16,24,32,.1);
+    margin-top: 1.4rem;
+    padding-top: 1.2rem;
+  }
+
+  .content-block > p:last-child {
+    color: #374151;
+    line-height: 1.8;
+  }
+
+  .attraction-modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-top: 1.8rem;
+  }
+
+  .attraction-modal-actions a {
+    border-radius: 999px;
+    background: #d6a23a;
+    color: #111;
+    padding: .9rem 1.2rem;
+    text-decoration: none;
+    font-weight: 900;
+  }
+
+  .attraction-modal-actions a + a {
+    background: #101820;
+    color: #fff;
+  }
+
+  @media (max-width: 1000px) {
+    .attraction-popup-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .attraction-modal-panel { grid-template-columns: 1fr; overflow-y: auto; }
+    .attraction-modal-panel > img { min-height: 330px; }
+  }
+
+  @media (max-width: 640px) {
+    .attraction-popup-grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,176 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: 'about' } },
+    { params: { slug: 'contact' } },
+    { params: { slug: 'faq' } },
+    { params: { slug: 'safety' } },
+    { params: { slug: 'privacy' } },
+    { params: { slug: 'terms' } },
+  ];
+}
+
+const pages = {
+  about: {
+    eyebrow: 'About AfghanTours',
+    title: 'American-led, Kabul-based Afghanistan travel.',
+    description: 'AfghanTours is operated by James Tourist & Travel Agency, a licensed Afghan tour operator based in Kabul.',
+    image: '/assets/images/heroes/about/hero.webp',
+    type: 'about',
+  },
+  contact: {
+    eyebrow: 'Contact AfghanTours',
+    title: 'Start the Conversation',
+    description: 'Tell us where you want to go, when you want to travel, and what kind of support you need.',
+    image: '/assets/images/heroes/contact/hero.webp',
+    type: 'contact',
+  },
+  faq: {
+    eyebrow: 'Travel Questions',
+    title: 'AfghanTours FAQ',
+    description: 'Practical answers for travelers planning private Afghanistan journeys.',
+    image: '/assets/images/heroes/faq/hero.webp',
+    type: 'faq',
+  },
+  safety: {
+    eyebrow: 'Responsible Travel',
+    title: 'Safety & Route-Aware Travel',
+    description: 'How AfghanTours approaches planning, routing, local coordination, and realistic expectations.',
+    image: '/assets/images/heroes/safety/hero-safety.webp',
+    type: 'policy',
+  },
+  privacy: {
+    eyebrow: 'Policy',
+    title: 'Privacy Policy',
+    description: 'How AfghanTours handles inquiry information and traveler privacy.',
+    image: '/assets/images/heroes/hero-privacy.webp',
+    type: 'policy',
+  },
+  terms: {
+    eyebrow: 'Policy',
+    title: 'Terms & Conditions',
+    description: 'General terms for inquiries, bookings, custom itineraries, and operational changes.',
+    image: '/assets/images/heroes/default-hero.webp',
+    type: 'policy',
+  },
+};
+
+const page = pages[Astro.params.slug] || pages.about;
+
+const faqItems = [
+  ['Are your tours fixed or private?', 'Most AfghanTours itineraries are private or custom-capable and can be adjusted around timing, comfort level, interests, and route conditions.'],
+  ['Can you build a custom itinerary?', 'Yes. Custom planning is one of our main strengths for photographers, veterans, researchers, mountaineers, media visitors, diaspora travelers, and private groups.'],
+  ['Is Afghanistan safe to visit?', 'Afghanistan requires serious planning and realistic expectations. We plan around current route access, timing, hotels, drivers, local coordination, and practical movement.'],
+  ['Can you help with invitation letters?', 'Where appropriate, we can support documentation connected to the planned itinerary. Final visa decisions remain with the relevant authorities.'],
+  ['Do you arrange hotels and transportation?', 'Yes. Hotels, vehicles, drivers, guides, translators, and local support can be coordinated as part of the itinerary.'],
+];
+
+const policyItems = {
+  safety: [
+    ['Route-aware planning', 'We build itineraries around real drive times, seasonal access, domestic flight realities, local coordination, and practical overnight points.'],
+    ['Local coordination', 'Travel is supported through local relationships, drivers, guides, hotel contacts, and operational knowledge developed inside Afghanistan.'],
+    ['Realistic expectations', 'We do not sell fantasy itineraries. If a route is too rushed, unavailable, or operationally weak, we will say so.'],
+  ],
+  privacy: [
+    ['Information collected', 'We may collect your name, email, WhatsApp number, nationality, dates, group size, interests, and inquiry details.'],
+    ['How information is used', 'Information is used to respond to inquiries, prepare itinerary options, and coordinate requested travel services.'],
+    ['Information sharing', 'Necessary details may be shared with operational partners only when needed for hotels, transport, guiding, documentation, or itinerary planning.'],
+  ],
+  terms: [
+    ['Inquiries are not bookings', 'Submitting an inquiry does not create a confirmed booking. A journey is confirmed only after itinerary, price, and payment terms are agreed.'],
+    ['Changes and availability', 'Hotels, vehicles, flights, routes, permits, and prices may change based on timing, access, weather, and operational conditions.'],
+    ['Traveler responsibility', 'Travelers must follow local guidance, respect Afghan culture and law, and avoid unauthorized photography or activity.'],
+  ],
+};
+
+const aboutItems = [
+  ['Licensed Kabul Operator', 'AfghanTours.com is owned and operated by James Tourist & Travel Agency, a licensed Afghanistan travel operator based in Kabul.'],
+  ['American-Led, Kabul-Based', 'The company is led by an American citizen with more than 15 years of continuous experience living and working inside Afghanistan.'],
+  ['Operational Travel Platform', 'We combine tourism, logistics, local relationships, drivers, hotels, guides, and route planning into realistic, supported journeys.'],
+];
+---
+
+<BaseLayout title={`${page.title} | AfghanTours`} description={page.description} image={page.image}>
+  <section class="simple-hero">
+    <img src={page.image} alt={page.title} />
+    <div></div>
+    <article>
+      <p>{page.eyebrow}</p>
+      <h1>{page.title}</h1>
+      <span>{page.description}</span>
+    </article>
+  </section>
+
+  <main class="simple-page">
+    {page.type === 'faq' ? (
+      <section class="content-card">
+        {faqItems.map(([q, a]) => (
+          <details>
+            <summary>{q}</summary>
+            <p>{a}</p>
+          </details>
+        ))}
+      </section>
+    ) : page.type === 'policy' ? (
+      <section class="policy-grid">
+        {(policyItems[Astro.params.slug] || []).map(([heading, text]) => (
+          <article>
+            <h2>{heading}</h2>
+            <p>{text}</p>
+          </article>
+        ))}
+      </section>
+    ) : page.type === 'contact' ? (
+      <section class="contact-grid">
+        <article class="content-card">
+          <h2>Contact Our Team</h2>
+          <p><strong>Email:</strong> info@afghantours.com</p>
+          <p><strong>WhatsApp:</strong> +93 780 123 456</p>
+          <p><strong>Office:</strong> 2nd Floor, Majid Mall, Shahr-e-Naw, District 10, Kabul, Afghanistan</p>
+        </article>
+        <form class="content-card" action="mailto:info@afghantours.com" method="post">
+          <label>Name <input name="name" /></label>
+          <label>Email or WhatsApp <input name="contact" /></label>
+          <label>Message <textarea name="message"></textarea></label>
+          <button type="submit">Send Inquiry</button>
+        </form>
+      </section>
+    ) : (
+      <section class="policy-grid">
+        {aboutItems.map(([heading, text]) => (
+          <article>
+            <h2>{heading}</h2>
+            <p>{text}</p>
+          </article>
+        ))}
+      </section>
+    )}
+  </main>
+</BaseLayout>
+
+<style>
+  .simple-hero{position:relative;min-height:56vh;background:#050807;color:#fff;display:flex;align-items:end;overflow:hidden}
+  .simple-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.7}
+  .simple-hero>div{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.82),rgba(0,0,0,.5),rgba(0,0,0,.2))}
+  .simple-hero article{position:relative;width:min(1180px,calc(100% - 2rem));margin:0 auto;padding:7rem 0 4.5rem}
+  .simple-hero p{color:#d6a23a;text-transform:uppercase;letter-spacing:.24em;font-size:.75rem;font-weight:900}
+  .simple-hero h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(3rem,6vw,6rem);line-height:.92;letter-spacing:-.06em;margin:.7rem 0 1rem}
+  .simple-hero span{display:block;max-width:720px;color:rgba(255,255,255,.86);font-size:1.1rem;line-height:1.75}
+  .simple-page{background:#fbf6ed;padding:clamp(4rem,7vw,7rem) 1rem;color:#101820}
+  .content-card,.policy-grid article{width:min(980px,100%);margin:0 auto;background:#fff;border:1px solid rgba(16,24,32,.1);border-radius:1.5rem;padding:clamp(1.5rem,3vw,2.4rem);box-shadow:0 14px 38px rgba(21,16,9,.08)}
+  details{border-bottom:1px solid #eadfce;padding:1rem 0}
+  details:last-child{border-bottom:0}
+  summary{cursor:pointer;font-weight:900;font-size:1.1rem}
+  details p,.content-card p,.policy-grid p{color:#4b5563;line-height:1.8}
+  .policy-grid,.contact-grid{width:min(1180px,100%);margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+  .contact-grid{grid-template-columns:1fr 1fr}
+  .policy-grid article{width:auto}
+  .policy-grid h2,.content-card h2{font-family:Georgia,"Times New Roman",serif;font-size:2rem;line-height:1;margin:.2rem 0 1rem}
+  label{display:grid;gap:.4rem;margin-bottom:1rem;font-weight:900}
+  input,textarea{width:100%;border:1px solid #d8c9b5;border-radius:.75rem;padding:.9rem;font:inherit}
+  textarea{min-height:150px}
+  button{border:0;border-radius:999px;background:#101820;color:#fff;padding:1rem 1.25rem;font-weight:900;cursor:pointer}
+  @media(max-width:800px){.policy-grid,.contact-grid{grid-template-columns:1fr}}
+</style>

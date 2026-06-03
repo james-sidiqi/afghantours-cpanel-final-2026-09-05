@@ -1,0 +1,5 @@
+route_group_id,route_group_name,season_start_month,season_end_month,notes,is_active
+CORRIDOR_RING,Main corridor network,,,For buses/newer vans/armored: Kabul–Mazar–Jalalabad–Kandahar–Khost–Herat and key nodes on main thoroughfares.,1
+ALL_EXCEPT_NUR,All locations (except Nuristan),,,Standard/budget vans and sedans can operate broadly; exclude Nuristan.,1
+ALL_LOCATIONS,All locations,,,Premium 4x4 SUVs assumed capable for all locations in your current location list.,1
+ARMORED_SEASONAL,Armored corridor + Bamyan (May–Oct),5.0,10.0,Armored options limited to corridor; Bamyan available May–October only.,1

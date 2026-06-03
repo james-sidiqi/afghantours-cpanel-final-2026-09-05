@@ -1,0 +1,67 @@
+<section class="home-intro" aria-labelledby="home-intro-title">
+  <div class="home-intro__grid">
+    <div class="home-intro__copy">
+      <p class="home-intro__eyebrow">Licensed Kabul operator</p>
+      <h2 id="home-intro-title">Afghanistan travel with local access and realistic planning</h2>
+      <p>
+        AfghanTours is operated by James Tourist & Travel Agency in Kabul, combining Afghan hospitality, local coordination, and operational experience developed through years of working across Afghanistan.
+      </p>
+    </div>
+
+    <div class="home-intro__cards">
+      <article class="home-intro__card">
+        <p>License</p>
+        <h3>ATO-KBL-1617</h3>
+        <span>Registered Afghan travel operator based in Kabul.</span>
+      </article>
+      <article class="home-intro__card home-intro__card--dark">
+        <p>Focus</p>
+        <h3>Custom & field-supported travel</h3>
+        <span>Cultural journeys, expeditions, media support, business visits, and private Afghanistan itineraries.</span>
+      </article>
+    </div>
+
+    <div class="intro-license-card">
+      <div class="intro-license-card__image">
+        <img src="/assets/images/logo/jtt-license.webp" alt="James Tourist & Travel Agency License" loading="lazy" />
+      </div>
+      <div class="intro-license-card__content">
+        <span class="intro-license-card__eyebrow">Government Registration</span>
+        <h3>Licensed Afghanistan Tour Operator</h3>
+        <p>James Tourist & Travel Agency is a registered Afghan tourism operator authorized to organize and coordinate travel services within Afghanistan.</p>
+        <div class="intro-license-card__meta">
+          <span>ATO-KBL-1617</span>
+          <span>Kabul, Afghanistan</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .home-intro { background: #f7f2e9; color: #11100d; padding: clamp(3rem, 6vw, 6rem) 1rem; }
+  .home-intro__grid { width: min(1180px, 100%); margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(300px, 1fr); gap: 1.4rem; align-items: start; }
+  .home-intro__copy { padding: 0.35rem 0; }
+  .home-intro__eyebrow, .intro-license-card__eyebrow, .home-intro__card p { margin: 0 0 0.75rem; color: #b45309; font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; font-weight: 900; }
+  .home-intro__copy h2 { margin: 0; max-width: 10ch; font-family: Georgia, "Times New Roman", serif; font-size: clamp(3.3rem, 6.2vw, 5.9rem); line-height: 0.9; letter-spacing: -0.065em; }
+  .home-intro__copy > p:last-child { max-width: 58ch; margin: 1.3rem 0 0; color: #4d4941; font-size: 1.06rem; line-height: 1.75; }
+  .home-intro__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .home-intro__card { min-height: 170px; border-radius: 28px; background: #fffaf0; border: 1px solid rgba(0,0,0,0.08); padding: 1.65rem; box-shadow: 0 14px 32px rgba(0,0,0,0.08); }
+  .home-intro__card h3 { margin: 0 0 1rem; font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.55rem, 2.6vw, 2rem); line-height: 0.95; }
+  .home-intro__card span { color: #4b4640; line-height: 1.65; }
+  .home-intro__card--dark { background: #080706; color: #fff8ec; box-shadow: 0 18px 40px rgba(0,0,0,0.18); }
+  .home-intro__card--dark span { color: rgba(255, 248, 236, 0.82); }
+  .home-intro__card--dark p { color: #f6c44b; }
+
+  .intro-license-card { grid-column: 1 / -1; display: grid; grid-template-columns: 220px 1fr; gap: 1.5rem; align-items: stretch; background: #f7f3ec; border: 1px solid rgba(0,0,0,0.08); border-radius: 28px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.06); }
+  .intro-license-card__image { background: #ece7dd; min-height: 260px; }
+  .intro-license-card__image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .intro-license-card__content { padding: 1.75rem; display: flex; flex-direction: column; justify-content: center; }
+  .intro-license-card__content h3 { font-size: clamp(1.7rem, 3vw, 2.3rem); line-height: 0.95; margin: 0 0 1rem; font-family: Georgia, "Times New Roman", serif; font-weight: 900; color: #111; }
+  .intro-license-card__content p { color: #4b5563; line-height: 1.75; max-width: 48ch; margin: 0; }
+  .intro-license-card__meta { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 1.25rem; }
+  .intro-license-card__meta span { padding: 0.45rem 0.8rem; border-radius: 999px; background: rgba(0,0,0,0.06); font-size: 0.78rem; font-weight: 700; }
+
+  @media (max-width: 920px) { .home-intro__grid { grid-template-columns: 1fr; } .home-intro__copy h2 { max-width: 100%; } }
+  @media (max-width: 700px) { .home-intro__cards, .intro-license-card { grid-template-columns: 1fr; } .intro-license-card__image { min-height: 220px; } }
+</style>

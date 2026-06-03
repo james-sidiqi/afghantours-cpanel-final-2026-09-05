@@ -1,0 +1,539 @@
+---
+const hubs = [
+  {
+    slug: "kabul-city",
+    name: "Kabul",
+    province: "Kabul",
+    type: "Gateway Hub",
+    image: "/assets/images/hubs/kabul-city/hero.webp",
+    cardImage: "/assets/images/hubs/kabul-city/01.webp",
+    summary: "Afghanistan’s primary arrival hub and the main base for most private, media, business, and cultural journeys.",
+    stats: ["Airport: Yes", "Hotels: 15+", "Attractions: 20+", "Best Season: Year-round"],
+    gallery: [
+      "/assets/images/hubs/kabul-city/01.webp",
+      "/assets/images/hubs/kabul-city/02.webp",
+      "/assets/images/hubs/kabul-city/03.webp",
+      "/assets/images/hubs/kabul-city/04.webp",
+      "/assets/images/hubs/kabul-city/05.webp",
+      "/assets/images/hubs/kabul-city/06.webp",
+      "/assets/images/hubs/kabul-city/07.webp",
+      "/assets/images/hubs/kabul-city/08.webp"
+    ],
+    attractions: [
+      ["Babur’s Gardens", "/assets/images/attractions/baburs-gardens/hero.webp", "/attractions/baburs-gardens/"],
+      ["Darulaman Palace", "/assets/images/attractions/darulaman-palace/hero.webp", "/attractions/darulaman-palace/"],
+      ["Kabul National Museum", "/assets/images/attractions/kabul-national-museum/hero.webp", "/attractions/kabul-national-museum/"],
+      ["Chicken Street", "/assets/images/attractions/chicken-street/hero.webp", "/attractions/chicken-street/"],
+      ["Bird Market", "/assets/images/attractions/kahfroshi-bird-market/hero.webp", "/attractions/kahfroshi-bird-market/"]
+    ],
+    hotels: [
+      ["Intercontinental", "/assets/images/hotels/kabul/intercontinental/hotel-exterior-1.webp", "/hotels/"],
+      ["Kabul Grand", "/assets/images/hotels/kabul/kabul-grand/hotel-exterior-2.webp", "/hotels/"],
+      ["Park Star", "/assets/images/hotels/kabul/park-star/hotel-exterior-1.webp", "/hotels/"]
+    ],
+    food: [
+      ["Kabuli Palaw", "/assets/images/food/dishes/kabuli-palaw/hero.webp", "/food-culture/kabuli-pulao/"],
+      ["Bakery Kabul", "/assets/images/food/bakery-kabul/hero.webp", "/food-culture/"],
+      ["Green Tea", "/assets/images/food/drinks/green-tea/hero.webp", "/food-culture/drinks/green-tea/"]
+    ],
+    transport: [
+      ["Kabul Airport", "/assets/images/transport/airports/kabul-airport.webp", "/transportation/"],
+      ["Private Vehicle Routes", "/assets/images/transport/standard/4x4-vehicle.webp", "/transportation/"],
+      ["Premium Vehicles", "/assets/images/transport/premium/premium-van.webp", "/transportation/"]
+    ],
+    tours: [
+      ["Weekend in Kabul", "/tours/weekend-in-kabul/"],
+      ["Central Afghanistan Discovery", "/tours/central-afghanistan-discovery/"],
+      ["Afghanistan Discovery Spring", "/tours/afghanistan-discovery-tour-spring/"]
+    ]
+  },
+  {
+    slug: "bamyan-city",
+    name: "Bamyan",
+    province: "Bamyan",
+    type: "Central Highlands Hub",
+    image: "/assets/images/hubs/bamyan-city/hero.webp",
+    cardImage: "/assets/images/hubs/bamyan-city/01.webp",
+    summary: "The central highlands hub for Bamyan Valley, Band-e-Amir, Buddhist heritage sites, skiing, trekking, and mountain scenery.",
+    stats: ["Airfield: Limited", "Hotels: 2+", "Attractions: 6+", "Best Season: Apr–Oct / Winter Ski"],
+    gallery: [
+      "/assets/images/hubs/bamyan-city/01.webp",
+      "/assets/images/hubs/bamyan-city/02.webp",
+      "/assets/images/hubs/bamyan-city/03.webp",
+      "/assets/images/hubs/bamyan-city/04.webp",
+      "/assets/images/hubs/bamyan-city/05.webp"
+    ],
+    attractions: [
+      ["Buddha Niches", "/assets/images/attractions/buddha-niches-of-bamyan/hero.webp", "/attractions/buddha-niches-of-bamyan/"],
+      ["Shahr-e Gholghola", "/assets/images/attractions/shahr-e-gholghola/hero.webp", "/attractions/shahr-e-gholghola/"],
+      ["Shahr-e Zohak", "/assets/images/attractions/shahr-e-zohak/hero.webp", "/attractions/shahr-e-zohak/"],
+      ["Band-e-Amir", "/assets/images/attractions/band-e-amir-national-park/hero.webp", "/attractions/band-e-amir-national-park/"],
+      ["Dragon Valley", "/assets/images/attractions/dragon-valley-dara-e-ajdahar/hero.webp", "/attractions/dragon-valley-dara-e-ajdahar/"],
+      ["Koh-e Baba", "/assets/images/attractions/koh-e-baba-range/hero.webp", "/attractions/koh-e-baba-range/"]
+    ],
+    hotels: [
+      ["Gholghola Hotel", "/assets/images/hotels/bamyan/gholghola/hotel-exterior-1.webp", "/hotels/"],
+      ["Royal Hotel", "/assets/images/hotels/bamyan/royal/hotel-exterior-1.webp", "/hotels/"]
+    ],
+    food: [
+      ["Bamyan Potatoes", "/assets/images/food/dishes/bamyan-potatoes/hero.webp", "/food-culture/produce/bamyan-potatoes/"],
+      ["Mantu", "/assets/images/food/dishes/mantu/hero.webp", "/food-culture/dishes/mantu/"],
+      ["Green Tea", "/assets/images/food/drinks/green-tea/hero.webp", "/food-culture/drinks/green-tea/"]
+    ],
+    transport: [
+      ["Ghorband Route", "/assets/images/transport/roads/mountain-pass.webp", "/transportation/"],
+      ["Mountain Roads", "/assets/images/transport/roads/hajigak-snow-roads.webp", "/transportation/"],
+      ["4x4 Vehicles", "/assets/images/transport/standard/4runner-qargha-lake.webp", "/transportation/"]
+    ],
+    tours: [
+      ["Central Afghanistan Discovery", "/tours/central-afghanistan-discovery/"],
+      ["Bamyan Skiing Tour", "/tours/bamyan-skiing-tour/"],
+      ["Winter Circuit", "/tours/winter-circuit/"]
+    ]
+  },
+  {
+    slug: "herat-city",
+    name: "Herat",
+    province: "Herat",
+    type: "Western Heritage Hub",
+    image: "/assets/images/hubs/herat-city/hero.webp",
+    cardImage: "/assets/images/hubs/herat-city/01.webp",
+    summary: "The western cultural hub for Timurid architecture, Herat city, the Friday Mosque, the Citadel, bazaars, and western route planning.",
+    stats: ["Airport: Yes", "Hotels: 2+", "Attractions: 5+", "Best Season: Mar–May / Sep–Nov"],
+    gallery: [
+      "/assets/images/hubs/herat-city/01.webp",
+      "/assets/images/hubs/herat-city/02.webp",
+      "/assets/images/hubs/herat-city/03.webp",
+      "/assets/images/hubs/herat-city/04.webp",
+      "/assets/images/hubs/herat-city/05.webp"
+    ],
+    attractions: [
+      ["Herat Citadel", "/assets/images/attractions/herat-citadel-qala-ye-ikhtiyaruddin/hero.webp", "/attractions/herat-citadel-qala-ye-ikhtiyaruddin/"],
+      ["Friday Mosque", "/assets/images/attractions/herat-friday-mosque-masjid-e-jami/hero.webp", "/attractions/herat-friday-mosque-masjid-e-jami/"],
+      ["Herat Minarets", "/assets/images/attractions/herat-minarets-musalla-complex/hero.webp", "/attractions/herat-minarets-musalla-complex/"],
+      ["Old City Bazaars", "/assets/images/attractions/herat-old-city-bazaars/hero.webp", "/attractions/herat-old-city-bazaars/"],
+      ["Khwaja Ansari Shrine", "/assets/images/attractions/khwaja-abdullah-ansari-shrine/hero.webp", "/attractions/khwaja-abdullah-ansari-shrine/"]
+    ],
+    hotels: [
+      ["Arg Hotel", "/assets/images/hotels/herat/arg/hotel-exterior-1.webp", "/hotels/"],
+      ["Sadaf Hotel", "/assets/images/hotels/herat/sadaf/hotel-exterior-1.webp", "/hotels/"]
+    ],
+    food: [
+      ["Herati Kebab", "/assets/images/food/dishes/kabob/hero.webp", "/food-culture/"],
+      ["Herat Saffron", "/assets/images/food/dried-fruit/herat-saffron/hero.webp", "/food-culture/produce/herat-saffron/"],
+      ["Herat Raisins", "/assets/images/food/dried-fruit/herat-raisins/hero.webp", "/food-culture/produce/herat-raisins/"]
+    ],
+    transport: [
+      ["Herat Airport", "/assets/images/transport/airports/herat-airport.webp", "/transportation/"],
+      ["Highway Routes", "/assets/images/scenery/highway-route.webp", "/transportation/"],
+      ["Private Vehicles", "/assets/images/transport/standard/4x4-vehicle.webp", "/transportation/"]
+    ],
+    tours: [
+      ["Timurid Grandeur Herat Tour", "/tours/timurid-grandeur-herat-tour/"],
+      ["Treasures of Silk Road Afghanistan", "/tours/treasures-of-silk-road-afghanistan/"],
+      ["Afghanistan Discovery Fall", "/tours/afghanistan-discovery-tour-fall/"]
+    ]
+  },
+  {
+    slug: "mazar-e-sharif",
+    name: "Mazar-e-Sharif",
+    province: "Balkh",
+    type: "Northern Hub",
+    image: "/assets/images/hubs/mazar-e-sharif/hero.webp",
+    cardImage: "/assets/images/hubs/mazar-e-sharif/01.webp",
+    summary: "The northern hub for Balkh, the Blue Mosque, ancient Bactria, Samangan, and northern Afghanistan routes.",
+    stats: ["Airport: Yes", "Hotels: 3+", "Attractions: 5+", "Best Season: Mar–May / Sep–Nov"],
+    gallery: [
+      "/assets/images/hubs/mazar-e-sharif/01.webp",
+      "/assets/images/hubs/mazar-e-sharif/02.webp",
+      "/assets/images/hubs/mazar-e-sharif/03 .webp"
+    ],
+    attractions: [
+      ["Blue Mosque", "/assets/images/attractions/shrine-of-hazrat-ali-blue-mosque/hero.webp", "/attractions/shrine-of-hazrat-ali-blue-mosque/"],
+      ["Ancient Balkh", "/assets/images/attractions/ancient-city-of-balkh/hero.webp", "/attractions/ancient-city-of-balkh/"],
+      ["Rabia Balkhi Tomb", "/assets/images/attractions/tomb-of-rabia-balkhi/hero.webp", "/attractions/tomb-of-rabia-balkhi/"],
+      ["Haji Piyada", "/assets/images/attractions/haji-piyada-nine-domes/hero.webp", "/attractions/haji-piyada-nine-domes/"],
+      ["Takht-e Rostam", "/assets/images/attractions/takht-e-rostam/hero.webp", "/attractions/takht-e-rostam/"]
+    ],
+    hotels: [
+      ["Barat Hotel", "/assets/images/hotels/mazar/barat/hotel-exterior-1.webp", "/hotels/"],
+      ["Ghazanfar Hotel", "/assets/images/hotels/mazar/ghazanfar/hotel-exterior-1.webp", "/hotels/"],
+      ["Kefayat Hotel", "/assets/images/hotels/mazar/kefayat/hotel-exterior-1.webp", "/hotels/"]
+    ],
+    food: [
+      ["Balkh Melon", "/assets/images/food/produce/balkh-melons/hero.webp", "/food-culture/produce/balkh-melon/"],
+      ["Balkh Almonds", "/assets/images/food/dried-fruit/balkh-almonds/hero.webp", "/food-culture/produce/balkh-almonds/"],
+      ["Kabob", "/assets/images/food/dishes/kabob/hero.webp", "/food-culture/"]
+    ],
+    transport: [
+      ["Mazar Airport", "/assets/images/transport/airports/mazar-e-sharif-airport.webp", "/transportation/"],
+      ["Northern Roads", "/assets/images/scenery/highway-route.webp", "/transportation/"],
+      ["Private Vehicles", "/assets/images/transport/standard/4x4-vehicle.webp", "/transportation/"]
+    ],
+    tours: [
+      ["Afghanistan Discovery Spring", "/tours/afghanistan-discovery-tour-spring/"],
+      ["Treasures of Silk Road Afghanistan", "/tours/treasures-of-silk-road-afghanistan/"],
+      ["Central Afghanistan Discovery", "/tours/central-afghanistan-discovery/"]
+    ]
+  },
+  {
+    slug: "faizabad",
+    name: "Faizabad",
+    province: "Badakhshan",
+    type: "Northeast Expedition Hub",
+    image: "/assets/images/hubs/faizabad/hero.webp",
+    cardImage: "/assets/images/hubs/faizabad/01.webp",
+    summary: "The staging hub for Badakhshan, Wakhan access, mountain routes, Noshaq expeditions, and northeast Afghanistan travel.",
+    stats: ["Airfield: Limited", "Hotels: 2+", "Attractions: 3+", "Best Season: Jun–Sep"],
+    gallery: [
+      "/assets/images/hubs/faizabad/01.webp",
+      "/assets/images/hubs/faizabad/02.webp"
+    ],
+    attractions: [
+      ["Wakhan Corridor", "/assets/images/attractions/wakhan-corridor/hero.webp", "/attractions/wakhan-corridor/"],
+      ["Mount Noshaq", "/assets/images/attractions/mount-noshaq/hero.webp", "/attractions/mount-noshaq/"],
+      ["Badakhshan Mountains", "/assets/images/attractions/badakhshan-mountains-and-lakes/hero.webp", "/attractions/badakhshan-mountains-and-lakes/"]
+    ],
+    hotels: [
+      ["Bam Dunya", "/assets/images/hotels/faizabad/bam-dunya/hotel-exterior-1.webp", "/hotels/"],
+      ["Qasri Kokcha", "/assets/images/hotels/faizabad/qasri-kokcha/hotel-exterior-1.webp", "/hotels/"]
+    ],
+    food: [
+      ["Green Tea", "/assets/images/food/drinks/green-tea/hero.webp", "/food-culture/drinks/green-tea/"],
+      ["Naan", "/assets/images/food/dishes/naan/hero.webp", "/food-culture/dishes/naan/"],
+      ["Dried Fruits", "/assets/images/food/dried-fruit/hero.webp", "/food-culture/produce/dried-fruits/"]
+    ],
+    transport: [
+      ["Mountain Roads", "/assets/images/transport/roads/mountain-range.webp", "/transportation/"],
+      ["Offroad Vehicles", "/assets/images/transport/premium/wakhan-offroad.webp", "/transportation/"],
+      ["Remote Routes", "/assets/images/transport/roads/tourist-walking-road.webp", "/transportation/"]
+    ],
+    tours: [
+      ["Noshaq Expeditions", "/tours/noshaq-expeditions/"],
+      ["Scientific Expeditions", "/tours/scientific-expeditions/"],
+      ["Custom Expedition", "/tours/custom-expedition/"]
+    ]
+  },
+  {
+    slug: "kandahar-city",
+    name: "Kandahar",
+    province: "Kandahar",
+    type: "Southern Hub",
+    image: "/assets/images/hubs/kandahar-city/hero.webp",
+    cardImage: "/assets/images/hubs/kandahar-city/01.webp",
+    summary: "The southern hub for Durrani history, Kandahar city, religious landmarks, Helmand access, and southern route planning.",
+    stats: ["Airport: Yes", "Hotels: 4+", "Attractions: 5+", "Best Season: Oct–Apr"],
+    gallery: [
+      "/assets/images/hubs/kandahar-city/01.webp",
+      "/assets/images/hubs/kandahar-city/02.webp",
+      "/assets/images/hubs/kandahar-city/03.webp",
+      "/assets/images/hubs/kandahar-city/04.webp",
+      "/assets/images/hubs/kandahar-city/05.webp"
+    ],
+    attractions: [
+      ["Ahmad Shah Durrani Tomb", "/assets/images/attractions/tomb-of-ahmad-shah-durrani/hero.webp", "/attractions/tomb-of-ahmad-shah-durrani/"],
+      ["Mirwais Hotak Shrine", "/assets/images/attractions/shrine-of-mirwais-hotak/hero.webp", "/attractions/shrine-of-mirwais-hotak/"],
+      ["Baba Wali Shrine", "/assets/images/attractions/baba-wali-shrine/hero.webp", "/attractions/baba-wali-shrine/"],
+      ["Kharqa Sharif", "/assets/images/attractions/kharqa-sharif-mosque/hero.webp", "/attractions/kharqa-sharif-mosque/"],
+      ["Chilzina", "/assets/images/attractions/chilzina-forty-steps/hero.webp", "/attractions/chilzina-forty-steps/"]
+    ],
+    hotels: [
+      ["Continental Hotel", "/assets/images/hotels/kandahar/continental/hotel-exterior-1.webp", "/hotels/"],
+      ["NFC Hotel", "/assets/images/hotels/kandahar/nfc/hotel-exterior-1.webp", "/hotels/"],
+      ["Royal Hotel", "/assets/images/hotels/kandahar/royal/hotel-exterior-1.webp", "/hotels/"]
+    ],
+    food: [
+      ["Kandahar Pomegranate", "/assets/images/food/produce/kandahar-pomegranate/hero.webp", "/food-culture/kandahar-pomegranate/"],
+      ["Chapli Kabob", "/assets/images/food/dishes/chapli-kabob/hero.webp", "/food-culture/dishes/chapli-kabob/"],
+      ["Sheer Chai", "/assets/images/food/drinks/sheer-chai/hero.webp", "/food-culture/drinks/sheer-chai/"]
+    ],
+    transport: [
+      ["Kandahar Airport", "/assets/images/transport/airports/kandahar-airport.webp", "/transportation/"],
+      ["Southern Roads", "/assets/images/scenery/highway-route.webp", "/transportation/"],
+      ["4x4 Vehicles", "/assets/images/transport/standard/4x4-vehicle.webp", "/transportation/"]
+    ],
+    tours: [
+      ["Kandahar Durrani Empire Tour", "/tours/kandahar-durrani-empire-tour/"],
+      ["Afghanistan Discovery Fall", "/tours/afghanistan-discovery-tour-fall/"],
+      ["Custom Expedition", "/tours/custom-expedition/"]
+    ]
+  },
+  {
+    slug: "jalalabad",
+    name: "Jalalabad",
+    province: "Nangarhar",
+    type: "Eastern Hub",
+    image: "/assets/images/hubs/jalalabad/hero.webp",
+    cardImage: "/assets/images/hubs/jalalabad/01.webp",
+    summary: "The eastern hub for Nangarhar, Jalalabad, Hadda, Darunta, Kunar access, and Kabul–Jalalabad road movement.",
+    stats: ["Airport: Limited", "Hotels: 1+", "Attractions: 4+", "Best Season: Oct–Apr"],
+    gallery: [
+      "/assets/images/hubs/jalalabad/01.webp",
+      "/assets/images/hubs/jalalabad/02.webp",
+      "/assets/images/hubs/jalalabad/03.webp",
+      "/assets/images/hubs/jalalabad/04.webp"
+    ],
+    attractions: [
+      ["Amanullah Mausoleum", "/assets/images/attractions/mausoleum-of-ghazi-amanullah/hero.webp", "/attractions/mausoleum-of-ghazi-amanullah/"],
+      ["Darunta Lake", "/assets/images/attractions/darunta-lake/hero.webp", "/attractions/darunta-lake/"],
+      ["Hadda Archaeological Site", "/assets/images/attractions/hadda-archaeological-site/hero.webp", "/attractions/hadda-archaeological-site/"],
+      ["Gandamak Site", "/assets/images/attractions/gandamak-last-stand-site/hero.webp", "/attractions/gandamak-last-stand-site/"]
+    ],
+    hotels: [
+      ["Spinghar Hotel", "/assets/images/hotels/jalalabad/spinghar/hotel-exterior-1.webp", "/hotels/"]
+    ],
+    food: [
+      ["Chapli Kabob", "/assets/images/food/dishes/chapli-kabob/hero.webp", "/food-culture/dishes/chapli-kabob/"],
+      ["Green Tea", "/assets/images/food/drinks/green-tea/hero.webp", "/food-culture/drinks/green-tea/"],
+      ["Naan", "/assets/images/food/dishes/naan/hero.webp", "/food-culture/dishes/naan/"]
+    ],
+    transport: [
+      ["Kabul–Jalalabad Road", "/assets/images/transport/roads/kabul-jalalabad-road.webp", "/transportation/"],
+      ["Mountain Pass", "/assets/images/transport/roads/mountain-pass.webp", "/transportation/"],
+      ["Private Vehicle", "/assets/images/transport/standard/4x4-vehicle.webp", "/transportation/"]
+    ],
+    tours: [
+      ["Kabul Surroundings", "/tours/kabul-surroundings/"],
+      ["Custom Cultural Expedition", "/tours/custom-expedition/"],
+      ["Weekend in Kabul", "/tours/weekend-in-kabul/"]
+    ]
+  }
+];
+---
+
+<section id="hubs" class="relative overflow-hidden bg-[#06150f] text-white">
+  <div class="absolute inset-0">
+    {hubs.map((hub, index) => (
+      <img
+        id={`hub-bg-${index}`}
+        src={hub.image}
+        alt=""
+        class={`absolute inset-0 h-full w-full object-cover transition-opacity duration-1000 ${index === 0 ? 'opacity-100' : 'opacity-0'}`}
+      />
+    ))}
+    <div class="absolute inset-0 bg-black/70"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-black/85"></div>
+  </div>
+
+  <div class="relative mx-auto grid max-w-[1600px] gap-0 lg:grid-cols-[1fr_460px]">
+    <div class="px-6 py-24 md:px-10 lg:px-16">
+      <p class="text-xs font-bold uppercase tracking-[0.35em] text-[#d6a23a]">
+        Operational Geography
+      </p>
+
+      <h2 class="mt-6 max-w-4xl font-serif text-5xl leading-none md:text-7xl">
+        Travel Through Afghanistan’s Key Hubs
+      </h2>
+
+      <p class="mt-8 max-w-2xl text-lg leading-8 text-white/80">
+        Afghanistan journeys are built around a network of operational hubs. Each offers
+        different attractions, transportation options, accommodations, seasonal advantages,
+        and regional access.
+      </p>
+
+      <div id="hub-main-panel" class="mt-12 max-w-3xl">
+        <h3 class="font-serif text-5xl">{hubs[0].name}</h3>
+        <p class="mt-2 text-sm text-white/70">{hubs[0].province} Province · {hubs[0].type}</p>
+        <p class="mt-5 text-base leading-7 text-white/80">{hubs[0].summary}</p>
+
+        <div class="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
+          {hubs[0].stats.map((stat) => (
+            <div class="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur">
+              <p class="text-sm font-semibold">{stat}</p>
+            </div>
+          ))}
+        </div>
+
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href={`/hubs/${hubs[0].slug}/`} class="rounded-full bg-[#d6a23a] px-6 py-3 text-sm font-bold uppercase tracking-wider text-black">
+            Explore Hub
+          </a>
+          <a href={`/contact/?hub=${hubs[0].slug}`} class="rounded-full border border-white/30 px-6 py-3 text-sm font-bold uppercase tracking-wider text-white">
+            Plan From This Hub
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-16 flex gap-4 overflow-x-auto pb-4">
+        {hubs.map((hub, index) => (
+          <button
+            type="button"
+            data-hub-index={index}
+            class={`hub-card min-w-[220px] rounded-2xl border p-3 text-left transition ${index === 0 ? 'border-[#d6a23a] bg-white/15' : 'border-white/10 bg-black/30 hover:border-[#d6a23a]'}`}
+          >
+            <img src={hub.cardImage || hub.image} alt={hub.name} class="h-28 w-full rounded-xl object-cover" />
+            <h4 class="mt-3 font-serif text-2xl">{hub.name}</h4>
+            <p class="text-sm text-white/70">{hub.type}</p>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <aside class="border-l border-white/10 bg-black/80 px-6 py-20 backdrop-blur-xl md:px-8">
+      <p class="text-xs font-bold uppercase tracking-[0.35em] text-[#d6a23a]">
+        Hub Preview
+      </p>
+
+      <h3 id="preview-title" class="mt-4 font-serif text-5xl">{hubs[0].name}</h3>
+
+      <div class="mt-8 flex flex-wrap gap-4 border-b border-white/10 pb-4 text-xs font-bold uppercase tracking-wider">
+        <button class="hub-tab text-[#d6a23a]" data-tab="overview">Overview</button>
+        <button class="hub-tab" data-tab="attractions">Attractions</button>
+        <button class="hub-tab" data-tab="hotels">Hotels</button>
+        <button class="hub-tab" data-tab="food">Food</button>
+        <button class="hub-tab" data-tab="transport">Transport</button>
+        <button class="hub-tab" data-tab="tours">Tours</button>
+      </div>
+
+      <div id="hub-preview-content" class="mt-8"></div>
+
+      <a
+        id="hub-preview-link"
+        href={`/hubs/${hubs[0].slug}/`}
+        class="mt-8 block rounded-xl bg-[#d6a23a] px-6 py-4 text-center text-sm font-bold uppercase tracking-wider text-black"
+      >
+        View All Hub Details →
+      </a>
+    </aside>
+  </div>
+</section>
+
+<script define:vars={{ hubs }}>
+  let activeHub = 0;
+  let activeTab = "overview";
+
+  const content = document.getElementById("hub-preview-content");
+  const title = document.getElementById("preview-title");
+  const mainPanel = document.getElementById("hub-main-panel");
+  const previewLink = document.getElementById("hub-preview-link");
+
+  function cardGrid(items) {
+    return `
+      <div class="grid grid-cols-2 gap-4">
+        ${items.map(([name, image, href]) => `
+          <a href="${href || '#'}" class="group block">
+            <img src="${image}" alt="${name}" class="h-24 w-full rounded-xl object-cover transition duration-300 group-hover:scale-[1.02]" />
+            <p class="mt-2 text-sm font-semibold leading-tight">${name}</p>
+          </a>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function tourList(items) {
+    return `
+      <div class="space-y-3">
+        ${items.map(([name, href]) => `
+          <a href="${href}" class="block rounded-2xl border border-white/10 bg-white/5 p-4 transition hover:border-[#d6a23a]">
+            <p class="font-semibold">${name}</p>
+          </a>
+        `).join("")}
+      </div>
+    `;
+  }
+
+  function renderOverview(hub) {
+    return `
+      <div class="space-y-6">
+        <p class="text-sm leading-7 text-white/75">${hub.summary}</p>
+
+        <div class="grid grid-cols-2 gap-4">
+          ${(hub.gallery || []).slice(0, 4).map((image) => `
+            <button type="button" class="hub-gallery-image group overflow-hidden rounded-xl">
+              <img src="${image}" alt="${hub.name}" class="h-28 w-full object-cover transition duration-300 group-hover:scale-105" />
+            </button>
+          `).join("")}
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          ${hub.stats.map((stat) => `
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm font-semibold">
+              ${stat}
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  }
+
+  function renderPreview() {
+    const hub = hubs[activeHub];
+    if (!hub || !content || !title) return;
+
+    title.textContent = hub.name;
+
+    if (previewLink) {
+      previewLink.href = `/hubs/${hub.slug}/`;
+    }
+
+    if (activeTab === "overview") {
+      content.innerHTML = renderOverview(hub);
+    } else if (activeTab === "tours") {
+      content.innerHTML = tourList(hub.tours || []);
+    } else {
+      content.innerHTML = cardGrid(hub[activeTab] || []);
+    }
+  }
+
+  function renderMainPanel() {
+    const hub = hubs[activeHub];
+    if (!mainPanel || !hub) return;
+
+    mainPanel.innerHTML = `
+      <h3 class="font-serif text-5xl">${hub.name}</h3>
+      <p class="mt-2 text-sm text-white/70">${hub.province} Province · ${hub.type}</p>
+      <p class="mt-5 text-base leading-7 text-white/80">${hub.summary}</p>
+
+      <div class="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
+        ${hub.stats.map((stat) => `
+          <div class="rounded-2xl border border-white/15 bg-white/10 p-4 backdrop-blur">
+            <p class="text-sm font-semibold">${stat}</p>
+          </div>
+        `).join("")}
+      </div>
+
+      <div class="mt-8 flex flex-wrap gap-4">
+        <a href="/hubs/${hub.slug}/" class="rounded-full bg-[#d6a23a] px-6 py-3 text-sm font-bold uppercase tracking-wider text-black">
+          Explore Hub
+        </a>
+        <a href="/contact/?hub=${hub.slug}" class="rounded-full border border-white/30 px-6 py-3 text-sm font-bold uppercase tracking-wider text-white">
+          Plan From This Hub
+        </a>
+      </div>
+    `;
+  }
+
+  function setHub(index) {
+    activeHub = index;
+
+    document.querySelectorAll("[id^='hub-bg-']").forEach((bg, i) => {
+      bg.classList.toggle("opacity-100", i === index);
+      bg.classList.toggle("opacity-0", i !== index);
+    });
+
+    document.querySelectorAll("[data-hub-index]").forEach((btn, i) => {
+      btn.classList.toggle("border-[#d6a23a]", i === index);
+      btn.classList.toggle("bg-white/15", i === index);
+      btn.classList.toggle("border-white/10", i !== index);
+      btn.classList.toggle("bg-black/30", i !== index);
+    });
+
+    renderMainPanel();
+    renderPreview();
+  }
+
+  document.querySelectorAll("[data-hub-index]").forEach((button) => {
+    button.addEventListener("click", () => setHub(Number(button.dataset.hubIndex)));
+  });
+
+  document.querySelectorAll("[data-tab]").forEach((button) => {
+    button.addEventListener("click", () => {
+      activeTab = button.dataset.tab || "overview";
+      document.querySelectorAll("[data-tab]").forEach((tab) => tab.classList.remove("text-[#d6a23a]"));
+      button.classList.add("text-[#d6a23a]");
+      renderPreview();
+    });
+  });
+
+  renderPreview();
+</script>
