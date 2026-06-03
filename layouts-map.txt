@@ -1,4 +1,0 @@
-src/layouts/.DS_Store
-src/layouts/BaseLayout.astro
-src/layouts/Footer.astro
-src/layouts/Header.astro
