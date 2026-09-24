@@ -1,0 +1,1796 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TourCardGrid from '../../components/cards/TourCardGrid.astro';
+import AttractionPopupGrid from '../../components/cards/AttractionPopupGrid.astro';
+
+import {
+  getAttractions,
+  getAttractionBySlug,
+  getTours,
+} from '../../lib/buildRelations';
+
+
+export function getStaticPaths() {
+  return getAttractions()
+    .filter((item) => item?.slug)
+    .map((item) => ({
+      params: {
+        slug: item.slug
+      }
+    }));
+}
+
+
+const item = Astro.params.slug
+  ? getAttractionBySlug(Astro.params.slug)
+  : undefined;
+
+if (!item) {
+  return Astro.redirect('/attractions/');
+}
+
+
+const title = item.title || item.name || 'Attraction';
+
+const province =
+  item.province ||
+  item.province_name ||
+  item.province_code ||
+  '';
+
+const region = item.region || '';
+
+const provinceSlug =
+  item.province_slug ||
+  String(province)
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+const attractionCode =
+  String(
+    item.attraction_code ||
+    item.code ||
+    ''
+  ).trim();
+
+
+const heroImage =
+  item.hero_image ||
+  item.image ||
+  item.image_path ||
+  item.card_image ||
+  item.thumbnail_path ||
+  '/assets/images/placeholders/default-attraction.webp';
+
+
+const shortDescription =
+  item.desc_short ||
+  item.excerpt ||
+  item.summary ||
+  'Explore one of Afghanistan’s distinctive cultural, historical, or natural places.';
+
+
+const longDescription =
+  item.desc_long ||
+  item.description ||
+  shortDescription;
+
+
+/* ---------------------------------------------------------
+   BUILD GALLERY FROM THE EXISTING ATTRACTION IMAGE FOLDER
+   --------------------------------------------------------- */
+
+const galleryCandidates = [];
+
+const configuredFolder =
+  item.gallery_folder ||
+  `/assets/images/attractions/${item.slug}/`;
+
+const publicFolder = path.join(
+  process.cwd(),
+  'public',
+  configuredFolder.replace(/^\/+/, '')
+);
+
+try {
+  if (fs.existsSync(publicFolder)) {
+    const files = fs
+      .readdirSync(publicFolder)
+      .filter((file) =>
+        /\.(webp|jpg|jpeg|png|avif)$/i.test(file)
+      )
+      .sort((a, b) => {
+        const score = (name) => {
+          const lower = name.toLowerCase();
+
+          if (lower.startsWith('hero.')) return 0;
+          if (lower.includes('overview')) return 1;
+          if (lower.includes('gallery')) return 2;
+
+          return 3;
+        };
+
+        return score(a) - score(b) ||
+          a.localeCompare(b);
+      });
+
+    files.forEach((file) => {
+      galleryCandidates.push(
+        `${configuredFolder.replace(/\/?$/, '/')}${file}`
+      );
+    });
+  }
+} catch (error) {
+  console.warn(
+    `Could not build gallery for ${item.slug}:`,
+    error
+  );
+}
+
+
+[
+  heroImage,
+  item.card_image,
+  item.image,
+  item.image_path,
+  item.thumbnail_path,
+].filter(Boolean).forEach((src) => {
+  galleryCandidates.unshift(src);
+});
+
+
+const galleryImages = [
+  ...new Set(
+    galleryCandidates
+      .filter(Boolean)
+      .map((src) => String(src).trim())
+  )
+].slice(0, 8);
+
+
+/* ---------------------------------------------------------
+   TOUR RELATIONSHIPS
+
+   Important:
+   Older template only checked tour.attractions.
+   Some real relationships live in tour_itinerary.csv
+   attraction_codes, so check BOTH.
+   --------------------------------------------------------- */
+
+const splitCodes = (value) =>
+  String(value || '')
+    .split(/[|;,]/)
+    .map((part) => part.trim())
+    .filter(Boolean);
+
+
+const tourIncludesAttraction = (tour) => {
+
+  const explicitRelation =
+    Array.isArray(tour.attractions) &&
+    tour.attractions.some((attraction) =>
+      attraction?.slug === item.slug ||
+      (
+        attractionCode &&
+        String(
+          attraction?.attraction_code ||
+          attraction?.code ||
+          ''
+        ).trim() === attractionCode
+      )
+    );
+
+
+  const itineraryRelation =
+    Array.isArray(tour.itinerary) &&
+    tour.itinerary.some((day) => {
+
+      const codes = splitCodes(
+        day?.attraction_codes ||
+        day?.attractions ||
+        day?.attraction_code
+      );
+
+      return (
+        attractionCode &&
+        codes.includes(attractionCode)
+      );
+    });
+
+
+  return explicitRelation || itineraryRelation;
+};
+
+
+const tours = getTours()
+  .filter(tourIncludesAttraction)
+  .slice(0, 6);
+
+
+/* ---------------------------------------------------------
+   RELATED ATTRACTIONS
+
+   Prefer same province first.
+   Only use same region to fill remaining slots.
+   --------------------------------------------------------- */
+
+const allAttractions = getAttractions();
+
+const sameProvince = allAttractions
+  .filter((attraction) =>
+    attraction.slug !== item.slug &&
+    (
+      (
+        attraction.province_code &&
+        item.province_code &&
+        String(attraction.province_code).toLowerCase() ===
+        String(item.province_code).toLowerCase()
+      ) ||
+      (
+        attraction.province &&
+        item.province &&
+        String(attraction.province).toLowerCase() ===
+        String(item.province).toLowerCase()
+      )
+    )
+  );
+
+
+const relatedSlugs =
+  new Set(sameProvince.map((attraction) => attraction.slug));
+
+
+const sameRegion = allAttractions
+  .filter((attraction) =>
+    attraction.slug !== item.slug &&
+    !relatedSlugs.has(attraction.slug) &&
+    attraction.region &&
+    item.region &&
+    String(attraction.region).toLowerCase() ===
+    String(item.region).toLowerCase()
+  );
+
+
+const relatedAttractions = [
+  ...sameProvince,
+  ...sameRegion
+].slice(0, 6);
+
+
+/* ---------------------------------------------------------
+   PRACTICAL FACTS
+   --------------------------------------------------------- */
+
+const pretty = (value) => {
+  const raw = String(value || '')
+    .replace(/[_-]+/g, ' ')
+    .trim();
+
+  if (!raw) return '';
+
+  return raw.replace(
+    /\b\w/g,
+    (char) => char.toUpperCase()
+  );
+};
+
+
+const hours =
+  item.open_time && item.close_time
+    ? `${item.open_time}–${item.close_time}`
+    : 'Confirm locally';
+
+
+const duration =
+  item.visit_duration_hours
+    ? `${item.visit_duration_hours} ${
+        Number(item.visit_duration_hours) === 1
+          ? 'hour'
+          : 'hours'
+      }`
+    : 'Varies';
+
+
+const access =
+  pretty(item.access_difficulty) ||
+  'Varies';
+
+
+const transport =
+  pretty(item.recommended_transport) ||
+  'Route dependent';
+
+
+const bestTime =
+  pretty(item.recommended_time_of_day) ||
+  'Flexible';
+
+
+const seasonalWindow =
+  [item.season_start, item.season_end]
+    .filter(Boolean)
+    .join('–') ||
+  (
+    item.winter_access
+      ? `Winter access: ${pretty(item.winter_access)}`
+      : 'Year-round / confirm locally'
+  );
+
+
+const facts = [
+  {
+    label: 'Province',
+    value: province || region || 'Afghanistan',
+  },
+  {
+    label: 'Recommended visit',
+    value: duration,
+  },
+  {
+    label: 'Access',
+    value: access,
+  },
+  {
+    label: 'Transport',
+    value: transport,
+  },
+  {
+    label: 'Typical hours',
+    value: hours,
+  },
+  {
+    label: 'Best time',
+    value: bestTime,
+  },
+];
+
+
+/* ---------------------------------------------------------
+   TAGS
+   --------------------------------------------------------- */
+
+const tags = String(item.tags || '')
+  .split(/[,|]/)
+  .map((tag) =>
+    tag.trim().replace(/^#/, '')
+  )
+  .filter(Boolean)
+  .slice(0, 6);
+
+
+const contactHref =
+  `/contact/?type=attraction&attraction=${encodeURIComponent(title)}`;
+
+const provinceHref =
+  provinceSlug
+    ? `/destinations/${provinceSlug}/`
+    : '/destinations/';
+---
+
+<BaseLayout
+  title={`${title} | AfghanTours`}
+  description={shortDescription}
+  image={heroImage}
+>
+
+  <!-- =====================================================
+       ATTRACTION HERO
+       ===================================================== -->
+
+  <section class="attraction-hero">
+
+    <img
+      class="attraction-hero-image"
+      src={heroImage}
+      alt={title}
+      fetchpriority="high"
+    />
+
+    <div
+      class="attraction-hero-overlay"
+      aria-hidden="true"
+    ></div>
+
+    <div class="attraction-hero-inner">
+
+      <nav
+        class="attraction-breadcrumbs"
+        aria-label="Breadcrumb"
+      >
+        <a href="/">Home</a>
+        <span>›</span>
+
+        <a href="/attractions/">
+          Attractions
+        </a>
+
+        {province && (
+          <>
+            <span>›</span>
+
+            <a href={provinceHref}>
+              {province}
+            </a>
+          </>
+        )}
+      </nav>
+
+
+      <div class="attraction-hero-copy">
+
+        <p class="hero-kicker">
+          {[province, region]
+            .filter(Boolean)
+            .join(' · ') || 'Afghanistan'}
+        </p>
+
+        <h1>{title}</h1>
+
+        <p class="hero-description">
+          {shortDescription}
+        </p>
+
+
+        {tags.length > 0 && (
+          <div class="hero-tags">
+            {tags.map((tag) => (
+              <span>{tag}</span>
+            ))}
+          </div>
+        )}
+
+
+        <div class="hero-actions">
+
+          <a
+            class="hero-primary"
+            href="#explore-attraction"
+          >
+            Explore this place
+          </a>
+
+          <a
+            class="hero-secondary"
+            href={contactHref}
+          >
+            Ask about visiting
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       QUICK FACTS
+       ===================================================== -->
+
+  <section
+    class="quick-facts-shell"
+    aria-label={`${title} visitor information`}
+  >
+
+    <div class="quick-facts">
+
+      {facts.map((fact) => (
+
+        <div class="quick-fact">
+
+          <span>
+            {fact.label}
+          </span>
+
+          <strong>
+            {fact.value}
+          </strong>
+
+        </div>
+
+      ))}
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       EDITORIAL CONTENT
+       ===================================================== -->
+
+  <main
+    id="explore-attraction"
+    class="attraction-main"
+  >
+
+    <div class="attraction-layout">
+
+      <article class="attraction-story">
+
+        <p class="section-kicker">
+          Discover
+        </p>
+
+        <h2>
+          About {title}
+        </h2>
+
+        {longDescription &&
+          longDescription !== shortDescription && (
+            <p class="editorial-lead">
+              {longDescription}
+            </p>
+          )
+        }
+
+        <div
+          class="editorial-prose"
+          set:html={item.content_html || ''}
+        />
+
+      </article>
+
+
+      <aside class="planning-column">
+
+        <div class="planning-card">
+
+          <p class="section-kicker">
+            Plan Your Visit
+          </p>
+
+          <h2>
+            Include {title} in your journey
+          </h2>
+
+          <p>
+            We plan attraction visits as part of a
+            practical Afghanistan itinerary, taking
+            account of travel time, local conditions,
+            transport, and the rest of your route.
+          </p>
+
+
+          <div class="planning-details">
+
+            <div>
+              <span>Season</span>
+              <strong>{seasonalWindow}</strong>
+            </div>
+
+            {item.photography_rating && (
+              <div>
+                <span>Photography</span>
+                <strong>
+                  {item.photography_rating}/10
+                </strong>
+              </div>
+            )}
+
+            {item.tourism_status && (
+              <div>
+                <span>Visitor status</span>
+                <strong>
+                  {pretty(item.tourism_status)}
+                </strong>
+              </div>
+            )}
+
+          </div>
+
+
+          <a
+            class="planning-primary"
+            href={contactHref}
+          >
+            Plan a visit
+          </a>
+
+
+          {province && (
+            <a
+              class="planning-secondary"
+              href={provinceHref}
+            >
+              Explore {province}
+            </a>
+          )}
+
+        </div>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+
+  <!-- =====================================================
+       GALLERY
+       ===================================================== -->
+
+  {galleryImages.length > 1 && (
+
+    <section class="gallery-section">
+
+      <div class="gallery-wrap">
+
+        <div class="section-heading">
+
+          <p class="section-kicker">
+            Gallery
+          </p>
+
+          <h2>
+            A closer look at {title}
+          </h2>
+
+        </div>
+
+
+        <div
+          class:list={[
+            'gallery-grid',
+            galleryImages.length === 2 &&
+              'gallery-grid-two',
+          ]}
+        >
+
+          {galleryImages.map((src, index) => (
+
+            <figure
+              class:list={[
+                'gallery-item',
+                index === 0 &&
+                  galleryImages.length >= 3 &&
+                  'gallery-featured',
+              ]}
+            >
+
+              <img
+                src={src}
+                alt={`${title}${index > 0 ? ` — view ${index + 1}` : ''}`}
+                loading={index === 0 ? 'eager' : 'lazy'}
+              />
+
+            </figure>
+
+          ))}
+
+        </div>
+
+      </div>
+
+    </section>
+
+  )}
+
+
+  <!-- =====================================================
+       CONNECTED TOURS
+       ===================================================== -->
+
+  {tours.length > 0 ? (
+
+    <TourCardGrid
+      tours={tours}
+      title={`Tours that visit ${title}`}
+      intro={`These AfghanTours journeys currently include ${title} in their published route or itinerary.`}
+    />
+
+  ) : (
+
+    <section class="no-tour-section">
+
+      <div class="no-tour-card">
+
+        <div>
+
+          <p class="section-kicker">
+            Custom Planning
+          </p>
+
+          <h2>
+            Want to include {title}?
+          </h2>
+
+          <p>
+            We can build it into a private itinerary
+            when the route, timing, and local operating
+            conditions make the visit practical.
+          </p>
+
+        </div>
+
+        <a href={contactHref}>
+          Request a custom itinerary
+        </a>
+
+      </div>
+
+    </section>
+
+  )}
+
+
+  <!-- =====================================================
+       RELATED ATTRACTIONS
+       ===================================================== -->
+
+  {relatedAttractions.length > 0 && (
+
+    <AttractionPopupGrid
+      attractions={relatedAttractions}
+      kicker={province ? `Explore ${province}` : 'Explore More'}
+      title="Nearby and related places"
+      intro={
+        province
+          ? `Continue exploring ${province} and other places that fit naturally into the same travel corridor.`
+          : 'Discover other attractions that can be combined with this part of your journey.'
+      }
+    />
+
+  )}
+
+
+  <!-- =====================================================
+       FINAL CTA
+       ===================================================== -->
+
+  <section class="attraction-final-cta">
+
+    <div class="final-cta-inner">
+
+      <div>
+
+        <p class="section-kicker">
+          Build Your Journey
+        </p>
+
+        <h2>
+          See more than a single attraction.
+        </h2>
+
+        <p>
+          Tell us what interests you and how much time
+          you have. We will help connect Afghanistan's
+          historic sites, landscapes, food, and local
+          experiences into a practical route.
+        </p>
+
+      </div>
+
+
+      <a href={contactHref}>
+        Start planning
+      </a>
+
+    </div>
+
+  </section>
+
+</BaseLayout>
+
+
+<style>
+
+  /* ======================================================
+     HERO
+     ====================================================== */
+
+  .attraction-hero {
+    position: relative;
+    min-height: clamp(520px, 66vh, 760px);
+    overflow: hidden;
+    background: #101820;
+    color: #fff;
+  }
+
+
+  .attraction-hero-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+
+  .attraction-hero-overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(5, 10, 15, .88) 0%,
+        rgba(5, 10, 15, .66) 42%,
+        rgba(5, 10, 15, .15) 75%
+      ),
+      linear-gradient(
+        0deg,
+        rgba(5, 10, 15, .8) 0%,
+        transparent 55%
+      );
+  }
+
+
+  .attraction-hero-inner {
+    position: relative;
+    z-index: 2;
+
+    width: min(
+      1280px,
+      calc(100% - 2rem)
+    );
+
+    min-height: clamp(520px, 66vh, 760px);
+
+    margin: 0 auto;
+
+    padding:
+      clamp(2rem, 5vw, 4rem)
+      0
+      clamp(4rem, 7vw, 6rem);
+
+    display: flex;
+    flex-direction: column;
+  }
+
+
+  .attraction-breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .55rem;
+
+    font-size: .78rem;
+    font-weight: 800;
+  }
+
+
+  .attraction-breadcrumbs a {
+    color: rgba(255,255,255,.84);
+    text-decoration: none;
+  }
+
+
+  .attraction-breadcrumbs a:hover {
+    color: #f1c56b;
+  }
+
+
+  .attraction-breadcrumbs span {
+    color: rgba(255,255,255,.42);
+  }
+
+
+  .attraction-hero-copy {
+    margin-top: auto;
+    max-width: 800px;
+  }
+
+
+  .hero-kicker,
+  .section-kicker {
+    margin: 0;
+
+    color: #d7a542;
+
+    font-size: .72rem;
+    font-weight: 900;
+
+    letter-spacing: .21em;
+    text-transform: uppercase;
+  }
+
+
+  .hero-kicker {
+    color: #f1c56b;
+  }
+
+
+  .attraction-hero h1 {
+    margin:
+      .6rem
+      0
+      1rem;
+
+    max-width: 900px;
+
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
+    font-size:
+      clamp(3.4rem, 7.5vw, 7rem);
+
+    line-height: .9;
+    letter-spacing: -.065em;
+
+    text-wrap: balance;
+
+    text-shadow:
+      0 4px 30px rgba(0,0,0,.35);
+  }
+
+
+  .hero-description {
+    max-width: 680px;
+
+    margin: 0;
+
+    color: rgba(255,255,255,.88);
+
+    font-size:
+      clamp(1.02rem, 1.6vw, 1.25rem);
+
+    line-height: 1.65;
+  }
+
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+
+    margin-top: 1.3rem;
+  }
+
+
+  .hero-tags span {
+    border:
+      1px solid
+      rgba(255,255,255,.22);
+
+    border-radius: 999px;
+
+    background:
+      rgba(5,10,15,.42);
+
+    backdrop-filter: blur(8px);
+
+    padding: .48rem .75rem;
+
+    font-size: .76rem;
+    font-weight: 800;
+  }
+
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+
+    margin-top: 1.8rem;
+  }
+
+
+  .hero-actions a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 999px;
+
+    padding:
+      .92rem
+      1.35rem;
+
+    font-size: .88rem;
+    font-weight: 900;
+
+    text-decoration: none;
+
+    transition:
+      transform .2s ease,
+      background .2s ease;
+  }
+
+
+  .hero-actions a:hover {
+    transform: translateY(-2px);
+  }
+
+
+  .hero-primary {
+    background: #d7a542;
+    color: #111820;
+  }
+
+
+  .hero-primary:hover {
+    background: #f0c569;
+  }
+
+
+  .hero-secondary {
+    border:
+      1px solid
+      rgba(255,255,255,.35);
+
+    color: #fff;
+    background:
+      rgba(5,10,15,.25);
+  }
+
+
+  /* ======================================================
+     QUICK FACTS
+     ====================================================== */
+
+  .quick-facts-shell {
+    position: relative;
+    z-index: 4;
+
+    background: #fbf6ed;
+  }
+
+
+  .quick-facts {
+    width: min(
+      1180px,
+      calc(100% - 2rem)
+    );
+
+    margin: 0 auto;
+
+    transform:
+      translateY(-2rem);
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(6, minmax(0,1fr));
+
+    overflow: hidden;
+
+    border:
+      1px solid
+      rgba(16,24,32,.09);
+
+    border-radius: 1.4rem;
+
+    background: #fff;
+
+    box-shadow:
+      0 20px 55px
+      rgba(21,16,9,.12);
+  }
+
+
+  .quick-fact {
+    min-width: 0;
+
+    padding:
+      1.2rem
+      1rem;
+
+    border-right:
+      1px solid
+      rgba(16,24,32,.08);
+  }
+
+
+  .quick-fact:last-child {
+    border-right: 0;
+  }
+
+
+  .quick-fact span {
+    display: block;
+
+    color: #777064;
+
+    font-size: .64rem;
+    font-weight: 900;
+
+    text-transform: uppercase;
+    letter-spacing: .13em;
+  }
+
+
+  .quick-fact strong {
+    display: block;
+
+    margin-top: .4rem;
+
+    color: #101820;
+
+    font-size: .9rem;
+    line-height: 1.35;
+  }
+
+
+  /* ======================================================
+     MAIN EDITORIAL AREA
+     ====================================================== */
+
+  .attraction-main {
+    background: #fbf6ed;
+    color: #101820;
+
+    padding:
+      clamp(2rem, 4vw, 4rem)
+      0
+      clamp(5rem, 8vw, 8rem);
+  }
+
+
+  .attraction-layout {
+    width: min(
+      1180px,
+      calc(100% - 2rem)
+    );
+
+    margin: 0 auto;
+
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      360px;
+
+    gap:
+      clamp(2rem, 5vw, 5rem);
+
+    align-items: start;
+  }
+
+
+  .attraction-story {
+    max-width: 760px;
+  }
+
+
+  .attraction-story > h2,
+  .planning-card h2,
+  .section-heading h2,
+  .no-tour-card h2,
+  .final-cta-inner h2 {
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
+    letter-spacing: -.052em;
+  }
+
+
+  .attraction-story > h2 {
+    margin:
+      .5rem
+      0
+      1.4rem;
+
+    font-size:
+      clamp(2.7rem, 5vw, 4.8rem);
+
+    line-height: .96;
+  }
+
+
+  .editorial-lead {
+    margin:
+      0
+      0
+      2rem;
+
+    color: #373b3d;
+
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
+    font-size:
+      clamp(1.25rem, 2vw, 1.55rem);
+
+    line-height: 1.55;
+  }
+
+
+  :global(.editorial-prose) {
+    color: #333b40;
+    line-height: 1.82;
+    font-size: 1.04rem;
+  }
+
+
+  :global(.editorial-prose h2),
+  :global(.editorial-prose h3) {
+    margin:
+      2.8rem
+      0
+      .85rem;
+
+    color: #101820;
+
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
+    line-height: 1.05;
+    letter-spacing: -.035em;
+  }
+
+
+  :global(.editorial-prose h2) {
+    font-size:
+      clamp(2rem, 3vw, 2.8rem);
+  }
+
+
+  :global(.editorial-prose h3) {
+    font-size:
+      clamp(1.6rem, 2.5vw, 2.15rem);
+  }
+
+
+  :global(.editorial-prose p) {
+    margin:
+      0
+      0
+      1.35rem;
+  }
+
+
+  :global(.editorial-prose ul) {
+    padding-left: 1.25rem;
+  }
+
+
+  :global(.editorial-prose li) {
+    margin-bottom: .65rem;
+  }
+
+
+  /* ======================================================
+     PLANNING SIDEBAR
+     ====================================================== */
+
+  .planning-column {
+    position: sticky;
+    top: 6rem;
+  }
+
+
+  .planning-card {
+    border:
+      1px solid
+      rgba(16,24,32,.1);
+
+    border-radius: 1.6rem;
+
+    background: #fff;
+
+    padding:
+      clamp(1.5rem, 2.5vw, 2rem);
+
+    box-shadow:
+      0 18px 45px
+      rgba(21,16,9,.09);
+  }
+
+
+  .planning-card h2 {
+    margin:
+      .55rem
+      0
+      1rem;
+
+    font-size:
+      clamp(1.8rem, 2.5vw, 2.35rem);
+
+    line-height: 1;
+  }
+
+
+  .planning-card > p:not(.section-kicker) {
+    color: #596168;
+    line-height: 1.68;
+  }
+
+
+  .planning-details {
+    display: grid;
+    gap: .8rem;
+
+    margin:
+      1.5rem
+      0;
+  }
+
+
+  .planning-details div {
+    border-top:
+      1px solid
+      rgba(16,24,32,.08);
+
+    padding-top: .8rem;
+  }
+
+
+  .planning-details span {
+    display: block;
+
+    color: #777064;
+
+    font-size: .66rem;
+    font-weight: 900;
+
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+
+  .planning-details strong {
+    display: block;
+
+    margin-top: .25rem;
+
+    font-size: .92rem;
+  }
+
+
+  .planning-primary,
+  .planning-secondary {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100%;
+
+    border-radius: 999px;
+
+    padding: .9rem 1rem;
+
+    text-decoration: none;
+    font-size: .85rem;
+    font-weight: 900;
+  }
+
+
+  .planning-primary {
+    background: #d7a542;
+    color: #101820;
+  }
+
+
+  .planning-secondary {
+    margin-top: .65rem;
+
+    border:
+      1px solid
+      rgba(16,24,32,.14);
+
+    color: #101820;
+  }
+
+
+  /* ======================================================
+     GALLERY
+     ====================================================== */
+
+  .gallery-section {
+    background: #101820;
+    color: #fff;
+
+    padding:
+      clamp(4rem, 7vw, 7rem)
+      0;
+  }
+
+
+  .gallery-wrap {
+    width: min(
+      1280px,
+      calc(100% - 2rem)
+    );
+
+    margin: 0 auto;
+  }
+
+
+  .section-heading {
+    max-width: 760px;
+
+    margin-bottom: 2rem;
+  }
+
+
+  .section-heading h2 {
+    margin:
+      .5rem
+      0
+      0;
+
+    font-size:
+      clamp(2.7rem, 5vw, 4.8rem);
+
+    line-height: .95;
+  }
+
+
+  .gallery-grid {
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    grid-auto-rows: 250px;
+
+    gap: .8rem;
+  }
+
+
+  .gallery-grid-two {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    grid-auto-rows: 440px;
+  }
+
+
+  .gallery-item {
+    margin: 0;
+
+    overflow: hidden;
+
+    border-radius: 1.1rem;
+
+    background: #222;
+  }
+
+
+  .gallery-featured {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+
+  .gallery-item img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+      transform .5s ease;
+  }
+
+
+  .gallery-item:hover img {
+    transform: scale(1.025);
+  }
+
+
+  /* ======================================================
+     NO TOUR FALLBACK
+     ====================================================== */
+
+  .no-tour-section {
+    background: #fff;
+
+    padding:
+      clamp(4rem, 7vw, 7rem)
+      0;
+  }
+
+
+  .no-tour-card {
+    width: min(
+      1180px,
+      calc(100% - 2rem)
+    );
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 2rem;
+
+    border-radius: 1.6rem;
+
+    background: #fbf6ed;
+
+    padding:
+      clamp(1.6rem, 4vw, 3rem);
+  }
+
+
+  .no-tour-card > div {
+    max-width: 680px;
+  }
+
+
+  .no-tour-card h2 {
+    margin:
+      .45rem
+      0
+      .7rem;
+
+    font-size:
+      clamp(2rem, 4vw, 3.5rem);
+
+    line-height: .98;
+  }
+
+
+  .no-tour-card p:not(.section-kicker) {
+    color: #596168;
+    line-height: 1.7;
+  }
+
+
+  .no-tour-card > a {
+    flex: 0 0 auto;
+
+    border-radius: 999px;
+
+    background: #101820;
+    color: #fff;
+
+    padding:
+      .95rem
+      1.3rem;
+
+    text-decoration: none;
+    font-weight: 900;
+  }
+
+
+  /* ======================================================
+     FINAL CTA
+     ====================================================== */
+
+  .attraction-final-cta {
+    background: #0b141b;
+    color: #fff;
+
+    padding:
+      clamp(4rem, 7vw, 7rem)
+      0;
+  }
+
+
+  .final-cta-inner {
+    width: min(
+      1180px,
+      calc(100% - 2rem)
+    );
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 3rem;
+  }
+
+
+  .final-cta-inner > div {
+    max-width: 720px;
+  }
+
+
+  .final-cta-inner h2 {
+    margin:
+      .5rem
+      0
+      1rem;
+
+    font-size:
+      clamp(2.6rem, 5vw, 4.7rem);
+
+    line-height: .95;
+  }
+
+
+  .final-cta-inner p:not(.section-kicker) {
+    color: rgba(255,255,255,.7);
+
+    line-height: 1.72;
+
+    font-size: 1.03rem;
+  }
+
+
+  .final-cta-inner > a {
+    flex: 0 0 auto;
+
+    border-radius: 999px;
+
+    background: #d7a542;
+    color: #101820;
+
+    padding:
+      1rem
+      1.5rem;
+
+    text-decoration: none;
+    font-weight: 900;
+  }
+
+
+  /* ======================================================
+     RESPONSIVE
+     ====================================================== */
+
+  @media (max-width: 1050px) {
+
+    .quick-facts {
+      grid-template-columns:
+        repeat(3, minmax(0,1fr));
+    }
+
+
+    .quick-fact:nth-child(3) {
+      border-right: 0;
+    }
+
+
+    .quick-fact:nth-child(-n+3) {
+      border-bottom:
+        1px solid
+        rgba(16,24,32,.08);
+    }
+
+
+    .attraction-layout {
+      grid-template-columns: 1fr;
+    }
+
+
+    .attraction-story {
+      max-width: none;
+    }
+
+
+    .planning-column {
+      position: static;
+    }
+
+
+    .gallery-grid {
+      grid-template-columns:
+        repeat(2, minmax(0,1fr));
+    }
+
+  }
+
+
+  @media (max-width: 720px) {
+
+    .attraction-hero {
+      min-height: 600px;
+    }
+
+
+    .attraction-hero-inner {
+      min-height: 600px;
+      padding-bottom: 4.5rem;
+    }
+
+
+    .attraction-hero-overlay {
+      background:
+        linear-gradient(
+          0deg,
+          rgba(5,10,15,.92) 0%,
+          rgba(5,10,15,.58) 70%,
+          rgba(5,10,15,.25) 100%
+        );
+    }
+
+
+    .attraction-hero h1 {
+      font-size:
+        clamp(3rem, 15vw, 5rem);
+
+      line-height: .91;
+    }
+
+
+    .hero-description {
+      font-size: 1rem;
+    }
+
+
+    .quick-facts {
+      transform:
+        translateY(-1rem);
+
+      grid-template-columns:
+        repeat(2, minmax(0,1fr));
+    }
+
+
+    .quick-fact {
+      border-bottom:
+        1px solid
+        rgba(16,24,32,.08);
+    }
+
+
+    .quick-fact:nth-child(odd) {
+      border-right:
+        1px solid
+        rgba(16,24,32,.08);
+    }
+
+
+    .quick-fact:nth-child(even) {
+      border-right: 0;
+    }
+
+
+    .gallery-grid,
+    .gallery-grid-two {
+      grid-template-columns: 1fr;
+      grid-auto-rows: 280px;
+    }
+
+
+    .gallery-featured {
+      grid-column: auto;
+      grid-row: auto;
+    }
+
+
+    .no-tour-card,
+    .final-cta-inner {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+
+    .no-tour-card > a,
+    .final-cta-inner > a {
+      width: 100%;
+      text-align: center;
+    }
+
+  }
+
+
+  @media (max-width: 430px) {
+
+    .quick-facts {
+      grid-template-columns: 1fr;
+    }
+
+
+    .quick-fact,
+    .quick-fact:nth-child(odd),
+    .quick-fact:nth-child(even) {
+      border-right: 0;
+      border-bottom:
+        1px solid
+        rgba(16,24,32,.08);
+    }
+
+
+    .quick-fact:last-child {
+      border-bottom: 0;
+    }
+
+  }
+
+</style>

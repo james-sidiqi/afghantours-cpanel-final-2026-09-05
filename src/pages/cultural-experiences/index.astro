@@ -1,0 +1,672 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+import {
+  getCollection,
+} from 'astro:content';
+
+
+const items =
+  (
+    await getCollection(
+      'cultural-experiences'
+    )
+  )
+    .sort(
+      (a, b) =>
+        a.data.title.localeCompare(
+          b.data.title
+        )
+    );
+
+
+const imageFor =
+  (item) =>
+    item.data.hero_image ||
+    item.data.image ||
+    '/assets/images/placeholders/default-attraction.webp';
+
+
+const slugFor =
+  (item) =>
+    item.id.replace(
+      /\.md$/,
+      ''
+    );
+
+
+const types =
+  [
+    ...new Set(
+      items
+        .map(
+          (item) =>
+            item.data.experience_type
+        )
+        .filter(Boolean)
+    )
+  ];
+---
+
+<BaseLayout
+  title="Cultural Experiences | AfghanTours"
+  description="Explore Afghanistan through traditional crafts, sport, hospitality, celebration, food, and living cultural traditions."
+>
+
+  <section class="culture-index-hero">
+
+    <div class="culture-index-hero-inner">
+
+      <p>
+        Living Afghanistan
+      </p>
+
+      <h1>
+        Cultural Experiences
+      </h1>
+
+      <span>
+        Go beyond monuments and landscapes.
+        Meet the traditions, crafts, sports,
+        foods, celebrations, and everyday
+        rituals that give Afghanistan its
+        cultural depth.
+      </span>
+
+    </div>
+
+  </section>
+
+
+  <main class="culture-index-main">
+
+    <div class="culture-index-wrap">
+
+      <div class="culture-index-heading">
+
+        <div>
+
+          <p>
+            Explore
+          </p>
+
+          <h2>
+            Experience the country through its people.
+          </h2>
+
+        </div>
+
+
+        <span>
+          {items.length} cultural experiences
+        </span>
+
+      </div>
+
+
+      {types.length > 1 && (
+
+        <div class="culture-type-strip">
+
+          {types.map((type) => (
+            <span>{type}</span>
+          ))}
+
+        </div>
+
+      )}
+
+
+      <div class="culture-index-grid">
+
+        {items.map((item) => (
+
+          <a
+            class="culture-index-card"
+            href={`/cultural-experiences/${slugFor(item)}/`}
+          >
+
+            <div class="culture-index-image">
+
+              <img
+                src={imageFor(item)}
+                alt={item.data.title}
+                loading="lazy"
+              />
+
+            </div>
+
+
+            <div class="culture-index-copy">
+
+              <p>
+                {
+                  item.data.experience_type ||
+                  'Cultural Experience'
+                }
+              </p>
+
+
+              <h3>
+                {item.data.title}
+              </h3>
+
+
+              {
+                item.data.card_description && (
+
+                  <span>
+                    {item.data.card_description}
+                  </span>
+
+                )
+              }
+
+
+              <div class="culture-index-meta">
+
+                {
+                  item.data.duration && (
+                    <small>
+                      {item.data.duration}
+                    </small>
+                  )
+                }
+
+
+                {
+                  item.data.best_season && (
+                    <small>
+                      {item.data.best_season}
+                    </small>
+                  )
+                }
+
+              </div>
+
+
+              <strong>
+                Explore experience →
+              </strong>
+
+            </div>
+
+          </a>
+
+        ))}
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <section class="culture-index-cta">
+
+    <div>
+
+      <p>
+        Custom Cultural Journey
+      </p>
+
+      <h2>
+        Build your trip around what interests you.
+      </h2>
+
+      <span>
+        Tell us which traditions, places,
+        foods, or communities you want to
+        understand and we will connect them
+        into a practical itinerary.
+      </span>
+
+      <a href="/contact/?type=cultural-experience">
+        Plan a cultural journey
+      </a>
+
+    </div>
+
+  </section>
+
+</BaseLayout>
+
+
+<style>
+
+  .culture-index-hero {
+    padding:
+      clamp(8rem, 15vw, 13rem)
+      0
+      clamp(5rem, 9vw, 8rem);
+
+    background:
+      linear-gradient(
+        120deg,
+        #0b141b,
+        #17242c
+      );
+
+    color: #fff;
+  }
+
+
+  .culture-index-hero-inner {
+    width:
+      min(1180px, calc(100% - 2rem));
+
+    margin: auto;
+
+    max-width: 1180px;
+  }
+
+
+  .culture-index-hero p,
+  .culture-index-heading p,
+  .culture-index-cta p {
+    margin: 0;
+
+    color: #e0ad4a;
+
+    font-size: .72rem;
+    font-weight: 900;
+
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+
+
+  .culture-index-hero h1 {
+    max-width: 900px;
+
+    margin:
+      .6rem 0
+      1.3rem;
+
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
+    font-size:
+      clamp(4rem, 9vw, 8rem);
+
+    line-height: .88;
+
+    letter-spacing: -.065em;
+  }
+
+
+  .culture-index-hero > div > span {
+    display: block;
+
+    max-width: 720px;
+
+    color:
+      rgba(255,255,255,.72);
+
+    font-size:
+      clamp(1.05rem, 1.8vw, 1.3rem);
+
+    line-height: 1.7;
+  }
+
+
+  .culture-index-main {
+    padding:
+      clamp(4rem, 7vw, 7rem)
+      0;
+
+    background: #fbf6ed;
+    color: #101820;
+  }
+
+
+  .culture-index-wrap {
+    width:
+      min(1280px, calc(100% - 2rem));
+
+    margin: auto;
+  }
+
+
+  .culture-index-heading {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-end;
+
+    gap: 2rem;
+
+    margin-bottom: 1.4rem;
+  }
+
+
+  .culture-index-heading > div {
+    max-width: 800px;
+  }
+
+
+  .culture-index-heading h2 {
+    margin:
+      .5rem 0
+      0;
+
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
+    font-size:
+      clamp(2.7rem, 5vw, 4.7rem);
+
+    line-height: .96;
+
+    letter-spacing: -.05em;
+  }
+
+
+  .culture-index-heading > span {
+    flex: 0 0 auto;
+
+    color: #6b6258;
+
+    font-size: .8rem;
+    font-weight: 800;
+  }
+
+
+  .culture-type-strip {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: .55rem;
+
+    margin:
+      0 0 2.2rem;
+  }
+
+
+  .culture-type-strip span {
+    padding:
+      .5rem .75rem;
+
+    border:
+      1px solid
+      #decfb9;
+
+    border-radius: 999px;
+
+    background: #fff;
+
+    font-size: .74rem;
+    font-weight: 800;
+  }
+
+
+  .culture-index-grid {
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, minmax(0,1fr));
+
+    gap: 1rem;
+  }
+
+
+  .culture-index-card {
+    display: block;
+
+    overflow: hidden;
+
+    border:
+      1px solid
+      rgba(16,24,32,.08);
+
+    border-radius: 1.35rem;
+
+    background: #fff;
+
+    color: inherit;
+    text-decoration: none;
+
+    box-shadow:
+      0 14px 36px
+      rgba(20,15,8,.07);
+
+    transition:
+      transform .25s ease,
+      box-shadow .25s ease;
+  }
+
+
+  .culture-index-card:hover {
+    transform:
+      translateY(-4px);
+
+    box-shadow:
+      0 24px 50px
+      rgba(20,15,8,.13);
+  }
+
+
+  .culture-index-image {
+    height: 270px;
+
+    overflow: hidden;
+
+    background: #17242c;
+  }
+
+
+  .culture-index-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+
+    transition:
+      transform .45s ease;
+  }
+
+
+  .culture-index-card:hover img {
+    transform:
+      scale(1.035);
+  }
+
+
+  .culture-index-copy {
+    padding:
+      1.35rem;
+  }
+
+
+  .culture-index-copy > p {
+    margin: 0;
+
+    color: #a4650d;
+
+    font-size: .67rem;
+    font-weight: 900;
+
+    letter-spacing: .13em;
+    text-transform: uppercase;
+  }
+
+
+  .culture-index-copy h3 {
+    margin:
+      .45rem 0
+      .85rem;
+
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
+    font-size:
+      clamp(1.6rem, 2.2vw, 2rem);
+
+    line-height: 1.03;
+
+    letter-spacing: -.04em;
+  }
+
+
+  .culture-index-copy > span {
+    display: -webkit-box;
+
+    color: #596168;
+
+    font-size: .9rem;
+    line-height: 1.6;
+
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+  }
+
+
+  .culture-index-meta {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: .4rem;
+
+    margin-top: 1.15rem;
+  }
+
+
+  .culture-index-meta small {
+    padding:
+      .4rem .62rem;
+
+    border-radius: 999px;
+
+    background: #fbf6ed;
+
+    color: #61594f;
+
+    font-size: .69rem;
+    font-weight: 800;
+  }
+
+
+  .culture-index-copy strong {
+    display: block;
+
+    margin-top: 1.1rem;
+
+    color: #a4650d;
+
+    font-size: .84rem;
+  }
+
+
+  .culture-index-cta {
+    padding:
+      clamp(5rem, 9vw, 9rem)
+      0;
+
+    background: #0b141b;
+
+    color: #fff;
+  }
+
+
+  .culture-index-cta > div {
+    width:
+      min(900px, calc(100% - 2rem));
+
+    margin: auto;
+
+    text-align: center;
+  }
+
+
+  .culture-index-cta h2 {
+    margin:
+      .55rem 0
+      1rem;
+
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
+    font-size:
+      clamp(3rem, 6vw, 5.6rem);
+
+    line-height: .94;
+
+    letter-spacing: -.055em;
+  }
+
+
+  .culture-index-cta > div > span {
+    display: block;
+
+    max-width: 680px;
+
+    margin: auto;
+
+    color:
+      rgba(255,255,255,.68);
+
+    line-height: 1.7;
+  }
+
+
+  .culture-index-cta a {
+    display: inline-flex;
+
+    margin-top: 1.8rem;
+
+    padding:
+      .95rem 1.4rem;
+
+    border-radius: 999px;
+
+    background: #d6a33e;
+    color: #101820;
+
+    text-decoration: none;
+
+    font-weight: 900;
+  }
+
+
+  @media (max-width: 950px) {
+
+    .culture-index-grid {
+      grid-template-columns:
+        repeat(2, minmax(0,1fr));
+    }
+
+  }
+
+
+  @media (max-width: 650px) {
+
+    .culture-index-heading {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+
+    .culture-index-grid {
+      grid-template-columns: 1fr;
+    }
+
+
+    .culture-index-image {
+      height: 240px;
+    }
+
+  }
+
+</style>

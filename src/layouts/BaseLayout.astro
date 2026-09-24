@@ -1,0 +1,78 @@
+---
+import '../styles/global.css';
+import '../styles/editorial.css';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import IconTest from '../components/IconTest.astro';
+import TourInquiryModal from '../components/TourInquiryModal.astro';
+import TourSalesBridge from '../components/TourSalesBridge.astro';
+import ImageLightbox from '../components/ImageLightbox.astro';
+
+const {
+  title = 'AfghanTours',
+  description = 'Professional Afghanistan travel, licensed itinerary planning, provincial permit coordination, and Kabul-based ground support.',
+  image = '/assets/images/heroes/home/hero.webp'
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://afghantours.com').toString();
+const ogImage = new URL(image, Astro.site ?? 'https://afghantours.com').toString();
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'TravelAgency',
+  name: 'AfghanTours.com',
+  alternateName: 'James Tourist & Travel Agency',
+  url: 'https://afghantours.com/',
+  logo: 'https://afghantours.com/assets/images/logo/header-logo.webp',
+  image: ogImage,
+  email: 'info@afghantours.com',
+  telephone: '+93780123456',
+  identifier: { '@type': 'PropertyValue', name: 'Afghanistan tour operator license', value: 'ATO-KBL-1617' },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '2nd Floor, Majid Mall, Shahr-e-Naw, District 10',
+    addressLocality: 'Kabul',
+    addressCountry: 'AF',
+  },
+  areaServed: { '@type': 'Country', name: 'Afghanistan' },
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="AfghanTours.com" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png" />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <a class="floating-whatsapp" href="https://wa.me/93780123456" aria-label="Contact AfghanTours on WhatsApp for rapid ground-support validation">
+      <IconTest name="lucide:message-circle" class="floating-whatsapp__icon" />
+      <span>WhatsApp</span>
+    </a>
+    <TourSalesBridge />
+    <TourInquiryModal />
+    <Footer />
+    <ImageLightbox />
+  </body>
+</html>

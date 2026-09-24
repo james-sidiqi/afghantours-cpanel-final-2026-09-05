@@ -1,0 +1,249 @@
+---
+const cards = [
+  {
+    eyebrow: 'Destinations by Region',
+    title: 'Explore Afghanistan by region.',
+    description:
+      'Move through the country by operational geography: central highlands, western heritage cities, northern routes, eastern valleys, southern history, and remote frontier regions.',
+    href: '/destinations/',
+    cta: 'View regions',
+    image: '/assets/images/regions/afghanistan.webp',
+    tags: ['Regions', 'Provinces', 'Hubs'],
+  },
+  {
+    eyebrow: 'Attractions',
+    title: 'Historic sites, landscapes, and living heritage.',
+    description:
+      'Browse citadels, shrines, bazaars, valleys, museums, lakes, mountain routes, and cultural landmarks that can be built into real itineraries.',
+    href: '/attractions/',
+    cta: 'View attractions',
+    image: '/assets/images/heroes/attractions/hero.webp',
+    tags: ['History', 'Nature', 'Culture'],
+  },
+  {
+    eyebrow: 'Food & Culture',
+    title: 'Food belongs inside destination planning.',
+    description:
+      'Meals, tea houses, markets, orchards, bakeries, dried fruits, restaurants, and regional produce are part of how travelers understand each hub.',
+    href: '/food-culture/',
+    cta: 'Explore food & culture',
+    image: '/assets/images/heroes/food-and-culture/hero.webp',
+    tags: ['Dishes', 'Markets', 'Experiences'],
+  },
+];
+---
+
+<section class="explore-afghanistan" aria-labelledby="explore-afghanistan-title">
+  <div class="explore-afghanistan__wrap">
+    <div class="explore-afghanistan__intro">
+      <p class="explore-afghanistan__eyebrow">Plan by place, interest, and experience</p>
+      <h2 id="explore-afghanistan-title">Explore Afghanistan beyond a simple tour list.</h2>
+      <p>
+        Use these gateways to compare regions, understand major attractions, and connect food and culture directly to the places you want to visit.
+      </p>
+    </div>
+
+    <div class="explore-afghanistan__grid">
+      {cards.map((card) => (
+        <a class="explore-card" href={card.href} aria-label={`${card.eyebrow}: ${card.cta}`}>
+          <img src={card.image} alt="" loading="lazy" />
+          <div class="explore-card__shade"></div>
+          <div class="explore-card__content">
+            <p>{card.eyebrow}</p>
+            <h3>{card.title}</h3>
+            <span>{card.description}</span>
+            <div class="explore-card__tags">
+              {card.tags.map((tag) => <b>{tag}</b>)}
+            </div>
+            <strong>{card.cta} →</strong>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .explore-afghanistan {
+    background: #fbf6ed;
+    padding: 5.5rem 0;
+    border-top: 1px solid rgba(25, 24, 20, 0.08);
+    border-bottom: 1px solid rgba(25, 24, 20, 0.08);
+  }
+
+  .explore-afghanistan__wrap {
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .explore-afghanistan__intro {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.8fr) minmax(320px, 1.2fr);
+    gap: 2rem;
+    align-items: end;
+    margin-bottom: 2rem;
+  }
+
+  .explore-afghanistan__eyebrow,
+  .explore-card__content > p {
+    margin: 0;
+    color: #b77a18;
+    font-size: 0.72rem;
+    font-weight: 950;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .explore-afghanistan h2 {
+    margin: 0.55rem 0 0;
+    max-width: 620px;
+    color: #101820;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(2.35rem, 4.4vw, 4.65rem);
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+  }
+
+  .explore-afghanistan__intro > p:last-child {
+    max-width: 560px;
+    margin: 0;
+    color: #314055;
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .explore-afghanistan__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.15rem;
+  }
+
+  .explore-card {
+    position: relative;
+    min-height: 470px;
+    overflow: hidden;
+    border: 1px solid rgba(16, 24, 32, 0.22);
+    border-radius: 1.45rem;
+    color: #fff;
+    text-decoration: none;
+    box-shadow: 0 24px 55px rgba(32, 22, 12, 0.16);
+    transform: translateY(0);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    background: #101820;
+  }
+
+  .explore-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(214, 165, 72, 0.8);
+    box-shadow: 0 30px 70px rgba(32, 22, 12, 0.24);
+  }
+
+  .explore-card img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .explore-card:hover img {
+    transform: scale(1.06);
+  }
+
+  .explore-card__shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.38) 42%, rgba(0, 0, 0, 0.82)),
+      linear-gradient(90deg, rgba(251, 246, 237, 0.84), rgba(251, 246, 237, 0.42) 34%, rgba(0, 0, 0, 0.28));
+  }
+
+  .explore-card__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    min-height: 470px;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 1.6rem;
+  }
+
+  .explore-card__content > p {
+    color: #d6a548;
+  }
+
+  .explore-card h3 {
+    max-width: 92%;
+    margin: 0.7rem 0 0.8rem;
+    color: #fff;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(2rem, 2.8vw, 3.05rem);
+    line-height: 0.96;
+    letter-spacing: -0.055em;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
+  }
+
+  .explore-card__content > span {
+    max-width: 95%;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 0.94rem;
+    line-height: 1.65;
+  }
+
+  .explore-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 1.15rem;
+  }
+
+  .explore-card__tags b {
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #101820;
+    padding: 0.48rem 0.68rem;
+    font-size: 0.68rem;
+    font-weight: 950;
+  }
+
+  .explore-card strong {
+    align-self: flex-start;
+    margin-top: 1.2rem;
+    border-radius: 999px;
+    background: #101820;
+    color: #fff;
+    padding: 0.82rem 1rem;
+    font-size: 0.75rem;
+    font-weight: 950;
+    letter-spacing: 0.02em;
+  }
+
+  @media (max-width: 980px) {
+    .explore-afghanistan__intro,
+    .explore-afghanistan__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .explore-card,
+    .explore-card__content {
+      min-height: 390px;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .explore-afghanistan {
+      padding: 4rem 0;
+    }
+
+    .explore-card,
+    .explore-card__content {
+      min-height: 360px;
+    }
+
+    .explore-card__content {
+      padding: 1.25rem;
+    }
+  }
+</style>

@@ -1,0 +1,160 @@
+---
+interface Hub {
+  slug: string;
+  title: string;
+  description?: string;
+  subtitle?: string;
+}
+
+interface Props {
+  hubs: Hub[];
+}
+
+const { hubs = [] } = Astro.props;
+
+// Helper to resolve the correct folder name matching your public assets directory
+const getCleanSlug = (slug: string): string => {
+  const clean = slug.toLowerCase().trim();
+  if ([
+    'bamyan-city', 'faizabad', 'ghazni-city', 'herat-city', 
+    'jalalabad', 'kabul-city', 'kandahar-city', 'mazar-e-sharif'
+  ].includes(clean)) {
+    return clean;
+  }
+  if (clean === 'mazar' || clean === 'mazar-e-sharif') return 'mazar-e-sharif';
+  if (clean === 'faizabad') return 'faizabad';
+  if (clean === 'jalalabad') return 'jalalabad';
+  
+  return `${clean.replace('-city', '')}-city`;
+};
+
+// Returns the correct structural hero image path
+const getHubHeroPath = (slug: string) => {
+  return `/assets/images/hubs/${getCleanSlug(slug)}/hero.webp`;
+};
+
+// Returns an array of valid gallery image paths based on your specific folder inventory
+const getHubGalleryPaths = (slug: string): string[] => {
+  const cleanSlug = getCleanSlug(slug);
+  let count = 0;
+
+  // Exact folder inventory counts from your asset logs
+  if (cleanSlug === 'kabul-city') count = 8;
+  else if (cleanSlug === 'bamyan-city') count = 5;
+  // Fallback default for other folders until counts are specified
+  else count = 4; 
+
+  return Array.from({ length: count }, (_, i) => `/assets/images/hubs/${cleanSlug}/${String(i + 1).padStart(2, '0')}.webp`);
+};
+---
+
+<section class="bg-zinc-950 py-24 text-white border-b border-zinc-900 relative">
+  <div class="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
+    
+    <div class="max-w-3xl mb-16">
+      <p class="text-xs font-black uppercase tracking-[0.25em] text-[#dca54a]">
+        Infrastructure Anchors
+      </p>
+      <h2 class="mt-4 text-4xl font-black tracking-tight sm:text-6xl text-white">
+        Travel Hubs
+      </h2>
+    </div>
+
+    <div class="w-full relative min-h-[460px] rounded-3xl overflow-hidden border border-zinc-800 shadow-2xl bg-zinc-900/40">
+      {hubs.map((hub, index) => {
+        const galleryImages = getHubGalleryPaths(hub.slug);
+        return (
+          <div 
+            id={`hub-panel-${index}`} 
+            class={`absolute inset-0 w-full h-full p-8 sm:p-12 flex flex-col justify-end transition-opacity duration-700 ${index === 0 ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none'}`}
+            data-gallery={JSON.stringify(galleryImages)}
+          >
+            <img 
+              src={getHubHeroPath(hub.slug)} 
+              alt="" 
+              class="absolute inset-0 w-full h-full object-cover object-center z-0"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent z-10"></div>
+            
+            <div class="relative z-20 max-w-2xl space-y-3">
+              <span class="text-xs font-black uppercase tracking-widest text-[#dca54a]">
+                {hub.subtitle || "Regional Base"}
+              </span>
+              <h3 class="text-3xl font-black tracking-tight text-white sm:text-5xl">
+                {hub.title}
+              </h3>
+              <p class="text-zinc-300 text-sm leading-relaxed font-normal">
+                {hub.description || "Operational launchpad managing logistics coordination, safety networks, and direct route access across regional districts."}
+              </p>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    <div class="flex gap-4 overflow-x-auto mt-8 pb-4 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-transparent snap-x">
+      {hubs.map((hub, index) => (
+        <button
+          data-hub-index={index}
+          class={`flex-none w-64 h-36 snap-start rounded-2xl relative overflow-hidden text-left p-4 border transition-all duration-300 flex flex-col justify-end group ${index === 0 ? 'border-[#dca54a] ring-2 ring-[#dca54a]/30' : 'border-zinc-900 hover:border-zinc-800'}`}
+        >
+          <img 
+            src={getHubHeroPath(hub.slug)} 
+            alt="" 
+            class="absolute inset-0 h-full w-full object-cover object-center z-0 transition-transform duration-500 group-hover:scale-105"
+          />
+          <div class="absolute inset-0 bg-zinc-950/70 group-hover:bg-zinc-950/60 transition-colors z-10"></div>
+          
+          <div class="relative z-20 w-full">
+            <h4 class="text-sm font-black text-white line-clamp-1 tracking-tight">
+              {hub.title}
+            </h4>
+          </div>
+        </button>
+      ))}
+    </div>
+
+  </div>
+</section>
+
+<script>
+  const hubButtons = document.querySelectorAll('[data-hub-index]');
+  
+  hubButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const targetIndex = button.getAttribute('data-hub-index');
+      if (!targetIndex) return;
+
+      // Reset carousel outlines
+      hubButtons.forEach(btn => {
+        btn.classList.remove('border-[#dca54a]', 'ring-2', 'ring-[#dca54a]/30');
+        btn.classList.add('border-zinc-900');
+      });
+
+      // Highlight active choice
+      button.classList.remove('border-zinc-900');
+      button.classList.add('border-[#dca54a]', 'ring-2', 'ring-[#dca54a]/30');
+
+      // Swap visibility across structural frame panes
+      const totalPanels = hubButtons.length;
+      for (let i = 0; i < totalPanels; i++) {
+        const panel = document.getElementById(`hub-panel-${i}`);
+        if (panel) {
+          if (i === parseInt(targetIndex)) {
+            panel.classList.remove('opacity-0', 'z-0', 'pointer-events-none');
+            panel.classList.add('opacity-100', 'z-10');
+            
+            // Log array tracking check to make sure galleries match active selections perfectly
+            const galleryData = panel.getAttribute('data-gallery');
+            if (galleryData) {
+              console.log('Active Hub Gallery Inventory Loaded Safely:', JSON.parse(galleryData));
+            }
+          } else {
+            panel.classList.remove('opacity-100', 'z-10');
+            panel.classList.add('opacity-0', 'z-0', 'pointer-events-none');
+          }
+        }
+      }
+    });
+  });
+</script>

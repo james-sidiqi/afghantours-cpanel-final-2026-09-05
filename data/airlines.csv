@@ -1,0 +1,3 @@
+airline_slug,airline_name,logo_path,hero_image_path,gallery_path,is_active
+ariana,Ariana Afghan Airlines,/assets/images/transport/airlines/ariana/logo.webp,/assets/images/transport/airlines/ariana/hero.webp,/assets/images/transport/airlines/ariana/,1
+kam-air,Kam Air,/assets/images/transport/airlines/kam-air/logo.webp,/assets/images/transport/airlines/kam-air/hero.webp,/assets/images/transport/airlines/kam-air/,1

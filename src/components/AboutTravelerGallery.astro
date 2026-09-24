@@ -1,0 +1,714 @@
+---
+const photos = [
+  {
+    src: '/assets/images/page-assets/about/travelers/citadel-walk-with-guides.webp',
+    alt: 'Travelers and local guides walking through a historic citadel complex',
+    shape: 'wide',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/kabul-community-children.webp',
+    alt: 'Children during a community visit in Kabul',
+    shape: 'tall',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/traveler-tea-break.webp',
+    alt: 'Travelers gathered during a tea break in Kabul',
+    shape: 'standard',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/bamyan-community-visit.webp',
+    alt: 'Travelers and local families during a winter visit in Bamyan',
+    shape: 'wide',
+  },
+  {
+    src: '/assets/images/page-assets/field-access/bamyan-cultural-site.webp',
+    alt: 'Visitors inside a historic Buddhist cave niche in Bamyan',
+    shape: 'tall',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/band-e-amir-approach.webp',
+    alt: 'Travelers approaching a cultural site in a mountain setting',
+    shape: 'standard',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/mountain-road-tour.webp',
+    alt: 'Travelers and an Afghan guide stopping on a mountain road',
+    shape: 'wide',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/chicken-street-winter-group.webp',
+    alt: 'Travelers during a winter market visit in Kabul',
+    shape: 'wide',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/guide-and-traveler.webp',
+    alt: 'Afghan guide and traveler during a countryside stop',
+    shape: 'standard',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/traveler-afghanistan-sign.webp',
+    alt: 'Traveler photographed at the Afghanistan sign in Kabul',
+    shape: 'tall',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/horseback-cultural-experience.webp',
+    alt: 'Travelers riding horses along a rural path in Afghanistan',
+    shape: 'wide',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/from-the-road-documenting-afghanistan.webp',
+    alt: 'Traveler documenting Afghanistan from inside a vehicle',
+    shape: 'standard',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/bamyan-buddha-niche-visit.webp',
+    alt: 'Traveler beneath the Bamyan Buddha niche',
+    shape: 'tall',
+  },
+  {
+    src: '/assets/images/page-assets/field-access/blue-mosque-cultural-access.webp',
+    alt: 'Visitors inside Sakhi Shrine in Kabul',
+    shape: 'standard',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/bamyan-ski-summit.webp',
+    alt: 'Traveler skiing in the mountains of Bamyan',
+    shape: 'wide',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/field-photography.webp',
+    alt: 'Field photography during a cultural documentation project',
+    shape: 'wide',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/guide-4x4-mosque-stop.webp',
+    alt: 'Afghan guide with a tour vehicle',
+    shape: 'standard',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/kabul-rickshaw-street-scene.webp',
+    alt: 'Local guides beside a rickshaw on a Kabul street',
+    shape: 'wide',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/brick-vault-heritage-gallery.webp',
+    alt: 'Historic brick-vaulted heritage interior in Afghanistan',
+    shape: 'standard',
+  },
+  {
+    src: '/assets/images/page-assets/about/travelers/historic-staircase-entry.webp',
+    alt: 'Historic underground staircase at an Afghan heritage site',
+    shape: 'standard',
+  },
+];
+---
+
+<section class="atg-section">
+  <div class="atg-wrap">
+
+    <header class="atg-heading">
+      <p class="atg-eyebrow">
+        Afghanistan Through Our Travelers’ Eyes
+      </p>
+
+      <h2>
+        Travelers, researchers, filmmakers,
+        business visitors, and explorers.
+      </h2>
+
+      <p>
+        Real moments from the road—historic sites, local communities,
+        mountain journeys, cultural encounters, and everyday Afghanistan.
+      </p>
+    </header>
+
+    <div class="atg-grid">
+      {
+        photos.map((photo, index) => (
+          <figure
+            class:list={[
+              'atg-tile',
+              `atg-tile--${photo.shape}`,
+            ]}
+          >
+            <button
+              type="button"
+              class="atg-open"
+              data-atg-open
+              data-atg-index={index}
+              aria-label={`Open photograph ${index + 1}`}
+            >
+              <img
+                src={photo.src}
+                alt={photo.alt}
+                loading="lazy"
+                decoding="async"
+              />
+            </button>
+          </figure>
+        ))
+      }
+    </div>
+
+  </div>
+</section>
+
+
+<div
+  class="atg-lightbox"
+  data-atg-lightbox
+  hidden
+  role="dialog"
+  aria-modal="true"
+  aria-label="Traveler photograph"
+>
+  <button
+    class="atg-backdrop"
+    type="button"
+    data-atg-close
+    aria-label="Close gallery"
+  ></button>
+
+  <div class="atg-lightbox__panel">
+
+    <div class="atg-lightbox__top">
+      <span data-atg-counter></span>
+
+      <button
+        class="atg-close"
+        type="button"
+        data-atg-close
+        aria-label="Close photograph"
+      >
+        ×
+      </button>
+    </div>
+
+    <div class="atg-lightbox__stage">
+
+      <button
+        class="atg-nav atg-nav--prev"
+        type="button"
+        data-atg-prev
+        aria-label="Previous photograph"
+      >
+        ‹
+      </button>
+
+      <img
+        data-atg-image
+        src=""
+        alt=""
+      />
+
+      <button
+        class="atg-nav atg-nav--next"
+        type="button"
+        data-atg-next
+        aria-label="Next photograph"
+      >
+        ›
+      </button>
+
+    </div>
+  </div>
+</div>
+
+
+<style>
+  .atg-section {
+    padding: 5.5rem 0;
+    background: #faf7f0;
+  }
+
+  .atg-wrap {
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .atg-heading {
+    max-width: 950px;
+    margin-bottom: 2.4rem;
+  }
+
+  .atg-eyebrow {
+    margin: 0 0 .65rem;
+
+    color: #a56d12;
+
+    font-size: .69rem;
+    font-weight: 900;
+
+    letter-spacing: .18em;
+    text-transform: uppercase;
+  }
+
+  .atg-heading h2 {
+    max-width: 900px;
+
+    margin: 0;
+
+    color: #12191f;
+
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-weight: 700;
+
+    line-height: .94;
+    letter-spacing: -.045em;
+  }
+
+  .atg-heading > p:last-child {
+    max-width: 720px;
+
+    margin: 1.2rem 0 0;
+
+    color: #59615d;
+
+    font-size: .98rem;
+    line-height: 1.7;
+  }
+
+
+  /* =======================================================
+     ACTUAL PACKAGED MOSAIC
+     ======================================================= */
+
+  .atg-grid {
+    display: grid;
+
+    grid-template-columns:
+      repeat(12, minmax(0, 1fr));
+
+    grid-auto-rows: 105px;
+    grid-auto-flow: dense;
+
+    gap: 12px;
+  }
+
+  .atg-tile {
+    grid-column: span 3;
+    grid-row: span 2;
+
+    min-width: 0;
+    min-height: 0;
+
+    margin: 0;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: #dedbd3;
+  }
+
+  .atg-tile--wide {
+    grid-column: span 6;
+  }
+
+  .atg-tile--tall {
+    grid-row: span 4;
+  }
+
+  .atg-open {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 0;
+    border: 0;
+
+    overflow: hidden;
+
+    background: transparent;
+
+    cursor: zoom-in;
+  }
+
+  .atg-open img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center;
+
+    transition:
+      transform .28s ease,
+      filter .28s ease;
+  }
+
+  .atg-open:hover img {
+    transform: scale(1.025);
+    filter: brightness(.94);
+  }
+
+  .atg-open:focus-visible {
+    outline: 3px solid #c58b28;
+    outline-offset: -3px;
+  }
+
+
+  /* =======================================================
+     LIGHTBOX
+     ======================================================= */
+
+  .atg-lightbox[hidden] {
+    display: none;
+  }
+
+  .atg-lightbox {
+    position: fixed;
+    inset: 0;
+
+    z-index: 15000;
+
+    display: grid;
+    place-items: center;
+
+    padding: .75rem;
+  }
+
+  .atg-backdrop {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 0;
+    border: 0;
+
+    background: rgba(7, 12, 10, .94);
+
+    backdrop-filter: blur(8px);
+
+    cursor: pointer;
+  }
+
+  .atg-lightbox__panel {
+    position: relative;
+    z-index: 1;
+
+    width: min(1500px, 100%);
+    height: calc(100vh - 1.5rem);
+
+    display: grid;
+    grid-template-rows: 52px minmax(0, 1fr);
+  }
+
+  .atg-lightbox__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    color: #fff;
+
+    font-size: .75rem;
+    font-weight: 800;
+  }
+
+  .atg-close {
+    width: 42px;
+    height: 42px;
+
+    border:
+      1px solid
+      rgba(255,255,255,.2);
+
+    border-radius: 50%;
+
+    background:
+      rgba(255,255,255,.1);
+
+    color: #fff;
+
+    font-size: 1.8rem;
+
+    cursor: pointer;
+  }
+
+  .atg-lightbox__stage {
+    position: relative;
+
+    min-width: 0;
+    min-height: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 4rem 1rem;
+  }
+
+  .atg-lightbox__stage img {
+    display: block;
+
+    width: auto;
+    height: auto;
+
+    max-width: 100%;
+    max-height: 100%;
+
+    object-fit: contain;
+  }
+
+  .atg-nav {
+    position: absolute;
+    top: 50%;
+
+    width: 48px;
+    height: 48px;
+
+    transform: translateY(-50%);
+
+    border:
+      1px solid
+      rgba(255,255,255,.2);
+
+    border-radius: 50%;
+
+    background:
+      rgba(0,0,0,.4);
+
+    color: #fff;
+
+    font-size: 2rem;
+
+    cursor: pointer;
+  }
+
+  .atg-nav--prev {
+    left: .2rem;
+  }
+
+  .atg-nav--next {
+    right: .2rem;
+  }
+
+
+  /* =======================================================
+     TABLET
+     ======================================================= */
+
+  @media (max-width: 900px) {
+
+    .atg-grid {
+      grid-template-columns:
+        repeat(6, minmax(0, 1fr));
+
+      grid-auto-rows: 105px;
+    }
+
+    .atg-tile {
+      grid-column: span 3;
+    }
+
+    .atg-tile--wide {
+      grid-column: span 6;
+    }
+
+  }
+
+
+  /* =======================================================
+     MOBILE
+     ======================================================= */
+
+  @media (max-width: 560px) {
+
+    .atg-section {
+      padding: 3.75rem 0;
+    }
+
+    .atg-wrap {
+      width: min(100% - 1rem, 1180px);
+    }
+
+    .atg-heading h2 {
+      font-size: 2.4rem;
+    }
+
+    .atg-grid {
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      grid-auto-rows: 135px;
+
+      gap: 7px;
+    }
+
+    .atg-tile {
+      grid-column: span 1;
+      grid-row: span 1;
+
+      border-radius: 13px;
+    }
+
+    .atg-tile--wide {
+      grid-column: span 2;
+    }
+
+    .atg-tile--tall {
+      grid-row: span 2;
+    }
+
+    .atg-lightbox {
+      padding: .3rem;
+    }
+
+    .atg-lightbox__panel {
+      height: calc(100vh - .6rem);
+    }
+
+    .atg-lightbox__stage {
+      padding:
+        0
+        2.7rem
+        .5rem;
+    }
+
+    .atg-nav {
+      width: 40px;
+      height: 40px;
+    }
+  }
+</style>
+
+
+<script define:vars={{ photos }}>
+  const galleryPhotos = photos;
+
+  const buttons =
+    Array.from(
+      document.querySelectorAll('[data-atg-open]')
+    );
+
+  const lightbox =
+    document.querySelector('[data-atg-lightbox]');
+
+  const image =
+    document.querySelector('[data-atg-image]');
+
+  const counter =
+    document.querySelector('[data-atg-counter]');
+
+  let currentIndex = 0;
+  let previousOverflow = '';
+
+  function renderImage() {
+    if (!image || !galleryPhotos.length) return;
+
+    const photo =
+      galleryPhotos[currentIndex];
+
+    image.src = photo.src;
+    image.alt = photo.alt;
+
+    if (counter) {
+      counter.textContent =
+        `${currentIndex + 1} / ${galleryPhotos.length}`;
+    }
+  }
+
+  function openGallery(index) {
+    if (!lightbox) return;
+
+    currentIndex = index;
+
+    renderImage();
+
+    previousOverflow =
+      document.body.style.overflow;
+
+    document.body.style.overflow =
+      'hidden';
+
+    lightbox.hidden = false;
+  }
+
+  function closeGallery() {
+    if (!lightbox) return;
+
+    lightbox.hidden = true;
+
+    document.body.style.overflow =
+      previousOverflow;
+  }
+
+  function moveGallery(direction) {
+    currentIndex =
+      (
+        currentIndex +
+        direction +
+        galleryPhotos.length
+      ) % galleryPhotos.length;
+
+    renderImage();
+  }
+
+  buttons.forEach((button) => {
+    button.addEventListener(
+      'click',
+      () => {
+        openGallery(
+          Number(
+            button.dataset.atgIndex || 0
+          )
+        );
+      }
+    );
+  });
+
+  document
+    .querySelectorAll('[data-atg-close]')
+    .forEach((button) => {
+      button.addEventListener(
+        'click',
+        closeGallery
+      );
+    });
+
+  document
+    .querySelector('[data-atg-prev]')
+    ?.addEventListener(
+      'click',
+      () => moveGallery(-1)
+    );
+
+  document
+    .querySelector('[data-atg-next]')
+    ?.addEventListener(
+      'click',
+      () => moveGallery(1)
+    );
+
+  document.addEventListener(
+    'keydown',
+    (event) => {
+
+      if (
+        !lightbox ||
+        lightbox.hidden
+      ) return;
+
+      if (event.key === 'Escape') {
+        closeGallery();
+      }
+
+      if (event.key === 'ArrowLeft') {
+        moveGallery(-1);
+      }
+
+      if (event.key === 'ArrowRight') {
+        moveGallery(1);
+      }
+    }
+  );
+</script>

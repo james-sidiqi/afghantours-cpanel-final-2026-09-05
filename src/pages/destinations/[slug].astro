@@ -1,0 +1,414 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AttractionPopupGrid from '../../components/cards/AttractionPopupGrid.astro';
+import TourCardGrid from '../../components/cards/TourCardGrid.astro';
+import HotelPopupGrid from '../../components/cards/HotelPopupGrid.astro';
+import {
+  getRegions,
+  getProvinces,
+  getProvinceBySlug,
+  getAttractions,
+  getTours,
+  getHotels,
+} from '../../lib/buildRelations';
+
+export function getStaticPaths() {
+  return getProvinces()
+    .filter((p) => p?.slug)
+    .map((p) => ({
+      params: { slug: p.slug }
+    }));
+}
+
+const province =
+  Astro.params.slug
+    ? getProvinceBySlug(Astro.params.slug)
+    : undefined;
+
+if (!province) {
+  return Astro.redirect('/destinations/');
+}
+
+const provinceName =
+  province.title ||
+  province.name ||
+  province.province_name ||
+  'Province';
+
+const provinceCode =
+  String(
+    province.province_code ||
+    province.code ||
+    ''
+  ).trim();
+
+const regionCode =
+  String(
+    province.region ||
+    province.region_code ||
+    ''
+  ).trim();
+
+const regions = getRegions();
+
+const parentRegion = regions.find((r) => {
+  const code = String(
+    r.region_code ||
+    r.code ||
+    ''
+  ).toLowerCase();
+
+  const slug = String(
+    r.slug ||
+    r.region_slug ||
+    ''
+  ).toLowerCase();
+
+  return (
+    code === regionCode.toLowerCase() ||
+    slug === regionCode.toLowerCase()
+  );
+});
+
+const regionName =
+  parentRegion?.title ||
+  parentRegion?.name ||
+  parentRegion?.region_name ||
+  ({
+    CENTRAL: 'Central Highlands',
+    NORTH: 'Northern Afghanistan',
+    SOUTH: 'Southern Afghanistan',
+    EAST: 'Eastern Afghanistan',
+    WEST: 'Western Afghanistan',
+  }[regionCode.toUpperCase()] || 'Afghanistan');
+
+const regionSlug =
+  parentRegion?.slug ||
+  parentRegion?.region_slug ||
+  regionCode.toLowerCase();
+
+const shortText =
+  province.short_blurb ||
+  province.excerpt ||
+  province.description ||
+  province.full_blurb ||
+  '';
+
+const image =
+  province.image ||
+  province.cover_image_path ||
+  `/assets/images/provinces/${province.slug}/hero.webp`;
+
+const attractions = getAttractions().filter((a) => {
+  const aProvinceCode = String(
+    a.province_code ||
+    ''
+  ).toLowerCase();
+
+  const aProvince = String(
+    a.province ||
+    a.province_name ||
+    ''
+  ).toLowerCase();
+
+  return (
+    aProvinceCode === provinceCode.toLowerCase() ||
+    aProvince === provinceName.toLowerCase()
+  );
+});
+
+const tours = getTours().filter((tour) => {
+  const text = JSON.stringify([
+    tour.province,
+    tour.provinces,
+    tour.route,
+    tour.route_summary,
+    tour.title,
+    tour.name,
+    tour.primary_location_slug,
+  ]).toLowerCase();
+
+  return (
+    text.includes(provinceName.toLowerCase()) ||
+    text.includes(provinceCode.toLowerCase()) ||
+    text.includes(String(province.slug).toLowerCase()) ||
+    (
+      Array.isArray(tour.attractions) &&
+      tour.attractions.some((a) =>
+        attractions.some((x) => x.slug === a.slug)
+      )
+    )
+  );
+});
+
+const hotels = getHotels().filter((hotel) => {
+  const text = JSON.stringify([
+    hotel.province,
+    hotel.province_code,
+    hotel.hub_name,
+    hotel.city,
+    hotel.destination_code,
+  ]).toLowerCase();
+
+  return (
+    text.includes(provinceName.toLowerCase()) ||
+    text.includes(provinceCode.toLowerCase()) ||
+    text.includes(String(province.slug).toLowerCase())
+  );
+});
+---
+
+<BaseLayout
+  title={`${provinceName} | AfghanTours`}
+  description={shortText}
+  image={image}
+>
+  <section class="province-hero">
+    <img
+      class="province-hero__image"
+      src={image}
+      alt={`${provinceName}, Afghanistan`}
+    />
+
+    <div class="province-hero__shade"></div>
+
+    <div class="province-hero__content">
+      <p class="province-hero__eyebrow">
+        <a href={`/regions/${regionSlug}/`}>
+          {regionName}
+        </a>
+      </p>
+
+      <h1>{provinceName}</h1>
+
+      {shortText && (
+        <p class="province-hero__description">
+          {shortText}
+        </p>
+      )}
+    </div>
+  </section>
+
+  <section class="destination-overview">
+    <div class="destination-wrap">
+      <article class="destination-copy">
+        <p class="section-kicker">Province Overview</p>
+
+        {province.content_html ? (
+          <div
+            class="editorial-prose"
+            set:html={province.content_html}
+          />
+        ) : (
+          <div class="editorial-prose">
+            <p>
+              {province.full_blurb || shortText}
+            </p>
+          </div>
+        )}
+
+        <div class="province-context">
+          <a href={`/regions/${regionSlug}/`}>
+            Explore {regionName} →
+          </a>
+
+          <a href="/destinations/#provinces">
+            All provinces →
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  {attractions.length > 0 && (
+    <AttractionPopupGrid
+        attractions={attractions}
+        title={`Attractions in ${provinceName}`}
+        intro={`Historic sites, landscapes, cultural places, and other attractions connected to ${provinceName}.`}
+      />
+  )}
+
+  {tours.length > 0 && (
+    <TourCardGrid
+        tours={tours}
+        title={`Tours connected to ${provinceName}`}
+        intro={`Journeys that visit ${provinceName}, pass through the province, or include attractions located here.`}
+      />
+  )}
+
+  {hotels.length > 0 && (
+    <HotelPopupGrid
+        hotels={hotels}
+        title={`Hotels connected to ${provinceName}`}
+        intro={`Accommodation options associated with ${provinceName} and its travel hubs.`}
+      />
+  )}
+</BaseLayout>
+
+<style>
+  .province-hero {
+    position: relative;
+    width: 100%;
+    height: clamp(430px, 43vw, 570px);
+    min-height: 430px;
+    max-height: 570px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    background: #07100d;
+    color: #fff;
+  }
+
+  .province-hero__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center 48%;
+  }
+
+  .province-hero__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(
+        90deg,
+        rgba(5, 13, 10, .82) 0%,
+        rgba(5, 13, 10, .60) 34%,
+        rgba(5, 13, 10, .28) 66%,
+        rgba(5, 13, 10, .08) 100%
+      ),
+      linear-gradient(
+        0deg,
+        rgba(5, 13, 10, .62) 0%,
+        rgba(5, 13, 10, .18) 52%,
+        transparent 100%
+      );
+  }
+
+  .province-hero__content {
+    position: relative;
+    z-index: 2;
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: clamp(3.5rem, 6vw, 5.5rem) 0;
+  }
+
+  .province-hero__eyebrow {
+    margin: 0 0 .8rem;
+    font-size: .72rem;
+    line-height: 1.2;
+    font-weight: 900;
+    letter-spacing: .21em;
+    text-transform: uppercase;
+  }
+
+  .province-hero__eyebrow a {
+    color: #dfa327;
+    text-decoration: none;
+  }
+
+  .province-hero__eyebrow a:hover {
+    color: #fff;
+  }
+
+  .province-hero h1 {
+    max-width: 900px;
+    margin: 0;
+    color: #f7f2e8;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.6rem, 7vw, 6.8rem);
+    line-height: .9;
+    letter-spacing: -.06em;
+    text-wrap: balance;
+  }
+
+  .province-hero__description {
+    max-width: 720px;
+    margin: 1.15rem 0 0;
+    color: rgba(255,255,255,.92);
+    font-size: clamp(1rem, 1.35vw, 1.12rem);
+    line-height: 1.68;
+  }
+
+  .destination-overview {
+    background: #fbf6ed;
+    color: #101820;
+    padding: clamp(4rem, 7vw, 7rem) 0;
+  }
+
+  .destination-wrap {
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .destination-copy {
+    background: #fff;
+    border: 1px solid rgba(16,24,32,.10);
+    border-radius: 2rem;
+    padding: clamp(1.6rem, 3vw, 2.8rem);
+    box-shadow: 0 14px 38px rgba(21,16,9,.08);
+  }
+
+  .section-kicker {
+    margin: 0 0 1rem;
+    color: #b46b00;
+    font-size: .72rem;
+    letter-spacing: .20em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  .editorial-prose {
+    max-width: 880px;
+    color: #394451;
+    font-size: 1.03rem;
+    line-height: 1.75;
+  }
+
+  .editorial-prose :global(p:first-child) {
+    margin-top: 0;
+  }
+
+  .province-context {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-top: 1.75rem;
+  }
+
+  .province-context a {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba(16,24,32,.12);
+    border-radius: 999px;
+    padding: .75rem 1rem;
+    color: #8b5708;
+    background: #fbf6ed;
+    font-size: .8rem;
+    font-weight: 900;
+    text-decoration: none;
+  }
+
+  @media (max-width: 700px) {
+    .province-hero {
+      height: 500px;
+      min-height: 500px;
+    }
+
+    .province-hero__image {
+      object-position: center;
+    }
+
+    .province-hero h1 {
+      font-size: clamp(3rem, 15vw, 4.8rem);
+    }
+
+    .province-hero__content {
+      padding: 3.5rem 0;
+    }
+  }
+</style>

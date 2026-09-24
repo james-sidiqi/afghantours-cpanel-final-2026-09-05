@@ -1,0 +1,90 @@
+attraction_code,name,province_code,base_location_code,visit_time_minutes,trip_classification,activity_level,is_active,notes,needs_manual_review
+BDK-001,Badakhshan Mountains & Lakes,BDK,FAIC,1440,Adventure,5,1,,TRUE
+BDK-002,The Wakhan Corridor,BDK,FAIC,2880,Expedition,5,1,,TRUE
+BDK-003,Mount Noshaq,BDK,FAIC,4320,Expedition,5,1,,TRUE
+BDG-001,Badghis Hills & Nomadic Pastures,BDG,HERC,480,Adventure,4,1,,TRUE
+BAG-001,Surkh Kotal,BAG,KBLC,90,Adventure,3,1,,FALSE
+BAL-001,Shrine of Hazrat Ali (Blue Mosque),BAL,MAZC,60,Tour,1,1,,FALSE
+BAL-002,Ancient City of Balkh,BAL,MAZC,120,Tour,2,1,,FALSE
+BAL-003,Tomb of Rabia Balkhi,BAL,MAZC,30,Tour,1,1,,FALSE
+BAL-004,Haji Piyada (Nine Domes) Mosque,BAL,MAZC,60,Tour,1,1,,FALSE
+BAL-005,Rumi's Father's House (Madrasa),BAL,MAZC,45,Tour,1,1,,FALSE
+BAL-006,Qala-i-Jangi Fortress,BAL,MAZC,60,Tour,1,1,,FALSE
+BMY-001,Buddha Niches of Bamyan,BMY,BMYC,90,Tour,2,1,,FALSE
+BMY-002,Shahr-e-Gholghola,BMY,BMYC,60,Tour,1,1,,FALSE
+BMY-003,Shahr-e-Zohak,BMY,BMYC,60,Tour,1,1,,FALSE
+BMY-004,Band-e-Amir National Park,BMY,BMYC,240,Tour,2,1,,FALSE
+BMY-005,Koh-e-Baba Mountain Range,BMY,BMYC,120,Adventure,3,1,,FALSE
+BMY-006,Dragon Valley,BMY,BMYC,90,Tour,3,1,,FALSE
+BMY-007,Chehel Burj Bamyan Ruins,BMY,BMYC,90,Tour,3,1,,FALSE
+DYK-001,Daykundi Highlands,DYK,BMYC,1440,Expedition,4,1,,TRUE
+FRH-001,Farah Citadel,FRH,HERC,60,Adventure,3,1,,FALSE
+FRY-001,Faryab Cultural Villages,FRY,MAZC,60,Expedition,4,1,,TRUE
+GHZ-001,Ghazni Minarets,GHZ,GHZC,45,Tour,1,1,,FALSE
+GHZ-002,Bala Hisar of Ghazni,GHZ,GHZC,90,Tour,2,1,,FALSE
+GHZ-003,Tomb of Sultan Mahmud,GHZ,GHZC,45,Tour,1,1,,FALSE
+GHZ-004,Tapa Sardar,GHZ,GHZC,60,Tour,1,1,,FALSE
+GHZ-005,Palace of Sultan Mas'ud III,GHZ,GHZC,60,Tour,1,1,,FALSE
+GHO-001,Minaret of Jam,GHO,HERC,90,Expedition,4,1,,TRUE
+GHO-002,Rural Ghor Highlands,GHO,HERC,60,Expedition,4,1,,TRUE
+HLM-001,Helmand River Landscape,HLM,KDRC,90,Tour,2,1,,FALSE
+HLM-002,Qala-e-Bost Arch,HLM,KDRC,90,Tour,2,1,,FALSE
+HER-001,Herat Old City & Bazaars,HER,HERC,120,Tour,2,1,,FALSE
+HER-002,Herat Citadel,HER,HERC,90,Tour,2,1,,FALSE
+HER-003,Herat Friday Mosque,HER,HERC,60,Tour,1,1,,FALSE
+HER-004,Herat Minarets,HER,HERC,60,Tour,1,1,,FALSE
+JOW-001,Tala Tepe,JOW,MAZC,60,Tour,1,1,,FALSE
+KBL-001,Darulaman Palace,KBL,KBLC,60,Tour,1,1,,FALSE
+KBL-002,Kabul National Museum,KBL,KBLC,75,Tour,2,1,,FALSE
+KBL-003,Babur's Gardens,KBL,KBLC,75,Tour,2,1,,FALSE
+KBL-004,Shah-e-Du Shamshira Mosque,KBL,KBLC,15,Tour,1,1,,FALSE
+KBL-005,Sakhi Shrine,KBL,KBLC,60,Tour,1,1,,FALSE
+KBL-006,Wazir Akbar Khan Hill,KBL,KBLC,60,Tour,1,1,,FALSE
+KBL-007,Chicken Street,KBL,KBLC,60,Tour,1,1,,FALSE
+KBL-008,Qargha Lake,KBL,KBLC,120,Tour,2,1,,FALSE
+KBL-009,TV Tower Hill (Mount Asmai),KBL,KBLC,30,Tour,1,1,,FALSE
+KBL-010,Bala Hissar,KBL,KBLC,60,Tour,1,1,,FALSE
+KBL-011,Kabul Zoo,KBL,KBLC,75,Tour,2,1,,FALSE
+KBL-012,Taq-e-Zafar Paghman,KBL,KBLC,75,Tour,2,1,,FALSE
+KBL-013,Murad Khane,KBL,KBLC,30,Tour,1,1,,FALSE
+KBL-014,Tape Nader Khan,KBL,KBLC,45,Tour,1,1,,FALSE
+KBL-015,Kahfroshi Bird Market,KBL,KBLC,60,Tour,1,1,,FALSE
+KBL-016,Ghazi Olympic Stadium,KBL,KBLC,45,Tour,1,1,,FALSE
+KBL-017,OMAR Landmine Museum,KBL,KBLC,90,Tour,2,1,,FALSE
+KBL-018,Khurd-Kabul Pass,KBL,KBLC,240,Tour,3,1,,FALSE
+KDR-001,Tomb of Ahmad Shah Durrani,KDR,KDRC,45,Tour,1,1,,FALSE
+KDR-002,Shrine of Mirwais Hotak,KDR,KDRC,45,Tour,1,1,,FALSE
+KDR-003,Baba Wali Shrine,KDR,KDRC,60,Tour,1,1,,FALSE
+KDR-004,Mosque of the Sacred Cloak,KDR,KDRC,30,Tour,1,1,,FALSE
+KDR-005,Chilzina and the Forty Steps,KDR,KDRC,75,Tour,2,1,,FALSE
+KDR-006,Ayno Mina,KDR,KDRC,75,Tour,2,1,,FALSE
+KPS-001,Nijrab Valley,KPS,KBLC,120,Adventure,3,1,,FALSE
+KHT-001,Khost City Scenery,KHT,JBDC,60,Adventure,3,1,,FALSE
+KNR-001,Kunar River Valley,KNR,JBDC,120,Adventure,3,1,,FALSE
+KDZ-001,Kunduz City & Farmlands,KDZ,MAZC,120,Adventure,3,1,,FALSE
+LGM-001,Alingar Valley,LGM,JBDC,120,Adventure,3,1,,FALSE
+LGR-001,Logar Valleys,LGR,KBLC,120,Adventure,3,1,,FALSE
+NGH-001,Amanullah Tomb,NGH,JBDC,90,Tour,2,1,,FALSE
+NGH-002,Darunta Lake,NGH,JBDC,60,Tour,1,1,,FALSE
+NGH-003,Gandamak Last Stand Site,NGH,JBDC,60,Adventure,3,1,,FALSE
+NIM-001,Nimroz Citadel,NIM,HERC,60,Expedition,4,1,,TRUE
+NIM-002,Qala Muhammad,NIM,HERC,60,Expedition,4,1,,TRUE
+NIM-003,Kamal Khan Dam,NIM,HERC,60,Expedition,4,1,,TRUE
+NRS-001,Parun Valley,NRS,JBDC,120,Expedition,4,1,,TRUE
+NRS-002,Bashgal Valley,NRS,JBDC,120,Expedition,4,1,,TRUE
+NRS-003,Barg-e Matal & Lakes,NRS,JBDC,120,Expedition,4,1,,TRUE
+PTA-001,Gardez & Zurmat Highlands,PTA,KBLC,60,Adventure,3,1,,FALSE
+PTK-001,Paktika Highlands,PTK,KBLC,60,Adventure,3,1,,FALSE
+PJR-001,Ahmad Shah Massoud Mausoleum,PJR,KBLC,60,Tour,1,1,,FALSE
+PJR-002,Paryan Valley,PJR,KBLC,120,Expedition,4,1,,TRUE
+PRW-001,Salang Pass,PRW,KBLC,30,Tour,1,1,,FALSE
+PRW-002,Jabal Saraj Palace,PRW,KBLC,45,Tour,1,1,,FALSE
+SAM-001,Takht-e Rostam,SAM,MAZC,90,Tour,2,1,,FALSE
+SAM-002,Buddhist Cave Monasteries,SAM,MAZC,90,Tour,2,1,,FALSE
+SEP-001,Sar-e-Pol Meadows,SEP,MAZC,60,Expedition,4,1,,TRUE
+TKH-001,Ai-Khanoum,TKH,FAIC,120,Adventure,3,1,,FALSE
+URZ-001,Tarin Kot Surroundings,URZ,KDRC,120,Expedition,4,1,,TRUE
+WRD-001,Wardak Highlands,WRD,KBLC,60,Adventure,3,1,,FALSE
+ZBL-001,Shahjoy & Qalat Valleys,ZBL,KDRC,150,Adventure,3,1,,FALSE
+KBL-019,Tomb of Nader Khan,KBL,KBLC,60,Tour,1,1,Generated to complete operational coverage for the attraction master record. Verify before final itinerary publication.,TRUE
+GHZ-006,Mausoleum of Shah Shahid,GHZ,GHZC,60,Tour,1,1,Generated after resolving duplicate GHZ-005; verify before publication.,TRUE

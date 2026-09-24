@@ -1,0 +1,4 @@
+asset_code;title;asset_type;image_path;alt_text;tags;applies_to;priority;is_active
+AST-CTA-001;Mountain Road CTA;cta_bg;/assets/images/transport/roads/bamyan-wardak-kabul/03.webp;Mountain road in Afghanistan;cta|road|adventure|tours;home|tours;1;1
+AST-BAN-001;Afghan Hospitality Banner;banner;/assets/images/page-assets/website-ready/guesthouse-hospitality.webp;Afghan hospitality setting;hospitality|culture|trust;home|about;1;1
+AST-VEH-001;Land Cruiser Road Travel;vehicle;/assets/images/transport/roads/off-road/02.webp;Tour vehicle on Afghan road;transport|logistics|safety;tours|transport;1;1

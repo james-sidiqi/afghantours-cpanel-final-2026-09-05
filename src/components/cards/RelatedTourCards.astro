@@ -1,0 +1,119 @@
+---
+import toursCsv from '../../../data/tours.csv?raw';
+
+interface Props {
+  tours?: string[];
+  title?: string;
+  intro?: string;
+}
+
+const { tours = [], title = 'Related tours', intro = '' } = Astro.props as Props;
+
+type Tour = {
+  name: string;
+  slug: string;
+  summary?: string;
+  hero_image_path?: string;
+  overview_image_path?: string;
+  duration_days?: string;
+  season?: string;
+  travel_style?: string;
+};
+
+function parseCsvLine(line: string) {
+  const values: string[] = [];
+  let current = '';
+  let inQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    const next = line[i + 1];
+
+    if (char === '"' && inQuotes && next === '"') {
+      current += '"';
+      i++;
+    } else if (char === '"') {
+      inQuotes = !inQuotes;
+    } else if (char === ',' && !inQuotes) {
+      values.push(current);
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  values.push(current);
+  return values;
+}
+
+function parseCsv(csv: string): Tour[] {
+  const lines = csv.trim().split(/\r?\n/).filter(Boolean);
+  const headers = parseCsvLine(lines[0]);
+  return lines.slice(1).map((line) => {
+    const values = parseCsvLine(line);
+    const row: Record<string, string> = {};
+    headers.forEach((header, index) => row[header] = values[index] || '');
+    return row as Tour;
+  }).filter((tour) => tour.slug && tour.name);
+}
+
+const allTours = parseCsv(toursCsv);
+const tourMap = new Map(allTours.map((tour) => [tour.slug, tour]));
+
+const customCard: Tour = {
+  name: 'Custom Tours',
+  slug: 'custom-tours',
+  summary: 'Build this experience into a private route designed around your dates, interests, access needs, and travel style.',
+  hero_image_path: '/assets/images/tours/custom-cultural-expeditions/gallery-1.webp',
+  duration_days: 'Flexible',
+  season: 'Year round',
+  travel_style: 'Private / Bespoke',
+};
+
+const selectedTours = tours
+  .map((slug) => slug === 'custom-tours' ? customCard : tourMap.get(slug))
+  .filter(Boolean) as Tour[];
+---
+
+{selectedTours.length > 0 && (
+  <section class="mt-10 border-t border-slate-200 pt-8">
+    <div class="mb-5">
+      <p class="text-xs font-bold uppercase tracking-[0.22em] text-blue-700">Plan this experience</p>
+      <h2 class="mt-2 text-2xl font-bold text-slate-950">{title}</h2>
+      {intro && <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">{intro}</p>}
+    </div>
+
+    <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+      {selectedTours.map((tour) => {
+        const href = tour.slug === 'custom-tours' ? '/contact/' : `/tours/${tour.slug}/`;
+        const image = tour.hero_image_path || tour.overview_image_path || '/assets/images/placeholders/default-tour.webp';
+        const durationMeta =
+          String(tour.duration_days || '').trim().toLowerCase() === 'inquire'
+            ? 'Custom duration'
+            : tour.duration_days
+              ? `${tour.duration_days} days`
+              : '';
+
+        const meta = [durationMeta, tour.season, tour.travel_style]
+          .filter(Boolean)
+          .slice(0, 2)
+          .join(' • ');
+        return (
+          <a href={href} class="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+            <div class="relative h-40 overflow-hidden bg-slate-200">
+              <img src={image} alt={tour.name} class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent"></div>
+              <div class="absolute bottom-4 left-4 right-4">
+                {meta && <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-white/75">{meta}</p>}
+                <h3 class="mt-1 text-lg font-bold leading-tight text-white">{tour.name}</h3>
+              </div>
+            </div>
+            <div class="p-5">
+              <p class="line-clamp-3 text-sm leading-6 text-slate-600">{tour.summary || 'A real AfghanTours itinerary that can include this experience when timing and local access allow.'}</p>
+              <div class="mt-4 text-sm font-bold text-blue-700 group-hover:text-blue-900">{tour.slug === 'custom-tours' ? 'Start planning →' : 'View tour →'}</div>
+            </div>
+          </a>
+        );
+      })}
+    </div>
+  </section>
+)}

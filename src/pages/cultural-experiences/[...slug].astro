@@ -1,0 +1,2425 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TourCardGrid from '../../components/cards/TourCardGrid.astro';
+
+import {
+  getCollection,
+  render,
+} from 'astro:content';
+
+import {
+  getTours,
+} from '../../lib/buildRelations';
+
+
+export async function getStaticPaths() {
+  const items = await getCollection(
+    'cultural-experiences'
+  );
+
+  return items.map((item) => ({
+    params: {
+      slug: item.id.replace(/\.md$/, ''),
+    },
+    props: {
+      item,
+    },
+  }));
+}
+
+
+const { item } = Astro.props;
+
+const { Content } = await render(item);
+
+const allExperiences = await getCollection(
+  'cultural-experiences'
+);
+
+const allTours = getTours();
+
+
+const slug =
+  item.id.replace(/\.md$/, '');
+
+
+const data = item.data;
+
+
+const title =
+  data.title;
+
+
+const subtitle =
+  data.subtitle ||
+  data.card_description ||
+  'A living cultural experience in Afghanistan.';
+
+
+const description =
+  data.card_description ||
+  data.subtitle ||
+  `Explore ${title}, one of Afghanistan's living cultural traditions.`;
+
+
+const heroImage =
+  data.hero_image ||
+  data.image ||
+  '/assets/images/placeholders/default-attraction.webp';
+
+
+const provinces =
+  Array.isArray(data.provinces)
+    ? data.provinces
+    : data.province
+      ? [data.province]
+      : [];
+
+
+const relatedTourSlugs =
+  Array.isArray(data.related_tours)
+    ? data.related_tours
+    : [];
+
+
+/* =========================================================
+   IMAGE DISCOVERY
+   ========================================================= */
+
+const imageCandidates = [];
+
+
+const addImage = (value) => {
+  if (!value) return;
+
+  const normalized =
+    String(value).trim();
+
+  if (
+    normalized &&
+    !imageCandidates.includes(normalized)
+  ) {
+    imageCandidates.push(normalized);
+  }
+};
+
+
+(data.gallery_images || []).forEach(addImage);
+
+addImage(heroImage);
+addImage(data.image);
+
+
+/*
+ * Discover images inside:
+ *
+ * 1. dedicated cultural experience folder
+ * 2. same folder as the configured hero image
+ *
+ * This means experiences using an existing rich image
+ * folder automatically gain a gallery.
+ */
+
+const foldersToCheck = [
+  `/assets/images/cultural-experiences/${slug}/`,
+];
+
+
+if (
+  heroImage &&
+  heroImage.startsWith('/')
+) {
+  const heroFolder =
+    heroImage.substring(
+      0,
+      heroImage.lastIndexOf('/') + 1
+    );
+
+  if (
+    heroFolder &&
+    !foldersToCheck.includes(heroFolder)
+  ) {
+    foldersToCheck.push(heroFolder);
+  }
+}
+
+
+for (const folder of foldersToCheck) {
+
+  const diskFolder = path.join(
+    process.cwd(),
+    'public',
+    folder.replace(/^\/+/, '')
+  );
+
+
+  try {
+
+    if (!fs.existsSync(diskFolder)) {
+      continue;
+    }
+
+
+    const images = fs
+      .readdirSync(diskFolder)
+      .filter((name) =>
+        /\.(webp|jpg|jpeg|png|avif)$/i.test(name)
+      )
+      .sort((a, b) => {
+
+        const rank = (name) => {
+          const lower =
+            name.toLowerCase();
+
+          if (
+            lower.startsWith('hero.')
+          ) return 0;
+
+          if (
+            lower.includes('overview')
+          ) return 1;
+
+          if (
+            lower.includes('gallery')
+          ) return 2;
+
+          return 3;
+        };
+
+
+        return (
+          rank(a) -
+          rank(b) ||
+          a.localeCompare(b)
+        );
+
+      });
+
+
+    images.forEach((name) =>
+      addImage(
+        `${folder.replace(/\/?$/, '/')}${name}`
+      )
+    );
+
+  } catch (error) {
+
+    console.warn(
+      `Gallery discovery failed for ${slug}`,
+      error
+    );
+
+  }
+
+}
+
+
+const galleryImages =
+  imageCandidates.slice(0, 9);
+
+
+/* =========================================================
+   RELATED TOURS
+   ========================================================= */
+
+const tourBySlug =
+  new Map(
+    allTours.map((tour) => [
+      tour.slug,
+      tour,
+    ])
+  );
+
+
+const explicitTours =
+  relatedTourSlugs
+    .map((tourSlug) =>
+      tourBySlug.get(tourSlug)
+    )
+    .filter(Boolean);
+
+
+const normalize =
+  (value) =>
+    String(value || '')
+      .toLowerCase()
+      .trim();
+
+
+const provinceSet =
+  new Set(
+    provinces.map(normalize)
+  );
+
+
+const tourProvinceNames = (tour) => {
+
+  const values = [];
+
+
+  if (Array.isArray(tour.provinces)) {
+
+    tour.provinces.forEach((province) => {
+
+      if (
+        typeof province === 'string'
+      ) {
+        values.push(province);
+
+      } else if (province) {
+
+        values.push(
+          province.title ||
+          province.name ||
+          province.slug ||
+          province.province ||
+          ''
+        );
+
+      }
+
+    });
+
+  }
+
+
+  [
+    tour.province,
+    tour.primary_province,
+  ]
+    .filter(Boolean)
+    .forEach((value) =>
+      values.push(value)
+    );
+
+
+  return values
+    .map(normalize)
+    .filter(Boolean);
+};
+
+
+const explicitSlugSet =
+  new Set(
+    explicitTours.map(
+      (tour) => tour.slug
+    )
+  );
+
+
+const geographicFallback =
+  allTours
+    .filter(
+      (tour) =>
+        !explicitSlugSet.has(tour.slug)
+    )
+    .filter((tour) => {
+
+      if (!provinceSet.size) {
+        return false;
+      }
+
+      return tourProvinceNames(tour)
+        .some((province) =>
+          provinceSet.has(province)
+        );
+
+    });
+
+
+const relatedTours = [
+  ...explicitTours,
+  ...geographicFallback,
+]
+  .filter(
+    (tour, index, array) =>
+      array.findIndex(
+        (candidate) =>
+          candidate.slug === tour.slug
+      ) === index
+  )
+  .slice(0, 6);
+
+
+/* =========================================================
+   RELATED CULTURAL EXPERIENCES
+   ========================================================= */
+
+const type =
+  normalize(
+    data.experience_type
+  );
+
+
+const scoredExperiences =
+  allExperiences
+    .filter(
+      (candidate) =>
+        candidate.id !== item.id
+    )
+    .map((candidate) => {
+
+      let score = 0;
+
+      const candidateType =
+        normalize(
+          candidate.data.experience_type
+        );
+
+
+      if (
+        type &&
+        candidateType === type
+      ) {
+        score += 5;
+      }
+
+
+      const candidateProvinces =
+        new Set(
+          (
+            candidate.data.provinces ||
+            []
+          ).map(normalize)
+        );
+
+
+      provinceSet.forEach(
+        (province) => {
+
+          if (
+            candidateProvinces.has(
+              province
+            )
+          ) {
+            score += 3;
+          }
+
+        }
+      );
+
+
+      return {
+        candidate,
+        score,
+      };
+
+    })
+    .sort(
+      (a, b) =>
+        b.score - a.score ||
+        a.candidate.data.title.localeCompare(
+          b.candidate.data.title
+        )
+    );
+
+
+const relatedExperiences =
+  scoredExperiences
+    .slice(0, 6)
+    .map(
+      (entry) =>
+        entry.candidate
+    );
+
+
+const pairedFoods =
+  data.paired_foods || [];
+
+
+const nearby =
+  data.nearby || [];
+
+
+const experienceType =
+  data.experience_type ||
+  'Cultural Experience';
+
+
+const duration =
+  data.duration ||
+  (
+    data.duration_hours
+      ? `${data.duration_hours} hours`
+      : 'Flexible'
+  );
+
+
+const season =
+  data.best_season ||
+  'Year round / timing dependent';
+
+
+const contactHref =
+  `/contact/?type=cultural-experience&experience=${encodeURIComponent(title)}`;
+
+const uniqueGalleryImages = (items = []) =>
+  [...new Set(
+    items
+      .filter(Boolean)
+      .map((item) => typeof item === 'string' ? item : item?.src || item?.image)
+      .filter(Boolean)
+  )];
+
+---
+
+<BaseLayout
+  title={`${title} | AfghanTours`}
+  description={description}
+  image={heroImage}
+>
+
+  <!-- =====================================================
+       HERO
+       ===================================================== -->
+
+  <section class="culture-hero">
+
+    <img
+      class="culture-hero-image"
+      src={heroImage}
+      alt={title}
+      fetchpriority="high"
+    />
+
+    <div
+      class="culture-hero-overlay"
+      aria-hidden="true"
+    ></div>
+
+
+    <div class="culture-hero-inner">
+
+      <nav
+        class="breadcrumbs"
+        aria-label="Breadcrumb"
+      >
+
+        <a href="/">
+          Home
+        </a>
+
+        <span>›</span>
+
+        <a href="/cultural-experiences/">
+          Cultural Experiences
+        </a>
+
+      </nav>
+
+
+      <div class="culture-hero-copy">
+
+        <p class="kicker">
+          {experienceType}
+        </p>
+
+
+        <h1>
+          {title}
+        </h1>
+
+
+        <p class="hero-subtitle">
+          {subtitle}
+        </p>
+
+
+        <div class="hero-actions">
+
+          <a
+            class="hero-primary"
+            href="#experience-story"
+          >
+            Explore the experience
+          </a>
+
+          <a
+            class="hero-secondary"
+            href={contactHref}
+          >
+            Add it to my trip
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       QUICK FACTS
+       ===================================================== -->
+
+  <section class="culture-facts-shell">
+
+    <div class="culture-facts">
+
+      <div class="culture-fact">
+        <span>Experience</span>
+        <strong>
+          {experienceType}
+        </strong>
+      </div>
+
+
+      <div class="culture-fact">
+        <span>Where</span>
+        <strong>
+          {
+            provinces.length
+              ? provinces.join(', ')
+              : 'Afghanistan'
+          }
+        </strong>
+      </div>
+
+
+      <div class="culture-fact">
+        <span>Duration</span>
+        <strong>
+          {duration}
+        </strong>
+      </div>
+
+
+      <div class="culture-fact">
+        <span>Best timing</span>
+        <strong>
+          {season}
+        </strong>
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       STORY
+       ===================================================== -->
+
+  <main
+    id="experience-story"
+    class="culture-main"
+  >
+
+    <div class="culture-layout">
+
+
+      <article class="culture-story">
+
+        <p class="section-kicker">
+          Living Afghanistan
+        </p>
+
+
+        <h2>
+          The experience
+        </h2>
+
+
+        <p class="story-lead">
+          {description}
+        </p>
+
+
+        <div class="culture-prose">
+          <Content />
+        </div>
+
+      </article>
+
+
+      <aside class="culture-sidebar">
+
+        <div class="sidebar-card">
+
+          <p class="section-kicker">
+            Plan Around It
+          </p>
+
+
+          <h2>
+            Make this part of your journey
+          </h2>
+
+
+          <p>
+            Cultural experiences work best when they
+            fit naturally into the route, season,
+            local schedule, and people available
+            during your visit.
+          </p>
+
+
+          <div class="sidebar-details">
+
+            <div>
+              <span>Duration</span>
+              <strong>
+                {duration}
+              </strong>
+            </div>
+
+
+            <div>
+              <span>Best season</span>
+              <strong>
+                {season}
+              </strong>
+            </div>
+
+
+            {provinces.length > 0 && (
+              <div>
+                <span>Province</span>
+                <strong>
+                  {provinces.join(', ')}
+                </strong>
+              </div>
+            )}
+
+          </div>
+
+
+          <a
+            class="sidebar-primary"
+            href={contactHref}
+          >
+            Build a trip around this
+          </a>
+
+
+          <a
+            class="sidebar-secondary"
+            href="/cultural-experiences/"
+          >
+            Browse all experiences
+          </a>
+
+        </div>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+
+  <!-- =====================================================
+       GALLERY / LIGHTBOX
+       ===================================================== -->
+
+  {galleryImages.length > 1 && (
+
+    <section class="culture-gallery-section">
+
+      <div class="culture-gallery-wrap">
+
+        <div class="section-heading">
+
+          <p class="section-kicker">
+            Visual Story
+          </p>
+
+          <h2>
+            See the experience
+          </h2>
+
+          <p>
+            Click any image for a larger view.
+          </p>
+
+        </div>
+
+
+        <div
+          class:list={[
+            'culture-gallery',
+            galleryImages.length === 2 &&
+              'culture-gallery-two',
+          ]}
+        >
+
+          {galleryImages.map(
+            (src, index) => (
+
+              <button
+                type="button"
+                class:list={[
+                  'culture-gallery-item',
+                  index === 0 &&
+                    galleryImages.length >= 3 &&
+                    'culture-gallery-featured',
+                ]}
+                data-cultural-gallery-image={src}
+                data-cultural-gallery-alt={`${title} — view ${index + 1}`}
+                aria-label={`Open image ${index + 1} of ${title}`}
+              >
+
+                <img
+                  src={src}
+                  alt={`${title} — view ${index + 1}`}
+                  loading={
+                    index < 2
+                      ? 'eager'
+                      : 'lazy'
+                  }
+                />
+
+              </button>
+
+            )
+          )}
+
+        </div>
+
+      </div>
+
+    </section>
+
+  )}
+
+
+  <!-- =====================================================
+       CULTURAL PAIRINGS
+       ===================================================== -->
+
+  {
+    (
+      pairedFoods.length > 0 ||
+      nearby.length > 0
+    ) && (
+
+      <section class="pairings-section">
+
+        <div class="pairings-wrap">
+
+          <div class="section-heading dark-heading">
+
+            <p class="section-kicker">
+              Build Context
+            </p>
+
+            <h2>
+              Pair the experience
+            </h2>
+
+            <p>
+              The strongest cultural moments rarely
+              happen in isolation. Combine them with
+              food, neighborhoods, landscapes, and
+              nearby stops.
+            </p>
+
+          </div>
+
+
+          <div class="pairing-columns">
+
+            {pairedFoods.length > 0 && (
+
+              <div class="pairing-card">
+
+                <span class="pairing-number">
+                  01
+                </span>
+
+                <h3>
+                  Food & hospitality
+                </h3>
+
+                <div class="pairing-pills">
+
+                  {pairedFoods.map(
+                    (food) => (
+                      <span>
+                        {food}
+                      </span>
+                    )
+                  )}
+
+                </div>
+
+              </div>
+
+            )}
+
+
+            {nearby.length > 0 && (
+
+              <div class="pairing-card">
+
+                <span class="pairing-number">
+                  02
+                </span>
+
+                <h3>
+                  Nearby & complementary
+                </h3>
+
+                <div class="pairing-pills">
+
+                  {nearby.map(
+                    (place) => (
+                      <span>
+                        {place}
+                      </span>
+                    )
+                  )}
+
+                </div>
+
+              </div>
+
+            )}
+
+          </div>
+
+        </div>
+
+      </section>
+
+    )
+  }
+
+
+  <!-- =====================================================
+       RELATED TOURS
+       ===================================================== -->
+
+  {
+    relatedTours.length > 0 && (
+
+      <TourCardGrid
+        tours={relatedTours}
+        title={`Journeys connected to ${title}`}
+        intro={`These tours are directly linked to this experience or travel through areas where it can fit naturally into the journey.`}
+      />
+
+    )
+  }
+
+
+  <!-- =====================================================
+       OTHER CULTURAL EXPERIENCES
+       ===================================================== -->
+
+  {
+    relatedExperiences.length > 0 && (
+
+      <section class="more-experiences">
+
+        <div class="more-experiences-wrap">
+
+          <div class="section-heading">
+
+            <p class="section-kicker">
+              Continue Exploring
+            </p>
+
+            <h2>
+              More cultural experiences
+            </h2>
+
+            <p>
+              Move between craft, sport, hospitality,
+              celebration, and everyday Afghan life
+              without returning to the main menu.
+            </p>
+
+          </div>
+
+
+          <div class="experience-grid">
+
+            {
+              relatedExperiences.map(
+                (experience) => {
+
+                  const experienceSlug =
+                    experience.id.replace(
+                      /\.md$/,
+                      ''
+                    );
+
+
+                  const image =
+                    experience.data.hero_image ||
+                    experience.data.image ||
+                    '/assets/images/placeholders/default-attraction.webp';
+
+
+                  return (
+
+                    <a
+                      class="experience-card"
+                      href={`/cultural-experiences/${experienceSlug}/`}
+                    >
+
+                      <div class="experience-card-image">
+
+                        <img
+                          src={image}
+                          alt={experience.data.title}
+                          loading="lazy"
+                        />
+
+                      </div>
+
+
+                      <div class="experience-card-copy">
+
+                        <p>
+                          {
+                            experience.data.experience_type ||
+                            'Cultural Experience'
+                          }
+                        </p>
+
+                        <h3>
+                          {experience.data.title}
+                        </h3>
+
+
+                        {
+                          experience.data.card_description && (
+
+                            <span>
+                              {experience.data.card_description}
+                            </span>
+
+                          )
+                        }
+
+
+                        <strong>
+                          Explore experience →
+                        </strong>
+
+                      </div>
+
+                    </a>
+
+                  );
+
+                }
+              )
+            }
+
+          </div>
+
+        </div>
+
+      </section>
+
+    )
+  }
+
+
+  <!-- =====================================================
+       CTA
+       ===================================================== -->
+
+  <section class="culture-final-cta">
+
+    <div class="culture-final-inner">
+
+      <div>
+
+        <p class="section-kicker">
+          Custom Journey
+        </p>
+
+        <h2>
+          Travel through culture, not around it.
+        </h2>
+
+        <p>
+          Tell us which traditions, foods, crafts,
+          landscapes, and historical places interest
+          you. We will build them into a practical
+          route rather than treating them as
+          disconnected stops.
+        </p>
+
+      </div>
+
+
+      <a href={contactHref}>
+        Start planning
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       IMAGE LIGHTBOX
+       ===================================================== -->
+
+  <dialog
+    id="cultural-gallery-dialog"
+    class="culture-dialog"
+  >
+
+    <button
+      class="culture-dialog-close"
+      type="button"
+      aria-label="Close image"
+    >
+      ×
+    </button>
+
+    <img
+      id="cultural-gallery-dialog-image"
+      src={heroImage}
+      alt=""
+    />
+
+  </dialog>
+
+
+<script is:inline>
+  /* CULTURAL-GALLERY-DEDUPE-START */
+  (() => {
+    const normalizeGallerySrc = (img) => {
+      const raw =
+        img.currentSrc ||
+        img.getAttribute('src') ||
+        '';
+
+      if (!raw) return '';
+
+      try {
+        const url = new URL(raw, window.location.origin);
+        return url.pathname
+          .replace(/\/+/g, '/')
+          .toLowerCase();
+      } catch {
+        return raw
+          .split('?')[0]
+          .split('#')[0]
+          .replace(/\/+/g, '/')
+          .toLowerCase();
+      }
+    };
+
+    const removeRepeatedGalleryImages = () => {
+      const selectors = [
+        '[data-gallery]',
+        '.experience-gallery',
+        '.gallery-grid',
+        '.gallery',
+        '.hero-gallery',
+        '.media-gallery',
+        '[class*="gallery"]'
+      ];
+
+      document
+        .querySelectorAll(selectors.join(','))
+        .forEach((gallery) => {
+          if (
+            gallery.closest('.related-tour-grid') ||
+            gallery.closest('.featured-modal')
+          ) {
+            return;
+          }
+
+          const seen = new Set();
+
+          gallery.querySelectorAll('img').forEach((img) => {
+            const src = normalizeGallerySrc(img);
+
+            if (!src) return;
+
+            if (!seen.has(src)) {
+              seen.add(src);
+              return;
+            }
+
+            const item =
+              img.closest(
+                '[data-gallery-item], figure, li, button, a, .gallery-item, .gallery-tile'
+              ) || img;
+
+            item.remove();
+          });
+        });
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener(
+        'DOMContentLoaded',
+        removeRepeatedGalleryImages,
+        { once: true }
+      );
+    } else {
+      removeRepeatedGalleryImages();
+    }
+  })();
+  /* CULTURAL-GALLERY-DEDUPE-END */
+</script>
+
+</BaseLayout>
+
+
+<script is:inline>
+  (() => {
+    const dialog =
+      document.getElementById(
+        'cultural-gallery-dialog'
+      );
+
+    const dialogImage =
+      document.getElementById(
+        'cultural-gallery-dialog-image'
+      );
+
+    if (!dialog || !dialogImage) {
+      return;
+    }
+
+
+    document
+      .querySelectorAll(
+        '[data-cultural-gallery-image]'
+      )
+      .forEach((button) => {
+
+        button.addEventListener(
+          'click',
+          () => {
+
+            dialogImage.src =
+              button.dataset
+                .culturalGalleryImage;
+
+            dialogImage.alt =
+              button.dataset
+                .culturalGalleryAlt ||
+              '';
+
+            dialog.showModal();
+
+          }
+        );
+
+      });
+
+
+    dialog
+      .querySelector(
+        '.culture-dialog-close'
+      )
+      ?.addEventListener(
+        'click',
+        () => dialog.close()
+      );
+
+
+    dialog.addEventListener(
+      'click',
+      (event) => {
+
+        if (
+          event.target === dialog
+        ) {
+          dialog.close();
+        }
+
+      }
+    );
+
+  })();
+</script>
+
+
+<style>
+
+  .culture-hero {
+    position: relative;
+
+    min-height:
+      clamp(560px, 70vh, 780px);
+
+    overflow: hidden;
+
+    background: #101820;
+    color: #fff;
+  }
+
+
+  .culture-hero-image {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+
+  .culture-hero-overlay {
+    position: absolute;
+    inset: 0;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(6,11,16,.91) 0%,
+        rgba(6,11,16,.70) 43%,
+        rgba(6,11,16,.18) 76%
+      ),
+      linear-gradient(
+        0deg,
+        rgba(6,11,16,.82) 0%,
+        transparent 62%
+      );
+  }
+
+
+  .culture-hero-inner {
+    position: relative;
+    z-index: 2;
+
+    width:
+      min(1280px, calc(100% - 2rem));
+
+    min-height:
+      clamp(560px, 70vh, 780px);
+
+    margin: auto;
+
+    padding:
+      clamp(2rem, 5vw, 4rem)
+      0
+      clamp(4rem, 8vw, 6rem);
+
+    display: flex;
+    flex-direction: column;
+  }
+
+
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: .55rem;
+
+    font-size: .78rem;
+    font-weight: 800;
+  }
+
+
+  .breadcrumbs a {
+    color: rgba(255,255,255,.82);
+    text-decoration: none;
+  }
+
+
+  .breadcrumbs span {
+    color: rgba(255,255,255,.4);
+  }
+
+
+  .culture-hero-copy {
+    margin-top: auto;
+    max-width: 930px;
+  }
+
+
+  .kicker,
+  .section-kicker {
+    margin: 0;
+
+    color: #d6a33e;
+
+    font-size: .72rem;
+    line-height: 1.3;
+
+    font-weight: 900;
+
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+
+
+  .culture-hero .kicker {
+    color: #f1c56b;
+  }
+
+
+  .culture-hero h1 {
+    margin:
+      .65rem 0
+      1rem;
+
+    max-width: 980px;
+
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
+    font-size:
+      clamp(3rem, 7vw, 6.8rem);
+
+    line-height: .91;
+
+    letter-spacing: -.06em;
+
+    text-wrap: balance;
+
+    text-shadow:
+      0 8px 35px
+      rgba(0,0,0,.36);
+  }
+
+
+  .hero-subtitle {
+    max-width: 720px;
+
+    margin: 0;
+
+    color:
+      rgba(255,255,255,.88);
+
+    font-size:
+      clamp(1.05rem, 1.7vw, 1.3rem);
+
+    line-height: 1.6;
+  }
+
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: .8rem;
+
+    margin-top: 1.8rem;
+  }
+
+
+  .hero-actions a {
+    display: inline-flex;
+
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 999px;
+
+    padding:
+      .95rem 1.35rem;
+
+    font-size: .88rem;
+    font-weight: 900;
+
+    text-decoration: none;
+
+    transition:
+      transform .2s ease,
+      background .2s ease;
+  }
+
+
+  .hero-actions a:hover {
+    transform:
+      translateY(-2px);
+  }
+
+
+  .hero-primary {
+    background: #d6a33e;
+    color: #101820;
+  }
+
+
+  .hero-primary:hover {
+    background: #efc266;
+  }
+
+
+  .hero-secondary {
+    border:
+      1px solid
+      rgba(255,255,255,.35);
+
+    background:
+      rgba(5,10,15,.28);
+
+    color: #fff;
+  }
+
+
+  /* QUICK FACTS */
+
+  .culture-facts-shell {
+    position: relative;
+    z-index: 5;
+
+    background: #fbf6ed;
+  }
+
+
+  .culture-facts {
+    width:
+      min(1120px, calc(100% - 2rem));
+
+    margin: auto;
+
+    transform:
+      translateY(-2rem);
+
+    display: grid;
+
+    grid-template-columns:
+      repeat(4, minmax(0, 1fr));
+
+    overflow: hidden;
+
+    border:
+      1px solid
+      rgba(16,24,32,.08);
+
+    border-radius: 1.4rem;
+
+    background: #fff;
+
+    box-shadow:
+      0 18px 50px
+      rgba(20,15,8,.12);
+  }
+
+
+  .culture-fact {
+    padding:
+      1.25rem 1.2rem;
+
+    border-right:
+      1px solid
+      rgba(16,24,32,.08);
+  }
+
+
+  .culture-fact:last-child {
+    border-right: 0;
+  }
+
+
+  .culture-fact span {
+    display: block;
+
+    color: #777064;
+
+    font-size: .65rem;
+    font-weight: 900;
+
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+
+
+  .culture-fact strong {
+    display: block;
+
+    margin-top: .4rem;
+
+    color: #101820;
+
+    font-size: .91rem;
+    line-height: 1.38;
+  }
+
+
+  /* STORY */
+
+  .culture-main {
+    background: #fbf6ed;
+
+    color: #101820;
+
+    padding:
+      clamp(2rem, 4vw, 4rem)
+      0
+      clamp(5rem, 8vw, 8rem);
+  }
+
+
+  .culture-layout {
+    width:
+      min(1180px, calc(100% - 2rem));
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      360px;
+
+    gap:
+      clamp(2rem, 5vw, 5rem);
+
+    align-items: start;
+  }
+
+
+  .culture-story {
+    min-width: 0;
+  }
+
+
+  .culture-story > h2,
+  .sidebar-card h2,
+  .section-heading h2,
+  .culture-final-inner h2 {
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
+    letter-spacing: -.05em;
+  }
+
+
+  .culture-story > h2 {
+    margin:
+      .5rem 0
+      1.2rem;
+
+    font-size:
+      clamp(2.7rem, 5vw, 4.6rem);
+
+    line-height: .96;
+  }
+
+
+  .story-lead {
+    margin:
+      0 0 2.2rem;
+
+    color: #3f4549;
+
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
+    font-size:
+      clamp(1.2rem, 2vw, 1.5rem);
+
+    line-height: 1.55;
+  }
+
+
+  .culture-prose {
+    color: #333b40;
+
+    font-size: 1.04rem;
+
+    line-height: 1.82;
+  }
+
+
+  .culture-prose :global(h2),
+  .culture-prose :global(h3) {
+    margin:
+      2.8rem 0
+      .85rem;
+
+    color: #101820;
+
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
+    line-height: 1.05;
+
+    letter-spacing: -.035em;
+  }
+
+
+  .culture-prose :global(h2) {
+    font-size:
+      clamp(2rem, 3vw, 2.8rem);
+  }
+
+
+  .culture-prose :global(h3) {
+    font-size:
+      clamp(1.55rem, 2.4vw, 2.1rem);
+  }
+
+
+  .culture-prose :global(p) {
+    margin:
+      0 0 1.35rem;
+  }
+
+
+  .culture-prose :global(strong) {
+    color: #101820;
+  }
+
+
+  /* SIDEBAR */
+
+  .culture-sidebar {
+    position: sticky;
+    top: 6rem;
+  }
+
+
+  .sidebar-card {
+    border:
+      1px solid
+      rgba(16,24,32,.09);
+
+    border-radius: 1.5rem;
+
+    background: #fff;
+
+    padding:
+      clamp(1.4rem, 2.4vw, 2rem);
+
+    box-shadow:
+      0 18px 46px
+      rgba(20,15,8,.09);
+  }
+
+
+  .sidebar-card h2 {
+    margin:
+      .5rem 0
+      .9rem;
+
+    font-size:
+      clamp(1.8rem, 2.5vw, 2.35rem);
+
+    line-height: 1;
+  }
+
+
+  .sidebar-card > p:not(.section-kicker) {
+    color: #596168;
+    line-height: 1.68;
+  }
+
+
+  .sidebar-details {
+    display: grid;
+    gap: .85rem;
+
+    margin:
+      1.5rem 0;
+  }
+
+
+  .sidebar-details div {
+    padding-top: .8rem;
+
+    border-top:
+      1px solid
+      rgba(16,24,32,.08);
+  }
+
+
+  .sidebar-details span {
+    display: block;
+
+    color: #777064;
+
+    font-size: .65rem;
+    font-weight: 900;
+
+    text-transform: uppercase;
+    letter-spacing: .11em;
+  }
+
+
+  .sidebar-details strong {
+    display: block;
+
+    margin-top: .25rem;
+
+    font-size: .92rem;
+  }
+
+
+  .sidebar-primary,
+  .sidebar-secondary {
+    display: flex;
+
+    width: 100%;
+
+    justify-content: center;
+    align-items: center;
+
+    padding: .9rem 1rem;
+
+    border-radius: 999px;
+
+    text-decoration: none;
+
+    font-size: .84rem;
+    font-weight: 900;
+  }
+
+
+  .sidebar-primary {
+    background: #d6a33e;
+    color: #101820;
+  }
+
+
+  .sidebar-secondary {
+    margin-top: .65rem;
+
+    border:
+      1px solid
+      rgba(16,24,32,.14);
+
+    color: #101820;
+  }
+
+
+  /* GALLERY */
+
+  .culture-gallery-section {
+    padding:
+      clamp(4rem, 7vw, 7rem)
+      0;
+
+    background: #101820;
+    color: #fff;
+  }
+
+
+  .culture-gallery-wrap {
+    width:
+      min(1280px, calc(100% - 2rem));
+
+    margin: auto;
+  }
+
+
+  .section-heading {
+    max-width: 760px;
+
+    margin-bottom: 2rem;
+  }
+
+
+  .section-heading h2 {
+    margin:
+      .5rem 0
+      .8rem;
+
+    font-size:
+      clamp(2.6rem, 5vw, 4.6rem);
+
+    line-height: .96;
+  }
+
+
+  .section-heading > p:last-child {
+    color: #596168;
+
+    line-height: 1.7;
+  }
+
+
+  .culture-gallery-section
+  .section-heading > p:last-child {
+    color:
+      rgba(255,255,255,.65);
+  }
+
+
+  .culture-gallery {
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, minmax(0,1fr));
+
+    grid-auto-rows: 250px;
+
+    gap: .8rem;
+  }
+
+
+  .culture-gallery-two {
+    grid-template-columns:
+      repeat(2, minmax(0,1fr));
+
+    grid-auto-rows: 420px;
+  }
+
+
+  .culture-gallery-item {
+    display: block;
+
+    width: 100%;
+
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+
+    border: 0;
+    border-radius: 1rem;
+
+    background: #202a31;
+
+    cursor: zoom-in;
+  }
+
+
+  .culture-gallery-featured {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+
+  .culture-gallery-item img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+      transform .45s ease;
+  }
+
+
+  .culture-gallery-item:hover img {
+    transform:
+      scale(1.025);
+  }
+
+
+  /* PAIRINGS */
+
+  .pairings-section {
+    padding:
+      clamp(4rem, 7vw, 7rem)
+      0;
+
+    background: #efe1cd;
+    color: #101820;
+  }
+
+
+  .pairings-wrap {
+    width:
+      min(1180px, calc(100% - 2rem));
+
+    margin: auto;
+  }
+
+
+  .pairing-columns {
+    display: grid;
+
+    grid-template-columns:
+      repeat(2, minmax(0,1fr));
+
+    gap: 1rem;
+  }
+
+
+  .pairing-card {
+    position: relative;
+
+    overflow: hidden;
+
+    min-height: 230px;
+
+    border-radius: 1.4rem;
+
+    padding:
+      clamp(1.5rem, 3vw, 2.2rem);
+
+    background: #fff;
+  }
+
+
+  .pairing-number {
+    color: #d6a33e;
+
+    font-family:
+      Georgia,
+      serif;
+
+    font-size: 2.5rem;
+  }
+
+
+  .pairing-card h3 {
+    margin:
+      .5rem 0
+      1.3rem;
+
+    font-family:
+      Georgia,
+      serif;
+
+    font-size:
+      clamp(1.7rem, 2.7vw, 2.5rem);
+
+    letter-spacing: -.04em;
+  }
+
+
+  .pairing-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .55rem;
+  }
+
+
+  .pairing-pills span {
+    border-radius: 999px;
+
+    background: #fbf6ed;
+
+    padding:
+      .55rem .8rem;
+
+    font-size: .79rem;
+    font-weight: 800;
+  }
+
+
+  /* MORE EXPERIENCES */
+
+  .more-experiences {
+    padding:
+      clamp(4rem, 7vw, 7rem)
+      0;
+
+    background: #fbf6ed;
+    color: #101820;
+  }
+
+
+  .more-experiences-wrap {
+    width:
+      min(1280px, calc(100% - 2rem));
+
+    margin: auto;
+  }
+
+
+  .experience-grid {
+    display: grid;
+
+    grid-template-columns:
+      repeat(3, minmax(0,1fr));
+
+    gap: 1rem;
+  }
+
+
+  .experience-card {
+    display: block;
+
+    overflow: hidden;
+
+    border:
+      1px solid
+      rgba(16,24,32,.08);
+
+    border-radius: 1.3rem;
+
+    background: #fff;
+
+    color: inherit;
+    text-decoration: none;
+
+    box-shadow:
+      0 14px 36px
+      rgba(20,15,8,.07);
+
+    transition:
+      transform .25s ease,
+      box-shadow .25s ease;
+  }
+
+
+  .experience-card:hover {
+    transform:
+      translateY(-4px);
+
+    box-shadow:
+      0 22px 45px
+      rgba(20,15,8,.12);
+  }
+
+
+  .experience-card-image {
+    height: 220px;
+    overflow: hidden;
+  }
+
+
+  .experience-card-image img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+      transform .45s ease;
+  }
+
+
+  .experience-card:hover img {
+    transform:
+      scale(1.03);
+  }
+
+
+  .experience-card-copy {
+    padding: 1.25rem;
+  }
+
+
+  .experience-card-copy > p {
+    margin: 0;
+
+    color: #a4650d;
+
+    font-size: .68rem;
+    font-weight: 900;
+
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+
+
+  .experience-card-copy h3 {
+    margin:
+      .45rem 0
+      .8rem;
+
+    font-family:
+      Georgia,
+      serif;
+
+    font-size: 1.65rem;
+
+    line-height: 1.05;
+    letter-spacing: -.035em;
+  }
+
+
+  .experience-card-copy > span {
+    display: -webkit-box;
+
+    color: #596168;
+
+    font-size: .9rem;
+    line-height: 1.55;
+
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+  }
+
+
+  .experience-card-copy strong {
+    display: block;
+
+    margin-top: 1rem;
+
+    color: #a4650d;
+
+    font-size: .85rem;
+  }
+
+
+  /* FINAL CTA */
+
+  .culture-final-cta {
+    padding:
+      clamp(4rem, 7vw, 7rem)
+      0;
+
+    background: #0b141b;
+    color: #fff;
+  }
+
+
+  .culture-final-inner {
+    width:
+      min(1180px, calc(100% - 2rem));
+
+    margin: auto;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 3rem;
+  }
+
+
+  .culture-final-inner > div {
+    max-width: 760px;
+  }
+
+
+  .culture-final-inner h2 {
+    margin:
+      .5rem 0
+      1rem;
+
+    font-size:
+      clamp(2.7rem, 5vw, 4.8rem);
+
+    line-height: .95;
+  }
+
+
+  .culture-final-inner
+  p:not(.section-kicker) {
+    color:
+      rgba(255,255,255,.68);
+
+    line-height: 1.7;
+  }
+
+
+  .culture-final-inner > a {
+    flex: 0 0 auto;
+
+    border-radius: 999px;
+
+    padding:
+      1rem 1.5rem;
+
+    background: #d6a33e;
+    color: #101820;
+
+    text-decoration: none;
+    font-weight: 900;
+  }
+
+
+  /* LIGHTBOX */
+
+  .culture-dialog {
+    width:
+      min(1180px, calc(100% - 2rem));
+
+    max-width: none;
+
+    border: 0;
+    padding: 0;
+
+    border-radius: 1.2rem;
+
+    overflow: hidden;
+
+    background: #060a0d;
+
+    box-shadow:
+      0 40px 100px
+      rgba(0,0,0,.6);
+  }
+
+
+  .culture-dialog::backdrop {
+    background:
+      rgba(0,0,0,.82);
+
+    backdrop-filter:
+      blur(5px);
+  }
+
+
+  .culture-dialog img {
+    display: block;
+
+    width: 100%;
+
+    max-height: 86vh;
+
+    object-fit: contain;
+  }
+
+
+  .culture-dialog-close {
+    position: absolute;
+
+    z-index: 5;
+
+    top: .8rem;
+    right: .8rem;
+
+    width: 44px;
+    height: 44px;
+
+    border: 0;
+    border-radius: 999px;
+
+    background:
+      rgba(0,0,0,.68);
+
+    color: #fff;
+
+    font-size: 1.7rem;
+    line-height: 1;
+
+    cursor: pointer;
+  }
+
+
+  /* RESPONSIVE */
+
+  @media (max-width: 1020px) {
+
+    .culture-layout {
+      grid-template-columns: 1fr;
+    }
+
+
+    .culture-sidebar {
+      position: static;
+    }
+
+
+    .experience-grid {
+      grid-template-columns:
+        repeat(2, minmax(0,1fr));
+    }
+
+  }
+
+
+  @media (max-width: 760px) {
+
+    .culture-hero,
+    .culture-hero-inner {
+      min-height: 620px;
+    }
+
+
+    .culture-hero-overlay {
+      background:
+        linear-gradient(
+          0deg,
+          rgba(6,11,16,.94) 0%,
+          rgba(6,11,16,.62) 68%,
+          rgba(6,11,16,.25) 100%
+        );
+    }
+
+
+    .culture-hero h1 {
+      font-size:
+        clamp(3rem, 14vw, 5rem);
+    }
+
+
+    .culture-facts {
+      grid-template-columns:
+        repeat(2, minmax(0,1fr));
+    }
+
+
+    .culture-fact:nth-child(2) {
+      border-right: 0;
+    }
+
+
+    .culture-fact:nth-child(-n+2) {
+      border-bottom:
+        1px solid
+        rgba(16,24,32,.08);
+    }
+
+
+    .culture-gallery,
+    .culture-gallery-two {
+      grid-template-columns: 1fr;
+
+      grid-auto-rows: 280px;
+    }
+
+
+    .culture-gallery-featured {
+      grid-column: auto;
+      grid-row: auto;
+    }
+
+
+    .pairing-columns {
+      grid-template-columns: 1fr;
+    }
+
+
+    .culture-final-inner {
+      flex-direction: column;
+
+      align-items: flex-start;
+    }
+
+
+    .culture-final-inner > a {
+      width: 100%;
+      text-align: center;
+    }
+
+  }
+
+
+  @media (max-width: 620px) {
+
+    .experience-grid {
+      grid-template-columns: 1fr;
+    }
+
+
+    .culture-facts {
+      grid-template-columns: 1fr;
+    }
+
+
+    .culture-fact,
+    .culture-fact:nth-child(2) {
+      border-right: 0;
+
+      border-bottom:
+        1px solid
+        rgba(16,24,32,.08);
+    }
+
+
+    .culture-fact:last-child {
+      border-bottom: 0;
+    }
+
+  }
+
+</style>

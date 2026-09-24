@@ -1,0 +1,91 @@
+base_location_code,attraction_code,transport_mode,nominal_minutes,planning_minutes,access_type,road_condition,notes,is_active
+FAIC,BDK-001,drive,180,240,expedition,rough,,1
+FAIC,BDK-002,drive,480,720,expedition,rough,Manual review recommended for expedition-style routing.,1
+FAIC,BDK-003,drive,480,720,expedition,rough,Manual review recommended for expedition-style routing.,1
+HERC,BDG-001,drive,300,420,remote_daytrip,rough,Access routed from nearest active operational base in current locations dataset.,1
+KBLC,BAG-001,drive,240,360,remote_daytrip,rough,Access routed from nearest active operational base in current locations dataset.,1
+MAZC,BAL-001,drive,30,45,urban,paved,,1
+MAZC,BAL-002,drive,60,90,regional,mixed,,1
+MAZC,BAL-003,drive,20,30,urban,paved,,1
+MAZC,BAL-004,drive,30,45,urban,paved,,1
+MAZC,BAL-005,drive,20,30,urban,paved,,1
+MAZC,BAL-006,drive,30,45,urban,paved,,1
+BMYC,BMY-001,drive,30,45,urban,paved,,1
+BMYC,BMY-002,drive,30,45,urban,paved,,1
+BMYC,BMY-003,drive,30,45,urban,paved,,1
+BMYC,BMY-004,drive,60,90,regional,mixed,,1
+BMYC,BMY-005,drive,90,120,regional,mixed,,1
+BMYC,BMY-006,drive,30,45,urban,paved,,1
+BMYC,BMY-007,drive,30,45,urban,paved,,1
+BMYC,DYK-001,drive,480,720,expedition,rough,Manual review recommended for expedition-style routing.,1
+HERC,FRH-001,drive,300,420,remote_daytrip,rough,Access routed from nearest active operational base in current locations dataset.,1
+MAZC,FRY-001,drive,480,720,expedition,rough,Manual review recommended for expedition-style routing.,1
+GHZC,GHZ-001,drive,20,30,urban,paved,,1
+GHZC,GHZ-002,drive,30,45,urban,paved,,1
+GHZC,GHZ-003,drive,20,30,urban,paved,,1
+GHZC,GHZ-004,drive,30,45,urban,paved,,1
+GHZC,GHZ-005,drive,30,45,urban,paved,,1
+HERC,GHO-001,drive,420,600,expedition,rough,Manual review recommended for expedition-style routing.,1
+HERC,GHO-002,drive,420,600,expedition,rough,Manual review recommended for expedition-style routing.,1
+KDRC,HLM-001,drive,180,240,remote_daytrip,mixed,Access routed from nearest active operational base in current locations dataset.,1
+KDRC,HLM-002,drive,180,240,remote_daytrip,mixed,Access routed from nearest active operational base in current locations dataset.,1
+HERC,HER-001,drive,60,90,regional,mixed,,1
+HERC,HER-002,drive,30,45,urban,paved,,1
+HERC,HER-003,drive,30,45,urban,paved,,1
+HERC,HER-004,drive,30,45,urban,paved,,1
+MAZC,JOW-001,drive,150,210,regional,mixed,Access routed from nearest active operational base in current locations dataset.,1
+KBLC,KBL-001,drive,30,45,urban,paved,,1
+KBLC,KBL-002,drive,30,45,urban,paved,,1
+KBLC,KBL-003,drive,30,45,urban,paved,,1
+KBLC,KBL-004,drive,20,30,urban,paved,,1
+KBLC,KBL-005,drive,30,45,urban,paved,,1
+KBLC,KBL-006,drive,30,45,urban,paved,,1
+KBLC,KBL-007,drive,30,45,urban,paved,,1
+KBLC,KBL-008,drive,60,90,regional,mixed,,1
+KBLC,KBL-009,drive,20,30,urban,paved,,1
+KBLC,KBL-010,drive,30,45,urban,paved,,1
+KBLC,KBL-011,drive,30,45,urban,paved,,1
+KBLC,KBL-012,drive,30,45,urban,paved,,1
+KBLC,KBL-013,drive,20,30,urban,paved,,1
+KBLC,KBL-014,drive,20,30,urban,paved,,1
+KBLC,KBL-015,drive,20,30,urban,paved,,1
+KBLC,KBL-016,drive,20,30,urban,paved,,1
+KBLC,KBL-017,drive,30,45,urban,paved,,1
+KBLC,KBL-018,drive,60,90,regional,mixed,,1
+KBLC,KBL-019,drive,20,30,urban,paved,,1
+KDRC,KDR-001,drive,20,30,urban,paved,,1
+KDRC,KDR-002,drive,20,30,urban,paved,,1
+KDRC,KDR-003,drive,30,45,urban,paved,,1
+KDRC,KDR-004,drive,20,30,urban,paved,,1
+KDRC,KDR-005,drive,30,45,urban,paved,,1
+KDRC,KDR-006,drive,30,45,urban,paved,,1
+KBLC,KPS-001,drive,150,210,regional,mixed,Access routed from nearest active operational base in current locations dataset.,1
+JBDC,KHT-001,drive,180,270,regional,mixed,Access routed from nearest active operational base in current locations dataset.,1
+JBDC,KNR-001,drive,180,270,regional,mixed,Access routed from nearest active operational base in current locations dataset.,1
+MAZC,KDZ-001,drive,180,270,regional,mixed,Access routed from nearest active operational base in current locations dataset.,1
+JBDC,LGM-001,drive,180,270,regional,mixed,Access routed from nearest active operational base in current locations dataset.,1
+KBLC,LGR-001,drive,150,210,regional,mixed,Access routed from nearest active operational base in current locations dataset.,1
+JBDC,NGH-001,drive,30,45,urban,paved,,1
+JBDC,NGH-002,drive,30,45,urban,paved,,1
+JBDC,NGH-003,drive,90,120,regional,mixed,,1
+HERC,NIM-001,drive,420,600,expedition,rough,Manual review recommended for expedition-style routing.,1
+HERC,NIM-002,drive,420,600,expedition,rough,Manual review recommended for expedition-style routing.,1
+HERC,NIM-003,drive,420,600,expedition,rough,Manual review recommended for expedition-style routing.,1
+JBDC,NRS-001,drive,480,720,expedition,rough,Manual review recommended for expedition-style routing.,1
+JBDC,NRS-002,drive,480,720,expedition,rough,Manual review recommended for expedition-style routing.,1
+JBDC,NRS-003,drive,480,720,expedition,rough,Manual review recommended for expedition-style routing.,1
+KBLC,PTA-001,drive,180,270,regional,mixed,Access routed from nearest active operational base in current locations dataset.,1
+KBLC,PTK-001,drive,180,270,regional,mixed,Access routed from nearest active operational base in current locations dataset.,1
+KBLC,PJR-001,drive,120,180,regional,mixed,Access routed from nearest active operational base in current locations dataset.,1
+KBLC,PJR-002,drive,240,360,expedition,rough,Manual review recommended for expedition-style routing.,1
+KBLC,PRW-001,drive,120,180,regional,mixed,Access routed from nearest active operational base in current locations dataset.,1
+KBLC,PRW-002,drive,120,180,regional,mixed,Access routed from nearest active operational base in current locations dataset.,1
+MAZC,SAM-001,drive,150,210,regional,mixed,Access routed from nearest active operational base in current locations dataset.,1
+MAZC,SAM-002,drive,150,210,regional,mixed,Access routed from nearest active operational base in current locations dataset.,1
+MAZC,SEP-001,drive,300,420,expedition,rough,Manual review recommended for expedition-style routing.,1
+FAIC,TKH-001,drive,240,360,remote_daytrip,rough,Access routed from nearest active operational base in current locations dataset.,1
+KDRC,URZ-001,drive,480,720,expedition,rough,Manual review recommended for expedition-style routing.,1
+KBLC,WRD-001,drive,150,210,regional,mixed,Access routed from nearest active operational base in current locations dataset.,1
+KDRC,ZBL-001,drive,240,360,remote_daytrip,rough,Access routed from nearest active operational base in current locations dataset.,1
+KBLC,KBL-019,drive,20,30,urban,paved,Generated to complete hub access coverage. Verify before publication.,1
+GHZC,GHZ-006,drive,20,30,urban,paved,Generated after resolving duplicate GHZ-005; verify before publication.,1

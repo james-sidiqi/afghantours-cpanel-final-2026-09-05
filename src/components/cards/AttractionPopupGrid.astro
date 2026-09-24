@@ -1,0 +1,482 @@
+---
+const {
+  attractions = [],
+  title = 'Attractions',
+  intro = '',
+  kicker = 'Route Highlights',
+} = Astro.props;
+
+const instanceId = `attraction-popup-${Math.random().toString(36).slice(2, 10)}`;
+
+const clean = (v) => String(v || '').trim();
+const strip = (v) => clean(v).replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
+const normalized = attractions
+  .filter(Boolean)
+  .filter((a) => a.slug || a.href)
+  .map((a) => {
+    const title = a.title || a.name || 'Attraction';
+    const slug = a.slug || clean(a.href).replace(/^\/attractions\//, '').replace(/\/$/, '');
+    const desc = strip(a.desc_short || a.excerpt || a.summary || a.description || a.desc_long || a.content || '');
+    const long = strip(a.desc_long || a.description || a.content || a.desc_short || a.excerpt || '');
+    const image = a.image || a.image_path || a.hero_image || a.thumbnail_path || `/assets/images/attractions/${slug}/hero.webp`;
+
+    return {
+      slug,
+      title,
+      province: a.province || a.province_name || a.province_code || '',
+      region: a.region || '',
+      category: a.category || 'Attraction',
+      desc,
+      long,
+      image,
+      href: a.href || `/attractions/${slug}/`,
+      duration: a.visit_duration_hours ? `${a.visit_duration_hours} hours` : '',
+      access: a.access_difficulty || '',
+      season: [a.season_start, a.season_end].filter(Boolean).join('–') || '',
+    };
+  });
+---
+
+<section class="attraction-popup-section" data-attraction-scope={instanceId}>
+  <div class="attraction-popup-wrap">
+    {(title || intro) && (
+      <div class="attraction-popup-heading">
+        <p class="section-kicker">{kicker}</p>
+        {title && <h2>{title}</h2>}
+        {intro && <p>{intro}</p>}
+      </div>
+    )}
+
+    {normalized.length > 0 ? (
+      <div class="attraction-popup-grid">
+        {normalized.map((item, index) => (
+          <button type="button" class="attraction-popup-card" data-attraction-index={index} aria-label={`Preview ${item.title}`}>
+            <div class="attraction-card-image">
+              <img src={item.image} alt={item.title} loading="lazy" />
+            </div>
+            <div class="attraction-card-body">
+              <p class="card-kicker">{item.province || item.region || 'Afghanistan'}</p>
+              <h3>{item.title}</h3>
+              <div class="attraction-card-tags">
+                {item.category && <span>{item.category}</span>}
+                {item.duration && <span>{item.duration}</span>}
+              </div>
+              <p>{item.desc || item.category}</p>
+              <strong>Preview attraction →</strong>
+            </div>
+          </button>
+        ))}
+      </div>
+    ) : (
+      <div class="empty-card">No linked attractions have been added yet.</div>
+    )}
+  </div>
+
+  <div class="attraction-modal" aria-hidden="true">
+    <div class="attraction-modal-backdrop" data-close-attraction></div>
+    <article class="attraction-modal-panel" role="dialog" aria-modal="true" aria-labelledby={`${instanceId}-title`}>
+      <button type="button" class="attraction-modal-close" data-close-attraction aria-label="Close attraction preview">×</button>
+
+      <div class="attraction-modal-gallery">
+        <img data-modal-image src="" alt="" />
+        <div class="attraction-modal-count" data-modal-location></div>
+      </div>
+
+      <div class="attraction-modal-body">
+        <p class="card-kicker" data-modal-kicker></p>
+        <h2 id={`${instanceId}-title`} data-modal-title></h2>
+        <div class="attraction-meta" data-modal-meta></div>
+
+        <div class="content-block">
+          <p class="section-label">About this attraction</p>
+          <p data-modal-desc></p>
+        </div>
+
+        <div class="content-block" data-modal-practical-wrap>
+          <p class="section-label">Traveler notes</p>
+          <div class="practical-list" data-modal-practical></div>
+        </div>
+
+        <div class="attraction-modal-actions">
+          <a data-modal-link href="/attractions/">Open attraction page</a>
+          <a data-modal-contact href="/contact/?type=attraction">Ask about visiting</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<script define:vars={{ attractions: normalized, instanceId }}>
+  const scope = document.querySelector(`[data-attraction-scope="${instanceId}"]`);
+  const modal = scope?.querySelector('.attraction-modal');
+  const img = scope?.querySelector('[data-modal-image]');
+  const locationLabel = scope?.querySelector('[data-modal-location]');
+  const kicker = scope?.querySelector('[data-modal-kicker]');
+  const title = scope?.querySelector('[data-modal-title]');
+  const meta = scope?.querySelector('[data-modal-meta]');
+  const desc = scope?.querySelector('[data-modal-desc]');
+  const practicalWrap = scope?.querySelector('[data-modal-practical-wrap]');
+  const practical = scope?.querySelector('[data-modal-practical]');
+  const link = scope?.querySelector('[data-modal-link]');
+  const contact = scope?.querySelector('[data-modal-contact]');
+
+  function escapeHtml(value) {
+    return String(value || '').replace(/[&<>"']/g, (m) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[m]));
+  }
+
+  function openAttraction(index) {
+    const item = attractions[index];
+    if (!item || !modal) return;
+
+    img.src = item.image || '';
+    img.alt = item.title || '';
+    locationLabel.textContent = [item.province, item.region].filter(Boolean).join(' • ') || 'Afghanistan';
+    kicker.textContent = item.province || item.region || item.category || 'Attraction';
+    title.textContent = item.title || 'Attraction';
+    desc.textContent = item.long || item.desc || 'More details are available on the full attraction page.';
+    link.href = item.href || '/attractions/';
+    contact.href = `/contact/?type=attraction&attraction=${encodeURIComponent(item.title || '')}`;
+
+    meta.innerHTML = [item.category, item.region, item.access].filter(Boolean).map((x) => `<span>${escapeHtml(x)}</span>`).join('');
+
+    const notes = [
+      ['Province', item.province],
+      ['Region', item.region],
+      ['Visit duration', item.duration],
+      ['Access', item.access],
+      ['Season', item.season],
+    ].filter(([, value]) => value);
+
+    if (notes.length) {
+      practicalWrap.hidden = false;
+      practical.innerHTML = notes.map(([label, value]) => `<div><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join('');
+    } else {
+      practicalWrap.hidden = true;
+      practical.innerHTML = '';
+    }
+
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeAttraction() {
+    if (!modal) return;
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  scope?.querySelectorAll('[data-attraction-index]').forEach((button) => {
+    button.addEventListener('click', () => openAttraction(Number(button.dataset.attractionIndex)));
+  });
+
+  scope?.querySelectorAll('[data-close-attraction]').forEach((button) => {
+    button.addEventListener('click', closeAttraction);
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeAttraction();
+  });
+</script>
+
+<style>
+  .attraction-popup-section {
+    background: #fbf6ed;
+    color: #101820;
+    padding: clamp(4rem, 7vw, 7rem) 0;
+  }
+
+  .attraction-popup-wrap {
+    width: min(1280px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .attraction-popup-heading {
+    max-width: 760px;
+    margin-bottom: 2rem;
+  }
+
+  .section-kicker,
+  .section-label,
+  .card-kicker {
+    margin: 0;
+    color: #b46b00;
+    font-size: .72rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  .attraction-popup-heading h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(2.4rem, 4.6vw, 4.5rem);
+    line-height: .98;
+    letter-spacing: -.055em;
+    margin: .45rem 0 1rem;
+  }
+
+  .attraction-popup-heading > p:last-child {
+    color: #4b5563;
+    line-height: 1.75;
+    font-size: 1.02rem;
+  }
+
+  .attraction-popup-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .attraction-popup-card {
+    border: 1px solid rgba(16,24,32,.12);
+    background: #fff;
+    padding: 0;
+    text-align: left;
+    border-radius: 1.35rem;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 14px 38px rgba(21,16,9,.08);
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    color: inherit;
+  }
+
+  .attraction-popup-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(180,107,0,.35);
+    box-shadow: 0 22px 50px rgba(21,16,9,.14);
+  }
+
+  .attraction-card-image {
+    height: 230px;
+    background: #e8dfd2;
+    overflow: hidden;
+  }
+
+  .attraction-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .5s ease;
+  }
+
+  .attraction-popup-card:hover .attraction-card-image img { transform: scale(1.045); }
+
+  .attraction-card-body {
+    padding: 1.35rem 1.45rem 1.55rem;
+  }
+
+  .attraction-popup-card h3 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(1.65rem, 2.1vw, 2.15rem);
+    line-height: 1;
+    letter-spacing: -.045em;
+    margin: .45rem 0 .8rem;
+  }
+
+  .attraction-card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin-bottom: .9rem;
+  }
+
+  .attraction-card-tags span,
+  .attraction-meta span {
+    border-radius: 999px;
+    background: #f4eadc;
+    color: #3b2d1c;
+    padding: .42rem .68rem;
+    font-size: .74rem;
+    font-weight: 900;
+  }
+
+  .attraction-popup-card p:not(.card-kicker) {
+    color: #4b5563;
+    line-height: 1.65;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .attraction-popup-card strong {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #9a5d04;
+    font-size: .85rem;
+    font-weight: 900;
+  }
+
+  .empty-card {
+    border-radius: 1.5rem;
+    border: 1px dashed #d5c7b4;
+    padding: 2rem;
+    background: #fff;
+    color: #4b5563;
+  }
+
+  .attraction-modal[aria-hidden='true'] { display: none; }
+
+  .attraction-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+  }
+
+  .attraction-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(3,7,18,.76);
+    backdrop-filter: blur(8px);
+  }
+
+  .attraction-modal-panel {
+    position: relative;
+    width: min(1080px, calc(100% - 2rem));
+    max-height: calc(100vh - 2rem);
+    margin: 1rem auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(360px, .9fr);
+    background: #fffaf3;
+    border-radius: 2rem;
+    overflow: hidden;
+    box-shadow: 0 35px 90px rgba(0,0,0,.45);
+  }
+
+  .attraction-modal-close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    z-index: 5;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(0,0,0,.72);
+    color: #fff;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+
+  .attraction-modal-gallery {
+    min-height: 600px;
+    background: #111;
+    position: relative;
+  }
+
+  .attraction-modal-gallery img {
+    width: 100%;
+    height: 100%;
+    min-height: 600px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .attraction-modal-count {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    border-radius: 999px;
+    background: rgba(0,0,0,.66);
+    color: #fff;
+    padding: .5rem .8rem;
+    font-size: .78rem;
+    font-weight: 900;
+  }
+
+  .attraction-modal-body {
+    padding: clamp(1.6rem, 3vw, 2.6rem);
+    overflow-y: auto;
+  }
+
+  .attraction-modal-body h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(2.3rem, 3.4vw, 3.8rem);
+    line-height: .95;
+    letter-spacing: -.055em;
+    margin: .6rem 0 .8rem;
+  }
+
+  .attraction-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin: 1rem 0;
+  }
+
+  .content-block {
+    border-top: 1px solid rgba(16,24,32,.1);
+    margin-top: 1.4rem;
+    padding-top: 1.2rem;
+  }
+
+  .content-block > p:last-child {
+    color: #374151;
+    line-height: 1.8;
+  }
+
+  .practical-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .65rem;
+  }
+
+  .practical-list div {
+    border: 1px solid rgba(16,24,32,.09);
+    border-radius: 1rem;
+    background: #fff;
+    padding: .8rem;
+  }
+
+  .practical-list span {
+    display: block;
+    color: #6b7280;
+    font-size: .68rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+
+  .practical-list strong {
+    display: block;
+    margin-top: .25rem;
+    font-size: .9rem;
+  }
+
+  .attraction-modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-top: 1.8rem;
+  }
+
+  .attraction-modal-actions a {
+    border-radius: 999px;
+    background: #d6a23a;
+    color: #111;
+    padding: .9rem 1.2rem;
+    text-decoration: none;
+    font-weight: 900;
+  }
+
+  .attraction-modal-actions a + a {
+    background: #101820;
+    color: #fff;
+  }
+
+  @media (max-width: 1100px) {
+    .attraction-popup-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .attraction-modal-panel { grid-template-columns: 1fr; overflow-y: auto; }
+    .attraction-modal-gallery,
+    .attraction-modal-gallery img { min-height: 340px; }
+  }
+
+  @media (max-width: 680px) {
+    .attraction-popup-grid { grid-template-columns: 1fr; }
+    .practical-list { grid-template-columns: 1fr; }
+    .attraction-modal-panel { width: min(100% - 1rem, 1080px); border-radius: 1.3rem; }
+  }
+</style>

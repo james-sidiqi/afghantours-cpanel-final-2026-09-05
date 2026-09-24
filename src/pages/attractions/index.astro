@@ -1,0 +1,134 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import AttractionPopupGrid from '../../components/cards/AttractionPopupGrid.astro';
+import { getAttractions } from '../../lib/buildRelations';
+
+const attractions = getAttractions()
+  .filter((a) => a.slug)
+  .sort((a, b) => String(a.title || a.name || '').localeCompare(String(b.title || b.name || '')));
+---
+<BaseLayout title="Attractions | AfghanTours" description="Cultural, historical, natural, and urban attractions across Afghanistan.">
+  <PageHero eyebrow="Explore Afghanistan" title="Attractions" text="Key places, landscapes, shrines, bazaars, ruins, and natural sites used across AfghanTours itineraries." image="/assets/images/heroes/destinations/hero.webp" height="min-h-[58vh]" />
+
+
+  <AttractionPopupGrid
+    attractions={attractions}
+    title="Browse Afghanistan’s attractions"
+    intro="Open a card for a quick preview, then continue to the full attraction page when you want the complete details."
+    kicker="Explore Afghanistan"
+  />
+</BaseLayout>
+
+<style>
+
+  /* ATTRACTIONS-HERO-TEXT-FIX-START */
+
+  .attractions-hero-corrected {
+    position: relative !important;
+    width: 100% !important;
+    height: clamp(440px, 44vw, 570px) !important;
+    min-height: 440px !important;
+    max-height: 570px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    background: #07100d !important;
+    color: #fff !important;
+  }
+
+  .attractions-hero-corrected > img,
+  .attractions-hero-corrected picture,
+  .attractions-hero-corrected picture img {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    object-fit: cover !important;
+    object-position: center 48% !important;
+  }
+
+  .attractions-hero-corrected::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    background:
+      linear-gradient(
+        90deg,
+        rgba(5,13,10,.84) 0%,
+        rgba(5,13,10,.58) 38%,
+        rgba(5,13,10,.20) 74%
+      ),
+      linear-gradient(
+        0deg,
+        rgba(5,13,10,.62) 0%,
+        rgba(5,13,10,.18) 55%,
+        transparent 100%
+      ) !important;
+  }
+
+  .attractions-hero-corrected > div,
+  .attractions-hero-corrected > header,
+  .attractions-hero-corrected > .hero-content,
+  .attractions-hero-corrected > .hero-inner,
+  .attractions-hero-corrected > .attractions-explore-hero__content {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  .attractions-hero-corrected > div,
+  .attractions-hero-corrected > header {
+    width: min(1180px, calc(100% - 2rem)) !important;
+    margin: 0 auto !important;
+    padding: clamp(3.5rem, 6vw, 5rem) 0 !important;
+  }
+
+  .attractions-hero-corrected h1,
+  .attractions-hero-corrected h2 {
+    max-width: 960px !important;
+    margin: .65rem 0 1rem !important;
+    color: #f7f2e8 !important;
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(3.4rem, 6vw, 6.2rem) !important;
+    line-height: .92 !important;
+    letter-spacing: -.055em !important;
+    text-wrap: balance;
+    text-shadow: 0 2px 14px rgba(0,0,0,.18);
+  }
+
+  .attractions-hero-corrected p,
+  .attractions-hero-corrected span {
+    max-width: 760px !important;
+    color: rgba(255,255,255,.92) !important;
+    font-size: clamp(1rem, 1.2vw, 1.08rem) !important;
+    line-height: 1.68 !important;
+  }
+
+  .attractions-hero-corrected [class*="eyebrow"],
+  .attractions-hero-corrected [class*="kicker"],
+  .attractions-hero-corrected [class*="label"] {
+    color: #dfa327 !important;
+    font-size: .72rem !important;
+    font-weight: 900 !important;
+    letter-spacing: .20em !important;
+    text-transform: uppercase !important;
+  }
+
+  @media (max-width: 700px) {
+    .attractions-hero-corrected {
+      height: 500px !important;
+      min-height: 500px !important;
+    }
+
+    .attractions-hero-corrected h1,
+    .attractions-hero-corrected h2 {
+      font-size: clamp(3rem, 14vw, 4.8rem) !important;
+    }
+  }
+
+  /* ATTRACTIONS-HERO-TEXT-FIX-END */
+
+</style>

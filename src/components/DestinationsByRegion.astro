@@ -1,0 +1,193 @@
+---
+interface Region {
+  title: string;
+  slug: string;
+  image: string;
+  text: string;
+}
+
+const regions: Region[] = [
+  {
+    title: 'Central Highlands',
+    slug: 'central',
+    image: '/assets/images/regions/central.webp',
+    text: 'Kabul, Bamyan, Panjshir, Parwan, Wardak, and the central route logic behind many cultural journeys.',
+  },
+  {
+    title: 'Northern Afghanistan',
+    slug: 'north',
+    image: '/assets/images/regions/north.webp',
+    text: 'Balkh, Mazar-e-Sharif, Samangan, Kunduz, Takhar, and the northern Silk Road corridors.',
+  },
+  {
+    title: 'Western Afghanistan',
+    slug: 'west',
+    image: '/assets/images/regions/west.webp',
+    text: 'Herat, Ghor, Badghis, and Farah: Timurid architecture, desert frontiers, and remote highland routes.',
+  },
+  {
+    title: 'Eastern Afghanistan',
+    slug: 'east',
+    image: '/assets/images/regions/east.webp',
+    text: 'Jalalabad, Nuristan, Kunar, Laghman, Khost, and the eastern valleys and passes.',
+  },
+  {
+    title: 'Southern Afghanistan',
+    slug: 'south',
+    image: '/assets/images/regions/south.webp',
+    text: 'Kandahar, Helmand, Uruzgan, Zabul, and Nimroz: Durrani history, desert routes, and southern access.',
+  },
+];
+---
+
+<section id="destinations-by-region" class="region-section">
+  <div class="region-wrap">
+    <div class="region-heading">
+      <p class="section-kicker">Destinations by Regions</p>
+      <h2>Plan Afghanistan by operational geography.</h2>
+      <span>
+        Regions help travelers understand scale, access conditions, road logic, flight options, and the cultural geography behind each itinerary.
+      </span>
+    </div>
+
+    <div class="region-map-placeholder">
+  <p>Interactive map coming soon.</p>
+</div>
+    </div>
+
+    <div class="region-grid">
+      {regions.map((region) => (
+        <a class="region-card" href={`/destinations/#regions`}>
+          <img src={region.image} alt={region.title} loading="lazy" width="640" height="420" />
+          <div>
+            <p>Region</p>
+            <h3>{region.title}</h3>
+            <span>{region.text}</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .region-section {
+    background: #101820;
+    color: #fff;
+    padding: clamp(4.5rem, 7vw, 7.5rem) 0;
+  }
+
+  .region-wrap {
+    width: min(1280px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .region-heading {
+    max-width: 850px;
+    margin-bottom: 2rem;
+  }
+
+  .section-kicker,
+  .region-card p {
+    margin: 0;
+    color: #d6a23a;
+    font-size: .78rem;
+    font-weight: 950;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+  }
+
+  .region-heading h2 {
+    margin: .9rem 0 1rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 5.5vw, 6rem);
+    line-height: .95;
+    letter-spacing: -.07em;
+  }
+
+  .region-heading span {
+    display: block;
+    max-width: 720px;
+    color: rgba(255,255,255,.78);
+    line-height: 1.8;
+  }
+
+  .region-map-card {
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 1.25rem;
+    background: rgba(255,255,255,.04);
+    aspect-ratio: 16 / 8;
+    margin-bottom: 1.1rem;
+  }
+
+  .region-map-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .region-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .region-card {
+    display: grid;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 1rem;
+    background: rgba(255,255,255,.05);
+    color: #fff;
+    text-decoration: none;
+    transition: transform .2s ease, border-color .2s ease, background .2s ease;
+  }
+
+  .region-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(214,162,58,.55);
+    background: rgba(255,255,255,.08);
+  }
+
+  .region-card img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    display: block;
+  }
+
+  .region-card div {
+    padding: 1rem;
+  }
+
+  .region-card h3 {
+    margin: .45rem 0 .65rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.4rem;
+    line-height: 1;
+  }
+
+  .region-card span {
+    color: rgba(255,255,255,.72);
+    font-size: .9rem;
+    line-height: 1.6;
+  }
+
+  @media(max-width: 1080px) {
+    .region-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media(max-width: 680px) {
+    .region-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .region-map-card {
+      aspect-ratio: 4 / 3;
+    }
+  }
+</style>

@@ -1,0 +1,24 @@
+tour_code,tour_slug,inclusion_type,title,description,is_active,sort_order
+ALL,all-tours,arrival,Airport pickup,Airport pickup on arrival at Kabul International Airport.,1,1
+ALL,all-tours,departure,Airport drop-off,Airport transfer for departing flights from Kabul.,1,2
+ALL,all-tours,transport,Ground transportation,Private ground transportation for scheduled tour movements.,1,3
+ALL,all-tours,guiding,Local guide support,Local guide support during scheduled sightseeing days.,1,4
+ALL,all-tours,planning,Route planning,Route planning based on timing, access, road conditions, and seasonal realities.,1,5
+ALL,all-tours,coordination,Operational coordination,On-the-ground coordination by the AfghanTours team during the tour.,1,6
+ALL,all-tours,briefing,Pre-tour briefing,Arrival briefing covering schedule, expectations, safety, and local etiquette.,1,7
+ALL,all-tours,culture,Cultural context,Local cultural guidance and explanation at major stops and attractions.,1,8
+ALL,all-tours,assistance,Traveler support,Basic traveler support during the scheduled tour period.,1,9
+ADTF,afghanistan-discovery-tour-fall,seasonal,Fall route planning,Itinerary timing adjusted for fall weather, road access, and daylight conditions.,1,10
+ADTS,afghanistan-discovery-tour-spring,seasonal,Spring route planning,Itinerary timing adjusted for spring landscapes, weather, and road access.,1,10
+BSKI,bamyan-skiing-tour,special_activity,Ski logistics coordination,Coordination for Bamyan backcountry skiing days with local support.,1,10
+BUZE,buzkashi-expedition,special_activity,Buzkashi coordination,Coordination for scheduled buzkashi match days where available.,1,10
+CAD,central-afghanistan-discovery,regional,Central Afghanistan routing,Route planning across Kabul, Panjshir, Bamyan, Wardak, and nearby areas.,1,10
+KBLS,kabul-surroundings,regional,Kabul area routing,Route planning for Kabul, Panjshir, Parwan, and nearby day trips.,1,10
+KTDE,kandahar-durrani-empire-tour,flight,Domestic flight coordination,Coordination for scheduled Kabul-Kandahar-Kabul domestic flights.,1,10
+TGHT,timurid-grandeur-herat-tour,flight,Domestic flight coordination,Coordination for scheduled Kabul-Herat-Kabul domestic flights.,1,10
+TGHT-EXT,timurid-grandeur-herat-tour-add-minaret-e-jam,expedition,Ghor access planning,Additional planning for the Minaret of Jam route depending on road and overnight conditions.,1,10
+TSRA,treasures-of-silk-road-afghanistan,flight,Multi-city flight coordination,Coordination for scheduled Kabul-Mazar-Herat domestic flight routing.,1,10
+WNTC,winter-circuit,seasonal,Winter route planning,Itinerary timing adjusted for winter weather, road access, and mountain conditions.,1,10
+CTME,custom-expedition,custom,Custom expedition planning,Custom route planning and operational coordination based on the final approved itinerary.,1,10
+PHOT,photography-tour,custom,Photography-focused planning,Route and timing support for photography-focused travel days.,1,10
+SCIE,scientific-expeditions,custom,Scientific expedition planning,Custom planning support for research, documentation, and expedition-style travel.,1,10

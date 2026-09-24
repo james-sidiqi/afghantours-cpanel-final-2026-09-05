@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const items = await getCollection('restaurants');
+
+  return items.map((item) => ({
+    params: {
+      slug: item.id.replace(/\.md$/, ''),
+    },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+
+const title = item.data.title || 'Restaurant';
+---
+
+<BaseLayout
+  title={`${title} | AfghanTours`}
+  description={`Explore ${title} as part of food and travel planning in Afghanistan.`}
+>
+  <main class="restaurant-page">
+    <article>
+      <p class="eyebrow">Food & Dining</p>
+      <h1>{title}</h1>
+      <Content />
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .restaurant-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 8rem 1.5rem 5rem;
+  }
+
+  article {
+    line-height: 1.75;
+  }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    font-size: .75rem;
+    font-weight: 700;
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1;
+    margin: .75rem 0 2rem;
+  }
+
+  article :global(h2) {
+    margin-top: 2.5rem;
+  }
+
+  article :global(p) {
+    font-size: 1.05rem;
+  }
+</style>

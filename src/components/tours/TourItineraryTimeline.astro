@@ -1,0 +1,614 @@
+---
+import { attractions, locations, hotels, dishes } from "../../lib/data";
+
+const { itinerary = [] } = Astro.props;
+
+const attractionByCode = new Map(
+  attractions.map((item) => [String(item.attraction_code || "").trim(), item])
+);
+
+function parseCodes(value) {
+  return String(value || "")
+    .split(/[|;,]/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function titleCaseHyphen(value) {
+  return String(value || "")
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join("-");
+}
+
+function imageFor(item) {
+  return (
+    item?.hero_image_path ||
+    item?.card_image_path ||
+    item?.image_path ||
+    item?.hero_image ||
+    item?.card_image ||
+    item?.image ||
+    item?.image_path_property_1 ||
+    "/assets/images/placeholders/default-card.webp"
+  );
+}
+
+function textFor(item) {
+  return (
+    item?.short_description ||
+    item?.summary ||
+    item?.description ||
+    item?.desc_short ||
+    item?.desc_long ||
+    item?.long_description ||
+    "A featured experience connected to this day of the journey."
+  );
+}
+
+function dayAttractions(day) {
+  return parseCodes(day.attraction_codes)
+    .map((code) => attractionByCode.get(code))
+    .filter(Boolean);
+}
+
+function isHub(location) {
+  return (
+    String(location.type || "").toLowerCase().includes("hub") ||
+    String(location.location_type || "").toLowerCase().includes("hub") ||
+    String(location.is_hub || "").toLowerCase() === "true" ||
+    String(location.is_hub || "") === "1"
+  );
+}
+
+function hubSlug(hub) {
+  const slug = hub?.slug || hub?.location_slug || hub?.hub_slug;
+  return slug === "mazar-e-sharif-city" ? "mazar-e-sharif" : slug;
+}
+
+function hubName(hub) {
+  return hub?.name || hub?.location_name || hub?.hub_name || hub?.title || "Overnight Hub";
+}
+
+function hubDisplayName(hub) {
+  const slug = hubSlug(hub);
+  if (slug) return titleCaseHyphen(slug);
+  return hubName(hub);
+}
+
+function findHub(day) {
+  const raw = String(day.overnight_hub || day.hub || day.location || "").toLowerCase().trim();
+  if (!raw) return null;
+
+  const clean = raw.replace(/\s+/g, "-");
+
+  const matches = locations.filter((location) => {
+    if (!isHub(location)) return false;
+
+    const text = [
+      location.name,
+      location.location_name,
+      location.hub_name,
+      location.slug,
+      location.location_slug,
+      location.hub_slug,
+    ]
+      .join(" ")
+      .toLowerCase();
+
+    return text.includes(raw) || text.includes(clean);
+  });
+
+  return (
+    matches.find((hub) => String(hubSlug(hub) || "").toLowerCase() === `${clean}-city`) ||
+    matches.find((hub) => String(hubSlug(hub) || "").toLowerCase().includes(`${clean}-city`)) ||
+    matches[0] ||
+    null
+  );
+}
+
+function hotelsForHub(hub) {
+  if (!hub) return [];
+
+  const tokens = [
+    hubName(hub),
+    hubSlug(hub),
+    String(hubSlug(hub) || "").replace("-city", ""),
+  ]
+    .filter(Boolean)
+    .map((item) => String(item).toLowerCase());
+
+  return hotels
+    .filter((hotel) => {
+      const text = [
+        hotel.hub,
+        hotel.hub_name,
+        hotel.destination_code,
+        hotel.city,
+        hotel.location,
+        hotel.hotel_slug,
+        hotel.slug,
+        hotel.display_name,
+        hotel.name,
+        hotel.description,
+      ]
+        .join(" ")
+        .toLowerCase();
+
+      return tokens.some((token) => text.includes(token));
+    })
+    .slice(0, 8);
+}
+
+function hotelName(hotel) {
+  return hotel.display_name || hotel.hotel_name || hotel.name || "Hotel Option";
+}
+
+function hotelTier(hotel) {
+  return String(hotel.tier || hotel.category || hotel.price_tier || hotel.class || "standard").toLowerCase();
+}
+
+function standardHotelsForHub(hub) {
+  return hotelsForHub(hub).filter((hotel) => {
+    const tier = hotelTier(hotel);
+    return !tier.includes("premium") && !tier.includes("luxury") && !tier.includes("luxurious");
+  });
+}
+
+function upgradedHotelsForHub(hub) {
+  return hotelsForHub(hub).filter((hotel) => {
+    const tier = hotelTier(hotel);
+    return tier.includes("premium") || tier.includes("luxury") || tier.includes("luxurious");
+  });
+}
+
+function foodForDay(day, hub) {
+  const explicit = String(day.food_culture || day.food || "").toLowerCase().trim();
+  const hubTokens = [
+    hubName(hub),
+    hubSlug(hub),
+    String(hubSlug(hub) || "").replace("-city", ""),
+    day.location,
+    day.provinces_traversed,
+  ]
+    .filter(Boolean)
+    .map((item) => String(item).toLowerCase());
+
+  if (explicit) {
+    const match = dishes.find((dish) =>
+      [
+        dish.name,
+        dish.slug,
+        dish.title,
+        dish.category,
+        dish.desc_short,
+        dish.description,
+      ]
+        .join(" ")
+        .toLowerCase()
+        .includes(explicit)
+    );
+    if (match) return match;
+  }
+
+  return dishes.find((dish) => {
+    const text = [
+      dish.name,
+      dish.slug,
+      dish.province_code,
+      dish.destination_code,
+      dish.region_code,
+      dish.hub,
+      dish.desc_short,
+      dish.description,
+    ]
+      .join(" ")
+      .toLowerCase();
+
+    return hubTokens.some((token) => text.includes(token));
+  });
+}
+import { getFoodHref } from '../../lib/buildRelations';
+---
+
+<section class="bg-white py-20 text-stone-950">
+  <div class="mx-auto max-w-6xl px-6">
+    <p class="text-xs font-black uppercase tracking-[0.28em] text-amber-700">Day by Day</p>
+    <h2 class="editorial-title mt-3 text-4xl font-black md:text-6xl">Itinerary</h2>
+
+    <div class="mt-12 grid gap-14">
+      {itinerary.map((day, index) => {
+        const hub = findHub(day);
+        const attractionsForDay = dayAttractions(day);
+        const food = foodForDay(day, hub);
+        const standardHotels = standardHotelsForHub(hub);
+        const upgradeHotels = upgradedHotelsForHub(hub);
+
+        const hotelDialogId = `hotel-options-day-${index}`;
+        const hubDialogId = `hub-day-${index}`;
+        const foodDialogId = `food-day-${index}`;
+
+        return (
+          <article class="relative grid gap-8 border-l border-stone-300 pl-6 lg:grid-cols-[1fr_340px] lg:pl-10">
+            <div class="absolute -left-[9px] top-1 h-4 w-4 rounded-full bg-amber-600 ring-4 ring-white"></div>
+
+            <div>
+              <p class="text-xs font-black uppercase tracking-[0.22em] text-amber-700">
+                Day {day.day_number || index + 1}
+              </p>
+
+              <h3 class="editorial-title mt-2 text-3xl font-black md:text-4xl">
+                {day.title || day.location || `Day ${index + 1}`}
+              </h3>
+
+              <p class="mt-5 max-w-3xl text-lg leading-8 text-stone-700">
+                {day.description}
+              </p>
+
+              {attractionsForDay.length > 0 && (
+                <div class="mt-8">
+                  <h4 class="text-xl font-black">Attractions This Day</h4>
+
+                  <div class="mt-4 grid gap-4 md:grid-cols-2">
+                    {attractionsForDay.map((attraction, attractionIndex) => {
+                      const attractionDialogId = `attraction-day-${index}-${attractionIndex}`;
+
+                      return (
+                        <>
+                          <button
+                            type="button"
+                            onclick={`document.getElementById('${attractionDialogId}').showModal()`}
+                            data-preview-card
+                            data-preview-title={attraction.name}
+                            data-preview-image={imageFor(attraction)}
+                            data-preview-text={textFor(attraction)}
+                            class="overflow-hidden rounded-[1.5rem] bg-[#fbf8f2] text-left shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                          >
+                            <img
+                              src={imageFor(attraction)}
+                              alt={attraction.name}
+                              loading="lazy"
+                              class="h-44 w-full object-cover"
+                            />
+                            <div class="p-5">
+                              <p class="text-xs font-black uppercase tracking-[0.18em] text-amber-700">
+                                {attraction.category || "Attraction"}
+                              </p>
+                              <h5 class="mt-2 text-lg font-black">{attraction.name}</h5>
+                              <p class="mt-3 text-sm leading-6 text-stone-700">
+                                {textFor(attraction)}
+                              </p>
+                            </div>
+                          </button>
+
+                          <dialog id={attractionDialogId} class="w-[min(760px,92vw)] rounded-[2rem] p-0 backdrop:bg-black/70">
+                            <div class="max-h-[86vh] overflow-y-auto bg-white text-stone-950">
+                              <img
+                                src={imageFor(attraction)}
+                                alt={attraction.name}
+                                class="h-72 w-full bg-stone-950 object-contain"
+                              />
+
+                              <div class="p-6">
+                                <p class="text-xs font-black uppercase tracking-[0.22em] text-amber-700">
+                                  {attraction.category || "Attraction"}
+                                </p>
+                                <h3 class="mt-2 text-3xl font-black">{attraction.name}</h3>
+                                <p class="mt-4 text-base leading-7 text-stone-700">
+                                  {textFor(attraction)}
+                                </p>
+
+                                <div class="mt-6 flex flex-wrap gap-3">
+                                  {attraction.slug && (
+                                    <a
+                                      href={`/attractions/${attraction.slug}/`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      class="rounded-full bg-stone-950 px-5 py-3 text-sm font-black text-white"
+                                    >
+                                      View Full Attraction Page
+                                    </a>
+                                  )}
+
+                                  <button
+                                    type="button"
+                                    onclick={`document.getElementById('${attractionDialogId}').close()`}
+                                    class="rounded-full border border-stone-300 px-5 py-3 text-sm font-black text-stone-950"
+                                  >
+                                    Close
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </dialog>
+                        </>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              <div class="mt-8 grid gap-4 md:grid-cols-2">
+                {food && (
+                  <>
+                    <button
+                      type="button"
+                      onclick={`document.getElementById('${foodDialogId}').showModal()`}
+                      data-preview-card
+                      data-preview-title={food.name}
+                      data-preview-image={imageFor(food)}
+                      data-preview-text={textFor(food)}
+                      class="overflow-hidden rounded-[1.5rem] bg-stone-950 text-left text-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                    >
+                      <img src={imageFor(food)} alt={food.name} loading="lazy" class="h-44 w-full object-cover" />
+                      <div class="p-5">
+                        <p class="text-xs font-black uppercase tracking-[0.18em] text-amber-300">
+                          Food & Culture
+                        </p>
+                        <h5 class="mt-2 text-lg font-black">{food.name}</h5>
+                        <p class="mt-3 text-sm leading-6 text-stone-200">{textFor(food)}</p>
+                      </div>
+                    </button>
+
+                    <dialog id={foodDialogId} class="w-[min(760px,92vw)] rounded-[2rem] p-0 backdrop:bg-black/70">
+                      <div class="max-h-[86vh] overflow-y-auto bg-white text-stone-950">
+                        <img src={imageFor(food)} alt={food.name} class="h-72 w-full bg-stone-950 object-contain" />
+                        <div class="p-6">
+                          <p class="text-xs font-black uppercase tracking-[0.22em] text-amber-700">Food & Culture</p>
+                          <h3 class="mt-2 text-3xl font-black">{food.name}</h3>
+                          <p class="mt-4 text-base leading-7 text-stone-700">{textFor(food)}</p>
+
+                          <div class="mt-6 flex flex-wrap gap-3">
+                            {food.slug && (
+                              <a
+                                href={getFoodHref(food)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="rounded-full bg-stone-950 px-5 py-3 text-sm font-black text-white"
+                              >
+                                View Full Page
+                              </a>
+                            )}
+                            <button
+                              type="button"
+                              onclick={`document.getElementById('${foodDialogId}').close()`}
+                              class="rounded-full border border-stone-300 px-5 py-3 text-sm font-black text-stone-950"
+                            >
+                              Close
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </dialog>
+                  </>
+                )}
+
+                {hub && (
+                  <>
+                    <button
+                      type="button"
+                      onclick={`document.getElementById('${hubDialogId}').showModal()`}
+                      data-preview-card
+                      data-preview-title={hubDisplayName(hub)}
+                      data-preview-image={imageFor(hub)}
+                      data-preview-text={textFor(hub)}
+                      class="overflow-hidden rounded-[1.5rem] bg-[#fbf8f2] text-left shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
+                    >
+                      <img src={imageFor(hub)} alt={hubDisplayName(hub)} loading="lazy" class="h-44 w-full object-cover" />
+                      <div class="p-5">
+                        <p class="text-xs font-black uppercase tracking-[0.18em] text-amber-700">
+                          Overnight Hub
+                        </p>
+                        <h5 class="mt-2 text-lg font-black">{hubDisplayName(hub)}</h5>
+                        <p class="mt-3 text-sm leading-6 text-stone-700">
+                          {textFor(hub)}
+                        </p>
+                      </div>
+                    </button>
+
+                    <dialog id={hubDialogId} class="w-[min(760px,92vw)] rounded-[2rem] p-0 backdrop:bg-black/70">
+                      <div class="max-h-[86vh] overflow-y-auto bg-white text-stone-950">
+                        <img src={imageFor(hub)} alt={hubDisplayName(hub)} class="h-72 w-full bg-stone-950 object-contain" />
+                        <div class="p-6">
+                          <p class="text-xs font-black uppercase tracking-[0.22em] text-amber-700">Overnight Hub</p>
+                          <h3 class="mt-2 text-3xl font-black">{hubDisplayName(hub)}</h3>
+                          <p class="mt-4 text-base leading-7 text-stone-700">{textFor(hub)}</p>
+
+                          <div class="mt-6 flex flex-wrap gap-3">
+                            {hubSlug(hub) && (
+                              <a
+                                href={`/hubs/${hubSlug(hub)}/`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="rounded-full bg-stone-950 px-5 py-3 text-sm font-black text-white"
+                              >
+                                View Full Hub Page
+                              </a>
+                            )}
+                            <button
+                              type="button"
+                              onclick={`document.getElementById('${hubDialogId}').close()`}
+                              class="rounded-full border border-stone-300 px-5 py-3 text-sm font-black text-stone-950"
+                            >
+                              Close
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </dialog>
+                  </>
+                )}
+              </div>
+            </div>
+
+            <aside class="lg:sticky lg:top-24 lg:self-start">
+              <div class="rounded-[1.5rem] bg-stone-100 p-5">
+                <div class="overflow-hidden rounded-2xl bg-stone-950">
+                  <img
+                    data-preview-image-target
+                    src={attractionsForDay[0] ? imageFor(attractionsForDay[0]) : imageFor(hub)}
+                    alt={day.title || day.location || `Day ${index + 1}`}
+                    loading="lazy"
+                    class="h-52 w-full object-cover"
+                  />
+                </div>
+
+                <div class="mt-4">
+                  <p class="text-xs font-black uppercase tracking-[0.18em] text-amber-700">
+                    Day Context
+                  </p>
+                  <h4 data-preview-title-target class="mt-1 text-xl font-black text-stone-950">
+                    {attractionsForDay[0]?.name || hubDisplayName(hub)}
+                  </h4>
+                  <p data-preview-text-target class="mt-2 text-sm leading-6 text-stone-700">
+                    {attractionsForDay[0] ? textFor(attractionsForDay[0]) : textFor(hub)}
+                  </p>
+                </div>
+
+                <div class="mt-5 rounded-2xl bg-white p-4 text-sm leading-6 text-stone-700">
+                  {day.location && (
+                    <p>
+                      <strong class="text-stone-950">Location:</strong> {day.location}
+                    </p>
+                  )}
+
+                  {hub && (
+                    <p class="mt-2">
+                      <strong class="text-stone-950">Overnight:</strong> {hubDisplayName(hub)}
+                    </p>
+                  )}
+
+                  {day.provinces_traversed && (
+                    <p class="mt-2">
+                      <strong class="text-stone-950">Province:</strong> {day.provinces_traversed}
+                    </p>
+                  )}
+
+                  {day.drive_time_notes && (
+                    <p class="mt-2">
+                      <strong class="text-stone-950">Drive:</strong> {day.drive_time_notes}
+                    </p>
+                  )}
+
+                  {standardHotels.length > 0 && (
+                    <button
+                      type="button"
+                      onclick={`document.getElementById('${hotelDialogId}').showModal()`}
+                      class="mt-4 w-full rounded-full bg-stone-950 px-4 py-2 text-xs font-black text-white transition hover:bg-amber-600"
+                    >
+                      View Hotel Options
+                    </button>
+                  )}
+                </div>
+              </div>
+            </aside>
+
+            <dialog id={hotelDialogId} class="w-[min(920px,92vw)] rounded-[2rem] p-0 backdrop:bg-black/70">
+              <div class="max-h-[86vh] overflow-y-auto bg-white text-stone-950">
+                <div class="sticky top-0 z-10 flex items-center justify-between border-b border-stone-200 bg-white p-5">
+                  <div>
+                    <p class="text-xs font-black uppercase tracking-[0.22em] text-amber-700">
+                      {hub ? hubDisplayName(hub) : "Hotel Options"}
+                    </p>
+                    <h3 class="text-2xl font-black">Hotel Options</h3>
+                  </div>
+
+                  <button
+                    type="button"
+                    onclick={`document.getElementById('${hotelDialogId}').close()`}
+                    class="rounded-full bg-stone-950 px-4 py-2 text-sm font-black text-white"
+                  >
+                    Close
+                  </button>
+                </div>
+
+                <div class="p-5">
+                  <div class="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm leading-6 text-stone-800">
+                    Standard hotel options are used for base tour planning unless otherwise stated. Premium and luxury upgrades may be available in this city, but they increase the final tour price and are not included in the base price shown on the tour page.
+                  </div>
+
+                  <h4 class="mt-6 text-xl font-black">Standard Hotel Options</h4>
+                  <div class="mt-4 grid gap-5 md:grid-cols-2">
+                    {(standardHotels.length ? standardHotels : hotelsForHub(hub).slice(0, 4)).map((hotel) => (
+                      <article class="overflow-hidden rounded-[1.5rem] bg-[#fbf8f2] shadow-sm">
+                        <img src={imageFor(hotel)} alt={hotelName(hotel)} loading="lazy" class="h-48 w-full object-cover" />
+                        <div class="p-5">
+                          <p class="text-xs font-black uppercase tracking-[0.18em] text-amber-700">
+                            {hotel.tier || hotel.category || "Standard"}
+                          </p>
+                          <h5 class="mt-2 text-lg font-black">{hotelName(hotel)}</h5>
+                          <p class="mt-3 text-sm leading-6 text-stone-700">
+                            {textFor(hotel)}
+                          </p>
+
+                          {(hotel.slug || hotel.hotel_slug) && (
+                            <a
+                              href={`/hotels/${hotel.slug || hotel.hotel_slug}/`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              class="mt-4 inline-flex rounded-full bg-stone-950 px-4 py-2 text-xs font-black text-white"
+                            >
+                              View Hotel Page
+                            </a>
+                          )}
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+
+                  {upgradeHotels.length > 0 && (
+                    <>
+                      <h4 class="mt-8 text-xl font-black">Premium & Luxury Upgrade Options</h4>
+                      <p class="mt-2 text-sm leading-6 text-stone-700">
+                        These options are shown for comparison and may be available at additional cost.
+                      </p>
+
+                      <div class="mt-4 grid gap-5 md:grid-cols-2">
+                        {upgradeHotels.map((hotel) => (
+                          <article class="overflow-hidden rounded-[1.5rem] bg-stone-950 text-white shadow-sm">
+                            <img src={imageFor(hotel)} alt={hotelName(hotel)} loading="lazy" class="h-48 w-full object-cover" />
+                            <div class="p-5">
+                              <p class="text-xs font-black uppercase tracking-[0.18em] text-amber-300">
+                                {hotel.tier || hotel.category || "Upgrade"}
+                              </p>
+                              <h5 class="mt-2 text-lg font-black">{hotelName(hotel)}</h5>
+                              <p class="mt-3 text-sm leading-6 text-stone-200">
+                                {textFor(hotel)}
+                              </p>
+                            </div>
+                          </article>
+                        ))}
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+            </dialog>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll("[data-preview-card]").forEach((card) => {
+    card.addEventListener("mouseenter", () => {
+      const dayBlock = card.closest("article");
+      if (!dayBlock) return;
+
+      const titleTarget = dayBlock.querySelector("[data-preview-title-target]");
+      const imageTarget = dayBlock.querySelector("[data-preview-image-target]");
+      const textTarget = dayBlock.querySelector("[data-preview-text-target]");
+
+      const title = card.getAttribute("data-preview-title");
+      const image = card.getAttribute("data-preview-image");
+      const text = card.getAttribute("data-preview-text");
+
+      if (titleTarget && title) titleTarget.textContent = title;
+      if (imageTarget && image) imageTarget.setAttribute("src", image);
+      if (textTarget && text) textTarget.textContent = text;
+    });
+  });
+</script>

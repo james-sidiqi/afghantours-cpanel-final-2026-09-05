@@ -1,0 +1,195 @@
+---
+interface Props { tours: any[] }
+
+const { tours = [] } = Astro.props;
+
+const imageFor = (tour:any) => {
+  if (tour.hero_image_path) return tour.hero_image_path;
+  if (tour.hero_image) return tour.hero_image;
+  if (tour.image) return tour.image;
+
+  const code = tour.tour_code || tour.custom_code || tour.code;
+
+  const customCodes = new Set([
+    'CTME',
+    'PHOT',
+    'SCIE',
+    'NOSHAQ',
+    'MEDIA',
+    'SKI',
+    'BIZ',
+    'VET',
+  ]);
+
+  if (customCodes.has(code)) {
+    return `/assets/images/custom-tours/${tour.slug}/hero.webp`;
+  }
+
+  return `/assets/images/featured-tours/${tour.slug}/hero.webp`;
+};
+
+const unique = (field:string) =>
+  [...new Set(tours.map((t:any) => String(t[field] || '').trim()).filter(Boolean))].slice(0,80);
+
+const regions = unique('region');
+const provinces = unique('province');
+const seasons = unique('season');
+const difficulties = unique('activity_level');
+const types = unique('style');
+
+const durationLabel = (d:any) => {
+  const value = String(d || '').trim();
+  if (!value || value.toLowerCase() === 'inquire') return 'Custom duration';
+  return `${value} Days`;
+};
+
+const priceLabel = (tour:any) => {
+  const raw = String(tour.price_from || tour.price || '').trim();
+
+  if (!raw) return 'Custom quote';
+  if (raw.toLowerCase() === 'inquire') return 'Request proposal';
+
+  const numeric = Number(raw.replace(/[$,\s]/g, ''));
+
+  return Number.isFinite(numeric)
+    ? `From $${numeric.toLocaleString('en-US')} / person`
+    : raw;
+};
+---
+
+<section id="tour-directory" class="tour-directory">
+  <div class="tour-wrap">
+    <form class="filter-bar" data-filter-form>
+      <label>Region<select data-filter="region"><option value="">All Regions</option>{regions.map((x)=><option value={x}>{x}</option>)}</select></label>
+      <label>Province<select data-filter="province"><option value="">All Provinces</option>{provinces.map((x)=><option value={x}>{x}</option>)}</select></label>
+      <label>Season<select data-filter="season"><option value="">All Seasons</option>{seasons.map((x)=><option value={x}>{x}</option>)}</select></label>
+      <label>Duration<select data-filter="duration"><option value="">Any Duration</option><option value="short">1–7 Days</option><option value="medium">8–14 Days</option><option value="long">15+ Days</option></select></label>
+      <label>Difficulty<select data-filter="activity_level"><option value="">Any Level</option>{difficulties.map((x)=><option value={x}>{x}</option>)}</select></label>
+      <label>Tour Type<select data-filter="style"><option value="">All Types</option>{types.map((x)=><option value={x}>{x}</option>)}</select></label>
+      <button type="button" data-clear-filters>Clear</button>
+    </form>
+
+    <div class="results-row">
+      <p><span data-result-count>{tours.length}</span> tours found</p>
+      <label>Sort by:
+        <select data-sort>
+          <option value="recommended">Recommended</option>
+          <option value="duration-asc">Duration: Short to Long</option>
+          <option value="duration-desc">Duration: Long to Short</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="tour-grid" data-tour-grid>
+      {tours.map((tour:any, index:number) => (
+        <article class="tour-card" data-tour-card data-region={tour.region || ''} data-province={tour.province || ''} data-season={tour.season || ''} data-activity_level={tour.activity_level || ''} data-style={tour.style || ''} data-duration={tour.duration_days || ''} data-index={index}>
+          <div class="tour-img">
+            <img src={imageFor(tour)} alt={tour.title || tour.name} loading="lazy" onerror="this.style.display='none'" />
+            {index === 0 && <span class="ribbon">Most Popular</span>}
+          </div>
+          <div class="tour-body">
+            <h3>{tour.title || tour.name}</h3>
+            <div class="meta">
+              <span>◷ {durationLabel(tour.duration_days)}</span>
+              <span>▣ {tour.season || 'Season varies'}</span>
+            </div>
+            <p class="tour-price">{priceLabel(tour)}</p>
+            <p>{[tour.style, tour.activity_level, tour.group_size].filter(Boolean).slice(0,3).join(' • ') || 'Private journey'}</p>
+            <a href={`/tours/${tour.slug}/`}>View Tour Details →</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  const form = document.querySelector('[data-filter-form]');
+  const cards = [...document.querySelectorAll('[data-tour-card]')];
+  const count = document.querySelector('[data-result-count]');
+  const sort = document.querySelector('[data-sort]');
+  const grid = document.querySelector('[data-tour-grid]');
+  const filters = [...document.querySelectorAll('[data-filter]')];
+
+  function durationBucket(days) {
+    const n = Number(days || 0);
+    if (!n) return '';
+    if (n <= 7) return 'short';
+    if (n <= 14) return 'medium';
+    return 'long';
+  }
+
+  function applyFilters() {
+    let visible = 0;
+    cards.forEach(card => {
+      let show = true;
+      filters.forEach(sel => {
+        const key = sel.getAttribute('data-filter');
+        const val = sel.value;
+        if (!val) return;
+        const data = key === 'duration' ? durationBucket(card.dataset.duration) : (card.dataset[key] || '');
+        if (data !== val) show = false;
+      });
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    if (count) count.textContent = String(visible);
+  }
+
+  filters.forEach(sel => sel.addEventListener('change', applyFilters));
+
+  document.querySelector('[data-clear-filters]')?.addEventListener('click', () => {
+    filters.forEach(s => s.value = '');
+    applyFilters();
+  });
+
+  sort?.addEventListener('change', () => {
+    const val = sort.value;
+    const sorted = [...cards].sort((a,b) => {
+      if (val === 'duration-asc') return Number(a.dataset.duration || 999) - Number(b.dataset.duration || 999);
+      if (val === 'duration-desc') return Number(b.dataset.duration || 0) - Number(a.dataset.duration || 0);
+      return Number(a.dataset.index) - Number(b.dataset.index);
+    });
+    sorted.forEach(card => grid?.appendChild(card));
+  });
+</script>
+
+<style>
+  .tour-directory{background:#ffffff;color:#101820;padding:0 0 5.5rem}
+  .tour-wrap{width:min(1180px,calc(100% - 2rem));margin:0 auto}
+  .filter-bar{transform:translateY(-50%);background:rgba(255,255,255,.92);border:1px solid #e9dfcf;border-radius:.65rem;box-shadow:0 18px 45px rgba(38,26,12,.12);padding:1rem;display:grid;grid-template-columns:repeat(6,1fr) auto;gap:.8rem}
+  .filter-bar label{font-size:.73rem;color:#514a41}
+  .filter-bar select{display:block;width:100%;margin-top:.25rem;border:1px solid #e1d6c5;border-radius:.4rem;background:#fff;padding:.75rem;color:#101820}
+  .filter-bar button{align-self:end;border:0;background:#101820;color:#fff;border-radius:.4rem;padding:.82rem 1rem;text-transform:uppercase;font-weight:900;font-size:.75rem}
+  .results-row{margin-top:-1rem;margin-bottom:1.5rem;display:flex;justify-content:space-between;gap:1rem;color:#72695e;text-transform:uppercase;font-size:.78rem;letter-spacing:.06em}
+  .results-row label{text-transform:none;letter-spacing:0}
+  .results-row select{border:1px solid #e0d5c5;border-radius:.4rem;padding:.55rem;background:#fff}
+  .tour-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.25rem}
+  .tour-card{background:#fff;border:1px solid #e5dbcc;border-radius:.55rem;overflow:hidden;box-shadow:0 8px 25px rgba(39,31,22,.08);transition:.25s}
+  .tour-card:hover{transform:translateY(-4px);box-shadow:0 15px 35px rgba(39,31,22,.14)}
+  .tour-img{height:178px;position:relative;background:#d6c7b0}
+  .tour-img img{width:100%;height:100%;object-fit:cover;display:block}
+  .ribbon{position:absolute;top:0;left:0;background:#a86920;color:#fff;text-transform:uppercase;font-size:.68rem;font-weight:900;padding:.45rem .7rem}
+  .tour-body{padding:1.15rem}
+  .tour-body h3{font-family:Georgia,"Times New Roman",serif;font-size:1.45rem;line-height:1.05;margin:0 0 .95rem}
+  .meta{display:flex;flex-wrap:wrap;gap:.9rem;font-size:.78rem;color:#6b6258}
+  .tour-body p{font-size:.84rem;color:#5a554e;margin:1rem 0 1.2rem}
+  .tour-body .tour-price{margin:.85rem 0 .1rem;color:#9a5d04;font-size:1rem;font-weight:900}
+  .tour-body a{color:#a86920;text-decoration:none;text-transform:uppercase;font-size:.78rem;font-weight:900;letter-spacing:.04em}
+
+  @media(max-width:1050px){
+    .filter-bar{grid-template-columns:repeat(3,1fr)}
+    .tour-grid{grid-template-columns:repeat(3,1fr)}
+  }
+
+  @media(max-width:760px){
+    .filter-bar{transform:none;margin:1rem 0 2rem;grid-template-columns:1fr 1fr}
+    .tour-grid{grid-template-columns:1fr 1fr}
+    .results-row{margin-top:0}
+  }
+
+  @media(max-width:520px){
+    .filter-bar,.tour-grid{grid-template-columns:1fr}
+    .results-row{flex-direction:column}
+  }
+</style>

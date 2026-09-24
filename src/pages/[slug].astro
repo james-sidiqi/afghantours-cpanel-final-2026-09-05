@@ -1,0 +1,515 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: 'about' } },
+    { params: { slug: 'contact' } },
+    { params: { slug: 'faq' } },
+    { params: { slug: 'safety' } },
+    { params: { slug: 'privacy' } },
+    { params: { slug: 'terms' } },
+  ];
+}
+
+const pages = {
+  about: {
+    eyebrow: 'About AfghanTours',
+    title: 'American-led, Kabul-based Afghanistan travel.',
+    description: 'AfghanTours is operated by James Tourist & Travel Agency, a licensed Afghan tour operator based in Kabul.',
+    image: '/assets/images/heroes/about/hero.webp',
+    type: 'about',
+  },
+  contact: {
+    eyebrow: 'Contact AfghanTours',
+    title: 'Contact AfghanTours',
+    description: 'Tell us where you want to go, when you want to travel, and what kind of support you need.',
+    image: '/assets/images/heroes/contact/hero.webp',
+    type: 'contact',
+  },
+  faq: {
+    eyebrow: 'Travel Questions',
+    title: 'AfghanTours FAQ',
+    description: 'Practical answers for travelers planning private Afghanistan journeys.',
+    image: '/assets/images/heroes/faq/hero.webp',
+    type: 'faq',
+  },
+  safety: {
+    eyebrow: 'Responsible Travel',
+    title: 'Safety & Route-Aware Travel',
+    description: 'Travel planning is reviewed as conditions change. How we approach routes, local coordination, documentation, and traveler responsibility.',
+    image: '/assets/images/heroes/safety/hero.webp',
+    type: 'policy',
+  },
+  privacy: {
+    eyebrow: 'Policy',
+    title: 'Privacy Policy',
+    description: 'How AfghanTours handles inquiry information and traveler privacy.',
+    image: '/assets/images/heroes/privacy/hero.webp',
+    type: 'policy',
+  },
+  terms: {
+    eyebrow: 'Policy',
+    title: 'Terms & Conditions',
+    description: 'General terms for inquiries, bookings, custom itineraries, and operational changes.',
+    image: '/assets/images/heroes/default-hero.webp',
+    type: 'policy',
+  },
+};
+
+const page = pages[Astro.params.slug] || pages.about;
+
+const faqSections = [
+  {
+    title: 'Planning & Booking',
+    image: '/assets/images/heroes/tour-guide-and-tourists.webp',
+    items: [
+      ['Are your tours fixed or private?', 'Most AfghanTours itineraries are designed for private parties and can be adjusted around dates, interests, comfort level, and practical route conditions.'],
+      ['Can you build a fully custom itinerary?', 'Yes. Tell us your dates, priorities, preferred comfort level, and places you want to visit. We can build a journey from scratch or modify an existing itinerary.'],
+      ['How far in advance should I contact you?', 'Several weeks or months is ideal, particularly when visa documentation, specialist logistics, seasonal routes, or premium accommodation are involved. Short-notice requests can still be reviewed.'],
+      ['Do you work with solo travelers and private groups?', 'Yes. We plan journeys for solo travelers, couples, families, private groups, professional visitors, and specialist teams.'],
+    ],
+  },
+  {
+    title: 'Visas & Documentation',
+    image: "/assets/images/page-assets/faqs/visa-sample.webp",
+    items: [
+      ['Can you help with a Letter of Invitation?', 'Letter of Invitation support is included for confirmed booked tours where it is required. AfghanTours does not issue visas; final visa decisions remain with the relevant authorities.'],
+      ['Do you arrange provincial permissions?', 'Where an itinerary requires provincial registrations, permissions, or local coordination, we handle or coordinate the practical process associated with the confirmed route.'],
+      ['What documents should I travel with?', 'Requirements depend on nationality and itinerary. We provide pre-trip guidance for confirmed travelers, while passports, visas, insurance, and any personal regulatory requirements remain the traveler’s responsibility.'],
+    ],
+  },
+  {
+    title: 'Safety & Route Planning',
+    image: "/assets/images/page-assets/faqs/transportation.jpeg",
+    items: [
+      ['How do you plan travel around current conditions?', 'Routes are reviewed around road access, timing, weather, seasonal conditions, local coordination, practical overnight points, and the requirements of the itinerary.'],
+      ['Can the itinerary change after booking?', 'Yes. Conditions can change, so route sequence, timing, transport, accommodation, or individual stops may be adjusted when necessary.'],
+      ['Do you prefer daytime road movement?', 'Daylight movement is preferred where practical. Drive times and overnight points are planned around realistic road conditions rather than map distance alone.'],
+      ['What happens if a destination becomes impractical to visit?', 'We discuss the available alternatives and adjust the itinerary rather than forcing a route that no longer makes practical sense.'],
+    ],
+  },
+  {
+    title: 'Hotels & Upgrades',
+    image: "/assets/images/page-assets/faqs/hotels-upgrades.webp",
+    items: [
+      ['What accommodation is included?', 'Each itinerary identifies the standard accommodation planned for the journey. Hotel standards vary by city and province.'],
+      ['Can I request premium or luxury hotels?', 'Yes. Where suitable options are available, premium or luxury upgrades can be requested for all or selected nights at additional cost.'],
+      ['Can I upgrade only part of my trip?', 'Yes. Tell us which hubs or nights matter most to you and we can quote available upgrades without rebuilding the entire itinerary.'],
+    ],
+  },
+  {
+    title: 'Transportation',
+    image: "/assets/images/page-assets/faqs/transport.webp",
+    items: [
+      ['Are airport transfers available?', 'Yes. Airport pickup, hotel transfers, and departure-day transport can be coordinated for confirmed travelers.'],
+      ['What vehicles do you use?', 'Vehicle choice depends on the route, group size, terrain, season, luggage, and comfort requirements. City sedans, SUVs, vans, and higher-clearance 4x4s may be used.'],
+      ['Do you arrange domestic flights?', 'Domestic flights can be incorporated where schedules, weather, availability, and route logic make flying more practical than driving.'],
+      ['How are remote and mountain routes handled?', 'Remote routes are planned around road condition, season, daylight, vehicle suitability, fuel, driver familiarity, and realistic travel times.'],
+    ],
+  },
+  {
+    title: 'Food & Culture',
+    image: '/assets/images/heroes/food-and-culture/hero.webp',
+    items: [
+      ['Are meals included?', 'Meal inclusions vary by itinerary. Each tour should state what is included, and additional restaurant or food experiences can be added during planning.'],
+      ['Can you accommodate dietary requirements?', 'Tell us about dietary needs in advance. We will plan around them where practical, recognizing that availability can be more limited outside major cities.'],
+      ['Can cultural experiences be added to a tour?', 'Yes. Markets, crafts, food stops, local traditions, photography interests, and regional experiences can be incorporated where they fit the route and timing.'],
+    ],
+  },
+  {
+    title: 'Practical Travel',
+    image: "/assets/images/page-assets/faqs/practical-travel.webp",
+    items: [
+      ['How should I handle money?', 'Cash remains important for travel in Afghanistan. We provide practical pre-trip guidance to confirmed travelers on currency handling and day-to-day spending.'],
+      ['Is mobile internet available?', 'Mobile data and hotel Wi-Fi are available in many populated areas, but reliability varies by provider and destination. Do not assume continuous connectivity on remote routes.'],
+      ['What should I wear?', 'Travelers should dress modestly and follow current local guidance. We provide practical clothing advice before arrival based on season, itinerary, and traveler needs.'],
+      ['What should I know about photography?', 'Always follow guide instructions and ask before photographing people. Government, military, checkpoint, infrastructure, and other sensitive locations may have restrictions.'],
+    ],
+  },
+  {
+    title: 'Specialist Travel',
+    image: "/assets/images/page-assets/faqs/specialist-travel.webp",
+    items: [
+      ['Can you support photographers, researchers, or media teams?', 'Yes. Specialist planning can include route design, drivers, guides, translators, accommodation, local coordination, production logistics, and project-specific requirements.'],
+      ['Do you support business visitors and delegations?', 'Yes. We can coordinate practical ground support, transport, accommodation, scheduling, and locally appropriate travel logistics around the visitor’s objectives.'],
+      ['Can you help with veteran or return visits?', 'Yes. Return visits can be planned around former locations, personal objectives, practical access, current conditions, and the level of privacy or support required.'],
+    ],
+  },
+];
+
+const policyItems = {
+  safety: [
+    [
+      'No safety guarantees',
+      'Travel in Afghanistan carries inherent risk. We do not describe a destination as safe or promise that conditions will remain unchanged. Travel planning is reviewed as conditions change.'
+    ],
+    [
+      'Route & daylight planning',
+      'We plan around real drive times, road conditions, weather, seasonal access, daylight, practical overnight points, and current operating conditions. Routes and timing can change when conditions change.'
+    ],
+    [
+      'Local coordination',
+      'Travel is supported through Kabul-based planning and working relationships with local guides, drivers, hotels, and other contacts relevant to the itinerary. Access is reviewed before movement rather than assumed.'
+    ],
+    [
+      'LOI, permits & documentation',
+      'Letter of Invitation support is included for every booked tour. We do not issue visas. Provincial permissions and registrations are processed or coordinated in advance where required, with final requirements determined by the itinerary and relevant authorities.'
+    ],
+    [
+      'Vehicles, guides & road movement',
+      'Vehicles, drivers, and local guides are assigned according to terrain, distance, group size, and route needs. Daylight movement is preferred where practical, and the operating plan can change when the road, weather, or access changes.'
+    ],
+    [
+      'Checkpoints & photography',
+      'Travelers should follow guide instructions during checkpoint interactions and ask before photographing government sites, checkpoints, military positions, infrastructure, religious sites, or people in sensitive settings.'
+    ],
+    [
+      'Insurance & medical planning',
+      'Travelers should read their own government travel advisory and carry insurance that explicitly covers Afghanistan. Emergency evacuation coverage is strongly recommended. Medical capability and response options vary significantly by location.'
+    ],
+    [
+      'Traveler responsibility',
+      'Travelers are expected to respect Afghan law and customs, cooperate with guides and drivers, arrive on time for planned movement, and accept itinerary changes when conditions require them.'
+    ],
+  ],
+  privacy: [
+    ['Information collected', 'We may collect your name, email, WhatsApp number, nationality, dates, group size, interests, and inquiry details.'],
+    ['How information is used', 'Information is used to respond to inquiries, prepare itinerary options, and coordinate requested travel services.'],
+    ['Information sharing', 'Necessary details may be shared with operational partners only when needed for hotels, transport, guiding, documentation, or itinerary planning.'],
+  ],
+  terms: [
+    ['Inquiries are not bookings', 'Submitting an inquiry does not create a confirmed booking. A journey is confirmed only after itinerary, price, and payment terms are agreed.'],
+    ['Changes and availability', 'Hotels, vehicles, flights, routes, permits, and prices may change based on timing, access, weather, and operational conditions.'],
+    ['Traveler responsibility', 'Travelers must follow local guidance, respect Afghan culture and law, and avoid unauthorized photography or activity.'],
+  ],
+};
+
+const aboutItems = [
+  ['Licensed Kabul Operator', 'AfghanTours.com is owned and operated by James Tourist & Travel Agency, a licensed Afghanistan travel operator based in Kabul.'],
+  ['American-Led, Kabul-Based', 'The company is led by an American citizen with more than 15 years of continuous experience living and working inside Afghanistan.'],
+  ['Operational Travel Platform', 'We combine tourism, logistics, local relationships, drivers, hotels, guides, and route planning into realistic, supported journeys.'],
+];
+
+const safetyImages = {
+  'Safety-Aware Planning': '/assets/images/page-assets/people/group-photos/tourists-photo-snow-road.webp',
+  'Route-aware planning': '/assets/images/transport/roads/kabul-parwan-bamyan/02.webp',
+  'Route & daylight planning': '/assets/images/transport/roads/kabul-parwan-bamyan/02.webp',
+  'Local coordination': '/assets/images/page-assets/people/guides/guides-on-tour.webp',
+  'LOI, permits & documentation': '/assets/images/heroes/contact/hero.webp',
+  'Vehicles, guides & road movement': '/assets/images/page-assets/people/guides/edrees-white-4runner.webp',
+  'Checkpoints & photography': '/assets/images/page-assets/people/guides/tour-and-guide.webp',
+  'Insurance & medical planning': '/assets/images/heroes/tour-guide-and-tourists.webp',
+  'Traveler responsibility': '/assets/images/page-assets/people/guides/edrees-and-tourist-nuristan-side-of-road.webp',
+  'Practical itinerary planning': '/assets/images/transport/roads/off-road/01.webp',
+};
+
+const trustImages = {
+  'American-Led, Kabul-Based Operations': '/assets/images/page-assets/people/guides/guide-james-explaining.webp',
+  'Experienced Local Staff': '/assets/images/page-assets/people/guides/guides-on-tour.webp',
+  'Safety-Aware Planning': '/assets/images/page-assets/people/guides/edrees-and-tourist-nuristan-side-of-road.webp',
+  'Visas, Passes & Permits': '/assets/images/heroes/contact/hero.webp',
+  'Transparent Pricing': '/assets/images/page-assets/people/tourists/faye-kabul.webp',
+  'Funds Stay Local': '/assets/images/page-assets/field-access/kabul-market-walk.webp',
+};
+
+const trustItems = [
+  ['American-Led, Kabul-Based Operations', 'Led by an American who has lived and worked in Afghanistan since 2010, with a permanent Kabul office and an experienced Afghan team on the ground.'],
+  ['Experienced Local Staff', 'Our team includes professionals who previously supported embassies, international organizations, development programs, media projects, and foreign visitors throughout Afghanistan.'],
+  ['Safety-Aware Planning', 'Routes, accommodations, and activities are selected based on current conditions, access requirements, and your personal comfort level.'],
+  ['Visas, Passes & Permits', 'We assist with visa guidance, provincial travel permissions, and the local coordination required to travel smoothly throughout Afghanistan.'],
+  ['Transparent Pricing', 'No surprise markups after you arrive. We explain costs clearly before your trip begins so you know exactly what to expect.'],
+  ['Funds Stay Local', 'Your trip directly supports Afghan drivers, guides, hotels, restaurants, artisans, and families in the communities you visit.'],
+];
+---
+
+<BaseLayout title={`${page.title} | AfghanTours`} description={page.description} image={page.image}>
+  {page.type !== 'contact' && (
+    <section class="simple-hero">
+      <img src={page.image} alt={page.title} />
+      <div></div>
+      <article>
+        <p>{page.eyebrow}</p>
+        <h1>{page.title}</h1>
+        <span>{page.description}</span>
+      </article>
+    </section>
+  )}
+
+  {page.type === 'contact' ? (
+    <main class="contact-landing" style={`--contact-bg: url('${page.image}')`}>
+      <section class="contact-intro">
+        <div class="contact-copy">
+          <p class="eyebrow">Contact AfghanTours</p>
+          <h1>Planning a trip to Afghanistan?</h1>
+          <p class="lead">Tell us where you want to travel, your dates, group size, interests, comfort level, and any special support you need. WhatsApp inquiries are usually fastest.</p>
+          <div class="contact-pills" aria-label="Common inquiry types">
+            <span>Custom Tours</span>
+            <span>Visa Guidance</span>
+            <span>Route Planning</span>
+            <span>Hotels & Transport</span>
+            <span>Media Support</span>
+            <span>Return Visits</span>
+          </div>
+        </div>
+
+        <form class="inquiry-form" action="mailto:info@afghantours.com" method="post" enctype="text/plain">
+          <p class="form-eyebrow">Start Planning</p>
+          <h2>Tell us about your trip</h2>
+
+          <div class="form-grid">
+            <label>Name <input name="name" autocomplete="name" required /></label>
+            <label>Email or WhatsApp <input name="contact" autocomplete="email" required /></label>
+          </div>
+
+          <div class="form-grid">
+            <label>Country <input name="country" autocomplete="country-name" /></label>
+            <label>Number of Travelers <input name="travelers" inputmode="numeric" /></label>
+          </div>
+
+          <label>What are you interested in? <input id="interestInput" name="interest" placeholder="Private journey, photography, media, heritage, research, or another request" /></label>
+          <label>Travel Dates <input name="travel_dates" placeholder="Approximate dates or season" /></label>
+          <label>Tell us about your goals <textarea name="message" placeholder="What would you like this journey to accomplish? Tell us where you hope to go, the people or places important to you, your interests, approximate schedule, and any special requirements."></textarea></label>
+
+          <div class="response-note">
+            <strong>Typical response time:</strong> within 24 hours. WhatsApp is usually fastest for urgent planning.
+          </div>
+
+          <button type="submit">Send Inquiry</button>
+        </form>
+      </section>
+
+      <section class="contact-details-map">
+        <article class="office-card">
+          <p class="eyebrow">Kabul Office</p>
+          <h2>Visit Our Office</h2>
+          <p><strong>AfghanTours.com</strong><br /><span class="operator-note">Operated by James Tourist & Travel Agency</span></p>
+          <p>2nd Floor, Majid Mall<br />Shahr-e-Naw, District 10<br />Kabul, Afghanistan</p>
+          <p><strong>Email:</strong> <a href="mailto:info@afghantours.com">info@afghantours.com</a></p>
+          <p><strong>WhatsApp:</strong> <a href="https://wa.me/93780123456">+93 780 123 456</a></p>
+          <a class="map-link" href="https://share.google/HYS3u9MY3gzVPRy4b" target="_blank" rel="noreferrer">Open in Google Maps</a>
+        </article>
+
+        <figure class="map-box office-visual">
+          <img src="/assets/images/page-assets/activities/sightseeing/shopping/majid-mall.webp" alt="Majid Mall in Shahr-e-Naw, Kabul, location of the AfghanTours.com office" loading="lazy" />
+          <figcaption><a class="map-link" href="https://share.google/HYS3u9MY3gzVPRy4b" target="_blank" rel="noreferrer">Open AfghanTours.com in Google Maps</a></figcaption>
+        </figure>
+      </section>
+
+      <section class="trust-section">
+        <p class="eyebrow">Why Travel With Us</p>
+        <h2>Built for serious Afghanistan travel.</h2>
+        <div class="trust-grid">
+          {trustItems.map(([heading, text]) => (
+            <article class="trust-card">
+              {trustImages[heading] && <img class="trust-card__image" src={trustImages[heading]} alt="" loading="lazy" />}
+              <div class="trust-card__body"><h3>{heading}</h3><p>{text}</p></div>
+            </article>
+          ))}
+        </div>
+      </section>
+    </main>
+  ) : (
+    <main class="simple-page">
+      {page.type === 'faq' ? (
+        <section class="faq-page" aria-label="Afghanistan travel frequently asked questions">
+          <div class="faq-intro-card">
+            <p class="eyebrow">Plan with confidence</p>
+            <h2>Questions before you travel</h2>
+            <p>Practical answers from a Kabul-based tour operator, organized around the decisions travelers make before booking and before arrival.</p>
+          </div>
+          {faqSections.map((section) => (
+            <section class="faq-section">
+              <figure class="faq-section__image"><img src={section.image} alt="" loading="lazy" /></figure>
+              <div class="faq-section__content">
+                <h2>{section.title}</h2>
+                {section.items.map(([q, a]) => (
+                  <details>
+                    <summary>{q}</summary>
+                    <p>{a}</p>
+                  </details>
+                ))}
+              </div>
+            </section>
+          ))}
+          <section class="faq-final-cta">
+            <div><p class="eyebrow">Still have a question?</p><h2>Tell us what you are planning.</h2></div>
+            <div class="faq-final-cta__actions"><a href="/contact/">Ask Us</a><a href="/contact/?type=custom-tour">Build My Trip</a></div>
+          </section>
+        </section>
+      ) : page.type === 'policy' ? (
+        <>
+          <section class="policy-grid">
+            {(policyItems[Astro.params.slug] || []).map(([heading, text]) => (
+              <article>
+                <h2>{heading}</h2>
+                <p>{text}</p>
+              </article>
+            ))}
+          </section>
+
+          {Astro.params.slug === 'safety' && (
+            <section class="safety-closing">
+              <p class="eyebrow">Plan around the real conditions</p>
+              <h2>Travel planning is reviewed as conditions change.</h2>
+              <p>
+                Tell us your dates and the places you want to reach. We will review the
+                route, season, road movement, local requirements, and practical alternatives
+                before the itinerary is confirmed.
+              </p>
+              <div class="safety-actions">
+                <a class="primary-action" href="/tours/custom-expedition/">Plan a Custom Trip</a>
+                <a href="https://wa.me/93780123456" target="_blank" rel="noopener noreferrer">
+                  WhatsApp the Kabul team
+                </a>
+              </div>
+            </section>
+          )}
+        </>
+      ) : (
+        <section class="policy-grid">
+          {aboutItems.map(([heading, text]) => (
+            <article>
+              <h2>{heading}</h2>
+              <p>{text}</p>
+            </article>
+          ))}
+        </section>
+      )}
+    </main>
+  )}
+</BaseLayout>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const interestInput = document.getElementById('interestInput');
+  const customInterestNames = {
+    'private-bespoke': 'Private Bespoke Journey',
+    'photography-filmmaking': 'Photographers & Filmmakers',
+    'journalists-media': 'Journalists & Media Teams',
+    'veterans-return-visitors': 'Veterans & Return Visitors',
+    'afghan-diaspora-heritage': 'Afghan Diaspora & Heritage Travel',
+    'research-specialist': 'Researchers & Specialist Travel'
+  };
+
+  const niceTitle = (value) => {
+    if (!value) return '';
+    if (customInterestNames[value]) return customInterestNames[value];
+
+    return value
+      .replace(/[-_]+/g, ' ')
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+  };
+
+  const interestSources = [
+    ['interest', 'Custom Journey'],
+    ['journey', 'Interested Journey'],
+    ['tour', 'Interested Tour'],
+    ['hub', 'Interested Hub'],
+    ['attraction', 'Interested Attraction'],
+    ['hotel', 'Interested Hotel'],
+    ['food', 'Interested Food & Culture Experience'],
+    ['type', 'Inquiry Type'],
+  ];
+
+  for (const [key, label] of interestSources) {
+    const value = params.get(key);
+    if (value && interestInput) {
+      interestInput.value = `${label}: ${niceTitle(value)}`;
+      break;
+    }
+  }
+</script>
+
+<style>
+  .simple-hero{position:relative;min-height:56vh;background:#050807;color:#fff;display:flex;align-items:end;overflow:hidden}
+  .simple-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.7}
+  .simple-hero>div{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.82),rgba(0,0,0,.5),rgba(0,0,0,.2))}
+  .simple-hero article{position:relative;width:min(1180px,calc(100% - 2rem));margin:0 auto;padding:7rem 0 4.5rem}
+  .simple-hero p,.eyebrow,.form-eyebrow{color:#b97816;text-transform:uppercase;letter-spacing:.24em;font-size:.75rem;font-weight:900}
+  .simple-hero h1{font-family:Georgia,"Times New Roman",serif;font-size:clamp(3rem,6vw,6rem);line-height:.92;letter-spacing:-.06em;margin:.7rem 0 1rem}
+  .simple-hero span{display:block;max-width:720px;color:rgba(255,255,255,.86);font-size:1.1rem;line-height:1.75}
+  .simple-page{background:#fbf6ed;padding:clamp(4rem,7vw,7rem) 1rem;color:#101820}
+  .content-card,.policy-grid article{width:min(980px,100%);margin:0 auto;background:#fff;border:1px solid rgba(16,24,32,.1);border-radius:1.5rem;padding:clamp(1.5rem,3vw,2.4rem);box-shadow:0 14px 38px rgba(21,16,9,.08)}
+  details{border-bottom:1px solid #eadfce;padding:1rem 0}
+  details:last-child{border-bottom:0}
+  summary{cursor:pointer;font-weight:900;font-size:1.1rem}
+  details p,.content-card p,.policy-grid p{color:#4b5563;line-height:1.8}
+  .policy-grid{width:min(1180px,100%);margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+  .policy-grid article{width:auto}
+  .policy-grid h2,.content-card h2{font-family:Georgia,"Times New Roman",serif;font-size:2rem;line-height:1;margin:.2rem 0 1rem}
+  .safety-closing{width:min(980px,100%);margin:2rem auto 0;background:#0f1a18;color:#fff;border-radius:1.5rem;padding:clamp(2rem,4vw,3.4rem);box-shadow:0 18px 50px rgba(21,16,9,.12)}
+  .safety-closing h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.4rem,4vw,4rem);line-height:.98;letter-spacing:-.04em;margin:.6rem 0 1rem;color:#fff}
+  .safety-closing>p:not(.eyebrow){max-width:760px;color:#e5e7eb;font-size:1.05rem;line-height:1.8}
+  .safety-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.6rem}
+  .safety-actions a{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:.85rem 1.15rem;color:#fff;font-weight:900;text-decoration:none}
+  .safety-actions .primary-action{background:#d2a33f;border-color:#d2a33f;color:#101820}
+
+
+  .contact-landing{position:relative;isolation:isolate;background:#fbf6ed;color:#101820;overflow:hidden}
+  .contact-landing::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(251,246,237,.96),rgba(251,246,237,.9)),var(--contact-bg);background-size:cover;background-position:center;opacity:.95;z-index:-2}
+  .contact-landing::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 82% 8%,rgba(214,162,58,.18),transparent 30%),radial-gradient(circle at 12% 25%,rgba(16,24,32,.12),transparent 26%);z-index:-1}
+  .contact-intro{width:min(1180px,calc(100% - 2rem));margin:0 auto;display:grid;grid-template-columns:minmax(0,.88fr) minmax(440px,1.12fr);gap:2.5rem;align-items:start;padding:clamp(4rem,7vw,7rem) 0 3rem}
+  .contact-copy{padding-top:1.4rem}
+  .contact-copy h1,.trust-section h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.9rem,5.2vw,5.25rem);line-height:.96;letter-spacing:-.045em;margin:.8rem 0 1.1rem;color:#101820;max-width:720px}
+  .lead{max-width:620px;font-size:1.08rem;line-height:1.85;color:#314154}
+  .contact-pills{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1.45rem;max-width:620px}
+  .contact-pills span{border:1px solid rgba(16,24,32,.12);border-radius:999px;background:#fff;padding:.72rem .9rem;font-size:.78rem;font-weight:900;box-shadow:0 10px 24px rgba(21,16,9,.06)}
+  .inquiry-form,.office-card,.map-box,.trust-grid article{background:#fff;border:1px solid rgba(16,24,32,.1);border-radius:1.5rem;box-shadow:0 18px 50px rgba(21,16,9,.1)}
+  .inquiry-form{padding:clamp(1.5rem,3vw,2.3rem)}
+  .inquiry-form h2,.office-card h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.3rem,4vw,4.4rem);line-height:.9;letter-spacing:-.055em;margin:.45rem 0 1.35rem;color:#101820}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  label{display:grid;gap:.4rem;margin-bottom:1rem;font-weight:900;font-size:.86rem;color:#101820}
+  input,textarea{width:100%;border:1px solid #d8c9b5;border-radius:.75rem;background:#fff;padding:.95rem;font:inherit;color:#101820;box-sizing:border-box}
+  input:focus,textarea:focus{outline:2px solid rgba(214,162,58,.35);border-color:#d6a23a}
+  textarea{min-height:155px;resize:vertical}
+  .response-note{border-radius:1rem;background:#f8f1e5;border:1px solid #eadfce;padding:.95rem 1rem;color:#4b5563;font-size:.9rem;line-height:1.55;margin:1rem 0}
+  button,.map-link{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:999px;background:#101820;color:#fff;text-decoration:none;padding:1rem 1.25rem;font-weight:900;cursor:pointer}
+  button:hover,.map-link:hover{background:#d6a23a;color:#101820}
+  .contact-details-map{width:min(1180px,calc(100% - 2rem));margin:0 auto;display:grid;grid-template-columns:.75fr 1.25fr;gap:1.25rem;padding:1rem 0 3rem}
+  .office-card{padding:clamp(1.4rem,3vw,2rem)}
+  .office-card p{line-height:1.75;color:#4b5563}
+  .office-card a{color:#101820;font-weight:900}
+  .office-card .map-link{color:#fff;background:#101820}
+  .office-card .map-link:hover{color:#101820;background:#d6a23a}
+  .map-box{overflow:hidden;min-height:420px}
+  .map-box iframe{display:block;width:100%;height:100%;min-height:420px;border:0;filter:saturate(.95) contrast(.98)}
+  .trust-section{width:min(1180px,calc(100% - 2rem));margin:0 auto;padding:1rem 0 clamp(4rem,7vw,7rem)}
+  .trust-section h2{font-size:clamp(2.6rem,4.8vw,5.4rem);max-width:850px}
+  .trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:2rem}
+  .trust-grid article{padding:1.35rem}
+  .trust-grid h3{font-family:Georgia,"Times New Roman",serif;font-size:1.55rem;line-height:1;margin:.1rem 0 .75rem;color:#101820;letter-spacing:-.035em}
+  .trust-grid p{color:#4b5563;line-height:1.7;margin:0}
+
+  .operator-note{display:inline-block;margin-top:.25rem;color:#6b6258;font-size:.9rem;font-weight:600}
+  .office-visual{position:relative;margin:0}
+  .office-visual>img{display:block;width:100%;height:100%;min-height:420px;object-fit:cover}
+  .office-visual figcaption{position:absolute;left:1rem;bottom:1rem}
+  .trust-card,.policy-card--visual{overflow:hidden;padding:0!important}
+  .trust-card__image,.policy-card__image{display:block;width:100%;height:180px;object-fit:cover;background:#e8dfd1}
+  .trust-card__body,.policy-card__body{padding:1.35rem}
+  .faq-page{width:min(1180px,100%);margin:0 auto;display:grid;gap:1.25rem}
+  .faq-intro-card{border-radius:1.5rem;background:#101820;color:#fff;padding:clamp(1.5rem,4vw,3rem);box-shadow:0 18px 46px rgba(21,16,9,.12)}
+  .faq-intro-card h2,.faq-section h2,.faq-final-cta h2{font-family:Georgia,"Times New Roman",serif;letter-spacing:-.045em}
+  .faq-intro-card h2{margin:.4rem 0 .7rem;font-size:clamp(2.4rem,5vw,4.8rem);line-height:.95}
+  .faq-intro-card>p:last-child{max-width:760px;color:rgba(255,255,255,.78);line-height:1.7}
+  .faq-section{display:grid;grid-template-columns:minmax(260px,.7fr) minmax(0,1.3fr);overflow:hidden;border:1px solid rgba(16,24,32,.1);border-radius:1.5rem;background:#fff;box-shadow:0 14px 38px rgba(21,16,9,.08)}
+  .faq-section__image{margin:0;min-height:100%}
+  .faq-section__image img{display:block;width:100%;height:100%;min-height:300px;object-fit:cover}
+  .faq-section__content{padding:clamp(1.25rem,3vw,2.25rem)}
+  .faq-section__content h2{margin:.1rem 0 1rem;font-size:clamp(1.9rem,3vw,2.8rem);color:#101820}
+  .faq-section details{padding:1rem 0}
+  .faq-final-cta{display:flex;align-items:center;justify-content:space-between;gap:1.25rem;border-radius:1.5rem;background:#f1dfb8;padding:clamp(1.4rem,3vw,2.3rem)}
+  .faq-final-cta h2{margin:.35rem 0 0;font-size:clamp(2rem,4vw,3.5rem);line-height:.95;color:#101820}
+  .faq-final-cta__actions{display:flex;flex-wrap:wrap;gap:.7rem}
+  .faq-final-cta__actions a{display:inline-flex;border-radius:999px;background:#101820;color:#fff;text-decoration:none;padding:.9rem 1.1rem;font-weight:900}
+
+  @media(max-width:900px){
+    .policy-grid,.contact-intro,.contact-details-map,.trust-grid,.faq-section{grid-template-columns:1fr}
+    .faq-section__image img{min-height:220px;max-height:300px}
+    .faq-final-cta{align-items:flex-start;flex-direction:column}
+    .contact-intro{padding-top:3rem}
+    .form-grid{grid-template-columns:1fr}
+    .map-box,.map-box iframe{min-height:340px}
+  }
+</style>

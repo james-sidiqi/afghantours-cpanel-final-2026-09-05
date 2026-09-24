@@ -1,0 +1,2100 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getTours, getTourBySlug, getAttractions } from "../../lib/buildRelations";
+import { getCollection } from "astro:content";
+import { hotels, dishes, locations } from "../../lib/data";
+import { parseCSV } from "../../lib/csv";
+import transportRaw from "../../../data/ground_transport.csv?raw";
+import inclusionsRaw from "../../../data/tour_inclusions.csv?raw";
+
+export function getStaticPaths() {
+  return getTours()
+    .filter((tour) => tour?.slug)
+    .map((tour) => ({ params: { slug: tour.slug } }));
+}
+
+const tour = Astro.params.slug ? getTourBySlug(Astro.params.slug) : undefined;
+if (!tour) return Astro.redirect("/tours/");
+
+const allTours = getTours();
+const transport = parseCSV(transportRaw);
+const allInclusions = parseCSV(inclusionsRaw);
+const allAttractions = getAttractions();
+const foodEntries = await getCollection("food");
+
+const foodPathBySlug = new Map();
+for (const entry of foodEntries) {
+  const leaf = entry.slug.split("/").pop();
+  for (const key of [entry.data.food_slug, entry.data.slug, leaf]) {
+    if (key) foodPathBySlug.set(String(key).trim().toLowerCase(), entry.slug);
+  }
+}
+
+function foodHref(item) {
+  const key = String(item?.food_slug || item?.slug || "").trim().toLowerCase();
+  const contentSlug = foodPathBySlug.get(key);
+  return contentSlug ? `/food-culture/${contentSlug}/` : "/food-culture/";
+}
+
+function humanize(value) {
+  return String(value || "")
+    .replace(/[-_]+/g, " ")
+    .replace(/\b\w/g, (letter) => letter.toUpperCase())
+    .trim();
+}
+
+
+const tourName = tour.title || tour.name || "Afghanistan Tour";
+const isCustomJourney = tour.slug === "custom-expedition";
+const heroImage =
+  tour.hero_image ||
+  tour.hero_image_path ||
+  tour.thumbnail_image_path ||
+  "/assets/images/placeholders/default-hero.webp";
+const overviewImage =
+  tour.overview_image ||
+  tour.overview_image_path ||
+  tour.image_path_overview ||
+  heroImage;
+
+function list(value) {
+  if (Array.isArray(value)) return value.filter(Boolean);
+  return String(value || "")
+    .split(/[|;,]/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function unique(items) {
+  const seen = new Set();
+  return items.filter((item) => {
+    const key = String(item || "").trim().toLowerCase();
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function cleanText(value) {
+  if (!value) return "";
+  if (typeof value === "string") return value.trim();
+  if (Array.isArray(value)) return value.map(cleanText).filter(Boolean).join(" → ");
+  if (typeof value === "object") {
+    return cleanText(value.name || value.title || value.label || value.summary || value.route || value.slug);
+  }
+  return String(value).trim();
+}
+
+function includesAny(value, tokens) {
+  const text = String(value || "").toLowerCase();
+  return tokens.some((token) => token && text.includes(String(token).toLowerCase()));
+}
+
+function isActiveRow(item) {
+  const active = String(item.is_active ?? "1").toLowerCase();
+  return active === "1" || active === "true" || active === "yes";
+}
+
+function formatPrice(value) {
+  const raw = String(value ?? "").trim();
+  if (!raw || raw.toLowerCase() === "inquire") return "Price on request";
+  const number = Number(raw.replace(/[^0-9.]/g, ""));
+  if (!Number.isFinite(number) || number <= 0) return raw;
+  return `From $${number.toLocaleString("en-US")}`;
+}
+
+function statusLabel(status) {
+  const value = String(status || "").toLowerCase();
+  if (value.includes("request") || value.includes("inquire")) return "On request";
+  if (value.includes("available") || value.includes("open")) return "Available";
+  if (value.includes("sold") || value.includes("full")) return "Full";
+  return status || "Ask us";
+}
+
+function dateLabel(row) {
+  const start = String(row?.date_start || "").trim();
+  const end = String(row?.date_end || "").trim();
+  if (!start || start.toLowerCase() === "inquire") return "Dates arranged around you";
+  if (!end || end === start || end.toLowerCase() === "inquire") return start;
+  return `${start} – ${end}`;
+}
+
+function imageFor(item) {
+  return (
+    item?.hero_image ||
+    item?.hero_image_path ||
+    item?.card_image ||
+    item?.card_image_path ||
+    item?.image ||
+    item?.image_path ||
+    item?.image_path_property_1 ||
+    item?.overview_image ||
+    "/assets/images/placeholders/default-card.webp"
+  );
+}
+
+const itinerary = Array.isArray(tour.itinerary) ? tour.itinerary.filter(isActiveRow) : [];
+const linkedAttractions = Array.isArray(tour.attractions) ? tour.attractions : [];
+const provinceObjects = Array.isArray(tour.provinces) ? tour.provinces : [];
+const provinceTokens = unique([
+  ...provinceObjects.map((item) => cleanText(item)),
+  ...itinerary.flatMap((day) => list(day.provinces_traversed || day.province || day.location)),
+].filter(Boolean));
+
+const routeText =
+  cleanText(tour.route) ||
+  cleanText(tour.route_summary) ||
+  cleanText(tour.route_text) ||
+  unique(itinerary.map((day) => cleanText(day.location)).filter(Boolean)).join(" → ") ||
+  provinceTokens.join(" → ");
+
+const locationTokens = unique([
+  tour.primary_location_slug,
+  tour.primary_location,
+  tour.hub,
+  tour.hubs,
+  ...itinerary.map((day) => day.overnight_hub || day.hub || day.location),
+  ...provinceTokens,
+].flatMap(list).filter(Boolean));
+
+function normalizeHotelHub(value) {
+  return String(value || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[_-]+/g, " ")
+    .replace(/\bcity\b/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function displayHotelHub(value) {
+  const key = normalizeHotelHub(value);
+
+  const labels = {
+    "kabul": "Kabul",
+    "bamyan": "Bamyan",
+    "herat": "Herat",
+    "mazar e sharif": "Mazar-e-Sharif",
+    "faizabad": "Faizabad",
+    "kandahar": "Kandahar",
+    "jalalabad": "Jalalabad",
+    "ghazni": "Ghazni",
+  };
+
+  return labels[key] || humanize(value);
+}
+
+/*
+ * Accommodation rule:
+ * one ACTIVE STANDARD hotel for every unique hub
+ * in which this itinerary overnights.
+ *
+ * We deliberately do not use premium/luxury hotels here.
+ */
+const overnightHubs = [];
+const seenOvernightHubs = new Set();
+
+for (const day of itinerary) {
+  const rawHub = day.overnight_hub || day.hub;
+
+  if (!rawHub) continue;
+
+  const key = normalizeHotelHub(rawHub);
+
+  if (!key || seenOvernightHubs.has(key)) continue;
+
+  seenOvernightHubs.add(key);
+
+  overnightHubs.push({
+    key,
+    raw: rawHub,
+    label: displayHotelHub(rawHub),
+  });
+}
+
+const standardHotels = hotels.filter((hotel) => {
+  const tier = String(hotel.tier || "").trim().toLowerCase();
+
+  return isActiveRow(hotel) && tier === "standard";
+});
+
+const routeHotels = overnightHubs
+  .map((hub) => {
+    const hotel = standardHotels.find((candidate) => {
+      return (
+        normalizeHotelHub(candidate.hub_name || candidate.hub) === hub.key
+      );
+    });
+
+    if (!hotel) return null;
+
+    return {
+      ...hotel,
+      route_hub_label: hub.label,
+    };
+  })
+  .filter(Boolean);
+
+const routeFood = dishes
+  .filter((dish) =>
+    includesAny(
+      [
+        dish.province_code,
+        dish.destination_code,
+        dish.region_code,
+        dish.hub,
+        dish.name,
+        dish.slug,
+        dish.desc_short,
+        dish.description,
+      ].join(" "),
+      locationTokens.concat(provinceTokens)
+    )
+  )
+  .slice(0, 4);
+
+const routeHubs = locations
+  .filter((location) => {
+    const locationText = [
+      location.name,
+      location.location_name,
+      location.slug,
+      location.location_slug,
+      location.province,
+      location.province_name,
+      location.type,
+      location.is_hub,
+    ].join(" ");
+    return includesAny(locationText, locationTokens) && (
+      String(location.type || "").toLowerCase().includes("hub") ||
+      String(location.is_hub || "").toLowerCase() === "true" ||
+      String(location.is_hub || "") === "1"
+    );
+  })
+  .slice(0, 4);
+
+const attractionByCode = new Map(
+  allAttractions
+    .map((item) => [String(item.attraction_code || item.code || "").trim(), item])
+    .filter(([key]) => key)
+);
+const linkedAttractionSlugs = new Set(linkedAttractions.map((item) => item.slug).filter(Boolean));
+const optionalAttractions = allAttractions
+  .filter((item) => !linkedAttractionSlugs.has(item.slug))
+  .filter((item) => includesAny([
+    item.province, item.province_name, item.region, item.region_name, item.location,
+    item.location_name, item.destination_code, item.summary, item.description
+  ].join(" "), locationTokens.concat(provinceTokens)))
+  .slice(0, 4);
+
+const foodBySlug = new Map(
+  routeFood.map((item) => [
+    String(item.slug || "").toLowerCase(),
+    item
+  ])
+);
+
+/*
+ * Always present the itinerary in true chronological order.
+ * Hubs are now visual markers within the day-by-day flow,
+ * rather than containers that interrupt the sequence.
+ */
+const sortedItinerary = [...itinerary].sort((a, b) => {
+  const aDay = Number(a.day_number || 9999);
+  const bDay = Number(b.day_number || 9999);
+
+  return aDay - bDay;
+});
+
+function attractionCodeFor(item) {
+  return String(
+    item?.attraction_code ||
+    item?.code ||
+    item?.slug ||
+    ""
+  ).trim();
+}
+
+/*
+ * Today's Highlights should be actual attractions.
+ * Return the complete attraction object instead of reducing
+ * it to plain text so the page can open a detail popup.
+ */
+function dayHighlights(day) {
+  const seen = new Set();
+
+  return list(day.attraction_codes)
+    .map((code) => attractionByCode.get(String(code).trim()))
+    .filter(Boolean)
+    .filter((item) => {
+      const key = attractionCodeFor(item);
+
+      if (!key || seen.has(key)) return false;
+
+      seen.add(key);
+      return true;
+    })
+    .slice(0, 6);
+}
+
+/*
+ * Count consecutive overnight-hub rows so the itinerary can
+ * show a compact "Kabul · 2 nights" marker without breaking
+ * the Day 1 → Day 2 → Day 3 flow.
+ */
+function itineraryHubKey(day) {
+  return cleanText(
+    day.overnight_hub ||
+    day.hub ||
+    day.location ||
+    "On the road"
+  );
+}
+
+const itineraryFlow = sortedItinerary.map((day, index) => {
+  const hubKey = itineraryHubKey(day);
+  const previousHub =
+    index > 0
+      ? itineraryHubKey(sortedItinerary[index - 1])
+      : "";
+
+  const showHub = index === 0 || hubKey !== previousHub;
+
+  let hubCount = 0;
+
+  if (showHub) {
+    for (let cursor = index; cursor < sortedItinerary.length; cursor += 1) {
+      if (itineraryHubKey(sortedItinerary[cursor]) !== hubKey) break;
+      hubCount += 1;
+    }
+  }
+
+  return {
+    day,
+    dayNumber:
+      Number(day.day_number) ||
+      index + 1,
+    hubKey,
+    hubLabel: humanize(hubKey || "On the road"),
+    hubCount,
+    showHub,
+  };
+});
+
+/*
+ * Only send attraction information actually used by this
+ * itinerary to the browser popup.
+ */
+const itineraryAttractionData = {};
+
+for (const entry of itineraryFlow) {
+  for (const attraction of dayHighlights(entry.day)) {
+    const code = attractionCodeFor(attraction);
+
+    if (!code) continue;
+
+    itineraryAttractionData[code] = {
+      code,
+      name:
+        attraction.name ||
+        attraction.title ||
+        "Attraction",
+
+      slug:
+        attraction.slug ||
+        "",
+
+      image:
+        imageFor(attraction),
+
+      summary:
+        attraction.summary ||
+        attraction.description ||
+        "An attraction included in this part of the journey.",
+
+      location:
+        attraction.location_name ||
+        attraction.location ||
+        attraction.city ||
+        "",
+
+      province:
+        attraction.province_name ||
+        attraction.province ||
+        "",
+    };
+  }
+}
+
+const needsMountain4wd = [
+  tour.transport_note,
+  tourName,
+  tour.slug,
+  tour.summary,
+  tour.activity_level,
+  tour.season,
+  routeText,
+].join(" ").toLowerCase().match(/4wd|4x4|ski|bamyan|mountain|challenging|winter/);
+
+const routeTransport = transport
+  .filter(isActiveRow)
+  .filter((item) => {
+    if (!needsMountain4wd) return true;
+    const text = `${item.transport_name || ""} ${item.transport_slug || ""} ${item.vehicle_type || ""} ${item.logic_notes || ""}`.toLowerCase();
+    return /4x4|suv|land cruiser|land_cruiser/.test(text);
+  })
+  .slice(0, 3);
+
+const galleryImages = unique([
+  heroImage,
+  overviewImage,
+  ...(Array.isArray(tour.gallery) ? tour.gallery : []),
+  ...linkedAttractions.map(imageFor),
+  ...routeFood.map(imageFor),
+  ...routeHotels.map(imageFor),
+].filter(Boolean));
+
+const heroGallery = Array.from({ length: 5 }, (_, index) => galleryImages[index] || galleryImages[0] || heroImage);
+
+const highlights = unique([
+  linkedAttractions[0]?.name && `Visit ${linkedAttractions[0].name}`,
+  linkedAttractions[1]?.name && `Explore ${linkedAttractions[1].name}`,
+  routeText && `Travel the ${routeText} route`,
+  routeFood[0]?.name && `Experience ${routeFood[0].name}`,
+  tour.travel_style && `${tour.travel_style} journey with local coordination`,
+  tour.transport_note,
+].filter(Boolean)).slice(0, 6);
+
+const globalInclusions = allInclusions
+  .filter(isActiveRow)
+  .filter((row) => row.tour_code === "ALL" || row.tour_slug === "all-tours");
+const specificInclusions = Array.isArray(tour.inclusions) ? tour.inclusions.filter(isActiveRow) : [];
+const inclusions = [...globalInclusions, ...specificInclusions]
+  .sort((a, b) => Number(a.sort_order || 999) - Number(b.sort_order || 999))
+  .filter((row, index, rows) => rows.findIndex((other) => String(other.title).toLowerCase() === String(row.title).toLowerCase()) === index)
+  .slice(0, 10);
+
+const dates = Array.isArray(tour.dates) ? tour.dates : [];
+const scheduledDates = dates.filter((row) => {
+  const start = String(row?.date_start || "").trim().toLowerCase();
+  return start && start !== "inquire";
+});
+const price = formatPrice(tour.price_from || tour.price_display);
+const duration = tour.duration_days && Number(tour.duration_days) > 0 ? `${tour.duration_days} days` : (tour.duration_display || "Flexible duration");
+const groupSize = tour.group_size_display || (
+  tour.min_group_size && tour.max_group_size
+    ? `${tour.min_group_size}–${tour.max_group_size} travelers`
+    : "Private / small group"
+);
+
+const relatedTours = allTours
+  .filter((item) => item.slug !== tour.slug)
+  .filter((item) => {
+    const text = `${item.regions || ""} ${item.travel_style || ""} ${item.summary || ""}`.toLowerCase();
+    return provinceTokens.some((province) => text.includes(String(province).toLowerCase()));
+  })
+  .slice(0, 3);
+
+const pageDescription =
+  tour.summary ||
+  tour.description ||
+  "A guided Afghanistan journey built around realistic logistics, cultural access, and Kabul-based ground coordination.";
+const contactHref = `/contact/?tour=${encodeURIComponent(tourName)}`;
+---
+
+<BaseLayout title={`${tourName} | AfghanTours`} description={pageDescription} image={heroImage}>
+  <article class="tour-detail">
+    <div class="tour-shell tour-breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a><span>›</span><a href="/tours/">Tours</a><span>›</span><strong>{tourName}</strong>
+    </div>
+
+    <header class="tour-hero tour-shell">
+      <div class="tour-hero__copy">
+        <p class="tour-kicker">{tour.travel_style || "Guided journey"}</p>
+        <h1>{tourName}</h1>
+        <p class="tour-hero__summary">{pageDescription}</p>
+
+        <div class="tour-facts" aria-label="Tour facts">
+          <div><span>Duration</span><strong>{duration}</strong></div>
+          <div><span>Group</span><strong>{groupSize}</strong></div>
+          <div><span>Activity</span><strong>{tour.activity_level || "Moderate"}</strong></div>
+        </div>
+
+        <div class="tour-hero__actions">
+          <a class="tour-button tour-button--primary" href={contactHref}>Plan this tour</a>
+          {isCustomJourney ? (
+  <a
+    class="tour-button tour-button--ghost"
+    href={`/contact/?type=custom-tour&tour=${encodeURIComponent(tourName)}`}
+  >
+    Build my journey
+  </a>
+) : (
+  <a class="tour-button tour-button--ghost" href="#itinerary">View itinerary</a>
+)}
+        </div>
+      </div>
+
+      <div class="tour-hero__gallery" aria-label={`${tourName} photo gallery`}>
+        <button
+          class="tour-gallery-tile tour-gallery-tile--lead"
+          type="button"
+          data-tour-gallery-index="0"
+          aria-label={`Open ${tourName} photo 1 of ${galleryImages.length}`}
+        >
+          <img src={heroGallery[0]} alt={`${tourName} in Afghanistan`} fetchpriority="high" />
+        </button>
+
+        <div class="tour-hero__thumbs">
+          {heroGallery.slice(1, 5).map((image, index) => (
+            <button
+              class="tour-gallery-tile"
+              type="button"
+              data-tour-gallery-index={Math.min(index + 1, Math.max(galleryImages.length - 1, 0))}
+              aria-label={`Open ${tourName} photo ${Math.min(index + 2, Math.max(galleryImages.length, 1))} of ${galleryImages.length}`}
+            >
+              <img src={image} alt={`${tourName} route preview ${index + 2}`} loading="lazy" />
+            </button>
+          ))}
+        </div>
+
+        {galleryImages.length > 1 && (
+          <button class="tour-gallery-count" type="button" data-tour-gallery-index="0">
+            View all {galleryImages.length} photos
+          </button>
+        )}
+      </div>
+    </header>
+
+    <div class="tour-lightbox" data-tour-lightbox hidden role="dialog" aria-modal="true" aria-label={`${tourName} photo gallery`}>
+      <button class="tour-lightbox__backdrop" type="button" data-tour-lightbox-close aria-label="Close photo gallery"></button>
+      <div class="tour-lightbox__panel">
+        <div class="tour-lightbox__bar">
+          <span class="tour-lightbox__counter" data-tour-lightbox-counter></span>
+          <button class="tour-lightbox__close" type="button" data-tour-lightbox-close aria-label="Close photo gallery">×</button>
+        </div>
+        <div class="tour-lightbox__stage">
+          <button class="tour-lightbox__nav tour-lightbox__nav--prev" type="button" data-tour-lightbox-prev aria-label="Previous photo">‹</button>
+          <img class="tour-lightbox__image" data-tour-lightbox-image src={heroGallery[0]} alt={`${tourName} gallery photo`} />
+          <button class="tour-lightbox__nav tour-lightbox__nav--next" type="button" data-tour-lightbox-next aria-label="Next photo">›</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="application/json" id="tour-gallery-data" set:html={JSON.stringify(galleryImages)}></script>
+
+    <nav class="tour-tabs" aria-label="Tour page sections">
+      <div class="tour-shell tour-tabs__inner">
+        <a href="#overview">Overview</a>
+        <a href="#itinerary">Itinerary</a>
+        <a href="#accommodation">Accommodation</a>
+        <a href="#experiences">Experiences</a>
+        <a href="#practical">Know before you go</a>
+      </div>
+    </nav>
+
+    <div class="tour-shell tour-content-grid">
+      <main class="tour-main">
+        <aside class="tour-note">
+          <div>
+            <strong>Built around your dates.</strong>
+            <p>Most AfghanTours journeys are private or small-group and can be adjusted around your interests, pace, and available travel window.</p>
+          </div>
+          <a href={contactHref}>Speak with our Kabul team</a>
+        </aside>
+
+        <section id="overview" class="tour-section">
+          <p class="tour-kicker">Overview</p>
+          <h2>Experience Afghanistan with local context.</h2>
+          <p class="tour-lead">{pageDescription}</p>
+          {routeText && <p class="tour-route"><strong>Route:</strong> {routeText}</p>}
+
+          {(highlights.length > 0 || inclusions.length > 0) && (
+            <div class="tour-columns">
+              {inclusions.length > 0 && (
+                <div>
+                  <h3>What's included</h3>
+                  <ul class="tour-check-list">
+                    {inclusions.map((item) => <li>{item.title}{item.description ? <span>{item.description}</span> : null}</li>)}
+                  </ul>
+                </div>
+              )}
+
+              {highlights.length > 0 && (
+                <div>
+                  <h3>Why you'll love it</h3>
+                  <ul class="tour-check-list tour-check-list--plain">
+                    {highlights.map((item) => <li>{item}</li>)}
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </section>
+
+        <section id="itinerary" class="tour-section tour-section--bordered">
+          <p class="tour-kicker">Itinerary</p>
+          <h2>{itinerary.length ? `${itinerary.length}-day journey` : "A route shaped around your trip"}</h2>
+          <p class="tour-section-intro">The itinerary is grouped by the places you stay, so you can see how the journey moves through Afghanistan. Daily plans may shift with road conditions, weather, local access, and the final interests of your group.</p>
+
+          {itinerary.length > 0 ? (
+            <>
+              <div class="tour-itinerary-timeline tour-itinerary-flow" data-tour-itinerary>
+                {itineraryFlow.map((entry) => {
+                  const day = entry.day;
+                  const highlightsForDay = dayHighlights(day);
+
+                  return (
+                    <div class="tour-itinerary-step">
+
+                      {entry.showHub && (
+                        <header class="tour-itinerary-hub">
+                          <div class="tour-itinerary-hub__dot" aria-hidden="true"></div>
+
+                          <h3>{entry.hubLabel}</h3>
+
+                          {entry.hubCount > 0 && (
+                            <span>
+                              {entry.hubCount}
+                              {" "}
+                              {entry.hubCount === 1 ? "night" : "nights"}
+                            </span>
+                          )}
+                        </header>
+                      )}
+
+                      <article class="tour-day-block">
+                        <div
+                          class="tour-day-block__dot"
+                          aria-hidden="true"
+                        ></div>
+
+                        <h4>
+                          Day {entry.dayNumber}:{" "}
+                          {day.title || day.location || "Touring day"}
+                        </h4>
+
+                        <div class="tour-day-block__body">
+
+                          {day.description && (
+                            <p>{day.description}</p>
+                          )}
+
+                          {(day.location || day.food_culture) && (
+                            <div class="tour-day-block__meta">
+
+                              {day.location && (
+                                <span>
+                                  <strong>Location</strong>
+                                  {day.location}
+                                </span>
+                              )}
+
+                              {day.food_culture && (
+                                <span>
+                                  <strong>Food & culture</strong>
+                                  {humanize(day.food_culture)}
+                                </span>
+                              )}
+
+                            </div>
+                          )}
+
+                          {highlightsForDay.length > 0 && (
+                            <aside class="tour-day-highlights">
+
+                              <strong>
+                                Today's highlights
+                              </strong>
+
+                              <ul>
+                                {highlightsForDay.map((attraction) => {
+                                  const code =
+                                    attractionCodeFor(attraction);
+
+                                  const attractionName =
+                                    attraction.name ||
+                                    attraction.title ||
+                                    "Attraction";
+
+                                  return (
+                                    <li>
+                                      <button
+                                        class="tour-highlight-link"
+                                        type="button"
+                                        data-attraction-popup={code}
+                                        aria-label={`Open information about ${attractionName}`}
+                                      >
+                                        <span>{attractionName}</span>
+                                        <span
+                                          class="tour-highlight-link__icon"
+                                          aria-hidden="true"
+                                        >
+                                          ↗
+                                        </span>
+                                      </button>
+                                    </li>
+                                  );
+                                })}
+                              </ul>
+
+                            </aside>
+                          )}
+
+                        </div>
+                      </article>
+
+                    </div>
+                  );
+                })}
+              </div>
+
+              <button
+                class="tour-itinerary-toggle"
+                type="button"
+                data-tour-itinerary-toggle
+              >
+                Collapse itinerary
+              </button>
+            </>
+          ) : (
+            <div class="tour-empty">A detailed itinerary is prepared during planning for this journey.</div>
+          )}
+        </section>
+
+        <!-- ==================================================
+             ITINERARY ATTRACTION QUICK VIEW
+             ================================================== -->
+
+        <div
+          class="tour-attraction-popup"
+          data-attraction-modal
+          hidden
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="tour-attraction-popup-title"
+        >
+          <button
+            class="tour-attraction-popup__backdrop"
+            type="button"
+            data-attraction-close
+            aria-label="Close attraction information"
+          ></button>
+
+          <div class="tour-attraction-popup__panel">
+
+            <button
+              class="tour-attraction-popup__close"
+              type="button"
+              data-attraction-close
+              aria-label="Close attraction information"
+            >
+              ×
+            </button>
+
+            <div class="tour-attraction-popup__image-wrap">
+              <img
+                class="tour-attraction-popup__image"
+                data-attraction-image
+                src=""
+                alt=""
+              />
+            </div>
+
+            <div class="tour-attraction-popup__body">
+
+              <p class="tour-kicker">
+                Today's highlight
+              </p>
+
+              <h3
+                id="tour-attraction-popup-title"
+                data-attraction-title
+              ></h3>
+
+              <p
+                class="tour-attraction-popup__location"
+                data-attraction-location
+              ></p>
+
+              <p
+                class="tour-attraction-popup__description"
+                data-attraction-description
+              ></p>
+
+              <div class="tour-attraction-popup__actions">
+
+                <button
+                  class="tour-button tour-button--primary"
+                  type="button"
+                  data-attraction-close
+                >
+                  Back to itinerary
+                </button>
+
+                <a
+                  class="tour-button tour-button--ghost"
+                  data-attraction-page
+                  href="#"
+                >
+                  View attraction page
+                </a>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <script
+          type="application/json"
+          id="tour-attraction-popup-data"
+          set:html={JSON.stringify(itineraryAttractionData)}
+        ></script>
+
+        <section id="accommodation" class="tour-section tour-section--bordered">
+          <p class="tour-kicker">Accommodation</p>
+          <h2>Handpicked accommodations</h2>
+          <p class="tour-section-intro">These are our standard hotel selections for the overnight hubs on this itinerary. Final hotel assignments may change depending on availability, operational requirements, or route adjustments.</p>
+
+          {routeHotels.length > 0 ? (
+            <div class="tour-stay-scroller" aria-label="Hotels on this route">
+              {routeHotels.map((hotel) => {
+                const hotelName = hotel.display_name || hotel.hotel_name || hotel.name || "Hotel";
+                const hotelSlug = hotel.hotel_slug || hotel.slug;
+                return (
+                  <a class="tour-stay-card" href={hotelSlug ? `/hotels/${hotelSlug}/` : "#"}>
+                    <img src={imageFor(hotel)} alt={hotelName} loading="lazy" />
+                    <div class="tour-stay-card__body">
+                      <div class="tour-stay-card__hub">
+                        Standard hotel · {hotel.route_hub_label || hotel.hub_name || "Overnight hub"}
+                      </div>
+                      <strong>{hotelName}</strong>
+                      <p>{hotel.description || hotel.summary || "Our standard hotel selection for this overnight hub."}</p>
+                      <span>Read more →</span>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          ) : (
+            <div class="tour-empty">Hotels are confirmed once your final route and dates are set.</div>
+          )}
+        </section>
+
+        <section id="experiences" class="tour-section tour-section--bordered">
+          <p class="tour-kicker">Experiences</p>
+          <h2>Places, culture, and optional additions</h2>
+
+          {linkedAttractions.length > 0 && (
+            <div class="tour-subsection">
+              <h3>Places on the route</h3>
+              <div class="tour-card-grid">
+                {linkedAttractions.slice(0, 6).map((item) => (
+                  <a class="tour-image-card" href={item.slug ? `/attractions/${item.slug}/` : "#"}>
+                    <img src={imageFor(item)} alt={item.name || item.title} loading="lazy" />
+                    <div><span>Attraction</span><strong>{item.name || item.title}</strong><p>{item.summary || item.description || "Part of this route."}</p></div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {routeFood.length > 0 && (
+            <div class="tour-subsection">
+              <h3>Food and culture</h3>
+              <div class="tour-card-grid tour-card-grid--two">
+                {routeFood.map((item) => (
+                  <a class="tour-image-card" href={foodHref(item)}>
+                    <img src={imageFor(item)} alt={item.name || "Afghan food and culture"} loading="lazy" />
+                    <div><span>{item.category || "Food & culture"}</span><strong>{item.name}</strong><p>{item.desc_short || item.description || "A cultural experience connected to this journey."}</p></div>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {(optionalAttractions.length > 0 || routeFood.length > 0) && (
+            <div class="tour-subsection tour-customize">
+              <h3>Customize your journey</h3>
+              <p>Depending on your dates, interests, route, and local conditions, additional stops can sometimes be incorporated into the trip.</p>
+              <div class="tour-excursion-scroller" aria-label="Possible additions to this tour">
+                {(optionalAttractions.length > 0 ? optionalAttractions : routeFood).slice(0, 4).map((item) => {
+                  const isAttraction = optionalAttractions.length > 0;
+                  const href = isAttraction && item.slug ? `/attractions/${item.slug}/` : foodHref(item);
+                  return (
+                    <article class="tour-excursion-card">
+                      <img src={imageFor(item)} alt={item.name || item.title || "Optional experience"} loading="lazy" />
+                      <div>
+                        <strong>{item.name || item.title}</strong>
+                        <span>{isAttraction ? "Possible route addition" : "Food & culture"}</span>
+                        <a href={href}>See details</a>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {linkedAttractions.length === 0 && routeFood.length === 0 && optionalAttractions.length === 0 && (
+            <div class="tour-empty">Cultural stops and featured experiences are tailored to the final route.</div>
+          )}
+        </section>
+
+        <section id="practical" class="tour-section tour-section--bordered">
+          <p class="tour-kicker">Know before you go</p>
+          <h2>Practical trip information</h2>
+          <p class="tour-section-intro">Open each section for the planning information most relevant to this journey.</p>
+
+          <div class="tour-know-list">
+            <details>
+              <summary>Passport, visa & entry requirements</summary>
+              <p>Entry requirements depend on nationality and current rules. AfghanTours can explain the supporting documentation available for confirmed travelers, but travelers should verify current official requirements before departure.</p>
+            </details>
+            <details>
+              <summary>Arrival & departure information</summary>
+              <p>Arrival and departure transfers are coordinated around the confirmed itinerary and flight schedule. Final pickup details are provided before travel.</p>
+            </details>
+            <details>
+              <summary>Physical activity level & mobility</summary>
+              <p>This tour is rated <strong>{tour.activity_level || "Moderate"}</strong>. Walking, altitude, road time, stairs, uneven surfaces, and other physical requirements are reviewed during trip planning.</p>
+            </details>
+            <details>
+              <summary>Transportation on tour</summary>
+              <p>{tour.transport_note || "Private ground transportation is arranged according to the route, terrain, season, and group size."}</p>
+              {routeTransport.length > 0 && <p><strong>Typical transport:</strong> {routeTransport.map((item) => item.transport_name || item.vehicle_type).filter(Boolean).join(", ")}</p>}
+            </details>
+            <details>
+              <summary>Clothing & packing tips</summary>
+              <p>Packing guidance is provided before departure. Clothing and equipment needs vary by season, altitude, destination, and the activities included in your itinerary.</p>
+            </details>
+            <details>
+              <summary>Hotels on tour</summary>
+              <p>{tour.accommodation_note || "Accommodation is selected around the overnight route, with an emphasis on practical comfort, location, and reliable operations."}</p>
+            </details>
+            <details>
+              <summary>Health</summary>
+              <p>Travelers should discuss personal medical needs, vaccinations, medications, altitude concerns, and travel insurance with qualified professionals before departure. Tell AfghanTours about mobility or dietary requirements that affect trip planning.</p>
+            </details>
+            <details>
+              <summary>Meals & Afghan cuisine</summary>
+              <p>Meals vary by region and itinerary. Local dishes and food experiences can be incorporated where practical, and dietary requirements should be discussed before travel.</p>
+            </details>
+            <details>
+              <summary>Currency & payments</summary>
+              <p>Cash remains the most practical form of payment for many day-to-day expenses in Afghanistan, and card acceptance is limited. Current money guidance is provided before departure.</p>
+            </details>
+            <details>
+              <summary>Wi-Fi, mobile data & connectivity</summary>
+              <p>Mobile data and Wi-Fi are available in many cities and hotels, but speed and reliability vary significantly along the route.</p>
+            </details>
+            <details>
+              <summary>Guides & on-tour support</summary>
+              <p>Trips are coordinated by AfghanTours from Kabul with local guides, drivers, hotels, and other partners selected according to the itinerary.</p>
+            </details>
+            <details>
+              <summary>Photography</summary>
+              <p>Photography rules vary by location. Travelers should ask before photographing people and follow local guidance around government, military, religious, and other sensitive sites.</p>
+            </details>
+            <details>
+              <summary>Time zones</summary>
+              <p>Afghanistan uses Afghanistan Time (UTC+4:30) throughout the year.</p>
+            </details>
+            <details>
+              <summary>Responsible travel</summary>
+              <p>Guests are expected to respect local customs, dress guidance, religious practices, communities, photography preferences, and site-specific instructions throughout the journey.</p>
+            </details>
+          </div>
+        </section>
+
+        {tour.content_html && (
+          <details class="tour-long-notes">
+            <summary>Read detailed trip notes</summary>
+            <div class="tour-long-notes__body" set:html={tour.content_html}></div>
+          </details>
+        )}
+      </main>
+
+      <aside class="tour-sidebar" aria-label="Tour planning">
+        <div class="tour-plan-card">
+          <div class="tour-summary-label">Tour summary</div>
+          <h2 class="tour-plan-card__title">{tourName}</h2>
+          <div class="tour-plan-card__price">{price}</div>
+          <p class="tour-plan-card__sub">Final pricing depends on group size, route, hotel level, domestic flights, and travel dates.</p>
+
+          <dl class="tour-plan-facts">
+            <div><dt>Duration</dt><dd>{duration}</dd></div>
+            <div><dt>Group</dt><dd>{groupSize}</dd></div>
+            <div><dt>Activity</dt><dd>{tour.activity_level || "Moderate"}</dd></div>
+            <div><dt>Season</dt><dd>{tour.season || "Route dependent"}</dd></div>
+          </dl>
+
+          {scheduledDates.length > 0 ? (
+            <div class="tour-date-selector">
+              <div class="tour-date-selector__heading">
+                <h3>Select tour date</h3>
+                <span>Published departures</span>
+              </div>
+              <div class="tour-date-selector__rows">
+                {scheduledDates.slice(0, 5).map((date) => (
+                  <a class="tour-date-choice" href={`${contactHref}&date=${encodeURIComponent(dateLabel(date))}`}>
+                    <span class="tour-date-choice__radio" aria-hidden="true"></span>
+                    <span class="tour-date-choice__date">{dateLabel(date)}</span>
+                    <span class="tour-date-choice__status">{statusLabel(date.status)}</span>
+                  </a>
+                ))}
+              </div>
+              <p class="tour-date-selector__note">Daily plans may be adjusted for weather, road conditions, local requirements, access, or other operational considerations.</p>
+            </div>
+          ) : (
+            <form class="tour-date-planner" action="/contact/" method="get">
+              <input type="hidden" name="tour" value={tourName} />
+              <h3>Plan your departure</h3>
+              <p>This journey can be arranged around your preferred dates and group size.</p>
+              <label>
+                Preferred travel month
+                <input type="month" name="preferred_month" />
+              </label>
+              <label>
+                Group size
+                <select name="group_size">
+                  <option value="">Select group size</option>
+                  <option>1 traveler</option>
+                  <option>2 travelers</option>
+                  <option>3–4 travelers</option>
+                  <option>5–6 travelers</option>
+                  <option>7+ travelers</option>
+                </select>
+              </label>
+              <button class="tour-button tour-button--primary tour-button--wide" type="submit">Plan this tour</button>
+            </form>
+          )}
+
+          {scheduledDates.length > 0 && <a class="tour-button tour-button--primary tour-button--wide" href={contactHref}>Ask about this tour</a>}
+          <a class="tour-plan-link" href="/contact/">Request a custom itinerary</a>
+        </div>
+
+        <div class="tour-help-card">
+          <strong>Traveling together?</strong>
+          <p>Private groups, families, friends, researchers, and organizations can request a trip built around their dates, pace, and interests.</p>
+          <a href={contactHref}>Speak with a Tour Consultant</a>
+        </div>
+      </aside>
+    </div>
+
+    {relatedTours.length > 0 && (
+      <section class="tour-related">
+        <div class="tour-shell">
+          <p class="tour-kicker">You may also like</p>
+          <h2>More journeys through Afghanistan</h2>
+          <div class="tour-card-grid tour-card-grid--three">
+            {relatedTours.map((item) => (
+              <a class="tour-image-card tour-image-card--related" href={`/tours/${item.slug}/`}>
+                <img src={imageFor(item)} alt={item.name || item.title} loading="lazy" />
+                <div><span>{item.duration_days ? `${item.duration_days} days` : "Custom tour"}</span><strong>{item.name || item.title}</strong><p>{item.summary}</p></div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+  </article>
+
+  <script>
+    const galleryRoot = document.querySelector('.tour-detail');
+    if (galleryRoot) {
+      const data = galleryRoot.querySelector('#tour-gallery-data');
+      const lightbox = galleryRoot.querySelector('[data-tour-lightbox]');
+      const lightboxImage = galleryRoot.querySelector('[data-tour-lightbox-image]');
+      const counter = galleryRoot.querySelector('[data-tour-lightbox-counter]');
+      const triggers = galleryRoot.querySelectorAll('[data-tour-gallery-index]');
+      const closeButtons = galleryRoot.querySelectorAll('[data-tour-lightbox-close]');
+      const prevButton = galleryRoot.querySelector('[data-tour-lightbox-prev]');
+      const nextButton = galleryRoot.querySelector('[data-tour-lightbox-next]');
+      let images = [];
+      let activeIndex = 0;
+      let previousOverflow = '';
+
+      try {
+        images = JSON.parse(data?.textContent || '[]');
+      } catch (error) {
+        images = [];
+      }
+
+      const render = () => {
+        if (!images.length || !lightboxImage) return;
+        activeIndex = (activeIndex + images.length) % images.length;
+        lightboxImage.src = images[activeIndex];
+        lightboxImage.alt = `Tour gallery photo ${activeIndex + 1} of ${images.length}`;
+        if (counter) counter.textContent = `${activeIndex + 1} / ${images.length}`;
+        const hasMultiple = images.length > 1;
+        if (prevButton) prevButton.hidden = !hasMultiple;
+        if (nextButton) nextButton.hidden = !hasMultiple;
+      };
+
+      const open = (index = 0) => {
+        if (!lightbox || !images.length) return;
+        activeIndex = Number.isFinite(index) ? index : 0;
+        render();
+        previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        lightbox.hidden = false;
+        galleryRoot.querySelector('.tour-lightbox__close')?.focus();
+      };
+
+      const close = () => {
+        if (!lightbox) return;
+        lightbox.hidden = true;
+        document.body.style.overflow = previousOverflow;
+      };
+
+      triggers.forEach((trigger) => {
+        trigger.addEventListener('click', () => open(Number(trigger.dataset.tourGalleryIndex || 0)));
+      });
+      closeButtons.forEach((button) => button.addEventListener('click', close));
+      prevButton?.addEventListener('click', () => { activeIndex -= 1; render(); });
+      nextButton?.addEventListener('click', () => { activeIndex += 1; render(); });
+
+      document.addEventListener('keydown', (event) => {
+        if (!lightbox || lightbox.hidden) return;
+        if (event.key === 'Escape') close();
+        if (event.key === 'ArrowLeft') { activeIndex -= 1; render(); }
+        if (event.key === 'ArrowRight') { activeIndex += 1; render(); }
+      });
+    }
+
+
+    /*
+     * Itinerary attraction quick-view popup
+     */
+    const attractionDataElement =
+      document.querySelector('#tour-attraction-popup-data');
+
+    const attractionModal =
+      document.querySelector('[data-attraction-modal]');
+
+    const attractionTriggers =
+      document.querySelectorAll('[data-attraction-popup]');
+
+    const attractionCloseButtons =
+      document.querySelectorAll('[data-attraction-close]');
+
+    let itineraryAttractions = {};
+    let attractionPreviousOverflow = '';
+
+    try {
+      itineraryAttractions = JSON.parse(
+        attractionDataElement?.textContent || '{}'
+      );
+    } catch (error) {
+      itineraryAttractions = {};
+    }
+
+    const openAttractionPopup = (code) => {
+      if (!attractionModal) return;
+
+      const attraction = itineraryAttractions[code];
+
+      if (!attraction) return;
+
+      const title =
+        attractionModal.querySelector('[data-attraction-title]');
+
+      const image =
+        attractionModal.querySelector('[data-attraction-image]');
+
+      const location =
+        attractionModal.querySelector('[data-attraction-location]');
+
+      const description =
+        attractionModal.querySelector('[data-attraction-description]');
+
+      const pageLink =
+        attractionModal.querySelector('[data-attraction-page]');
+
+      if (title) {
+        title.textContent = attraction.name || 'Attraction';
+      }
+
+      if (image) {
+        image.src = attraction.image || '';
+        image.alt = attraction.name || 'Afghanistan attraction';
+      }
+
+      if (location) {
+        const place = [
+          attraction.location,
+          attraction.province
+        ].filter(Boolean).join(' · ');
+
+        location.textContent = place;
+        location.hidden = !place;
+      }
+
+      if (description) {
+        description.textContent =
+          attraction.summary ||
+          'Part of this journey.';
+      }
+
+      if (pageLink) {
+        if (attraction.slug) {
+          pageLink.href =
+            `/attractions/${attraction.slug}/`;
+
+          pageLink.hidden = false;
+        } else {
+          pageLink.hidden = true;
+        }
+      }
+
+      attractionPreviousOverflow =
+        document.body.style.overflow;
+
+      document.body.style.overflow = 'hidden';
+
+      attractionModal.hidden = false;
+
+      attractionModal
+        .querySelector('.tour-attraction-popup__close')
+        ?.focus();
+    };
+
+    const closeAttractionPopup = () => {
+      if (!attractionModal) return;
+
+      attractionModal.hidden = true;
+
+      document.body.style.overflow =
+        attractionPreviousOverflow;
+    };
+
+    attractionTriggers.forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        openAttractionPopup(
+          trigger.dataset.attractionPopup || ''
+        );
+      });
+    });
+
+    attractionCloseButtons.forEach((button) => {
+      button.addEventListener(
+        'click',
+        closeAttractionPopup
+      );
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (
+        event.key === 'Escape' &&
+        attractionModal &&
+        !attractionModal.hidden
+      ) {
+        closeAttractionPopup();
+      }
+    });
+
+    const itineraryRoot = document.querySelector('[data-tour-itinerary]');
+    const itineraryToggle = document.querySelector('[data-tour-itinerary-toggle]');
+    if (itineraryRoot && itineraryToggle) {
+      itineraryToggle.addEventListener('click', () => {
+        const collapsed = itineraryRoot.classList.toggle('is-collapsed');
+        itineraryToggle.textContent = collapsed ? 'Expand itinerary' : 'Collapse itinerary';
+      });
+    }
+  </script>
+
+  <style>
+    .tour-detail {
+      --tour-ink: #1c1d1b;
+      --tour-muted: #66675f;
+      --tour-line: #d9d7cf;
+      --tour-soft: #f6f2ea;
+      --tour-paper: #fffdfa;
+      --tour-accent: #b9852f;
+      --tour-dark: #111917;
+      background: var(--tour-paper);
+      color: var(--tour-ink);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .tour-shell { width: min(1180px, calc(100% - 2.5rem)); margin-inline: auto; }
+
+    .tour-breadcrumbs {
+      display: flex; align-items: center; gap: .5rem; padding: 1rem 0 .8rem;
+      font-size: .75rem; color: #5e605b; white-space: nowrap; overflow-x: auto;
+    }
+    .tour-breadcrumbs a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+    .tour-breadcrumbs strong { color: var(--tour-ink); font-weight: 700; }
+
+    .tour-hero {
+      border: 1px solid var(--tour-line); background: #fff; overflow: hidden;
+    }
+    .tour-hero__copy { padding: clamp(1.7rem, 3.2vw, 3rem); }
+    .tour-kicker { margin: 0 0 .55rem; color: #8a6526; font-size: .72rem; line-height: 1.2; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; }
+    .tour-hero h1 { margin: 0; max-width: 900px; font: 700 clamp(2.15rem, 4.3vw, 4.3rem)/1.02 Georgia, "Times New Roman", serif; letter-spacing: -.045em; }
+    .tour-hero__summary { max-width: 880px; margin: 1rem 0 0; color: var(--tour-muted); font-size: 1rem; line-height: 1.65; }
+    .tour-facts { display: flex; flex-wrap: wrap; gap: 1.4rem 2rem; margin-top: 1.55rem; }
+    .tour-facts div { min-width: 115px; }
+    .tour-facts span, .tour-plan-facts dt { display: block; color: var(--tour-muted); font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+    .tour-facts strong { display: block; margin-top: .25rem; font-size: .9rem; }
+    .tour-hero__actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.55rem; }
+    .tour-button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; border-radius: 999px; padding: .75rem 1.15rem; font-size: .82rem; font-weight: 900; text-decoration: none; transition: transform .15s ease, background .15s ease; }
+    .tour-button:hover { transform: translateY(-1px); }
+    .tour-button--primary { background: var(--tour-dark); color: #fff; }
+    .tour-button--primary:hover { background: #29332f; }
+    .tour-button--ghost { border: 1px solid #aaa79f; color: var(--tour-ink); background: #fff; }
+    .tour-button--wide { width: 100%; margin-top: 1rem; }
+
+    .tour-hero__gallery {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
+      gap: 4px;
+      padding: 4px;
+      height: auto;
+      min-height: 0;
+      background: #fff;
+      border-top: 1px solid var(--tour-line);
+    }
+
+    /*
+     * Desktop gallery geometry:
+     * the lead image occupies one 16:9 panel.
+     * The right half contains four 16:9 thumbnails.
+     *
+     * Because both sides have equal width, two thumbnail rows
+     * naturally equal the height of the large image.
+     */
+    .tour-gallery-tile--lead {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 9;
+      min-height: 0;
+    }
+
+    .tour-hero__thumbs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      gap: 4px;
+      min-width: 0;
+      min-height: 0;
+    }
+
+    .tour-gallery-tile {
+      display: block;
+      width: 100%;
+      min-width: 0;
+      min-height: 0;
+      padding: 0;
+      border: 0;
+      overflow: hidden;
+      background: #eee9df;
+      cursor: zoom-in;
+    }
+
+    .tour-gallery-tile img {
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      transition: transform .25s ease, filter .25s ease;
+    }
+
+    .tour-gallery-tile:hover img {
+      transform: scale(1.018);
+      filter: brightness(.94);
+    }
+    .tour-gallery-count { position: absolute; right: 1rem; bottom: 1rem; border: 1px solid rgba(20,22,20,.2); border-radius: 999px; padding: .52rem .78rem; background: rgba(255,255,255,.94); color: #161715; font-size: .7rem; font-weight: 900; box-shadow: 0 3px 16px rgba(0,0,0,.15); cursor: pointer; }
+
+    .tour-lightbox[hidden] { display: none; }
+    .tour-lightbox { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; padding: clamp(.75rem, 2vw, 1.5rem); }
+    .tour-lightbox__backdrop { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: rgba(8,10,9,.93); cursor: zoom-out; }
+    .tour-lightbox__panel {
+      position: relative;
+      z-index: 1;
+      width: min(1600px, 100%);
+      height: min(1000px, calc(100vh - 2rem));
+      display: grid;
+      grid-template-rows: auto 1fr;
+    }
+
+    .tour-lightbox__bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 48px;
+      color: #fff;
+    }
+
+    .tour-lightbox__counter {
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+    }
+
+    .tour-lightbox__close {
+      width: 42px;
+      height: 42px;
+      border: 0;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      color: #fff;
+      font-size: 2rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .tour-lightbox__stage {
+      position: relative;
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 3.75rem 1rem;
+      overflow: hidden;
+    }
+
+    /*
+     * Expanded image:
+     * keep the ORIGINAL source-image aspect ratio.
+     * Width and height are not forced to fill the modal.
+     */
+    .tour-lightbox__image {
+      display: block;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+    .tour-lightbox__nav { position: absolute; top: 50%; z-index: 2; width: 46px; height: 46px; border: 0; border-radius: 999px; background: rgba(255,255,255,.92); color: #111; font-size: 2rem; line-height: 1; transform: translateY(-50%); cursor: pointer; box-shadow: 0 4px 18px rgba(0,0,0,.25); }
+    .tour-lightbox__nav--prev { left: .75rem; }
+    .tour-lightbox__nav--next { right: .75rem; }
+
+    .tour-tabs { position: sticky; top: 76px; z-index: 40; margin-top: 1rem; border-top: 1px solid var(--tour-line); border-bottom: 1px solid var(--tour-line); background: rgba(255,253,250,.96); backdrop-filter: blur(12px); }
+    .tour-tabs__inner { display: flex; gap: 2rem; overflow-x: auto; scrollbar-width: none; }
+    .tour-tabs__inner::-webkit-scrollbar { display: none; }
+    .tour-tabs a { flex: 0 0 auto; padding: .95rem 0 .85rem; border-bottom: 2px solid transparent; color: #444640; font-size: .74rem; font-weight: 800; text-decoration: none; }
+    .tour-tabs a:hover { border-color: var(--tour-accent); color: var(--tour-ink); }
+
+    .tour-content-grid { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: clamp(2rem, 4.5vw, 4rem); padding-top: 1.7rem; padding-bottom: 5rem; align-items: start; }
+    .tour-main { min-width: 0; }
+    .tour-note { display: flex; justify-content: space-between; gap: 1.5rem; align-items: center; border: 1px solid #bbb6aa; border-radius: 12px; padding: 1.15rem 1.25rem; background: var(--tour-soft); }
+    .tour-note strong { font-size: .9rem; }
+    .tour-note p { margin: .35rem 0 0; color: var(--tour-muted); font-size: .76rem; line-height: 1.55; }
+    .tour-note a { flex: 0 0 auto; color: var(--tour-ink); font-size: .74rem; font-weight: 900; text-underline-offset: 3px; }
+
+    .tour-section { scroll-margin-top: 150px; padding: 2rem 0 2.5rem; }
+    .tour-section--bordered { border-top: 1px solid var(--tour-line); }
+    .tour-section h2, .tour-related h2 { max-width: 760px; margin: 0; font: 700 clamp(1.8rem, 3vw, 2.65rem)/1.08 Georgia, "Times New Roman", serif; letter-spacing: -.03em; }
+    .tour-lead, .tour-section-intro { max-width: 790px; color: #4f514b; font-size: .94rem; line-height: 1.75; }
+    .tour-lead { margin: 1rem 0 0; }
+    .tour-section-intro { margin: .85rem 0 0; }
+    .tour-route { margin: 1rem 0 0; padding-left: .9rem; border-left: 3px solid var(--tour-accent); color: #55574f; font-size: .82rem; line-height: 1.6; }
+
+    .tour-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 2.5rem; margin-top: 2rem; }
+    .tour-columns h3, .tour-subsection h3 { margin: 0 0 .8rem; font-size: .86rem; font-weight: 900; }
+    .tour-check-list { margin: 0; padding: 0; list-style: none; columns: 1; }
+    .tour-check-list li { position: relative; margin: 0 0 .65rem; padding-left: 1.1rem; color: #353733; font-size: .78rem; line-height: 1.5; break-inside: avoid; }
+    .tour-check-list li::before { content: "•"; position: absolute; left: 0; top: -.02rem; font-weight: 900; }
+    .tour-check-list li span { display: block; margin-top: .15rem; color: #777970; font-size: .7rem; }
+
+    .tour-itinerary { display: grid; gap: .65rem; margin-top: 1.4rem; }
+    .tour-day { border: 1px solid var(--tour-line); border-radius: 12px; background: #fff; overflow: hidden; }
+    .tour-day summary { display: grid; grid-template-columns: 74px 1fr 24px; gap: .75rem; align-items: center; cursor: pointer; list-style: none; padding: 1rem; }
+    .tour-day summary::-webkit-details-marker { display: none; }
+    .tour-day__number { justify-self: start; border-radius: 999px; padding: .38rem .55rem; background: var(--tour-dark); color: #fff; font-size: .64rem; font-weight: 900; text-transform: uppercase; }
+    .tour-day__title { font-size: .92rem; font-weight: 900; line-height: 1.35; }
+    .tour-day__chevron { text-align: center; font-weight: 900; transition: transform .15s ease; }
+    .tour-day[open] .tour-day__chevron { transform: rotate(180deg); }
+    .tour-day__body { padding: 0 2rem 1.15rem 100px; color: #55574f; font-size: .8rem; line-height: 1.65; }
+    .tour-day__body p { margin: 0; }
+    .tour-day__meta { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: .8rem; color: #72746e; font-size: .7rem; text-transform: capitalize; }
+
+    .tour-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: .9rem; margin-top: 1.2rem; }
+    .tour-card-grid--two { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .tour-card-grid--three { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .tour-image-card { min-width: 0; overflow: hidden; border: 1px solid var(--tour-line); border-radius: 10px; background: #fff; color: inherit; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease; }
+    .tour-image-card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(25,25,20,.08); }
+    .tour-image-card img { width: 100%; height: 155px; display: block; object-fit: cover; }
+    .tour-image-card div { padding: .85rem .9rem 1rem; }
+    .tour-image-card span { display: block; margin-bottom: .3rem; color: #8a6526; font-size: .62rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+    .tour-image-card strong { display: block; font-size: .88rem; line-height: 1.3; }
+    .tour-image-card p { display: -webkit-box; margin: .38rem 0 0; overflow: hidden; color: #6a6c65; font-size: .7rem; line-height: 1.45; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+    .tour-subsection + .tour-subsection { margin-top: 1.8rem; }
+
+    .tour-practical-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: .8rem; margin-top: 1.3rem; }
+    .tour-practical-grid article { min-width: 0; border: 1px solid var(--tour-line); border-radius: 10px; padding: 1rem; background: var(--tour-soft); }
+    .tour-practical-grid span { display: block; color: #8a6526; font-size: .63rem; font-weight: 900; text-transform: uppercase; letter-spacing: .08em; }
+    .tour-practical-grid strong { display: block; margin-top: .35rem; font-size: .84rem; line-height: 1.35; }
+    .tour-practical-grid p { margin: .45rem 0 0; color: #686a63; font-size: .7rem; line-height: 1.5; }
+    .tour-transport-strip { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1rem; }
+    .tour-transport-strip span { border: 1px solid var(--tour-line); border-radius: 999px; padding: .45rem .65rem; background: #fff; color: #5b5d56; font-size: .67rem; font-weight: 800; }
+
+    .tour-empty { margin-top: 1rem; border: 1px dashed #c7c3b8; border-radius: 10px; padding: 1rem; background: var(--tour-soft); color: #65675f; font-size: .78rem; line-height: 1.55; }
+
+    .tour-sidebar { position: sticky; top: 145px; }
+    .tour-plan-card { border: 1px solid #d7d3ca; border-radius: 14px; padding: 1.35rem; background: #fff; box-shadow: 0 12px 34px rgba(25,25,20,.06); }
+    .tour-summary-label { display: inline-flex; align-items: center; margin-bottom: .9rem; border-radius: 999px; padding: .38rem .62rem; background: var(--tour-soft); color: #74551e; font-size: .62rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
+    .tour-plan-card__price { font: 700 1.55rem/1.1 Georgia, "Times New Roman", serif; }
+    .tour-plan-card__sub { margin: .55rem 0 0; color: #73756f; font-size: .7rem; line-height: 1.5; }
+    .tour-plan-facts { margin: 1.15rem 0 0; }
+    .tour-plan-facts div { display: grid; grid-template-columns: 86px 1fr; gap: .8rem; padding: .65rem 0; border-top: 1px solid #ece8df; }
+    .tour-plan-facts dd { margin: 0; font-size: .76rem; font-weight: 800; text-align: right; }
+    .tour-dates { margin-top: .7rem; border-top: 1px solid #d8d4c9; padding-top: 1rem; }
+    .tour-dates h3 { margin: 0 0 .45rem; font-size: .77rem; }
+    .tour-date-row { display: flex; align-items: start; justify-content: space-between; gap: .8rem; padding: .7rem 0; border-bottom: 1px solid #eeeae1; }
+    .tour-date-row strong { display: block; font-size: .72rem; }
+    .tour-date-row span { display: block; margin-top: .15rem; color: #85877f; font-size: .62rem; line-height: 1.4; }
+    .tour-date-row em { flex: 0 0 auto; border-radius: 999px; padding: .25rem .48rem; background: var(--tour-soft); color: #7b5b23; font-size: .58rem; font-style: normal; font-weight: 900; text-transform: uppercase; }
+    .tour-plan-link { display: block; margin-top: .75rem; color: var(--tour-ink); font-size: .7rem; font-weight: 900; text-align: center; text-underline-offset: 3px; }
+    .tour-help-card { margin-top: .9rem; border-radius: 12px; padding: 1.2rem; background: var(--tour-soft); }
+    .tour-help-card strong { font: 700 1.08rem/1.25 Georgia, "Times New Roman", serif; }
+    .tour-help-card p { margin: .55rem 0; color: #666861; font-size: .7rem; line-height: 1.55; }
+    .tour-help-card a { color: #242522; font-size: .69rem; font-weight: 900; text-underline-offset: 3px; }
+
+    .tour-long-notes { margin-top: .5rem; border-top: 1px solid var(--tour-line); border-bottom: 1px solid var(--tour-line); }
+    .tour-long-notes summary { cursor: pointer; list-style: none; padding: 1rem 0; font-size: .78rem; font-weight: 900; }
+    .tour-long-notes summary::-webkit-details-marker { display: none; }
+    .tour-long-notes__body { padding-bottom: 1.5rem; color: #55574f; font-size: .8rem; line-height: 1.7; }
+    .tour-long-notes__body :global(h2), .tour-long-notes__body :global(h3), .tour-long-notes__body :global(h4) { margin: 1.5rem 0 .55rem; font-family: Georgia, "Times New Roman", serif; color: var(--tour-ink); }
+    .tour-long-notes__body :global(p) { margin: 0 0 .8rem; }
+    .tour-long-notes__body :global(li) { margin-bottom: .3rem; }
+
+    .tour-related { border-top: 1px solid var(--tour-line); padding: 3.5rem 0 4.5rem; background: #f5f1e8; }
+    .tour-related .tour-card-grid { margin-top: 1.4rem; }
+    .tour-image-card--related img { height: 210px; }
+
+    .tour-plan-card__title { margin: 0 0 .7rem; font: 700 1.15rem/1.25 Georgia, "Times New Roman", serif; }
+
+    .tour-itinerary-timeline { position: relative; margin-top: 1.55rem; padding-left: 1.2rem; border-left: 1px solid #8f908a; }
+    .tour-itinerary-group { position: relative; padding: 0 0 2rem 1.15rem; }
+    .tour-itinerary-group:last-child { padding-bottom: .6rem; }
+    .tour-itinerary-group__header { display: flex; align-items: baseline; gap: .85rem; margin-left: -.4rem; margin-bottom: .8rem; }
+    .tour-itinerary-group__header::before { content: ""; position: absolute; left: -1.56rem; top: .48rem; width: 7px; height: 7px; border-radius: 50%; background: var(--tour-dark); }
+    .tour-itinerary-group__header h3 { margin: 0; font-size: 1.02rem; font-weight: 900; }
+    .tour-itinerary-group__header span { padding-left: .8rem; border-left: 1px solid #bdbab2; color: #696b65; font-size: .72rem; }
+    .tour-itinerary-group__days { display: grid; gap: 1.25rem; }
+    .tour-day-block { position: relative; }
+    .tour-day-block__dot { position: absolute; left: -2.56rem; top: .48rem; width: 5px; height: 5px; border-radius: 50%; background: #fff; border: 1px solid var(--tour-dark); }
+    .tour-day-block h4 { margin: 0; font-size: .86rem; line-height: 1.45; }
+    .tour-day-block__body { margin-top: .45rem; color: #4f514b; font-size: .78rem; line-height: 1.68; }
+    .tour-day-block__body > p { margin: 0; }
+    .tour-day-block__meta { display: flex; flex-wrap: wrap; gap: .65rem 1rem; margin-top: .7rem; }
+    .tour-day-block__meta span { display: inline-flex; gap: .35rem; color: #6b6d66; font-size: .68rem; }
+    .tour-day-block__meta strong { color: #30312e; }
+    .tour-day-highlights { margin-top: .9rem; border-radius: 12px; padding: 1rem 1.05rem; background: var(--tour-soft); color: #3f413d; }
+    .tour-day-highlights > strong { display: block; margin-bottom: .5rem; font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; }
+    .tour-day-highlights ul { margin: 0; padding-left: 1.1rem; }
+    .tour-day-highlights li { margin: .32rem 0; font-size: .72rem; line-height: 1.5; }
+    .tour-itinerary-toggle { margin-top: .8rem; border: 1px solid #8c8b85; border-radius: 999px; padding: .48rem .75rem; background: #fff; color: #242522; font-size: .68rem; font-weight: 800; cursor: pointer; }
+    .tour-itinerary-timeline.is-collapsed .tour-day-block__body { display: none; }
+    .tour-itinerary-timeline.is-collapsed .tour-itinerary-group { padding-bottom: 1rem; }
+
+    .tour-stay-scroller, .tour-excursion-scroller { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(230px, 31%); gap: .7rem; margin-top: 1.2rem; padding-bottom: .55rem; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: thin; }
+    .tour-stay-card { overflow: hidden; border: 1px solid #9f9d96; border-radius: 12px; background: #fff; color: inherit; text-decoration: none; scroll-snap-align: start; }
+    .tour-stay-card img { width: 100%; aspect-ratio: 4/3; display: block; object-fit: cover; }
+    .tour-stay-card__body { padding: .8rem .8rem 1rem; }
+    .tour-stay-card__hub {
+      margin-bottom: .3rem;
+      color: #8a5a18;
+      font-size: .61rem;
+      font-weight: 900;
+      letter-spacing: .055em;
+      text-transform: uppercase;
+    }
+    .tour-stay-card__body strong { display: block; font-size: .82rem; line-height: 1.35; }
+    .tour-stay-card__body p { display: -webkit-box; margin: .4rem 0 .65rem; overflow: hidden; color: #62645e; font-size: .7rem; line-height: 1.45; -webkit-line-clamp: 4; -webkit-box-orient: vertical; }
+    .tour-stay-card__body span { color: var(--tour-ink); font-size: .68rem; font-weight: 900; text-decoration: underline; text-underline-offset: 3px; }
+
+    .tour-customize { margin-top: 2.3rem; }
+    .tour-customize > p { max-width: 680px; margin: -.2rem 0 0; color: #64665f; font-size: .72rem; line-height: 1.55; }
+    .tour-excursion-card { overflow: hidden; border: 1px solid #9f9d96; border-radius: 12px; background: #fff; scroll-snap-align: start; }
+    .tour-excursion-card img { width: 100%; aspect-ratio: 16/9; display: block; object-fit: cover; }
+    .tour-excursion-card > div { padding: .75rem .8rem .9rem; }
+    .tour-excursion-card strong { display: block; font-size: .78rem; line-height: 1.35; }
+    .tour-excursion-card span { display: block; margin: .35rem 0 .55rem; color: #73756e; font-size: .66rem; }
+    .tour-excursion-card a { color: var(--tour-ink); font-size: .67rem; font-weight: 900; text-underline-offset: 3px; }
+
+    .tour-know-list { margin-top: 1.3rem; border-top: 1px solid #bfc0bb; }
+    .tour-know-list details { border-bottom: 1px solid #c9cac5; }
+    .tour-know-list summary { position: relative; cursor: pointer; list-style: none; padding: .95rem 2rem .95rem .55rem; font-size: .74rem; font-weight: 800; }
+    .tour-know-list summary::-webkit-details-marker { display: none; }
+    .tour-know-list summary::after { content: "⌄"; position: absolute; right: .55rem; top: .8rem; font-size: .9rem; transition: transform .15s ease; }
+    .tour-know-list details[open] summary::after { transform: rotate(180deg); }
+    .tour-know-list details p { margin: 0; padding: 0 2rem 1rem .55rem; color: #5d5f58; font-size: .72rem; line-height: 1.65; }
+
+    .tour-date-selector, .tour-date-planner { margin-top: 1rem; border-top: 1px solid #d8d4c9; padding-top: 1rem; }
+    .tour-date-selector__heading { display: flex; justify-content: space-between; gap: .7rem; align-items: baseline; }
+    .tour-date-selector__heading h3, .tour-date-planner h3 { margin: 0; font-size: .9rem; }
+    .tour-date-selector__heading span { color: #777970; font-size: .61rem; }
+    .tour-date-selector__rows { margin-top: .55rem; border: 1px solid #c8c5bc; border-radius: 10px; overflow: hidden; }
+    .tour-date-choice { display: grid; grid-template-columns: 14px 1fr auto; gap: .55rem; align-items: center; padding: .72rem .7rem; border-bottom: 1px solid #dedbd3; color: inherit; text-decoration: none; }
+    .tour-date-choice:last-child { border-bottom: 0; }
+    .tour-date-choice:hover { background: var(--tour-soft); }
+    .tour-date-choice__radio { width: 10px; height: 10px; border: 1px solid #777; border-radius: 50%; }
+    .tour-date-choice__date { font-size: .7rem; font-weight: 800; }
+    .tour-date-choice__status { color: #6e7069; font-size: .62rem; }
+    .tour-date-selector__note { margin: .7rem 0 0; color: #74766f; font-size: .62rem; line-height: 1.45; }
+    .tour-date-planner > p { margin: .4rem 0 .85rem; color: #6d6f68; font-size: .68rem; line-height: 1.5; }
+    .tour-date-planner label { display: block; margin-top: .65rem; color: #4b4d48; font-size: .65rem; font-weight: 800; }
+    .tour-date-planner input, .tour-date-planner select { width: 100%; margin-top: .3rem; border: 1px solid #cbc8c0; border-radius: 8px; padding: .7rem .75rem; background: #fff; color: #222; font: inherit; font-size: .72rem; }
+
+    @media (max-width: 980px) {
+      .tour-tabs { position: static; }
+      .tour-content-grid { grid-template-columns: 1fr; }
+      .tour-sidebar { position: static; display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
+      .tour-help-card { margin-top: 0; }
+    }
+
+    @media (max-width: 760px) {
+      .tour-shell { width: min(100% - 1.25rem, 1180px); }
+      .tour-breadcrumbs { padding-top: .7rem; }
+      .tour-hero { border-left: 0; border-right: 0; }
+      .tour-hero__copy { padding: 1.35rem 1rem 1.5rem; }
+      .tour-hero h1 { font-size: clamp(2rem, 11vw, 3.1rem); }
+      .tour-hero__summary { font-size: .88rem; }
+      .tour-facts { gap: 1rem 1.25rem; }
+      .tour-hero__gallery {
+        grid-template-columns: 1fr;
+        height: auto;
+        min-height: 0;
+      }
+
+      .tour-gallery-tile--lead {
+        min-height: 0;
+        aspect-ratio: 16 / 9;
+      }
+
+      /*
+       * Mobile thumbnails become a horizontal 16:9 strip
+       * rather than four tall narrow boxes.
+       */
+      .tour-hero__thumbs {
+        display: flex;
+        gap: 4px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        scroll-snap-type: x proximity;
+      }
+
+      .tour-hero__thumbs::-webkit-scrollbar {
+        display: none;
+      }
+
+      .tour-hero__thumbs .tour-gallery-tile {
+        flex: 0 0 124px;
+        aspect-ratio: 16 / 9;
+        scroll-snap-align: start;
+      }
+
+      .tour-gallery-count {
+        right: .7rem;
+        bottom: .7rem;
+      }
+
+      .tour-lightbox {
+        padding: .5rem;
+      }
+
+      .tour-lightbox__panel {
+        height: calc(100vh - 1rem);
+      }
+
+      .tour-lightbox__stage {
+        padding: 0 2.75rem .75rem;
+      }
+
+      .tour-lightbox__nav {
+        width: 40px;
+        height: 40px;
+      }
+
+      .tour-lightbox__nav--prev {
+        left: .15rem;
+      }
+
+      .tour-lightbox__nav--next {
+        right: .15rem;
+      }
+      .tour-tabs__inner { gap: 1.2rem; }
+      .tour-content-grid { width: min(100% - 1.5rem, 1180px); padding-top: 1rem; }
+      .tour-note { align-items: flex-start; flex-direction: column; }
+      .tour-columns, .tour-card-grid, .tour-card-grid--two, .tour-card-grid--three, .tour-practical-grid, .tour-sidebar { grid-template-columns: 1fr; }
+      .tour-section { padding: 1.7rem 0 2rem; }
+      .tour-day summary { grid-template-columns: 62px 1fr 22px; }
+      .tour-day__body { padding-left: 1rem; padding-right: 1rem; }
+      .tour-image-card img, .tour-image-card--related img { height: 190px; }
+      .tour-stay-scroller, .tour-excursion-scroller { grid-auto-columns: minmax(245px, 86%); }
+      .tour-itinerary-timeline { padding-left: .95rem; }
+      .tour-itinerary-group { padding-left: .9rem; }
+      .tour-itinerary-group__header::before { left: -1.36rem; }
+      .tour-day-block__dot { left: -2.03rem; }
+    }
+  
+
+    /* ========================================================
+       DAY-BY-DAY ITINERARY FLOW
+       ======================================================== */
+
+    .tour-itinerary-flow {
+      position: relative;
+
+      margin-top: 1.6rem;
+      padding-left: 1.4rem;
+
+      border-left: 1px solid #8f908a;
+    }
+
+    .tour-itinerary-step {
+      position: relative;
+
+      padding: 0 0 1.9rem 1.15rem;
+    }
+
+    .tour-itinerary-step:last-child {
+      padding-bottom: .5rem;
+    }
+
+    /*
+     * Hub markers appear only when the overnight hub changes.
+     * The days themselves remain one uninterrupted sequence.
+     */
+    .tour-itinerary-hub {
+      position: relative;
+
+      display: flex;
+      align-items: baseline;
+      gap: .8rem;
+
+      margin:
+        0
+        0
+        .9rem
+        -.45rem;
+    }
+
+    .tour-itinerary-hub__dot {
+      position: absolute;
+
+      left: -2.17rem;
+      top: .48rem;
+
+      width: 8px;
+      height: 8px;
+
+      border-radius: 50%;
+
+      background: var(--tour-dark);
+    }
+
+    .tour-itinerary-hub h3 {
+      margin: 0;
+
+      font-size: 1.02rem;
+      font-weight: 900;
+    }
+
+    .tour-itinerary-hub span {
+      padding-left: .8rem;
+
+      border-left: 1px solid #bdbab2;
+
+      color: #696b65;
+
+      font-size: .72rem;
+    }
+
+    .tour-itinerary-flow .tour-day-block {
+      position: relative;
+    }
+
+    .tour-itinerary-flow .tour-day-block__dot {
+      left: -2.72rem;
+    }
+
+    .tour-itinerary-flow .tour-day-block h4 {
+      font-size: .9rem;
+    }
+
+
+    /* ========================================================
+       CLICKABLE TODAY'S HIGHLIGHTS
+       ======================================================== */
+
+    .tour-day-highlights ul {
+      margin: 0;
+      padding: 0;
+
+      list-style: none;
+    }
+
+    .tour-day-highlights li {
+      margin: 0;
+
+      border-top:
+        1px solid
+        rgba(40, 42, 38, .09);
+    }
+
+    .tour-day-highlights li:first-child {
+      border-top: 0;
+    }
+
+    .tour-highlight-link {
+      width: 100%;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      gap: 1rem;
+
+      padding: .48rem .15rem;
+
+      border: 0;
+
+      background: transparent;
+
+      color: #252723;
+
+      font: inherit;
+      font-size: .74rem;
+      font-weight: 750;
+
+      text-align: left;
+
+      cursor: pointer;
+    }
+
+    .tour-highlight-link:hover,
+    .tour-highlight-link:focus-visible {
+      color: #8a6526;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .tour-highlight-link:focus-visible {
+      outline:
+        2px solid
+        rgba(185, 133, 47, .35);
+
+      outline-offset: 3px;
+    }
+
+    .tour-highlight-link__icon {
+      flex: 0 0 auto;
+
+      font-size: .8rem;
+
+      opacity: .65;
+    }
+
+
+    /* ========================================================
+       ATTRACTION QUICK VIEW POPUP
+       ======================================================== */
+
+    .tour-attraction-popup[hidden] {
+      display: none;
+    }
+
+    .tour-attraction-popup {
+      position: fixed;
+      inset: 0;
+
+      z-index: 10020;
+
+      display: grid;
+      place-items: center;
+
+      padding: 1rem;
+    }
+
+    .tour-attraction-popup__backdrop {
+      position: absolute;
+      inset: 0;
+
+      width: 100%;
+      height: 100%;
+
+      border: 0;
+
+      background:
+        rgba(8, 12, 10, .78);
+
+      backdrop-filter: blur(5px);
+
+      cursor: pointer;
+    }
+
+    .tour-attraction-popup__panel {
+      position: relative;
+      z-index: 1;
+
+      width: min(760px, 100%);
+      max-height: calc(100vh - 2rem);
+
+      display: grid;
+      grid-template-columns:
+        minmax(250px, .88fr)
+        minmax(0, 1.12fr);
+
+      overflow: hidden;
+
+      border:
+        1px solid
+        rgba(255,255,255,.2);
+
+      border-radius: 18px;
+
+      background: #fffdfa;
+
+      box-shadow:
+        0 30px 90px
+        rgba(0,0,0,.35);
+    }
+
+    .tour-attraction-popup__close {
+      position: absolute;
+
+      top: .75rem;
+      right: .75rem;
+
+      z-index: 3;
+
+      width: 38px;
+      height: 38px;
+
+      border:
+        1px solid
+        rgba(0,0,0,.12);
+
+      border-radius: 50%;
+
+      background:
+        rgba(255,255,255,.92);
+
+      color: #111;
+
+      font-size: 1.6rem;
+      line-height: 1;
+
+      cursor: pointer;
+    }
+
+    .tour-attraction-popup__image-wrap {
+      min-height: 365px;
+
+      background: #ece8df;
+    }
+
+    .tour-attraction-popup__image {
+      width: 100%;
+      height: 100%;
+
+      display: block;
+
+      object-fit: cover;
+    }
+
+    .tour-attraction-popup__body {
+      padding:
+        2.4rem
+        2rem
+        2rem;
+
+      overflow-y: auto;
+    }
+
+    .tour-attraction-popup__body h3 {
+      margin: 0;
+
+      font:
+        700
+        clamp(1.65rem, 3vw, 2.5rem)/1.05
+        Georgia,
+        "Times New Roman",
+        serif;
+
+      letter-spacing: -.03em;
+    }
+
+    .tour-attraction-popup__location {
+      margin: .7rem 0 0;
+
+      color: #8a6526;
+
+      font-size: .72rem;
+      font-weight: 850;
+    }
+
+    .tour-attraction-popup__description {
+      margin: 1rem 0 0;
+
+      color: #555750;
+
+      font-size: .82rem;
+      line-height: 1.7;
+    }
+
+    .tour-attraction-popup__actions {
+      display: flex;
+      flex-wrap: wrap;
+
+      gap: .6rem;
+
+      margin-top: 1.5rem;
+    }
+
+
+    @media (max-width: 700px) {
+
+      .tour-attraction-popup {
+        padding: .55rem;
+      }
+
+      .tour-attraction-popup__panel {
+        grid-template-columns: 1fr;
+
+        max-height:
+          calc(100vh - 1.1rem);
+      }
+
+      .tour-attraction-popup__image-wrap {
+        min-height: 0;
+        height: 220px;
+      }
+
+      .tour-attraction-popup__body {
+        padding: 1.35rem 1.1rem 1.25rem;
+      }
+
+      .tour-itinerary-flow {
+        padding-left: 1rem;
+      }
+
+      .tour-itinerary-step {
+        padding-left: .85rem;
+      }
+
+      .tour-itinerary-hub__dot {
+        left: -1.72rem;
+      }
+
+      .tour-itinerary-flow
+      .tour-day-block__dot {
+        left: -2.05rem;
+      }
+    }
+
+</style>
+</BaseLayout>

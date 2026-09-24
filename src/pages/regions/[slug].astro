@@ -1,0 +1,514 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AttractionPopupGrid from '../../components/cards/AttractionPopupGrid.astro';
+import TourCardGrid from '../../components/cards/TourCardGrid.astro';
+import HotelPopupGrid from '../../components/cards/HotelPopupGrid.astro';
+import {
+  getRegions,
+  getRegionBySlug,
+  getProvincesByRegion,
+  getAttractionsByRegion,
+  getTours,
+  getHotels,
+} from '../../lib/buildRelations';
+
+export function getStaticPaths() {
+  return getRegions()
+    .filter((r) => r?.slug)
+    .map((r) => ({
+      params: { slug: r.slug }
+    }));
+}
+
+const region =
+  Astro.params.slug
+    ? getRegionBySlug(Astro.params.slug)
+    : undefined;
+
+if (!region) {
+  return Astro.redirect('/destinations/#regions');
+}
+
+const regionName =
+  region.title ||
+  region.name ||
+  region.region_name ||
+  'Afghanistan Region';
+
+const regionCode =
+  String(
+    region.region_code ||
+    region.code ||
+    region.slug ||
+    ''
+  ).trim();
+
+const regionDescription =
+  region.description ||
+  region.short_blurb ||
+  region.excerpt ||
+  '';
+
+const regionImage =
+  region.image ||
+  region.img_path ||
+  `/assets/images/regions/${region.slug}.webp`;
+
+const titleOf = (item) =>
+  item?.title ||
+  item?.name ||
+  item?.province_name ||
+  item?.slug ||
+  'Province';
+
+const provinces = getProvincesByRegion(region)
+  .filter((p) => p?.slug)
+  .sort((a, b) =>
+    titleOf(a).localeCompare(titleOf(b))
+  );
+
+const attractions = getAttractionsByRegion(region)
+  .filter((a) => a?.slug);
+
+const provinceTerms = provinces.flatMap((p) => [
+  String(p.title || '').toLowerCase(),
+  String(p.name || '').toLowerCase(),
+  String(p.province_name || '').toLowerCase(),
+  String(p.slug || '').toLowerCase(),
+  String(p.province_code || '').toLowerCase(),
+]).filter(Boolean);
+
+const tours = getTours().filter((tour) => {
+  const text = JSON.stringify([
+    tour.region,
+    tour.regions,
+    tour.province,
+    tour.provinces,
+    tour.route,
+    tour.route_summary,
+    tour.title,
+    tour.name,
+  ]).toLowerCase();
+
+  return (
+    text.includes(regionCode.toLowerCase()) ||
+    text.includes(String(region.slug).toLowerCase()) ||
+    text.includes(regionName.toLowerCase()) ||
+    provinceTerms.some((term) =>
+      term.length > 2 && text.includes(term)
+    )
+  );
+});
+
+const hotels = getHotels().filter((hotel) => {
+  const text = JSON.stringify([
+    hotel.province,
+    hotel.province_code,
+    hotel.hub_name,
+    hotel.city,
+    hotel.destination_code,
+  ]).toLowerCase();
+
+  return provinceTerms.some((term) =>
+    term.length > 2 && text.includes(term)
+  );
+});
+
+const provinceImage = (p) =>
+  p.image ||
+  p.cover_image_path ||
+  `/assets/images/provinces/${p.slug}/hero.webp`;
+---
+
+<BaseLayout
+  title={`${regionName} | AfghanTours`}
+  description={regionDescription}
+  image={regionImage}
+>
+  <section class="region-hero">
+    <img
+      class="region-hero__image"
+      src={regionImage}
+      alt={regionName}
+    />
+
+    <div class="region-hero__shade"></div>
+
+    <div class="region-hero__content">
+      <p class="region-hero__eyebrow">
+        Afghanistan Regions
+      </p>
+
+      <h1>{regionName}</h1>
+
+      {regionDescription && (
+        <p class="region-hero__description">
+          {regionDescription}
+        </p>
+      )}
+    </div>
+  </section>
+
+  <section class="region-overview">
+    <div class="region-wrap">
+      <article class="region-copy">
+        <p class="section-kicker">Regional Overview</p>
+
+        <h2>
+          Explore the provinces of {regionName}.
+        </h2>
+
+        {region.content_html ? (
+          <div
+            class="editorial-prose"
+            set:html={region.content_html}
+          />
+        ) : (
+          <p class="region-intro">
+            {regionDescription}
+          </p>
+        )}
+
+        <div class="province-count">
+          {provinces.length} provinces in this region
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="region-provinces">
+    <div class="region-wrap">
+      <div class="section-heading">
+        <p>Provinces</p>
+        <h2>Province-by-province.</h2>
+        <span>
+          Open any province for its attractions, tours,
+          accommodation context, and destination overview.
+        </span>
+      </div>
+
+      <div class="province-grid">
+        {provinces.map((province) => (
+          <a
+            class="province-card"
+            href={`/destinations/${province.slug}/`}
+          >
+            <div class="province-card__media">
+              <img
+                src={provinceImage(province)}
+                alt={titleOf(province)}
+                loading="lazy"
+              />
+            </div>
+
+            <div class="province-card__body">
+              <p>
+                {regionName}
+              </p>
+
+              <h3>
+                {titleOf(province)}
+              </h3>
+
+              <span>
+                {
+                  province.short_blurb ||
+                  province.excerpt ||
+                  province.description ||
+                  'Explore this province and the routes connected to it.'
+                }
+              </span>
+
+              <strong>
+                View province details →
+              </strong>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {attractions.length > 0 && (
+    <AttractionPopupGrid
+        attractions={attractions}
+        title={`Attractions across ${regionName}`}
+        intro={`Historic sites, landscapes, cultural places, and natural attractions connected to the provinces of ${regionName}.`}
+      />
+  )}
+
+  {tours.length > 0 && (
+    <TourCardGrid
+        tours={tours}
+        title={`Tours through ${regionName}`}
+        intro={`Journeys that include one or more provinces in ${regionName}.`}
+      />
+  )}
+
+  {hotels.length > 0 && (
+    <HotelPopupGrid
+        hotels={hotels}
+        title={`Hotels across ${regionName}`}
+        intro={`Accommodation options connected to the provinces and operational travel hubs in ${regionName}.`}
+      />
+  )}
+</BaseLayout>
+
+<style>
+  .region-hero {
+    position: relative;
+    width: 100%;
+    height: clamp(440px, 44vw, 590px);
+    min-height: 440px;
+    max-height: 590px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    color: #fff;
+    background: #07100d;
+  }
+
+  .region-hero__image {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .region-hero__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(
+        90deg,
+        rgba(5,13,10,.84),
+        rgba(5,13,10,.58) 38%,
+        rgba(5,13,10,.18) 75%
+      ),
+      linear-gradient(
+        0deg,
+        rgba(5,13,10,.60),
+        transparent 62%
+      );
+  }
+
+  .region-hero__content {
+    position: relative;
+    z-index: 2;
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: clamp(3.5rem, 6vw, 5.5rem) 0;
+  }
+
+  .region-hero__eyebrow {
+    margin: 0 0 .8rem;
+    color: #dfa327;
+    font-size: .72rem;
+    line-height: 1.2;
+    font-weight: 900;
+    letter-spacing: .21em;
+    text-transform: uppercase;
+  }
+
+  .region-hero h1 {
+    max-width: 980px;
+    margin: 0;
+    color: #f7f2e8;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.8rem, 7vw, 7rem);
+    line-height: .9;
+    letter-spacing: -.06em;
+    text-wrap: balance;
+  }
+
+  .region-hero__description {
+    max-width: 760px;
+    margin: 1.2rem 0 0;
+    color: rgba(255,255,255,.92);
+    font-size: clamp(1rem, 1.35vw, 1.12rem);
+    line-height: 1.7;
+  }
+
+  .region-overview,
+  .region-provinces {
+    background: #fbf6ed;
+    color: #101820;
+  }
+
+  .region-overview {
+    padding: clamp(4rem, 7vw, 6.5rem) 0 2rem;
+  }
+
+  .region-provinces {
+    padding: 2rem 0 clamp(5rem, 8vw, 8rem);
+  }
+
+  .region-wrap {
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .region-copy {
+    border: 1px solid rgba(16,24,32,.10);
+    border-radius: 2rem;
+    padding: clamp(1.7rem, 3vw, 2.8rem);
+    background: #fff;
+    box-shadow: 0 14px 38px rgba(21,16,9,.07);
+  }
+
+  .section-kicker,
+  .section-heading > p {
+    margin: 0 0 .75rem;
+    color: #b46b00;
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: .20em;
+    text-transform: uppercase;
+  }
+
+  .region-copy h2,
+  .section-heading h2 {
+    margin: 0;
+    color: #101820;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.5rem, 4vw, 4.4rem);
+    line-height: .96;
+    letter-spacing: -.045em;
+  }
+
+  .region-intro,
+  .editorial-prose,
+  .section-heading span {
+    display: block;
+    max-width: 820px;
+    margin-top: 1rem;
+    color: #435064;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .province-count {
+    display: inline-flex;
+    margin-top: 1.4rem;
+    border-radius: 999px;
+    padding: .7rem 1rem;
+    background: #f4ead8;
+    color: #8e5809;
+    font-size: .8rem;
+    font-weight: 900;
+  }
+
+  .section-heading {
+    margin-bottom: 1.75rem;
+  }
+
+  .province-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.2rem;
+  }
+
+  .province-card {
+    overflow: hidden;
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
+    border: 1px solid rgba(16,24,32,.10);
+    border-radius: 1.45rem;
+    background: #fff;
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 12px 30px rgba(21,16,9,.07);
+    transition:
+      transform .18s ease,
+      box-shadow .18s ease;
+  }
+
+  .province-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(21,16,9,.13);
+  }
+
+  .province-card__media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    background: #ddd;
+  }
+
+  .province-card__media img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    transition: transform .25s ease;
+  }
+
+  .province-card:hover .province-card__media img {
+    transform: scale(1.025);
+  }
+
+  .province-card__body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+  }
+
+  .province-card__body > p {
+    margin: 0 0 .45rem;
+    color: #b46b00;
+    font-size: .68rem;
+    font-weight: 900;
+    letter-spacing: .17em;
+    text-transform: uppercase;
+  }
+
+  .province-card h3 {
+    margin: 0;
+    color: #101820;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.75rem;
+    line-height: 1;
+    letter-spacing: -.035em;
+  }
+
+  .province-card__body > span {
+    margin: .75rem 0 1.25rem;
+    color: #4a5667;
+    font-size: .92rem;
+    line-height: 1.55;
+  }
+
+  .province-card strong {
+    margin-top: auto;
+    color: #9a5d04;
+    font-size: .82rem;
+  }
+
+  @media (max-width: 900px) {
+    .province-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 620px) {
+    .province-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .region-hero {
+      height: 510px;
+      min-height: 510px;
+    }
+
+    .region-hero h1 {
+      font-size: clamp(3.1rem, 15vw, 5rem);
+    }
+  }
+</style>

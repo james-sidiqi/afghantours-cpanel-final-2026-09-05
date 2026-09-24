@@ -1,0 +1,384 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import AttractionPopupGrid from '../../components/cards/AttractionPopupGrid.astro';
+import HotelPopupGrid from '../../components/cards/HotelPopupGrid.astro';
+import TourCardGrid from '../../components/cards/TourCardGrid.astro';
+import { getHubs, getHubBySlug, getAttractions, getHotels, getTours, getFoodItems, getFoodHref } from '../../lib/buildRelations';
+
+export function getStaticPaths() {
+  return getHubs().filter((hub) => hub?.slug).map((hub) => ({ params: { slug: hub.slug } }));
+}
+
+const hub = Astro.params.slug ? getHubBySlug(Astro.params.slug) : undefined;
+if (!hub) return Astro.redirect('/hubs/');
+
+const hubName = hub.title || hub.name || hub.location_name || 'Travel Hub';
+const hubSlug = hub.slug;
+const hubCode = hub.location_code || hub.code || hub.destination_code || hub.destination || '';
+const provinceCode = hub.parent_code || hub.province_code || '';
+const provinceName = hub.province || hub.province_name || hubName;
+
+const attractions = getAttractions().filter((a) => {
+  const fields = [
+    a.location_code,
+    a.requires_location_code,
+    a.nearest_hub_code,
+    a.hub_code,
+    a.destination_code,
+  ].map((x) => String(x || '').toLowerCase());
+
+  const provinceFields = [a.province_code, a.province].map((x) => String(x || '').toLowerCase());
+
+  return fields.includes(String(hubCode).toLowerCase())
+    || fields.includes(String(hubSlug).toLowerCase())
+    || provinceFields.includes(String(provinceCode).toLowerCase())
+    || provinceFields.includes(String(provinceName).toLowerCase());
+});
+
+const hotels = getHotels().filter((hotel) => {
+  const fields = [hotel.destination_code, hotel.location_code, hotel.hub_code, hotel.hub_name, hotel.city].map((x) => String(x || '').toLowerCase());
+  return fields.includes(String(hubCode).toLowerCase()) || fields.includes(String(hubName).toLowerCase()) || fields.includes(String(hubSlug).toLowerCase());
+});
+
+const food = getFoodItems().filter((item) => {
+  const fieldValues = [
+    item.destination_code,
+    item.location_code,
+    item.hub_name,
+    item.city,
+    item.province,
+    item.province_code,
+    ...(Array.isArray(item.provinces) ? item.provinces : []),
+    ...(Array.isArray(item.associated_hubs) ? item.associated_hubs : []),
+    ...(Array.isArray(item.nearby) ? item.nearby : []),
+  ];
+  const fields = fieldValues.map((x) => String(x || '').toLowerCase());
+  const targets = [hubCode, hubName, hubSlug, provinceCode, provinceName].map((x) => String(x || '').toLowerCase()).filter(Boolean);
+  return targets.some((target) => fields.some((field) => field === target || field.includes(target) || target.includes(field)));
+});
+
+const tours = getTours().filter((tour) => {
+  const tourText = [
+    tour.route,
+    tour.route_summary,
+    tour.province,
+    tour.provinces,
+    tour.region,
+    tour.title,
+    tour.name,
+  ].join(' ').toLowerCase();
+
+  return tourText.includes(String(hubName).toLowerCase())
+    || tourText.includes(String(provinceName).toLowerCase())
+    || (Array.isArray(tour.attractions) && tour.attractions.some((a) => attractions.some((x) => x.slug === a.slug)));
+});
+
+const image = hub.image || `/assets/images/hubs/${hubSlug}/hero.webp` || '/assets/images/placeholders/default-hub.webp';
+---
+
+<BaseLayout
+  title={`${hubName} Travel Hub | AfghanTours`}
+  description={hub.summary || hub.description || `Operational travel hub for ${hubName}.`}
+  image={image}
+>
+  <PageHero
+    eyebrow={provinceName}
+    title={`${hubName} Travel Hub`}
+    text={hub.summary || hub.description || `Operational information for routes, attractions, hotels, food, and transportation connected to ${hubName}.`}
+    image={image}
+    height="min-h-[62vh]"
+  />
+
+  <section class="hub-overview">
+    <div class="hub-overview-wrap">
+      <div class="hub-copy">
+        <p class="section-kicker">Operational Summary</p>
+        <h2>How {hubName} functions as a travel hub</h2>
+        <div class="editorial-prose" set:html={hub.content_html || ''} />
+      </div>
+
+      <aside class="hub-facts">
+        <p class="section-kicker">At a glance</p>
+        <div>
+          <span>Province</span>
+          <strong>{provinceName}</strong>
+        </div>
+        {hubCode && (
+          <div>
+            <span>Hub code</span>
+            <strong>{hubCode}</strong>
+          </div>
+        )}
+        <div>
+          <span>Linked attractions</span>
+          <strong>{attractions.length}</strong>
+        </div>
+        <div>
+          <span>Linked hotels</span>
+          <strong>{hotels.length}</strong>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <TourCardGrid
+    tours={tours}
+    title={`Tours using ${hubName}`}
+    intro="These journeys either begin from, pass through, or rely on this hub for routing and logistics."
+  />
+
+
+  <AttractionPopupGrid
+    attractions={attractions}
+    title={`Attractions accessed from ${hubName}`}
+    intro="These are the main attractions and field sites connected to this operational hub."
+  />
+
+  <HotelPopupGrid
+    hotels={hotels}
+    title={`Hotels used in ${hubName}`}
+    intro="Accommodation references connected to this hub and nearby travel routes."
+  />
+
+  {food.length > 0 && (
+    <section class="simple-section">
+      <div class="simple-wrap">
+        <p class="section-kicker">Food & Culture</p>
+        <h2>Food connected to {hubName}</h2>
+        <div class="simple-grid">
+          {food.slice(0, 8).map((item) => (
+            <a class="simple-card" href={getFoodHref(item)}>
+              <img src={item.image} alt={item.title || item.name} loading="lazy" />
+              <h3>{item.title || item.name}</h3>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .hub-overview,
+  .simple-section {
+    background: #fbf6ed;
+    color: #101820;
+    padding: clamp(4rem, 7vw, 7rem) 0;
+  }
+
+  .hub-overview-wrap,
+  .simple-wrap {
+    width: min(1240px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .hub-overview-wrap {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .hub-copy,
+  .hub-facts,
+  .simple-card {
+    background: #fff;
+    border: 1px solid rgba(16,24,32,.1);
+    border-radius: 2rem;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    box-shadow: 0 14px 38px rgba(21,16,9,.08);
+  }
+
+  .section-kicker {
+    margin: 0;
+    color: #b46b00;
+    font-size: .72rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  .hub-copy h2,
+  .simple-wrap h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 5vw, 4.8rem);
+    line-height: .95;
+    letter-spacing: -.06em;
+    margin: .5rem 0 1.4rem;
+  }
+
+  .hub-facts {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .hub-facts div {
+    border-top: 1px solid rgba(16,24,32,.1);
+    padding-top: 1rem;
+  }
+
+  .hub-facts span {
+    display: block;
+    color: #6b7280;
+    font-size: .76rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+
+  .hub-facts strong {
+    display: block;
+    margin-top: .3rem;
+    font-size: 1.15rem;
+  }
+
+  .simple-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .simple-card {
+    padding: 0;
+    overflow: hidden;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .simple-card img {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .simple-card h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    padding: 1rem;
+    margin: 0;
+    font-size: 1.45rem;
+    line-height: 1;
+  }
+
+  @media (max-width: 900px) {
+    .hub-overview-wrap { grid-template-columns: 1fr; }
+    .simple-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 620px) {
+    .simple-grid { grid-template-columns: 1fr; }
+  }
+
+  /* HUB-HERO-TEXT-FIX-START */
+
+  .hub-hero-corrected {
+    position: relative !important;
+    width: 100% !important;
+    height: clamp(430px, 42vw, 560px) !important;
+    min-height: 430px !important;
+    max-height: 560px !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    background: #07100d !important;
+    color: #fff !important;
+  }
+
+  .hub-hero-corrected > img,
+  .hub-hero-corrected picture,
+  .hub-hero-corrected picture img {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+    object-fit: cover !important;
+    object-position: center 48% !important;
+  }
+
+  .hub-hero-corrected::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    background:
+      linear-gradient(
+        90deg,
+        rgba(5,13,10,.82) 0%,
+        rgba(5,13,10,.58) 38%,
+        rgba(5,13,10,.20) 72%,
+        rgba(5,13,10,.06) 100%
+      ),
+      linear-gradient(
+        0deg,
+        rgba(5,13,10,.62) 0%,
+        rgba(5,13,10,.18) 52%,
+        transparent 100%
+      ) !important;
+  }
+
+  .hub-hero-corrected > div,
+  .hub-hero-corrected > header,
+  .hub-hero-corrected > .hero-content,
+  .hub-hero-corrected > .hero-inner {
+    position: relative !important;
+    z-index: 2 !important;
+  }
+
+  .hub-hero-corrected > div,
+  .hub-hero-corrected > header {
+    width: min(1180px, calc(100% - 2rem)) !important;
+    margin: 0 auto !important;
+    padding: clamp(3rem, 5vw, 4.5rem) 0 !important;
+  }
+
+  .hub-hero-corrected h1,
+  .hub-hero-corrected h2 {
+    max-width: 900px !important;
+    margin: .55rem 0 .9rem !important;
+    color: #f7f2e8 !important;
+    font-family: Georgia, "Times New Roman", serif !important;
+    font-size: clamp(3.2rem, 6vw, 6rem) !important;
+    line-height: .92 !important;
+    letter-spacing: -.055em !important;
+    text-wrap: balance;
+    text-shadow: 0 2px 14px rgba(0,0,0,.18);
+  }
+
+  .hub-hero-corrected p,
+  .hub-hero-corrected span {
+    max-width: 720px !important;
+    color: rgba(255,255,255,.92) !important;
+    font-size: clamp(1rem, 1.2vw, 1.08rem) !important;
+    line-height: 1.65 !important;
+  }
+
+  .hub-hero-corrected [class*="eyebrow"],
+  .hub-hero-corrected [class*="kicker"],
+  .hub-hero-corrected [class*="label"] {
+    color: #dfa327 !important;
+    font-size: .72rem !important;
+    line-height: 1.2 !important;
+    font-weight: 900 !important;
+    letter-spacing: .20em !important;
+    text-transform: uppercase !important;
+  }
+
+  @media (max-width: 700px) {
+    .hub-hero-corrected {
+      height: 490px !important;
+      min-height: 490px !important;
+    }
+
+    .hub-hero-corrected h1,
+    .hub-hero-corrected h2 {
+      font-size: clamp(3rem, 14vw, 4.7rem) !important;
+    }
+  }
+
+  /* HUB-HERO-TEXT-FIX-END */
+
+</style>

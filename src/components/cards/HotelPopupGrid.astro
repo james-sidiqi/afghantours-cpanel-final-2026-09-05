@@ -1,0 +1,692 @@
+---
+const { hotels = [], title = "Hotels", intro = "" } = Astro.props;
+
+function splitPipe(value) {
+  return String(value || "")
+    .split("|")
+    .map((x) => x.trim())
+    .filter(Boolean);
+}
+
+function uniqueImages(items) {
+  const seen = new Set();
+  return items.filter((src) => {
+    if (!src) return false;
+    const key = String(src).trim();
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function hotelImages(hotel) {
+  const resolved = Array.isArray(hotel.property_images)
+    ? hotel.property_images
+    : [];
+
+  return uniqueImages([
+    ...resolved,
+    hotel.hero_image,
+    hotel.image,
+    hotel.image_path_property_1,
+    hotel.image_path_property_2,
+    hotel.image_path_property_3,
+  ]);
+}
+
+function roomImages(hotel) {
+  const resolved = Array.isArray(hotel.room_images)
+    ? hotel.room_images
+    : [];
+
+  const fromPipe = splitPipe(hotel.room_image_paths);
+  const fromRooms = Array.isArray(hotel.rooms)
+    ? hotel.rooms.flatMap((room) => [
+        room.image,
+        room.image_path,
+        room.room_image,
+        room.room_image_path,
+        room.image_path_room_1,
+        room.image_path_room_2,
+      ])
+    : [];
+
+  return uniqueImages([...resolved, ...fromPipe, ...fromRooms]);
+}
+
+const normalizedHotels = hotels.map((hotel) => {
+  const displayName = hotel.display_name || hotel.title || hotel.hotel_name || hotel.name || "Hotel";
+  const subtitle = hotel.subtitle || "";
+  const hub = hotel.hub_name || hotel.city || hotel.destination_name || hotel.destination_code || "Afghanistan";
+  const tier = hotel.tier || hotel.category || "standard";
+  const facilities = splitPipe(hotel.facilities);
+  const bestFor = splitPipe(hotel.best_for);
+  const propertyGallery = hotelImages(hotel);
+  const rooms = roomImages(hotel);
+  const allImages = uniqueImages([...propertyGallery, ...rooms]);
+
+  return {
+    slug: hotel.slug || hotel.hotel_slug,
+    displayName,
+    subtitle,
+    originalName: hotel.hotel_name || hotel.name || displayName,
+    hub,
+    tier,
+    starRating: hotel.star_rating || hotel.stars || "",
+    priceRange: hotel.price_range || "",
+    description: hotel.description || hotel.content || "",
+    image: propertyGallery[0] || rooms[0] || hotel.image || "/assets/images/placeholders/default-hotel.webp",
+    propertyGallery,
+    rooms,
+    allImages,
+    facilities,
+    bestFor,
+    href: `/hotels/${hotel.slug || hotel.hotel_slug}/`,
+  };
+});
+---
+
+<section class="hotel-grid-section">
+  <div class="hotel-grid-wrap">
+    {(title || intro) && (
+      <div class="hotel-grid-heading">
+        {title && <p class="section-kicker">Accommodation Network</p>}
+        {title && <h2>{title}</h2>}
+        {intro && <p>{intro}</p>}
+      </div>
+    )}
+
+    <div class="hotel-grid">
+      {normalizedHotels.map((hotel, index) => (
+        <button class="hotel-card" type="button" data-hotel-index={index}>
+          <img src={hotel.image} alt={hotel.displayName} loading="lazy" />
+          <div class="hotel-card-body">
+            <p class="hotel-card-hub">{hotel.hub}</p>
+            <h3>{hotel.displayName}</h3>
+            {hotel.subtitle && <p class="hotel-subtitle">({hotel.subtitle})</p>}
+
+            <div class="hotel-meta-row">
+              {hotel.starRating && <span>{'★'.repeat(Number(hotel.starRating) || 0)} {hotel.starRating}-Star</span>}
+              {hotel.tier && <span>{hotel.tier}</span>}
+              {hotel.priceRange && <span>{hotel.priceRange}</span>}
+            </div>
+
+            {hotel.facilities?.length > 0 && (
+              <p class="hotel-facilities">{hotel.facilities.slice(0, 4).join(" • ")}</p>
+            )}
+
+            <p class="hotel-description">{hotel.description}</p>
+            <span class="hotel-view">View hotel details →</span>
+          </div>
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <div class="hotel-modal" id="hotel-modal" aria-hidden="true">
+    <div class="hotel-modal-backdrop" data-close-hotel></div>
+    <div class="hotel-modal-panel" role="dialog" aria-modal="true" aria-labelledby="hotel-modal-title">
+      <button class="hotel-modal-close" type="button" data-close-hotel>×</button>
+
+      <div class="hotel-modal-media">
+        <div class="hotel-main-frame">
+          <button class="hotel-gallery-nav hotel-gallery-prev" type="button" data-gallery-prev aria-label="Previous image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg></button>
+          <img class="hotel-modal-main-image" id="hotel-modal-main-image" src="" alt="" />
+          <button class="hotel-gallery-nav hotel-gallery-next" type="button" data-gallery-next aria-label="Next image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg></button>
+        </div>
+
+        <div class="hotel-image-counter" id="hotel-image-counter"></div>
+
+        <div class="hotel-modal-thumbs" id="hotel-modal-thumbs"></div>
+      </div>
+
+      <div class="hotel-modal-content">
+        <p class="hotel-card-hub" id="hotel-modal-hub"></p>
+        <h2 id="hotel-modal-title"></h2>
+        <p class="hotel-subtitle" id="hotel-modal-subtitle"></p>
+
+        <div class="hotel-meta-row hotel-modal-meta" id="hotel-modal-meta"></div>
+
+        <div class="hotel-modal-section">
+          <p class="section-label">About this hotel</p>
+          <p id="hotel-modal-description"></p>
+        </div>
+
+        <div class="hotel-modal-section" id="hotel-modal-facilities-wrap">
+          <p class="section-label">Facilities</p>
+          <div class="pill-list" id="hotel-modal-facilities"></div>
+        </div>
+
+        <div class="hotel-modal-section" id="hotel-modal-bestfor-wrap">
+          <p class="section-label">Best for</p>
+          <div class="pill-list" id="hotel-modal-bestfor"></div>
+        </div>
+
+        <div class="hotel-modal-section" id="hotel-modal-gallery-wrap">
+          <p class="section-label">Gallery</p>
+          <p class="gallery-help">Use the arrows or select a thumbnail to view property and room images.</p>
+        </div>
+
+        <div class="hotel-modal-actions">
+          <a id="hotel-modal-link" href="/hotels/">View hotel page</a>
+          <a id="hotel-modal-contact" href="/contact/">Ask about this hotel</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ hotels: normalizedHotels }}>
+  let activeHotel = null;
+  let activeImageIndex = 0;
+
+  const modal = document.getElementById("hotel-modal");
+  const mainImage = document.getElementById("hotel-modal-main-image");
+  const thumbs = document.getElementById("hotel-modal-thumbs");
+  const imageCounter = document.getElementById("hotel-image-counter");
+  const modalHub = document.getElementById("hotel-modal-hub");
+  const modalTitle = document.getElementById("hotel-modal-title");
+  const modalSubtitle = document.getElementById("hotel-modal-subtitle");
+  const modalMeta = document.getElementById("hotel-modal-meta");
+  const modalDescription = document.getElementById("hotel-modal-description");
+  const modalFacilitiesWrap = document.getElementById("hotel-modal-facilities-wrap");
+  const modalFacilities = document.getElementById("hotel-modal-facilities");
+  const modalBestForWrap = document.getElementById("hotel-modal-bestfor-wrap");
+  const modalBestFor = document.getElementById("hotel-modal-bestfor");
+  const modalLink = document.getElementById("hotel-modal-link");
+  const modalContact = document.getElementById("hotel-modal-contact");
+
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function renderPills(items) {
+    return (items || []).map((item) => `<span>${escapeHtml(item)}</span>`).join("");
+  }
+
+  function renderThumbs() {
+    if (!activeHotel || !thumbs) return;
+    const images = activeHotel.allImages || [];
+    thumbs.innerHTML = images.map((src, index) => `
+      <button type="button" class="hotel-modal-thumb ${index === activeImageIndex ? "is-active" : ""}" data-image-index="${index}">
+        <img src="${escapeHtml(src)}" alt="${escapeHtml(activeHotel.displayName)} ${index + 1}" loading="lazy" />
+      </button>
+    `).join("");
+  }
+
+  function setImage(index) {
+    if (!activeHotel || !mainImage) return;
+    const images = activeHotel.allImages || [];
+    if (!images.length) return;
+
+    activeImageIndex = (index + images.length) % images.length;
+    mainImage.src = images[activeImageIndex];
+    mainImage.alt = `${activeHotel.displayName} image ${activeImageIndex + 1}`;
+
+    if (imageCounter) {
+      imageCounter.textContent = `${activeImageIndex + 1} / ${images.length}`;
+    }
+
+    renderThumbs();
+  }
+
+  function openHotel(index) {
+    const hotel = hotels[index];
+    if (!hotel || !modal) return;
+
+    activeHotel = hotel;
+    activeImageIndex = 0;
+
+    modalHub.textContent = hotel.hub || "";
+    modalTitle.textContent = hotel.displayName || "Hotel";
+    modalSubtitle.textContent = hotel.subtitle ? `(${hotel.subtitle})` : "";
+
+    const stars = hotel.starRating ? `${"★".repeat(Number(hotel.starRating) || 0)} ${hotel.starRating}-Star` : "";
+    modalMeta.innerHTML = [stars, hotel.tier, hotel.priceRange]
+      .filter(Boolean)
+      .map((x) => `<span>${escapeHtml(x)}</span>`)
+      .join("");
+
+    modalDescription.textContent = hotel.description || "";
+
+    if (hotel.facilities?.length) {
+      modalFacilitiesWrap.style.display = "";
+      modalFacilities.innerHTML = renderPills(hotel.facilities);
+    } else {
+      modalFacilitiesWrap.style.display = "none";
+    }
+
+    if (hotel.bestFor?.length) {
+      modalBestForWrap.style.display = "";
+      modalBestFor.innerHTML = renderPills(hotel.bestFor);
+    } else {
+      modalBestForWrap.style.display = "none";
+    }
+
+    modalLink.href = hotel.href || "/hotels/";
+    modalContact.href = `/contact/&hotel=${encodeURIComponent(hotel.displayName || "")}`;
+
+    setImage(0);
+
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeHotel() {
+    if (!modal) return;
+    modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    activeHotel = null;
+    activeImageIndex = 0;
+  }
+
+  document.querySelectorAll("[data-hotel-index]").forEach((button) => {
+    button.addEventListener("click", () => openHotel(Number(button.dataset.hotelIndex)));
+  });
+
+  document.querySelectorAll("[data-close-hotel]").forEach((button) => {
+    button.addEventListener("click", closeHotel);
+  });
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+
+    const thumb = target?.closest?.("[data-image-index]");
+    if (thumb) {
+      setImage(Number(thumb.getAttribute("data-image-index")));
+      return;
+    }
+
+    if (target?.closest?.("[data-gallery-prev]")) {
+      setImage(activeImageIndex - 1);
+      return;
+    }
+
+    if (target?.closest?.("[data-gallery-next]")) {
+      setImage(activeImageIndex + 1);
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (!activeHotel) return;
+    if (event.key === "Escape") closeHotel();
+    if (event.key === "ArrowLeft") setImage(activeImageIndex - 1);
+    if (event.key === "ArrowRight") setImage(activeImageIndex + 1);
+  });
+</script>
+
+<style>
+  .hotel-grid-section {
+    background: #fbf6ed;
+    color: #101820;
+    padding: clamp(4rem, 7vw, 7rem) 0;
+  }
+
+  .hotel-grid-wrap {
+    width: min(1280px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .hotel-grid-heading {
+    max-width: 760px;
+    margin-bottom: 2rem;
+  }
+
+  .hotel-grid-heading h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: -0.06em;
+    margin: 0.4rem 0 1rem;
+  }
+
+  .hotel-grid-heading > p:last-child {
+    color: #4b5563;
+    line-height: 1.75;
+    font-size: 1.05rem;
+  }
+
+  .section-kicker,
+  .section-label,
+  .hotel-card-hub {
+    margin: 0;
+    color: #b46b00;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  .hotel-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .hotel-card {
+    appearance: none;
+    border: 1px solid rgba(16, 24, 32, 0.1);
+    background: #fff;
+    padding: 0;
+    text-align: left;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 14px 38px rgba(21, 16, 9, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+
+  .hotel-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(180, 107, 0, 0.35);
+    box-shadow: 0 22px 50px rgba(21, 16, 9, 0.14);
+  }
+
+  .hotel-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hotel-card-body {
+    padding: 1.45rem;
+  }
+
+  .hotel-card h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.9rem;
+    line-height: 0.95;
+    margin: 0.55rem 0 0.25rem;
+    letter-spacing: -0.04em;
+  }
+
+  .hotel-subtitle {
+    margin: 0;
+    color: #6b5d4b;
+    font-weight: 700;
+    font-size: 0.95rem;
+  }
+
+  .hotel-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 1rem;
+  }
+
+  .hotel-meta-row span {
+    border-radius: 999px;
+    background: #f4eadc;
+    color: #3b2d1c;
+    padding: 0.42rem 0.72rem;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-transform: capitalize;
+  }
+
+  .hotel-facilities {
+    margin: 0.9rem 0 0;
+    color: #3f3a32;
+    font-weight: 700;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .hotel-description {
+    margin: 0.85rem 0 0;
+    color: #4b5563;
+    line-height: 1.65;
+    font-size: 0.94rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .hotel-view {
+    display: inline-block;
+    margin-top: 1.1rem;
+    color: #9a5d04;
+    font-weight: 900;
+    font-size: 0.86rem;
+  }
+
+  .hotel-modal[aria-hidden="true"] {
+    display: none;
+  }
+
+  .hotel-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+  }
+
+  .hotel-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(3, 7, 18, 0.76);
+    backdrop-filter: blur(8px);
+  }
+
+  .hotel-modal-panel {
+    position: relative;
+    width: min(1180px, calc(100% - 2rem));
+    height: min(820px, calc(100vh - 2rem));
+    margin: 1rem auto;
+    display: grid;
+    grid-template-columns: 1.06fr 0.94fr;
+    background: #fffaf3;
+    border-radius: 2rem;
+    overflow: hidden;
+    box-shadow: 0 35px 90px rgba(0, 0, 0, 0.45);
+  }
+
+  .hotel-modal-close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    z-index: 5;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 0;
+    background: rgba(0, 0, 0, 0.72);
+    color: #fff;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+
+  .hotel-modal-media {
+    background: #111;
+    display: grid;
+    grid-template-rows: 1fr auto auto;
+    min-height: 0;
+  }
+
+  .hotel-main-frame {
+    position: relative;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .hotel-modal-main-image {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hotel-gallery-nav {
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 999px;
+    background: rgba(0,0,0,.55);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .hotel-gallery-nav svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .hotel-gallery-prev {
+    left: 1rem;
+  }
+
+  .hotel-gallery-next {
+    right: 1rem;
+  }
+
+  .hotel-image-counter {
+    background: #15110d;
+    color: rgba(255,255,255,.75);
+    text-align: center;
+    font-size: .82rem;
+    font-weight: 800;
+    padding: .45rem;
+  }
+
+  .hotel-modal-thumbs {
+    display: flex;
+    gap: 0.55rem;
+    padding: 0.75rem;
+    background: #15110d;
+    overflow-x: auto;
+  }
+
+  .hotel-modal-thumb {
+    flex: 0 0 96px;
+    border: 2px solid transparent;
+    padding: 0;
+    border-radius: 0.8rem;
+    overflow: hidden;
+    cursor: pointer;
+    background: transparent;
+    opacity: .78;
+  }
+
+  .hotel-modal-thumb.is-active {
+    border-color: #d6a23a;
+    opacity: 1;
+  }
+
+  .hotel-modal-thumb img {
+    width: 100%;
+    height: 70px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .hotel-modal-content {
+    padding: clamp(1.6rem, 3vw, 2.6rem);
+    overflow-y: auto;
+  }
+
+  .hotel-modal-content h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    line-height: 0.92;
+    letter-spacing: -0.06em;
+    margin: 0.6rem 0 0.3rem;
+  }
+
+  .hotel-modal-section {
+    margin-top: 1.5rem;
+    border-top: 1px solid rgba(16, 24, 32, 0.1);
+    padding-top: 1.2rem;
+  }
+
+  .hotel-modal-section > p:last-child,
+  .gallery-help {
+    color: #374151;
+    line-height: 1.75;
+  }
+
+  .gallery-help {
+    margin: .5rem 0 0;
+    font-size: .92rem;
+  }
+
+  .pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 0.8rem;
+  }
+
+  .pill-list span {
+    border-radius: 999px;
+    background: #f1e5d2;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 800;
+    color: #3b2d1c;
+  }
+
+  .hotel-modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.8rem;
+  }
+
+  .hotel-modal-actions a {
+    border-radius: 999px;
+    background: #d6a23a;
+    color: #111;
+    padding: 0.9rem 1.2rem;
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 0.86rem;
+  }
+
+  .hotel-modal-actions a + a {
+    background: #101820;
+    color: #fff;
+  }
+
+  @media (max-width: 1000px) {
+    .hotel-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .hotel-modal-panel {
+      grid-template-columns: 1fr;
+      height: calc(100vh - 1rem);
+      margin: 0.5rem auto;
+      overflow-y: auto;
+    }
+
+    .hotel-modal-media {
+      min-height: 420px;
+    }
+
+    .hotel-main-frame {
+      min-height: 330px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hotel-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hotel-modal-panel {
+      width: calc(100% - 1rem);
+      border-radius: 1.25rem;
+    }
+  }
+</style>

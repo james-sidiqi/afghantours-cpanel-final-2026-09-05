@@ -1,0 +1,1361 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TourCardGrid from '../../components/cards/TourCardGrid.astro';
+
+import { getCollection } from 'astro:content';
+import { getTours } from '../../lib/buildRelations';
+
+export async function getStaticPaths() {
+  const foodEntries = await getCollection('food');
+
+  return foodEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+const data = entry.data as any;
+const allFood = await getCollection('food');
+const allTours = getTours();
+
+const foodPath = entry.slug || entry.id.replace(/\.md$/, '');
+const parts = foodPath.split('/');
+const categorySlug = parts.length > 1 ? parts[0] : 'food';
+const baseSlug = parts[parts.length - 1];
+
+/*
+ * entry.slug is not always enough to determine the original content
+ * category. entry.id preserves the source path such as dishes/foo.md.
+ */
+const sourceFoodPath = entry.id.replace(/\.md$/, '');
+const sourceParts = sourceFoodPath.split('/');
+const sourceCategorySlug =
+  sourceParts.length > 1 ? sourceParts[0] : categorySlug;
+const sourceBaseSlug =
+  sourceParts[sourceParts.length - 1];
+
+const title = data.title || baseSlug;
+const subtitle =
+  data.subtitle ||
+  data.card_description ||
+  'A taste of Afghanistan connected to place, hospitality, and the journey itself.';
+
+const description =
+  data.card_description ||
+  data.subtitle ||
+  `Explore ${title} as part of Afghanistan's regional food and hospitality culture.`;
+
+/*
+ * Resolve real food photography from the asset library before falling
+ * back to generic imagery. This also handles historic spelling/slug
+ * differences in the imported AfghanTours image archive.
+ */
+const foodAssetRoots: Record<string, string> = {
+  dishes: '/assets/images/food/dishes',
+  drinks: '/assets/images/food/drinks',
+  produce: '/assets/images/food/produce',
+  'dried-fruits': '/assets/images/food/dried-fruit',
+  desserts: '/assets/images/food/sweets',
+};
+
+const imageSlugAliases: Record<string, string[]> = {
+  'kabuli-pulao': ['kabuli-palaw'],
+  'qabuli-palaw': ['kabuli-palaw', 'kabuli-pulao'],
+  samosa: ['sambosa'],
+  'sambosa-pastry': ['sambosa'],
+  aushak: ['ashak'],
+  ashak: ['aushak'],
+  dogh: ['doogh'],
+  'farah-watermelon': ['farah-watermellons'],
+};
+
+const publicAssetExists = (publicPath: string) => {
+  if (!publicPath || !publicPath.startsWith('/')) return false;
+
+  return fs.existsSync(
+    path.join(
+      process.cwd(),
+      'public',
+      publicPath.replace(/^\/+/, '')
+    )
+  );
+};
+
+const categoryCandidates = [
+  sourceCategorySlug,
+  categorySlug,
+].filter(
+  (value, index, array) =>
+    value &&
+    array.indexOf(value) === index
+);
+
+const slugCandidates = [
+  baseSlug,
+  sourceBaseSlug,
+  ...(imageSlugAliases[baseSlug] || []),
+  ...(imageSlugAliases[sourceBaseSlug] || []),
+].filter(
+  (value, index, array) =>
+    value &&
+    array.indexOf(value) === index
+);
+
+const dedicatedFolderCandidates: string[] = [];
+
+for (const category of categoryCandidates) {
+  const root = foodAssetRoots[category];
+
+  if (!root) continue;
+
+  for (const candidateSlug of slugCandidates) {
+    dedicatedFolderCandidates.push(
+      `${root}/${candidateSlug}/`
+    );
+  }
+}
+
+/*
+ * Some food experiences were historically stored in the
+ * cultural-experiences image tree.
+ */
+for (const candidateSlug of slugCandidates) {
+  dedicatedFolderCandidates.push(
+    `/assets/images/cultural-experiences/${candidateSlug}/`
+  );
+}
+
+const resolvedFoodImageFolder =
+  dedicatedFolderCandidates.find((folder) =>
+    publicAssetExists(`${folder}hero.webp`)
+  ) ||
+  dedicatedFolderCandidates.find((folder) => {
+    const diskFolder = path.join(
+      process.cwd(),
+      'public',
+      folder.replace(/^\/+/, '')
+    );
+
+    try {
+      return (
+        fs.existsSync(diskFolder) &&
+        fs.readdirSync(diskFolder).some((file) =>
+          /\.(webp|jpg|jpeg|png|avif)$/i.test(file)
+        )
+      );
+    } catch {
+      return false;
+    }
+  }) ||
+  '';
+
+const dedicatedHero =
+  resolvedFoodImageFolder &&
+  publicAssetExists(`${resolvedFoodImageFolder}hero.webp`)
+    ? `${resolvedFoodImageFolder}hero.webp`
+    : '';
+
+const heroImage =
+  dedicatedHero ||
+  data.hero_image ||
+  data.image ||
+  '/assets/images/heroes/food-and-culture/hero.webp';
+
+const categoryLabels: Record<string, string> = {
+  dishes: 'Afghan Dish',
+  drinks: 'Tea & Drinks',
+  produce: 'Regional Produce',
+  'dried-fruits': 'Dried Fruits & Nuts',
+  desserts: 'Sweets & Desserts',
+};
+
+const categoryLabel =
+  data.experience_type ||
+  data.category ||
+  categoryLabels[categorySlug] ||
+  'Food & Culture';
+
+const provinces = Array.isArray(data.provinces) ? data.provinces : [];
+const pairedFoods = Array.isArray(data.paired_foods) ? data.paired_foods : [];
+const nearby = Array.isArray(data.nearby) ? data.nearby : [];
+
+const bestSeason = data.best_season || 'Year round / availability varies';
+const duration =
+  data.duration ||
+  (data.duration_hours ? `${data.duration_hours} hours` : 'Flexible');
+
+const normalizeKey = (value: any) =>
+  String(value || '')
+    .toLowerCase()
+    .normalize('NFKD')
+    .replace(/[’']/g, '')
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+
+const explicitTourSlugs = (Array.isArray(data.related_tours) ? data.related_tours : [])
+  .map((tour: any) => {
+    if (typeof tour === 'string') return tour;
+    return tour?.slug || tour?.tour_slug || '';
+  })
+  .filter(Boolean);
+
+/*
+ * Some legacy food records contain useful frontmatter fields that are
+ * not exposed by the active Astro collection schema. Read only the
+ * related_tours list as a fallback so those explicit editorial
+ * relationships are not lost during schema parsing.
+ */
+let frontmatterRelatedTourSlugs: string[] = [];
+
+try {
+  const sourcePath = path.join(
+    process.cwd(),
+    'src',
+    'content',
+    'food',
+    `${foodPath}.md`
+  );
+
+  if (fs.existsSync(sourcePath)) {
+    const source = fs.readFileSync(sourcePath, 'utf8');
+    const frontmatterMatch = source.match(/^---\s*\n([\s\S]*?)\n---/);
+
+    if (frontmatterMatch) {
+      const fm = frontmatterMatch[1];
+
+      /*
+       * Supports the inline form used by records such as:
+       * related_tours: ["tour-a", "tour-b"]
+       */
+      const inline = fm.match(
+        /^related_tours:\s*\[([^\]]*)\]\s*$/m
+      );
+
+      if (inline) {
+        frontmatterRelatedTourSlugs = [
+          ...inline[1].matchAll(/["']([^"']+)["']/g),
+        ]
+          .map((match) => match[1].trim())
+          .filter(Boolean);
+      } else {
+        /*
+         * Also support a simple YAML block list:
+         *
+         * related_tours:
+         *   - tour-a
+         *   - tour-b
+         */
+        const block = fm.match(
+          /^related_tours:\s*\n((?:\s+-\s+[^\n]+\n?)*)/m
+        );
+
+        if (block) {
+          frontmatterRelatedTourSlugs = block[1]
+            .split('\n')
+            .map((line) =>
+              line
+                .replace(/^\s*-\s*/, '')
+                .trim()
+                .replace(/^["']|["']$/g, '')
+            )
+            .filter(Boolean);
+        }
+      }
+    }
+  }
+} catch (error) {
+  console.warn(
+    `Could not read explicit food tour relationships for ${foodPath}`,
+    error
+  );
+}
+
+const mergedExplicitTourSlugs = [
+  ...new Set([
+    ...explicitTourSlugs,
+    ...frontmatterRelatedTourSlugs,
+  ]),
+];
+
+const tourBySlug = new Map(allTours.map((tour: any) => [tour.slug, tour]));
+const explicitTours = mergedExplicitTourSlugs
+  .map((slug: string) => tourBySlug.get(slug))
+  .filter(Boolean);
+
+const aliasMap: Record<string, string[]> = {
+  'kabuli-pulao': ['qabuli-palaw', 'kabuli-palaw'],
+  'ghazni-qabili-pulao': ['qabuli-palaw'],
+  'chicken-qabili': ['qabuli-palaw'],
+  samosa: ['sambosa'],
+  'sambosa-pastry': ['sambosa'],
+  aushak: ['ashak'],
+  'chapli-kabob': ['kabob'],
+  'kabul-kabob': ['kabob'],
+  'herat-kabob': ['kabob'],
+};
+
+const foodKeys = new Set<string>();
+
+[
+  baseSlug,
+  data.dish_code,
+  data.experience_code,
+  data.card_title,
+]
+  .filter(Boolean)
+  .forEach((value) => foodKeys.add(normalizeKey(value)));
+
+(aliasMap[baseSlug] || []).forEach((alias) => foodKeys.add(normalizeKey(alias)));
+
+const itineraryTours = allTours.filter((tour: any) => {
+  if (!Array.isArray(tour.itinerary)) return false;
+
+  return tour.itinerary.some((day: any) => {
+    const value = normalizeKey(day.food_culture || day.food || '');
+    return value && foodKeys.has(value);
+  });
+});
+
+const relatedTours = [...explicitTours, ...itineraryTours]
+  .filter(Boolean)
+  .filter(
+    (tour: any, index, array) =>
+      array.findIndex((candidate: any) => candidate.slug === tour.slug) === index
+  )
+  .slice(0, 6);
+
+const galleryCandidates: string[] = [];
+
+const addGalleryImage = (value: any) => {
+  if (!value) return;
+  const src = String(value).trim();
+  if (src && !galleryCandidates.includes(src)) galleryCandidates.push(src);
+};
+
+if (Array.isArray(data.gallery_images)) data.gallery_images.forEach(addGalleryImage);
+
+addGalleryImage(heroImage);
+
+if (data.image && data.image !== heroImage) addGalleryImage(data.image);
+
+const scanFoodImageFolder = (publicFolder: string) => {
+  if (!publicFolder || !publicFolder.startsWith('/')) return;
+
+  const diskFolder = path.join(
+    process.cwd(),
+    'public',
+    publicFolder.replace(/^\/+/, '')
+  );
+
+  try {
+    if (!fs.existsSync(diskFolder)) return;
+
+    let files = fs.readdirSync(diskFolder)
+      .filter((file) =>
+        /\.(webp|jpg|jpeg|png|avif)$/i.test(file)
+      )
+      .filter((file) =>
+        !/^(thumb|thumbnail)\./i.test(file)
+      );
+
+    /*
+     * If curated gallery-N files exist, prefer those over duplicate
+     * numeric aliases such as 01.webp.
+     */
+    const hasNamedGallery = files.some((file) =>
+      /^gallery-\d+/i.test(file)
+    );
+
+    if (hasNamedGallery) {
+      files = files.filter(
+        (file) =>
+          /^hero\./i.test(file) ||
+          /^gallery-\d+/i.test(file)
+      );
+    }
+
+    files
+      .sort((a, b) => {
+        const rank = (file: string) => {
+          if (/^hero\./i.test(file)) return 0;
+          if (/^gallery-/i.test(file)) return 1;
+          if (/^\d+/i.test(file)) return 2;
+          return 3;
+        };
+
+        return rank(a) - rank(b) || a.localeCompare(b);
+      })
+      .forEach((file) =>
+        addGalleryImage(`${publicFolder}${file}`)
+      );
+  } catch (error) {
+    console.warn(
+      `Could not inspect food image folder ${publicFolder}`,
+      error
+    );
+  }
+};
+
+/*
+ * First inspect the canonical route-specific food folder.
+ */
+if (resolvedFoodImageFolder) {
+  scanFoodImageFolder(resolvedFoodImageFolder);
+}
+
+/*
+ * Also inspect an explicitly configured hero's folder if it is
+ * different from the canonical folder.
+ */
+if (heroImage.startsWith('/')) {
+  const configuredHeroFolder =
+    heroImage.substring(
+      0,
+      heroImage.lastIndexOf('/') + 1
+    );
+
+  if (
+    configuredHeroFolder !==
+    resolvedFoodImageFolder
+  ) {
+    scanFoodImageFolder(configuredHeroFolder);
+  }
+}
+
+const galleryImages = galleryCandidates.slice(0, 9);
+
+const currentProvinceSet = new Set(provinces.map(normalizeKey));
+const pairedKeys = pairedFoods.map(normalizeKey);
+
+const scoredFood = allFood
+  .filter((candidate) => candidate.id !== entry.id)
+  .map((candidate) => {
+    const candidateData = candidate.data as any;
+    const candidatePath =
+      candidate.slug || candidate.id.replace(/\.md$/, '');
+    const candidateParts = candidatePath.split('/');
+    const candidateBase = candidateParts[candidateParts.length - 1];
+    const candidateCategory =
+      candidateParts.length > 1 ? candidateParts[0] : 'food';
+
+    const candidateTitle = normalizeKey(candidateData.title);
+    const candidateSlugKey = normalizeKey(candidateBase);
+
+    let score = 0;
+
+    for (const pairing of pairedKeys) {
+      if (!pairing) continue;
+
+      if (
+        candidateTitle === pairing ||
+        candidateSlugKey === pairing ||
+        candidateTitle.includes(pairing) ||
+        pairing.includes(candidateTitle) ||
+        candidateSlugKey.includes(pairing) ||
+        pairing.includes(candidateSlugKey)
+      ) {
+        score += 10;
+      }
+    }
+
+    const candidateProvinces = Array.isArray(candidateData.provinces)
+      ? candidateData.provinces
+      : [];
+
+    candidateProvinces.map(normalizeKey).forEach((province) => {
+      if (currentProvinceSet.has(province)) score += 4;
+    });
+
+    if (candidateCategory === categorySlug) score += 2;
+
+    return { candidate, score };
+  })
+  .filter((item) => item.score > 0)
+  .sort(
+    (a, b) =>
+      b.score - a.score ||
+      a.candidate.data.title.localeCompare(b.candidate.data.title)
+  );
+
+const relatedFood = scoredFood.slice(0, 6).map((result) => result.candidate);
+
+const foodHref = (candidate: any) =>
+  `/food-culture/${candidate.slug || candidate.id.replace(/\.md$/, '')}/`;
+
+const foodImage = (candidate: any) => {
+  const candidateData = candidate.data as any;
+
+  return (
+    candidateData.hero_image ||
+    candidateData.image ||
+    '/assets/images/heroes/food-and-culture/hero.webp'
+  );
+};
+
+const contactHref = `/contact/?food=${encodeURIComponent(title)}`;
+---
+
+<BaseLayout
+  title={`${title} | Food & Culture | AfghanTours`}
+  description={description}
+  image={heroImage}
+>
+  <section class="food-detail-hero">
+    <img class="food-detail-hero-image" src={heroImage} alt={title} fetchpriority="high" />
+    <div class="food-detail-hero-overlay" aria-hidden="true"></div>
+
+    <div class="food-detail-hero-inner">
+      <nav class="food-breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span>›</span>
+        <a href="/food-culture/">Food & Culture</a>
+        <span>›</span>
+        <a href={`/food-culture/#${categorySlug}`}>{categoryLabel}</a>
+      </nav>
+
+      <div class="food-detail-hero-copy">
+        <p class="food-kicker">{categoryLabel}</p>
+        <h1>{title}</h1>
+        <p class="food-hero-subtitle">{subtitle}</p>
+
+        <div class="food-hero-actions">
+          <a class="food-hero-primary" href="#food-story">Discover the story</a>
+          <a class="food-hero-secondary" href={contactHref}>Experience this on a trip</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="food-facts-shell">
+    <div class="food-facts">
+      <div class="food-fact"><span>Category</span><strong>{categoryLabel}</strong></div>
+      <div class="food-fact"><span>Region</span><strong>{provinces.length ? provinces.join(', ') : 'Afghanistan'}</strong></div>
+      <div class="food-fact"><span>Best season</span><strong>{bestSeason}</strong></div>
+      <div class="food-fact"><span>Experience time</span><strong>{duration}</strong></div>
+    </div>
+  </section>
+
+  <main id="food-story" class="food-story-section">
+    <div class="food-story-layout">
+      <article class="food-story">
+        <p class="section-kicker">Taste & Place</p>
+        <h2>The story</h2>
+        <p class="food-story-lead">{description}</p>
+        <div class="food-prose"><Content /></div>
+      </article>
+
+      <aside class="food-planning-column">
+        <div class="food-planning-card">
+          <p class="section-kicker">Plan Around It</p>
+          <h2>Build it into the journey</h2>
+          <p>
+            Food and market experiences work best when they fit naturally into the route,
+            season, meal schedule, market hours, and local availability.
+          </p>
+
+          <div class="food-planning-details">
+            {provinces.length > 0 && (
+              <div><span>Common location</span><strong>{provinces.join(', ')}</strong></div>
+            )}
+
+            <div><span>Best timing</span><strong>{bestSeason}</strong></div>
+
+            {pairedFoods.length > 0 && (
+              <div><span>Pair with</span><strong>{pairedFoods.join(', ')}</strong></div>
+            )}
+
+            {nearby.length > 0 && (
+              <div><span>Nearby</span><strong>{nearby.join(', ')}</strong></div>
+            )}
+
+            {data.vegan && (
+              <div><span>Dietary note</span><strong>Vegan</strong></div>
+            )}
+
+            {!data.vegan && data.vegetarian && (
+              <div><span>Dietary note</span><strong>Vegetarian</strong></div>
+            )}
+          </div>
+
+          <a class="food-planning-primary" href={contactHref}>Add this to my trip</a>
+          <a class="food-planning-secondary" href="/food-culture/">Explore Food & Culture</a>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  {galleryImages.length > 1 && (
+    <section class="food-gallery-section">
+      <div class="food-gallery-wrap">
+        <div class="food-section-heading">
+          <p class="section-kicker">Gallery</p>
+          <h2>A closer look</h2>
+          <p>These images belong directly to this food or cultural experience.</p>
+        </div>
+
+        <div class:list={['food-gallery-grid', galleryImages.length === 2 && 'food-gallery-two']}>
+          {galleryImages.map((src, index) => (
+            <button
+              type="button"
+              class:list={[
+                'food-gallery-item',
+                index === 0 && galleryImages.length >= 3 && 'food-gallery-featured',
+              ]}
+              data-food-image={src}
+              data-food-alt={`${title} — image ${index + 1}`}
+              aria-label={`Open image ${index + 1}`}
+            >
+              <img
+                src={src}
+                alt={`${title} — image ${index + 1}`}
+                loading={index < 2 ? 'eager' : 'lazy'}
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {relatedFood.length > 0 && (
+    <section class="related-food-section">
+      <div class="related-food-wrap">
+        <div class="food-section-heading dark-copy">
+          <p class="section-kicker">Continue Tasting</p>
+          <h2>Related food & hospitality</h2>
+          <p>
+            Explore foods, produce, drinks, and market traditions that connect
+            through region or cultural pairing.
+          </p>
+        </div>
+
+        <div class="related-food-grid">
+          {relatedFood.map((candidate) => {
+            const candidateData = candidate.data as any;
+
+            return (
+              <a class="related-food-card" href={foodHref(candidate)}>
+                <div class="related-food-image">
+                  <img src={foodImage(candidate)} alt={candidateData.title} loading="lazy" />
+                </div>
+
+                <div class="related-food-copy">
+                  <p>
+                    {candidateData.category ||
+                      categoryLabels[(candidate.slug || candidate.id).split('/')[0]] ||
+                      'Food & Culture'}
+                  </p>
+
+                  <h3>{candidateData.title}</h3>
+                  {candidateData.card_description && <span>{candidateData.card_description}</span>}
+                  <strong>Explore →</strong>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {relatedTours.length > 0 ? (
+    <TourCardGrid
+      tours={relatedTours}
+      title={`Journeys connected to ${title}`}
+      intro={`These published AfghanTours journeys either reference this food or cultural experience directly or include it through their itinerary planning.`}
+    />
+  ) : (
+    <section class="food-custom-tour-section">
+      <div class="food-custom-tour-card">
+        <div>
+          <p class="section-kicker">Custom Planning</p>
+          <h2>Want to experience {title}?</h2>
+          <p>
+            We can build food, markets, tea stops, orchards, restaurants, and regional
+            specialties into a private itinerary when they fit naturally into your route.
+          </p>
+        </div>
+
+        <a href={contactHref}>Request a custom journey</a>
+      </div>
+    </section>
+  )}
+
+  <section class="food-final-cta">
+    <div class="food-final-inner">
+      <div>
+        <p class="section-kicker">Food Is Part of the Route</p>
+        <h2>Travel through Afghanistan's hospitality.</h2>
+        <p>
+          Tell us what you want to taste, understand, photograph, or experience.
+          We can connect food culture with the places and people already on your journey.
+        </p>
+      </div>
+
+      <a href={contactHref}>Start planning</a>
+    </div>
+  </section>
+
+  <dialog id="food-gallery-dialog" class="food-dialog">
+    <button type="button" class="food-dialog-close" aria-label="Close image">×</button>
+    <img id="food-gallery-dialog-image" src={heroImage} alt="" />
+  </dialog>
+</BaseLayout>
+
+<script is:inline>
+  (() => {
+    const dialog = document.getElementById('food-gallery-dialog');
+    const image = document.getElementById('food-gallery-dialog-image');
+
+    if (!dialog || !image) return;
+
+    document.querySelectorAll('[data-food-image]').forEach((button) => {
+      button.addEventListener('click', () => {
+        image.src = button.dataset.foodImage;
+        image.alt = button.dataset.foodAlt || '';
+        dialog.showModal();
+      });
+    });
+
+    dialog.querySelector('.food-dialog-close')?.addEventListener('click', () => dialog.close());
+
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  })();
+</script>
+
+<style>
+  .food-detail-hero {
+    position: relative;
+    min-height: clamp(540px, 68vh, 760px);
+    overflow: hidden;
+    background: #101820;
+    color: #fff;
+  }
+
+  .food-detail-hero-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .food-detail-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(7,11,14,.92) 0%, rgba(7,11,14,.70) 43%, rgba(7,11,14,.18) 77%),
+      linear-gradient(0deg, rgba(7,11,14,.82) 0%, transparent 62%);
+  }
+
+  .food-detail-hero-inner {
+    position: relative;
+    z-index: 2;
+    width: min(1280px, calc(100% - 2rem));
+    min-height: clamp(540px, 68vh, 760px);
+    margin: auto;
+    padding: clamp(2rem, 5vw, 4rem) 0 clamp(4rem, 8vw, 6rem);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .food-breadcrumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .55rem;
+    font-size: .77rem;
+    font-weight: 800;
+  }
+
+  .food-breadcrumbs a {
+    color: rgba(255,255,255,.82);
+    text-decoration: none;
+  }
+
+  .food-breadcrumbs a:hover { color: #efc266; }
+  .food-breadcrumbs span { color: rgba(255,255,255,.38); }
+
+  .food-detail-hero-copy {
+    max-width: 940px;
+    margin-top: auto;
+  }
+
+  .food-kicker,
+  .section-kicker {
+    margin: 0;
+    color: #d7a542;
+    font-size: .71rem;
+    font-weight: 900;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+
+  .food-kicker { color: #f0c46a; }
+
+  .food-detail-hero h1 {
+    max-width: 1000px;
+    margin: .65rem 0 1rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.1rem, 7vw, 6.7rem);
+    line-height: .91;
+    letter-spacing: -.06em;
+    text-wrap: balance;
+    text-shadow: 0 8px 35px rgba(0,0,0,.35);
+  }
+
+  .food-hero-subtitle {
+    max-width: 740px;
+    margin: 0;
+    color: rgba(255,255,255,.87);
+    font-size: clamp(1.05rem, 1.7vw, 1.28rem);
+    line-height: 1.62;
+  }
+
+  .food-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .8rem;
+    margin-top: 1.8rem;
+  }
+
+  .food-hero-actions a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: .95rem 1.35rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: .86rem;
+    font-weight: 900;
+    transition: transform .2s ease, background .2s ease;
+  }
+
+  .food-hero-actions a:hover { transform: translateY(-2px); }
+
+  .food-hero-primary {
+    background: #d7a542;
+    color: #101820;
+  }
+
+  .food-hero-secondary {
+    border: 1px solid rgba(255,255,255,.35);
+    background: rgba(7,11,14,.28);
+    color: #fff;
+  }
+
+  .food-facts-shell {
+    position: relative;
+    z-index: 4;
+    background: #fbf6ed;
+  }
+
+  .food-facts {
+    width: min(1120px, calc(100% - 2rem));
+    margin: auto;
+    transform: translateY(-2rem);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    overflow: hidden;
+    border: 1px solid rgba(16,24,32,.08);
+    border-radius: 1.4rem;
+    background: #fff;
+    box-shadow: 0 18px 50px rgba(20,15,8,.12);
+  }
+
+  .food-fact {
+    padding: 1.2rem 1.15rem;
+    border-right: 1px solid rgba(16,24,32,.08);
+  }
+
+  .food-fact:last-child { border-right: 0; }
+
+  .food-fact span {
+    display: block;
+    color: #777064;
+    font-size: .64rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+
+  .food-fact strong {
+    display: block;
+    margin-top: .4rem;
+    color: #101820;
+    font-size: .9rem;
+    line-height: 1.4;
+  }
+
+  .food-story-section {
+    padding: clamp(2rem, 4vw, 4rem) 0 clamp(5rem, 8vw, 8rem);
+    background: #fbf6ed;
+    color: #101820;
+  }
+
+  .food-story-layout {
+    width: min(1180px, calc(100% - 2rem));
+    margin: auto;
+    display: grid;
+    grid-template-columns: minmax(0,1fr) 360px;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+
+  .food-story { min-width: 0; }
+
+  .food-story > h2,
+  .food-planning-card h2,
+  .food-section-heading h2,
+  .food-custom-tour-card h2,
+  .food-final-inner h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    letter-spacing: -.05em;
+  }
+
+  .food-story > h2 {
+    margin: .5rem 0 1.2rem;
+    font-size: clamp(2.7rem, 5vw, 4.6rem);
+    line-height: .96;
+  }
+
+  .food-story-lead {
+    margin: 0 0 2.1rem;
+    color: #3e4549;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    line-height: 1.56;
+  }
+
+  .food-prose {
+    color: #333b40;
+    font-size: 1.04rem;
+    line-height: 1.82;
+  }
+
+  .food-prose :global(h2),
+  .food-prose :global(h3) {
+    margin: 2.8rem 0 .85rem;
+    color: #101820;
+    font-family: Georgia, "Times New Roman", serif;
+    line-height: 1.06;
+    letter-spacing: -.035em;
+  }
+
+  .food-prose :global(h2) { font-size: clamp(2rem, 3vw, 2.8rem); }
+  .food-prose :global(h3) { font-size: clamp(1.55rem, 2.4vw, 2.1rem); }
+  .food-prose :global(p) { margin: 0 0 1.35rem; }
+  .food-prose :global(li) { margin-bottom: .55rem; }
+
+  .food-planning-column {
+    position: sticky;
+    top: 6rem;
+  }
+
+  .food-planning-card {
+    padding: clamp(1.45rem, 2.5vw, 2rem);
+    border: 1px solid rgba(16,24,32,.09);
+    border-radius: 1.5rem;
+    background: #fff;
+    box-shadow: 0 18px 46px rgba(20,15,8,.09);
+  }
+
+  .food-planning-card h2 {
+    margin: .5rem 0 .9rem;
+    font-size: clamp(1.8rem, 2.5vw, 2.35rem);
+    line-height: 1;
+  }
+
+  .food-planning-card > p:not(.section-kicker) {
+    color: #596168;
+    line-height: 1.68;
+  }
+
+  .food-planning-details {
+    display: grid;
+    gap: .85rem;
+    margin: 1.45rem 0;
+  }
+
+  .food-planning-details div {
+    padding-top: .8rem;
+    border-top: 1px solid rgba(16,24,32,.08);
+  }
+
+  .food-planning-details span {
+    display: block;
+    color: #777064;
+    font-size: .64rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .11em;
+  }
+
+  .food-planning-details strong {
+    display: block;
+    margin-top: .25rem;
+    font-size: .91rem;
+    line-height: 1.45;
+  }
+
+  .food-planning-primary,
+  .food-planning-secondary {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: .9rem 1rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: .84rem;
+    font-weight: 900;
+  }
+
+  .food-planning-primary {
+    background: #d7a542;
+    color: #101820;
+  }
+
+  .food-planning-secondary {
+    margin-top: .65rem;
+    border: 1px solid rgba(16,24,32,.14);
+    color: #101820;
+  }
+
+  .food-gallery-section {
+    padding: clamp(4rem, 7vw, 7rem) 0;
+    background: #101820;
+    color: #fff;
+  }
+
+  .food-gallery-wrap,
+  .related-food-wrap {
+    width: min(1280px, calc(100% - 2rem));
+    margin: auto;
+  }
+
+  .food-section-heading {
+    max-width: 780px;
+    margin-bottom: 2rem;
+  }
+
+  .food-section-heading h2 {
+    margin: .5rem 0 .75rem;
+    font-size: clamp(2.6rem, 5vw, 4.6rem);
+    line-height: .96;
+  }
+
+  .food-section-heading > p:last-child {
+    color: rgba(255,255,255,.66);
+    line-height: 1.7;
+  }
+
+  .food-gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    grid-auto-rows: 250px;
+    gap: .8rem;
+  }
+
+  .food-gallery-two {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    grid-auto-rows: 420px;
+  }
+
+  .food-gallery-item {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 1rem;
+    background: #222;
+    cursor: zoom-in;
+  }
+
+  .food-gallery-featured {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .food-gallery-item img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .45s ease;
+  }
+
+  .food-gallery-item:hover img { transform: scale(1.025); }
+
+  .related-food-section {
+    padding: clamp(4rem, 7vw, 7rem) 0;
+    background: #efe1cd;
+    color: #101820;
+  }
+
+  .dark-copy > p:last-child { color: #62676a; }
+
+  .related-food-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 1rem;
+  }
+
+  .related-food-card {
+    display: block;
+    overflow: hidden;
+    border: 1px solid rgba(16,24,32,.08);
+    border-radius: 1.3rem;
+    background: #fff;
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 14px 34px rgba(20,15,8,.07);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+
+  .related-food-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 45px rgba(20,15,8,.12);
+  }
+
+  .related-food-image {
+    height: 225px;
+    overflow: hidden;
+  }
+
+  .related-food-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .45s ease;
+  }
+
+  .related-food-card:hover img { transform: scale(1.035); }
+
+  .related-food-copy { padding: 1.25rem; }
+
+  .related-food-copy > p {
+    margin: 0;
+    color: #a4650d;
+    font-size: .67rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .related-food-copy h3 {
+    margin: .45rem 0 .8rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.65rem;
+    line-height: 1.05;
+    letter-spacing: -.035em;
+  }
+
+  .related-food-copy > span {
+    display: -webkit-box;
+    color: #596168;
+    font-size: .89rem;
+    line-height: 1.55;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .related-food-copy strong {
+    display: block;
+    margin-top: 1rem;
+    color: #a4650d;
+    font-size: .83rem;
+  }
+
+  .food-custom-tour-section {
+    padding: clamp(4rem, 7vw, 7rem) 0;
+    background: #fff;
+  }
+
+  .food-custom-tour-card {
+    width: min(1180px, calc(100% - 2rem));
+    margin: auto;
+    padding: clamp(1.7rem, 4vw, 3rem);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    border-radius: 1.5rem;
+    background: #fbf6ed;
+  }
+
+  .food-custom-tour-card > div { max-width: 720px; }
+
+  .food-custom-tour-card h2 {
+    margin: .5rem 0 .8rem;
+    font-size: clamp(2.2rem, 4vw, 3.6rem);
+    line-height: .98;
+  }
+
+  .food-custom-tour-card p:not(.section-kicker) {
+    color: #596168;
+    line-height: 1.7;
+  }
+
+  .food-custom-tour-card > a {
+    flex: 0 0 auto;
+    padding: .95rem 1.3rem;
+    border-radius: 999px;
+    background: #101820;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 900;
+  }
+
+  .food-final-cta {
+    padding: clamp(4rem, 7vw, 7rem) 0;
+    background: #0b141b;
+    color: #fff;
+  }
+
+  .food-final-inner {
+    width: min(1180px, calc(100% - 2rem));
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .food-final-inner > div { max-width: 760px; }
+
+  .food-final-inner h2 {
+    margin: .5rem 0 1rem;
+    font-size: clamp(2.7rem, 5vw, 4.8rem);
+    line-height: .95;
+  }
+
+  .food-final-inner p:not(.section-kicker) {
+    color: rgba(255,255,255,.68);
+    line-height: 1.7;
+  }
+
+  .food-final-inner > a {
+    flex: 0 0 auto;
+    padding: 1rem 1.5rem;
+    border-radius: 999px;
+    background: #d7a542;
+    color: #101820;
+    text-decoration: none;
+    font-weight: 900;
+  }
+
+  .food-dialog {
+    width: min(1180px, calc(100% - 2rem));
+    max-width: none;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 1.2rem;
+    background: #05090c;
+    box-shadow: 0 40px 100px rgba(0,0,0,.6);
+  }
+
+  .food-dialog::backdrop {
+    background: rgba(0,0,0,.82);
+    backdrop-filter: blur(5px);
+  }
+
+  .food-dialog img {
+    display: block;
+    width: 100%;
+    max-height: 86vh;
+    object-fit: contain;
+  }
+
+  .food-dialog-close {
+    position: absolute;
+    z-index: 5;
+    top: .8rem;
+    right: .8rem;
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(0,0,0,.68);
+    color: #fff;
+    font-size: 1.7rem;
+    cursor: pointer;
+  }
+
+  @media (max-width: 1020px) {
+    .food-story-layout { grid-template-columns: 1fr; }
+    .food-planning-column { position: static; }
+    .related-food-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  }
+
+  @media (max-width: 760px) {
+    .food-detail-hero,
+    .food-detail-hero-inner { min-height: 610px; }
+
+    .food-detail-hero-overlay {
+      background:
+        linear-gradient(
+          0deg,
+          rgba(7,11,14,.94) 0%,
+          rgba(7,11,14,.62) 68%,
+          rgba(7,11,14,.25) 100%
+        );
+    }
+
+    .food-detail-hero h1 { font-size: clamp(3rem, 14vw, 5rem); }
+
+    .food-facts { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .food-fact:nth-child(2) { border-right: 0; }
+    .food-fact:nth-child(-n+2) { border-bottom: 1px solid rgba(16,24,32,.08); }
+
+    .food-gallery-grid,
+    .food-gallery-two {
+      grid-template-columns: 1fr;
+      grid-auto-rows: 280px;
+    }
+
+    .food-gallery-featured {
+      grid-column: auto;
+      grid-row: auto;
+    }
+
+    .food-custom-tour-card,
+    .food-final-inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .food-custom-tour-card > a,
+    .food-final-inner > a {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .related-food-grid { grid-template-columns: 1fr; }
+    .food-facts { grid-template-columns: 1fr; }
+
+    .food-fact,
+    .food-fact:nth-child(2) {
+      border-right: 0;
+      border-bottom: 1px solid rgba(16,24,32,.08);
+    }
+
+    .food-fact:last-child { border-bottom: 0; }
+  }
+</style>

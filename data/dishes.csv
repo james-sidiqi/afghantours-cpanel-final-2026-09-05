@@ -1,0 +1,31 @@
+dish_code,name,slug,region_code,province_code,destination_code,category,meal_type,is_produce,season_start,season_end,desc_short,image_path,is_active
+AF-KBL-PUL,Qabuli Palaw,kabuli-palaw,CENTRAL,KBL,KBLC,Main,Dinner,0,1,12,Afghanistan's national rice dish with lamb carrots and raisins.,/assets/images/food/dishes/kabuli-palaw/hero.webp,TRUE
+AF-KBL-MAN,Mantu,mantu,CENTRAL,KBL,KBLC,Main,Lunch,0,1,12,Steamed dumplings filled with meat and topped with yogurt and lentils.,/assets/images/food/dishes/mantu/hero.webp,TRUE
+AF-KBL-ASH,Ashak,ashak,CENTRAL,KBL,KBLC,Main,Lunch,0,1,12,Dumplings filled with leeks and topped with yogurt and meat sauce.,/assets/images/food/dishes/aushak/hero.webp,TRUE
+AF-KBL-BOL,Bolani,bolani,CENTRAL,KBL,KBLC,Street Food,Snack,0,1,12,Stuffed flatbread filled with potato pumpkin or leeks.,/assets/images/food/dishes/bolani/hero.webp,TRUE
+AF-NGH-CHK,Chapli Kabob,chapli-kabob,EAST,NGH,JBDC,Main,Lunch,0,1,12,Famous eastern Afghan chapli kabob traditionally enjoyed in Jalalabad including at Adam Khan Restaurant.,/assets/images/food/dishes/chapli-kabob/hero.webp,TRUE
+AF-KBL-SHO,Shola,shola,CENTRAL,KBL,KBLC,Main,Dinner,0,1,12,Traditional rice and lentil dish slow cooked with spices.,/assets/images/placeholders/default-food.webp,TRUE
+AF-KBL-QGS,Qorma-e Gosht,qorma-e-gosht,CENTRAL,KBL,KBLC,Main,Dinner,0,1,12,Traditional Afghan meat stew served with rice.,/assets/images/placeholders/default-food.webp,TRUE
+AF-KBL-QSB,Qorma-e Sabzi,qorma-e-sabzi,CENTRAL,KBL,KBLC,Main,Dinner,0,1,12,Spinach and herb stew served with rice.,/assets/images/placeholders/default-food.webp,TRUE
+AF-KBL-KEB,Seekh Kabob,seekh-kabob,CENTRAL,KBL,KBLC,Main,Dinner,0,1,12,Charcoal grilled skewers of seasoned meat.,/assets/images/food/dishes/kabob/hero.webp,TRUE
+AF-KBL-LAN,Landi,landi,CENTRAL,KBL,KBLC,Traditional,Dinner,0,11,2,Traditional dried meat prepared during winter.,/assets/images/placeholders/default-food.webp,TRUE
+AF-KBL-FIR,Firni,firni-pudding,CENTRAL,KBL,KBLC,Dessert,Dessert,0,1,12,Creamy milk pudding flavored with cardamom.,/assets/images/food/dishes/firni/hero.webp,TRUE
+AF-KDR-SPR,Sheer Pira,sheer-pira,SOUTH,KDR,KDRC,Dessert,Dessert,0,1,12,Milk fudge flavored with cardamom.,/assets/images/food/dishes/sheer-pira/hero.webp,TRUE
+AF-HER-GEF,Gosh e Fil,gosh-e-fil,WEST,HER,HERC,Dessert,Dessert,0,1,12,Fried elephant ear pastry served with sugar.,/assets/images/food/dishes/gosh-e-fil/hero.webp,TRUE
+AF-HER-CHA,Saffron Tea,saffron-tea,WEST,HER,HERC,Beverage,Tea,0,1,12,Tea infused with Herat saffron strands.,/assets/images/food/drinks/saffron-tea/hero.webp,TRUE
+AF-KBL-CHA,Green Tea,green-tea,CENTRAL,KBL,KBLC,Beverage,Tea,0,1,12,Traditional Afghan green tea served throughout the country.,/assets/images/food/drinks/green-tea/hero.webp,TRUE
+AF-KBL-DOG,Dogh,dogh,CENTRAL,KBL,KBLC,Beverage,Drink,0,1,12,Cooling yogurt drink often served with meals.,/assets/images/food/drinks/doogh/hero.webp,TRUE
+AF-BMY-POT,Bamyan Potatoes,bamyan-potatoes,CENTRAL,BMY,BMYC,Produce,Ingredient,1,9,11,Buttery potatoes grown in Bamyan valley.,/assets/images/food/dishes/bamyan-potatoes/hero.webp,TRUE
+AF-KDR-POM,Kandahar Pomegranate,kandahar-pomegranate,SOUTH,KDR,KDRC,Produce,Snack,1,9,11,Ruby red pomegranates famous across Afghanistan.,/assets/images/food/produce/kandahar-pomegranate/hero.webp,TRUE
+AF-HER-SAF,Herat Saffron,herat-saffron,WEST,HER,HERC,Produce,Ingredient,1,10,11,Premium saffron grown near Herat.,/assets/images/food/dried-fruit/herat-saffron/hero.webp,TRUE
+AF-BAL-MEL,Balkh Melon,balkh-melon,NORTH,BAL,MAZC,Produce,Snack,1,8,10,Sweet melon grown in Balkh province.,/assets/images/food/produce/balkh-melons/hero.webp,TRUE
+AF-KDZ-MEL,Kunduz Melon,kunduz-melon,NORTH,KDZ,MAZC,Produce,Snack,1,7,9,Northern summer melon with floral aroma.,/assets/images/food/produce/kunduz-melon/hero.webp,TRUE
+AF-PJR-WAL,Panjshir Walnuts,panjshir-walnuts,CENTRAL,PJR,KBLC,Produce,Snack,1,9,10,Fresh walnuts harvested in Panjshir valley.,/assets/images/food/dried-fruit/panjshir-walnuts/hero.webp,TRUE
+AF-FRH-WAT,Farah Watermelon,farah-watermelon,WEST,FRH,HERC,Produce,Snack,1,5,8,Large red watermelon grown in Farah.,/assets/images/food/produce/farah-watermellons/hero.webp,TRUE
+AF-SAM-PIS,Samangan Pistachios,samangan-pistachios,NORTH,SAM,MAZC,Produce,Snack,1,8,10,Famous wild pistachios from Samangan.,/assets/images/food/dried-fruit/samangan-pistachios/hero.webp,TRUE
+AF-HER-RAI,Herat Raisins,herat-raisins,WEST,HER,HERC,Produce,Snack,1,8,10,Sun dried raisins from Herat vineyards.,/assets/images/food/dried-fruit/herat-raisins/hero.webp,TRUE
+AF-BAL-ALM,Balkh Almonds,balkh-almonds,NORTH,BAL,MAZC,Produce,Snack,1,8,10,Crunchy almonds grown in Balkh province.,/assets/images/food/dried-fruit/balkh-almonds/hero.webp,TRUE
+AF-WRD-APP,Wardak Apples,wardak-apples,CENTRAL,WRD,KBLC,Produce,Snack,1,8,10,Famous mountain apples from Wardak province.,/assets/images/food/produce/wardak-apples/hero.webp,TRUE
+AF-DYK-ALM,Daykundi Almonds,daykundi-almonds,CENTRAL,DYK,BMYC,Produce,Snack,1,8,10,Premium almonds grown in the highlands of Daykundi.,/assets/images/placeholders/default-food.webp,TRUE
+AF-BDK-MUL,Badakhshan Mulberries,badakhshan-mulberries,NORTH,BDK,FAIC,Produce,Snack,1,7,9,Sweet mulberries harvested from mountain valleys.,/assets/images/placeholders/default-food.webp,TRUE
+AF-KDR-GRP,Kandahar Grapes,kandahar-grapes,SOUTH,KDR,KDRC,Produce,Snack,1,8,10,Renowned table grapes from Kandahar vineyards.,/assets/images/placeholders/default-food.webp,TRUE

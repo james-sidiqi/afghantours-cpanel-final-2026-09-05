@@ -1,0 +1,91 @@
+from_location_code,to_attraction_code,route_type,requires_expedition,road_condition,confidence,overnight_type,province_code,notes,is_active
+BMYC,DYK-001,expedition,1,rough,low,non_hub,DYK,Manual review recommended for expedition-style routing. Typical planning assumption indicates overnight or field logistics may occur outside hub/secondary-city network.,1
+FAIC,BDK-001,expedition,1,rough,low,non_hub,BDK,nan Typical planning assumption indicates overnight or field logistics may occur outside hub/secondary-city network.,1
+FAIC,BDK-002,expedition,1,rough,low,non_hub,BDK,Manual review recommended for expedition-style routing. Typical planning assumption indicates overnight or field logistics may occur outside hub/secondary-city network.,1
+FAIC,BDK-003,expedition,1,rough,low,non_hub,BDK,Manual review recommended for expedition-style routing. Typical planning assumption indicates overnight or field logistics may occur outside hub/secondary-city network.,1
+HERC,GHO-001,expedition,1,rough,low,non_hub,GHO,Manual review recommended for expedition-style routing. Typical planning assumption indicates overnight or field logistics may occur outside hub/secondary-city network.,1
+HERC,GHO-002,expedition,1,rough,low,non_hub,GHO,Manual review recommended for expedition-style routing. Typical planning assumption indicates overnight or field logistics may occur outside hub/secondary-city network.,1
+HERC,NIM-001,expedition,1,rough,low,non_hub,NIM,Manual review recommended for expedition-style routing. Typical planning assumption indicates overnight or field logistics may occur outside hub/secondary-city network.,1
+HERC,NIM-002,expedition,1,rough,low,non_hub,NIM,Manual review recommended for expedition-style routing. Typical planning assumption indicates overnight or field logistics may occur outside hub/secondary-city network.,1
+HERC,NIM-003,expedition,1,rough,low,non_hub,NIM,Manual review recommended for expedition-style routing. Typical planning assumption indicates overnight or field logistics may occur outside hub/secondary-city network.,1
+JBDC,NRS-001,expedition,1,rough,low,non_hub,NRS,Manual review recommended for expedition-style routing. Typical planning assumption indicates overnight or field logistics may occur outside hub/secondary-city network.,1
+JBDC,NRS-002,expedition,1,rough,low,non_hub,NRS,Manual review recommended for expedition-style routing. Typical planning assumption indicates overnight or field logistics may occur outside hub/secondary-city network.,1
+JBDC,NRS-003,expedition,1,rough,low,non_hub,NRS,Manual review recommended for expedition-style routing. Typical planning assumption indicates overnight or field logistics may occur outside hub/secondary-city network.,1
+KBLC,PJR-002,expedition,1,rough,low,non_hub,PJR,Manual review recommended for expedition-style routing. Typical planning assumption indicates overnight or field logistics may occur outside hub/secondary-city network.,1
+KDRC,URZ-001,expedition,1,rough,low,non_hub,URZ,Manual review recommended for expedition-style routing. Typical planning assumption indicates overnight or field logistics may occur outside hub/secondary-city network.,1
+MAZC,FRY-001,expedition,1,rough,low,non_hub,FRY,Manual review recommended for expedition-style routing. Typical planning assumption indicates overnight or field logistics may occur outside hub/secondary-city network.,1
+MAZC,SEP-001,expedition,1,rough,low,non_hub,SEP,Manual review recommended for expedition-style routing. Typical planning assumption indicates overnight or field logistics may occur outside hub/secondary-city network.,1
+BMYC,BMY-001,standard,0,paved,high,hub,BMY,,1
+BMYC,BMY-002,standard,0,paved,high,hub,BMY,,1
+BMYC,BMY-003,standard,0,paved,high,hub,BMY,,1
+BMYC,BMY-004,standard,0,mixed,medium,hub,BMY,,1
+BMYC,BMY-005,standard,0,mixed,medium,hub,BMY,,1
+BMYC,BMY-006,standard,0,paved,high,hub,BMY,,1
+BMYC,BMY-007,standard,0,paved,high,hub,BMY,,1
+FAIC,TKH-001,adventure,0,rough,medium,hub,TKH,Access routed from nearest active operational base in current locations dataset. Remote access daytrip from hub assumed; review if user requests deeper field overnights.,1
+GHZC,GHZ-001,standard,0,paved,high,hub,GHZ,,1
+GHZC,GHZ-002,standard,0,paved,high,hub,GHZ,,1
+GHZC,GHZ-003,standard,0,paved,high,hub,GHZ,,1
+GHZC,GHZ-004,standard,0,paved,high,hub,GHZ,,1
+GHZC,GHZ-005,standard,0,paved,high,hub,GHZ,,1
+HERC,BDG-001,adventure,0,rough,medium,hub,BDG,Access routed from nearest active operational base in current locations dataset. Remote access daytrip from hub assumed; review if user requests deeper field overnights.,1
+HERC,FRH-001,adventure,0,rough,medium,hub,FRH,Access routed from nearest active operational base in current locations dataset. Remote access daytrip from hub assumed; review if user requests deeper field overnights.,1
+HERC,HER-001,standard,0,mixed,medium,hub,HER,,1
+HERC,HER-002,standard,0,paved,high,hub,HER,,1
+HERC,HER-003,standard,0,paved,high,hub,HER,,1
+HERC,HER-004,standard,0,paved,high,hub,HER,,1
+JBDC,KHT-001,standard,0,mixed,medium,hub,KHT,Access routed from nearest active operational base in current locations dataset.,1
+JBDC,KNR-001,standard,0,mixed,medium,hub,KNR,Access routed from nearest active operational base in current locations dataset.,1
+JBDC,LGM-001,standard,0,mixed,medium,hub,LGM,Access routed from nearest active operational base in current locations dataset.,1
+JBDC,NGH-001,standard,0,paved,high,hub,NGH,,1
+JBDC,NGH-002,standard,0,paved,high,hub,NGH,,1
+JBDC,NGH-003,standard,0,paved,high,hub,NGH,,1
+JBDC,NGH-004,standard,0,mixed,medium,hub,NGH,,1
+KBLC,BAG-001,adventure,0,rough,medium,hub,BAG,Access routed from nearest active operational base in current locations dataset. Remote access daytrip from hub assumed; review if user requests deeper field overnights.,1
+KBLC,KBL-001,standard,0,paved,high,hub,KBL,,1
+KBLC,KBL-002,standard,0,paved,high,hub,KBL,,1
+KBLC,KBL-003,standard,0,paved,high,hub,KBL,,1
+KBLC,KBL-004,standard,0,paved,high,hub,KBL,,1
+KBLC,KBL-005,standard,0,paved,high,hub,KBL,,1
+KBLC,KBL-006,standard,0,paved,high,hub,KBL,,1
+KBLC,KBL-007,standard,0,paved,high,hub,KBL,,1
+KBLC,KBL-008,standard,0,mixed,medium,hub,KBL,,1
+KBLC,KBL-009,standard,0,paved,high,hub,KBL,,1
+KBLC,KBL-010,standard,0,paved,high,hub,KBL,,1
+KBLC,KBL-011,standard,0,paved,high,hub,KBL,,1
+KBLC,KBL-012,standard,0,paved,high,hub,KBL,,1
+KBLC,KBL-013,standard,0,paved,high,hub,KBL,,1
+KBLC,KBL-014,standard,0,paved,high,hub,KBL,,1
+KBLC,KBL-015,standard,0,paved,high,hub,KBL,,1
+KBLC,KBL-016,standard,0,paved,high,hub,KBL,,1
+KBLC,KBL-017,standard,0,paved,high,hub,KBL,,1
+KBLC,KBL-018,standard,0,mixed,medium,hub,KBL,,1
+KBLC,KPS-001,standard,0,mixed,medium,hub,KPS,Access routed from nearest active operational base in current locations dataset.,1
+KBLC,LGR-001,standard,0,mixed,medium,hub,LGR,Access routed from nearest active operational base in current locations dataset.,1
+KBLC,PJR-001,standard,0,mixed,medium,hub,PJR,Access routed from nearest active operational base in current locations dataset.,1
+KBLC,PRW-001,standard,0,mixed,medium,hub,PRW,Access routed from nearest active operational base in current locations dataset.,1
+KBLC,PRW-002,standard,0,mixed,medium,hub,PRW,Access routed from nearest active operational base in current locations dataset.,1
+KBLC,PTA-001,standard,0,mixed,medium,hub,PTA,Access routed from nearest active operational base in current locations dataset.,1
+KBLC,PTK-001,standard,0,mixed,medium,hub,PTK,Access routed from nearest active operational base in current locations dataset.,1
+KBLC,WRD-001,standard,0,mixed,medium,hub,WRD,Access routed from nearest active operational base in current locations dataset.,1
+KDRC,HLM-001,adventure,0,mixed,medium,hub,HLM,Access routed from nearest active operational base in current locations dataset. Remote access daytrip from hub assumed; review if user requests deeper field overnights.,1
+KDRC,HLM-002,adventure,0,mixed,medium,hub,HLM,Access routed from nearest active operational base in current locations dataset. Remote access daytrip from hub assumed; review if user requests deeper field overnights.,1
+KDRC,KDR-001,standard,0,paved,high,hub,KDR,,1
+KDRC,KDR-002,standard,0,paved,high,hub,KDR,,1
+KDRC,KDR-003,standard,0,paved,high,hub,KDR,,1
+KDRC,KDR-004,standard,0,paved,high,hub,KDR,,1
+KDRC,KDR-005,standard,0,paved,high,hub,KDR,,1
+KDRC,KDR-006,standard,0,paved,high,hub,KDR,,1
+KDRC,ZBL-001,adventure,0,rough,medium,hub,ZBL,Access routed from nearest active operational base in current locations dataset. Remote access daytrip from hub assumed; review if user requests deeper field overnights.,1
+MAZC,BAL-001,standard,0,paved,high,hub,BAL,,1
+MAZC,BAL-002,standard,0,mixed,medium,hub,BAL,,1
+MAZC,BAL-003,standard,0,paved,high,hub,BAL,,1
+MAZC,BAL-004,standard,0,paved,high,hub,BAL,,1
+MAZC,BAL-005,standard,0,paved,high,hub,BAL,,1
+MAZC,BAL-006,standard,0,paved,high,hub,BAL,,1
+MAZC,JOW-001,standard,0,mixed,medium,hub,JOW,Access routed from nearest active operational base in current locations dataset.,1
+MAZC,KDZ-001,standard,0,mixed,medium,hub,KDZ,Access routed from nearest active operational base in current locations dataset.,1
+MAZC,SAM-001,standard,0,mixed,medium,hub,SAM,Access routed from nearest active operational base in current locations dataset.,1
+MAZC,SAM-002,standard,0,mixed,medium,hub,SAM,Access routed from nearest active operational base in current locations dataset.,1
+KBLC,KBL-019,standard,0,paved,medium,hub,KBL,Generated to complete route classification coverage. Verify before publication.,1
+GHZC,GHZ-006,standard,0,paved,medium,hub,GHZ,Generated after resolving duplicate GHZ-005; verify before publication.,1

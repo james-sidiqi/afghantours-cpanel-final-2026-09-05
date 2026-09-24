@@ -1,0 +1,252 @@
+<div class="tour-inquiry-modal" data-tour-inquiry-modal hidden>
+  <button class="tour-inquiry-modal__backdrop" type="button" data-tour-inquiry-close aria-label="Close inquiry form"></button>
+
+  <section class="tour-inquiry-modal__panel" role="dialog" aria-modal="true" aria-labelledby="tour-inquiry-title">
+    <button class="tour-inquiry-modal__close" type="button" data-tour-inquiry-close aria-label="Close inquiry form">×</button>
+
+    <div class="tour-inquiry-modal__heading">
+      <p>Tour inquiry</p>
+      <h2 id="tour-inquiry-title">Plan this journey</h2>
+      <span>Tell us your dates and group details. The tour you selected is already filled in.</span>
+    </div>
+
+    <form class="tour-inquiry-form" data-tour-inquiry-form action="/tour-inquiry.php" method="post">
+      <input type="hidden" name="tour_slug" data-inquiry-tour-slug />
+      <input type="hidden" name="tour_url" data-inquiry-tour-url />
+      <input type="hidden" name="source_url" data-inquiry-source-url />
+      <input class="tour-inquiry-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+      <label class="tour-inquiry-form__full">
+        Tour
+        <input name="tour" data-inquiry-tour readonly />
+      </label>
+
+      <div class="tour-inquiry-form__grid">
+        <label>
+          Name
+          <input name="name" autocomplete="name" required />
+        </label>
+        <label>
+          Country
+          <input name="country" autocomplete="country-name" />
+        </label>
+      </div>
+
+      <div class="tour-inquiry-form__grid">
+        <label>
+          Email
+          <input type="email" name="email" autocomplete="email" />
+        </label>
+        <label>
+          WhatsApp
+          <input name="whatsapp" autocomplete="tel" placeholder="Include country code" />
+        </label>
+      </div>
+
+      <div class="tour-inquiry-form__grid">
+        <label>
+          Preferred travel dates
+          <input name="travel_dates" data-inquiry-date placeholder="Exact dates, month, or season" />
+        </label>
+        <label>
+          Number of travelers
+          <input name="travelers" data-inquiry-travelers inputmode="numeric" placeholder="e.g. 2" />
+        </label>
+      </div>
+
+      <label class="tour-inquiry-form__full">
+        What should we know?
+        <textarea name="message" rows="5" placeholder="Interests, pace, hotel preferences, mobility needs, photography, private group requirements, or anything else that will help us plan."></textarea>
+      </label>
+
+      <div class="tour-inquiry-form__note">
+        Please provide either an email address or WhatsApp number so our Kabul team can reply.
+      </div>
+
+      <div class="tour-inquiry-form__status" data-inquiry-status aria-live="polite"></div>
+
+      <div class="tour-inquiry-form__actions">
+        <button class="tour-inquiry-submit" type="submit">Send tour inquiry</button>
+        <button class="tour-inquiry-cancel" type="button" data-tour-inquiry-close>Cancel</button>
+      </div>
+    </form>
+  </section>
+</div>
+
+<script is:inline>
+  (() => {
+    const modal = document.querySelector('[data-tour-inquiry-modal]');
+    const form = modal?.querySelector('[data-tour-inquiry-form]');
+    if (!modal || !form) return;
+
+    const tourInput = form.querySelector('[data-inquiry-tour]');
+    const slugInput = form.querySelector('[data-inquiry-tour-slug]');
+    const tourUrlInput = form.querySelector('[data-inquiry-tour-url]');
+    const sourceUrlInput = form.querySelector('[data-inquiry-source-url]');
+    const dateInput = form.querySelector('[data-inquiry-date]');
+    const travelersInput = form.querySelector('[data-inquiry-travelers]');
+    const status = form.querySelector('[data-inquiry-status]');
+    const submit = form.querySelector('.tour-inquiry-submit');
+
+    const humanize = (value = '') => String(value)
+      .replace(/^\/+|\/+$/g, '')
+      .split('/').pop()
+      .replace(/[-_]+/g, ' ')
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+
+    const pageTourSlug = () => {
+      const match = window.location.pathname.match(/^\/tours\/([^/]+)/);
+      return match ? decodeURIComponent(match[1]) : '';
+    };
+
+    const pageTourTitle = () => {
+      const h1 = document.querySelector('main h1, h1');
+      return h1?.textContent?.trim() || humanize(pageTourSlug());
+    };
+
+    const openModal = ({ tour, slug, date, travelers } = {}) => {
+      form.reset();
+      if (tourInput) tourInput.value = tour || pageTourTitle();
+      if (slugInput) slugInput.value = slug || pageTourSlug();
+      if (tourUrlInput) tourUrlInput.value = window.location.href.split('#')[0];
+      if (sourceUrlInput) sourceUrlInput.value = document.referrer || window.location.href;
+      if (dateInput && date) dateInput.value = date;
+      if (travelersInput && travelers) travelersInput.value = travelers;
+      if (status) status.textContent = '';
+      modal.hidden = false;
+      document.documentElement.classList.add('tour-inquiry-open');
+      setTimeout(() => form.querySelector('input[name="name"]')?.focus(), 40);
+    };
+
+    const closeModal = () => {
+      modal.hidden = true;
+      document.documentElement.classList.remove('tour-inquiry-open');
+    };
+
+    document.addEventListener('click', (event) => {
+      const close = event.target.closest('[data-tour-inquiry-close]');
+      if (close && modal.contains(close)) {
+        event.preventDefault();
+        closeModal();
+        return;
+      }
+
+      const trigger = event.target.closest('[data-tour-inquiry], a[href*="/contact/?tour="], a[href*="/contact?tour="]');
+      if (!trigger) return;
+
+      const explicitlyMarked = trigger.hasAttribute('data-tour-inquiry');
+      const isTourPage = window.location.pathname.startsWith('/tours/');
+      if (!explicitlyMarked && !isTourPage) return;
+
+      let tour = trigger.getAttribute('data-tour-title') || '';
+      let slug = trigger.getAttribute('data-tour-slug') || '';
+      let date = trigger.getAttribute('data-tour-date') || '';
+      let travelers = trigger.getAttribute('data-tour-travelers') || '';
+
+      const rawHref = trigger.getAttribute('href');
+      if (rawHref) {
+        try {
+          const url = new URL(rawHref, window.location.href);
+          tour ||= url.searchParams.get('tour') || '';
+          date ||= url.searchParams.get('date') || url.searchParams.get('preferred_month') || '';
+          travelers ||= url.searchParams.get('group_size') || '';
+        } catch (_) {}
+      }
+
+      event.preventDefault();
+      openModal({ tour, slug, date, travelers });
+    });
+
+    document.addEventListener('submit', (event) => {
+      const planner = event.target.closest('form.tour-date-planner');
+      if (planner) {
+        event.preventDefault();
+        const data = new FormData(planner);
+        openModal({
+          tour: data.get('tour') || pageTourTitle(),
+          slug: pageTourSlug(),
+          date: data.get('preferred_month') || '',
+          travelers: data.get('group_size') || '',
+        });
+      }
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (status) status.textContent = '';
+
+      const data = new FormData(form);
+      const email = String(data.get('email') || '').trim();
+      const whatsapp = String(data.get('whatsapp') || '').trim();
+      if (!email && !whatsapp) {
+        if (status) status.textContent = 'Please enter an email address or WhatsApp number.';
+        return;
+      }
+
+      if (submit) {
+        submit.disabled = true;
+        submit.textContent = 'Sending…';
+      }
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' },
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || result.ok === false) throw new Error(result.message || 'Unable to send inquiry.');
+
+        if (status) status.textContent = 'Thank you. Your tour inquiry has been sent to AfghanTours.';
+        form.querySelectorAll('input:not([readonly]):not([type="hidden"]), textarea').forEach((el) => { el.value = ''; });
+      } catch (error) {
+        if (status) status.textContent = error?.message || 'Unable to send the inquiry. Please try again or contact us by WhatsApp.';
+      } finally {
+        if (submit) {
+          submit.disabled = false;
+          submit.textContent = 'Send tour inquiry';
+        }
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !modal.hidden) closeModal();
+    });
+  })();
+</script>
+
+<style>
+  :global(html.tour-inquiry-open) { overflow: hidden; }
+  .tour-inquiry-modal[hidden] { display: none !important; }
+  .tour-inquiry-modal { position: fixed; inset: 0; z-index: 5000; display: grid; place-items: center; padding: 1rem; }
+  .tour-inquiry-modal__backdrop { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 0; background: rgba(6, 12, 9, .78); backdrop-filter: blur(7px); cursor: default; }
+  .tour-inquiry-modal__panel { position: relative; z-index: 1; width: min(760px, 100%); max-height: calc(100vh - 2rem); overflow: auto; border: 1px solid rgba(16,24,32,.12); border-radius: 1.45rem; background: #fffaf2; color: #101820; box-shadow: 0 30px 90px rgba(0,0,0,.35); }
+  .tour-inquiry-modal__close { position: absolute; right: 1rem; top: 1rem; z-index: 2; width: 40px; height: 40px; border: 1px solid #d8c9b5; border-radius: 999px; background: #fff; color: #101820; font-size: 1.7rem; line-height: 1; cursor: pointer; }
+  .tour-inquiry-modal__heading { padding: 1.7rem 1.7rem 1rem; border-bottom: 1px solid #e5d9c7; }
+  .tour-inquiry-modal__heading p { margin: 0 0 .55rem; color: #a86a12; text-transform: uppercase; letter-spacing: .18em; font-size: .68rem; font-weight: 900; }
+  .tour-inquiry-modal__heading h2 { margin: 0; padding-right: 3rem; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.2rem, 5vw, 3.7rem); line-height: .92; letter-spacing: -.055em; }
+  .tour-inquiry-modal__heading span { display: block; margin-top: .7rem; color: #596158; line-height: 1.6; }
+  .tour-inquiry-form { padding: 1.35rem 1.7rem 1.7rem; }
+  .tour-inquiry-form__grid { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
+  .tour-inquiry-form label { display: grid; gap: .38rem; margin: 0 0 .9rem; color: #101820; font-size: .78rem; font-weight: 900; }
+  .tour-inquiry-form input, .tour-inquiry-form textarea { width: 100%; box-sizing: border-box; border: 1px solid #d6c8b4; border-radius: .72rem; background: #fff; color: #101820; padding: .85rem .9rem; font: inherit; }
+  .tour-inquiry-form input[readonly] { background: #f2eadf; font-weight: 800; }
+  .tour-inquiry-form input:focus, .tour-inquiry-form textarea:focus { outline: 2px solid rgba(214,162,58,.28); border-color: #c99027; }
+  .tour-inquiry-form textarea { resize: vertical; min-height: 120px; }
+  .tour-inquiry-form__note { margin: .15rem 0 .8rem; padding: .8rem .9rem; border: 1px solid #eadfce; border-radius: .75rem; background: #f6efe4; color: #60584e; font-size: .8rem; line-height: 1.5; }
+  .tour-inquiry-form__status { min-height: 1.25rem; margin: .2rem 0 .7rem; color: #765018; font-weight: 800; font-size: .82rem; }
+  .tour-inquiry-form__actions { display: flex; gap: .7rem; align-items: center; }
+  .tour-inquiry-submit, .tour-inquiry-cancel { min-height: 44px; padding: .75rem 1.1rem; border-radius: 999px; font-weight: 900; cursor: pointer; }
+  .tour-inquiry-submit { border: 0; background: #111b16; color: #fff; }
+  .tour-inquiry-submit:hover { background: #d9a02d; color: #111b16; }
+  .tour-inquiry-submit:disabled { opacity: .65; cursor: wait; }
+  .tour-inquiry-cancel { border: 1px solid #cdbfae; background: transparent; color: #101820; }
+  .tour-inquiry-hp { position: absolute !important; left: -9999px !important; width: 1px !important; height: 1px !important; opacity: 0 !important; }
+  @media (max-width: 640px) {
+    .tour-inquiry-modal { padding: .45rem; }
+    .tour-inquiry-modal__panel { max-height: calc(100vh - .9rem); border-radius: 1rem; }
+    .tour-inquiry-modal__heading, .tour-inquiry-form { padding-left: 1rem; padding-right: 1rem; }
+    .tour-inquiry-form__grid { grid-template-columns: 1fr; gap: 0; }
+    .tour-inquiry-form__actions { align-items: stretch; flex-direction: column; }
+  }
+</style>

@@ -1,0 +1,482 @@
+---
+interface Props {
+  height?: string;
+  initialZoom?: number;
+  showAttractions?: boolean;
+}
+
+const {
+  height = "680px",
+  initialZoom = 6,
+  showAttractions = true,
+} = Astro.props;
+
+import "leaflet/dist/leaflet.css";
+---
+
+<div class="afg-map-shell">
+  <div class="afg-map-toolbar" aria-label="Map filters">
+    <strong>AfghanTours Map</strong>
+    <button type="button" id="map-country-reset">Country</button>
+    <label><input id="toggle-provinces" type="checkbox" checked /> Provinces</label>
+    <label><input id="toggle-hubs" type="checkbox" checked /> Hubs</label>
+    <label><input id="toggle-attractions" type="checkbox" checked={showAttractions} /> Attractions</label>
+    <select id="province-select" aria-label="Select province">
+      <option value="">Select province</option>
+    </select>
+    <select id="hub-select" aria-label="Select hub">
+      <option value="">Select hub</option>
+    </select>
+  </div>
+  <div
+    id="afg-attraction-map"
+    class="afg-attraction-map"
+    data-initial-zoom={initialZoom}
+    data-show-attractions={showAttractions}
+    style={`height:${height}`}
+  ></div>
+</div>
+
+<script>
+  import L from "leaflet";
+
+  const mapEl = document.getElementById("afg-attraction-map");
+  const initialZoom = Number(mapEl?.dataset.initialZoom || 6);
+  const showAttractions = mapEl?.dataset.showAttractions !== "false";
+
+  const map = L.map("afg-attraction-map", {
+    scrollWheelZoom: false,
+    preferCanvas: true,
+  }).setView([33.9391, 67.7100], initialZoom);
+
+  // Offline-first: province polygons and markers work without internet tiles.
+  // Uncomment this block later if you want the OpenStreetMap basemap back.
+  // L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  //   maxZoom: 18,
+  //   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  // }).addTo(map);
+
+  const provinceLayer = L.geoJSON(null, {
+    style: (feature) => provinceStyle(feature),
+    onEachFeature: (feature, layer) => {
+      const name = feature?.properties?.adm1_name || "Province";
+      layer.on("mouseover", () => layer.setStyle({ fillOpacity: 0.42, weight: 2 }));
+      layer.on("mouseout", () => provinceLayer.resetStyle(layer));
+      layer.on("click", () => {
+        const code = feature?.properties?.afghanToursCode;
+        if (code) selectProvince(code);
+      });
+      layer.bindTooltip(name, { sticky: true });
+    },
+  });
+
+  const attractionLayer = L.layerGroup();
+  const hubLayer = L.layerGroup();
+  const capitalLayer = L.layerGroup();
+
+  const normalize = (value) => String(value || "").trim().toLowerCase();
+  const asNumber = (value) => {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : null;
+  };
+
+  let selectedProvinceCode = "";
+  let selectedHubCode = "";
+  let allAttractions = [];
+  let allHubs = [];
+  let provinceFeaturesByCode = new Map();
+  let provincesByCode = new Map();
+  let provincesByName = new Map();
+
+  const hubIcon = L.divIcon({
+    className: "afg-hub-icon",
+    html: '<span class="afg-hub-icon__inner">◆</span>',
+    iconSize: [22, 22],
+    iconAnchor: [11, 11],
+  });
+
+  const capitalIcon = L.divIcon({
+    className: "afg-capital-icon",
+    html: '<span class="afg-capital-icon__inner">★</span>',
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
+  });
+
+  function provinceStyle(feature) {
+    const code = feature?.properties?.afghanToursCode;
+    const selected = selectedProvinceCode && code === selectedProvinceCode;
+    return {
+      color: selected ? "#0f2f3f" : "#f8f1df",
+      weight: selected ? 3 : 1,
+      fillColor: selected ? "#2f6f7e" : "#9ec4cc",
+      fillOpacity: selected ? 0.5 : 0.28,
+    };
+  }
+
+  function popupHtml(attraction) {
+    const image = attraction.card_image || attraction.hero_image || "";
+    const url = `/attractions/${attraction.slug}/`;
+    return `
+      <article class="map-popup-card">
+        ${image ? `<img src="${image}" alt="${attraction.name}" loading="lazy" />` : ""}
+        <strong>${attraction.name}</strong>
+        <small>${attraction.category || "Attraction"} • ${attraction.province_code || ""}</small>
+        <p>${attraction.desc_short || ""}</p>
+        <a href="${url}">View attraction</a>
+      </article>
+    `;
+  }
+
+  function hubPopupHtml(hub) {
+    const count = allAttractions.filter((a) => a.location_code === hub.code).length;
+    return `
+      <article class="map-popup-card map-popup-card--hub">
+        ${hub.image ? `<img src="${hub.image}" alt="${hub.name}" loading="lazy" />` : ""}
+        <strong>${hub.name}</strong>
+        <small>${hub.provinceName || "Travel hub"}</small>
+        <p>${count} connected attractions in this planning hub.</p>
+        <button type="button" data-select-hub="${hub.code}">Zoom to hub</button>
+      </article>
+    `;
+  }
+
+  function getAttractionLatLng(attraction) {
+    if (!Number.isFinite(attraction.latitude) || !Number.isFinite(attraction.longitude)) return null;
+    return [attraction.latitude, attraction.longitude];
+  }
+
+  function calculateHubPoint(location, attractionsForHub) {
+    const province = provincesByCode.get(location.parent_code) || provincesByCode.get(location.location_code);
+    if (attractionsForHub.length) {
+      const lat = attractionsForHub.reduce((sum, a) => sum + a.latitude, 0) / attractionsForHub.length;
+      const lon = attractionsForHub.reduce((sum, a) => sum + a.longitude, 0) / attractionsForHub.length;
+      return { lat, lon };
+    }
+    return {
+      lat: asNumber(province?.center_lat) || 34.5,
+      lon: asNumber(province?.center_lon) || 69.1,
+    };
+  }
+
+  function buildHubs(locations) {
+    const destinationHubs = locations.filter((location) =>
+      String(location.is_hub).toLowerCase() === "true" && location.type === "destination"
+    );
+
+    return destinationHubs.map((location) => {
+      const attractionsForHub = allAttractions.filter((a) => a.location_code === location.location_code);
+      const point = calculateHubPoint(location, attractionsForHub);
+      const province = provincesByCode.get(location.parent_code);
+      return {
+        code: location.location_code,
+        name: location.name,
+        slug: location.slug,
+        provinceCode: location.parent_code,
+        provinceName: province?.name || province?.province_name || location.parent_code,
+        image: location.image_path || "",
+        lat: point.lat,
+        lon: point.lon,
+      };
+    });
+  }
+
+  function drawAttractions(attractions) {
+    attractionLayer.clearLayers();
+    attractions.forEach((attraction) => {
+      const latLng = getAttractionLatLng(attraction);
+      if (!latLng) return;
+      const marker = L.circleMarker(latLng, {
+        radius: selectedHubCode && attraction.location_code === selectedHubCode ? 8 : 6,
+        color: "#0f2f3f",
+        weight: 1,
+        fillColor: "#d6a84f",
+        fillOpacity: 0.95,
+      });
+      marker.bindPopup(popupHtml(attraction), { maxWidth: 280 });
+      marker.bindTooltip(attraction.name, { direction: "top" });
+      marker.addTo(attractionLayer);
+    });
+  }
+
+  function drawHubs(hubs, selectedAsCapital = false) {
+    hubLayer.clearLayers();
+    capitalLayer.clearLayers();
+    hubs.forEach((hub) => {
+      const marker = L.marker([hub.lat, hub.lon], { icon: selectedAsCapital ? capitalIcon : hubIcon });
+      marker.bindPopup(hubPopupHtml(hub), { maxWidth: 280 });
+      marker.bindTooltip(hub.name, { direction: "top" });
+      marker.on("click", () => selectHub(hub.code));
+      marker.addTo(selectedAsCapital ? capitalLayer : hubLayer);
+    });
+  }
+
+  function getVisibleAttractions() {
+    if (selectedHubCode) return allAttractions.filter((a) => a.location_code === selectedHubCode);
+    if (selectedProvinceCode) return allAttractions.filter((a) => a.province_code === selectedProvinceCode);
+    return allAttractions;
+  }
+
+  function getVisibleHubs() {
+    if (selectedHubCode) return allHubs.filter((h) => h.code === selectedHubCode);
+    if (selectedProvinceCode) return allHubs.filter((h) => h.provinceCode === selectedProvinceCode);
+    return allHubs;
+  }
+
+  function refreshLayers() {
+    const attractions = getVisibleAttractions();
+    const hubs = getVisibleHubs();
+    drawAttractions(attractions);
+    drawHubs(hubs, Boolean(selectedProvinceCode));
+    provinceLayer.setStyle((feature) => provinceStyle(feature));
+  }
+
+  function fitToItems(attractions, hubs, provinceFeature = null) {
+    const group = L.featureGroup();
+    if (provinceFeature) group.addLayer(provinceFeature);
+    attractions.forEach((a) => {
+      const latLng = getAttractionLatLng(a);
+      if (latLng) group.addLayer(L.marker(latLng));
+    });
+    hubs.forEach((h) => group.addLayer(L.marker([h.lat, h.lon])));
+    if (group.getLayers().length) {
+      map.fitBounds(group.getBounds(), { padding: [35, 35], maxZoom: selectedHubCode ? 10 : 8 });
+    }
+  }
+
+  function selectHub(code) {
+    selectedHubCode = code;
+    const hub = allHubs.find((h) => h.code === code);
+    selectedProvinceCode = hub?.provinceCode || "";
+    document.getElementById("hub-select").value = selectedHubCode;
+    document.getElementById("province-select").value = selectedProvinceCode;
+    refreshLayers();
+    fitToItems(getVisibleAttractions(), getVisibleHubs());
+  }
+
+  function selectProvince(code) {
+    selectedProvinceCode = code;
+    selectedHubCode = "";
+    document.getElementById("province-select").value = selectedProvinceCode;
+    document.getElementById("hub-select").value = "";
+    refreshLayers();
+    fitToItems(getVisibleAttractions(), getVisibleHubs(), provinceFeaturesByCode.get(code));
+  }
+
+  function showCountry() {
+    selectedProvinceCode = "";
+    selectedHubCode = "";
+    document.getElementById("province-select").value = "";
+    document.getElementById("hub-select").value = "";
+    refreshLayers();
+    map.fitBounds(provinceLayer.getBounds(), { padding: [20, 20] });
+  }
+
+  const [geojson, provinces, attractions, locations] = await Promise.all([
+    fetch("/data/maps/afg_admin1.geojson").then((r) => r.json()),
+    fetch("/data/maps/afghanToursProvinces.json").then((r) => r.json()),
+    fetch("/data/maps/afghanToursAttractions.json").then((r) => r.json()),
+    fetch("/data/maps/afghanToursLocations.json").then((r) => r.json()),
+  ]);
+
+  provinces.forEach((province) => {
+    const code = province.code || province.province_code;
+    const name = province.name || province.province_name;
+    provincesByCode.set(code, province);
+    provincesByName.set(normalize(name), { ...province, code, name });
+  });
+
+  allAttractions = attractions.filter((attraction) => attraction.is_active !== "0");
+  allHubs = buildHubs(locations);
+
+  geojson.features = geojson.features.map((feature) => {
+    const admName = feature?.properties?.adm1_name;
+    const match = provincesByName.get(normalize(admName));
+    if (match) {
+      feature.properties.afghanToursCode = match.code;
+      feature.properties.afghanToursSlug = match.slug || match.province_slug;
+      feature.properties.afghanToursBlurb = match.short_blurb;
+    }
+    return feature;
+  });
+
+  provinceLayer.addData(geojson).addTo(map);
+  provinceLayer.eachLayer((layer) => {
+    const code = layer.feature?.properties?.afghanToursCode;
+    if (code) provinceFeaturesByCode.set(code, layer);
+  });
+
+  const provinceSelect = document.getElementById("province-select");
+  provinces
+    .slice()
+    .sort((a, b) => String(a.name).localeCompare(String(b.name)))
+    .forEach((province) => {
+      const option = document.createElement("option");
+      option.value = province.code;
+      option.textContent = province.name;
+      provinceSelect.appendChild(option);
+    });
+
+  const hubSelect = document.getElementById("hub-select");
+  allHubs
+    .slice()
+    .sort((a, b) => String(a.name).localeCompare(String(b.name)))
+    .forEach((hub) => {
+      const option = document.createElement("option");
+      option.value = hub.code;
+      option.textContent = `${hub.name} — ${hub.provinceName}`;
+      hubSelect.appendChild(option);
+    });
+
+  provinceSelect.addEventListener("change", (event) => {
+    event.currentTarget.value ? selectProvince(event.currentTarget.value) : showCountry();
+  });
+
+  hubSelect.addEventListener("change", (event) => {
+    event.currentTarget.value ? selectHub(event.currentTarget.value) : showCountry();
+  });
+
+  document.getElementById("map-country-reset")?.addEventListener("click", showCountry);
+
+  document.getElementById("toggle-provinces")?.addEventListener("change", (event) => {
+    event.currentTarget.checked ? provinceLayer.addTo(map) : provinceLayer.remove();
+  });
+
+  document.getElementById("toggle-hubs")?.addEventListener("change", (event) => {
+    event.currentTarget.checked ? hubLayer.addTo(map) : hubLayer.remove();
+    event.currentTarget.checked ? capitalLayer.addTo(map) : capitalLayer.remove();
+  });
+
+  document.getElementById("toggle-attractions")?.addEventListener("change", (event) => {
+    event.currentTarget.checked ? attractionLayer.addTo(map) : attractionLayer.remove();
+  });
+
+  document.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-select-hub]");
+    if (button) selectHub(button.dataset.selectHub);
+  });
+
+  refreshLayers();
+  hubLayer.addTo(map);
+  capitalLayer.addTo(map);
+  if (showAttractions) attractionLayer.addTo(map);
+  map.fitBounds(provinceLayer.getBounds(), { padding: [20, 20] });
+  setTimeout(() => map.invalidateSize(), 150);
+</script>
+
+<style>
+  .afg-map-shell {
+    border: 1px solid rgba(15, 47, 63, 0.15);
+    border-radius: 18px;
+    overflow: hidden;
+    background: #08141d;
+  }
+
+  .afg-map-toolbar {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0.8rem 1rem;
+    background: #0f2f3f;
+    color: #f8f1df;
+    font-size: 0.95rem;
+  }
+
+  .afg-map-toolbar label {
+    display: inline-flex;
+    gap: 0.35rem;
+    align-items: center;
+  }
+
+  .afg-map-toolbar button,
+  .afg-map-toolbar select {
+    border: 1px solid rgba(248, 241, 223, 0.3);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #f8f1df;
+    padding: 0.35rem 0.65rem;
+    font: inherit;
+    font-weight: 700;
+  }
+
+  .afg-map-toolbar select option {
+    color: #0f2f3f;
+  }
+
+  .afg-attraction-map {
+    width: 100%;
+    min-height: 420px;
+    background: #dbe7ea;
+  }
+
+  :global(.afg-hub-icon),
+  :global(.afg-capital-icon) {
+    background: transparent;
+    border: 0;
+  }
+
+  :global(.afg-hub-icon__inner) {
+    display: grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    color: #0f2f3f;
+    text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  :global(.afg-capital-icon__inner) {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    color: #101820;
+    text-shadow: 0 1px 0 #d6a84f, 1px 0 0 #d6a84f, 0 -1px 0 #d6a84f, -1px 0 0 #d6a84f;
+    font-size: 19px;
+    line-height: 1;
+  }
+
+  :global(.map-popup-card) {
+    width: 240px;
+  }
+
+  :global(.map-popup-card img) {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 0.65rem;
+  }
+
+  :global(.map-popup-card strong) {
+    display: block;
+    color: #0f2f3f;
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
+  :global(.map-popup-card small) {
+    display: block;
+    margin-top: 0.25rem;
+    color: #54636b;
+  }
+
+  :global(.map-popup-card p) {
+    margin: 0.55rem 0;
+    line-height: 1.35;
+  }
+
+  :global(.map-popup-card a),
+  :global(.map-popup-card button) {
+    display: inline-block;
+    border: 0;
+    background: #0f2f3f;
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.45rem 0.7rem;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+  }
+</style>

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://afghantours.com/sitemap.xml

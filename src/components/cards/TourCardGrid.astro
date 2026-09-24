@@ -1,0 +1,201 @@
+---
+const { tours = [], title = "Related Tours", intro = "" } = Astro.props;
+
+const imageFor = (tour) =>
+  tour.hero_image ||
+  tour.hero_image_path ||
+  tour.image ||
+  tour.overview_image ||
+  tour.overview_image_path ||
+  `/assets/images/featured-tours/${tour.slug}/hero.webp`;
+
+const durationLabel = (tour) =>
+  tour.duration_days ? `${tour.duration_days} Days` : (tour.duration || 'Custom Duration');
+
+const priceLabel = (tour) => {
+  const raw = String(tour.price_from || tour.price || '').trim();
+
+  if (!raw) return 'Custom quote';
+  if (raw.toLowerCase() === 'inquire') return 'Request proposal';
+
+  const numeric = Number(raw.replace(/[$,\s]/g, ''));
+
+  return Number.isFinite(numeric)
+    ? `From $${numeric.toLocaleString('en-US')} / person`
+    : raw;
+};
+---
+
+<section class="related-tour-section">
+  <div class="related-tour-wrap">
+    {(title || intro) && (
+      <div class="related-tour-heading">
+        <p class="section-kicker">Connected Journeys</p>
+        {title && <h2>{title}</h2>}
+        {intro && <p>{intro}</p>}
+      </div>
+    )}
+
+    {tours.length > 0 ? (
+      <div class="related-tour-grid">
+        {tours.map((tour) => (
+          <a class="related-tour-card" href={`/tours/${tour.slug}/`}>
+            <img src={imageFor(tour)} alt={tour.title || tour.name} loading="lazy" />
+            <div>
+              <p class="card-kicker">{tour.season || tour.region || 'AfghanTours'}</p>
+              <h3>{tour.title || tour.name}</h3>
+              <div class="tour-meta">
+                <span>{durationLabel(tour)}</span>
+                {tour.style && <span>{tour.style}</span>}
+                {tour.activity_level && <span>{tour.activity_level}</span>}
+              </div>
+              <p class="related-tour-price">{priceLabel(tour)}</p>
+              <p>{tour.summary || tour.description || tour.excerpt || 'Private Afghanistan itinerary built around real access and local coordination.'}</p>
+              <strong>View tour →</strong>
+            </div>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="empty-card">No related tours have been linked yet.</div>
+    )}
+  </div>
+</section>
+
+<style>
+  .related-tour-section {
+    background: #fff;
+    color: #101820;
+    padding: clamp(4rem, 7vw, 7rem) 0;
+  }
+
+  .related-tour-wrap {
+    width: min(1280px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .related-tour-heading {
+    max-width: 760px;
+    margin-bottom: 2rem;
+  }
+
+  .section-kicker,
+  .card-kicker {
+    margin: 0;
+    color: #b46b00;
+    font-size: .72rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  .related-tour-heading h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 5vw, 5rem);
+    line-height: .95;
+    letter-spacing: -.06em;
+    margin: .45rem 0 1rem;
+  }
+
+  .related-tour-heading > p:last-child {
+    color: #4b5563;
+    line-height: 1.75;
+  }
+
+  .related-tour-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.2rem;
+  }
+
+  .related-tour-card {
+    display: block;
+    overflow: hidden;
+    border: 1px solid rgba(16,24,32,.1);
+    border-radius: 1.35rem;
+    background: #fbf6ed;
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 14px 38px rgba(21,16,9,.08);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+
+  .related-tour-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 22px 50px rgba(21,16,9,.14);
+  }
+
+  .related-tour-card img {
+    width: 100%;
+    height: 210px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .related-tour-card > div {
+    padding: 1.35rem;
+  }
+
+  .related-tour-card h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.75rem;
+    line-height: 1;
+    letter-spacing: -.04em;
+    margin: .45rem 0 .9rem;
+  }
+
+  .tour-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+    margin-bottom: .9rem;
+  }
+
+  .tour-meta span {
+    border-radius: 999px;
+    background: #efe1cd;
+    color: #3b2d1c;
+    padding: .42rem .7rem;
+    font-size: .75rem;
+    font-weight: 900;
+  }
+
+  .related-tour-card p:not(.card-kicker) {
+    color: #4b5563;
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .related-tour-card strong {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #9a5d04;
+  }
+
+  .empty-card {
+    border-radius: 1.5rem;
+    border: 1px dashed #d5c7b4;
+    padding: 2rem;
+    background: #fff;
+    color: #4b5563;
+  }
+
+  @media (max-width: 900px) {
+    .related-tour-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 620px) {
+    .related-tour-grid { grid-template-columns: 1fr; }
+  }
+
+  .related-tour-card .related-tour-price {
+    margin: .75rem 0 .2rem;
+    color: #9a5d04;
+    font-size: .98rem;
+    line-height: 1.3;
+    font-weight: 900;
+    display: block;
+  }
+</style>

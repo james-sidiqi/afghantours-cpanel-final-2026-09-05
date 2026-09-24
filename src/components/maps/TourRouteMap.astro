@@ -1,0 +1,71 @@
+---
+const { points = [] } = Astro.props;
+const mapId = `tour-map-${Math.random().toString(36).slice(2)}`;
+---
+
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<div
+  id={mapId}
+  data-points={JSON.stringify(points)}
+  class="h-[520px] w-full overflow-hidden rounded-[2rem] bg-stone-200"
+></div>
+
+<script is:inline define:vars={{ mapId }}>
+  (function () {
+    const mapEl = document.getElementById(mapId);
+    if (!mapEl) return;
+
+    const loadLeaflet = () =>
+      new Promise((resolve, reject) => {
+        if (window.L) {
+          resolve(window.L);
+          return;
+        }
+
+        const script = document.createElement("script");
+        script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+        script.onload = () => resolve(window.L);
+        script.onerror = reject;
+        document.head.appendChild(script);
+      });
+
+    loadLeaflet().then((L) => {
+      const points = JSON.parse(mapEl.dataset.points || "[]");
+
+      const map = L.map(mapEl).setView([34.5553, 69.2075], 6);
+
+      L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 18,
+        attribution: "&copy; OpenStreetMap contributors",
+      }).addTo(map);
+
+      const routePoints = points
+        .filter((p) => p.lat && p.lng)
+        .map((p) => [Number(p.lat), Number(p.lng)]);
+
+      points.forEach((p) => {
+        if (!p.lat || !p.lng) return;
+
+        L.marker([Number(p.lat), Number(p.lng)])
+          .addTo(map)
+          .bindPopup(`<strong>${p.name}</strong><br>${p.type || ""}`);
+      });
+
+      if (routePoints.length > 1) {
+        L.polyline(routePoints, {
+          color: "#d69f28",
+          weight: 5,
+          opacity: 0.9,
+        }).addTo(map);
+
+        map.fitBounds(routePoints, {
+          padding: [40, 40],
+        });
+      }
+    });
+  })();
+</script>

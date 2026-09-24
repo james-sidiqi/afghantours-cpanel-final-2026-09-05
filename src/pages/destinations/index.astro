@@ -1,0 +1,747 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProvinces, getHubs } from '../../lib/buildRelations';
+
+const titleOf = (item) => item?.title || item?.name || item?.province_name || item?.display_name || item?.slug || 'Destination';
+const cleanRegion = (value) => String(value || 'Afghanistan').replace(/_/g, ' ').replace(/-/g, ' ');
+
+const provinces = getProvinces()
+  .filter((p) => p?.slug)
+  .sort((a, b) => titleOf(a).localeCompare(titleOf(b)));
+
+const hubs = getHubs().filter((h) => h?.slug);
+
+const regions = [
+  {
+    title: 'Central Afghanistan',
+    slug: 'central',
+    image: '/assets/images/regions/central.webp',
+    text: 'Kabul, Bamyan, Panjshir, Parwan, Wardak, Ghazni, and the highland routes at the heart of many cultural journeys.',
+  },
+  {
+    title: 'North Afghanistan',
+    slug: 'north',
+    image: '/assets/images/regions/north.webp',
+    text: 'Balkh, Mazar-e-Sharif, Samangan, Baghlan, Kunduz, Takhar, Faryab, Jowzjan, and Sar-e-Pol.',
+  },
+  {
+    title: 'West Afghanistan',
+    slug: 'west',
+    image: '/assets/images/regions/west.webp',
+    text: 'Herat, Ghor, Badghis, and Farah: Timurid architecture, Silk Road history, and rugged western routes.',
+  },
+  {
+    title: 'East Afghanistan',
+    slug: 'east',
+    image: '/assets/images/regions/east.webp',
+    text: 'Nangarhar, Laghman, Kunar, Nuristan, Khost, Paktia, Paktika, and eastern mountain corridors.',
+  },
+  {
+    title: 'South Afghanistan',
+    slug: 'south',
+    image: '/assets/images/regions/south.webp',
+    text: 'Kandahar, Helmand, Uruzgan, Zabul, and Nimroz: Durrani history, desert routes, and southern cultural sites.',
+  },
+  {
+    title: 'Wakhan & Northeast',
+    slug: 'wakhan-northeast',
+    image: '/assets/images/provinces/badakhshan/hero.webp',
+    text: 'Badakhshan, Faizabad, Wakhan access, mountain expeditions, river valleys, and remote frontier routes.',
+  },
+];
+
+const hubNameOverrides = {
+  'kabul-city': 'Kabul',
+  'bamyan-city': 'Bamyan',
+  'ghazni-city': 'Ghazni',
+  ghazni: 'Ghazni City',
+  'kandahar-city': 'Kandahar',
+  kandahar: 'Kandahar City',
+  'faizabad-city': 'Faizabad',
+  faizabad: 'Faizabad',
+  'jalalabad-city': 'Jalalabad',
+  jalalabad: 'Jalalabad',
+  'mazar-e-sharif-city': 'Mazar-e-Sharif',
+  'mazar-e-sharif': 'Mazar-e-Sharif',
+  'herat-city': 'Herat',
+};
+
+const hubImageOverrides = {
+  'jalalabad-city': '/assets/images/hubs/jalalabad/hero.webp',
+  jalalabad: '/assets/images/hubs/jalalabad/hero.webp',
+  'faizabad-city': '/assets/images/hubs/faizabad/hero.webp',
+  faizabad: '/assets/images/hubs/faizabad/hero.webp',
+  'mazar-e-sharif-city': '/assets/images/hubs/mazar-e-sharif/hero.webp',
+  'mazar-e-sharif': '/assets/images/hubs/mazar-e-sharif/hero.webp',
+};
+
+const imageForProvince = (p) => p.image || p.cover_image_path || `/assets/images/provinces/${p.slug}/hero.webp`;
+const imageForHub = (h) => hubImageOverrides[h.slug] || h.image || h.image_path || `/assets/images/hubs/${h.slug}/hero.webp`;
+const displayHubName = (h) => hubNameOverrides[h.slug] || h.display_name || h.title || h.name || 'Travel Hub';
+
+const provinceCards = provinces.map((province) => {
+  const name = titleOf(province);
+  const description = province.short_blurb || province.excerpt || province.description || province.full_blurb || 'Destination profile, attractions, tours, food, hotels, and planning context.';
+  return {
+    slug: province.slug,
+    title: name,
+    region: cleanRegion(province.region),
+    description,
+    fullDescription: province.full_blurb || province.description || description,
+    image: imageForProvince(province),
+    map: province.map_image_path || `/assets/maps/provinces/${province.slug}-map.webp`,
+    href: `/destinations/${province.slug}/`,
+  };
+});
+---
+
+<BaseLayout
+  title="Destinations | AfghanTours"
+  description="Explore Afghanistan by regions, provinces, operational travel hubs, and food and culture context."
+  image="/assets/images/heroes/destinations/hero.webp"
+>
+  <section class="dest-hero">
+    <img src="/assets/images/heroes/destinations/hero.webp" alt="Afghanistan destinations" />
+    <div class="dest-hero-shade"></div>
+    <div class="dest-hero-content">
+      <p>Destination Guide</p>
+      <h1>Explore Afghanistan by region, province, and travel hub.</h1>
+      <span>
+        Browse Afghanistan through the way travel actually works: broad regions, individual
+        provinces, operational cities and hubs, and the food and culture that gives each journey context.
+      </span>
+    </div>
+  </section>
+
+  <main class="dest-page">
+    <nav class="dest-tabs" aria-label="Destination sections">
+      <a href="#regions">Regions</a>
+      <a href="#provinces">Provinces</a>
+      <a href="#hubs">Cities & Hubs</a>
+      <a href="/food-culture/">Food & Culture</a>
+    </nav>
+
+
+
+    <section id="regions" class="dest-section">
+      <div class="section-heading">
+        <p>Regions</p>
+        <h2>Start with Afghanistan’s major travel regions.</h2>
+        <span>Regions help travelers understand scale, climate, route logic, and broad cultural geography.</span>
+      </div>
+
+      <div class="region-grid">
+        {regions.map((region) => (
+          <a class="region-card" href={`/regions/${region.slug}/`}>
+            <img src={region.image} alt={region.title} loading="lazy" />
+            <div>
+              <p>Region</p>
+              <h3>{region.title}</h3>
+              <span>{region.text}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section id="provinces" class="dest-section province-carousel-section">
+      <div class="section-heading province-heading-row">
+        <div>
+          <p>Provinces</p>
+          <h2>Province-by-province destination context.</h2>
+          <span>Browse Afghanistan’s provinces alphabetically. Open a card for route context, regional identity, and a direct link to the province page.</span>
+        </div>
+        <div class="province-controls" aria-label="Province carousel controls">
+          <button type="button" data-province-prev aria-label="Previous provinces"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg></button>
+          <button type="button" data-province-next aria-label="Next provinces"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg></button>
+        </div>
+      </div>
+
+      <div class="province-carousel" data-province-carousel>
+        {provinceCards.map((province, index) => (
+          <button
+            class="province-card"
+            type="button"
+            data-province-index={index}
+            data-province-slug={province.slug}
+          >
+            <img src={province.image} alt={province.title} loading="lazy" />
+            <div>
+              <p>{province.region}</p>
+              <h3>{province.title}</h3>
+              <span>{province.description}</span>
+              <strong>View province details →</strong>
+            </div>
+          </button>
+        ))}
+      </div>
+    </section>
+
+    <section id="hubs" class="dest-section">
+      <div class="section-heading">
+        <p>Cities & Hubs</p>
+        <h2>Operational travel hubs.</h2>
+        <span>
+          These are the cities and access points that connect hotels, transportation, attractions,
+          food and culture, and day-by-day tour movement.
+        </span>
+      </div>
+
+      <div class="hub-grid">
+        {hubs.map((hub) => (
+          <a class="destination-card" href={`/hubs/${hub.slug}/`}>
+            <img src={imageForHub(hub)} alt={displayHubName(hub)} loading="lazy" />
+            <div>
+              <p>Travel Hub</p>
+              <h3>{displayHubName(hub)}</h3>
+              <span>{hub.summary || hub.description || 'Operational hub for routes, hotels, attractions, food, and transport.'}</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="food-culture-band">
+      <div>
+        <p>Food & Culture</p>
+        <h2>Food belongs inside destination planning.</h2>
+        <span>
+          Afghan food, tea culture, produce, dried fruits, bakeries, local restaurants, and cultural
+          experiences should be connected to the places where travelers actually encounter them.
+        </span>
+      </div>
+      <a href="/food-culture/">Explore Food & Culture</a>
+    </section>
+  </main>
+
+  <div class="province-modal" id="province-modal" aria-hidden="true">
+    <div class="province-modal-backdrop" data-close-province></div>
+    <div class="province-modal-panel" role="dialog" aria-modal="true" aria-labelledby="province-modal-title">
+      <button class="province-modal-close" type="button" data-close-province>×</button>
+      <div class="province-modal-media">
+        <img id="province-modal-image" src="" alt="" />
+      </div>
+      <div class="province-modal-content">
+        <p class="province-modal-kicker" id="province-modal-region"></p>
+        <h2 id="province-modal-title"></h2>
+        <div class="province-modal-section">
+          <p class="section-label">About this province</p>
+          <p id="province-modal-description"></p>
+        </div>
+        <div class="province-modal-section province-map-wrap">
+          <p class="section-label">Map reference</p>
+          <img id="province-modal-map" src="" alt="" />
+        </div>
+        <div class="province-modal-actions">
+          <a id="province-modal-link" href="/destinations/">Open province page</a>
+          <a id="province-modal-contact" href="/contact/?type=destination">Plan around this province</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script define:vars={{ provinceCards }}>
+  const provinces = provinceCards || [];
+  const carousel = document.querySelector('[data-province-carousel]');
+  const modal = document.getElementById('province-modal');
+  const modalImage = document.getElementById('province-modal-image');
+  const modalMap = document.getElementById('province-modal-map');
+  const modalRegion = document.getElementById('province-modal-region');
+  const modalTitle = document.getElementById('province-modal-title');
+  const modalDescription = document.getElementById('province-modal-description');
+  const modalLink = document.getElementById('province-modal-link');
+  const modalContact = document.getElementById('province-modal-contact');
+
+  function openProvince(index) {
+    const province = provinces[index];
+    if (!province || !modal) return;
+
+    modalImage.src = province.image || '/assets/images/placeholders/default-province.webp';
+    modalImage.alt = province.title || 'Province';
+    modalMap.src = province.map || '';
+    modalMap.alt = `${province.title || 'Province'} map`;
+    modalRegion.textContent = province.region || 'Afghanistan';
+    modalTitle.textContent = province.title || 'Province';
+    modalDescription.textContent = province.fullDescription || province.description || '';
+    modalLink.href = province.href || '/destinations/';
+    modalContact.href = `/contact/?type=destination&province=${encodeURIComponent(province.title || '')}`;
+
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeProvince() {
+    if (!modal) return;
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-province-index]').forEach((button) => {
+    button.addEventListener('click', () => openProvince(Number(button.getAttribute('data-province-index'))));
+  });
+
+  document.querySelectorAll('[data-close-province]').forEach((button) => {
+    button.addEventListener('click', closeProvince);
+  });
+
+  document.querySelector('[data-province-prev]')?.addEventListener('click', () => {
+    carousel?.scrollBy({ left: -360, behavior: 'smooth' });
+  });
+
+  document.querySelector('[data-province-next]')?.addEventListener('click', () => {
+    carousel?.scrollBy({ left: 360, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeProvince();
+  });
+</script>
+
+<style>
+  .dest-hero {
+    position: relative;
+    min-height: 58vh;
+    display: flex;
+    align-items: end;
+    overflow: hidden;
+    background: #050807;
+    color: #fff;
+  }
+
+  .dest-hero img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: .74;
+  }
+
+  .dest-hero-shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(0,0,0,.82), rgba(0,0,0,.52), rgba(0,0,0,.22)),
+      linear-gradient(0deg, rgba(0,0,0,.5), transparent 55%);
+  }
+
+  .dest-hero-content {
+    position: relative;
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: 8rem 0 5rem;
+  }
+
+  .dest-hero-content p,
+  .section-heading p,
+  .food-culture-band p,
+  .destination-card p,
+  .region-card p,
+  .province-card p,
+  .province-modal-kicker,
+  .section-label {
+    margin: 0;
+    color: #b46b00;
+    font-size: .72rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  .dest-hero h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3rem, 5.6vw, 5.8rem);
+    line-height: .94;
+    letter-spacing: -.055em;
+    max-width: 1000px;
+    margin: .8rem 0 1.1rem;
+  }
+
+  .dest-hero span {
+    display: block;
+    max-width: 720px;
+    color: rgba(255,255,255,.88);
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+
+  .dest-page {
+    background: #fbf6ed;
+    color: #101820;
+    padding-bottom: 5rem;
+  }
+
+  .dest-tabs {
+    position: sticky;
+    top: 76px;
+    z-index: 20;
+    background: rgba(251,246,237,.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(16,24,32,.08);
+    display: flex;
+    justify-content: center;
+    gap: .8rem;
+    padding: .9rem 1rem;
+    overflow-x: auto;
+  }
+
+  .dest-tabs a {
+    border-radius: 999px;
+    background: #fff;
+    border: 1px solid #eadfce;
+    color: #101820;
+    text-decoration: none;
+    padding: .75rem 1rem;
+    font-size: .82rem;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+
+  .dest-tabs a:hover { background: #d6a23a; }
+
+  .dest-section,
+  .food-culture-band {
+    width: min(1280px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding-top: clamp(4rem, 7vw, 6rem);
+  }
+
+  .section-heading {
+    max-width: 840px;
+    margin-bottom: 2rem;
+  }
+
+  .province-heading-row {
+    max-width: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 2rem;
+  }
+
+  .province-heading-row > div:first-child { max-width: 840px; }
+
+  .section-heading h2,
+  .food-culture-band h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.5rem, 4.5vw, 4.5rem);
+    line-height: .98;
+    letter-spacing: -.055em;
+    margin: .55rem 0 1rem;
+  }
+
+  .section-heading span,
+  .food-culture-band span {
+    display: block;
+    color: #4b5563;
+    line-height: 1.75;
+    font-size: 1.02rem;
+    max-width: 760px;
+  }
+
+  .region-grid,
+  .hub-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.2rem;
+  }
+
+  .province-controls {
+    display: flex;
+    gap: .6rem;
+    flex: 0 0 auto;
+  }
+
+  .province-controls button {
+    width: 46px;
+    height: 46px;
+    border-radius: 999px;
+    border: 1px solid rgba(16,24,32,.14);
+    background: #fff;
+    color: #101820;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(21,16,9,.08);
+  }
+
+  .province-controls button svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  .province-controls button:hover { background: #d6a23a; }
+
+  .province-carousel {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(285px, 32%);
+    gap: 1.2rem;
+    overflow-x: auto;
+    padding: .2rem .2rem 1.2rem;
+    scrollbar-width: thin;
+  }
+
+  .province-card,
+  .region-card,
+  .destination-card {
+    display: block;
+    background: #fff;
+    color: inherit;
+    text-decoration: none;
+    border: 1px solid rgba(16,24,32,.1);
+    border-radius: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 14px 38px rgba(21,16,9,.08);
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+
+  .province-card {
+    appearance: none;
+    text-align: left;
+    padding: 0;
+    cursor: pointer;
+
+  }
+
+  .region-card:hover,
+  .destination-card:hover,
+  .province-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(180,107,0,.35);
+    box-shadow: 0 22px 50px rgba(21,16,9,.14);
+  }
+
+  .region-card img,
+  .destination-card img,
+  .province-card img {
+    width: 100%;
+    height: 210px;
+    display: block;
+    object-fit: cover;
+    background: #eadfce;
+  }
+
+  .region-card div,
+  .destination-card div,
+  .province-card div {
+    padding: 1.35rem;
+  }
+
+  .region-card h3,
+  .destination-card h3,
+  .province-card h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.65rem, 2vw, 2rem);
+    line-height: 1;
+    letter-spacing: -.045em;
+    margin: .45rem 0 .85rem;
+  }
+
+  .region-card span,
+  .destination-card span,
+  .province-card span {
+    color: #4b5563;
+    line-height: 1.65;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .province-card strong {
+    display: inline-block;
+    margin-top: 1rem;
+    color: #9a5d04;
+    font-size: .86rem;
+    font-weight: 900;
+  }
+
+  .food-culture-band {
+    margin-top: clamp(4rem, 7vw, 6rem);
+    padding: clamp(2rem, 4vw, 3rem);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: center;
+    background:
+      linear-gradient(90deg, rgba(255,255,255,.96), rgba(255,255,255,.82)),
+      url('/assets/images/heroes/destinations/hero.webp') center/cover no-repeat;
+    border: 1px solid rgba(16,24,32,.1);
+    border-radius: 1.5rem;
+    box-shadow: 0 14px 38px rgba(21,16,9,.08);
+  }
+
+  .food-culture-band a {
+    border-radius: 999px;
+    background: #101820;
+    color: #fff;
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    font-weight: 900;
+    white-space: nowrap;
+  }
+
+  .province-modal[aria-hidden="true"] { display: none; }
+
+  .province-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+  }
+
+  .province-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(3, 7, 18, .76);
+    backdrop-filter: blur(8px);
+  }
+
+  .province-modal-panel {
+    position: relative;
+    width: min(1120px, calc(100% - 2rem));
+    height: min(760px, calc(100vh - 2rem));
+    margin: 1rem auto;
+    display: grid;
+    grid-template-columns: 1.05fr .95fr;
+    background: #fffaf3;
+    border-radius: 2rem;
+    overflow: hidden;
+    box-shadow: 0 35px 90px rgba(0,0,0,.45);
+  }
+
+  .province-modal-close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    z-index: 5;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    border: 0;
+    background: rgba(0,0,0,.72);
+    color: #fff;
+    font-size: 1.8rem;
+    cursor: pointer;
+  }
+
+  .province-modal-media {
+    background: #111;
+    min-height: 0;
+  }
+
+  .province-modal-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .province-modal-content {
+    padding: clamp(1.6rem, 3vw, 2.6rem);
+    overflow-y: auto;
+  }
+
+  .province-modal-content h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.4rem, 4vw, 4rem);
+    line-height: .94;
+    letter-spacing: -.055em;
+    margin: .6rem 0 .3rem;
+  }
+
+  .province-modal-section {
+    margin-top: 1.5rem;
+    border-top: 1px solid rgba(16,24,32,.1);
+    padding-top: 1.2rem;
+  }
+
+  .province-modal-section > p:last-child {
+    color: #374151;
+    line-height: 1.75;
+  }
+
+  .province-map-wrap img {
+    margin-top: .9rem;
+    width: 100%;
+    max-height: 220px;
+    object-fit: contain;
+    border-radius: 1rem;
+    border: 1px solid rgba(16,24,32,.1);
+    background: #f4eadc;
+  }
+
+  .province-modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-top: 1.8rem;
+  }
+
+  .province-modal-actions a {
+    border-radius: 999px;
+    padding: .95rem 1.15rem;
+    font-size: .86rem;
+    font-weight: 900;
+    text-decoration: none;
+  }
+
+  .province-modal-actions a:first-child { background: #d6a23a; color: #101820; }
+  .province-modal-actions a:last-child { background: #101820; color: #fff; }
+
+  @media(max-width: 980px) {
+    .region-grid,
+    .hub-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .province-carousel { grid-auto-columns: minmax(275px, 48%); }
+    .food-culture-band { grid-template-columns: 1fr; }
+    .province-modal-panel { grid-template-columns: 1fr; overflow-y: auto; }
+    .province-modal-media { height: 310px; }
+  }
+
+  @media(max-width: 620px) {
+    .region-grid,
+    .hub-grid { grid-template-columns: 1fr; }
+    .province-heading-row { display: block; }
+    .province-controls { margin-top: 1rem; }
+    .province-carousel { grid-auto-columns: minmax(260px, 88%); }
+    .section-heading h2,
+    .food-culture-band h2 { font-size: clamp(2.15rem, 12vw, 3rem); }
+  }
+</style>
+
+<style is:global>
+  .dest-map-section .afg-map-shell { box-shadow: 0 28px 70px rgba(15, 47, 63, 0.13); }
+  .map-page-link-row { margin-top: 1rem; }
+  .map-page-link-row a { display: inline-flex; border-radius: 999px; background: #0f2f3f; color: #fff; padding: .85rem 1.15rem; font-weight: 900; text-decoration: none; }
+
+  /* PROVINCE-IMAGE-GAP-FIX-START */
+
+  .province-card {
+    line-height: normal;
+  }
+
+  .province-card > img {
+    display: block;
+    width: 100%;
+    height: 212px;
+    margin: -1px 0 0;
+    border: 0;
+    vertical-align: top;
+    object-fit: cover;
+  }
+
+  .province-card[data-province-slug="ghor"] > img,
+  .province-card[data-province-slug="helmand"] > img,
+  .province-card[data-province-slug="jowzjan"] > img,
+  .province-card[data-province-slug="farah"] > img {
+    transform: scale(1.055);
+    transform-origin: center center;
+  }
+
+  .province-card[data-province-slug="zabul"] > img {
+    transform: scale(1.085);
+    transform-origin: center center;
+    object-position: center 58%;
+  }
+
+  /* PROVINCE-IMAGE-GAP-FIX-END */
+
+</style>

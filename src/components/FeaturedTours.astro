@@ -1,0 +1,772 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import { getTours } from '../lib/buildRelations';
+
+interface Tour {
+  slug: string;
+  tour_code?: string;
+  code?: string;
+  title?: string;
+  name?: string;
+  description?: string;
+  summary?: string;
+  duration_days?: number | string;
+  price_from?: number | string;
+  style?: string;
+  travel_style?: string;
+  activity_level?: string;
+  season?: string;
+  hero_image?: string;
+  hero_image_path?: string;
+  overview_image?: string;
+  overview_image_path?: string;
+  thumbnail_image_path?: string;
+  image?: string;
+  gallery?: string[];
+  hubs?: any[];
+  provinces?: any[];
+}
+
+interface Props { tours?: Tour[]; }
+
+const { tours = [] } = Astro.props;
+
+function parseCsvLine(line: string) {
+  const cells: string[] = [];
+  let cell = '';
+  let quoted = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+    const next = line[i + 1];
+
+    if (char === '"' && quoted && next === '"') {
+      cell += '"';
+      i++;
+    } else if (char === '"') {
+      quoted = !quoted;
+    } else if (char === ',' && !quoted) {
+      cells.push(cell.trim());
+      cell = '';
+    } else {
+      cell += char;
+    }
+  }
+
+  cells.push(cell.trim());
+  return cells;
+}
+
+function getFeaturedIds() {
+  const file = path.resolve('data/tours_featured.csv');
+
+  if (!fs.existsSync(file)) {
+    return { slugs: new Set<string>(), codes: new Set<string>() };
+  }
+
+  const raw = fs.readFileSync(file, 'utf8').trim();
+
+  if (!raw) {
+    return { slugs: new Set<string>(), codes: new Set<string>() };
+  }
+
+  const lines = raw.split(/\r?\n/).filter(Boolean);
+  const headers = parseCsvLine(lines[0]).map((h) => h.trim().toLowerCase());
+
+  const slugIndex = headers.findIndex((h) => ['slug', 'tour_slug'].includes(h));
+  const codeIndex = headers.findIndex((h) => ['tour_code', 'code'].includes(h));
+
+  const slugs = new Set<string>();
+  const codes = new Set<string>();
+
+  for (const line of lines.slice(1)) {
+    const cells = parseCsvLine(line);
+
+    if (slugIndex >= 0 && cells[slugIndex]) {
+      slugs.add(cells[slugIndex].trim());
+    }
+
+    if (codeIndex >= 0 && cells[codeIndex]) {
+      codes.add(cells[codeIndex].trim());
+    }
+  }
+
+  return { slugs, codes };
+}
+
+const customSlugs = new Set([
+  'custom-expedition',
+  'photography-tour',
+  'scientific-expeditions',
+  'noshaq-expedition-support',
+  'noshaq-expeditions',
+  'media-support',
+  'ski-expeditions',
+  'business-investment',
+  'veteran-return',
+]);
+
+const folderFor = (tour: Tour) =>
+  customSlugs.has(tour.slug) ? 'custom-tours' : 'featured-tours';
+
+const titleOf = (tour: Tour) =>
+  tour.title || tour.name || 'Afghanistan Tour';
+
+const heroOf = (tour: Tour) =>
+  tour.hero_image ||
+  tour.hero_image_path ||
+  tour.image ||
+  tour.overview_image ||
+  tour.overview_image_path ||
+  tour.thumbnail_image_path ||
+  `/assets/images/${folderFor(tour)}/${tour.slug}/hero.webp`;
+
+const summaryOf = (tour: Tour) =>
+  tour.summary ||
+  tour.description ||
+  'A carefully designed Afghanistan journey built around real access, local knowledge, and operational support.';
+
+const priceLabelOf = (tour: Tour) => {
+  const raw = String(tour.price_from || '').trim();
+
+  if (!raw) return 'Custom quote';
+  if (raw.toLowerCase() === 'inquire') return 'Request proposal';
+
+  const numeric = Number(raw.replace(/[$,\s]/g, ''));
+
+  return Number.isFinite(numeric)
+    ? `From $${numeric.toLocaleString('en-US')} / person`
+    : raw;
+};
+
+const metaOf = (tour: Tour) => [
+  tour.duration_days ? `${tour.duration_days} Days` : 'Private Journey',
+  tour.travel_style || tour.style || 'Cultural',
+  tour.activity_level || 'Route-aware',
+].filter(Boolean);
+
+const routeOf = (tour: Tour) => {
+  const hubs = Array.isArray(tour.hubs)
+    ? tour.hubs.map((h: any) => h.name || h.title || h.slug).filter(Boolean)
+    : [];
+
+  const provinces = Array.isArray(tour.provinces)
+    ? tour.provinces.map((p: any) => p.name || p.title || p.slug).filter(Boolean)
+    : [];
+
+  return (hubs.length ? hubs : provinces).slice(0, 6);
+};
+
+const galleryOf = (tour: Tour) => {
+  const supplied = Array.isArray(tour.gallery) ? tour.gallery : [];
+
+  return [
+    ...supplied,
+    heroOf(tour),
+  ]
+    .filter(Boolean)
+    .filter((item, index, arr) => arr.indexOf(item) === index)
+    .slice(0, 4);
+};
+
+const allTours = getTours().filter((tour: Tour) => tour?.slug);
+const featuredIds = getFeaturedIds();
+
+let safeTours = allTours.filter((tour: Tour) => {
+  const slug = String(tour.slug || '').trim();
+  const code = String(tour.tour_code || tour.code || '').trim();
+
+  return featuredIds.slugs.has(slug) || featuredIds.codes.has(code);
+});
+
+if (!safeTours.length) {
+  safeTours = tours.filter((tour: Tour) => tour?.slug);
+}
+
+safeTours = safeTours.slice(0, 10);
+---
+
+<section id="featured-section" class="featured-tours-section" data-featured-section>
+  <div class="featured-wrap">
+    <div class="featured-head">
+      <p class="section-kicker">Featured Tours</p>
+      <h2>Curated journeys built around real access.</h2>
+      <p>Our featured itineraries combine the major sights with the operational planning required to travel responsibly through Afghanistan.</p>
+    </div>
+
+    {safeTours.length > 0 && (
+      <div class="featured-showcase">
+        <div class="featured-active">
+          {safeTours.map((tour, index) => (
+            <article class={`featured-active-card ${index === 0 ? 'is-active' : ''}`} data-featured-panel={index}>
+              <div class="featured-active-image">
+                <img src={heroOf(tour)} alt={titleOf(tour)} loading={index === 0 ? 'eager' : 'lazy'} />
+              </div>
+
+              <div class="featured-active-copy">
+                <p class="featured-label">{tour.season || 'Year-round'}</p>
+                <h3>{titleOf(tour)}</h3>
+                <div class="featured-meta">
+                  {metaOf(tour).map((item) => <span>{item}</span>)}
+                </div>
+                <p class="featured-price">{priceLabelOf(tour)}</p>
+                <p>{summaryOf(tour)}</p>
+                {routeOf(tour).length > 0 && <div class="featured-route">{routeOf(tour).join(' → ')}</div>}
+
+                <div class="featured-actions">
+                  <button type="button" data-featured-open={index}>Preview details</button>
+                  <a href={`/tours/${tour.slug}/`}>View full itinerary</a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div class="featured-rail" aria-label="Featured tour selector">
+          {safeTours.map((tour, index) => (
+            <button type="button" class={`featured-thumb ${index === 0 ? 'is-active' : ''}`} data-featured-select={index}>
+              <img src={heroOf(tour)} alt="" loading="lazy" />
+              <span>{tour.season || 'Year-round'}</span>
+              <strong>{titleOf(tour)}</strong>
+              <small class="featured-thumb-price">{priceLabelOf(tour)}</small>
+            </button>
+          ))}
+        </div>
+      </div>
+    )}
+  </div>
+
+  <div class="featured-modal" data-featured-modal hidden>
+    <div class="featured-modal__overlay" data-featured-close></div>
+
+    <article class="featured-modal__dialog" role="dialog" aria-modal="true" aria-label="Tour preview">
+      <button type="button" class="featured-modal__close" data-featured-close aria-label="Close preview">×</button>
+
+      <div class="featured-modal__grid">
+        <div class="featured-modal__galleryWrap">
+          <div class="featured-modal__gallery" data-featured-gallery></div>
+        </div>
+
+        <div class="featured-modal__content">
+          <p class="section-kicker">Tour Preview</p>
+          <h3 data-featured-modal-title></h3>
+          <div class="featured-modal__meta" data-featured-modal-meta></div>
+          <p data-featured-modal-summary></p>
+          <div class="featured-modal__route" data-featured-modal-route></div>
+
+          <div class="featured-modal__actions">
+            <a data-featured-modal-itinerary href="/tours/">Open itinerary</a>
+            <a data-featured-modal-contact href="/contact/">Contact us about this tour</a>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<script define:vars={{ safeTours }}>
+  const panels = [...document.querySelectorAll('[data-featured-panel]')];
+  const thumbs = [...document.querySelectorAll('[data-featured-select]')];
+  const modal = document.querySelector('[data-featured-modal]');
+  const title = document.querySelector('[data-featured-modal-title]');
+  const meta = document.querySelector('[data-featured-modal-meta]');
+  const summary = document.querySelector('[data-featured-modal-summary]');
+  const route = document.querySelector('[data-featured-modal-route]');
+  const gallery = document.querySelector('[data-featured-gallery]');
+  const itinerary = document.querySelector('[data-featured-modal-itinerary]');
+  const contact = document.querySelector('[data-featured-modal-contact]');
+
+  const customSlugs = new Set([
+    'custom-expedition',
+    'photography-tour',
+    'scientific-expeditions',
+    'noshaq-expedition-support',
+    'noshaq-expeditions',
+    'media-support',
+    'ski-expeditions',
+    'business-investment',
+    'veteran-return',
+  ]);
+
+  const folderForClient = (tour) =>
+    customSlugs.has(tour.slug) ? 'custom-tours' : 'featured-tours';
+
+  const titleOfClient = (tour) =>
+    tour.title || tour.name || 'Afghanistan Tour';
+
+  const heroOfClient = (tour) =>
+    tour.hero_image ||
+    tour.hero_image_path ||
+    tour.image ||
+    tour.overview_image ||
+    tour.overview_image_path ||
+    tour.thumbnail_image_path ||
+    `/assets/images/${folderForClient(tour)}/${tour.slug}/hero.webp`;
+
+  const summaryOfClient = (tour) =>
+    tour.summary ||
+    tour.description ||
+    'A carefully designed Afghanistan journey built around real access, local knowledge, and operational support.';
+
+  const metaOfClient = (tour) => [
+    tour.duration_days ? `${tour.duration_days} Days` : 'Private Journey',
+    tour.travel_style || tour.style || 'Cultural',
+    tour.activity_level || 'Route-aware',
+  ].filter(Boolean);
+
+  const routeOfClient = (tour) => {
+    const hubs = Array.isArray(tour.hubs)
+      ? tour.hubs.map((h) => h.name || h.title || h.slug).filter(Boolean)
+      : [];
+
+    const provinces = Array.isArray(tour.provinces)
+      ? tour.provinces.map((p) => p.name || p.title || p.slug).filter(Boolean)
+      : [];
+
+    return (hubs.length ? hubs : provinces).slice(0, 6);
+  };
+
+  const galleryOfClient = (tour) => {
+    const supplied = Array.isArray(tour.gallery) ? tour.gallery : [];
+
+    return [
+      ...supplied,
+      heroOfClient(tour),
+    ].filter(Boolean).filter((item, index, arr) => arr.indexOf(item) === index).slice(0, 4);
+  };
+
+  function setActive(index) {
+    if (!panels.length || !thumbs.length) return;
+
+    const activeIndex = ((index % panels.length) + panels.length) % panels.length;
+
+    panels.forEach((panel, i) => panel.classList.toggle('is-active', i === activeIndex));
+    thumbs.forEach((thumb, i) => thumb.classList.toggle('is-active', i === activeIndex));
+  }
+
+  function openModal(index) {
+    const tour = safeTours[index];
+
+    if (!tour || !modal) return;
+
+    const name = titleOfClient(tour);
+
+    title.textContent = name;
+    meta.innerHTML = metaOfClient(tour).map((item) => `<span>${item}</span>`).join('');
+    summary.textContent = summaryOfClient(tour);
+
+    const routeItems = routeOfClient(tour);
+    route.textContent = routeItems.length
+      ? routeItems.join(' → ')
+      : 'Route customized around timing, access, and traveler priorities.';
+
+    const images = galleryOfClient(tour);
+    gallery.innerHTML = images.map((src) => `<img src="${src}" alt="${name}" loading="lazy" />`).join('');
+
+    itinerary.href = `/tours/${tour.slug}/`;
+    contact.href = `/contact/?tour=${encodeURIComponent(tour.slug)}`;
+
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+
+  thumbs.forEach((button) => {
+    button.addEventListener('click', () => {
+      setActive(Number(button.dataset.featuredSelect));
+    });
+  });
+
+  document.querySelectorAll('[data-featured-open]').forEach((button) => {
+    button.addEventListener('click', () => {
+      openModal(Number(button.dataset.featuredOpen));
+    });
+  });
+
+  document.querySelectorAll('[data-featured-close]').forEach((button) => {
+    button.addEventListener('click', () => {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+    });
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && modal && !modal.hidden) {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+    }
+  });
+
+  setActive(0);
+</script>
+
+<style>
+  .featured-tours-section {
+    background: #f7f0e6;
+    color: #101820;
+    padding: clamp(2.5rem, 4.5vw, 4.75rem) 0;
+    border-top: 1px solid rgba(16,24,32,.08);
+    border-bottom: 1px solid rgba(16,24,32,.08);
+  }
+
+  .featured-wrap {
+    width: min(1120px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .section-kicker {
+    margin: 0;
+    color: #b77926;
+    font-size: .72rem;
+    font-weight: 950;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+  }
+
+  .featured-head {
+    max-width: 760px;
+    margin-bottom: 1.4rem;
+  }
+
+  .featured-head h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.25rem, 4.2vw, 4.4rem);
+    line-height: .9;
+    letter-spacing: -.06em;
+    margin: .75rem 0 1rem;
+  }
+
+  .featured-head p:not(.section-kicker) {
+    color: #3f4a57;
+    line-height: 1.75;
+    max-width: 58ch;
+    margin: 0;
+  }
+
+  .featured-active {
+    position: relative;
+    min-height: 360px;
+  }
+
+  .featured-active-card {
+    display: none;
+    overflow: hidden;
+    border: 1px solid rgba(16,24,32,.12);
+    border-radius: 2rem;
+    background: #fff;
+    box-shadow: 0 24px 70px rgba(20,14,8,.12);
+  }
+
+  .featured-active-card.is-active {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(330px, .75fr);
+  }
+
+  .featured-active-image {
+    min-height: 360px;
+    background: #101820;
+  }
+
+  .featured-active-image img {
+    width: 100%;
+    height: 100%;
+    min-height: 360px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .featured-active-copy {
+    padding: clamp(1.6rem, 3vw, 2.7rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .featured-label {
+    color: #b77926;
+    margin: 0 0 .9rem;
+    font-size: .72rem;
+    font-weight: 950;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+  }
+
+  .featured-active-copy h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.85rem, 3vw, 3.35rem);
+    line-height: .94;
+    letter-spacing: -.055em;
+    margin: 0;
+  }
+
+  .featured-meta,
+  .featured-modal__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .55rem;
+    margin: 1rem 0;
+  }
+
+  .featured-meta span,
+  .featured-modal__meta span {
+    border-radius: 999px;
+    background: #f2eadc;
+    color: #25303b;
+    padding: .45rem .75rem;
+    font-size: .72rem;
+    font-weight: 900;
+  }
+
+  .featured-active-copy p:not(.featured-label) {
+    color: #3f4a57;
+    line-height: 1.75;
+    margin: 0;
+  }
+
+  .featured-route {
+    margin-top: 1.2rem;
+    color: #8c5d17;
+    font-weight: 850;
+    line-height: 1.55;
+  }
+
+  .featured-actions,
+  .featured-modal__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .85rem;
+    margin-top: 1.6rem;
+  }
+
+  .featured-actions button,
+  .featured-actions a,
+  .featured-modal__actions a {
+    border: 0;
+    border-radius: 999px;
+    padding: .95rem 1.15rem;
+    font-size: .78rem;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .featured-actions button,
+  .featured-modal__actions a:first-child {
+    background: #d6a23a;
+    color: #111;
+  }
+
+  .featured-actions a,
+  .featured-modal__actions a:last-child {
+    background: #101820;
+    color: #fff;
+  }
+
+  .featured-rail {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 1.05rem .2rem .25rem;
+    scrollbar-width: thin;
+  }
+
+  .featured-thumb {
+    flex: 0 0 190px;
+    text-align: left;
+    border: 1px solid rgba(16,24,32,.1);
+    border-radius: 1.25rem;
+    overflow: hidden;
+    background: #fff;
+    cursor: pointer;
+    box-shadow: 0 12px 35px rgba(20,14,8,.08);
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+  }
+
+  .featured-thumb:hover,
+  .featured-thumb.is-active {
+    transform: translateY(-3px);
+    border-color: #d6a23a;
+    box-shadow: 0 18px 42px rgba(20,14,8,.14);
+  }
+
+  .featured-thumb img {
+    width: 100%;
+    height: 104px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .featured-thumb span,
+  .featured-thumb strong {
+    display: block;
+    padding-inline: 1rem;
+  }
+
+  .featured-thumb span {
+    padding-top: .75rem;
+    color: #b77926;
+    font-size: .64rem;
+    font-weight: 950;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+  }
+
+  .featured-thumb strong {
+    padding-top: .45rem;
+    padding-bottom: 1rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.08rem;
+    line-height: 1.05;
+  }
+
+  .featured-modal[hidden] {
+    display: none;
+  }
+
+  .featured-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+  }
+
+  .featured-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10,12,14,.72);
+    backdrop-filter: blur(8px);
+  }
+
+  .featured-modal__dialog {
+    position: relative;
+    width: min(1040px, 100%);
+    max-height: min(720px, 92vh);
+    overflow: auto;
+    border-radius: 2rem;
+    background: #fffaf2;
+    box-shadow: 0 30px 90px rgba(0,0,0,.42);
+  }
+
+  .featured-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 3;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 999px;
+    background: #101820;
+    color: #fff;
+    font-size: 1.6rem;
+    cursor: pointer;
+  }
+
+  .featured-modal__grid {
+    display: grid;
+    grid-template-columns: 1.12fr .88fr;
+  }
+
+  .featured-modal__galleryWrap {
+    position: relative;
+    min-height: 560px;
+    overflow: hidden;
+    background: #101820;
+  }
+
+  .featured-modal__gallery {
+    display: flex;
+    height: 100%;
+    min-height: 560px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+
+  .featured-modal__gallery::-webkit-scrollbar {
+    display: none;
+  }
+
+  .featured-modal__gallery img {
+    flex: 0 0 100%;
+    width: 100%;
+    min-height: 560px;
+    object-fit: contain;
+    background: #101820;
+  }
+
+  .featured-modal__content {
+    padding: clamp(2rem, 4vw, 3.5rem);
+  }
+
+  .featured-modal__content h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.85rem, 3vw, 3.35rem);
+    line-height: .94;
+    letter-spacing: -.055em;
+    margin: .75rem 0 0;
+  }
+
+  .featured-modal__content p {
+    color: #3f4a57;
+    line-height: 1.7;
+  }
+
+  .featured-modal__route {
+    border-top: 1px solid rgba(16,24,32,.12);
+    border-bottom: 1px solid rgba(16,24,32,.12);
+    padding: 1rem 0;
+    color: #8c5d17;
+    font-weight: 850;
+    line-height: 1.55;
+  }
+
+  @media(max-width: 900px) {
+    .featured-active-card.is-active,
+    .featured-modal__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .featured-active-image,
+    .featured-active-image img {
+      min-height: 260px;
+    }
+
+    .featured-modal__galleryWrap,
+    .featured-modal__gallery,
+    .featured-modal__gallery img {
+      min-height: 320px;
+    }
+  }
+
+  .featured-price {
+    margin: .9rem 0 .25rem;
+    color: #a86920;
+    font-size: 1.05rem;
+    font-weight: 900;
+    letter-spacing: .01em;
+  }
+
+  /* FEATURED-THUMB-PRICE-START */
+
+  .featured-thumb strong {
+    padding-bottom: .35rem;
+  }
+
+  .featured-thumb-price {
+    display: block;
+    padding: 0 1rem .9rem;
+    color: #945d08;
+    font-size: .76rem;
+    line-height: 1.25;
+    font-weight: 900;
+    letter-spacing: .01em;
+  }
+
+  /* FEATURED-THUMB-PRICE-END */
+
+</style>

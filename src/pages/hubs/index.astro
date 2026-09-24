@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HubsSection from '../../components/HubsSection.astro';
+import { getTours, getHubs, getAttractions, getHotels, getFoodItems } from '../../lib/buildRelations';
+
+const tours = getTours();
+const hubs = getHubs();
+const attractions = getAttractions();
+const hotels = getHotels();
+const food = getFoodItems();
+---
+
+<BaseLayout
+  title="Travel Hubs | AfghanTours"
+  description="Operational hubs for Afghanistan travel, routing, attractions, hotels, food, and transportation."
+  image="/assets/images/heroes/hubs/hero.webp"
+>
+  <HubsSection hubs={hubs} tours={tours} attractions={attractions} hotels={hotels} food={food} />
+</BaseLayout>

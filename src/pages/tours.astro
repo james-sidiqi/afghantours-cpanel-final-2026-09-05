@@ -1,0 +1,226 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FeaturedTours from '../components/FeaturedTours.astro';
+import CustomTours from '../components/CustomTours.astro';
+import TourDirectory from '../components/TourDirectory.astro';
+import { getTours } from '../lib/buildRelations';
+
+const tours = getTours().filter((tour) => tour.is_active !== false && tour.slug);
+
+/*
+ * Custom journeys are services built collaboratively with the traveler.
+ * They do not have fixed itineraries and therefore must not appear in
+ * the regular tour directory or packaged-tour featured section.
+ */
+const customJourneySlugs = new Set([
+  'photography-tour',
+  'scientific-expeditions',
+  'noshaq-expedition-support',
+  'media-support',
+  'ski-expeditions',
+  'business-investment',
+  'veteran-return',
+  'custom-expedition',
+]);
+
+const packagedTours = tours.filter(
+  (tour) => !customJourneySlugs.has(String(tour.slug))
+);
+
+const featuredTours = packagedTours
+  .filter((tour) => String(tour.is_featured ?? '').trim() === '1')
+  .slice(0, 8);
+const directoryTours = tours.filter((tour) => String(tour.tour_type || "").toLowerCase() !== "custom");
+---
+
+<BaseLayout
+  title="Tours | AfghanTours"
+  description="Browse Afghanistan tours, cultural circuits, mountaineering expeditions, and custom journeys built around real access and local knowledge."
+  image="/assets/images/heroes/tours/hero.webp"
+>
+  <FeaturedTours tours={featuredTours} />
+
+  <CustomTours />
+
+  <section class="tour-list-intro">
+    <div>
+      <p>All Tours</p>
+      <h1>Browse Afghanistan Routes</h1>
+      <span>
+        Use the filters below to compare our published tours with defined routes, durations,
+        seasonal timing, and planned itineraries.
+      </span>
+    </div>
+  </section>
+
+  <TourDirectory tours={packagedTours} />
+
+  <section class="custom-cta">
+    <img
+        src="/assets/images/logo/custom-search.webp"
+        alt=""
+        class="custom-search-icon"
+        loading="lazy"
+        width="96"
+        height="96"
+      />
+    <div>
+      <h2>Didn’t Find What You’re Looking For?</h2>
+      <p>
+        Not every journey fits into a predefined itinerary. Whether you are a photographer,
+        filmmaker, veteran, researcher, mountaineer, journalist, or family group, we can develop
+        a private itinerary built around your interests, schedule, and comfort level.
+      </p>
+      <div class="cta-actions">
+        <a href="/contact/?type=custom-tour">Start Custom Inquiry</a>
+        <a href="/contact/">Contact Our Team</a>
+      </div>
+    </div>
+    <div class="cta-tags">
+      <span>Photographers</span>
+      <span>Filmmakers</span>
+      <span>Researchers</span>
+      <span>Veterans</span>
+      <span>Diaspora Travelers</span>
+      <span>Expeditions</span>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .tour-list-intro {
+    background: #ffffff;
+    color: #101820;
+    padding: clamp(4rem, 6vw, 6rem) 0 1rem;
+    border-top: 1px solid rgba(16,24,32,.08);
+  }
+
+  .tour-list-intro > div {
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+    max-width: 900px;
+  }
+
+  .tour-list-intro p {
+    margin: 0;
+    color: #b46b00;
+    font-size: .72rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  .tour-list-intro h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    line-height: .95;
+    letter-spacing: -.06em;
+    margin: .5rem 0 1rem;
+  }
+
+  .tour-list-intro span {
+    color: #4b5563;
+    line-height: 1.75;
+    font-size: 1.05rem;
+  }
+
+  .custom-cta {
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto 5rem;
+    background: #f7f0e6;
+    border: 1px solid #dfd0bc;
+    border-radius: .75rem;
+    box-shadow: 0 12px 34px rgba(50,36,18,.08);
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 90px 1fr .95fr;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .cta-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #101820;
+    color: #d6a548;
+    display: grid;
+    place-items: center;
+    font-size: 2rem;
+  }
+
+  .custom-cta h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 2.4rem;
+    line-height: 1;
+    margin: 0 0 .7rem;
+  }
+
+  .custom-cta p {
+    line-height: 1.7;
+    color: #333;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1.2rem;
+  }
+
+  .cta-actions a {
+    padding: .95rem 1.25rem;
+    border-radius: .35rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: .78rem;
+    font-weight: 900;
+  }
+
+  .cta-actions a:first-child {
+    background: #b98237;
+    color: #fff;
+  }
+
+  .cta-actions a:last-child {
+    border: 1px solid #101820;
+    color: #101820;
+  }
+
+  .cta-tags {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .8rem;
+  }
+
+  .cta-tags span {
+    border: 1px solid #e3d7c5;
+    border-radius: .45rem;
+    padding: .85rem;
+    color: #5a5146;
+    font-weight: 800;
+    font-size: .88rem;
+  }
+
+  @media(max-width:850px) {
+    .custom-cta { grid-template-columns: 1fr; }
+    .cta-tags { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media(max-width:520px) {
+    .cta-tags { grid-template-columns: 1fr; }
+  }
+
+  .custom-search-icon {
+    width: 96px !important;
+    height: 96px !important;
+    display: block !important;
+    flex: 0 0 96px !important;
+    object-fit: contain !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+</style>

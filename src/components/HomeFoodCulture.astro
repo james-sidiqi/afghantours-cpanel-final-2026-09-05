@@ -1,0 +1,173 @@
+<section id="food-culture" class="food-culture-home" aria-labelledby="food-culture-title">
+  <div class="food-culture-wrap">
+    <div class="food-culture-media" aria-hidden="true">
+      <video autoplay muted loop playsinline preload="metadata" poster="/assets/images/heroes/food-and-culture/hero.webp">
+        <source src="/assets/images/heroes/food-and-culture/hero.webm" type="video/webm" />
+        <source src="/assets/images/heroes/food-and-culture/hero.mp4" type="video/mp4" />
+      </video>
+      <img src="/assets/images/heroes/food-and-culture/hero.webp" alt="" width="1600" height="900" loading="lazy" />
+    </div>
+
+    <div class="food-culture-panel">
+      <p class="section-kicker">Food & Culture</p>
+      <h2 id="food-culture-title">Food belongs inside destination planning.</h2>
+      <p>
+        Afghan hospitality is not a side activity. Meals, tea houses, markets, orchards, bakeries,
+        dried fruits, restaurants, and regional produce are part of how travelers understand each hub.
+      </p>
+
+      <div class="food-culture-links" aria-label="Food and culture categories">
+        <span>Dishes</span>
+        <span>Drinks</span>
+        <span>Produce</span>
+        <span>Dried Fruits</span>
+        <span>Restaurants</span>
+        <span>Tea Houses</span>
+        <span>Markets</span>
+        <span>Cultural Experiences</span>
+      </div>
+
+      <a href="/food-culture/" class="food-culture-cta">Explore Food & Culture</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .food-culture-home {
+    background: #fbf6ed;
+    color: #101820;
+    padding: clamp(4.5rem, 7vw, 7.5rem) 0;
+  }
+
+  .food-culture-wrap {
+    position: relative;
+    width: min(1280px, calc(100% - 2rem));
+    min-height: clamp(520px, 48vw, 720px);
+    margin: 0 auto;
+    overflow: hidden;
+    border: 1px solid rgba(16, 24, 32, .12);
+    border-radius: 1.4rem;
+    background: #11141a;
+    box-shadow: 0 28px 70px rgba(28, 20, 11, .16);
+    isolation: isolate;
+  }
+
+  .food-culture-media,
+  .food-culture-media video,
+  .food-culture-media img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .food-culture-media video,
+  .food-culture-media img {
+    object-fit: cover;
+  }
+
+  .food-culture-media img {
+    z-index: 0;
+  }
+
+  .food-culture-media video {
+    z-index: 1;
+  }
+
+  .food-culture-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background:
+      linear-gradient(90deg, rgba(251, 246, 237, .94) 0%, rgba(251, 246, 237, .84) 43%, rgba(251, 246, 237, .48) 70%, rgba(16, 24, 32, .18) 100%),
+      linear-gradient(0deg, rgba(16, 24, 32, .18), rgba(16, 24, 32, .02));
+  }
+
+  .food-culture-panel {
+    position: relative;
+    z-index: 3;
+    max-width: 850px;
+    padding: clamp(2rem, 6vw, 5.25rem);
+  }
+
+  .section-kicker {
+    margin: 0 0 1rem;
+    color: #b98237;
+    font-size: .78rem;
+    font-weight: 950;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+  }
+
+  .food-culture-panel h2 {
+    margin: 0;
+    max-width: 790px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.4rem, 7vw, 7.5rem);
+    line-height: .86;
+    letter-spacing: -.078em;
+    color: #101820;
+  }
+
+  .food-culture-panel p:not(.section-kicker) {
+    max-width: 760px;
+    margin: 1.65rem 0 0;
+    color: #344151;
+    font-size: clamp(1rem, 1.5vw, 1.18rem);
+    line-height: 1.82;
+  }
+
+  .food-culture-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .65rem;
+    max-width: 760px;
+    margin: 1.6rem 0 0;
+  }
+
+  .food-culture-links span {
+    border: 1px solid rgba(16, 24, 32, .14);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .62);
+    padding: .56rem .82rem;
+    color: #243140;
+    font-size: .78rem;
+    font-weight: 900;
+  }
+
+  .food-culture-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+    border-radius: 999px;
+    background: #101820;
+    color: #fff;
+    padding: 1rem 1.35rem;
+    font-weight: 950;
+    text-decoration: none;
+    box-shadow: 0 18px 34px rgba(16, 24, 32, .22);
+  }
+
+  .food-culture-cta:hover {
+    background: #d6a23a;
+    color: #101820;
+  }
+
+  @media(max-width: 760px) {
+    .food-culture-wrap {
+      min-height: 640px;
+    }
+
+    .food-culture-wrap::after {
+      background:
+        linear-gradient(0deg, rgba(251,246,237,.96) 0%, rgba(251,246,237,.92) 58%, rgba(251,246,237,.34) 100%),
+        linear-gradient(0deg, rgba(16,24,32,.18), rgba(16,24,32,.18));
+    }
+
+    .food-culture-panel {
+      padding: 2rem;
+    }
+  }
+</style>

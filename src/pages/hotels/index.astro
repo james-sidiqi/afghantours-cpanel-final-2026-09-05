@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import HotelPopupGrid from '../../components/cards/HotelPopupGrid.astro';
+import { getHotels } from '../../lib/buildRelations';
+
+const hotels = getHotels().filter((hotel) => hotel.is_active !== false);
+---
+
+<BaseLayout
+  title="Hotels | AfghanTours"
+  description="Hotel references used for Afghanistan tour planning, organized by operational hub."
+  image="/assets/images/heroes/hotels/hero.webp"
+>
+  <PageHero
+    eyebrow="Accommodation Network"
+    title="Hotels Used for Afghanistan Itineraries"
+    text="A practical reference of hotels and guesthouses used across AfghanTours routes, organized by hub, comfort level, facilities, and traveler type."
+    image="/assets/images/heroes/hotels/hero.webp"
+    height="min-h-[58vh]"
+  />
+
+  <HotelPopupGrid
+    hotels={hotels}
+    title="Hotel References by Hub"
+    intro="These properties are not presented as a generic booking engine. They are shown as practical accommodation references for real Afghanistan itineraries, based on location, comfort level, facilities, and route usefulness."
+  />
+</BaseLayout>

@@ -1,0 +1,29 @@
+tour_code,tour_slug,date_start,date_end,status,notes
+PHOT,photography-tour,Inquire,Inquire,on_request,Photographers and specialized media groups
+SCIE,scientific-expeditions,Inquire,Inquire,on_request,Research teams and scientific field studies
+NOSHAQ,noshaq-expeditions,Inquire,Inquire,on_request,Custom mountaineering and climbing dates
+MEDIA,media-support,Inquire,Inquire,on_request,Logistics and support for media production
+SKI,ski-expeditions,Inquire,Inquire,on_request,Custom back-country skiing dates
+BIZ,business-investment,Inquire,Inquire,on_request,Corporate and business delegation dates
+VET,veteran-return,Inquire,Inquire,on_request,Tailored itineraries for returning veterans
+CTME,custom-expedition,Inquire,Inquire,on_request,Custom bespoke itineraries on request
+TTWC,trek-the-wakhan-corridor,2026-07-01,2026-07-14,open,Summer high-altitude window
+TGHT,timurid-grandeur-herat-tour,2026-08-06,2026-08-12,open,Herat focus regional loop
+TGHT-EXT,timurid-grandeur-herat-tour-add-minaret-e-jam,2026-08-06,2026-08-17,limited,Optional post-tour extension from Herat to Minaret-e-Jam
+KBLS,kabul-surroundings,2026-08-13,2026-08-18,open,City-based loop
+WKND,weekend-in-kabul,2026-08-20,2026-08-22,open,Short weekend layout
+SUMC,summer-circuit,2026-08-20,2026-08-28,open,Summer circuit routing
+TSRA,treasures-of-silk-road-afghanistan,2026-09-07,2026-09-16,open,Autumn cross-country departure
+CAD,central-afghanistan-discovery,2026-09-12,2026-09-19,open,Fall departure window
+ADTF,afghanistan-discovery-tour-fall,2026-09-21,2026-09-29,open,First fall departure loop
+PVEH,panjshir-valley-emeralds-history,2026-09-28,2026-10-01,open,Short loop focusing on history and gem mines
+KBLS,kabul-surroundings,2026-10-05,2026-10-10,open,City-based loop
+ADTF,afghanistan-discovery-tour-fall,2026-10-12,2026-10-20,open,Second fall departure loop
+KTDE,kandahar-durrani-empire-tour,2026-10-26,2026-10-31,open,Southern region focus
+WNTC,winter-circuit,2026-12-05,2026-12-17,open,Early winter circuit route
+BSKI,bamyan-skiing-tour,2027-02-09,2027-02-13,open,Winter skiing window in Bamyan
+WNTC,winter-circuit,2027-02-16,2027-02-27,open,Late winter circuit route
+BUZE,buzkashi-expedition,2027-02-23,2027-03-04,open,Peak buzkashi tournament season
+WKND,weekend-in-kabul,2027-03-06,2027-03-08,open,Spring weekend layout
+ADTS,afghanistan-discovery-tour-spring,2027-04-20,2027-04-28,limited,Limited spots on spring departure
+TTWC,trek-the-wakhan-corridor,2027-08-01,2027-08-14,open,High-altitude summer window

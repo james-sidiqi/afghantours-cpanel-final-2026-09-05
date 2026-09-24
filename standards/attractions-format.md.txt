@@ -1,0 +1,284 @@
+AFGHANTOURS ATTRACTION CONTENT STANDARD
+Version 1.0
+
+================================================================================
+FRONTMATTER
+
+⸻
+
+title: “”
+slug: “”
+attraction_code: “”
+
+province: “”
+primary_hub: “”
+
+category: “”
+activity_level: “Easy”
+
+season: “Year Round”
+
+hero_image_path: “”
+
+seo_title: “”
+seo_description: “”
+
+related_tours:
+
+related_attractions:
+
+related_food:
+
+related_activities:
+
+⸻
+
+================================================================================
+OVERVIEW
+
+Provide a concise introduction explaining:
+
+• What the attraction is
+• Why it matters
+• Why travelers visit
+• What makes it distinctive
+• How it fits into a wider Afghanistan journey
+
+Target Length:
+150–250 words
+
+Writing Style:
+Professional destination guide written by an experienced Kabul-based tour operator.
+
+================================================================================
+WHY VISIT
+
+Explain the primary reasons travelers choose to visit.
+
+Examples:
+
+• Historical importance
+• Cultural significance
+• Architecture
+• Landscapes
+• Photography
+• Archaeology
+• Local traditions
+
+Use short paragraphs or bullet points.
+
+================================================================================
+HISTORICAL & CULTURAL CONTEXT
+
+Explain:
+
+• Historical period
+• Key events
+• Cultural importance
+• Architectural significance
+• Local traditions
+
+Remain factual and neutral.
+
+Avoid political commentary.
+
+Target Length:
+200–500 words
+
+================================================================================
+WHAT YOU WILL SEE
+
+Describe the actual visitor experience.
+
+Examples:
+
+• Buildings
+• Monuments
+• Markets
+• Landscapes
+• Villages
+• Religious sites
+• Museums
+• Archaeological remains
+• Viewpoints
+
+Answer:
+
+“What will a traveler actually experience when visiting?”
+
+================================================================================
+VISITOR REALITY & LOGISTICS
+
+ACCESS
+
+Explain:
+
+• How visitors typically reach the site
+• Driving times
+• Access routes
+• Transportation realities
+
+WALKING & TERRAIN
+
+Explain:
+
+• Stairs
+• Uneven ground
+• Hiking requirements
+• Elevation
+• Mobility considerations
+
+TIME REQUIRED
+
+Examples:
+
+• 30 minutes
+• 1–2 hours
+• Half day
+• Full day
+
+SEASONAL CONSIDERATIONS
+
+Explain:
+
+• Weather
+• Snow
+• Road conditions
+• Daylight considerations
+
+Avoid guarantees.
+
+================================================================================
+PHOTOGRAPHY NOTES
+
+Describe:
+
+• Best lighting conditions
+• Best viewpoints
+• Landscape opportunities
+• Architectural photography opportunities
+• Seasonal considerations
+
+Keep practical and useful.
+
+================================================================================
+BEST COMBINED WITH
+
+Visitors frequently combine this attraction with:
+
+• Attraction A
+• Attraction B
+• Attraction C
+
+Use nearby attractions or commonly paired experiences.
+
+================================================================================
+RELATED FOOD & CULTURE
+
+Reference nearby:
+
+• Dishes
+• Restaurants
+• Tea houses
+• Cultural experiences
+• Handicrafts
+• Markets
+
+Examples:
+
+• Qabuli Palaw
+• Chai Khana Culture
+• Pottery Workshops
+• Carpet Weaving
+• Traditional Bazaars
+
+================================================================================
+PRACTICAL INFORMATION
+
+Province:
+Primary Hub:
+Typical Visit Length:
+Activity Level:
+Best Season:
+
+Suitable For:
+
+• History Travelers
+• Cultural Travelers
+• Families
+• Photographers
+• Researchers
+• Adventure Travelers
+
+================================================================================
+RELATED ATTRACTIONS
+
+• Attraction A
+• Attraction B
+• Attraction C
+
+================================================================================
+RELATED TOURS
+
+• Tour A
+• Tour B
+• Tour C
+
+================================================================================
+AFGHANTOURS WRITING RULES
+
+VOICE
+
+Use:
+
+• Professional
+• Knowledgeable
+• Historically grounded
+• Operationally realistic
+• Hospitality-focused
+
+Avoid:
+
+• Bucket-list language
+• Adventure clichés
+• Danger narratives
+• Political commentary
+• Travel-blog exaggeration
+
+================================================================================
+PRIMARY HUB RULE
+
+primary_hub ALWAYS means:
+
+“The overnight city used by travelers accessing this attraction.”
+
+Examples:
+
+Massoud Mausoleum
+province: panjshir
+primary_hub: kabul-city
+
+Band-e-Amir
+province: bamyan
+primary_hub: bamyan-city
+
+Jam Minaret
+province: ghor
+primary_hub: herat-city
+
+Primary Hub DOES NOT mean:
+
+• Nearest city
+• Administrative center
+• Closest town
+• Provincial capital
+
+It means the overnight hub used in AfghanTours itineraries.
+
+================================================================================
+GOAL
+
+Every attraction page should read like it was written by an experienced
+Afghanistan tour operator helping a traveler understand a place before visiting,
+while remaining historically accurate, operationally realistic, and useful for
+trip planning.

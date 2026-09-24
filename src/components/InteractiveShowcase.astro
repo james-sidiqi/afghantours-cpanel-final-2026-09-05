@@ -1,0 +1,142 @@
+---
+const {
+  eyebrow = 'Explore',
+  title = 'Explore Afghanistan',
+  intro = '',
+  items = [],
+  sectionId = 'interactive-showcase',
+  className = ''
+} = Astro.props;
+const normalized = (items || []).filter(Boolean).map((item, index) => ({
+  title: item.title || item.name || 'Untitled',
+  label: item.label || item.eyebrow || item.region || item.group || 'AfghanTours',
+  description: item.description || item.summary || item.short_blurb || item.excerpt || '',
+  details: item.details || item.content || '',
+  image: item.image || item.hero_image || item.hero_image_path || item.thumbnail_image_path || item.map_image || '/assets/images/placeholders/default-card.webp',
+  href: item.href || '#',
+  cta: item.cta || 'Explore',
+  meta: item.meta || item.duration || item.best_for || item.bestFor || '',
+  map: item.map || item.map_image || item.map_image_path || '',
+  active: index === 0
+}));
+const first = normalized[0] || {};
+---
+<section class={`interactive-showcase ${className}`} id={sectionId}>
+  <div class="interactive-showcase__bg" style={`background-image: url('${first.image || '/assets/images/placeholders/default-hero.webp'}')`}></div>
+  <div class="interactive-showcase__shade"></div>
+  <div class="interactive-showcase__inner">
+    <div class="interactive-showcase__header">
+      <div>
+        <p>{eyebrow}</p>
+        <h2>{title}</h2>
+      </div>
+      {intro && <div class="interactive-showcase__intro">{intro}</div>}
+    </div>
+
+    <article class="interactive-showcase__preview">
+      <p class="preview-label">{first.label}</p>
+      <h3>{first.title}</h3>
+      <p class="preview-description">{first.description}</p>
+      {first.meta && <p class="preview-meta">{first.meta}</p>}
+      {first.map && (
+        <figure class="preview-map">
+          <img src={first.map} alt={`${first.title} map`} loading="lazy" />
+          <figcaption>Route / region context map</figcaption>
+        </figure>
+      )}
+      <div class="preview-actions">
+        <a class="preview-primary" href={first.href || '#'}>{first.cta || 'Explore'}</a>
+        <a class="preview-secondary" href="/contact/">Ask a Question</a>
+      </div>
+    </article>
+
+    <div class="interactive-showcase__rail" aria-label={`${title} options`}>
+      {normalized.map((item, index) => (
+        <button
+          type="button"
+          class:list={["interactive-card", index === 0 && "is-active"]}
+          data-title={item.title}
+          data-label={item.label}
+          data-description={item.description}
+          data-meta={item.meta}
+          data-image={item.image}
+          data-href={item.href}
+          data-cta={item.cta}
+          data-map={item.map}
+        >
+          <img src={item.image} alt="" loading={index < 2 ? 'eager' : 'lazy'} />
+          <span>{item.label}</span>
+          <strong>{item.title}</strong>
+        </button>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll('.interactive-showcase').forEach((section) => {
+    const bg = section.querySelector('.interactive-showcase__bg');
+    const label = section.querySelector('.preview-label');
+    const title = section.querySelector('.interactive-showcase__preview h3');
+    const desc = section.querySelector('.preview-description');
+    const meta = section.querySelector('.preview-meta');
+    const primary = section.querySelector('.preview-primary');
+    const mapFigure = section.querySelector('.preview-map');
+    const mapImage = section.querySelector('.preview-map img');
+    section.querySelectorAll('.interactive-card').forEach((card) => {
+      card.addEventListener('click', () => {
+        section.querySelectorAll('.interactive-card').forEach((c) => c.classList.remove('is-active'));
+        card.classList.add('is-active');
+        const image = card.getAttribute('data-image') || '';
+        if (bg && image) bg.style.backgroundImage = `url('${image}')`;
+        if (label) label.textContent = card.getAttribute('data-label') || '';
+        if (title) title.textContent = card.getAttribute('data-title') || '';
+        if (desc) desc.textContent = card.getAttribute('data-description') || '';
+        if (meta) meta.textContent = card.getAttribute('data-meta') || '';
+        if (primary) {
+          primary.setAttribute('href', card.getAttribute('data-href') || '#');
+          primary.textContent = card.getAttribute('data-cta') || 'Explore';
+        }
+        const map = card.getAttribute('data-map') || '';
+        if (mapImage && mapFigure) {
+          if (map) {
+            mapImage.setAttribute('src', map);
+            mapImage.setAttribute('alt', `${card.getAttribute('data-title') || ''} map`);
+            mapFigure.removeAttribute('hidden');
+          } else {
+            mapFigure.setAttribute('hidden', '');
+          }
+        }
+      });
+    });
+  });
+</script>
+
+<style>
+  .interactive-showcase { position:relative; isolation:isolate; min-height: 760px; overflow:hidden; background:#071b12; color:#fff8ec; }
+  .interactive-showcase__bg { position:absolute; inset:0; z-index:-3; background-size:cover; background-position:center; transform:scale(1.03); transition: background-image 280ms ease, transform 500ms ease; }
+  .interactive-showcase__shade { position:absolute; inset:0; z-index:-2; background: linear-gradient(90deg, rgba(4,13,8,0.88), rgba(4,13,8,0.58) 48%, rgba(4,13,8,0.22)), linear-gradient(180deg, rgba(4,13,8,0.25), rgba(4,13,8,0.88)); }
+  .interactive-showcase__inner { width:min(1180px, calc(100% - 2rem)); margin:0 auto; padding: clamp(4rem, 8vw, 6rem) 0 2.5rem; }
+  .interactive-showcase__header { display:grid; grid-template-columns: minmax(280px, 0.9fr) minmax(280px, 0.7fr); gap:2rem; align-items:end; }
+  .interactive-showcase__header p, .preview-label { margin:0 0 0.8rem; color:#d9a12d; font-size:0.72rem; font-weight:900; letter-spacing:0.28em; text-transform:uppercase; }
+  .interactive-showcase__header h2 { margin:0; max-width:12ch; font-family:Georgia,'Times New Roman',serif; font-size:clamp(3rem,6vw,5.4rem); line-height:0.92; letter-spacing:-0.055em; }
+  .interactive-showcase__intro { color:#f3eadb; font-size:1rem; line-height:1.8; max-width:560px; }
+  .interactive-showcase__preview { margin-top:clamp(3rem,6vw,5rem); max-width:660px; padding:clamp(1.5rem,3vw,2.2rem); border-radius:2rem; background:rgba(5,22,12,0.72); border:1px solid rgba(255,255,255,0.14); backdrop-filter:blur(10px); box-shadow:0 24px 60px rgba(0,0,0,0.28); }
+  .interactive-showcase__preview h3 { margin:0; font-family:Georgia,'Times New Roman',serif; font-size:clamp(2.4rem,5vw,4.8rem); line-height:0.92; letter-spacing:-0.055em; }
+  .preview-description { max-width:58ch; margin:1.2rem 0 0; color:#fff8ec; font-size:1.03rem; line-height:1.75; }
+  .preview-meta { display:inline-flex; width:fit-content; margin:1rem 0 0; border-radius:999px; background:rgba(255,255,255,0.14); padding:0.55rem 0.85rem; font-size:0.78rem; font-weight:900; color:#fff8ec; }
+  .preview-map { margin:1.25rem 0 0; overflow:hidden; border-radius:1.25rem; background:rgba(255,248,236,0.12); border:1px solid rgba(255,255,255,0.18); }
+  .preview-map img { width:100%; max-height:240px; object-fit:contain; display:block; padding:0.75rem; background:rgba(239,231,218,0.92); }
+  .preview-map figcaption { padding:0.7rem 0.9rem; color:#f3eadb; font-size:0.72rem; font-weight:900; letter-spacing:0.16em; text-transform:uppercase; }
+  .preview-actions { display:flex; flex-wrap:wrap; gap:0.8rem; margin-top:1.6rem; }
+  .preview-actions a { border-radius:999px; padding:0.95rem 1.25rem; font-size:0.88rem; font-weight:900; text-decoration:none; }
+  .preview-primary { background:#d9a12d; color:#11100d; }
+  .preview-secondary { background:rgba(255,255,255,0.12); color:#fff8ec; border:1px solid rgba(255,255,255,0.2); }
+  .interactive-showcase__rail { margin-top:2rem; display:grid; grid-auto-flow:column; grid-auto-columns:minmax(240px, 280px); gap:1rem; overflow-x:auto; /* scroll-snap disabled by AfghanTours UX standard */ padding-bottom:1rem; }
+  .interactive-card { text-align:left; border:1px solid rgba(255,255,255,0.12); border-radius:1.5rem; overflow:hidden; background:rgba(255,248,236,0.1); color:#fff8ec; cursor:pointer; transition:transform 180ms ease, background 180ms ease, border-color 180ms ease; }
+  .interactive-card:hover, .interactive-card.is-active { transform:translateY(-2px); background:rgba(255,248,236,0.2); border-color:#d9a12d; }
+  .interactive-card img { width:100%; height:135px; object-fit:cover; display:block; }
+  .interactive-card span { display:block; margin:1rem 1rem 0.35rem; color:#d9a12d; font-size:0.65rem; font-weight:900; letter-spacing:0.18em; text-transform:uppercase; }
+  .interactive-card strong { display:block; margin:0 1rem 1.1rem; font-family:Georgia,'Times New Roman',serif; font-size:1.5rem; line-height:1; }
+  @media (max-width: 860px) { .interactive-showcase { min-height:auto; } .interactive-showcase__header { grid-template-columns:1fr; } .interactive-showcase__rail { grid-auto-columns:78vw; } }
+</style>

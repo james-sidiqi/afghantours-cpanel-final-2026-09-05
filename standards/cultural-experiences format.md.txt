@@ -1,0 +1,231 @@
+AFGHANTOURS CULTURAL EXPERIENCE CONTENT STANDARD
+Version 1.0
+
+================================================================================
+FRONTMATTER
+
+⸻
+
+title: “”
+subtitle: “”
+
+slug: “”
+
+category: “Cultural Experiences”
+
+experience_type: “”
+
+hero_image: “”
+image: “”
+
+provinces:
+
+primary_hubs:
+
+paired_foods:
+
+paired_attractions:
+
+paired_tours:
+
+best_season: “”
+
+duration: “”
+
+activity_level: “Easy”
+
+seo_title: “”
+seo_description: “”
+
+================================================================================
+OVERVIEW
+
+Introduce the experience.
+
+Explain:
+
+• What it is
+• Why it matters
+• Why visitors encounter it
+• Why it remains important today
+
+Target Length:
+
+150–250 words
+
+The goal is to help travelers understand the cultural significance before participating.
+
+================================================================================
+WHY IT MATTERS
+
+Explain:
+
+• Historical importance
+• Social importance
+• Cultural meaning
+• Regional significance
+
+Answer:
+
+“Why is this experience important in Afghanistan?”
+
+================================================================================
+HISTORICAL & CULTURAL CONTEXT
+
+Explain:
+
+• Origins
+• Historical development
+• Regional variations
+• Cultural traditions
+
+Remain factual and educational.
+
+Avoid political commentary.
+
+================================================================================
+THE VISITOR EXPERIENCE
+
+Describe what travelers actually experience.
+
+Examples:
+
+• Shopping in a bazaar
+• Drinking tea in a chai khana
+• Watching a buzkashi match
+• Visiting a pottery workshop
+• Carpet browsing
+• Traditional clothing measurement
+
+Answer:
+
+“What will the traveler actually do?”
+
+================================================================================
+REGIONAL VARIATIONS
+
+Explain how the experience differs across Afghanistan.
+
+Examples:
+
+• Kabul
+• Herat
+• Mazar-e-Sharif
+• Kandahar
+• Bamyan
+• Badakhshan
+
+Not every experience requires this section, but include it whenever relevant.
+
+================================================================================
+ETIQUETTE & PRACTICAL NOTES
+
+Explain:
+
+• Appropriate behavior
+• Photography considerations
+• Dress expectations
+• Purchasing customs
+• Social expectations
+
+Provide practical visitor guidance.
+
+================================================================================
+FOOD & CULTURAL PAIRINGS
+
+Explain foods, drinks, or related traditions commonly connected to the experience.
+
+Examples:
+
+• Green Tea
+• Qabuli Palaw
+• Dried Fruits
+• Almonds
+• Chai Khana Culture
+• Traditional Bakeries
+
+================================================================================
+BEST COMBINED WITH
+
+List attractions, hubs, or experiences commonly paired with this activity.
+
+Examples:
+
+• Chicken Street
+• Herat Old City
+• Mazar Bazaars
+• Istalif Pottery
+• Chashma-e-Dogh
+
+================================================================================
+PRACTICAL INFORMATION
+
+Typical Duration:
+
+Best Season:
+
+Activity Level:
+
+Common Provinces:
+
+Common Hubs:
+
+Suitable For:
+
+• Cultural Travelers
+• Families
+• Photographers
+• Historians
+• Researchers
+
+================================================================================
+RELATED CONTENT
+
+RELATED FOOD
+
+• Food A
+• Food B
+• Food C
+
+RELATED ATTRACTIONS
+
+• Attraction A
+• Attraction B
+• Attraction C
+
+RELATED TOURS
+
+• Tour A
+• Tour B
+• Tour C
+
+================================================================================
+AFGHANTOURS CULTURAL EXPERIENCE WRITING RULES
+
+VOICE
+
+Use:
+
+• Professional
+• Educational
+• Hospitality-focused
+• Historically grounded
+• Respectful
+
+Avoid:
+
+• Bucket-list language
+• Exoticizing language
+• Adventure clichés
+• Political commentary
+• Travel-blog exaggeration
+
+================================================================================
+GOAL
+
+Every cultural experience page should help travelers understand not only
+what they are seeing, but why it matters within Afghan society, history,
+hospitality, and everyday life.
+
+The page should feel like a knowledgeable local guide is introducing
+the traveler to an authentic aspect of Afghanistan.

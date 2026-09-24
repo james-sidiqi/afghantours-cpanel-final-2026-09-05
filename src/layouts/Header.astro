@@ -1,0 +1,516 @@
+---
+const tourLinks = [
+  ['All Tours', '/tours/'],
+  ['Featured Tours', '/tours/#featured-section'],
+  ['Custom Tours', '/tours/#custom-tours'],
+];
+
+const exploreLinks = [
+  ['Attractions', '/attractions/'],
+  ['Regional Map', '/destinations/#regions'],
+  ['Province Directory', '/destinations/#provinces'],
+];
+
+const planLinks = [
+  ['Travel Hubs', '/hubs/'],
+  ['Transportation', '/transportation/'],
+  ['Visa & Entry', '/visa-entry/'],
+  ['FAQ', '/faq/'],
+];
+
+const informationLinks = [
+  ['About', '/about/'],
+  ['Safety', '/safety/'],
+  ['Contact', '/contact/'],
+];
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+
+    <a
+      class="site-brand"
+      href="/"
+      aria-label="AfghanTours home"
+    >
+      <img
+        src="/assets/images/logo/header-logo.webp"
+        alt="Afghan Tours"
+        width="58"
+        height="48"
+      />
+
+      <div class="site-brand__copy">
+        <strong>Afghan Tours</strong>
+        <span>Come for the history, stay for the hospitality</span>
+      </div>
+    </a>
+
+    <nav class="site-nav" aria-label="Main navigation">
+
+      <div class="site-nav__group">
+        <a class="site-nav__link" href="/tours/">
+          Tours
+          <span class="site-nav__chevron" aria-hidden="true">⌄</span>
+        </a>
+
+        <div class="site-dropdown">
+          {
+            tourLinks.map(([label, href]) => (
+              <a href={href}>{label}</a>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="site-nav__group">
+        <a class="site-nav__link" href="/attractions/">
+          Explore
+          <span class="site-nav__chevron" aria-hidden="true">⌄</span>
+        </a>
+
+        <div class="site-dropdown">
+          {
+            exploreLinks.map(([label, href]) => (
+              <a href={href}>{label}</a>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="site-nav__group">
+        <a class="site-nav__link" href="/hubs/">
+          Plan
+          <span class="site-nav__chevron" aria-hidden="true">⌄</span>
+        </a>
+
+        <div class="site-dropdown">
+          {
+            planLinks.map(([label, href]) => (
+              <a href={href}>{label}</a>
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="site-nav__group">
+        <a class="site-nav__link" href="/about/">
+          Information
+          <span class="site-nav__chevron" aria-hidden="true">⌄</span>
+        </a>
+
+        <div class="site-dropdown">
+          {
+            informationLinks.map(([label, href]) => (
+              <a href={href}>{label}</a>
+            ))
+          }
+        </div>
+      </div>
+
+      <a class="site-nav__cta" href="/contact/">
+        Contact Us
+      </a>
+
+    </nav>
+
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    width: 100%;
+
+    background:
+      linear-gradient(
+        90deg,
+        #111a16 0%,
+        #101915 58%,
+        #121b17 100%
+      );
+
+    border-top: 1px solid rgba(214, 162, 58, .18);
+    border-bottom: 1px solid rgba(255, 255, 255, .10);
+
+    color: #fff;
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .site-header__inner {
+    width: min(1280px, calc(100% - 2rem));
+    min-height: 78px;
+
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 2.5rem;
+  }
+
+
+  /* ========================================================
+     BRAND
+     ======================================================== */
+
+  .site-brand {
+    min-width: 0;
+
+    display: flex;
+    align-items: center;
+
+    gap: .9rem;
+
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .site-brand img {
+    display: block;
+
+    width: auto;
+    height: 48px;
+
+    flex: 0 0 auto;
+
+    object-fit: contain;
+  }
+
+  .site-brand__copy {
+    min-width: 0;
+  }
+
+  .site-brand strong {
+    display: block;
+
+    margin: 0;
+
+    color: #fff;
+
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
+    font-size: clamp(1.7rem, 2vw, 2.15rem);
+
+    font-weight: 700;
+
+    line-height: .92;
+
+    letter-spacing: -.035em;
+
+    white-space: nowrap;
+  }
+
+  .site-brand span {
+    display: block;
+
+    margin-top: .3rem;
+
+    color: #e0a62d;
+
+    font-size: .76rem;
+    font-weight: 800;
+
+    line-height: 1;
+
+    white-space: nowrap;
+  }
+
+
+  /* ========================================================
+     NAVIGATION
+     ======================================================== */
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+
+    gap: 1.35rem;
+
+    margin-left: auto;
+
+    font-size: .86rem;
+    font-weight: 850;
+  }
+
+  .site-nav a {
+    text-decoration: none;
+  }
+
+  .site-nav__group {
+    position: relative;
+  }
+
+  .site-nav__link {
+    display: inline-flex;
+    align-items: center;
+
+    gap: .32rem;
+
+    padding: 1.85rem 0;
+
+    color: rgba(255, 255, 255, .96);
+
+    white-space: nowrap;
+
+    transition:
+      color .18s ease,
+      opacity .18s ease;
+  }
+
+  .site-nav__chevron {
+    position: relative;
+    top: -.05rem;
+
+    font-size: .82rem;
+    font-weight: 700;
+
+    opacity: .9;
+  }
+
+  .site-nav__link:hover,
+  .site-nav__group:hover > .site-nav__link,
+  .site-nav__group:focus-within > .site-nav__link {
+    color: #e0a62d;
+  }
+
+
+  /* ========================================================
+     DROPDOWNS
+     ======================================================== */
+
+  .site-dropdown {
+    position: absolute;
+
+    top: calc(100% - .35rem);
+    left: 50%;
+
+    z-index: 1100;
+
+    min-width: 225px;
+
+    padding: .55rem;
+
+    border:
+      1px solid
+      rgba(255, 255, 255, .12);
+
+    border-radius: .85rem;
+
+    background: rgba(15, 24, 20, .985);
+
+    box-shadow:
+      0 20px 50px
+      rgba(0, 0, 0, .32);
+
+    opacity: 0;
+    pointer-events: none;
+
+    transform:
+      translateX(-50%)
+      translateY(8px);
+
+    transition:
+      opacity .16s ease,
+      transform .16s ease;
+  }
+
+  .site-nav__group:hover .site-dropdown,
+  .site-nav__group:focus-within .site-dropdown {
+    opacity: 1;
+    pointer-events: auto;
+
+    transform:
+      translateX(-50%)
+      translateY(0);
+  }
+
+  .site-dropdown a {
+    display: block;
+
+    padding: .78rem .88rem;
+
+    border-radius: .6rem;
+
+    color: rgba(255, 255, 255, .84);
+
+    font-size: .83rem;
+    font-weight: 700;
+
+    white-space: nowrap;
+
+    transition:
+      background .15s ease,
+      color .15s ease;
+  }
+
+  .site-dropdown a:hover,
+  .site-dropdown a:focus-visible {
+    background: rgba(214, 162, 58, .14);
+    color: #e0a62d;
+
+    outline: none;
+  }
+
+
+  /* ========================================================
+     PRIMARY CTA
+     ======================================================== */
+
+  .site-nav__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 52px;
+
+    padding: .8rem 1.45rem;
+
+    border-radius: 999px;
+
+    background: #dda52f;
+
+    color: #121713 !important;
+
+    font-size: .85rem;
+    font-weight: 900;
+
+    white-space: nowrap;
+
+    transition:
+      background .16s ease,
+      color .16s ease,
+      transform .16s ease;
+  }
+
+  .site-nav__cta:hover {
+    background: #f0bb48;
+    color: #0d120f !important;
+
+    transform: translateY(-1px);
+  }
+
+
+  /* ========================================================
+     TABLET
+     ======================================================== */
+
+  @media (max-width: 1050px) {
+
+    .site-header__inner {
+      gap: 1.3rem;
+    }
+
+    .site-nav {
+      gap: .9rem;
+    }
+
+    .site-brand strong {
+      font-size: 1.65rem;
+    }
+
+    .site-brand span {
+      font-size: .67rem;
+    }
+
+    .site-nav__cta {
+      padding-left: 1.1rem;
+      padding-right: 1.1rem;
+    }
+  }
+
+
+  /* ========================================================
+     MOBILE
+     ======================================================== */
+
+  @media (max-width: 860px) {
+
+    .site-header {
+      position: relative;
+    }
+
+    .site-header__inner {
+      width: min(100% - 1.25rem, 1280px);
+
+      min-height: auto;
+
+      padding: .75rem 0;
+
+      flex-direction: column;
+      align-items: stretch;
+
+      gap: .65rem;
+    }
+
+    .site-brand {
+      justify-content: flex-start;
+    }
+
+    .site-brand img {
+      height: 43px;
+    }
+
+    .site-brand strong {
+      font-size: 1.55rem;
+    }
+
+    .site-brand span {
+      font-size: .66rem;
+    }
+
+    .site-nav {
+      width: 100%;
+
+      margin: 0;
+
+      padding-bottom: .15rem;
+
+      gap: 1.05rem;
+
+      overflow-x: auto;
+      overflow-y: hidden;
+
+      scrollbar-width: none;
+    }
+
+    .site-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .site-nav__link {
+      padding: .55rem 0;
+    }
+
+    .site-dropdown {
+      display: none;
+    }
+
+    .site-nav__cta {
+      min-height: 39px;
+
+      padding: .55rem 1rem;
+    }
+  }
+
+
+  @media (max-width: 520px) {
+
+    .site-brand span {
+      white-space: normal;
+    }
+
+    .site-nav {
+      font-size: .8rem;
+    }
+  }
+</style>

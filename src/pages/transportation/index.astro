@@ -1,0 +1,491 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+
+const routeSupport = [
+  {
+    title: 'Hassle-Free Arrival & Departure',
+    label: 'Airport Transfers',
+    text: 'Start and finish your trip with private pickup or drop-off coordinated around your flight, luggage, hotel, and first-day plan.',
+    meta: 'Typical vehicle: Private sedan or SUV',
+    image: '/assets/images/transport/airports/kabul-city/hero.webp',
+    href: '/contact/?type=transportation&topic=Airport%20Transfers',
+    cta: 'Request Transfer',
+  },
+  {
+    title: 'Daily Kabul & Hub Transport',
+    label: 'Kabul & Provincial Hubs',
+    text: 'Move comfortably between hotels, historic sites, markets, restaurants, meetings, and neighborhoods with transport built around your day.',
+    meta: 'Typical vehicle: Sedan, SUV, or private van',
+    image: '/assets/images/transport/budget/taxi/hero.webp',
+    href: '/contact/?type=transportation&topic=City%20Movement',
+    cta: 'Add City Transport',
+  },
+  {
+    title: 'Comfortable Private Overland Travel',
+    label: 'Road Routes',
+    text: 'Travel between major destinations in a private vehicle selected for the road, journey time, group size, luggage, and comfort you expect.',
+    meta: 'Typical vehicle: Toyota Land Cruiser or 4Runner',
+    image: '/assets/images/transport/standard/suv/hero.webp',
+    href: '/contact/?type=transportation&topic=Private%20Overland%20Travel',
+    cta: 'Build My Road Route',
+  },
+  {
+    title: 'Expedition-Grade Mountain Access',
+    label: 'Remote & Mountain Routes',
+    text: 'Reach Bamyan, Wakhan, mountain passes, and remote provincial routes with higher-clearance vehicles chosen for terrain and seasonal conditions.',
+    meta: 'Typical vehicle: High-clearance 4x4',
+    image: '/assets/images/transport/roads/off-road/01.webp',
+    href: '/contact/?type=transportation&topic=Mountain%20and%20Remote%20Access',
+    cta: 'Plan Remote Access',
+  },
+  {
+    title: 'Smarter Long-Distance Connections',
+    label: 'Domestic Flights',
+    text: 'When flying makes more sense than driving, we can build scheduled domestic flights into the route and coordinate the ground movements around them.',
+    meta: 'Mode: Scheduled domestic flight + ground transfer',
+    image: '/assets/images/transport/airlines/kam-air/hero.webp',
+    href: '/contact/?type=transportation&topic=Domestic%20Flight%20Coordination',
+    cta: 'Check Flight Options',
+  },
+  {
+    title: 'Tailored Transport for Specialist Travel',
+    label: 'Private Requirements',
+    text: 'For media teams, business delegations, professional visitors, and premium travelers, we can plan transport around equipment, privacy, comfort, and operational needs.',
+    meta: 'Available: Premium and specialist vehicles on request',
+    image: '/assets/images/transport/luxury/armored-suv/hero.webp',
+    href: '/contact/?type=transportation&topic=Special%20Transport%20Needs',
+    cta: 'Request a Transport Plan',
+  },
+];
+
+const planningFactors = [
+  {
+    title: 'We check the road, not just the map.',
+    text: 'Route recommendations account for current road condition, seasonal access, construction, and realistic driving time.',
+  },
+  {
+    title: 'We plan movement around daylight.',
+    text: 'Departure times and daily stages are arranged to keep long road days practical and avoid unnecessary late arrivals.',
+  },
+  {
+    title: 'We match the vehicle to the terrain.',
+    text: 'A city transfer and a mountain route should not use the same transport. Vehicle type is selected around the actual journey.',
+  },
+  {
+    title: 'We account for traffic and hotel location.',
+    text: 'City movement is planned around where you are staying, what you want to see, and the time needed to cross busy urban areas.',
+  },
+  {
+    title: 'We plan for your comfort level.',
+    text: 'Budget, private, and premium travelers have different expectations for space, privacy, vehicle standard, and pace.',
+  },
+  {
+    title: 'We adjust when conditions change.',
+    text: 'Local coordination and route updates allow us to revise timing or transport choices when weather, access, or schedules shift.',
+  },
+];
+---
+
+<BaseLayout title="Transportation | AfghanTours" description="Private transportation, airport transfers, overland 4x4 travel, domestic flight coordination, and route planning for travel in Afghanistan.">
+  <div class="license-strip" aria-label="AfghanTours operator credentials">
+  </div>
+
+  
+  <section class="transport-hero-new">
+    <img
+      class="transport-hero-new__image"
+      src="/assets/images/heroes/transportation/hero.webp"
+      alt="Mountain road transportation through Afghanistan"
+    />
+
+    <div class="transport-hero-new__shade"></div>
+
+    <div class="transport-hero-new__inner">
+      <div class="transport-hero-new__content">
+        <p class="transport-hero-new__eyebrow">
+          Private Transport & Route Planning
+        </p>
+
+        <h1>
+          Move through Afghanistan with the route already thought through.
+        </h1>
+
+        <p class="transport-hero-new__text">
+          From airport pickup to mountain roads, we coordinate the vehicles,
+          timing, and connections around your itinerary so transport feels
+          like part of the journey—not a problem to solve after you arrive.
+        </p>
+
+        <a
+          class="transport-hero-new__cta"
+          href="/contact/?type=transportation"
+        >
+          Plan My Transportation →
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="transport-intro">
+    <div class="transport-intro__inner">
+      <p class="eyebrow">Built Into Your Itinerary</p>
+      <h2>The right transport for each part of the trip.</h2>
+      <p>
+        Travel in Afghanistan can combine airport transfers, city vehicles, private overland journeys, 4x4 mountain access, and domestic flights. We recommend the combination that fits your destinations, season, group size, luggage, comfort level, and pace—then coordinate it as one connected plan.
+      </p>
+      <div class="intro-trust" aria-label="Transportation service highlights">
+        <span>Private route planning</span>
+        <span>Locally coordinated drivers</span>
+        <span>Vehicle selection by terrain</span>
+        <span>Airport-to-hotel support</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="support-section">
+    <div class="support-header">
+      <p class="eyebrow">Transport Options</p>
+      <h2>Choose the support your itinerary needs.</h2>
+      <p>Each service can be added to a custom tour or combined into a complete transportation plan.</p>
+    </div>
+
+    <div class="support-grid">
+      {routeSupport.map((item) => (
+        <article class="support-card">
+          <div class="support-card__image">
+            <img src={item.image} alt={item.title} loading="lazy" onerror="this.src='/assets/images/placeholders/default-transport.webp'" />
+            <span>{item.label}</span>
+          </div>
+          <div class="support-card__body">
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+            <div class="service-meta">{item.meta}</div>
+            <a href={item.href}>{item.cta}</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="planning-section">
+    <div class="planning-panel">
+      <div class="planning-copy">
+        <p class="eyebrow">Our Route Intelligence</p>
+        <h2>We handle the variables behind a smooth travel day.</h2>
+        <p>
+          Distance alone does not tell you how an Afghan route will feel. We use local knowledge, practical timing, terrain, and current conditions to recommend how each leg should be traveled.
+        </p>
+      </div>
+      <div class="planning-list">
+        {planningFactors.map((factor) => (
+          <article>
+            <h3>{factor.title}</h3>
+            <p>{factor.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="route-cta" id="route-recommendations">
+    <div class="route-cta__inner">
+      <div class="route-cta__copy">
+        <p class="eyebrow">Start With The Route</p>
+        <h2>Tell us where you want to go. We will recommend how to get there.</h2>
+        <p>
+          You do not need to know which vehicle or connection to request. Give us the basics and we will recommend the most practical transport setup for your itinerary.
+        </p>
+        <div class="contact-microcopy">
+          <span>Licensed operator: <strong>ATO-KBL-1617</strong></span>
+          <span>WhatsApp: <a href="https://wa.me/93780123456">+93 780 123 456</a></span>
+        </div>
+      </div>
+
+      <div class="route-steps" data-route-planner>
+        <div class="route-step route-step--intro" data-step-one>
+          <span class="step-number">Step 1</span>
+          <h3>Get a transport recommendation first.</h3>
+          <p>No long booking form. Start with your destination, group size, travel style, and preferred contact method.</p>
+          <button type="button" data-open-route-form>Get Route Recommendations</button>
+        </div>
+
+        <form class="route-form" action="mailto:info@afghantours.com" method="post" enctype="text/plain" data-route-form hidden>
+          <div class="route-form__heading">
+            <span class="step-number">Step 2</span>
+            <h3>Send us the four essentials.</h3>
+          </div>
+
+          <label>
+            Destination
+            <input name="destination" placeholder="e.g. Kabul, Bamyan, Herat, Wakhan" required />
+          </label>
+
+          <label>
+            Group Size
+            <input name="group_size" type="number" min="1" inputmode="numeric" placeholder="Number of travelers" required />
+          </label>
+
+          <label>
+            Preferred Style
+            <select name="preferred_style" required>
+              <option value="" disabled selected>Select a travel style</option>
+              <option value="Budget">Budget</option>
+              <option value="Private">Private</option>
+              <option value="Premium">Premium</option>
+            </select>
+          </label>
+
+          <label>
+            WhatsApp or Email
+            <input name="contact" placeholder="Your WhatsApp number or email" required />
+          </label>
+
+          <div class="form-actions">
+            <button type="submit">Send Route Request</button>
+            <a href="https://wa.me/93780123456">Prefer WhatsApp?</a>
+          </div>
+          <p class="form-note">We will use these details to recommend the transport approach. You can discuss dates, luggage, and other trip details after we reply.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const planner = document.querySelector('[data-route-planner]');
+    const openButton = planner?.querySelector('[data-open-route-form]');
+    const stepOne = planner?.querySelector('[data-step-one]');
+    const form = planner?.querySelector('[data-route-form]');
+
+    openButton?.addEventListener('click', () => {
+      if (!form || !stepOne) return;
+      stepOne.setAttribute('hidden', '');
+      form.removeAttribute('hidden');
+      const firstInput = form.querySelector('input');
+      if (firstInput instanceof HTMLElement) firstInput.focus();
+    });
+  </script>
+</BaseLayout>
+
+<style>
+  .eyebrow { margin: 0 0 0.75rem; color: #b45309; font-size: 0.74rem; font-weight: 900; letter-spacing: 0.24em; text-transform: uppercase; }
+  .license-strip { background: #101820; color: #fff8ec; border-bottom: 1px solid rgba(255,255,255,.12); }
+  .license-strip__inner { width: min(1180px, calc(100% - 2rem)); min-height: 46px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: .75rem; flex-wrap: wrap; padding: .55rem 0; font-size: .78rem; }
+  .license-strip__inner strong { display: inline-flex; align-items: center; border-radius: 999px; background: #c58a2b; color: #101820; padding: .42rem .72rem; font-size: .76rem; letter-spacing: .08em; }
+  .license-strip__status { font-weight: 900; }
+  .license-strip__inner span:last-child { color: #ddd1bd; }
+
+  .transport-intro { background: #f7f2e9; color: #11100d; padding: clamp(3.25rem, 6vw, 5.5rem) 1rem; }
+  .transport-intro__inner { width: min(1040px, 100%); margin: 0 auto; }
+  h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.2rem, 4.5vw, 4.1rem); line-height: 0.98; letter-spacing: -0.05em; color: #101820; }
+  .transport-intro p:last-of-type, .support-header p, .planning-copy > p:last-child, .route-cta__copy > p:not(.eyebrow) { color: #514c44; line-height: 1.75; font-size: 1rem; }
+  .transport-intro p:last-of-type { max-width: 860px; margin: 1.25rem 0 0; }
+  .intro-trust { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1.35rem; }
+  .intro-trust span { border-radius: 999px; border: 1px solid rgba(16,24,32,.1); background: rgba(255,255,255,.7); color: #3e3a34; padding: .58rem .8rem; font-size: .76rem; font-weight: 800; }
+
+  .support-section { background: #fbf8f2; padding: clamp(3rem, 6vw, 5.5rem) 1rem; }
+  .support-header { width: min(1180px, 100%); margin: 0 auto 1.75rem; }
+  .support-header p:last-child { max-width: 720px; margin-top: 0.85rem; }
+  .support-grid { width: min(1180px, 100%); margin: 0 auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.1rem; }
+  .support-card { overflow: hidden; border-radius: 26px; background: white; border: 1px solid rgba(16,24,32,0.1); box-shadow: 0 16px 36px rgba(16,24,32,0.08); display: flex; flex-direction: column; }
+  .support-card__image { position: relative; height: 210px; overflow: hidden; background: #ddd3c3; }
+  .support-card__image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .45s ease; }
+  .support-card:hover img { transform: scale(1.045); }
+  .support-card__image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,.55), transparent 55%); }
+  .support-card__image span { position: absolute; left: 1rem; bottom: 1rem; z-index: 1; display: inline-flex; border-radius: 999px; background: rgba(255,255,255,.92); color: #11100d; padding: .45rem .7rem; font-size: .68rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+  .support-card__body { padding: 1.25rem; display: flex; flex-direction: column; flex: 1; }
+  .support-card h3 { margin: 0; font-family: Georgia, "Times New Roman", serif; color: #101820; font-size: 1.55rem; line-height: 1.05; letter-spacing: -0.035em; }
+  .support-card p { margin: .75rem 0 0; color: #5d554b; line-height: 1.65; font-size: .94rem; }
+  .service-meta { margin-top: 1rem; border-top: 1px solid rgba(16,24,32,.08); padding-top: .85rem; color: #796232; font-size: .76rem; font-weight: 900; line-height: 1.35; }
+  .support-card a, .route-step button, .route-form button { display: inline-flex; align-items: center; justify-content: center; margin-top: 1rem; border: 0; border-radius: 999px; background: #07110d; color: #fff8ec; padding: .82rem 1rem; font-size: .78rem; font-weight: 900; text-decoration: none; cursor: pointer; }
+  .support-card a { align-self: flex-start; margin-top: auto; transform: translateY(1rem); }
+
+  .planning-section { background: #f7f2e9; padding: clamp(3rem, 6vw, 5.5rem) 1rem; }
+  .planning-panel { width: min(1180px, 100%); margin: 0 auto; display: grid; grid-template-columns: .82fr 1.18fr; gap: 2rem; align-items: start; border-radius: 34px; background: #fffaf2; border: 1px solid rgba(16,24,32,.1); padding: clamp(1.5rem, 4vw, 3rem); box-shadow: 0 18px 42px rgba(16,24,32,.07); }
+  .planning-copy { position: sticky; top: 1.5rem; }
+  .planning-copy > p:last-child { max-width: 660px; margin: 1rem 0 0; }
+  .planning-list { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+  .planning-list article { border-radius: 18px; background: #f3eadb; border: 1px solid rgba(16,24,32,.08); padding: 1.05rem; }
+  .planning-list h3 { margin: 0; color: #27241f; font-size: .95rem; line-height: 1.35; }
+  .planning-list p { margin: .45rem 0 0; color: #665e54; font-size: .84rem; line-height: 1.55; }
+
+  .route-cta { background: #efe4d2; padding: clamp(4rem, 8vw, 7rem) 1rem; }
+  .route-cta__inner { width: min(1180px, 100%); margin: 0 auto; display: grid; grid-template-columns: .9fr 1.1fr; gap: 1.4rem; align-items: stretch; }
+  .route-cta__copy, .route-steps { border-radius: 30px; border: 1px solid rgba(16,24,32,.1); box-shadow: 0 18px 46px rgba(16,24,32,.08); }
+  .route-cta__copy { background: #fffaf2; padding: clamp(1.6rem, 4vw, 3rem); }
+  .route-cta__copy > p:not(.eyebrow) { margin: 1rem 0 0; }
+  .contact-microcopy { display: grid; gap: .45rem; margin-top: 1.3rem; color: #50483d; font-size: .82rem; }
+  .contact-microcopy a { color: #7c581e; font-weight: 900; }
+  .route-steps { background: #101820; color: #fff8ec; padding: clamp(1.6rem, 4vw, 3rem); }
+  .route-step, .route-form { height: 100%; }
+  .route-step { display: flex; flex-direction: column; justify-content: center; }
+  .route-step[hidden], .route-form[hidden] { display: none !important; }
+  .step-number { display: inline-flex; width: fit-content; border-radius: 999px; background: rgba(197,138,43,.18); border: 1px solid rgba(197,138,43,.42); color: #f0c982; padding: .45rem .7rem; font-size: .68rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+  .route-step h3, .route-form h3 { margin: .9rem 0 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2rem, 4vw, 3.3rem); line-height: .98; letter-spacing: -.045em; }
+  .route-step p { margin: .9rem 0 0; color: #d8cfbf; line-height: 1.7; }
+  .route-step button, .route-form button { background: #c58a2b; color: #101820; align-self: flex-start; padding-inline: 1.2rem; }
+
+  .route-form { display: grid; gap: .9rem; }
+  .route-form__heading { margin-bottom: .2rem; }
+  .route-form label { display: grid; gap: .38rem; color: #f2eadf; font-size: .78rem; font-weight: 900; }
+  .route-form input, .route-form select { width: 100%; border: 1px solid rgba(255,255,255,.18); border-radius: 13px; background: rgba(255,255,255,.08); color: #fff; padding: .9rem .95rem; font: inherit; outline: none; }
+  .route-form input::placeholder { color: #bdb5a9; }
+  .route-form select option { color: #101820; background: #fff; }
+  .route-form input:focus, .route-form select:focus { border-color: #d3a24f; box-shadow: 0 0 0 3px rgba(211,162,79,.16); }
+  .form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; }
+  .form-actions a { color: #f0c982; font-size: .8rem; font-weight: 900; }
+  .form-note { margin: 0; color: #bfb6a8; font-size: .76rem; line-height: 1.55; }
+
+  @media (max-width: 1080px) {
+    .support-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .planning-panel, .route-cta__inner { grid-template-columns: 1fr; }
+    .planning-copy { position: static; }
+  }
+  @media (max-width: 700px) {
+    .license-strip__inner { justify-content: flex-start; }
+    .support-grid, .planning-list { grid-template-columns: 1fr; }
+    .support-card__image { height: 190px; }
+    .support-card a { width: 100%; }
+    .route-step button, .route-form button { width: 100%; }
+  }
+
+  .transport-hero-new {
+    position: relative;
+    min-height: clamp(470px, 52vw, 620px);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    background: #07110d;
+  }
+
+  .transport-hero-new__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center 48%;
+  }
+
+  .transport-hero-new__shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        90deg,
+        rgba(5, 13, 10, .94) 0%,
+        rgba(5, 13, 10, .78) 35%,
+        rgba(5, 13, 10, .35) 68%,
+        rgba(5, 13, 10, .10) 100%
+      ),
+      linear-gradient(
+        0deg,
+        rgba(5, 13, 10, .32) 0%,
+        transparent 45%
+      );
+  }
+
+  .transport-hero-new__inner {
+    position: relative;
+    z-index: 2;
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: clamp(4rem, 8vw, 7rem) 0;
+  }
+
+  .transport-hero-new__content {
+    max-width: 690px;
+  }
+
+  .transport-hero-new__eyebrow {
+    margin: 0 0 1rem;
+    color: #e3a62b;
+    font-size: .74rem;
+    font-weight: 900;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+  }
+
+  .transport-hero-new h1 {
+    max-width: 680px;
+    margin: 0;
+    color: #fff;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3rem, 5.7vw, 5.4rem);
+    line-height: .94;
+    letter-spacing: -.055em;
+    text-wrap: balance;
+  }
+
+  .transport-hero-new__text {
+    max-width: 620px;
+    margin: 1.4rem 0 0;
+    color: rgba(255,255,255,.88);
+    font-size: clamp(1rem, 1.25vw, 1.12rem);
+    line-height: 1.7;
+  }
+
+  .transport-hero-new__cta {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 1.6rem;
+    border-radius: 999px;
+    background: #dda226;
+    color: #101820;
+    padding: .9rem 1.25rem;
+    font-size: .78rem;
+    font-weight: 900;
+    letter-spacing: .04em;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .transport-hero-new__cta:hover {
+    transform: translateY(-1px);
+  }
+
+  @media (max-width: 720px) {
+    .transport-hero-new {
+      min-height: 540px;
+    }
+
+    .transport-hero-new__shade {
+      background:
+        linear-gradient(
+          90deg,
+          rgba(5,13,10,.90),
+          rgba(5,13,10,.56)
+        ),
+        linear-gradient(
+          0deg,
+          rgba(5,13,10,.60),
+          transparent
+        );
+    }
+
+    .transport-hero-new h1 {
+      font-size: clamp(2.7rem, 12vw, 4rem);
+    }
+  }
+
+
+  /* TRANSPORT-HERO-TEXT-COLOR-START */
+
+  .transport-hero-new h1 {
+    color: #f7f2e8 !important;
+    text-shadow: 0 3px 18px rgba(0, 0, 0, .28);
+  }
+
+  .transport-hero-new__eyebrow {
+    color: #e2a72b !important;
+  }
+
+  .transport-hero-new__text {
+    color: rgba(255, 255, 255, .92) !important;
+  }
+
+  /* TRANSPORT-HERO-TEXT-COLOR-END */
+
+</style>

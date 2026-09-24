@@ -1,0 +1,198 @@
+---
+const {
+  tour,
+  tourName = "this tour",
+  routeText = "",
+  hasItinerary = false,
+} = Astro.props;
+
+function money(value) {
+  if (
+    value === undefined ||
+    value === null ||
+    String(value).trim() === ""
+  ) {
+    return "";
+  }
+
+  const raw = String(value).trim();
+
+  if (/^\$/.test(raw)) return raw;
+
+  const number = Number(
+    raw.replace(/[^0-9.]/g, "")
+  );
+
+  if (Number.isFinite(number) && number > 0) {
+    return `$${number.toLocaleString("en-US")}`;
+  }
+
+  return raw;
+}
+
+const price =
+  tour.price_display ||
+  tour.price_from_display ||
+  (
+    tour.price_from
+      ? `From ${money(tour.price_from)}`
+      : tour.price
+        ? money(tour.price)
+        : "Price on request"
+  );
+
+const inquiryHref =
+  `/contact/?tour=${encodeURIComponent(tourName)}`;
+
+const route =
+  routeText ||
+  tour.route_summary ||
+  tour.route ||
+  "Route tailored to the published itinerary";
+---
+
+<aside
+  class="tour-decision-strip"
+  data-tour-decision-strip
+  aria-label="Tour decision shortcuts"
+>
+  <div class="tour-decision-inner">
+    <div class="tour-decision-route">
+      <span>Route</span>
+      <strong>{route}</strong>
+    </div>
+
+    <div class="tour-decision-price">
+      <span>Price guidance</span>
+      <strong>{price}</strong>
+    </div>
+
+    <div class="tour-decision-actions">
+      {hasItinerary && (
+        <a class="tour-decision-secondary" href="#itinerary">
+          Itinerary
+        </a>
+      )}
+
+      <a class="tour-decision-primary" href={inquiryHref}>
+        Ask about this tour
+      </a>
+    </div>
+  </div>
+</aside>
+
+<style>
+  .tour-decision-strip {
+    position: sticky;
+    top: 72px;
+    z-index: 35;
+    border-top: 1px solid rgba(16,24,32,.08);
+    border-bottom: 1px solid rgba(16,24,32,.1);
+    background: rgba(255,255,255,.94);
+    color: #101820;
+    backdrop-filter: blur(12px);
+  }
+
+  .tour-decision-inner {
+    width: min(1180px, calc(100% - 2rem));
+    margin: auto;
+    min-height: 72px;
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(150px, .5fr) auto;
+    gap: 1rem;
+    align-items: center;
+    padding: .65rem 0;
+  }
+
+  .tour-decision-route,
+  .tour-decision-price {
+    min-width: 0;
+  }
+
+  .tour-decision-route span,
+  .tour-decision-price span {
+    display: block;
+    color: #8b650f;
+    font-size: .58rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .tour-decision-route strong,
+  .tour-decision-price strong {
+    display: block;
+    margin-top: .2rem;
+    overflow: hidden;
+    color: #101820;
+    font-size: .78rem;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .tour-decision-actions {
+    display: flex;
+    gap: .45rem;
+  }
+
+  .tour-decision-actions a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 42px;
+    border-radius: 999px;
+    padding: .65rem .95rem;
+    font-size: .75rem;
+    font-weight: 900;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .tour-decision-primary {
+    background: #d7a542;
+    color: #101820;
+  }
+
+  .tour-decision-secondary {
+    border: 1px solid rgba(16,24,32,.16);
+    color: #101820;
+  }
+
+  @media (max-width: 820px) {
+    .tour-decision-strip {
+      position: static;
+    }
+
+    .tour-decision-inner {
+      grid-template-columns: 1fr 1fr;
+      padding: .85rem 0;
+    }
+
+    .tour-decision-route {
+      grid-column: 1 / -1;
+    }
+
+    .tour-decision-actions {
+      justify-content: flex-end;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .tour-decision-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .tour-decision-route {
+      grid-column: auto;
+    }
+
+    .tour-decision-actions {
+      justify-content: stretch;
+    }
+
+    .tour-decision-actions a {
+      flex: 1;
+    }
+  }
+</style>

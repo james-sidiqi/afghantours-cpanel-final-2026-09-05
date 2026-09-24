@@ -1,0 +1,258 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { getHotels, getHotelBySlug } from '../../lib/buildRelations';
+
+export function getStaticPaths() {
+  return getHotels()
+    .filter((hotel) => hotel?.slug)
+    .map((hotel) => ({ params: { slug: hotel.slug } }));
+}
+
+const hotel = Astro.params.slug ? getHotelBySlug(Astro.params.slug) : undefined;
+if (!hotel) return Astro.redirect('/hotels/');
+
+function splitPipe(value) {
+  return String(value || "")
+    .split("|")
+    .map((x) => x.trim())
+    .filter(Boolean);
+}
+
+const displayName = hotel.display_name || hotel.title || hotel.hotel_name || hotel.name || "Hotel";
+const subtitle = hotel.subtitle || "";
+const hub = hotel.hub_name || hotel.city || hotel.destination_code || "Afghanistan";
+const propertyImages =
+  Array.isArray(hotel.property_images) && hotel.property_images.length
+    ? hotel.property_images
+    : [
+        hotel.image,
+        hotel.image_path_property_1,
+        hotel.image_path_property_2,
+        hotel.image_path_property_3,
+      ].filter(Boolean);
+
+const roomImages =
+  Array.isArray(hotel.room_images) && hotel.room_images.length
+    ? hotel.room_images
+    : [
+        ...splitPipe(hotel.room_image_paths),
+        ...(Array.isArray(hotel.rooms)
+          ? hotel.rooms.flatMap((room) =>
+              Array.isArray(room.gallery_images)
+                ? room.gallery_images
+                : [room.hero_image].filter(Boolean)
+            )
+          : []),
+      ];
+const facilities = splitPipe(hotel.facilities);
+const bestFor = splitPipe(hotel.best_for);
+const heroImage = propertyImages[0] || "/assets/images/placeholders/default-hotel.webp";
+---
+
+<BaseLayout
+  title={`${displayName} | AfghanTours Hotels`}
+  description={hotel.description || `Hotel reference for ${hub}.`}
+  image={heroImage}
+>
+  <PageHero
+    eyebrow={hub}
+    title={displayName}
+    text={subtitle ? `(${subtitle})` : hotel.description}
+    image={heroImage}
+    height="min-h-[62vh]"
+  />
+
+  <main class="hotel-detail">
+    <section class="hotel-detail-wrap">
+      <div class="hotel-detail-main">
+        <p class="section-kicker">Hotel Profile</p>
+        <h2>{displayName}</h2>
+        {subtitle && <p class="hotel-detail-subtitle">({subtitle})</p>}
+
+        <div class="hotel-meta-row">
+          {hotel.star_rating && <span>{'★'.repeat(Number(hotel.star_rating) || 0)} {hotel.star_rating}-Star</span>}
+          {hotel.tier && <span>{hotel.tier}</span>}
+          {hotel.price_range && <span>{hotel.price_range}</span>}
+          {hub && <span>{hub}</span>}
+        </div>
+
+        <div class="content-block">
+          <p class="section-label">About this hotel</p>
+          <p>{hotel.description}</p>
+        </div>
+
+        {facilities.length > 0 && (
+          <div class="content-block">
+            <p class="section-label">Facilities</p>
+            <div class="pill-list">
+              {facilities.map((facility) => <span>{facility}</span>)}
+            </div>
+          </div>
+        )}
+
+        {bestFor.length > 0 && (
+          <div class="content-block">
+            <p class="section-label">Best for</p>
+            <div class="pill-list">
+              {bestFor.map((item) => <span>{item}</span>)}
+            </div>
+          </div>
+        )}
+
+        <div class="hotel-actions">
+          <a href="#tours-for-this-content">See tours using this hub</a>
+          <a href="/hotels/">Back to hotels</a>
+        </div>
+      </div>
+
+      <aside class="hotel-detail-gallery">
+        <p class="section-label">Property Images</p>
+        <div class="image-grid">
+          {propertyImages.map((image) => (
+            <img src={image} alt={displayName} loading="lazy" data-lightbox />
+          ))}
+        </div>
+
+        {roomImages.length > 0 && (
+          <>
+            <p class="section-label room-label">Rooms & Interiors</p>
+            <div class="image-grid">
+              {roomImages.map((image) => (
+                <img src={image} alt={`${displayName} room`} loading="lazy" data-lightbox />
+              ))}
+            </div>
+          </>
+        )}
+      </aside>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .hotel-detail {
+    background: #fbf6ed;
+    color: #101820;
+    padding: clamp(4rem, 7vw, 7rem) 0;
+  }
+
+  .hotel-detail-wrap {
+    width: min(1240px, calc(100% - 2rem));
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .hotel-detail-main,
+  .hotel-detail-gallery {
+    background: #fff;
+    border: 1px solid rgba(16, 24, 32, 0.1);
+    border-radius: 2rem;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    box-shadow: 0 14px 38px rgba(21, 16, 9, 0.08);
+  }
+
+  .section-kicker,
+  .section-label {
+    margin: 0;
+    color: #b46b00;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  .hotel-detail-main h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3rem, 5vw, 5rem);
+    line-height: 0.92;
+    letter-spacing: -0.06em;
+    margin: 0.6rem 0 0.2rem;
+  }
+
+  .hotel-detail-subtitle {
+    margin: 0 0 1rem;
+    color: #6b5d4b;
+    font-weight: 800;
+    font-size: 1.1rem;
+  }
+
+  .hotel-meta-row,
+  .pill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 1rem;
+  }
+
+  .hotel-meta-row span,
+  .pill-list span {
+    border-radius: 999px;
+    background: #f4eadc;
+    color: #3b2d1c;
+    padding: 0.52rem 0.78rem;
+    font-size: 0.8rem;
+    font-weight: 900;
+    text-transform: capitalize;
+  }
+
+  .content-block {
+    border-top: 1px solid rgba(16, 24, 32, 0.1);
+    margin-top: 1.5rem;
+    padding-top: 1.3rem;
+  }
+
+  .content-block > p:last-child {
+    color: #374151;
+    line-height: 1.8;
+    font-size: 1rem;
+  }
+
+  .hotel-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .hotel-actions a {
+    border-radius: 999px;
+    background: #d6a23a;
+    color: #111;
+    padding: 0.95rem 1.25rem;
+    text-decoration: none;
+    font-weight: 900;
+  }
+
+  .hotel-actions a + a {
+    background: #101820;
+    color: #fff;
+  }
+
+  .image-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+    margin-top: 1rem;
+  }
+
+  .image-grid img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    border-radius: 1rem;
+    object-fit: cover;
+  }
+
+  .room-label {
+    display: block;
+    margin-top: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .hotel-detail-wrap {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

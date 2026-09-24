@@ -1,0 +1,165 @@
+/*
+  Transitional editorial compatibility layer.
+  New components should consume the canonical tokens in tokens.css directly.
+  This file keeps legacy content selectors visually stable while pages migrate.
+*/
+:root {
+  --ink: var(--at-ink);
+  --muted: var(--at-text);
+  --gold: var(--at-gold-text);
+  --paper: var(--at-paper);
+}
+
+.prose,
+.page-content,
+.attraction-content,
+.destination-content,
+.food-content,
+.hotel-content,
+.tour-content {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--at-text);
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.page-content h1,
+.page-content h2,
+.page-content h3,
+.attraction-content h1,
+.attraction-content h2,
+.attraction-content h3,
+.destination-content h1,
+.destination-content h2,
+.destination-content h3,
+.food-content h1,
+.food-content h2,
+.food-content h3,
+.hotel-content h1,
+.hotel-content h2,
+.hotel-content h3,
+.tour-content h1,
+.tour-content h2,
+.tour-content h3 {
+  font-family: var(--font-display);
+  color: var(--at-ink);
+  font-weight: 700;
+  line-height: var(--line-heading);
+  letter-spacing: -0.04em;
+  margin: var(--space-7) 0 var(--space-4);
+}
+
+.prose h2,
+.page-content h2,
+.attraction-content h2,
+.destination-content h2,
+.food-content h2,
+.hotel-content h2,
+.tour-content h2 { font-size: var(--title-section); }
+
+.prose h3,
+.page-content h3,
+.attraction-content h3,
+.destination-content h3,
+.food-content h3,
+.hotel-content h3,
+.tour-content h3 { font-size: var(--title-card); }
+
+.prose p,
+.page-content p,
+.attraction-content p,
+.destination-content p,
+.food-content p,
+.hotel-content p,
+.tour-content p {
+  margin: 0 0 var(--space-5);
+  max-width: 72ch;
+}
+
+.prose ul,
+.page-content ul,
+.attraction-content ul,
+.destination-content ul,
+.food-content ul,
+.hotel-content ul,
+.tour-content ul {
+  margin: var(--space-4) 0 var(--space-5);
+  padding-left: 1.25rem;
+}
+
+.prose li,
+.page-content li,
+.attraction-content li,
+.destination-content li,
+.food-content li,
+.hotel-content li,
+.tour-content li { margin: .45rem 0; }
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: var(--title-card);
+  font-weight: 700;
+  line-height: var(--line-heading);
+  letter-spacing: -0.04em;
+}
+
+.text-card { padding: clamp(1.5rem, 3vw, 2.5rem); }
+
+/* Temporary compatibility rules retained until these legacy sections are rebuilt. */
+.home-hero h1,
+.home-hero .hero-content h1,
+.info-hero h1,
+section[class*="hero"] h1,
+.editorial-title.text-white,
+.relative.text-white h1 {
+  color: var(--at-white) !important;
+  text-shadow: 0 8px 34px rgba(0,0,0,.85) !important;
+}
+
+.home-hero .lead,
+.home-hero .hero-content .lead,
+.info-hero span,
+.info-hero p,
+.relative.text-white p { color: rgba(255,255,255,.94) !important; }
+
+.trust-wrap h2 { font-size: clamp(2.4rem, 4.2vw, 4.8rem) !important; }
+.trust-cards article > span { display: none !important; }
+
+#featured-section { overflow: visible !important; }
+#featured-section > div { min-height: 860px !important; padding-bottom: var(--space-8) !important; }
+#featured-section aside { background: var(--at-ink) !important; backdrop-filter: none !important; }
+#featured-section [data-featured-index] { min-height: 250px !important; }
+#featured-section .overflow-x-auto { padding-bottom: var(--space-6) !important; }
+
+#custom-tours article > span,
+#custom-tours article .icon,
+#custom-tours article [class*="icon"] { display: none !important; }
+
+.why-section h2,
+.why-wrap h2,
+section[id*="why"] h2 { font-size: clamp(2.4rem, 4vw, 4.5rem) !important; }
+
+.why-section .pillar-icon,
+.why-section article > span,
+.why-section .american-card,
+.why-section [class*="badge"],
+.why-section [class*="trust"] { display: none !important; }
+
+section.bg-\[\#0d1d16\] h2,
+section.bg-\[\#06150f\] h2 {
+  color: var(--at-white) !important;
+  text-shadow: 0 4px 22px rgba(0,0,0,.5);
+}
+
+.site-footer .footer-logo { display: block !important; margin: 0 auto .65rem !important; }
+.site-footer .footer-brand,
+.site-footer .footer-company,
+.site-footer .footer-license,
+.site-footer .footer-motto {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.site-footer .footer-motto { margin-top: .65rem !important; }

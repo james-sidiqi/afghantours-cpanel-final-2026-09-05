@@ -1,0 +1,225 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Compatibility aliases while legacy components are migrated to AfghanTours tokens. */
+:root {
+  --page-ink: var(--at-ink);
+  --page-muted: var(--at-text);
+  --page-gold: var(--at-gold);
+  --page-sand: var(--at-sand);
+  --at-cream: var(--at-paper);
+  --at-sandstone: var(--at-sand);
+  --at-pale-cream: var(--at-paper);
+  --at-dark: var(--at-ink);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-height) + var(--space-5));
+}
+
+body {
+  margin: 0;
+  background: var(--at-paper);
+  color: var(--at-text);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: var(--line-body);
+}
+
+section[id] {
+  scroll-margin-top: calc(var(--header-height) + var(--space-5));
+}
+
+h1, h2, h3, h4,
+.font-display,
+.editorial-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--at-ink);
+  line-height: var(--line-heading);
+  letter-spacing: -0.04em;
+}
+
+p { line-height: var(--line-body); }
+
+.at-container {
+  width: min(var(--content-max), calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.at-prose,
+.editorial-prose {
+  max-width: var(--prose-max);
+  color: var(--at-text);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.at-prose h1,
+.at-prose h2,
+.at-prose h3,
+.editorial-prose h1,
+.editorial-prose h2,
+.editorial-prose h3 {
+  margin-top: var(--space-7);
+  margin-bottom: var(--space-4);
+  color: var(--at-ink);
+  line-height: var(--line-heading);
+}
+
+.at-prose h1,
+.editorial-prose h1 { font-size: var(--title-page); }
+.at-prose h2,
+.editorial-prose h2 { font-size: var(--title-section); }
+.at-prose h3,
+.editorial-prose h3 { font-size: var(--title-card); }
+
+.at-prose p,
+.editorial-prose p { margin: var(--space-4) 0; }
+.at-prose ul,
+.at-prose ol,
+.editorial-prose ul,
+.editorial-prose ol { margin: var(--space-5) 0; padding-left: 1.4rem; }
+.at-prose li,
+.editorial-prose li { margin: 0.45rem 0; }
+.at-prose a,
+.editorial-prose a {
+  color: var(--at-gold-text);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.at-prose blockquote,
+.editorial-prose blockquote {
+  margin: var(--space-6) 0;
+  border-left: 5px solid var(--at-gold);
+  background: color-mix(in srgb, var(--at-gold) 8%, var(--at-white));
+  padding: var(--space-5);
+  border-radius: 0 var(--radius-small) var(--radius-small) 0;
+  color: var(--at-ink);
+}
+
+.at-kicker,
+.section-kicker,
+.eyebrow,
+.kicker {
+  margin: 0;
+  color: var(--at-gold-text);
+  font-family: var(--font-body);
+  font-size: var(--text-kicker);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.at-kicker--dark { color: var(--at-gold-light); }
+
+.at-lead {
+  max-width: var(--prose-max);
+  color: var(--at-text);
+  font-size: var(--text-lead);
+  line-height: var(--line-lead);
+}
+
+.at-card,
+.text-card {
+  background: var(--at-white);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+
+.at-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  padding: 0.95rem 1.35rem;
+  font-family: var(--font-body);
+  font-size: var(--text-small);
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition: background-color var(--motion-fast) var(--ease-standard),
+              color var(--motion-fast) var(--ease-standard),
+              border-color var(--motion-fast) var(--ease-standard),
+              transform var(--motion-fast) var(--ease-standard);
+}
+
+.at-button--primary {
+  background: var(--at-gold);
+  color: var(--at-ink);
+}
+.at-button--primary:hover { background: var(--at-white); }
+
+.at-button--outline-light {
+  border: 1px solid rgba(255,255,255,.35);
+  color: var(--at-white);
+}
+.at-button--outline-light:hover {
+  background: var(--at-white);
+  color: var(--at-ink);
+}
+
+.snap-row {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--at-gold) 80%, transparent) rgba(255,255,255,.15);
+}
+.snap-row::-webkit-scrollbar { height: 10px; }
+.snap-row::-webkit-scrollbar-track { background: rgba(255,255,255,.14); border-radius: var(--radius-pill); }
+.snap-row::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--at-gold) 85%, transparent); border-radius: var(--radius-pill); }
+
+.glass-panel {
+  background: rgba(255,255,255,.09);
+  border: 1px solid rgba(255,255,255,.18);
+  box-shadow: var(--shadow-raised);
+  backdrop-filter: blur(14px);
+}
+
+.floating-whatsapp {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  z-index: 80;
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  border-radius: var(--radius-pill);
+  background: #25d366; /* Service brand color: intentional exception. */
+  color: #071b10;
+  padding: .85rem 1rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-raised);
+}
+
+.tour-modal::backdrop { background: rgba(0,0,0,.72); backdrop-filter: blur(6px); }
+.tour-modal { border: 0; border-radius: var(--radius-card); padding: 0; max-width: min(920px, calc(100vw - 2rem)); background: transparent; }
+
+.featured-tours-section { background: var(--at-white) !important; }
+.custom-tours-section { background: var(--at-sand) !important; }
+.tour-directory,
+.tour-list-intro,
+.map-section,
+.interactive-map-section { background: var(--at-white) !important; }
+.food-preview-section,
+.food-culture-preview { background: var(--at-paper) !important; }
+.hubs-section,
+#hubs-section { background-color: var(--at-ink); }
+.why-section { border-top: 1px solid var(--border-soft); }
+
+@media (max-width: 640px) {
+  .floating-whatsapp span { display: none; }
+  .floating-whatsapp { width: 3.35rem; height: 3.35rem; justify-content: center; padding: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
