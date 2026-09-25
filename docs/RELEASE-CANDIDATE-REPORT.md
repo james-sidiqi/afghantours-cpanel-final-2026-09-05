@@ -26,9 +26,9 @@ Engineering P0 = **0** · P1 = **0**
 | Dist drift | **must be green on final `main`** (fixed: deterministic popup/map IDs) |
 
 ## Dist drift root cause (gate fix)
-- **Cause:** nondeterministic `Math.random()` in `AttractionPopupGrid.astro` (`data-attraction-scope="attraction-popup-…"`), so every `npm run build` rewrote 137 tracked HTML files (attractions / destinations / hubs / regions).
-- **Also hardened:** `TourRouteMap.astro` map element id (same class of bug; not in current drift set).
-- **Fix:** pathname-derived stable IDs; regenerate `dist/` via `npm run build` only (no hand-edited HTML). Drift check left enabled.
+1. **Nondeterministic IDs:** `Math.random()` in `AttractionPopupGrid.astro` (`data-attraction-scope="attraction-popup-…"`) rewrote 137 tracked HTML files (attractions / destinations / hubs / regions) on every build. Also hardened `TourRouteMap.astro`.
+2. **Environment-dependent paths:** `FeaturedTours.astro` serialized full tour rows (nested markdown with absolute `file` paths from `readMarkdownFolder`) into `define:vars`, so `dist/index.html` + `dist/tours/index.html` differed between local `/workspace/...` and GitHub Actions runner paths.
+- **Fix:** pathname-derived stable IDs; repo-relative markdown `file` paths; lean FeaturedTours client DTO; regenerate `dist/` via `npm run build` only. Drift check left enabled (failure now also runs `scripts/ci-dist-drift-diagnose.mjs`).
 
 ## Merged PRs this drive
 | PR | Merge SHA | Title |

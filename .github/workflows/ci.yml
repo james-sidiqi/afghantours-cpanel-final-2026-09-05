@@ -60,6 +60,7 @@ jobs:
             if ! git diff --cached --quiet -- dist/; then
               echo "Tracked dist/ drifts from npm run build output:"
               git diff --cached --stat -- dist/ | head -80
+              node scripts/ci-dist-drift-diagnose.mjs
               exit 1
             fi
             echo "dist/ matches build (no drift)."
