@@ -7,6 +7,7 @@ import TourCardGrid from '../../components/cards/TourCardGrid.astro';
 
 import { getCollection } from 'astro:content';
 import { getTours } from '../../lib/buildRelations';
+import { culinaryLinksForFoodSlug } from '../../lib/culinary';
 
 export async function getStaticPaths() {
   const foodEntries = await getCollection('food');
@@ -486,6 +487,13 @@ const scoredFood = allFood
 
 const relatedFood = scoredFood.slice(0, 6).map((result) => result.candidate);
 
+const culinaryLinks = [
+  ...culinaryLinksForFoodSlug(sourceBaseSlug),
+  ...culinaryLinksForFoodSlug(baseSlug),
+  ...culinaryLinksForFoodSlug(String(data.food_slug || data.slug || '')),
+].filter((item, index, arr) => arr.findIndex((x) => x.slug === item.slug) === index);
+
+
 const foodHref = (candidate: any) =>
   `/food-culture/${candidate.slug || candidate.id.replace(/\.md$/, '')}/`;
 
@@ -618,6 +626,33 @@ const contactHref = `/contact/?food=${encodeURIComponent(title)}`;
                 loading={index < 2 ? 'eager' : 'lazy'}
               />
             </button>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+
+  {culinaryLinks.length > 0 && (
+    <section class="related-food-section culinary-from-food">
+      <div class="related-food-wrap">
+        <div class="food-section-heading dark-copy">
+          <p class="section-kicker">Culinary Experiences</p>
+          <h2>Where travelers encounter this on the journey</h2>
+          <p>
+            Hub-based culinary experiences connected to this Food &amp; Culture page.
+            Food pages stay separate; these links only add route context.
+          </p>
+        </div>
+        <div class="related-food-grid">
+          {culinaryLinks.map((item) => (
+            <a class="related-food-card" href={item.href}>
+              <div class="related-food-copy" style="padding:1.25rem">
+                <p>Culinary Experience</p>
+                <h3>{item.title}</h3>
+                <strong>Explore culinary experience →</strong>
+              </div>
+            </a>
           ))}
         </div>
       </div>

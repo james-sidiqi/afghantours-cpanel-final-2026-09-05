@@ -1,32 +1,46 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
+import { RESTAURANT_TO_CULINARY } from '../../lib/culinary';
 
 export async function getStaticPaths() {
   const items = await getCollection('restaurants');
 
-  return items.map((item) => ({
-    params: {
-      slug: item.id.replace(/\.md$/, ''),
-    },
-    props: { item },
-  }));
+  return items.map((item) => {
+    const slug = item.id.replace(/\.md$/, '');
+    return {
+      params: { slug },
+      props: {
+        item,
+        redirectTo: RESTAURANT_TO_CULINARY[slug] || null,
+      },
+    };
+  });
 }
 
-const { item } = Astro.props;
-const { Content } = await render(item);
+const { item, redirectTo } = Astro.props;
 
-const title = item.data.title || 'Restaurant';
+if (redirectTo) {
+  return Astro.redirect(redirectTo, 301);
+}
+
+const { Content } = await render(item);
+const title = item.data.title || item.data.name || 'Restaurant';
 ---
 
 <BaseLayout
   title={`${title} | AfghanTours`}
-  description={`Explore ${title} as part of food and travel planning in Afghanistan.`}
+  description={`Explore ${title} as supporting dining context for food and travel planning in Afghanistan.`}
 >
   <main class="restaurant-page">
     <article>
-      <p class="eyebrow">Food & Dining</p>
+      <p class="eyebrow">Supporting dining notes</p>
       <h1>{title}</h1>
+      <p class="note">
+        Primary Culinary Experiences live under
+        <a href="/cultural-experiences/culinary/">/cultural-experiences/culinary/</a>.
+        This page is retained as supporting restaurant / dining context.
+      </p>
       <Content />
     </article>
   </main>
@@ -38,29 +52,23 @@ const title = item.data.title || 'Restaurant';
     margin: 0 auto;
     padding: 8rem 1.5rem 5rem;
   }
-
-  article {
-    line-height: 1.75;
-  }
-
+  article { line-height: 1.75; }
   .eyebrow {
     text-transform: uppercase;
     letter-spacing: .14em;
     font-size: .75rem;
     font-weight: 700;
   }
-
   h1 {
     font-size: clamp(2.5rem, 6vw, 5rem);
     line-height: 1;
-    margin: .75rem 0 2rem;
+    margin: .75rem 0 1rem;
   }
-
-  article :global(h2) {
-    margin-top: 2.5rem;
+  .note {
+    color: #596168;
+    margin: 0 0 2rem;
   }
-
-  article :global(p) {
-    font-size: 1.05rem;
-  }
+  .note a { color: #a4650d; }
+  article :global(h2) { margin-top: 2.5rem; }
+  article :global(p) { font-size: 1.05rem; }
 </style>

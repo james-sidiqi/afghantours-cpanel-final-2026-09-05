@@ -207,3 +207,53 @@ export function getAttractionImage(attraction: any): string {
   ], PLACEHOLDERS.attraction);
 }
 
+/** Documented experience asset roots (long-term hierarchy). */
+export const EXPERIENCE_ASSET_ROOTS = {
+  culinary: '/assets/images/experiences/culinary',
+  cultural: '/assets/images/experiences/cultural',
+  activities: '/assets/images/experiences/activities',
+} as const;
+
+export function getCulinaryImage(item: any): string {
+  const slug = item?.slug || item?.culinary_slug || item?.experience_slug;
+  return firstExisting([
+    item?.hero_image,
+    item?.image,
+    item?.image_path,
+    slug ? `${EXPERIENCE_ASSET_ROOTS.culinary}/${slug}/hero.webp` : null,
+    slug ? `${EXPERIENCE_ASSET_ROOTS.culinary}/${slug}/thumb.webp` : null,
+    // Legacy interim locations still present in this repo
+    slug ? `/assets/images/cultural-experiences/${slug}/hero.webp` : null,
+    slug ? `/assets/images/food/${slug}/hero.webp` : null,
+  ], PLACEHOLDERS.food);
+}
+
+export function getCulinaryGallery(item: any): string[] {
+  const slug = item?.slug || item?.culinary_slug;
+  const explicit = [
+    ...(Array.isArray(item?.gallery_images) ? item.gallery_images : []),
+    item?.gallery_image_1,
+    item?.gallery_image_2,
+    item?.gallery_image_3,
+  ].filter(Boolean).map((v) => normalizeImagePath(v, ''));
+
+  const discovered = slug
+    ? [
+        ...listPublicImages(`${EXPERIENCE_ASSET_ROOTS.culinary}/${slug}`, true),
+        ...listPublicImages(`/assets/images/cultural-experiences/${slug}`, true),
+      ]
+    : [];
+
+  return [...new Set([...explicit, ...discovered].filter(Boolean))];
+}
+
+export function getCulturalExperienceImage(item: any): string {
+  const slug = item?.slug || item?.id?.replace(/\.md$/, '');
+  return firstExisting([
+    item?.hero_image,
+    item?.image,
+    slug ? `${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}/hero.webp` : null,
+    slug ? `/assets/images/cultural-experiences/${slug}/hero.webp` : null,
+  ], PLACEHOLDERS.attraction);
+}
+

@@ -5,6 +5,7 @@ import AttractionPopupGrid from '../../components/cards/AttractionPopupGrid.astr
 import HotelPopupGrid from '../../components/cards/HotelPopupGrid.astro';
 import TourCardGrid from '../../components/cards/TourCardGrid.astro';
 import { getHubs, getHubBySlug, getAttractions, getHotels, getTours, getFoodItems, getFoodHref } from '../../lib/buildRelations';
+import { getCulinaryForHub, routeContextLabel } from '../../lib/culinary';
 
 export function getStaticPaths() {
   return getHubs().filter((hub) => hub?.slug).map((hub) => ({ params: { slug: hub.slug } }));
@@ -74,6 +75,9 @@ const tours = getTours().filter((tour) => {
     || (Array.isArray(tour.attractions) && tour.attractions.some((a) => attractions.some((x) => x.slug === a.slug)));
 });
 
+
+const culinary = getCulinaryForHub(hubSlug);
+
 const image = hub.image || `/assets/images/hubs/${hubSlug}/hero.webp` || '/assets/images/placeholders/default-hub.webp';
 ---
 
@@ -140,6 +144,32 @@ const image = hub.image || `/assets/images/hubs/${hubSlug}/hero.webp` || '/asset
     title={`Hotels used in ${hubName}`}
     intro="Accommodation references connected to this hub and nearby travel routes."
   />
+
+
+  {culinary.length > 0 && (
+    <section class="simple-section culinary-hub-section">
+      <div class="simple-wrap">
+        <p class="section-kicker">Culinary Experiences</p>
+        <h2>Taste {hubName} through hub-based food experiences</h2>
+        <p class="culin-hub-intro">
+          These culinary stops are planned from this hub — restaurants, bakeries, markets, and roadside food culture with clear route context.
+        </p>
+        <div class="simple-grid">
+          {culinary.map((item) => (
+            <a class="simple-card" href={item.href}>
+              <img src={item.image} alt={item.name} loading="lazy" />
+              <div class="culin-hub-card-copy">
+                <small>{routeContextLabel(item.route_context)}</small>
+                <h3>{item.name}</h3>
+                {item.signature_food && <p>{item.signature_food}</p>}
+              </div>
+            </a>
+          ))}
+        </div>
+        <a class="culin-hub-all" href="/cultural-experiences/culinary/">Browse all culinary experiences →</a>
+      </div>
+    </section>
+  )}
 
   {food.length > 0 && (
     <section class="simple-section">
@@ -269,6 +299,43 @@ const image = hub.image || `/assets/images/hubs/${hubSlug}/hero.webp` || '/asset
 
   @media (max-width: 620px) {
     .simple-grid { grid-template-columns: 1fr; }
+  }
+
+
+  .culin-hub-intro {
+    color: #596168;
+    max-width: 720px;
+    line-height: 1.65;
+    margin: -0.5rem 0 0;
+  }
+  .culin-hub-card-copy {
+    padding: 1rem;
+  }
+  .culin-hub-card-copy small {
+    display: block;
+    color: #a4650d;
+    font-size: .65rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  .culin-hub-card-copy h3 {
+    padding: .35rem 0 0;
+  }
+  .culin-hub-card-copy p {
+    margin: .35rem 0 0;
+    color: #596168;
+    font-size: .88rem;
+  }
+  .culin-hub-all {
+    display: inline-flex;
+    margin-top: 1.5rem;
+    color: #a4650d;
+    font-weight: 800;
+    text-decoration: none;
+  }
+  .culinary-hub-section .simple-card h3 {
+    padding: 0;
   }
 
   /* HUB-HERO-TEXT-FIX-START */

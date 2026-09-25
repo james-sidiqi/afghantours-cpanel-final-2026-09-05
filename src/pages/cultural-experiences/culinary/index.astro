@@ -1,0 +1,241 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import {
+  getCulinaryExperiences,
+  publicVenueLabel,
+  routeContextLabel,
+} from '../../../lib/culinary';
+import { getCulinaryImage } from '../../../lib/images';
+
+const csvItems = getCulinaryExperiences();
+const mdItems = await getCollection('culinary-experiences');
+const mdBySlug = new Map(
+  mdItems.map((item) => [item.id.replace(/\.md$/, ''), item])
+);
+
+const items = csvItems.map((row) => {
+  const md = mdBySlug.get(row.slug);
+  const title = md?.data.title || row.name;
+  const card = md?.data.card_description || row.card_description || '';
+  const image = getCulinaryImage({
+    slug: row.slug,
+    hero_image: md?.data.hero_image || row.hero_image,
+  });
+  return {
+    ...row,
+    title,
+    card,
+    image,
+    venueLabel: publicVenueLabel({ ...row, venue_name: md?.data.venue_name || row.venue_name, venue_status: md?.data.venue_status || row.venue_status }),
+    routeLabel: routeContextLabel(row.route_context),
+  };
+});
+---
+
+<BaseLayout
+  title="Culinary Experiences | AfghanTours"
+  description="Hub-based culinary experiences across Afghanistan — restaurants, bakeries, markets, and roadside food culture planned from operational travel hubs."
+>
+  <section class="culin-index-hero">
+    <div class="culin-index-hero-inner">
+      <p>Food on the journey</p>
+      <h1>Culinary Experiences</h1>
+      <span>
+        Planned from travel hubs — not a standalone restaurant directory.
+        Taste chapli kabob, dogh, bakery sweets, highland quroot, and
+        regional hospitality as part of a practical route.
+      </span>
+      <a class="culin-index-hero-link" href="/cultural-experiences/">Browse cultural experiences</a>
+    </div>
+  </section>
+
+  <main class="culin-index-main">
+    <div class="culin-index-wrap">
+      <div class="culin-index-heading">
+        <div>
+          <p>Hub-based catalog</p>
+          <h2>Eleven culinary experiences across Afghanistan’s travel hubs.</h2>
+        </div>
+        <span>{items.length} experiences</span>
+      </div>
+
+      <div class="culin-index-grid">
+        {items.map((item) => (
+          <a class="culin-index-card" href={item.href}>
+            <div class="culin-index-image">
+              <img src={item.image} alt={item.title} loading="lazy" />
+            </div>
+            <div class="culin-index-copy">
+              <p>Culinary Experience</p>
+              <h3>{item.title}</h3>
+              {item.card && <span>{item.card}</span>}
+              <div class="culin-index-meta">
+                <small>{item.routeLabel}</small>
+                {item.signature_food && <small>{item.signature_food}</small>}
+                {item.venueLabel && <small>{item.venueLabel}</small>}
+              </div>
+              <strong>Explore culinary experience →</strong>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .culin-index-hero {
+    padding: clamp(8rem, 15vw, 13rem) 0 clamp(5rem, 9vw, 8rem);
+    background: linear-gradient(120deg, #0b141b, #1a2418);
+    color: #fff;
+  }
+  .culin-index-hero-inner {
+    width: min(1180px, calc(100% - 2rem));
+    margin: auto;
+  }
+  .culin-index-hero p,
+  .culin-index-heading p {
+    margin: 0;
+    color: #e0ad4a;
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+  .culin-index-hero h1 {
+    max-width: 900px;
+    margin: .6rem 0 1.3rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3.4rem, 8vw, 7rem);
+    line-height: .9;
+    letter-spacing: -.06em;
+  }
+  .culin-index-hero > div > span {
+    display: block;
+    max-width: 720px;
+    color: rgba(255,255,255,.72);
+    font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+    line-height: 1.7;
+  }
+  .culin-index-hero-link {
+    display: inline-flex;
+    margin-top: 1.6rem;
+    color: #f1c56b;
+    font-weight: 800;
+    text-decoration: none;
+  }
+  .culin-index-main {
+    padding: clamp(4rem, 7vw, 7rem) 0;
+    background: #fbf6ed;
+    color: #101820;
+  }
+  .culin-index-wrap {
+    width: min(1280px, calc(100% - 2rem));
+    margin: auto;
+  }
+  .culin-index-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+  .culin-index-heading h2 {
+    margin: .5rem 0 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.4rem, 4.5vw, 4.2rem);
+    line-height: .96;
+    letter-spacing: -.05em;
+  }
+  .culin-index-heading > span {
+    color: #6b6258;
+    font-size: .8rem;
+    font-weight: 800;
+  }
+  .culin-index-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 1rem;
+  }
+  .culin-index-card {
+    display: block;
+    overflow: hidden;
+    border: 1px solid rgba(16,24,32,.08);
+    border-radius: 1.35rem;
+    background: #fff;
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 14px 36px rgba(20,15,8,.07);
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .culin-index-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 50px rgba(20,15,8,.13);
+  }
+  .culin-index-image {
+    height: 240px;
+    overflow: hidden;
+    background: #17242c;
+  }
+  .culin-index-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .45s ease;
+  }
+  .culin-index-card:hover img { transform: scale(1.035); }
+  .culin-index-copy { padding: 1.35rem; }
+  .culin-index-copy > p {
+    margin: 0;
+    color: #a4650d;
+    font-size: .67rem;
+    font-weight: 900;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+  }
+  .culin-index-copy h3 {
+    margin: .45rem 0 .85rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.5rem, 2.1vw, 1.9rem);
+    line-height: 1.05;
+    letter-spacing: -.04em;
+  }
+  .culin-index-copy > span {
+    display: -webkit-box;
+    color: #596168;
+    font-size: .9rem;
+    line-height: 1.6;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .culin-index-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin-top: 1.1rem;
+  }
+  .culin-index-meta small {
+    padding: .4rem .62rem;
+    border-radius: 999px;
+    background: #fbf6ed;
+    color: #61594f;
+    font-size: .69rem;
+    font-weight: 800;
+  }
+  .culin-index-copy strong {
+    display: block;
+    margin-top: 1.1rem;
+    color: #a4650d;
+    font-size: .84rem;
+  }
+  @media (max-width: 950px) {
+    .culin-index-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  }
+  @media (max-width: 650px) {
+    .culin-index-heading { flex-direction: column; align-items: flex-start; }
+    .culin-index-grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -32,3 +32,7 @@ The markets may also sell fresh yogurt, butter, cream, cheese, and other local d
 ## Cultural Pairing: Band-e-Amir and the Central Highlands
 
 Qurut belongs to the road, the pastures, and the highland journey. Tasting it before reaching Band-e-Amir makes the landscape feel more connected to the people who live there.
+
+## Related Culinary Experience
+
+For the hub-based culinary stop planned from Bamyan, see [Band-e-Amir Dairy Market & Quroot](/cultural-experiences/culinary/band-e-amir-dairy-market-quroot/).
