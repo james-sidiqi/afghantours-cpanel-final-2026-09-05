@@ -193,6 +193,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="section-wrap">
       <p class="eyebrow">Leadership</p>
       <h2>American-led leadership. Afghan operations on the ground.</h2>
+      <figure class="leadership-team">
+        <img
+          src="/assets/images/page-assets/people/guides/james-and-edrees-mountain-road.webp"
+          alt="James and Edrees on a mountain road in Afghanistan"
+          width="1320"
+          height="952"
+          loading="lazy"
+        />
+      </figure>
       <div class="leadership-grid">
         <article>
           <img src="/assets/images/page-assets/people/guides/partner-james.webp" alt="James Amir Sidiqi" width="900" height="720" loading="lazy" />
@@ -578,6 +587,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       margin-top: .4rem;
       color: rgba(255,255,255,.68);
       line-height: 1.6;
+    }
+
+    .leadership-team {
+      margin: 2.5rem 0 0;
+      overflow: hidden;
+      border-radius: 2rem;
+      background: #111;
+      box-shadow: 0 18px 55px rgba(16,24,32,.08);
+    }
+
+    .leadership-team img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 520px;
+      object-fit: cover;
     }
 
     .leadership-grid {
