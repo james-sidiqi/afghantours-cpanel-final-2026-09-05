@@ -2,7 +2,8 @@
 
 **Verified:** 2026-09-25 23:04:06 +0430 (Asia/Kabul)  
 **Repo:** `james-sidiqi/afghantours-cpanel-final-2026-09-05`  
-**Main SHA:** `2d4ad7a84772807db53f96e5bca9888ca0ad748c`  
+**Artifact main SHA:** `baa5a2801a20b3cfd8e156f3a81773c3fe88a763`  
+**Docs tip SHA:** `28b43acd9a4685af4e4047492888b035bccf5cbc`  
 **Production deploy:** **NOT performed** — artifact verified only; awaiting James cPanel authorization
 
 ## Verdict
