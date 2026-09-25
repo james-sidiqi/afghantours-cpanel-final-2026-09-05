@@ -85,19 +85,19 @@ const cards = [
   }
   .section-kicker {
     margin: 0;
-    color: #b46b00;
+    color: var(--at-gold-text);
     font-size: .72rem;
     letter-spacing: .22em;
     text-transform: uppercase;
     font-weight: 900;
   }
   .custom-copy h2 {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: var(--font-display);
     font-size: clamp(2rem, 3.5vw, 2.8rem);
     line-height: 1.05;
     margin: .55rem 0 1rem;
   }
-  .custom-intro { color: #4b5563; line-height: 1.7; }
+  .custom-intro { color: var(--at-text); line-height: 1.7; }
   .custom-main-button {
     display: inline-block;
     margin-top: 1.2rem;
@@ -152,7 +152,7 @@ const cards = [
   .custom-card__content { padding: 1rem 1.1rem; display: grid; gap: .35rem; }
   .custom-card__label {
     margin: 0;
-    color: #b46b00;
+    color: var(--at-gold-text);
     font-size: .66rem;
     letter-spacing: .14em;
     text-transform: uppercase;
@@ -160,10 +160,10 @@ const cards = [
   }
   .custom-card h3 {
     margin: 0;
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: var(--font-display);
     font-size: 1.25rem;
   }
-  .custom-card__text { margin: 0; color: #4b5563; line-height: 1.55; font-size: .92rem; }
+  .custom-card__text { margin: 0; color: var(--at-text); line-height: 1.55; font-size: .92rem; }
   .custom-card__cta { color: #b98237; font-weight: 800; font-size: .88rem; }
   @media (max-width: 900px) {
     .custom-wrap { grid-template-columns: 1fr; }
