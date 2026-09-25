@@ -156,18 +156,40 @@ export function buildHubIndexCatalog(): HubCatalogItem[] {
     const hub = hubsBySlug.get(slug) || { slug, title: slug, name: slug };
     const g = glance.get(slug) || {};
     const name = String(hub.title || hub.name || g.display_name || slug);
-    const province = String(
-      hub.province || hub.province_name || g.display_name || name.replace(/\s+City$/i, '') || name
-    );
-    const image = String(hub.image || `/assets/images/hubs/${slug}/hero.webp`);
+    const provinceRaw = String(
+      hub.province || hub.province_name || ''
+    ).trim();
+    const province = provinceRaw
+      && provinceRaw.toLowerCase() !== name.toLowerCase()
+      && provinceRaw.toLowerCase() !== `${name} province`.toLowerCase()
+        ? provinceRaw
+        : String(name.replace(/\s+City$/i, '') || g.display_name || name);
     const existingHubImages = new Set(listPublicImages(`/assets/images/hubs/${slug}`));
+    // Also check short-folder assets used by some hubs (e.g. jalalabad/, faizabad/).
+    const short = slug.replace(/-city$/, '');
+    if (short !== slug) {
+      for (const p of listPublicImages(`/assets/images/hubs/${short}`)) existingHubImages.add(p);
+    }
+    const imageCandidates = [
+      `/assets/images/hubs/${slug}/hero.webp`,
+      `/assets/images/hubs/${slug}/01.webp`,
+      `/assets/images/hubs/${short}/hero.webp`,
+      `/assets/images/hubs/${short}/01.webp`,
+      String(hub.image || ''),
+    ].filter(Boolean);
+    const image =
+      imageCandidates.find((p) => existingHubImages.has(p) || (p.includes('/placeholders/') === false && p === hub.image && !String(hub.image || '').includes('placeholder')))
+      || imageCandidates.find((p) => existingHubImages.has(p))
+      || String(hub.image || `/assets/images/hubs/${slug}/hero.webp`);
     const cardCandidates = [
       `/assets/images/hubs/${slug}/01.webp`,
       `/assets/images/hubs/${slug}/thumb.webp`,
       `/assets/images/hubs/${slug}/gallery-1.webp`,
+      `/assets/images/hubs/${short}/01.webp`,
+      `/assets/images/hubs/${short}/thumb.webp`,
       image,
     ];
-    const cardImage = cardCandidates.find((p) => existingHubImages.has(p) || p === image) || image;
+    const cardImage = cardCandidates.find((p) => existingHubImages.has(p)) || image;
 
     const summary = firstSentence(
       String(hub.content || ''),
