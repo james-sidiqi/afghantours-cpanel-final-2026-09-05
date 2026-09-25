@@ -470,41 +470,32 @@ const informationLinks = [
       font-size: .66rem;
     }
 
-    /* Wrap so yellow Contact CTA is never clipped off-screen on phones */
     .site-nav {
       width: 100%;
-
       margin: 0;
-
-      padding-bottom: .15rem;
-
-      gap: .55rem 1rem;
-
+      padding-bottom: .1rem;
+      gap: .35rem .9rem;
       flex-wrap: wrap;
       align-items: center;
-
       overflow: visible;
     }
 
     .site-nav__link {
-      padding: .55rem 0;
+      padding: .45rem 0;
     }
 
     .site-dropdown {
       display: none;
     }
 
-    /* Own accessible row under brand — full “Contact Us” always readable */
+    /* Keep Contact visible without turning the mobile header into a large CTA panel. */
     .site-nav__cta {
-      order: -1;
-      flex: 1 1 100%;
-
+      flex: 0 0 auto;
       box-sizing: border-box;
-      width: 100%;
-      max-width: 100%;
-      min-height: 42px;
-
-      padding: .55rem 1rem;
+      width: auto;
+      min-height: 36px;
+      padding: .42rem .8rem;
+      font-size: .78rem;
     }
   }
 
@@ -521,8 +512,8 @@ const informationLinks = [
     }
 
     .site-nav__cta {
-      min-height: 40px;
-      font-size: .82rem;
+      min-height: 34px;
+      font-size: .76rem;
     }
   }
 
