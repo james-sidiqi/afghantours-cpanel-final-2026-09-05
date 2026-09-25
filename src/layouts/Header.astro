@@ -13,7 +13,6 @@ const exploreLinks = [
   ['Cultural Experiences', '/cultural-experiences/'],
   ['Culinary Experiences', '/cultural-experiences/culinary/'],
   ['Activities', '/activities/'],
-  ['Regional Map', '/destinations/#regions'],
   ['Province Directory', '/destinations/#provinces'],
 ];
 
@@ -134,9 +133,9 @@ const informationLinks = [
     background:
       linear-gradient(
         90deg,
-        #111a16 0%,
-        #101915 58%,
-        #121b17 100%
+        var(--at-footer) 0%,
+        #0b1712 58%,
+        var(--at-footer) 100%
       );
 
     border-top: 1px solid rgba(214, 162, 58, .18);
@@ -200,10 +199,7 @@ const informationLinks = [
 
     color: #fff;
 
-    font-family:
-      Georgia,
-      "Times New Roman",
-      serif;
+    font-family: var(--font-display);
 
     font-size: clamp(1.7rem, 2vw, 2.15rem);
 
@@ -221,7 +217,7 @@ const informationLinks = [
 
     margin-top: .3rem;
 
-    color: #e0a62d;
+    color: var(--at-gold);
 
     font-size: .76rem;
     font-weight: 800;
@@ -286,7 +282,7 @@ const informationLinks = [
   .site-nav__link:hover,
   .site-nav__group:hover > .site-nav__link,
   .site-nav__group:focus-within > .site-nav__link {
-    color: #e0a62d;
+    color: var(--at-gold);
   }
 
 
@@ -362,7 +358,7 @@ const informationLinks = [
   .site-dropdown a:hover,
   .site-dropdown a:focus-visible {
     background: rgba(214, 162, 58, .14);
-    color: #e0a62d;
+    color: var(--at-gold);
 
     outline: none;
   }
@@ -383,7 +379,7 @@ const informationLinks = [
 
     border-radius: 999px;
 
-    background: #dda52f;
+    background: var(--at-gold);
 
     color: #121713 !important;
 
@@ -399,7 +395,7 @@ const informationLinks = [
   }
 
   .site-nav__cta:hover {
-    background: #f0bb48;
+    background: var(--at-gold-light);
     color: #0d120f !important;
 
     transform: translateY(-1px);
