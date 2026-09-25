@@ -18,3 +18,22 @@ RewriteRule ^tours/veteran-return/?$ /return-journeys/veterans-contractors-diplo
 # Custom journey
 RewriteRule ^tours/custom-expedition/?$ /custom-requests/ [R=301,L]
 </IfModule>
+
+
+# Culinary Experiences — hub-based primary URLs
+# Flat cultural / restaurant aliases → /cultural-experiences/culinary/<slug>/
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Former cultural flat culinary URL
+RewriteRule ^cultural-experiences/chashma-e-dogh/?$ /cultural-experiences/culinary/chashma-e-dogh/ [R=301,L]
+RewriteRule ^cultural-experiences/chashma-e-dough/?$ /cultural-experiences/culinary/chashma-e-dogh/ [R=301,L]
+
+# Restaurant → culinary (KEEP AS CULINARY / MERGE)
+RewriteRule ^restaurants/adam-khan-chapli-kabob/?$ /cultural-experiences/culinary/adam-khan-chapli-kabob/ [R=301,L]
+RewriteRule ^restaurants/arg-restaurant-herat/?$ /cultural-experiences/culinary/arg-restaurant-herat/ [R=301,L]
+RewriteRule ^restaurants/aziz-bakery/?$ /cultural-experiences/culinary/aziz-bakery/ [R=301,L]
+RewriteRule ^restaurants/bakery-kabul/?$ /cultural-experiences/culinary/aziz-bakery/ [R=301,L]
+RewriteRule ^restaurants/chashma-e-dough/?$ /cultural-experiences/culinary/chashma-e-dogh/ [R=301,L]
+</IfModule>
