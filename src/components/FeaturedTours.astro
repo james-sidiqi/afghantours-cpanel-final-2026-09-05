@@ -141,6 +141,17 @@ const priceLabelOf = (tour: Tour) => {
     : raw;
 };
 
+
+const productClassOf = (tour: Tour & { product_class?: string }) =>
+  String((tour as any).product_class || '').toLowerCase() === 'scheduled'
+    ? 'Scheduled departure'
+    : 'Private fixed itinerary';
+
+const productClassKeyOf = (tour: Tour & { product_class?: string }) =>
+  String((tour as any).product_class || '').toLowerCase() === 'scheduled'
+    ? 'scheduled'
+    : 'private-fixed';
+
 const metaOf = (tour: Tour) => [
   tour.duration_days ? `${tour.duration_days} Days` : 'Private Journey',
   tour.travel_style || tour.style || 'Cultural',
@@ -217,6 +228,7 @@ const clientTours = safeTours.map((tour: any) => ({
     ? tour.provinces.map((p: any) => ({ name: p?.name, title: p?.title, slug: p?.slug }))
     : [],
   inquiryHref: tour.inquiryHref,
+  product_class: tour.product_class || productClassKeyOf(tour),
 }));
 ---
 
@@ -238,7 +250,11 @@ const clientTours = safeTours.map((tour: any) => ({
               </div>
 
               <div class="featured-active-copy">
-                <p class="featured-label">{tour.season || 'Year-round'}</p>
+                <p class="featured-label">
+                  <span class={`featured-class featured-class--${productClassKeyOf(tour)}`}>{productClassOf(tour)}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>{tour.season || 'Year-round'}</span>
+                </p>
                 <h3>{titleOf(tour)}</h3>
                 <div class="featured-meta">
                   {metaOf(tour).map((item) => <span>{item}</span>)}
@@ -260,7 +276,7 @@ const clientTours = safeTours.map((tour: any) => ({
           {safeTours.map((tour, index) => (
             <button type="button" class={`featured-thumb ${index === 0 ? 'is-active' : ''}`} data-featured-select={index}>
               <img src={heroOf(tour)} alt="" loading="lazy" />
-              <span>{tour.season || 'Year-round'}</span>
+              <span>{productClassOf(tour)} · {tour.season || 'Year-round'}</span>
               <strong>{titleOf(tour)}</strong>
               <small class="featured-thumb-price">{priceLabelOf(tour)}</small>
             </button>
@@ -342,7 +358,13 @@ const clientTours = safeTours.map((tour: any) => ({
     tour.description ||
     'A carefully designed Afghanistan journey built around real access, local knowledge, and operational support.';
 
+  const productClassLabelClient = (tour) =>
+    String(tour.product_class || '').toLowerCase() === 'scheduled'
+      ? 'Scheduled departure'
+      : 'Private fixed itinerary';
+
   const metaOfClient = (tour) => [
+    productClassLabelClient(tour),
     tour.duration_days ? `${tour.duration_days} Days` : 'Private Journey',
     tour.travel_style || tour.style || 'Cultural',
     tour.activity_level || 'Route-aware',
@@ -516,12 +538,42 @@ const clientTours = safeTours.map((tour: any) => ({
   }
 
   .featured-label {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem;
     color: #b77926;
     margin: 0 0 .9rem;
     font-size: .72rem;
     font-weight: 950;
     letter-spacing: .24em;
     text-transform: uppercase;
+  }
+
+  .featured-class {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.2rem 0.55rem;
+    border: 1px solid rgba(180, 107, 0, 0.35);
+    background: rgba(255, 248, 236, 0.9);
+    color: #8a4b00;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  .featured-class--scheduled {
+    border-color: rgba(16, 24, 32, 0.18);
+    background: #101820;
+    color: #f6e7c2;
+  }
+
+  .featured-class--private-fixed {
+    border-color: rgba(180, 107, 0, 0.4);
+    background: #fff8ec;
+    color: #8a4b00;
   }
 
   .featured-active-copy h3 {

@@ -519,6 +519,15 @@ const pageDescription =
   tour.summary ||
   tour.description ||
   "A guided Afghanistan journey built around realistic logistics, cultural access, and Kabul-based ground coordination.";
+const productClassKey = String(tour.product_class || '').toLowerCase() === 'scheduled' ? 'scheduled' : 'private-fixed';
+const productClassLabel = productClassKey === 'scheduled' ? 'Scheduled departure' : 'Private fixed itinerary';
+const tourNoteTitle = productClassKey === 'scheduled'
+  ? 'Proposed seasonal departures.'
+  : 'Built around your dates.';
+const tourNoteBody = productClassKey === 'scheduled'
+  ? 'This itinerary has scheduled or proposed departure windows. Ask about joining a published date, or running the same route privately.'
+  : 'This is a published fixed itinerary run on private dates — adjustable around your interests, pace, and available travel window.';
+
 const contactHref = buildTourInquiryHref(tour);
 ---
 
@@ -536,7 +545,7 @@ const contactHref = buildTourInquiryHref(tour);
 
     <header class="tour-hero tour-shell">
       <div class="tour-hero__copy">
-        <p class="tour-kicker">{tour.travel_style || "Guided journey"}</p>
+        <p class="tour-kicker">{productClassLabel} · {tour.travel_style || "Guided journey"}</p>
         <h1>{tourName}</h1>
         <p class="tour-hero__summary">{pageDescription}</p>
 
@@ -623,8 +632,8 @@ const contactHref = buildTourInquiryHref(tour);
       <main class="tour-main">
         <aside class="tour-note">
           <div>
-            <strong>Built around your dates.</strong>
-            <p>Most AfghanTours journeys are private or small-group and can be adjusted around your interests, pace, and available travel window.</p>
+            <strong>{tourNoteTitle}</strong>
+            <p>{tourNoteBody}</p>
           </div>
           <a href={contactHref}>Speak with our Kabul team</a>
         </aside>

@@ -1,13 +1,13 @@
 tour_code,tour_slug,inclusion_type,title,description,is_active,sort_order
 ALL,all-tours,arrival,Airport pickup,Airport pickup on arrival at Kabul International Airport.,1,1
 ALL,all-tours,departure,Airport drop-off,Airport transfer for departing flights from Kabul.,1,2
-ALL,all-tours,transport,Ground transportation,Private ground transportation for scheduled tour movements.,1,3
-ALL,all-tours,guiding,Local guide support,Local guide support during scheduled sightseeing days.,1,4
+ALL,all-tours,transport,Ground transportation,Private ground transportation for tour movements.,1,3
+ALL,all-tours,guiding,Local guide support,Local guide support during sightseeing days.,1,4
 ALL,all-tours,planning,Route planning,Route planning based on timing, access, road conditions
 ALL,all-tours,coordination,Operational coordination,On-the-ground coordination by the AfghanTours team during the tour.,1,6
 ALL,all-tours,briefing,Pre-tour briefing,Arrival briefing covering schedule, expectations, safety
 ALL,all-tours,culture,Cultural context,Local cultural guidance and explanation at major stops and attractions.,1,8
-ALL,all-tours,assistance,Traveler support,Basic traveler support during the scheduled tour period.,1,9
+ALL,all-tours,assistance,Traveler support,Basic traveler support during the tour period.,1,9
 ADTF,afghanistan-discovery-tour-fall,seasonal,Fall route planning,Itinerary timing adjusted for fall weather, road access, and daylight conditions.
 ADTS,afghanistan-discovery-tour-spring,seasonal,Spring route planning,Itinerary timing adjusted for spring landscapes, weather, and road access.
 BSKI,bamyan-skiing-tour,special_activity,Ski logistics coordination,Coordination for Bamyan backcountry skiing days with local support.,1,10
