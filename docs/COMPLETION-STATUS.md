@@ -1,21 +1,30 @@
 # AfghanTours cPanel — Completion Status
 
-Last updated: 2026-09-25 ~22:05 Asia/Kabul
+Last updated: 2026-09-25 ~22:10 Asia/Kabul
 
 ## Current phase
-**Phase 14** — `qa/seo-accessibility-performance` (sitemap stubs removed)
+**Phase 15 — RELEASE CANDIDATE** (docs only; no new features)  
+**Phase 16 — STOP before production**
 
-## main tip (pre-merge)
-`3ba8410`
+## main tip
+`06237d4` (will advance when RC PR merges)
 
 ## Phase checklist
 | Phase | Status | Notes |
 |-------|--------|-------|
-| 0–5 | DONE | PRs #3–#7 |
-| 6–13 | VERIFIED | See `docs/CONTENT-PHASES-6-13-VERIFICATION.md` |
-| 14 qa/seo… | IN PROGRESS | sitemap 300 (skipped 15 stubs); no legacy tour URLs |
-| 15 release candidate | NEXT | |
-| 16 Production | STOP | |
+| 0 | DONE | PR #3 `280e6ca` / tip `ecb10ff` |
+| 1 | DONE | Branches cleaned; backup tag kept |
+| 2 | DONE | PR #4 |
+| 3 | DONE | PR #5 |
+| 4 | DONE | PR #6 |
+| 5 | DONE | PR #7 |
+| 6–13 | VERIFIED | `docs/CONTENT-PHASES-6-13-VERIFICATION.md` |
+| 14 | DONE | PR #8 sitemap 300 |
+| 15 | IN PROGRESS | `docs/RELEASE-CANDIDATE-REPORT.md` |
+| 16 Production | **STOP** | James only |
 
 ## Metrics
-- Pages: 307 · Sitemap: **300** · Image missing: 0
+307 pages · 300 sitemap · missing images 0 · P0=0 · P1=0
+
+## Production
+**NOT DEPLOYED**
