@@ -4,7 +4,7 @@ subtitle: "Kite flying, rooftop competition, and the chase for the azadi kite."
 card_description: "Look up over Kabul or Mazar and experience one of Afghanistan’s most cinematic street traditions."
 category: "Cultural Experiences"
 experience_type: "Spectacle, Sport & Sky"
-hero_image: "/assets/images/cultural-experiences/gudiparan-bazi/kabul-kite-flying.webp"
+hero_image: "/assets/images/experiences/cultural/gudiparan-bazi/hero.webp"
 image: "/assets/images/hubs/kabul-city/gallery-5.webp"
 provinces: ["Kabul", "Balkh"]
 paired_foods: ["Saffron Tea", "Roasted Chickpeas", "Raisins"]
@@ -13,8 +13,8 @@ duration: "1–2 hours"
 related_tours: ["weekend-in-kabul", "kabul-surroundings", "custom-tours"]
 nearby: ["Kabul Rooftops", "Tapa-e-Maranjan", "Mazar Rooftops"]
 gallery:
-  - "/assets/images/cultural-experiences/gudiparan-bazi/kabul-kite-flying.webp"
-  - "/assets/images/cultural-experiences/gudiparan-bazi/kites-kabul-sky.webp"
+  - "/assets/images/experiences/cultural/gudiparan-bazi/hero.webp"
+  - "/assets/images/experiences/cultural/gudiparan-bazi/gallery/01.webp"
 ---
 
 On crisp windy afternoons, Afghan skies can fill with hundreds of kites. **Gudiparan Bazi** is not casual flying. It is strategy, patience, craft, and competition.
