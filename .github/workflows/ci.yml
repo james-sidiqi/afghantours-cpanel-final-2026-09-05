@@ -50,6 +50,9 @@ jobs:
       - name: Inquiry entrypoint audit (rendered HTML)
         run: node scripts/audit-inquiry-entrypoints.mjs
 
+      - name: Tour image identity
+        run: node scripts/audit-tour-image-identity.mjs
+
       - name: Dist drift check (tracked dist must match build)
         run: |
           if git ls-files --error-unmatch dist/index.html >/dev/null 2>&1; then

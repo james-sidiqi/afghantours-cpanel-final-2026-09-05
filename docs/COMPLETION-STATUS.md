@@ -1,23 +1,20 @@
 # AfghanTours cPanel — Completion Status
 
-Last updated: 2026-09-25 ~21:55 Asia/Kabul
+Last updated: 2026-09-25 ~22:00 Asia/Kabul
 
 ## Current phase
-**Phase 4** — `data/canonical-catalog` (QA → PR)
+**Phase 5** — `content/tour-catalog-final` (image identity lock verified)
 
-## Branch / HEAD
-- `main`: `51aee8f`
-- Working: `data/canonical-catalog`
-- Production: **NOT deployed**
+## main tip
+`65c2f18`
 
 ## Phase checklist
 | Phase | Status | Notes |
 |-------|--------|-------|
-| 0–3 | DONE | PRs #3–#5 |
-| 4 data/canonical-catalog | IN PROGRESS | matrix + schema normalize; no active flips |
-| 5–15 | PENDING | |
+| 0–4 | DONE | PRs #3–#6 |
+| 5 content/tour-catalog-final | IN PROGRESS | image identity rule locked + audit |
+| 6–15 | PENDING | |
 | 16 Production | STOP | |
 
-## Catalog
-- See `docs/CANONICAL-CATALOG-MATRIX.md`
-- Image missing_count: 0
+## Metrics
+- Pages: 307 · Sitemap: 315 · Image missing: 0 · P0/P1 tracked in RC report (Phase 15)
