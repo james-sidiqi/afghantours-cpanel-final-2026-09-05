@@ -1,8 +1,8 @@
 ---
 title: Faizabad
-hub_slug: faizabad
+hub_slug: faizabad-city
 section: hub_content
-save_to: src/content/hubs/faizabad.md
+save_to: src/content/hubs/faizabad-city.md
 ---
 
 ### Overview

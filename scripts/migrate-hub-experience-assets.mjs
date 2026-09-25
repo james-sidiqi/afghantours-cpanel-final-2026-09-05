@@ -83,7 +83,7 @@ for (const slug of culturalSlugs) {
   ];
   // Prefer known MD hero paths where legacy folder empty
   const mdHeroFallbacks = {
-    'afghan-carpets': ['/assets/images/page-assets/activities/sightseeing/shopping/01.webp'],
+    'afghan-carpets': ['/assets/images/experiences/activities/shopping/gallery/page-01.webp', '/assets/images/page-assets/activities/sightseeing/shopping/01.webp'],
     'afghan-weddings': ['/assets/images/page-assets/people/tourists/tourists-relaxing-tea.webp'],
     'buzkashi': ['/assets/images/featured-tours/buzkashi-expedition/hero.webp'],
     'eid-and-celebrations': ['/assets/images/food/dishes/gosh-e-fil/hero.webp'],
@@ -136,6 +136,7 @@ const activitySources = {
     '/assets/images/page-assets/about/travelers/bamyan-ski-summit.webp',
   ],
   shopping: [
+    '/assets/images/experiences/activities/shopping/hero.webp',
     '/assets/images/page-assets/activities/sightseeing/shopping/01.webp',
     '/assets/images/page-assets/activities/sightseeing/markets/01.webp',
     '/assets/images/page-assets/activities/sightseeing/markets/02.webp',
@@ -143,7 +144,7 @@ const activitySources = {
   sightseeing: [
     '/assets/images/page-assets/activities/sightseeing/scenic/01.webp',
     '/assets/images/page-assets/activities/sightseeing/historical/01.webp',
-    '/assets/images/page-assets/activities/sightseeing/religous/01.webp',
+    '/assets/images/page-assets/activities/sightseeing/religious/01.webp',
   ],
   'horse-riding': [
     '/assets/images/page-assets/about/travelers/horseback-cultural-experience.webp',
@@ -191,7 +192,8 @@ for (const [slug, sources] of Object.entries(activitySources)) {
   }
   // sightseeing subtypes optional mirror
   if (slug === 'sightseeing') {
-    for (const sub of ['scenic', 'historical', 'religous', 'markets', 'shopping']) {
+    for (const sub of ['scenic', 'historical', 'religious', 'markets']) {
+      // shopping is top-level under activities/shopping — not a sightseeing subtype
       const subImages = listImages(`/assets/images/page-assets/activities/sightseeing/${sub}`);
       for (const img of subImages.slice(0, 3)) {
         const base = path.basename(img);

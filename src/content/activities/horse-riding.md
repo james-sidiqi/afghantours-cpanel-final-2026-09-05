@@ -3,7 +3,7 @@ title: "Horse Riding"
 activity_code: "ACT-HRS"
 subtitle: "Equestrian outings linked to Kabul and Mazar corridors."
 card_description: "Horse-riding experiences planned from Kabul and Mazar-e-Sharif when local horses, handlers, and routes are available."
-best_season: "Spring–autumn"
+best_season: "Spring–autumn (subject to conditions)"
 duration: "1–3 hours"
 hero_image: "/assets/images/experiences/activities/horse-riding/hero.webp"
 ---

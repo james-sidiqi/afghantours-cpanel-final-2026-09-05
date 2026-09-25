@@ -43,3 +43,16 @@ RewriteRule ^restaurants/chashma-e-dough/?$ /cultural-experiences/culinary/chash
 RewriteEngine On
 RewriteRule ^cultural-experiences/culinary/band-e-amir-dairy-market-quroot/?$ /cultural-experiences/culinary/band-e-amir-quroot-dairy/ [R=301,L]
 </IfModule>
+
+# Hub page slug aliases → canonical 8 runtime slugs
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^hubs/faizabad/?$ /hubs/faizabad-city/ [R=301,L]
+RewriteRule ^hubs/jalalabad/?$ /hubs/jalalabad-city/ [R=301,L]
+RewriteRule ^hubs/mazar-e-sharif-city/?$ /hubs/mazar-e-sharif/ [R=301,L]
+RewriteRule ^hubs/kabul/?$ /hubs/kabul-city/ [R=301,L]
+RewriteRule ^hubs/bamyan/?$ /hubs/bamyan-city/ [R=301,L]
+RewriteRule ^hubs/ghazni/?$ /hubs/ghazni-city/ [R=301,L]
+RewriteRule ^hubs/herat/?$ /hubs/herat-city/ [R=301,L]
+RewriteRule ^hubs/kandahar/?$ /hubs/kandahar-city/ [R=301,L]
+</IfModule>

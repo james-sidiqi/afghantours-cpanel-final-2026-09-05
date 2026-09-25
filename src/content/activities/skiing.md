@@ -3,7 +3,7 @@ title: "Skiing"
 activity_code: "ACT-SKI"
 subtitle: "Highland skiing experiences linked to Kabul and Bamyan corridors."
 card_description: "Skiing and snow-season highland travel planned from Kabul and Bamyan hubs when snow and access allow."
-best_season: "Winter–early spring"
+best_season: "Winter–early spring (subject to conditions)"
 duration: "Day to multi-day"
 hero_image: "/assets/images/experiences/activities/skiing/hero.webp"
 ---

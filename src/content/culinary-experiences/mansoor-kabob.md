@@ -7,7 +7,7 @@ hub_slug: "mazar-e-sharif"
 route_context: "near-hub"
 venue_name: "Mansoor Kabob"
 venue_type: "restaurant"
-venue_status: "confirmed"
+venue_status: "operator-provided"
 signature_food: "Kabob"
 related_food_slugs: []
 provinces: ["Balkh"]
@@ -17,7 +17,7 @@ hero_image: "/assets/images/experiences/culinary/mansoor-kabob/hero.webp"
 nearby: ["Mazar-e-Sharif", "Balkh", "Blue Mosque"]
 ---
 
-Mansoor Kabob is a confirmed northern kabob name used when travelers explore the Mazar-e-Sharif hub and the wider Balkh corridor. Physical address details are kept operator-side so this page does not over-claim a street location.
+Mansoor Kabob is an operator-provided northern kabob name used when travelers explore the Mazar-e-Sharif hub and the wider Balkh corridor. Physical address details are kept operator-side so this page does not over-claim a street location.
 
 ## Northern Kabob Culture
 

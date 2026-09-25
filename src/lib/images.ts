@@ -289,6 +289,8 @@ export function getActivityImage(item: any): string {
     // Legacy / interim paths
     slug === 'skiing' ? '/assets/images/page-assets/activities/skiing/01.webp' : null,
     slug === 'sightseeing' ? '/assets/images/page-assets/activities/sightseeing/scenic/01.webp' : null,
+    slug === 'shopping' ? '/assets/images/experiences/activities/shopping/hero.webp' : null,
+    // Temporary fallback (shopping is top-level, not a sightseeing subtype)
     slug === 'shopping' ? '/assets/images/page-assets/activities/sightseeing/shopping/01.webp' : null,
     slug === 'hiking' ? '/assets/images/page-assets/website-ready/rocky-valley-hiking.webp' : null,
     slug === 'horse-riding' ? '/assets/images/page-assets/about/travelers/horseback-cultural-experience.webp' : null,

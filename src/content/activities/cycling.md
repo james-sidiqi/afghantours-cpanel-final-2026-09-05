@@ -3,7 +3,7 @@ title: "Cycling"
 activity_code: "ACT-CYC"
 subtitle: "Urban and near-hub cycling around Kabul when conditions allow."
 card_description: "Cycling as a soft-adventure option from the Kabul hub — route and timing confirmed case by case."
-best_season: "Spring–autumn"
+best_season: "Spring–autumn (subject to conditions)"
 duration: "1–3 hours"
 hero_image: "/assets/images/experiences/activities/cycling/hero.webp"
 ---

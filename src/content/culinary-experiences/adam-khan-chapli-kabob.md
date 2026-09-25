@@ -7,7 +7,7 @@ hub_slug: "jalalabad-city"
 route_context: "in-hub"
 venue_name: "Adam Khan Chapli Kabob"
 venue_type: "restaurant"
-venue_status: "confirmed"
+venue_status: "operator-provided"
 signature_food: "Chapli Kabob"
 related_food_slugs: ["chapli-kabob"]
 provinces: ["Nangarhar"]

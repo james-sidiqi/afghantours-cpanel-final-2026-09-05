@@ -3,7 +3,7 @@ title: "Hiking"
 activity_code: "ACT-HIK"
 subtitle: "Day hikes and highland walks from Afghanistan’s travel hubs."
 card_description: "Guided hiking from operational hubs — valleys, viewpoints, and highland paths planned around current access."
-best_season: "Spring–autumn"
+best_season: "Spring–autumn (subject to conditions)"
 duration: "Half day to full day"
 hero_image: "/assets/images/experiences/activities/hiking/hero.webp"
 ---

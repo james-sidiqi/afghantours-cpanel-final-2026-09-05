@@ -12,7 +12,7 @@ Sightseeing is the backbone of most Afghan journeys and is planned from **every 
 
 ## Contexts
 
-Sightseeing spans historic sites, religious places, scenic viewpoints, and market streets. Sub-themes (historical, religious, scenic, markets) may use shared imagery under the experiences/activities asset tree without changing public URLs.
+Sightseeing spans historic sites, religious places, scenic viewpoints, and market streets. Sub-themes (historical, religious, scenic, markets) may use shared imagery under the experiences/activities asset tree without changing public URLs. **Shopping is a separate top-level activity** (`/activities/shopping/`), not a sightseeing subtype — do not treat `sightseeing/shopping/` media as canonical.
 
 ## How hubs use it
 

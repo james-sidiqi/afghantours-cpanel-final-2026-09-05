@@ -3,7 +3,7 @@ title: "Trekking"
 activity_code: "ACT-TRK"
 subtitle: "Multi-day trekking staged from Faizabad toward Badakhshan highland routes."
 card_description: "Expedition-style trekking logistics planned from Faizabad — proposal-led pacing, not a fixed day-by-day catalog trek."
-best_season: "Late spring–early autumn"
+best_season: "Late spring–early autumn (subject to conditions)"
 duration: "Multi-day"
 hero_image: "/assets/images/experiences/activities/trekking/hero.webp"
 ---

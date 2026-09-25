@@ -63,7 +63,9 @@ export function publicVenueLabel(item: CulinaryRow): string | null {
   const name = String(item.venue_name || '').trim();
   if (!name) return null;
   if (status.includes('needs exact')) return null;
-  if (status === 'confirmed' || status.startsWith('operator') || status.includes('confirmed')) {
+  // Show named venues when operator-provided (or legacy "confirmed" rows still present).
+  // Prefer operator-provided wording in data — do not present ambiguous "confirmed" as a public status.
+  if (status.startsWith('operator') || status === 'confirmed' || status.includes('operator-provided')) {
     return name;
   }
   if (status.includes('market') || status.includes('non-restaurant')) return null;

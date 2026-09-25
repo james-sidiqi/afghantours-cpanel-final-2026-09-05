@@ -3,7 +3,7 @@ title: "Fishing"
 activity_code: "ACT-FSH"
 subtitle: "River and lakeside fishing culture tied to hub day trips."
 card_description: "Fishing outings planned from selected hubs where river or lakeside access is workable — not a guaranteed catch product."
-best_season: "Spring–autumn"
+best_season: "Spring–autumn (subject to conditions)"
 duration: "Half day to full day"
 hero_image: "/assets/images/experiences/activities/fishing/hero.webp"
 ---

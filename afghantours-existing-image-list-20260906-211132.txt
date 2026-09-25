@@ -1029,9 +1029,9 @@ public/assets/images/page-assets/activities/sightseeing/historical/04.webp
 public/assets/images/page-assets/activities/sightseeing/historical/05.webp
 public/assets/images/page-assets/activities/sightseeing/markets/01.webp
 public/assets/images/page-assets/activities/sightseeing/markets/02.webp
-public/assets/images/page-assets/activities/sightseeing/religous/01.webp
-public/assets/images/page-assets/activities/sightseeing/religous/02.webp
-public/assets/images/page-assets/activities/sightseeing/religous/03.webp
+public/assets/images/page-assets/activities/sightseeing/religious/01.webp
+public/assets/images/page-assets/activities/sightseeing/religious/02.webp
+public/assets/images/page-assets/activities/sightseeing/religious/03.webp
 public/assets/images/page-assets/activities/sightseeing/scenic/01.webp
 public/assets/images/page-assets/activities/sightseeing/scenic/northern-plains-sheep.webp
 public/assets/images/page-assets/activities/sightseeing/shopping/01.webp
