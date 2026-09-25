@@ -1,0 +1,20 @@
+# AfghanTours product separation redirects (Tour / Specialist / Return)
+# Prefer specialist/return/custom targets — no chains through /tours/
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Specialist services
+RewriteRule ^tours/photography-tour/?$ /specialist-services/photography-documentary/ [R=301,L]
+RewriteRule ^tours/scientific-expeditions/?$ /specialist-services/scientific-research/ [R=301,L]
+RewriteRule ^tours/media-support/?$ /specialist-services/media-journalist/ [R=301,L]
+RewriteRule ^tours/business-investment/?$ /specialist-services/business-investment/ [R=301,L]
+RewriteRule ^tours/noshaq-expedition-support/?$ /specialist-services/noshaq-expedition-support/ [R=301,L]
+RewriteRule ^tours/ski-expeditions/?$ /specialist-services/ski-expeditions/ [R=301,L]
+
+# Return journeys
+RewriteRule ^tours/veteran-return/?$ /return-journeys/veterans-contractors-diplomats/ [R=301,L]
+
+# Custom journey
+RewriteRule ^tours/custom-expedition/?$ /custom-requests/ [R=301,L]
+</IfModule>
