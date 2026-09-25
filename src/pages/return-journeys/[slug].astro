@@ -14,6 +14,13 @@ if (!journey) return Astro.redirect('/return-journeys/');
 
 const inquiryHref = `/contact/?type=return&journey=${encodeURIComponent(journey.slug)}&interest=${encodeURIComponent(journey.name)}`;
 const hero = journey.hero_image_path || journey.image_path || '/assets/images/placeholders/default-hero.webp';
+const diasporaGallery = journey.slug === 'diaspora' ? [
+  { src: '/assets/images/return-journeys/diaspora/family-trip.webp', alt: 'Afghan diaspora family trip' },
+  { src: '/assets/images/return-journeys/diaspora/family-trip-museum.webp', alt: 'Afghan diaspora family at a museum' },
+  { src: '/assets/images/return-journeys/diaspora/kid-fountain.webp', alt: 'Child beside a fountain in Afghanistan' },
+  { src: '/assets/images/return-journeys/diaspora/return-trips/return-airport.webp', alt: 'Return journey at an airport' },
+  { src: '/assets/images/return-journeys/diaspora/james-family/brothers/brothers-mountains.webp', alt: 'Brothers together in the mountains' },
+] : [];
 ---
 <BaseLayout
   title={`${journey.name} | Return Journeys | AfghanTours`}
@@ -64,6 +71,17 @@ const hero = journey.hero_image_path || journey.image_path || '/assets/images/pl
         </div>
       )}
 
+      {diasporaGallery.length > 0 && (
+        <section class="rj-gallery" aria-label="Diaspora return journey imagery">
+          <h2>Return journey imagery</h2>
+          <div class="gallery-grid">
+            {diasporaGallery.map((image) => (
+              <img src={image.src} alt={image.alt} loading="lazy" />
+            ))}
+          </div>
+        </section>
+      )}
+
       <div class="grid">
         {journey.accommodation_note && <div class="tile"><h3>Accommodation</h3><p>{journey.accommodation_note}</p></div>}
         {journey.transport_note && <div class="tile"><h3>Transport</h3><p>{journey.transport_note}</p></div>}
@@ -94,6 +112,9 @@ const hero = journey.hero_image_path || journey.image_path || '/assets/images/pl
   .rj-body h2 { font-family: Georgia, "Times New Roman", serif; font-size: 1.55rem; margin: 1.8rem 0 .55rem; color: #101820; }
   .block { margin-top: 1.2rem; }
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.8rem; }
+  .rj-gallery { margin-top: 1.8rem; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .75rem; }
+  .gallery-grid img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: .65rem; }
   .tile { border: 1px solid #e5dccf; border-radius: .85rem; padding: 1rem 1.1rem; background: #fff; }
   .tile h3 { margin: 0 0 .45rem; font-size: 1rem; }
   .cta-band { margin-top: 2.8rem; background: #101820; color: #fff; border-radius: 1rem; padding: 2rem 1.5rem; text-align: center; }
