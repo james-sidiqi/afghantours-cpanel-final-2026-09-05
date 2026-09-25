@@ -129,7 +129,10 @@ addImage(data.image);
  */
 
 const foldersToCheck = [
+  `/assets/images/experiences/cultural/${slug}/`,
+  `/assets/images/experiences/cultural/${slug}/gallery/`,
   `/assets/images/cultural-experiences/${slug}/`,
+  `/assets/images/cultural-experiences/${slug}/gallery/`,
 ];
 
 
@@ -143,12 +146,11 @@ if (
       heroImage.lastIndexOf('/') + 1
     );
 
-  if (
-    heroFolder &&
-    !foldersToCheck.includes(heroFolder)
-  ) {
-    foldersToCheck.push(heroFolder);
-  }
+  [heroFolder, `${heroFolder}gallery/`].forEach((folder) => {
+    if (folder && !foldersToCheck.includes(folder)) {
+      foldersToCheck.push(folder);
+    }
+  });
 }
 
 
