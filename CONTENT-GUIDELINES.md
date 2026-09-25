@@ -104,7 +104,7 @@ Approved substitutes:
 - local coordination
 - access is assessed before departure
 - if a pass is the wrong call that week, we use another road or we wait
-- **Your safety is planned, not promised.**
+- Travel in Afghanistan carries inherent risk; planning is reviewed as conditions change
 
 Travelers should be told to read their own government’s advisory. Insurance that actually covers Afghanistan is the traveler’s responsibility unless the owner later requires it in public copy.
 
@@ -184,7 +184,6 @@ Approved lines (reuse; do not dilute):
 
 - Not the headlines. The hospitality. The history. The highlands.
 - We do not sell fantasy itineraries.
-- Your safety is planned, not promised.
 - We monitor the roads so you can watch the mountains.
 - Afghanistan is not a checkbox. It is a conversation.
 - Direct local operators — no middlemen, no guesswork.
@@ -309,7 +308,7 @@ The live page is thin and honest. Keep the honesty. Extend only with planning la
 - itineraries change with road, weather, or access
 - we do not sell fantasy itineraries
 - travelers read their own advisory
-- your safety is planned, not promised
+- inherent risk; no safety guarantees
 
 Do not add operational detail that creates liability (named checkpoints, convoy procedures, “real-time monitoring”).
 

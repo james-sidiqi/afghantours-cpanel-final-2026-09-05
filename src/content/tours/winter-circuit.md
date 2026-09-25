@@ -35,4 +35,3 @@ Winter travel requires additional schedule flexibility. Road movement, domestic 
 
 Letter of Invitation support is included for booked travel. We do not issue visas.
 
-Your safety is planned, not promised.
