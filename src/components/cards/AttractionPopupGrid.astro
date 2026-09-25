@@ -1,4 +1,11 @@
 ---
+import {
+  buildAttractionTopMeta,
+  buildAttractionTravelerNotes,
+  formatVisitDuration,
+  titleCaseMeta,
+} from '../../lib/attractionMeta';
+
 const {
   attractions = [],
   title = 'Attractions',
@@ -26,20 +33,38 @@ const normalized = attractions
     const desc = strip(a.desc_short || a.excerpt || a.summary || a.description || a.desc_long || a.content || '');
     const long = strip(a.desc_long || a.description || a.content || a.desc_short || a.excerpt || '');
     const image = a.image || a.image_path || a.hero_image || a.thumbnail_path || `/assets/images/attractions/${slug}/hero.webp`;
+    const province = a.province || a.province_name || a.province_code || '';
+    const region = a.region || '';
+    const category = a.category || 'Attraction';
+    const access = a.access_difficulty || a.access || '';
+    const season = [a.season_start, a.season_end].filter(Boolean).join('–') || '';
+    const durationHours = a.visit_duration_hours ?? a.visit_duration;
+    const duration = durationHours
+      ? formatVisitDuration(durationHours)
+      : '';
 
     return {
       slug,
       title,
-      province: a.province || a.province_name || a.province_code || '',
-      region: a.region || '',
-      category: a.category || 'Attraction',
+      province: titleCaseMeta(province),
+      region: titleCaseMeta(region),
+      category: titleCaseMeta(category),
       desc,
       long,
       image,
       href: a.href || `/attractions/${slug}/`,
-      duration: a.visit_duration_hours ? `${a.visit_duration_hours} hours` : '',
-      access: a.access_difficulty || '',
-      season: [a.season_start, a.season_end].filter(Boolean).join('–') || '',
+      duration,
+      access,
+      season,
+      topMeta: buildAttractionTopMeta({ category, region, access }),
+      travelerNotes: buildAttractionTravelerNotes({
+        slug,
+        province,
+        region,
+        visit_duration_hours: durationHours,
+        season,
+        omitFitness: true,
+      }),
     };
   });
 ---
@@ -146,15 +171,10 @@ const normalized = attractions
     link.href = item.href || '/attractions/';
     contact.href = `/contact/?type=attraction&attraction=${encodeURIComponent(item.title || '')}`;
 
-    meta.innerHTML = [item.category, item.region, item.access].filter(Boolean).map((x) => `<span>${escapeHtml(x)}</span>`).join('');
+    const topMeta = Array.isArray(item.topMeta) ? item.topMeta : [item.category, item.region, item.access].filter(Boolean);
+    meta.innerHTML = topMeta.map((x) => `<span>${escapeHtml(x)}</span>`).join('');
 
-    const notes = [
-      ['Province', item.province],
-      ['Region', item.region],
-      ['Visit duration', item.duration],
-      ['Access', item.access],
-      ['Season', item.season],
-    ].filter(([, value]) => value);
+    const notes = Array.isArray(item.travelerNotes) ? item.travelerNotes : [];
 
     if (notes.length) {
       practicalWrap.hidden = false;
@@ -290,13 +310,18 @@ const normalized = attractions
   }
 
   .attraction-card-tags span,
-  .attraction-meta span {
+  .attraction-meta :global(span) {
+    display: inline-flex;
+    align-items: center;
     border-radius: 999px;
+    border: 1px solid rgba(180, 107, 0, .22);
     background: #f4eadc;
     color: #3b2d1c;
-    padding: .42rem .68rem;
+    padding: .42rem .72rem;
     font-size: .74rem;
     font-weight: 900;
+    line-height: 1.2;
+    white-space: nowrap;
   }
 
   .attraction-popup-card p:not(.card-kicker) {
@@ -438,19 +463,22 @@ const normalized = attractions
     padding: .8rem;
   }
 
-  .practical-list span {
+  .practical-list :global(span) {
     display: block;
     color: #6b7280;
     font-size: .68rem;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: .12em;
+    margin-bottom: .2rem;
   }
 
-  .practical-list strong {
+  .practical-list :global(strong) {
     display: block;
-    margin-top: .25rem;
+    margin-top: .15rem;
     font-size: .9rem;
+    line-height: 1.35;
+    word-break: break-word;
   }
 
   .attraction-modal-actions {

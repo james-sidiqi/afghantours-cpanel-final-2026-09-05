@@ -11,12 +11,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <section class="about-intro">
     <div class="section-wrap about-intro__grid">
-      <div>
+      <div class="about-intro__copy">
         <p class="eyebrow">Working From Kabul</p>
         <h2>We do not parachute in for the season.</h2>
-      </div>
 
-      <div class="about-intro__copy">
         <p>
           Leadership is American-led and the team is Afghan. President / Co-Founder
           James “Amir” Sidiqi and Vice President / Co-Founder Mohammad “Edrees” Rahimi
@@ -39,6 +37,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <strong>Your safety is planned, not promised.</strong>
         </p>
       </div>
+
+      <figure class="about-intro__figure">
+        <img
+          src="/assets/images/page-assets/activities/sightseeing/shopping/majid-mall.webp"
+          alt="Majid Mall in Kabul, where AfghanTours plans and operates from"
+          width="1000"
+          height="760"
+          loading="lazy"
+        />
+      </figure>
     </div>
   </section>
 
@@ -86,8 +94,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
         <article>
           <img
-            src="/assets/images/page-assets/people/cultural-interactions/local-authorities.webp"
-            alt="AfghanTours leadership with local contacts in Afghanistan"
+            src="/assets/images/transport/roads/kabul-salang/01.webp"
+            alt="Open road and mountain terrain on an Afghanistan travel route"
             width="900"
             height="620"
             loading="lazy"
@@ -102,34 +110,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </div>
         </article>
       </div>
-    </div>
-  </section>
-
-  <section class="traveler-story">
-    <div class="section-wrap traveler-story__grid">
-      <div>
-        <p class="eyebrow">Beyond the Headlines</p>
-        <h2>Afghanistan is not a checkbox. It is a conversation.</h2>
-        <p>
-          Travelers remember the monuments, mountains, and ancient cities. But they also remember
-          the tea, the markets, the conversations, the local guides, the drivers, and the people who
-          welcomed them along the way.
-        </p>
-        <p>
-          Our job is to make that access possible through disciplined planning, local guidance,
-          clear expectations, and respect for Afghanistan’s culture and operating environment.
-        </p>
-      </div>
-      <figure>
-        <img
-          src="/assets/images/page-assets/field-access/kabul-market-walk.webp"
-          alt="AfghanTours travelers walking through a Kabul market during a rainy day visit"
-          width="1000"
-          height="760"
-          loading="lazy"
-        />
-        <figcaption>Guided city access, cultural context, and hospitality on the ground.</figcaption>
-      </figure>
     </div>
   </section>
 
@@ -216,7 +196,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </div>
         </article>
         <article>
-          <img src="/assets/images/page-assets/people/guides/partner-edrees.webp" alt="Mohammad Edrees Rahimi" width="900" height="720" loading="lazy" />
+          <img src="/assets/images/page-assets/people/guides/edrees-white-4runner.webp" alt="Mohammad Edrees Rahimi" width="900" height="720" loading="lazy" />
           <div>
             <p class="card-kicker">Vice President / Co-Founder</p>
             <h3>Mohammad “Edrees” Rahimi</h3>
@@ -234,21 +214,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="section-wrap">
       <p class="eyebrow">Our Team</p>
       <h2>Guides, drivers, and partners on the road.</h2>
-      <p class="our-team-intro">The journeys are carried by Afghan colleagues who work with us across hubs and routes. Photos below are from approved field assets — names and roles are shown only where already established on this page or in filenames without inventing biographies.</p>
+      <p class="our-team-intro">The journeys are carried by Afghan colleagues who work with us across hubs and routes. Photos below are from approved field assets.</p>
       <div class="our-team-grid">
         <figure>
           <img src="/assets/images/page-assets/people/guides/guides-on-tour.webp" alt="AfghanTours guides on tour" width="900" height="700" loading="lazy" />
         </figure>
         <figure>
-          <img src="/assets/images/page-assets/people/guides/ramin-guiding.webp" alt="Ramin guiding travelers" width="900" height="700" loading="lazy" />
-          <figcaption>Ramin</figcaption>
+          <img src="/assets/images/page-assets/people/guides/ramin-guiding.webp" alt="AfghanTours guide with travelers" width="900" height="700" loading="lazy" />
         </figure>
         <figure>
-          <img src="/assets/images/page-assets/people/guides/fahim-smiling-buddha-bamyan-snow.webp" alt="Fahim with travelers in Bamyan snow" width="900" height="700" loading="lazy" />
-          <figcaption>Fahim</figcaption>
+          <img src="/assets/images/page-assets/people/guides/fahim-smiling-buddha-bamyan-snow.webp" alt="AfghanTours guide with travelers in Bamyan snow" width="900" height="700" loading="lazy" />
         </figure>
         <figure>
-          <img src="/assets/images/page-assets/people/guides/fahim-kandahar_mosque.webp" alt="Fahim at a Kandahar mosque visit" width="900" height="700" loading="lazy" />
+          <img src="/assets/images/page-assets/people/guides/fahim-kandahar_mosque.webp" alt="Mosque visit during an AfghanTours journey" width="900" height="700" loading="lazy" />
         </figure>
         <figure>
           <img src="/assets/images/page-assets/people/guides/tour-and-guide.webp" alt="Traveler with AfghanTours guide" width="900" height="700" loading="lazy" />
@@ -508,15 +486,38 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       object-fit: cover;
     }
 
-    .our-team-grid figcaption {
-      padding: .55rem .75rem .7rem;
-      color: #2d3330;
-      font-size: .82rem;
-      font-weight: 800;
+
+    .about-intro__grid {
+      display: grid;
+      gap: 2.5rem;
+      grid-template-columns: 1.05fr .95fr;
+      align-items: center;
     }
 
-    .about-intro__grid,
-    .traveler-story__grid,
+    .about-intro__copy p {
+      margin: 0 0 1.35rem;
+      color: #374151;
+      font-size: 1.05rem;
+      line-height: 1.9;
+    }
+
+    .about-intro__figure {
+      margin: 0;
+      overflow: hidden;
+      border-radius: 2rem;
+      background: #e8dfd2;
+      box-shadow: 0 18px 55px rgba(16,24,32,.08);
+    }
+
+    .about-intro__figure img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 320px;
+      max-height: 520px;
+      object-fit: cover;
+    }
+
     .trust-band__grid {
       display: grid;
       gap: 4rem;
@@ -538,7 +539,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
 
     .about-intro__copy p,
-    .traveler-story p,
     .trust-band p,
     .about-final-cta p {
       margin: 0 0 1.35rem;
@@ -589,34 +589,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       line-height: 1.75;
     }
 
-    .traveler-story {
-      padding: 6.5rem 0;
-      background: #fff;
-    }
-
-    .traveler-story figure,
     .about-gallery figure {
       margin: 0;
       overflow: hidden;
       border-radius: 2rem;
-      background: #111;
+      background: #e8dfd2;
       box-shadow: 0 18px 55px rgba(16,24,32,.08);
     }
 
-    .traveler-story img,
     .about-gallery img {
       width: 100%;
       height: 100%;
       min-height: 420px;
       object-fit: cover;
       display: block;
-    }
-
-    .traveler-story figcaption {
-      padding: 1rem 1.25rem;
-      background: #101820;
-      color: rgba(255,255,255,.78);
-      font-size: .88rem;
     }
 
     .about-gallery {
@@ -736,11 +722,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     @media (max-width: 920px) {
       .about-intro__grid,
-      .traveler-story__grid,
       .trust-band__grid,
       .access-cards__grid,
       .leadership-grid {
         grid-template-columns: 1fr;
+      }
+
+      .about-intro__figure img {
+        min-height: 240px;
+        max-height: 360px;
       }
 
       .about-gallery {
@@ -765,8 +755,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         margin-top: 1rem;
       }
 
-      .about-gallery img,
-      .traveler-story img {
+      .about-gallery img {
         min-height: 260px;
       }
 
@@ -775,10 +764,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }
     }
   
-
-
-
-
 
 
     /* AFGHANTOURS_LICENSE_REPAIR_V6_START */

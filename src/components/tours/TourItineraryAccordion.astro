@@ -1,4 +1,5 @@
 ---
+import { buildAttractionTopMeta, buildAttractionTravelerNotes } from '../../lib/attractionMeta';
 import { attractions, locations, hotels } from "../../lib/data";
 
 const { itinerary = [] } = Astro.props;
@@ -134,26 +135,27 @@ function attractionLocation(attraction) {
   return [attraction.province, attraction.region].filter(Boolean).join(" · ") || "";
 }
 
-function attractionTags(attraction) {
-  return String(attraction.tags || "")
-    .split(/[,|#]/)
-    .map((t) => t.trim())
-    .filter(Boolean)
-    .slice(0, 6);
-}
-
 function attractionPractical(attraction) {
-  const notes = [];
-  if (attraction.visit_duration_hours) notes.push(["Duration", `${attraction.visit_duration_hours} hours`]);
-  if (attraction.access_difficulty) notes.push(["Access", String(attraction.access_difficulty)]);
   const season = [attraction.season_start, attraction.season_end].filter(Boolean).join("–");
-  if (season) notes.push(["Season", season]);
+  const notes = buildAttractionTravelerNotes({
+    slug: attraction.slug || "",
+    province: attraction.province_name || attraction.province || "",
+    region: attraction.region || "",
+    visit_duration_hours: attraction.visit_duration_hours,
+    season,
+    omitFitness: true,
+  });
   if (attraction.seasonal_notes) notes.push(["Season note", String(attraction.seasonal_notes)]);
   if (attraction.recommended_time_of_day) notes.push(["Best time", String(attraction.recommended_time_of_day)]);
-  if (attraction.photography_rating) notes.push(["Photography", String(attraction.photography_rating)]);
-  if (attraction.cultural_sensitivity) notes.push(["Sensitivity", String(attraction.cultural_sensitivity)]);
-  if (attraction.notes) notes.push(["Notes", String(attraction.notes)]);
   return notes;
+}
+
+function attractionTopMeta(attraction) {
+  return buildAttractionTopMeta({
+    category: attraction.category || attraction.primary_category || "",
+    region: attraction.region || "",
+    access: attraction.access_difficulty,
+  });
 }
 
 function hotelName(hotel) {
@@ -442,7 +444,7 @@ function upgradedHotelsForHub(hub) {
             {attractionsForDay.map((attraction, aIndex) => {
               const detailId = `${attractionDialogId}-detail-${aIndex}`;
               const practical = attractionPractical(attraction);
-              const tags = attractionTags(attraction);
+              const tags = attractionTopMeta(attraction);
               const location = attractionLocation(attraction);
               return (
                 <dialog id={detailId} class="attraction-itinerary-dialog w-[min(720px,96vw)] max-w-none rounded-[1.5rem] p-0 backdrop:bg-black/70 sm:rounded-[2rem]">

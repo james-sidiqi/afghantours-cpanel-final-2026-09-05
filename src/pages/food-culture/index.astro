@@ -843,18 +843,39 @@ const categories = [
     padding: clamp(3rem, 5vw, 5rem) 0;
   }
 
-  .premium-grid {
+  .premium-grid,
+  .premium-grid.small {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1rem;
   }
 
-  .premium-grid.small {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .premium-grid .food-card,
+  .premium-grid.small .food-card {
+    min-width: 0;
   }
 
-  .food-card__image { margin: -1.25rem -1.25rem 1.1rem; height: 160px; overflow: hidden; background: #e7dfd3; }
-  .food-card__image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .premium-grid .food-card h3,
+  .premium-grid.small .food-card h3 {
+    margin: .55rem 0 .55rem;
+  }
+
+  .food-card__image {
+    width: calc(100% + 2.5rem);
+    aspect-ratio: 16 / 10;
+    height: auto;
+    margin: -1.25rem -1.25rem 1.1rem;
+    overflow: hidden;
+    border-radius: 1rem 1rem 0 0;
+    background: #e7dfd3;
+  }
+  .food-card__image img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+  }
 
   .food-card {
     display: flex;
@@ -950,21 +971,7 @@ const categories = [
     }
   }
 
-  .food-card__image {
-    width: calc(100% + 2.5rem);
-    height: 180px;
-    margin: -1.25rem -1.25rem 1.1rem;
-    overflow: hidden;
-    border-radius: 1rem 1rem 0 0;
-    background: #ece5d9;
-  }
-
-  .food-card__image img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-  }
+  /* food-card__image rules unified above for identical crop/height across grids */
 
   .experience-hub {
     margin-top: 2.5rem;
