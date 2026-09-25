@@ -262,6 +262,7 @@ const trustItems = [
           <input type="hidden" name="entity_code" id="entityCodeInput" value="" />
           <input type="hidden" name="entity_slug" id="entitySlugInput" value="" />
           <input type="hidden" name="entity_name" id="entityNameInput" value="" />
+          <input type="hidden" name="product_class" id="productClassInput" value="" />
           <input type="hidden" name="source_url" id="sourceUrlInput" value="" />
           <input type="hidden" name="preferred_hub" id="preferredHubInput" value="" />
           <input class="tour-inquiry-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
@@ -431,7 +432,8 @@ const trustItems = [
       return String(value).replace(/[-_]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
     };
 
-    const typeRaw = (params.get('type') || params.get('flow') || '').toLowerCase();
+    const productClassInput = document.getElementById('productClassInput');
+
     const typeMap = {
       'specialist': 'specialist',
       'return': 'return',
@@ -439,16 +441,26 @@ const trustItems = [
       'custom': 'custom',
       'custom-tour': 'custom',
       'custom_tour': 'custom',
+      'build-my-journey': 'custom',
       'scheduled': 'scheduled',
       'private-fixed': 'private-fixed',
       'private': 'private-fixed',
+      'private_fixed': 'private-fixed',
+      'fixed': 'private-fixed',
       'tour': 'private-fixed',
       'general': 'general',
     };
-    let flow = typeMap[typeRaw] || 'general';
 
-    // Entity context BEFORE generic interest — specialist/return/activity must not be
-    // silently labeled as "Custom Journey" when `interest=` is also present.
+    // Canonical params FIRST (win over legacy aliases).
+    const canonicalFlowRaw = (params.get('flow') || '').toLowerCase();
+    const canonicalEntityType = (params.get('entity_type') || '').toLowerCase();
+    const canonicalEntityCode = params.get('entity_code') || '';
+    const canonicalEntitySlug = params.get('entity_slug') || '';
+    const canonicalEntityName = params.get('entity_name') || '';
+    const canonicalProductClass = (params.get('product_class') || '').toLowerCase();
+
+    // Legacy aliases (only fill gaps; never override canonical).
+    const typeRaw = (params.get('type') || params.get('inquiry_type') || '').toLowerCase();
     const serviceSlug = params.get('service') || params.get('service_slug') || '';
     const journeySlug = params.get('journey') || params.get('journey_slug') || '';
     const activitySlug = params.get('activity') || params.get('activity_slug') || '';
@@ -456,65 +468,130 @@ const trustItems = [
     const activityName = params.get('activity_name') || '';
     const interest = params.get('interest') || '';
     const hub = params.get('hub') || '';
-    const dates = params.get('dates') || params.get('travel_dates') || params.get('preferred_dates') || '';
+    const dates = params.get('dates') || params.get('travel_dates') || params.get('preferred_dates') || params.get('date') || '';
+    const legacyTourCode = params.get('tour_code') || params.get('code') || '';
 
-    let entityType = 'general';
+    const normalizeProductClass = (raw) => {
+      const pc = String(raw || '').toLowerCase();
+      if (pc === 'scheduled') return 'scheduled';
+      if (pc === 'private-fixed' || pc === 'private' || pc === 'fixed' || pc === 'private_fixed') return 'private-fixed';
+      return '';
+    };
+
+    let flow = '';
+    let entityType = '';
     let entitySlug = '';
     let entityName = '';
+    let entityCode = '';
+    let productClass = '';
     let interestLabel = '';
 
-    if (flow === 'specialist' || serviceSlug) {
-      flow = 'specialist';
-      entityType = 'specialist';
-      entitySlug = serviceSlug || interest;
-      entityName = interest || niceTitle(serviceSlug);
-      interestLabel = entityName ? `Specialist service: ${niceTitle(entityName)}` : 'Specialist service inquiry';
-    } else if (flow === 'return' || (journeySlug && typeRaw === 'return')) {
-      flow = 'return';
-      entityType = 'return';
-      entitySlug = journeySlug || interest;
-      entityName = interest || niceTitle(journeySlug);
-      interestLabel = entityName ? `Return journey: ${niceTitle(entityName)}` : 'Return journey inquiry';
-    } else if (flow === 'activity' || activitySlug || activityName) {
-      flow = 'activity';
-      entityType = 'activity';
-      entitySlug = activitySlug || interest;
-      entityName = activityName || niceTitle(activitySlug) || niceTitle(interest);
-      interestLabel = entityName ? `Activity: ${niceTitle(entityName)}` : 'Activity inquiry';
-    } else if (flow === 'custom' || typeRaw === 'custom-tour' || interest === 'build-my-journey') {
-      flow = 'custom';
-      entityType = 'custom';
-      entitySlug = 'custom-expedition';
-      entityName = 'Build My Journey';
-      interestLabel = 'Custom journey: Build My Journey';
-    } else if (tourSlug) {
-      flow = typeMap[typeRaw] || 'private-fixed';
-      entityType = 'tour';
-      entitySlug = tourSlug;
-      entityName = niceTitle(tourSlug);
-      interestLabel = `Tour: ${entityName}`;
-    } else if (journeySlug && typeRaw !== 'return') {
-      // CustomJourneys cards use ?journey=Label without type — treat as custom/general planning interest
-      flow = flow === 'general' ? 'custom' : flow;
-      entityType = 'custom';
-      entitySlug = '';
-      entityName = niceTitle(journeySlug);
-      interestLabel = `Interested journey: ${entityName}`;
+    // 1) Apply canonical values when present.
+    if (canonicalFlowRaw && typeMap[canonicalFlowRaw]) {
+      flow = typeMap[canonicalFlowRaw];
+    }
+    if (canonicalEntityType) entityType = canonicalEntityType;
+    if (canonicalEntitySlug) entitySlug = canonicalEntitySlug;
+    if (canonicalEntityName) entityName = canonicalEntityName;
+    if (canonicalEntityCode) entityCode = canonicalEntityCode;
+    productClass = normalizeProductClass(canonicalProductClass);
+
+    // Explicit scheduled must never be demoted to private-fixed.
+    if (productClass === 'scheduled') {
+      flow = 'scheduled';
+      if (!entityType) entityType = 'tour';
+    } else if (productClass === 'private-fixed') {
+      if (!flow || flow === 'general' || flow === 'private-fixed') flow = 'private-fixed';
+      if (!entityType) entityType = 'tour';
+    }
+
+    // 2) Legacy fill — only when canonical left gaps.
+    if (!flow && typeRaw && typeMap[typeRaw]) {
+      flow = typeMap[typeRaw];
+    }
+
+    if ((!flow || flow === 'general' || entityType === 'specialist') && (serviceSlug || entityType === 'specialist' || flow === 'specialist' || typeRaw === 'specialist')) {
+      if (!flow || flow === 'general') flow = 'specialist';
+      if (!entityType) entityType = 'specialist';
+      if (!entitySlug) entitySlug = serviceSlug || interest || entitySlug;
+      if (!entityName) entityName = interest || niceTitle(serviceSlug) || entityName;
+    } else if ((!flow || flow === 'general' || entityType === 'return') && (typeRaw === 'return' || entityType === 'return' || flow === 'return' || (journeySlug && (typeRaw === 'return' || canonicalFlowRaw === 'return' || entityType === 'return')))) {
+      if (!flow || flow === 'general') flow = 'return';
+      if (!entityType) entityType = 'return';
+      if (!entitySlug) entitySlug = journeySlug || interest || entitySlug;
+      if (!entityName) entityName = interest || niceTitle(journeySlug) || entityName;
+    } else if ((!flow || flow === 'general' || entityType === 'activity') && (flow === 'activity' || typeRaw === 'activity' || activitySlug || activityName || entityType === 'activity')) {
+      if (!flow || flow === 'general') flow = 'activity';
+      if (!entityType) entityType = 'activity';
+      if (!entitySlug) entitySlug = activitySlug || interest || entitySlug;
+      if (!entityName) entityName = activityName || niceTitle(activitySlug) || niceTitle(interest) || entityName;
+    } else if ((!flow || flow === 'general' || entityType === 'custom') && (flow === 'custom' || typeRaw === 'custom-tour' || typeRaw === 'custom' || interest === 'build-my-journey' || entityType === 'custom')) {
+      if (!flow || flow === 'general') flow = 'custom';
+      if (!entityType) entityType = 'custom';
+      if (!entitySlug) entitySlug = 'custom-expedition';
+      if (!entityName) entityName = 'Build My Journey';
+      if (!entityCode) entityCode = 'CTME';
+    } else if (tourSlug || entityType === 'tour' || flow === 'scheduled' || flow === 'private-fixed') {
+      if (!entityType) entityType = 'tour';
+      if (!entitySlug) entitySlug = tourSlug || entitySlug;
+      if (!entityName) entityName = niceTitle(tourSlug) || entityName;
+      if (!entityCode) entityCode = legacyTourCode || entityCode;
+      // Prefer explicit product_class / flow=scheduled over defaulting to private-fixed.
+      if (productClass === 'scheduled' || flow === 'scheduled') {
+        flow = 'scheduled';
+        productClass = 'scheduled';
+      } else if (productClass === 'private-fixed' || flow === 'private-fixed') {
+        flow = 'private-fixed';
+        productClass = productClass || 'private-fixed';
+      } else if (!flow || flow === 'general') {
+        // Legacy ?tour= without class: default private-fixed (historic behavior).
+        flow = typeMap[typeRaw] || 'private-fixed';
+        if (flow === 'scheduled') productClass = 'scheduled';
+        else productClass = 'private-fixed';
+      }
+    } else if (journeySlug && typeRaw !== 'return' && canonicalFlowRaw !== 'return') {
+      // CustomJourneys cards use ?journey=Label without type
+      if (!flow || flow === 'general') flow = 'custom';
+      if (!entityType) entityType = 'custom';
+      if (!entityName) entityName = niceTitle(journeySlug);
     } else if (hub) {
-      flow = 'general';
-      entityType = 'hub';
-      entitySlug = hub;
-      entityName = niceTitle(hub);
-      interestLabel = `Interested hub: ${entityName}`;
+      if (!flow || flow === 'general') flow = 'general';
+      if (!entityType) entityType = 'hub';
+      if (!entitySlug) entitySlug = hub;
+      if (!entityName) entityName = niceTitle(hub);
+    } else if (interest) {
+      if (!entityName) entityName = niceTitle(interest);
+    }
+
+    if (!flow) flow = 'general';
+    if (!entityType) entityType = flow === 'general' ? 'general' : entityType || flow;
+
+    if (flow === 'scheduled') productClass = 'scheduled';
+    if (flow === 'private-fixed' && !productClass) productClass = 'private-fixed';
+
+    if (flow === 'specialist') {
+      interestLabel = entityName ? `Specialist service: ${niceTitle(entityName)}` : 'Specialist service inquiry';
+    } else if (flow === 'return') {
+      interestLabel = entityName ? `Return journey: ${niceTitle(entityName)}` : 'Return journey inquiry';
+    } else if (flow === 'activity') {
+      interestLabel = entityName ? `Activity: ${niceTitle(entityName)}` : 'Activity inquiry';
+    } else if (flow === 'custom') {
+      interestLabel = 'Custom journey: Build My Journey';
+      if (!entityName) entityName = 'Build My Journey';
+    } else if (flow === 'scheduled' || flow === 'private-fixed') {
+      interestLabel = entityName ? `Tour: ${entityName}` : (entitySlug ? `Tour: ${niceTitle(entitySlug)}` : 'Tour inquiry');
+    } else if (hub) {
+      interestLabel = `Interested hub: ${niceTitle(hub)}`;
     } else if (interest) {
       interestLabel = `Interest: ${niceTitle(interest)}`;
-      entityName = niceTitle(interest);
     }
 
     if (flowInput) flowInput.value = flow;
     if (entityTypeInput) entityTypeInput.value = entityType;
     if (entitySlugInput) entitySlugInput.value = entitySlug;
     if (entityNameInput) entityNameInput.value = entityName;
+    if (entityCodeInput) entityCodeInput.value = entityCode;
+    if (productClassInput) productClassInput.value = productClass;
     if (sourceUrlInput) sourceUrlInput.value = window.location.href.split('#')[0];
     if (preferredHubInput && hub) preferredHubInput.value = hub;
     if (interestInput && interestLabel) interestInput.value = interestLabel;

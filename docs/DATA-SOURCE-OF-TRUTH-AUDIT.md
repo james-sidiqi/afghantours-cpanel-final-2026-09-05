@@ -18,7 +18,7 @@ Classification key:
 | Source | Classification | Notes |
 |--------|----------------|-------|
 | `data/tours.csv` | USED AT RUNTIME | Canonical tour packages via `getTours()` |
-| `data/tours_featured.csv` | UNUSED CANDIDATE | Slim image/index mirror; runtime uses `tours.csv` |
+| `data/tours_featured.csv` | USED FOR BUILD / FEATURED-TOUR SELECTION | Consumed by `FeaturedTours.astro` (`getFeaturedIds()`) to select which tours appear in the homepage featured showcase; tour content itself still comes from `tours.csv` via `getTours()` |
 | `data/tours_custom.csv` | UNUSED CANDIDATE / MIGRATION/LEGACY | Empty shell post specialist/custom separation |
 | `data/specialist_services.csv` | USED AT RUNTIME | `/specialist-services/` |
 | `data/return_journeys.csv` | USED AT RUNTIME | `/return-journeys/` |
@@ -106,8 +106,8 @@ Classification key:
 
 ## Open James decisions (from this audit)
 
-1. Confirm delete-or-keep for `tours_featured.csv` / empty `tours_custom.csv`.
-2. Confirm FAQ SoT (`faq.csv` vs hard-coded `[slug].astro` sections vs `data/faqs*`).
+1. Confirm delete-or-keep for empty `tours_custom.csv` only (`tours_featured.csv` is used for featured selection — keep).
+2. Confirm FAQ SoT (`faq.csv` vs hard-coded `[slug].astro` sections vs `data/faqs*`) — **do not consolidate FAQ in inquiry/hub PR #3**; defer to trust/FAQ phase.
 3. Confirm whether `about.md` / `contact.md` can move to archive.
 4. Confirm public use of `pricing_reference.csv`.
 5. Confirm restaurant collection long-term vs culinary-only public IA.

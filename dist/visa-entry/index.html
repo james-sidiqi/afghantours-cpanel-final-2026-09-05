@@ -174,18 +174,24 @@ Please provide either an email address or WhatsApp number so our Kabul team can 
       return 'private-fixed';
     };
 
+    const pageTourCode = () => {
+      const el = document.querySelector('[data-tour-code]');
+      return el?.getAttribute('data-tour-code') || '';
+    };
+
     const openModal = ({ tour, slug, date, travelers, flow, entityType, entityCode, productClass } = {}) => {
       form.reset();
       const resolvedSlug = slug || pageTourSlug();
       const resolvedName = tour || pageTourTitle();
       const resolvedClass = productClass || pageProductClass();
       const resolvedFlow = flow || flowFromProductClass(resolvedClass);
+      const resolvedCode = entityCode || pageTourCode();
 
       if (tourInput) tourInput.value = resolvedName;
       if (slugInput) slugInput.value = resolvedSlug;
       if (entitySlugInput) entitySlugInput.value = resolvedSlug;
       if (entityNameInput) entityNameInput.value = resolvedName;
-      if (entityCodeInput) entityCodeInput.value = entityCode || '';
+      if (entityCodeInput) entityCodeInput.value = resolvedCode;
       if (entityTypeInput) entityTypeInput.value = entityType || 'tour';
       if (flowInput) flowInput.value = resolvedFlow;
       if (productClassInput) productClassInput.value = resolvedClass;
@@ -218,12 +224,14 @@ Please provide either an email address or WhatsApp number so our Kabul team can 
         return;
       }
 
-      const trigger = event.target.closest('[data-tour-inquiry], a[href*="/contact/?tour="], a[href*="/contact?tour="]');
+      const trigger = event.target.closest('[data-tour-inquiry], a[href*="/contact/?tour="], a[href*="/contact?tour="], a[href*="/contact/?flow=scheduled"], a[href*="/contact/?flow=private-fixed"], a[href*="entity_type=tour"]');
       if (!trigger) return;
 
       const explicitlyMarked = trigger.hasAttribute('data-tour-inquiry');
       const isTourPage = window.location.pathname.startsWith('/tours/');
-      if (!explicitlyMarked && !isTourPage) return;
+      const rawHref = trigger.getAttribute('href') || '';
+      let hrefLooksTour = /[?&](tour|tour_slug)=/.test(rawHref) || /[?&]flow=(scheduled|private-fixed)/.test(rawHref) || /[?&]entity_type=tour/.test(rawHref);
+      if (!explicitlyMarked && !isTourPage && !hrefLooksTour) return;
 
       let tour = trigger.getAttribute('data-tour-title') || '';
       let slug = trigger.getAttribute('data-tour-slug') || '';
@@ -233,15 +241,18 @@ Please provide either an email address or WhatsApp number so our Kabul team can 
       let flow = trigger.getAttribute('data-inquiry-flow') || '';
       let entityCode = trigger.getAttribute('data-tour-code') || '';
 
-      const rawHref = trigger.getAttribute('href');
       if (rawHref) {
         try {
           const url = new URL(rawHref, window.location.href);
-          tour ||= url.searchParams.get('tour') || '';
-          date ||= url.searchParams.get('date') || url.searchParams.get('preferred_month') || url.searchParams.get('preferred_dates') || '';
-          travelers ||= url.searchParams.get('group_size') || url.searchParams.get('travelers') || '';
-          productClass ||= url.searchParams.get('product_class') || '';
-          flow ||= url.searchParams.get('flow') || url.searchParams.get('type') || '';
+          const sp = url.searchParams;
+          // Canonical first, then legacy.
+          tour ||= sp.get('entity_name') || sp.get('tour') || '';
+          slug ||= sp.get('entity_slug') || sp.get('tour_slug') || sp.get('tour') || '';
+          entityCode ||= sp.get('entity_code') || sp.get('tour_code') || '';
+          productClass ||= sp.get('product_class') || '';
+          flow ||= sp.get('flow') || sp.get('type') || '';
+          date ||= sp.get('date') || sp.get('preferred_month') || sp.get('preferred_dates') || '';
+          travelers ||= sp.get('group_size') || sp.get('travelers') || '';
         } catch (_) {}
       }
 

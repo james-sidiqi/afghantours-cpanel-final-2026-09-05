@@ -1,9 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildCustomInquiryHref } from '../../lib/inquiry';
 import { getCustomJourneys } from '../../lib/buildRelations';
 
 const journey = getCustomJourneys()[0];
-const inquiryHref = '/contact/?type=custom-tour&interest=build-my-journey';
+const inquiryHref = buildCustomInquiryHref(journey ? { slug: journey.slug, name: journey.name, code: journey.journey_code } : undefined);
 const hero = journey?.hero_image_path || '/assets/images/custom-tours/custom-expedition/hero.webp';
 ---
 <BaseLayout

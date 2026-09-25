@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Privacy Policy | AfghanTours</title><meta name="description" content="How AfghanTours handles inquiry information and traveler privacy."><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://afghantours.com/privacy/"><meta property="og:title" content="Privacy Policy | AfghanTours"><meta property="og:description" content="How AfghanTours handles inquiry information and traveler privacy."><meta property="og:image" content="https://afghantours.com/assets/images/heroes/privacy/hero.webp"><meta property="og:url" content="https://afghantours.com/privacy/"><meta property="og:site_name" content="AfghanTours.com"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Privacy Policy | AfghanTours"><meta name="twitter:description" content="How AfghanTours handles inquiry information and traveler privacy."><meta name="twitter:image" content="https://afghantours.com/assets/images/heroes/privacy/hero.webp"><meta property="og:type" content="website"><link rel="icon" href="/favicon/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png"><link rel="manifest" href="/favicon/site.webmanifest"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TravelAgency","name":"AfghanTours.com","alternateName":"James Tourist & Travel Agency","url":"https://afghantours.com/","logo":"https://afghantours.com/assets/images/logo/header-logo.webp","image":"https://afghantours.com/assets/images/heroes/privacy/hero.webp","email":"info@afghantours.com","telephone":"+93780123456","identifier":{"@type":"PropertyValue","name":"Afghanistan tour operator license","value":"ATO-KBL-1617"},"address":{"@type":"PostalAddress","streetAddress":"2nd Floor, Majid Mall, Shahr-e-Naw, District 10","addressLocality":"Kabul","addressCountry":"AF"},"areaServed":{"@type":"Country","name":"Afghanistan"}}</script><link rel="stylesheet" href="/_astro/_slug_.BOXtUxcU.css">
-<link rel="stylesheet" href="/_astro/_slug_.bJLEYSiG.css"><script type="module" src="/_astro/hoisted.BpTwKb_i.js"></script></head> <body> <header class="site-header" data-astro-cid-xbstl6g3> <div class="site-header__inner" data-astro-cid-xbstl6g3> <a class="site-brand" href="/" aria-label="AfghanTours home" data-astro-cid-xbstl6g3> <img src="/assets/images/logo/header-logo.webp" alt="Afghan Tours" width="58" height="48" data-astro-cid-xbstl6g3> <div class="site-brand__copy" data-astro-cid-xbstl6g3> <strong data-astro-cid-xbstl6g3>Afghan Tours</strong> <span data-astro-cid-xbstl6g3>Come for the history, stay for the hospitality</span> </div> </a> <nav class="site-nav" aria-label="Main navigation" data-astro-cid-xbstl6g3> <div class="site-nav__group" data-astro-cid-xbstl6g3> <a class="site-nav__link" href="/tours/" data-astro-cid-xbstl6g3>
+<link rel="stylesheet" href="/_astro/_slug_.bJLEYSiG.css"><script type="module" src="/_astro/hoisted.kYURd7W3.js"></script></head> <body> <header class="site-header" data-astro-cid-xbstl6g3> <div class="site-header__inner" data-astro-cid-xbstl6g3> <a class="site-brand" href="/" aria-label="AfghanTours home" data-astro-cid-xbstl6g3> <img src="/assets/images/logo/header-logo.webp" alt="Afghan Tours" width="58" height="48" data-astro-cid-xbstl6g3> <div class="site-brand__copy" data-astro-cid-xbstl6g3> <strong data-astro-cid-xbstl6g3>Afghan Tours</strong> <span data-astro-cid-xbstl6g3>Come for the history, stay for the hospitality</span> </div> </a> <nav class="site-nav" aria-label="Main navigation" data-astro-cid-xbstl6g3> <div class="site-nav__group" data-astro-cid-xbstl6g3> <a class="site-nav__link" href="/tours/" data-astro-cid-xbstl6g3>
 Tours
 <span class="site-nav__chevron" aria-hidden="true" data-astro-cid-xbstl6g3>⌄</span> </a> <div class="site-dropdown" data-astro-cid-xbstl6g3> <a href="/tours/" data-astro-cid-xbstl6g3>All Tours</a><a href="/tours/#scheduled-tours" data-astro-cid-xbstl6g3>Scheduled Tours</a><a href="/tours/#private-tours" data-astro-cid-xbstl6g3>Private Tours</a><a href="/custom-requests/" data-astro-cid-xbstl6g3>Build My Journey</a><a href="/specialist-services/" data-astro-cid-xbstl6g3>Specialist Services</a><a href="/return-journeys/" data-astro-cid-xbstl6g3>Return Journeys</a> </div> </div> <div class="site-nav__group" data-astro-cid-xbstl6g3> <a class="site-nav__link" href="/attractions/" data-astro-cid-xbstl6g3>
 Explore
@@ -77,18 +77,24 @@ Please provide either an email address or WhatsApp number so our Kabul team can 
       return 'private-fixed';
     };
 
+    const pageTourCode = () => {
+      const el = document.querySelector('[data-tour-code]');
+      return el?.getAttribute('data-tour-code') || '';
+    };
+
     const openModal = ({ tour, slug, date, travelers, flow, entityType, entityCode, productClass } = {}) => {
       form.reset();
       const resolvedSlug = slug || pageTourSlug();
       const resolvedName = tour || pageTourTitle();
       const resolvedClass = productClass || pageProductClass();
       const resolvedFlow = flow || flowFromProductClass(resolvedClass);
+      const resolvedCode = entityCode || pageTourCode();
 
       if (tourInput) tourInput.value = resolvedName;
       if (slugInput) slugInput.value = resolvedSlug;
       if (entitySlugInput) entitySlugInput.value = resolvedSlug;
       if (entityNameInput) entityNameInput.value = resolvedName;
-      if (entityCodeInput) entityCodeInput.value = entityCode || '';
+      if (entityCodeInput) entityCodeInput.value = resolvedCode;
       if (entityTypeInput) entityTypeInput.value = entityType || 'tour';
       if (flowInput) flowInput.value = resolvedFlow;
       if (productClassInput) productClassInput.value = resolvedClass;
@@ -121,12 +127,14 @@ Please provide either an email address or WhatsApp number so our Kabul team can 
         return;
       }
 
-      const trigger = event.target.closest('[data-tour-inquiry], a[href*="/contact/?tour="], a[href*="/contact?tour="]');
+      const trigger = event.target.closest('[data-tour-inquiry], a[href*="/contact/?tour="], a[href*="/contact?tour="], a[href*="/contact/?flow=scheduled"], a[href*="/contact/?flow=private-fixed"], a[href*="entity_type=tour"]');
       if (!trigger) return;
 
       const explicitlyMarked = trigger.hasAttribute('data-tour-inquiry');
       const isTourPage = window.location.pathname.startsWith('/tours/');
-      if (!explicitlyMarked && !isTourPage) return;
+      const rawHref = trigger.getAttribute('href') || '';
+      let hrefLooksTour = /[?&](tour|tour_slug)=/.test(rawHref) || /[?&]flow=(scheduled|private-fixed)/.test(rawHref) || /[?&]entity_type=tour/.test(rawHref);
+      if (!explicitlyMarked && !isTourPage && !hrefLooksTour) return;
 
       let tour = trigger.getAttribute('data-tour-title') || '';
       let slug = trigger.getAttribute('data-tour-slug') || '';
@@ -136,15 +144,18 @@ Please provide either an email address or WhatsApp number so our Kabul team can 
       let flow = trigger.getAttribute('data-inquiry-flow') || '';
       let entityCode = trigger.getAttribute('data-tour-code') || '';
 
-      const rawHref = trigger.getAttribute('href');
       if (rawHref) {
         try {
           const url = new URL(rawHref, window.location.href);
-          tour ||= url.searchParams.get('tour') || '';
-          date ||= url.searchParams.get('date') || url.searchParams.get('preferred_month') || url.searchParams.get('preferred_dates') || '';
-          travelers ||= url.searchParams.get('group_size') || url.searchParams.get('travelers') || '';
-          productClass ||= url.searchParams.get('product_class') || '';
-          flow ||= url.searchParams.get('flow') || url.searchParams.get('type') || '';
+          const sp = url.searchParams;
+          // Canonical first, then legacy.
+          tour ||= sp.get('entity_name') || sp.get('tour') || '';
+          slug ||= sp.get('entity_slug') || sp.get('tour_slug') || sp.get('tour') || '';
+          entityCode ||= sp.get('entity_code') || sp.get('tour_code') || '';
+          productClass ||= sp.get('product_class') || '';
+          flow ||= sp.get('flow') || sp.get('type') || '';
+          date ||= sp.get('date') || sp.get('preferred_month') || sp.get('preferred_dates') || '';
+          travelers ||= sp.get('group_size') || sp.get('travelers') || '';
         } catch (_) {}
       }
 

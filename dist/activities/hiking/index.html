@@ -10,7 +10,7 @@ Plan
 Information
 <span class="site-nav__chevron" aria-hidden="true" data-astro-cid-xbstl6g3>⌄</span> </a> <div class="site-dropdown" data-astro-cid-xbstl6g3> <a href="/about/" data-astro-cid-xbstl6g3>About</a><a href="/safety/" data-astro-cid-xbstl6g3>Safety</a><a href="/contact/" data-astro-cid-xbstl6g3>Contact</a> </div> </div> <a class="site-nav__cta" href="/contact/" data-astro-cid-xbstl6g3>
 Contact Us
-</a> </nav> </div> </header>  <main>  <section class="act-detail-hero" data-astro-cid-2b4ifctk> <div class="act-detail-wrap hero-grid" data-astro-cid-2b4ifctk> <div data-astro-cid-2b4ifctk> <p class="section-kicker" data-astro-cid-2b4ifctk><a href="/activities/" data-astro-cid-2b4ifctk>Activities</a></p> <h1 data-astro-cid-2b4ifctk>Hiking</h1> <p class="lede" data-astro-cid-2b4ifctk>Day hikes and highland walks arranged from Afghanistan’s travel hubs.</p> <div class="meta" data-astro-cid-2b4ifctk> <span data-astro-cid-2b4ifctk>Best season: Varies by hub and route (subject to conditions)</span> <span data-astro-cid-2b4ifctk>Duration: Varies — half day to full day; discuss during planning</span> </div> <p class="cta-row" data-astro-cid-2b4ifctk> <a class="primary" href="/contact/?type=activity&#38;activity=hiking&#38;activity_name=Hiking" data-astro-cid-2b4ifctk>Ask about this activity</a> <a class="secondary" href="/contact/?type=activity&#38;activity=hiking&#38;activity_name=Hiking&#38;journey=add-activity" data-astro-cid-2b4ifctk>Add to my journey</a> <a class="secondary" href="/activities/" data-astro-cid-2b4ifctk>All activities</a> </p> </div> <img class="hero-img" src="/assets/images/experiences/activities/hiking/hero.webp" alt="Hiking" data-astro-cid-2b4ifctk> </div> </section> <section class="act-detail-body" data-astro-cid-2b4ifctk> <div class="act-detail-wrap body-grid" data-astro-cid-2b4ifctk> <article class="editorial-prose" data-astro-cid-2b4ifctk> <p>Hiking in Afghanistan is arranged from operational travel hubs — not as a freestanding catalog of named trailheads with guaranteed schedules.</p>
+</a> </nav> </div> </header>  <main>  <section class="act-detail-hero" data-astro-cid-2b4ifctk> <div class="act-detail-wrap hero-grid" data-astro-cid-2b4ifctk> <div data-astro-cid-2b4ifctk> <p class="section-kicker" data-astro-cid-2b4ifctk><a href="/activities/" data-astro-cid-2b4ifctk>Activities</a></p> <h1 data-astro-cid-2b4ifctk>Hiking</h1> <p class="lede" data-astro-cid-2b4ifctk>Day hikes and highland walks arranged from Afghanistan’s travel hubs.</p> <div class="meta" data-astro-cid-2b4ifctk> <span data-astro-cid-2b4ifctk>Best season: Varies by hub and route (subject to conditions)</span> <span data-astro-cid-2b4ifctk>Duration: Varies — half day to full day; discuss during planning</span> </div> <p class="cta-row" data-astro-cid-2b4ifctk> <a class="primary" href="/contact/?flow=activity&#38;entity_type=activity&#38;entity_code=ACT-HIK&#38;entity_slug=hiking&#38;entity_name=Hiking" data-astro-cid-2b4ifctk>Ask about this activity</a> <a class="secondary" href="/contact/?flow=activity&#38;entity_type=activity&#38;entity_code=ACT-HIK&#38;entity_slug=hiking&#38;entity_name=Hiking&#38;journey=add-activity" data-astro-cid-2b4ifctk>Add to my journey</a> <a class="secondary" href="/activities/" data-astro-cid-2b4ifctk>All activities</a> </p> </div> <img class="hero-img" src="/assets/images/experiences/activities/hiking/hero.webp" alt="Hiking" data-astro-cid-2b4ifctk> </div> </section> <section class="act-detail-body" data-astro-cid-2b4ifctk> <div class="act-detail-wrap body-grid" data-astro-cid-2b4ifctk> <article class="editorial-prose" data-astro-cid-2b4ifctk> <p>Hiking in Afghanistan is arranged from operational travel hubs — not as a freestanding catalog of named trailheads with guaranteed schedules.</p>
 <h2 id="how-it-works">How it works</h2>
 <p>From each active hub, day hikes and viewpoint walks can be scoped around current road access, weather, and local guidance. Routes vary by region — highland valleys near Bamyan, foothill walks around Kabul, and corridor day options from other hubs when conditions allow.</p>
 <p>Hub listings mean we can <strong>arrange hiking from</strong> that hub. They are not automatic tour inclusions.</p>
@@ -85,18 +85,24 @@ Please provide either an email address or WhatsApp number so our Kabul team can 
       return 'private-fixed';
     };
 
+    const pageTourCode = () => {
+      const el = document.querySelector('[data-tour-code]');
+      return el?.getAttribute('data-tour-code') || '';
+    };
+
     const openModal = ({ tour, slug, date, travelers, flow, entityType, entityCode, productClass } = {}) => {
       form.reset();
       const resolvedSlug = slug || pageTourSlug();
       const resolvedName = tour || pageTourTitle();
       const resolvedClass = productClass || pageProductClass();
       const resolvedFlow = flow || flowFromProductClass(resolvedClass);
+      const resolvedCode = entityCode || pageTourCode();
 
       if (tourInput) tourInput.value = resolvedName;
       if (slugInput) slugInput.value = resolvedSlug;
       if (entitySlugInput) entitySlugInput.value = resolvedSlug;
       if (entityNameInput) entityNameInput.value = resolvedName;
-      if (entityCodeInput) entityCodeInput.value = entityCode || '';
+      if (entityCodeInput) entityCodeInput.value = resolvedCode;
       if (entityTypeInput) entityTypeInput.value = entityType || 'tour';
       if (flowInput) flowInput.value = resolvedFlow;
       if (productClassInput) productClassInput.value = resolvedClass;
@@ -129,12 +135,14 @@ Please provide either an email address or WhatsApp number so our Kabul team can 
         return;
       }
 
-      const trigger = event.target.closest('[data-tour-inquiry], a[href*="/contact/?tour="], a[href*="/contact?tour="]');
+      const trigger = event.target.closest('[data-tour-inquiry], a[href*="/contact/?tour="], a[href*="/contact?tour="], a[href*="/contact/?flow=scheduled"], a[href*="/contact/?flow=private-fixed"], a[href*="entity_type=tour"]');
       if (!trigger) return;
 
       const explicitlyMarked = trigger.hasAttribute('data-tour-inquiry');
       const isTourPage = window.location.pathname.startsWith('/tours/');
-      if (!explicitlyMarked && !isTourPage) return;
+      const rawHref = trigger.getAttribute('href') || '';
+      let hrefLooksTour = /[?&](tour|tour_slug)=/.test(rawHref) || /[?&]flow=(scheduled|private-fixed)/.test(rawHref) || /[?&]entity_type=tour/.test(rawHref);
+      if (!explicitlyMarked && !isTourPage && !hrefLooksTour) return;
 
       let tour = trigger.getAttribute('data-tour-title') || '';
       let slug = trigger.getAttribute('data-tour-slug') || '';
@@ -144,15 +152,18 @@ Please provide either an email address or WhatsApp number so our Kabul team can 
       let flow = trigger.getAttribute('data-inquiry-flow') || '';
       let entityCode = trigger.getAttribute('data-tour-code') || '';
 
-      const rawHref = trigger.getAttribute('href');
       if (rawHref) {
         try {
           const url = new URL(rawHref, window.location.href);
-          tour ||= url.searchParams.get('tour') || '';
-          date ||= url.searchParams.get('date') || url.searchParams.get('preferred_month') || url.searchParams.get('preferred_dates') || '';
-          travelers ||= url.searchParams.get('group_size') || url.searchParams.get('travelers') || '';
-          productClass ||= url.searchParams.get('product_class') || '';
-          flow ||= url.searchParams.get('flow') || url.searchParams.get('type') || '';
+          const sp = url.searchParams;
+          // Canonical first, then legacy.
+          tour ||= sp.get('entity_name') || sp.get('tour') || '';
+          slug ||= sp.get('entity_slug') || sp.get('tour_slug') || sp.get('tour') || '';
+          entityCode ||= sp.get('entity_code') || sp.get('tour_code') || '';
+          productClass ||= sp.get('product_class') || '';
+          flow ||= sp.get('flow') || sp.get('type') || '';
+          date ||= sp.get('date') || sp.get('preferred_month') || sp.get('preferred_dates') || '';
+          travelers ||= sp.get('group_size') || sp.get('travelers') || '';
         } catch (_) {}
       }
 

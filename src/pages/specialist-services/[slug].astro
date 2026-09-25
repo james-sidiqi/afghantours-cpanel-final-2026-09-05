@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildSpecialistInquiryHref } from '../../lib/inquiry';
 import { getSpecialistServices, getSpecialistBySlug } from '../../lib/buildRelations';
 
 export function getStaticPaths() {
@@ -12,7 +13,7 @@ export function getStaticPaths() {
 const service = Astro.props.service || (Astro.params.slug ? getSpecialistBySlug(Astro.params.slug) : undefined);
 if (!service) return Astro.redirect('/specialist-services/');
 
-const inquiryHref = `/contact/?type=specialist&service=${encodeURIComponent(service.slug)}&interest=${encodeURIComponent(service.name)}`;
+const inquiryHref = buildSpecialistInquiryHref(service);
 const regions = Array.isArray(service.regions_supported_list)
   ? service.regions_supported_list
   : String(service.regions_supported || '').split(/[|;,]/).map((x) => x.trim()).filter(Boolean);

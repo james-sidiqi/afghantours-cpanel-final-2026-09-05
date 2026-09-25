@@ -6,6 +6,7 @@ import { hotels, dishes, locations } from "../../lib/data";
 import { parseCSV } from "../../lib/csv";
 import transportRaw from "../../../data/ground_transport.csv?raw";
 import inclusionsRaw from "../../../data/tour_inclusions.csv?raw";
+import { buildTourInquiryHref, buildCustomInquiryHref } from "../../lib/inquiry";
 
 export function getStaticPaths() {
   return getTours()
@@ -518,7 +519,7 @@ const pageDescription =
   tour.summary ||
   tour.description ||
   "A guided Afghanistan journey built around realistic logistics, cultural access, and Kabul-based ground coordination.";
-const contactHref = `/contact/?tour=${encodeURIComponent(tourName)}`;
+const contactHref = buildTourInquiryHref(tour);
 ---
 
 <BaseLayout title={`${tourName} | AfghanTours`} description={pageDescription} image={heroImage}>
@@ -550,7 +551,7 @@ const contactHref = `/contact/?tour=${encodeURIComponent(tourName)}`;
           {isCustomJourney ? (
   <a
     class="tour-button tour-button--ghost"
-    href={`/contact/?type=custom-tour&tour=${encodeURIComponent(tourName)}`}
+    href={buildCustomInquiryHref()}
   >
     Build my journey
   </a>

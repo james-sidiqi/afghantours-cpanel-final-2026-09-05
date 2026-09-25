@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildReturnInquiryHref } from '../../lib/inquiry';
 import { getReturnJourneys, getReturnJourneyBySlug } from '../../lib/buildRelations';
 
 export function getStaticPaths() {
@@ -12,7 +13,7 @@ export function getStaticPaths() {
 const journey = Astro.props.journey || (Astro.params.slug ? getReturnJourneyBySlug(Astro.params.slug) : undefined);
 if (!journey) return Astro.redirect('/return-journeys/');
 
-const inquiryHref = `/contact/?type=return&journey=${encodeURIComponent(journey.slug)}&interest=${encodeURIComponent(journey.name)}`;
+const inquiryHref = buildReturnInquiryHref(journey);
 const hero = journey.hero_image_path || journey.image_path || '/assets/images/placeholders/default-hero.webp';
 const diasporaExampleGallery = journey.slug === 'diaspora' ? [
   {

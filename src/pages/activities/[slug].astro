@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 import { getActivities, getHubsForActivity, accessTypeLabel, getToursForActivity } from '../../lib/experiences';
 import { getActivityImage, getActivityGallery, getTourHeroImage } from '../../lib/images';
+import { buildActivityInquiryHref } from '../../lib/inquiry';
 import { getHubBySlug, getTours } from '../../lib/buildRelations';
 
 export async function getStaticPaths() {
@@ -52,8 +53,17 @@ const featuredTours = relatedTourRels
   })
   .filter(Boolean);
 
-const askHref = `/contact/?type=activity&activity=${encodeURIComponent(slug)}&activity_name=${encodeURIComponent(title)}`;
-const journeyHref = `/contact/?type=activity&activity=${encodeURIComponent(slug)}&activity_name=${encodeURIComponent(title)}&journey=add-activity`;
+const askHref = buildActivityInquiryHref({
+  slug,
+  name: title,
+  activity_code: row.activity_code || row.code,
+});
+const journeyHref = buildActivityInquiryHref({
+  slug,
+  name: title,
+  activity_code: row.activity_code || row.code,
+  extras: { journey: 'add-activity' },
+});
 ---
 
 <BaseLayout title={`${title} | Activities | AfghanTours`} description={description} image={heroImage}>
