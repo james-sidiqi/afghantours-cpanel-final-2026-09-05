@@ -280,25 +280,15 @@ export function getCulturalExperienceGallery(item: any): string[] {
 
 export function getActivityImage(item: any): string {
   const slug = item?.slug || item?.activity_slug;
+  // Exact entity assets only — never cross-substitute another activity's hero
+  // (e.g. fishing→horse-riding other/01, cycling→hiking).
   return firstExisting([
     item?.hero_image,
     item?.image,
     item?.image_path,
     slug ? `${EXPERIENCE_ASSET_ROOTS.activities}/${slug}/hero.webp` : null,
     slug ? `${EXPERIENCE_ASSET_ROOTS.activities}/${slug}/thumb.webp` : null,
-    // Legacy / interim paths
-    slug === 'skiing' ? '/assets/images/page-assets/activities/skiing/01.webp' : null,
-    slug === 'sightseeing' ? '/assets/images/page-assets/activities/sightseeing/scenic/01.webp' : null,
-    slug === 'shopping' ? '/assets/images/experiences/activities/shopping/hero.webp' : null,
-    // Temporary fallback (shopping is top-level, not a sightseeing subtype)
-    slug === 'shopping' ? '/assets/images/page-assets/activities/sightseeing/shopping/01.webp' : null,
-    slug === 'hiking' ? '/assets/images/page-assets/website-ready/rocky-valley-hiking.webp' : null,
-    slug === 'horse-riding' ? '/assets/images/page-assets/about/travelers/horseback-cultural-experience.webp' : null,
-    slug === 'trekking' ? '/assets/images/featured-tours/trek-the-wakhan-corridor/hero.webp' : null,
-    slug === 'fishing' ? '/assets/images/page-assets/activities/other/01.webp' : null,
-    slug === 'cycling' ? '/assets/images/page-assets/website-ready/rocky-valley-hiking.webp' : null,
-    slug ? `/assets/images/activities/${slug}/hero.webp` : null,
-  ], PLACEHOLDERS.attraction);
+  ], PLACEHOLDERS.card);
 }
 
 export function getActivityGallery(item: any): string[] {
@@ -310,14 +300,15 @@ export function getActivityGallery(item: any): string[] {
     item?.gallery_image_3,
   ].filter(Boolean).map((v) => normalizeImagePath(v, ''));
 
+  // Entity gallery only — do not pull sibling activity folders or cross-entity page-assets.
   const discovered = slug
     ? [
         ...listPublicImages(`${EXPERIENCE_ASSET_ROOTS.activities}/${slug}`, true),
-        ...listPublicImages(`/assets/images/activities/${slug}`, true),
         ...listPublicImages(`/assets/images/page-assets/activities/${slug}`, true),
       ]
     : [];
 
-  return [...new Set([...explicit, ...discovered].filter(Boolean))];
+  const hero = getActivityImage(item);
+  return [...new Set([...explicit, ...discovered].filter((src) => src && src !== hero))];
 }
 
