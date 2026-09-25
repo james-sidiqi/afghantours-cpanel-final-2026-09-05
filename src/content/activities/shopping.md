@@ -3,12 +3,12 @@ title: "Shopping"
 activity_code: "ACT-SHP"
 subtitle: "Bazaars, craft streets, and market browsing from every active hub."
 card_description: "Guided bazaar and craft shopping planned from each operational hub — carpets, copper, dried fruit, and local specialties."
-best_season: "Year round"
-duration: "1–3 hours"
+best_season: "Year round (subject to local conditions)"
+duration: "Varies — typically 1–3 hours; discuss during planning"
 hero_image: "/assets/images/experiences/activities/shopping/hero.webp"
 ---
 
-Shopping is available from **all active travel hubs** — bazaars, craft streets, and market browsing planned with local guidance.
+Shopping can be arranged from **all active travel hubs** — bazaars, craft streets, and market browsing planned with local guidance.
 
 ## What travelers browse
 

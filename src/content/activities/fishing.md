@@ -1,18 +1,18 @@
 ---
 title: "Fishing"
 activity_code: "ACT-FSH"
-subtitle: "River and lakeside fishing culture tied to hub day trips."
-card_description: "Fishing outings planned from selected hubs where river or lakeside access is workable — not a guaranteed catch product."
-best_season: "Spring–autumn (subject to conditions)"
-duration: "Half day to full day"
+subtitle: "River and lakeside fishing outings arranged from selected hubs."
+card_description: "Fishing outings arranged from selected hubs where river or lakeside access is workable — not a guaranteed catch product."
+best_season: "Varies by corridor (subject to conditions)"
+duration: "Varies — typically half day to full day; discuss during planning"
 hero_image: "/assets/images/experiences/activities/fishing/hero.webp"
 ---
 
-Fishing experiences are hub-linked day options where river or lakeside access is workable — not a product that promises a catch.
+Fishing experiences are hub-arranged day options where river or lakeside access is workable — not a product that promises a catch.
 
 ## Hub planning
 
-Locked planning hubs for fishing include Kabul, Mazar-e-Sharif, Faizabad, Jalalabad, and Kandahar. Exact put-in points, local hosts, and season windows are confirmed case by case.
+Locked planning hubs for fishing include Kabul, Mazar-e-Sharif, Faizabad, Jalalabad, and Kandahar. Exact put-in points, local hosts, and season windows are confirmed case by case. Hub links mean we can **arrange from** those hubs — not that fishing is included on every tour that visits them.
 
 ## Honest framing
 

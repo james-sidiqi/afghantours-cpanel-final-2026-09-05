@@ -402,6 +402,8 @@ const trustItems = [
   };
 
   const interestSources = [
+    ['activity_name', 'Activity'],
+    ['activity', 'Activity'],
     ['interest', 'Custom Journey'],
     ['journey', 'Interested Journey'],
     ['tour', 'Interested Tour'],
@@ -419,6 +421,23 @@ const trustItems = [
       break;
     }
   }
+
+  // Optional hub / dates fields when present (activity inquiry wiring)
+  const message = document.querySelector('textarea[name="message"]');
+  const hub = params.get('hub');
+  const dates = params.get('dates') || params.get('travel_dates');
+  const journey = params.get('journey');
+  const extras = [];
+  if (hub) extras.push(`Preferred hub: ${niceTitle(hub)}`);
+  if (dates) extras.push(`Preferred dates: ${dates}`);
+  if (journey === 'add-activity') extras.push('Request: add this activity to my journey planning.');
+  if (message && extras.length) {
+    const existing = message.value ? `${message.value}\n\n` : '';
+    message.value = `${existing}${extras.join('\n')}`;
+  }
+
+  const datesInput = document.querySelector('input[name="travel_dates"]');
+  if (datesInput && dates) datesInput.value = dates;
 </script>
 
 <style>

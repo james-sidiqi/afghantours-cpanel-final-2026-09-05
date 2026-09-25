@@ -1,0 +1,4 @@
+tour_code,activity_slug,status,day_number,note,is_active,evidence_source
+BSKI,skiing,included,3,"Koh-e-Baba backcountry ski touring day in Bamyan Skiing Tour itinerary (not resort skiing).",1,tour_itinerary.csv:BSKI day 3
+BSKI,skiing,optional,4,"Weather-flex second short ski outing if snow and road conditions allow; day balances cultural sites.",1,tour_itinerary.csv:BSKI day 4
+TTWC,trekking,included,,"Trekking the Wakhan Corridor is the product identity: Faizabad-staged Badakhshan/Wakhan mountain travel with short walks and route extension by group ability — not a fixed trail package.",1,tours.csv:TTWC + tour_itinerary.csv:TTWC days 5–9

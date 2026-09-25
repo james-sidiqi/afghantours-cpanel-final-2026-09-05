@@ -1,9 +1,9 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
-import { getActivities, getActivityBySlug, getHubsForActivity, accessTypeLabel } from '../../lib/experiences';
-import { getActivityImage, getActivityGallery } from '../../lib/images';
-import { getHubBySlug } from '../../lib/buildRelations';
+import { getActivities, getHubsForActivity, accessTypeLabel, getToursForActivity } from '../../lib/experiences';
+import { getActivityImage, getActivityGallery, getTourHeroImage } from '../../lib/images';
+import { getHubBySlug, getTours } from '../../lib/buildRelations';
 
 export async function getStaticPaths() {
   const csv = getActivities();
@@ -21,9 +21,9 @@ const data = { ...row, ...(md?.data || {}) };
 const slug = row.slug;
 const title = data.title || row.name;
 const subtitle = data.subtitle || data.card_description || row.card_description || '';
-const description = data.card_description || row.card_description || `Explore ${title}, a hub-based activity in Afghanistan.`;
+const description = data.card_description || row.card_description || `Explore ${title}, a hub-arranged activity in Afghanistan.`;
 const heroImage = getActivityImage({ slug, hero_image: data.hero_image, image: data.image });
-const galleryImages = getActivityGallery({ slug, gallery_images: data.gallery_images }).filter((src) => src !== heroImage).slice(0, 8);
+const galleryImages = getActivityGallery({ slug, gallery_images: data.gallery_images }).slice(0, 8);
 const hubRels = getHubsForActivity(slug);
 const hubs = hubRels.map((rel) => {
   const hub = getHubBySlug(rel.hub_slug);
@@ -34,7 +34,26 @@ const hubs = hubRels.map((rel) => {
   };
 });
 const siblings = getActivities().filter((a) => a.slug !== slug).slice(0, 4);
-const contactHref = `/contact/?type=activity&activity=${encodeURIComponent(title)}`;
+
+const relatedTourRels = getToursForActivity(slug);
+const toursByCode = new Map(getTours().map((t) => [String(t.tour_code), t]));
+const featuredTours = relatedTourRels
+  .map((rel) => {
+    const tour = toursByCode.get(String(rel.tour_code));
+    if (!tour) return null;
+    return {
+      ...rel,
+      name: tour.name || tour.title,
+      slug: tour.slug,
+      href: `/tours/${tour.slug}/`,
+      image: getTourHeroImage(tour),
+      statusLabel: String(rel.status || '').replace(/-/g, ' '),
+    };
+  })
+  .filter(Boolean);
+
+const askHref = `/contact/?type=activity&activity=${encodeURIComponent(slug)}&activity_name=${encodeURIComponent(title)}`;
+const journeyHref = `/contact/?type=activity&activity=${encodeURIComponent(slug)}&activity_name=${encodeURIComponent(title)}&journey=add-activity`;
 ---
 
 <BaseLayout title={`${title} | Activities | AfghanTours`} description={description} image={heroImage}>
@@ -49,7 +68,8 @@ const contactHref = `/contact/?type=activity&activity=${encodeURIComponent(title
           {data.duration && <span>Duration: {data.duration}</span>}
         </div>
         <p class="cta-row">
-          <a class="primary" href={contactHref}>Ask about this activity</a>
+          <a class="primary" href={askHref}>Ask about this activity</a>
+          <a class="secondary" href={journeyHref}>Add to my journey</a>
           <a class="secondary" href="/activities/">All activities</a>
         </p>
       </div>
@@ -63,8 +83,8 @@ const contactHref = `/contact/?type=activity&activity=${encodeURIComponent(title
         {Content ? <Content /> : <p>{description}</p>}
       </article>
       <aside class="sidebar">
-        <h2>Hubs</h2>
-        <p class="side-intro">Planned from these operational hubs when access allows.</p>
+        <h2>Arrange from hubs</h2>
+        <p class="side-intro">These hubs are where we can arrange this activity when access allows — not automatic tour inclusions.</p>
         <ul>
           {hubs.map((h) => (
             <li>
@@ -77,6 +97,27 @@ const contactHref = `/contact/?type=activity&activity=${encodeURIComponent(title
       </aside>
     </div>
   </section>
+
+  {featuredTours.length > 0 && (
+    <section class="act-related-tours">
+      <div class="act-detail-wrap">
+        <h2>Tours featuring this activity</h2>
+        <p class="related-intro">Only itineraries with an explicit activity relationship are listed here. Shared hubs alone do not create a link.</p>
+        <div class="tour-grid">
+          {featuredTours.map((tour) => (
+            <a class="tour-card" href={tour.href}>
+              <img src={tour.image} alt={tour.name} loading="lazy" />
+              <div>
+                <p class="card-kicker">{tour.statusLabel}{tour.day_number ? ` · Day ${tour.day_number}` : ''}</p>
+                <strong>{tour.name}</strong>
+                {tour.note && <p class="tour-note">{tour.note}</p>}
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 
   {galleryImages.length > 0 && (
     <section class="act-gallery">
@@ -107,7 +148,7 @@ const contactHref = `/contact/?type=activity&activity=${encodeURIComponent(title
 </BaseLayout>
 
 <style>
-  .act-detail-hero, .act-detail-body, .act-gallery, .act-siblings { background: #fbf6ed; color: #101820; padding: clamp(2.5rem, 5vw, 4.5rem) 0; }
+  .act-detail-hero, .act-detail-body, .act-gallery, .act-siblings, .act-related-tours { background: #fbf6ed; color: #101820; padding: clamp(2.5rem, 5vw, 4.5rem) 0; }
   .act-detail-wrap { width: min(1120px, calc(100% - 2rem)); margin: 0 auto; }
   .section-kicker { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; opacity: 0.7; margin: 0 0 0.75rem; }
   .section-kicker a { color: inherit; }
@@ -133,6 +174,13 @@ const contactHref = `/contact/?type=activity&activity=${encodeURIComponent(title
   .sidebar a { color: inherit; font-weight: 600; }
   .sidebar small { opacity: 0.65; }
   .sidebar-secondary { font-size: 0.9rem; }
+  .related-intro { opacity: 0.8; max-width: 42rem; margin: 0.5rem 0 1.25rem; }
+  .tour-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+  .tour-card { display: grid; gap: 0.65rem; text-decoration: none; color: inherit; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(16,24,32,0.06); }
+  .tour-card img { width: 100%; aspect-ratio: 16/10; object-fit: cover; }
+  .tour-card > div { padding: 0 1rem 1rem; display: grid; gap: 0.35rem; }
+  .card-kicker { margin: 0; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem; opacity: 0.65; font-weight: 700; }
+  .tour-note { margin: 0; font-size: 0.88rem; line-height: 1.45; opacity: 0.8; }
   .gal-grid, .sib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.85rem; }
   .gal-grid img, .sib-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 12px; }
   .sib-card { text-decoration: none; color: inherit; display: grid; gap: 0.4rem; }

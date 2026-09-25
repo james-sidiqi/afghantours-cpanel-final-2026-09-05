@@ -2,6 +2,7 @@ import culturalHubsRaw from '../../data/cultural_experience_hubs.csv?raw';
 import culinaryHubsRaw from '../../data/culinary_experience_hubs.csv?raw';
 import activityHubsRaw from '../../data/activity_hubs.csv?raw';
 import activitiesRaw from '../../data/activities.csv?raw';
+import tourActivityMapRaw from '../../data/tour_activity_map.csv?raw';
 import { parseCSV, isActive } from './csv';
 import { getActivityImage } from './images';
 
@@ -166,4 +167,38 @@ export function accessTypeLabel(ctx?: string): string {
     default:
       return ctx ? String(ctx) : 'Experience';
   }
+}
+
+export function getTourActivityMap(): RelationRow[] {
+  return parseCSV(tourActivityMapRaw).filter((r) => isActive(r.is_active));
+}
+
+/** Tours with an explicit activity relationship (never inferred from shared hubs). */
+export function getToursForActivity(activitySlug: string): RelationRow[] {
+  const rows = getTourActivityMap().filter((r) => r.activity_slug === activitySlug);
+  // Collapse duplicate tour_codes, prefer earliest day_number then included>optional>possible-on-request
+  const rank = (s: string) => ({ included: 0, optional: 1, 'possible-on-request': 2 }[String(s || '').toLowerCase()] ?? 9);
+  const byCode = new Map<string, RelationRow>();
+  for (const row of rows) {
+    const code = String(row.tour_code || '');
+    if (!code) continue;
+    const prev = byCode.get(code);
+    if (!prev) {
+      byCode.set(code, { ...row });
+      continue;
+    }
+    const betterStatus = rank(row.status) < rank(prev.status);
+    const earlierDay =
+      row.day_number && (!prev.day_number || Number(row.day_number) < Number(prev.day_number));
+    if (betterStatus || (rank(row.status) === rank(prev.status) && earlierDay)) {
+      byCode.set(code, {
+        ...prev,
+        ...row,
+        note: [prev.note, row.note].filter(Boolean).join(' · '),
+      });
+    } else if (row.note && row.note !== prev.note) {
+      byCode.set(code, { ...prev, note: [prev.note, row.note].filter(Boolean).join(' · ') });
+    }
+  }
+  return [...byCode.values()].sort((a, b) => rank(a.status) - rank(b.status));
 }

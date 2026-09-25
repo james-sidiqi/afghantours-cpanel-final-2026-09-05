@@ -3,12 +3,12 @@ title: "Sightseeing"
 activity_code: "ACT-SGT"
 subtitle: "City and field sightseeing routed from every active hub."
 card_description: "Hub-based sightseeing across historic, religious, scenic, and market contexts — the backbone of most Afghan journeys."
-best_season: "Year round"
-duration: "Half day to full day"
+best_season: "Year round (subject to site access)"
+duration: "Varies — half day to full day; discuss during planning"
 hero_image: "/assets/images/experiences/activities/sightseeing/hero.webp"
 ---
 
-Sightseeing is the backbone of most Afghan journeys and is planned from **every active hub**.
+Sightseeing is the backbone of most Afghan journeys and can be arranged from **every active hub**.
 
 ## Contexts
 
