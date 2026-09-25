@@ -30,6 +30,6 @@ Wardak lies west of Kabul and features highland valleys and historic travel rout
 
 Wardak is usually part of the central-highland road rather than a standalone overnight destination. The itineraries below include Wardak or central-highland stops in their current route plan, while the actual road is selected according to conditions and schedule.
 
-[Plan a Custom Expedition →](/tours/custom-expedition/)
+[Plan a Custom Expedition →](/custom-requests/)
 
 [Ask the Kabul team on WhatsApp →](https://wa.me/93780123456)

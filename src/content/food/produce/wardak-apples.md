@@ -31,7 +31,7 @@ Wardak is commonly crossed on central-highland routes, but stops depend on the d
 
 [Explore Wardak](/destinations/wardak/)
 
-[Plan a Custom Journey](/tours/custom-expedition/)
+[Plan a Custom Journey](/custom-requests/)
 
 [Ask the Kabul team on WhatsApp](https://wa.me/93780123456)
 

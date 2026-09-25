@@ -27,6 +27,6 @@ Zabul sits along historic routes between Kandahar and Ghazni and is characterize
 
 No fixed featured itinerary currently uses Zabul as a scheduled stop. We can assess it as part of a custom expedition based on route, season, access, and current operating conditions.
 
-[Plan a Custom Expedition →](/tours/custom-expedition/)
+[Plan a Custom Expedition →](/custom-requests/)
 
 [Ask the Kabul team on WhatsApp →](https://wa.me/93780123456)

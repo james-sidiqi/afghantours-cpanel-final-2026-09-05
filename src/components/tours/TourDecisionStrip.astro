@@ -1,4 +1,6 @@
 ---
+import { buildTourInquiryHref } from "../../lib/inquiry";
+
 const {
   tour,
   tourName = "this tour",
@@ -41,8 +43,9 @@ const price =
         : "Price on request"
   );
 
-const inquiryHref =
-  `/contact/?tour=${encodeURIComponent(tourName)}`;
+const inquiryHref = tour
+  ? buildTourInquiryHref({ ...tour, name: tour.name || tour.title || tourName })
+  : buildTourInquiryHref({ name: tourName, slug: "", product_class: "private-fixed" });
 
 const route =
   routeText ||

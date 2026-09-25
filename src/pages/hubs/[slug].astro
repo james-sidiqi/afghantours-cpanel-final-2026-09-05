@@ -5,6 +5,10 @@ import AttractionPopupGrid from '../../components/cards/AttractionPopupGrid.astr
 import HotelPopupGrid from '../../components/cards/HotelPopupGrid.astro';
 import TourCardGrid from '../../components/cards/TourCardGrid.astro';
 import { getHubs, getHubBySlug, getAttractions, getHotels, getTours, getFoodItems, getFoodHref } from '../../lib/buildRelations';
+import { getCulinaryForHub, routeContextLabel } from '../../lib/culinary';
+import { getCulturalForHub, getActivitiesForHub, accessTypeLabel } from '../../lib/experiences';
+import { getCollection } from 'astro:content';
+import { getCulturalExperienceImage, getActivityImage } from '../../lib/images';
 
 export function getStaticPaths() {
   return getHubs().filter((hub) => hub?.slug).map((hub) => ({ params: { slug: hub.slug } }));
@@ -74,6 +78,33 @@ const tours = getTours().filter((tour) => {
     || (Array.isArray(tour.attractions) && tour.attractions.some((a) => attractions.some((x) => x.slug === a.slug)));
 });
 
+
+const culinary = getCulinaryForHub(hubSlug);
+
+const culturalRels = getCulturalForHub(hubSlug);
+const culturalCollection = await getCollection('cultural-experiences');
+const culturalBySlug = new Map(culturalCollection.map((i) => [i.id.replace(/\.md$/, ''), i]));
+const cultural = culturalRels.map((rel) => {
+  const md = culturalBySlug.get(rel.experience_slug);
+  return {
+    slug: rel.experience_slug,
+    title: md?.data?.title || rel.experience_slug,
+    href: `/cultural-experiences/${rel.experience_slug}/`,
+    access_type: rel.access_type,
+    image: getCulturalExperienceImage({
+      slug: rel.experience_slug,
+      hero_image: md?.data?.hero_image,
+      image: md?.data?.image,
+    }),
+  };
+}).filter((x) => culturalBySlug.has(x.slug));
+
+const activities = getActivitiesForHub(hubSlug).map((item) => ({
+  ...item,
+  image: getActivityImage(item),
+}));
+
+
 const image = hub.image || `/assets/images/hubs/${hubSlug}/hero.webp` || '/assets/images/placeholders/default-hub.webp';
 ---
 
@@ -140,6 +171,81 @@ const image = hub.image || `/assets/images/hubs/${hubSlug}/hero.webp` || '/asset
     title={`Hotels used in ${hubName}`}
     intro="Accommodation references connected to this hub and nearby travel routes."
   />
+
+
+  {cultural.length > 0 && (
+    <section class="simple-section cultural-hub-section">
+      <div class="simple-wrap">
+        <p class="section-kicker">Cultural Experiences</p>
+        <h2>Cultural experiences linked to {hubName}</h2>
+        <p class="culin-hub-intro">
+          Locked hub relationships only — additional cultural pages still need operator hub review before appearing here.
+        </p>
+        <div class="simple-grid">
+          {cultural.map((item) => (
+            <a class="simple-card" href={item.href}>
+              <img src={item.image} alt={item.title} loading="lazy" />
+              <div class="culin-hub-card-copy">
+                <small>{accessTypeLabel(item.access_type)}</small>
+                <h3>{item.title}</h3>
+              </div>
+            </a>
+          ))}
+        </div>
+        <a class="culin-hub-all" href="/cultural-experiences/">Browse all cultural experiences →</a>
+      </div>
+    </section>
+  )}
+
+  {culinary.length > 0 && (
+    <section class="simple-section culinary-hub-section">
+      <div class="simple-wrap">
+        <p class="section-kicker">Culinary Experiences</p>
+        <h2>Taste {hubName} through hub-based food experiences</h2>
+        <p class="culin-hub-intro">
+          These culinary stops are planned from this hub — restaurants, bakeries, markets, and roadside food culture with clear route context.
+        </p>
+        <div class="simple-grid">
+          {culinary.map((item) => (
+            <a class="simple-card" href={item.href}>
+              <img src={item.image} alt={item.name} loading="lazy" />
+              <div class="culin-hub-card-copy">
+                <small>{routeContextLabel(item.route_context)}</small>
+                <h3>{item.name}</h3>
+                {item.signature_food && <p>{item.signature_food}</p>}
+              </div>
+            </a>
+          ))}
+        </div>
+        <a class="culin-hub-all" href="/cultural-experiences/culinary/">Browse all culinary experiences →</a>
+      </div>
+    </section>
+  )}
+
+  {activities.length > 0 && (
+    <section class="simple-section activities-hub-section">
+      <div class="simple-wrap">
+        <p class="section-kicker">Activities</p>
+        <h2>Activities planned from {hubName}</h2>
+        <p class="culin-hub-intro">
+          Hub-linked activity classes for journey planning. Specialist expedition support remains under Specialist Services.
+        </p>
+        <div class="simple-grid">
+          {activities.map((item) => (
+            <a class="simple-card" href={item.href}>
+              <img src={item.image} alt={item.name} loading="lazy" />
+              <div class="culin-hub-card-copy">
+                <small>{accessTypeLabel(item.access_type)}</small>
+                <h3>{item.name}</h3>
+                {item.card_description && <p>{item.card_description}</p>}
+              </div>
+            </a>
+          ))}
+        </div>
+        <a class="culin-hub-all" href="/activities/">Browse all activities →</a>
+      </div>
+    </section>
+  )}
 
   {food.length > 0 && (
     <section class="simple-section">
@@ -269,6 +375,43 @@ const image = hub.image || `/assets/images/hubs/${hubSlug}/hero.webp` || '/asset
 
   @media (max-width: 620px) {
     .simple-grid { grid-template-columns: 1fr; }
+  }
+
+
+  .culin-hub-intro {
+    color: #596168;
+    max-width: 720px;
+    line-height: 1.65;
+    margin: -0.5rem 0 0;
+  }
+  .culin-hub-card-copy {
+    padding: 1rem;
+  }
+  .culin-hub-card-copy small {
+    display: block;
+    color: #a4650d;
+    font-size: .65rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+  .culin-hub-card-copy h3 {
+    padding: .35rem 0 0;
+  }
+  .culin-hub-card-copy p {
+    margin: .35rem 0 0;
+    color: #596168;
+    font-size: .88rem;
+  }
+  .culin-hub-all {
+    display: inline-flex;
+    margin-top: 1.5rem;
+    color: #a4650d;
+    font-weight: 800;
+    text-decoration: none;
+  }
+  .culinary-hub-section .simple-card h3 {
+    padding: 0;
   }
 
   /* HUB-HERO-TEXT-FIX-START */

@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildCustomInquiryHref } from '../../lib/inquiry';
+import { getCustomJourneys } from '../../lib/buildRelations';
+
+const journey = getCustomJourneys()[0];
+const inquiryHref = buildCustomInquiryHref(journey ? { slug: journey.slug, name: journey.name, code: journey.journey_code } : undefined);
+const hero = journey?.hero_image_path || '/assets/images/custom-tours/custom-expedition/hero.webp';
+---
+<BaseLayout
+  title="Build My Journey | Custom Requests | AfghanTours"
+  description={journey?.summary || 'Private leisure journey planning — duration, route, and price set after scoping. Not a fixed 15-day package.'}
+  image={hero}
+>
+  <article class="cj">
+    <header class="cj-hero" style={`--cj-hero:url('${hero}')`}>
+      <div class="cj-wrap">
+        <p class="kicker">Custom Journey · Build My Journey</p>
+        <h1>{journey?.name || 'Build My Journey'}</h1>
+        <p class="summary">{journey?.summary}</p>
+        <a class="btn-primary" href={inquiryHref}>{journey?.cta_label || 'Build My Journey'}</a>
+      </div>
+    </header>
+
+    <section class="cj-wrap cj-body">
+      <div class="notice">
+        <p class="notice-label">No predetermined package</p>
+        <p>
+          This is a private leisure planning service. There is no predetermined duration, itinerary,
+          route, scheduled departure, or package price — and we do not restore a fictional 15-day / $3,500
+          “Custom Expedition” catalog product.
+        </p>
+      </div>
+
+      <h2>How planning works</h2>
+      <ol>
+        <li>Tell us your dates, regions, pace, group size, and goals.</li>
+        <li>Our Kabul team reviews feasibility around current access and conditions.</li>
+        <li>We reply with a scoped route proposal and a written quotation.</li>
+        <li>We refine together before anything is confirmed.</li>
+      </ol>
+
+      <p>{journey?.description}</p>
+
+      <div class="cta-band">
+        <h2>Start Build My Journey</h2>
+        <p>Share what you want this trip to accomplish. Duration and price are outputs of planning — not catalog fields.</p>
+        <a class="btn-primary" href={inquiryHref}>Build My Journey</a>
+        <p class="cta-note">
+          Looking for specialist logistics? <a href="/specialist-services/">Specialist Services</a> ·
+          Returning with personal history? <a href="/return-journeys/">Return Journeys</a> ·
+          Prefer a published itinerary? <a href="/tours/">Tour Packages</a>
+        </p>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .cj-wrap { width: min(860px, calc(100% - 2rem)); margin: 0 auto; }
+  .cj-hero { background: linear-gradient(120deg, rgba(16,24,32,.88), rgba(16,24,32,.5)), var(--cj-hero) center/cover; color: #fff; padding: clamp(3.5rem, 7vw, 5.5rem) 0; }
+  .kicker { margin: 0; color: #d6a548; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 900; }
+  .cj-hero h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.2rem, 4.5vw, 3.4rem); line-height: 1.05; margin: .55rem 0 1rem; }
+  .summary { max-width: 58ch; color: rgba(255,255,255,.88); line-height: 1.7; margin-bottom: 1.4rem; }
+  .btn-primary { display: inline-block; background: #b98237; color: #fff; text-decoration: none; padding: .95rem 1.25rem; border-radius: .35rem; font-size: .78rem; font-weight: 900; text-transform: uppercase; }
+  .cj-body { padding: 2.8rem 0 4.5rem; }
+  .notice { background: #f7f0e6; border: 1px solid #dfd0bc; border-radius: 1rem; padding: 1.1rem 1.2rem; margin-bottom: 2rem; }
+  .notice-label { margin: 0 0 .35rem; color: #b46b00; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 900; }
+  .cj-body p, .notice p, .cj-body li { color: #374151; line-height: 1.7; }
+  .cj-body h2 { font-family: Georgia, "Times New Roman", serif; font-size: 1.55rem; margin: 1.8rem 0 .55rem; }
+  .cj-body ol { padding-left: 1.2rem; display: grid; gap: .55rem; }
+  .cta-band { margin-top: 2.8rem; background: #101820; color: #fff; border-radius: 1rem; padding: 2rem 1.5rem; text-align: center; }
+  .cta-band h2 { color: #fff; margin-top: 0; }
+  .cta-band p { color: rgba(255,255,255,.82); max-width: 52ch; margin: 0 auto 1.2rem; }
+  .cta-note { font-size: .85rem !important; margin-top: 1rem !important; }
+  .cta-note a { color: #d6a548; }
+</style>

@@ -13,19 +13,26 @@ interface Props {
 const { hubs = [] } = Astro.props;
 
 // Helper to resolve the correct folder name matching your public assets directory
+// Image-folder resolver (asset dirs use short names for Faizabad/Jalalabad).
+// Runtime hub PAGE slugs are canonical: faizabad-city, jalalabad-city, etc.
 const getCleanSlug = (slug: string): string => {
   const clean = slug.toLowerCase().trim();
-  if ([
-    'bamyan-city', 'faizabad', 'ghazni-city', 'herat-city', 
-    'jalalabad', 'kabul-city', 'kandahar-city', 'mazar-e-sharif'
-  ].includes(clean)) {
-    return clean;
-  }
-  if (clean === 'mazar' || clean === 'mazar-e-sharif') return 'mazar-e-sharif';
-  if (clean === 'faizabad') return 'faizabad';
-  if (clean === 'jalalabad') return 'jalalabad';
-  
-  return `${clean.replace('-city', '')}-city`;
+  const imageFolderByPageSlug: Record<string, string> = {
+    'kabul-city': 'kabul-city',
+    'bamyan-city': 'bamyan-city',
+    'ghazni-city': 'ghazni-city',
+    'herat-city': 'herat-city',
+    'kandahar-city': 'kandahar-city',
+    'mazar-e-sharif': 'mazar-e-sharif',
+    'mazar-e-sharif-city': 'mazar-e-sharif',
+    'mazar': 'mazar-e-sharif',
+    'faizabad-city': 'faizabad',
+    'faizabad': 'faizabad',
+    'jalalabad-city': 'jalalabad',
+    'jalalabad': 'jalalabad',
+  };
+  if (imageFolderByPageSlug[clean]) return imageFolderByPageSlug[clean];
+  return `${clean.replace(/-city$/, '')}-city`;
 };
 
 // Returns the correct structural hero image path

@@ -1,374 +1,172 @@
 ---
+/**
+ * Homepage / supporting band that points to separated product families.
+ * Not a mixed TourCard grid of Winter Circuit + Scientific + Media.
+ */
 const cards = [
   {
-    title: 'Private Bespoke Journeys',
-    label: 'Your Trip, Your Goals',
+    title: 'Build My Journey',
+    label: 'Custom Journey',
     image: '/assets/images/custom-tours/custom-expedition/hero.webp',
-    text: 'For travelers who want something beyond our published tours. Tell us where you want to go, what interests you, and how you want to travel.',
-    contactType: 'private-bespoke'
+    text: 'Private leisure planning with no predetermined duration, itinerary, route, or package price.',
+    href: '/custom-requests/',
+    cta: 'Start Build My Journey'
   },
   {
-    title: 'Photographers & Filmmakers',
-    label: 'Visual Storytelling',
+    title: 'Specialist Services',
+    label: 'Proposal-led logistics',
     image: '/assets/images/custom-tours/photography-tour/hero.webp',
-    text: 'Flexible travel planning, location scouting, local coordination, translation, transport, and practical support built around your project.',
-    contactType: 'photography-filmmaking'
+    text: 'Photography, research, media, business, and expedition support — not fixed tour packages.',
+    href: '/specialist-services/',
+    cta: 'Browse specialist services'
   },
   {
-    title: 'Journalists & Media Teams',
-    label: 'Media Support',
-    image: '/assets/images/custom-tours/media-support/hero.webp',
-    text: 'Ground logistics and local coordination designed around your assignment, reporting objectives, schedule, and locations.',
-    contactType: 'journalists-media'
-  },
-  {
-    title: 'Veterans & Return Visitors',
-    label: 'Return Journeys',
+    title: 'Return Journeys',
+    label: 'Diaspora & veterans',
     image: '/assets/images/custom-tours/veteran-return/hero.webp',
-    text: 'Private journeys developed around the places, people, memories, and personal connections that bring you back to Afghanistan.',
-    contactType: 'veterans-return-visitors'
-  },
-  {
-    title: 'Afghan Diaspora & Heritage',
-    label: 'Heritage Travel',
-    image: '/assets/images/page-assets/people/guides/guide-james-explaining.webp',
-    text: 'Personalized journeys for Afghan families and diaspora travelers reconnecting with family regions, communities, heritage, and history.',
-    contactType: 'afghan-diaspora-heritage'
-  },
-  {
-    title: 'Researchers & Specialist Travel',
-    label: 'Research & Expeditions',
-    image: '/assets/images/custom-tours/scientific-expeditions/hero.webp',
-    text: 'Custom planning for researchers, academics, institutions, mountaineers, and specialist travelers whose objectives require a tailored itinerary.',
-    contactType: 'research-specialist'
+    text: 'Heritage returns and veterans, contractors, and diplomats visits — distinct from leisure tours.',
+    href: '/return-journeys/',
+    cta: 'Explore return journeys'
   }
 ];
 ---
 
 <section id="custom-tours" class="custom-tours-section">
   <div class="custom-wrap">
-
     <div class="custom-copy">
-      <p class="section-kicker">Custom Journeys</p>
-
-      <h2>Build a journey around your goals.</h2>
-
+      <p class="section-kicker">Beyond the tour catalog</p>
+      <h2>Custom, specialist, and return planning.</h2>
       <p class="custom-intro">
-        These are not fixed tours or packaged itineraries. Tell us what you want
-        to accomplish, where you hope to go, your approximate dates, interests,
-        and any special requirements.
+        Not every journey belongs in the tour grid. Choose the planning path that matches your goals —
+        then request a proposal from our Kabul team.
       </p>
-
-      <p class="custom-intro">
-        Our Kabul-based team works with you to develop a private itinerary around
-        your objectives and the practical realities of traveling in Afghanistan.
-      </p>
-
-      <a
-        href="/contact/?type=custom-tour&interest=private-bespoke"
-        class="custom-main-button"
-      >
-        Start planning your journey
-      </a>
-
-      <p class="custom-helper">
-        Tell us what you want to accomplish. We will build the itinerary with you.
-      </p>
+      <a href="/custom-requests/" class="custom-main-button">Build My Journey</a>
+      <p class="custom-helper">Prefer a published itinerary? <a href="/tours/">Browse tour packages</a>.</p>
     </div>
 
     <div class="custom-services">
       <div class="custom-service-note">
-        <span>No fixed itineraries</span>
-        <span>Private planning</span>
-        <span>Built with you</span>
+        <span>No fake Day 1–N</span>
+        <span>Proposal-led</span>
+        <span>Separated from tours</span>
       </div>
 
       <div class="custom-grid">
         {cards.map((card) => (
-          <a
-            class="custom-card"
-            href={`/contact/?type=custom-tour&interest=${encodeURIComponent(card.contactType)}`}
-          >
+          <a class="custom-card" href={card.href}>
             <div class="custom-card__image">
-              <img
-                src={card.image}
-                alt={card.title}
-                loading="lazy"
-              />
+              <img src={card.image} alt={card.title} loading="lazy" />
             </div>
-
             <div class="custom-card__content">
               <p class="custom-card__label">{card.label}</p>
-
               <h3>{card.title}</h3>
-
               <p class="custom-card__text">{card.text}</p>
-
-              <span class="custom-card__cta">
-                Tell us about your goals →
-              </span>
+              <span class="custom-card__cta">{card.cta} →</span>
             </div>
           </a>
         ))}
       </div>
     </div>
-
   </div>
 </section>
 
 <style>
   .custom-tours-section {
-    background: #f4f2ee;
-    color: #101820;
-    padding: clamp(4rem, 7vw, 7rem) 0;
+    background: #f1eadc;
+    padding: clamp(3rem, 5vw, 4.5rem) 0;
   }
-
   .custom-wrap {
-    width: min(1360px, calc(100% - 2.5rem));
+    width: min(1180px, calc(100% - 2rem));
     margin: 0 auto;
-
     display: grid;
-    grid-template-columns: minmax(280px, 0.37fr) minmax(0, 0.63fr);
-    gap: clamp(1.5rem, 3vw, 3rem);
+    grid-template-columns: .9fr 1.2fr;
+    gap: 2rem;
     align-items: start;
   }
-
   .section-kicker {
     margin: 0;
-    color: #a86418;
-    font-size: .68rem;
-    font-weight: 950;
-    letter-spacing: .28em;
+    color: #b46b00;
+    font-size: .72rem;
+    letter-spacing: .22em;
     text-transform: uppercase;
+    font-weight: 900;
   }
-
-  .custom-copy {
-    position: sticky;
-    top: 6.5rem;
-  }
-
   .custom-copy h2 {
-    max-width: 8ch;
-    margin: .7rem 0 1.15rem;
-
     font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(3rem, 4.7vw, 5.3rem);
-    font-weight: 700;
-    line-height: .9;
-    letter-spacing: -.06em;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    line-height: 1.05;
+    margin: .55rem 0 1rem;
   }
-
-  .custom-intro {
-    max-width: 44ch;
-    margin: 0 0 .85rem;
-    color: #46515c;
-    font-size: .95rem;
-    line-height: 1.7;
-  }
-
+  .custom-intro { color: #4b5563; line-height: 1.7; }
   .custom-main-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    margin-top: 1.1rem;
-    padding: .95rem 1.25rem;
-
-    border-radius: 999px;
-    background: #b77926;
+    display: inline-block;
+    margin-top: 1.2rem;
+    background: #b98237;
     color: #fff;
-
     text-decoration: none;
+    padding: .95rem 1.25rem;
+    border-radius: .35rem;
+    font-size: .78rem;
+    font-weight: 900;
     text-transform: uppercase;
-
-    font-size: .7rem;
-    font-weight: 950;
-    letter-spacing: .08em;
-
-    transition: transform .2s ease, background .2s ease;
   }
-
-  .custom-main-button:hover {
-    background: #986017;
-    transform: translateY(-2px);
-  }
-
-  .custom-helper {
-    max-width: 34ch;
-    margin: .8rem 0 0;
-    color: #6b7280;
-    font-size: .76rem;
-    line-height: 1.55;
-  }
-
-  .custom-services {
-    min-width: 0;
-  }
-
+  .custom-helper { margin-top: .9rem; color: #5a5146; font-size: .92rem; }
+  .custom-helper a { color: #101820; font-weight: 700; }
   .custom-service-note {
     display: flex;
     flex-wrap: wrap;
-    gap: .45rem;
-    margin: 0 0 1rem;
+    gap: .55rem;
+    margin-bottom: .9rem;
   }
-
   .custom-service-note span {
-    display: inline-flex;
-    align-items: center;
-
-    padding: .5rem .72rem;
-    border: 1px solid rgba(16,24,32,.11);
+    border: 1px solid #e3d7c5;
+    background: #fff;
     border-radius: 999px;
-
-    background: rgba(255,255,255,.72);
-    color: #4c5560;
-
-    font-size: .62rem;
-    font-weight: 900;
-    letter-spacing: .08em;
-    text-transform: uppercase;
+    padding: .45rem .8rem;
+    font-size: .78rem;
+    font-weight: 800;
+    color: #5a5146;
   }
-
   .custom-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-auto-rows: 1fr;
-    gap: 1rem;
-    align-items: stretch;
+    grid-template-columns: 1fr;
+    gap: .9rem;
   }
-
   .custom-card {
-    min-width: 0;
-    height: 100%;
-    overflow: hidden;
-
-    display: flex;
-    flex-direction: column;
-
-    border: 1px solid rgba(16,24,32,.10);
-    border-radius: 1.1rem;
-
+    display: grid;
+    grid-template-columns: 140px 1fr;
     background: #fff;
-    color: #101820;
-    text-decoration: none;
-
-    box-shadow: 0 10px 28px rgba(27,22,14,.06);
-
-    transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
-  }
-
-  .custom-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(183,121,38,.35);
-    box-shadow: 0 18px 38px rgba(27,22,14,.12);
-  }
-
-  .custom-card__image {
-    position: relative;
+    border: 1px solid #e3d7c5;
+    border-radius: .75rem;
     overflow: hidden;
-    aspect-ratio: 16 / 9;
-    background: #ddd5c9;
+    text-decoration: none;
+    color: inherit;
   }
-
   .custom-card__image img {
-    display: block;
     width: 100%;
     height: 100%;
+    min-height: 130px;
     object-fit: cover;
-    transition: transform .35s ease;
+    display: block;
   }
-
-  .custom-card:hover .custom-card__image img {
-    transform: scale(1.03);
-  }
-
-  .custom-card__content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 1.1rem 1.1rem 1.15rem;
-  }
-
+  .custom-card__content { padding: 1rem 1.1rem; display: grid; gap: .35rem; }
   .custom-card__label {
-    margin: 0 0 .48rem;
-    color: #a86418;
-    font-size: .58rem;
-    font-weight: 950;
-    letter-spacing: .17em;
-    text-transform: uppercase;
-  }
-
-  .custom-card h3 {
-    margin: 0 0 .62rem;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(1.35rem, 1.9vw, 1.8rem);
-    line-height: .98;
-    letter-spacing: -.035em;
-  }
-
-  .custom-card__text {
-    flex: 1;
     margin: 0;
-    color: #59636e;
-    font-size: .84rem;
-    line-height: 1.58;
+    color: #b46b00;
+    font-size: .66rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    font-weight: 900;
   }
-
-  .custom-card__cta {
-    display: inline-flex;
-    margin-top: .95rem;
-    color: #a86418;
-    font-size: .74rem;
-    font-weight: 950;
+  .custom-card h3 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.25rem;
   }
-
-  @media (max-width: 1150px) {
-    .custom-wrap {
-      grid-template-columns: minmax(260px, 0.4fr) minmax(0, 0.6fr);
-      gap: 1.5rem;
-    }
-
-    .custom-copy h2 {
-      font-size: clamp(2.7rem, 5vw, 4.5rem);
-    }
-  }
-
-  @media (max-width: 980px) {
-    .custom-wrap {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-
-    .custom-copy {
-      position: static;
-    }
-
-    .custom-copy h2,
-    .custom-intro,
-    .custom-helper {
-      max-width: none;
-    }
-  }
-
-  @media (max-width: 680px) {
-    .custom-tours-section {
-      padding: 3.5rem 0;
-    }
-
-    .custom-wrap {
-      width: min(100% - 1.25rem, 1360px);
-    }
-
-    .custom-copy h2 {
-      font-size: clamp(2.65rem, 13vw, 4.1rem);
-    }
-
-    .custom-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .custom-card__image {
-      aspect-ratio: 16 / 8.8;
-    }
+  .custom-card__text { margin: 0; color: #4b5563; line-height: 1.55; font-size: .92rem; }
+  .custom-card__cta { color: #b98237; font-weight: 800; font-size: .88rem; }
+  @media (max-width: 900px) {
+    .custom-wrap { grid-template-columns: 1fr; }
+    .custom-card { grid-template-columns: 110px 1fr; }
   }
 </style>

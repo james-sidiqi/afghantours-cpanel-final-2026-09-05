@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildSpecialistInquiryHref } from '../../lib/inquiry';
+import { getSpecialistServices, getSpecialistBySlug } from '../../lib/buildRelations';
+
+export function getStaticPaths() {
+  return getSpecialistServices().map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const service = Astro.props.service || (Astro.params.slug ? getSpecialistBySlug(Astro.params.slug) : undefined);
+if (!service) return Astro.redirect('/specialist-services/');
+
+const inquiryHref = buildSpecialistInquiryHref(service);
+const regions = Array.isArray(service.regions_supported_list)
+  ? service.regions_supported_list
+  : String(service.regions_supported || '').split(/[|;,]/).map((x) => x.trim()).filter(Boolean);
+const hero = service.hero_image_path || service.image_path || '/assets/images/placeholders/default-hero.webp';
+---
+<BaseLayout
+  title={`${service.name} | Specialist Services | AfghanTours`}
+  description={service.summary}
+  image={hero}
+>
+  <article class="sp">
+    <header class="sp-hero" style={`--sp-hero:url('${hero}')`}>
+      <div class="sp-wrap">
+        <p class="kicker">Specialist service · proposal-led</p>
+        <h1>{service.name}</h1>
+        <p class="summary">{service.summary}</p>
+        <a class="btn-primary" href={inquiryHref}>{service.cta_label || 'Request a Proposal'}</a>
+      </div>
+    </header>
+
+    <section class="sp-wrap sp-body">
+      <div class="notice">
+        <p class="notice-label">Not a tour package</p>
+        <p>
+          We do not advertise fixed duration, day-by-day itineraries, scheduled departures, or catalog
+          “from” prices for specialist work. Pricing is a <strong>custom quotation</strong> after scoping.
+        </p>
+      </div>
+
+      <h2>Who this is for</h2>
+      <p>{service.audience || 'Specialist teams'}</p>
+      <p class="desc">{service.description}</p>
+
+      {regions.length > 0 && (
+        <div class="block">
+          <h2>Regions we can discuss</h2>
+          <p>{regions.join(' · ')}</p>
+        </div>
+      )}
+
+      {service.support_note && (
+        <div class="block">
+          <h2>What we can arrange</h2>
+          <p>{service.support_note}</p>
+        </div>
+      )}
+
+      {service.planning_notes && (
+        <div class="block">
+          <h2>Planning process</h2>
+          <p>{service.planning_notes}</p>
+        </div>
+      )}
+
+      <div class="grid">
+        {service.accommodation_note && (
+          <div class="tile"><h3>Accommodation</h3><p>{service.accommodation_note}</p></div>
+        )}
+        {service.transport_note && (
+          <div class="tile"><h3>Transport</h3><p>{service.transport_note}</p></div>
+        )}
+        {service.availability_note && (
+          <div class="tile"><h3>Operational considerations</h3><p>{service.availability_note}</p></div>
+        )}
+      </div>
+
+      <div class="cta-band">
+        <h2>Request a Proposal</h2>
+        <p>Share your brief, preferred window, and team size. We reply from Kabul with workable options — then a written quotation. An inquiry is not a booking.</p>
+        <a class="btn-primary" href={inquiryHref}>{service.cta_label || 'Request a Proposal'}</a>
+        <p class="cta-note">Prefer a scheduled itinerary? <a href="/tours/">Browse Tour Packages</a> · <a href="/return-journeys/">Return Journeys</a> · <a href="/custom-requests/">Build My Journey</a></p>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .sp-wrap { width: min(860px, calc(100% - 2rem)); margin: 0 auto; }
+  .sp-hero { background: linear-gradient(120deg, rgba(16,24,32,.88), rgba(16,24,32,.55)), var(--sp-hero) center/cover; color: #fff; padding: clamp(3.5rem, 7vw, 5.5rem) 0; }
+  .kicker { margin: 0; color: #d6a548; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 900; }
+  .sp-hero h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.2rem, 4.5vw, 3.4rem); line-height: 1.05; margin: .55rem 0 1rem; }
+  .summary { max-width: 58ch; color: rgba(255,255,255,.88); line-height: 1.7; margin-bottom: 1.4rem; }
+  .btn-primary { display: inline-block; background: #b98237; color: #fff; text-decoration: none; padding: .95rem 1.25rem; border-radius: .35rem; font-size: .78rem; font-weight: 900; text-transform: uppercase; }
+  .sp-body { padding: 2.8rem 0 4.5rem; }
+  .notice { background: #f6f7fb; border: 1px solid rgba(30,58,95,.12); border-radius: 1rem; padding: 1.1rem 1.2rem; margin-bottom: 2rem; }
+  .notice-label { margin: 0 0 .35rem; color: #b88a2a; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 900; }
+  .notice p, .sp-body p, .tile p { color: #374151; line-height: 1.7; }
+  .sp-body h2 { font-family: Georgia, "Times New Roman", serif; font-size: 1.55rem; margin: 1.8rem 0 .55rem; color: #101820; }
+  .desc { margin-top: .7rem; }
+  .block { margin-top: 1.2rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.8rem; }
+  .tile { border: 1px solid #e5dccf; border-radius: .85rem; padding: 1rem 1.1rem; background: #fff; }
+  .tile h3 { margin: 0 0 .45rem; font-size: 1rem; color: #101820; }
+  .cta-band { margin-top: 2.8rem; background: #101820; color: #fff; border-radius: 1rem; padding: 2rem 1.5rem; text-align: center; }
+  .cta-band h2 { color: #fff; margin-top: 0; }
+  .cta-band p { color: rgba(255,255,255,.82); max-width: 52ch; margin: 0 auto 1.2rem; }
+  .cta-note { font-size: .85rem !important; margin-top: 1rem !important; }
+  .cta-note a { color: #d6a548; }
+</style>

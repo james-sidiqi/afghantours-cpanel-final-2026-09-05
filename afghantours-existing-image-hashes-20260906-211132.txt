@@ -816,7 +816,7 @@
 9e92243aeba3644520970b235b752f4d2c743bfe433c2da2428eff63a1bac43f  public/assets/images/attractions/qalai-jangi-fortress/hero.webp
 9e9c0e68d29e5cb69e94f25e0d28d36cc99ae85c8b6e7ad5fc32e430f4375aaf  public/assets/images/attractions/tarin-kot-surroundings/gallery-1.webp
 9ebac92fa71c0f6f5a1d1d15994ee1a8b91d176d265671334d0d587b89afd463  public/assets/images/attractions/tape-tajbeg-palace/hero.webp
-9ed191d1af2e0ff470f7f15deb3ea052295a3040bf290997f08ab233e10c53f6  public/assets/images/page-assets/activities/sightseeing/religous/01.webp
+9ed191d1af2e0ff470f7f15deb3ea052295a3040bf290997f08ab233e10c53f6  public/assets/images/page-assets/activities/sightseeing/religious/01.webp
 9eda2abd5c35141373ab8fc16c3935b5ac3928520c0bd633159eaee814a0304e  public/assets/images/food/sweets/sheer-khurma/hero.webp
 9f489ce7c9901e2c0d9bedfb98488ca5aa6413bdd473bcdd70e7c231a27add46  public/assets/images/provinces/nuristan/gallery-4.webp
 9f60b9bebfe37a3d95fd4fbec7b663f5f4686683877f22e27c31f8d5001b0a7e  public/assets/images/food/dishes/mantu/gallery-1.webp
@@ -1336,9 +1336,9 @@ f9f30c211ba5e9e37dc8b9e268ea1f67d686b0239782f95f8321035870a40e48  public/assets/
 fa01e45c62053a35e4ad494af012b017502c8d50be3cbd9511b2d5f896be0042  public/assets/images/hotels/faizabad/bam-dunya/hero.webp
 fa01e45c62053a35e4ad494af012b017502c8d50be3cbd9511b2d5f896be0042  public/assets/images/hotels/faizabad/bam-dunya/hotel-exterior-1.webp
 fa2f025fde8c9e8cffa5643f00de376ba35ec9a68bf71006d28b1d9e18aae886  public/assets/images/attractions/sultan-dam/hero.webp
-fa5bb30df7d0cadb63e57cde7fefd387f3fe5100c1de766cf79ed1f6cca01053  public/assets/images/page-assets/activities/sightseeing/religous/03.webp
+fa5bb30df7d0cadb63e57cde7fefd387f3fe5100c1de766cf79ed1f6cca01053  public/assets/images/page-assets/activities/sightseeing/religious/03.webp
 fa902302234fc4c9df87807e51d2c478c37fea61d8389734bc307790e39c1cf0  public/assets/images/provinces/sar-e-pol/hero.webp
-fafac42c616151618600345372d0e3ea816fff24108fb072bb14210ae156ddb8  public/assets/images/page-assets/activities/sightseeing/religous/02.webp
+fafac42c616151618600345372d0e3ea816fff24108fb072bb14210ae156ddb8  public/assets/images/page-assets/activities/sightseeing/religious/02.webp
 fb24a3d402d0aa1897d8e27aba8e495ad7e8f44a3346aff8a1988d25420ca46e  public/assets/images/page-assets/people/group-photos/tourist-group-shahr-e-zohak.webp
 fb281d0caa6e8d770a7b8ce3a4f44526a2c545255581add549d0543cf71de073  public/assets/images/province/badghis/gallery-1.webp
 fb386fd96be05f9d86451936253f231649f477b26b45a8fb6597bb0661ffd778  public/assets/images/featured-tours/panjshir-valley-emeralds-history/thumb.webp

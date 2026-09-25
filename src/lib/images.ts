@@ -207,3 +207,108 @@ export function getAttractionImage(attraction: any): string {
   ], PLACEHOLDERS.attraction);
 }
 
+/** Documented experience asset roots (long-term hierarchy). */
+export const EXPERIENCE_ASSET_ROOTS = {
+  culinary: '/assets/images/experiences/culinary',
+  cultural: '/assets/images/experiences/cultural',
+  activities: '/assets/images/experiences/activities',
+} as const;
+
+export function getCulinaryImage(item: any): string {
+  const slug = item?.slug || item?.culinary_slug || item?.experience_slug;
+  return firstExisting([
+    item?.hero_image,
+    item?.image,
+    item?.image_path,
+    slug ? `${EXPERIENCE_ASSET_ROOTS.culinary}/${slug}/hero.webp` : null,
+    slug ? `${EXPERIENCE_ASSET_ROOTS.culinary}/${slug}/thumb.webp` : null,
+    // Renamed culinary slug fallback
+    slug === 'band-e-amir-quroot-dairy' ? `${EXPERIENCE_ASSET_ROOTS.culinary}/band-e-amir-dairy-market-quroot/hero.webp` : null,
+    // Legacy interim locations still present in this repo
+    slug ? `/assets/images/cultural-experiences/${slug}/hero.webp` : null,
+    slug ? `/assets/images/food/${slug}/hero.webp` : null,
+  ], PLACEHOLDERS.food);
+}
+
+export function getCulinaryGallery(item: any): string[] {
+  const slug = item?.slug || item?.culinary_slug;
+  const explicit = [
+    ...(Array.isArray(item?.gallery_images) ? item.gallery_images : []),
+    item?.gallery_image_1,
+    item?.gallery_image_2,
+    item?.gallery_image_3,
+  ].filter(Boolean).map((v) => normalizeImagePath(v, ''));
+
+  const discovered = slug
+    ? [
+        ...listPublicImages(`${EXPERIENCE_ASSET_ROOTS.culinary}/${slug}`, true),
+        ...listPublicImages(`/assets/images/cultural-experiences/${slug}`, true),
+      ]
+    : [];
+
+  return [...new Set([...explicit, ...discovered].filter(Boolean))];
+}
+
+export function getCulturalExperienceImage(item: any): string {
+  const slug = item?.slug || item?.id?.replace(/\.md$/, '');
+  return firstExisting([
+    item?.hero_image,
+    item?.image,
+    slug ? `${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}/hero.webp` : null,
+    slug ? `/assets/images/cultural-experiences/${slug}/hero.webp` : null,
+  ], PLACEHOLDERS.attraction);
+}
+
+export function getCulturalExperienceGallery(item: any): string[] {
+  const slug = item?.slug || item?.id?.replace(/\.md$/, '');
+  const explicit = [
+    ...(Array.isArray(item?.gallery_images) ? item.gallery_images : []),
+    item?.gallery_image_1,
+    item?.gallery_image_2,
+    item?.gallery_image_3,
+  ].filter(Boolean).map((v) => normalizeImagePath(v, ''));
+
+  const discovered = slug
+    ? [
+        ...listPublicImages(`${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}`, true),
+        ...listPublicImages(`/assets/images/cultural-experiences/${slug}`, true),
+      ]
+    : [];
+
+  return [...new Set([...explicit, ...discovered].filter(Boolean))];
+}
+
+export function getActivityImage(item: any): string {
+  const slug = item?.slug || item?.activity_slug;
+  // Exact entity assets only — never cross-substitute another activity's hero
+  // (e.g. fishing→horse-riding other/01, cycling→hiking).
+  return firstExisting([
+    item?.hero_image,
+    item?.image,
+    item?.image_path,
+    slug ? `${EXPERIENCE_ASSET_ROOTS.activities}/${slug}/hero.webp` : null,
+    slug ? `${EXPERIENCE_ASSET_ROOTS.activities}/${slug}/thumb.webp` : null,
+  ], PLACEHOLDERS.card);
+}
+
+export function getActivityGallery(item: any): string[] {
+  const slug = item?.slug || item?.activity_slug;
+  const explicit = [
+    ...(Array.isArray(item?.gallery_images) ? item.gallery_images : []),
+    item?.gallery_image_1,
+    item?.gallery_image_2,
+    item?.gallery_image_3,
+  ].filter(Boolean).map((v) => normalizeImagePath(v, ''));
+
+  // Entity gallery only — do not pull sibling activity folders or cross-entity page-assets.
+  const discovered = slug
+    ? [
+        ...listPublicImages(`${EXPERIENCE_ASSET_ROOTS.activities}/${slug}`, true),
+        ...listPublicImages(`/assets/images/page-assets/activities/${slug}`, true),
+      ]
+    : [];
+
+  const hero = getActivityImage(item);
+  return [...new Set([...explicit, ...discovered].filter((src) => src && src !== hero))];
+}
+

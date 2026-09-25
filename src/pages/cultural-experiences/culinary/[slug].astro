@@ -1,0 +1,652 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import TourCardGrid from '../../../components/cards/TourCardGrid.astro';
+import { getCollection, render } from 'astro:content';
+import { getTours, getHubBySlug } from '../../../lib/buildRelations';
+import {
+  getCulinaryExperiences,
+  getCulinaryBySlug,
+  publicVenueLabel,
+  publicVenueTypeLabel,
+  routeContextLabel,
+  relatedFoodLinks,
+  getCulinaryForTour,
+} from '../../../lib/culinary';
+import { getCulinaryImage, getCulinaryGallery } from '../../../lib/images';
+
+export async function getStaticPaths() {
+  const csv = getCulinaryExperiences();
+  const mdItems = await getCollection('culinary-experiences');
+  const mdBySlug = new Map(mdItems.map((i) => [i.id.replace(/\.md$/, ''), i]));
+
+  return csv.map((row) => ({
+    params: { slug: row.slug },
+    props: { row, md: mdBySlug.get(row.slug) || null },
+  }));
+}
+
+const { row, md } = Astro.props;
+const Content = md ? (await render(md)).Content : null;
+
+const data = {
+  ...row,
+  ...(md?.data || {}),
+  related_food_slugs: (md?.data?.related_food_slugs?.length
+    ? md.data.related_food_slugs
+    : row.related_food_slugs) || [],
+  provinces: (md?.data?.provinces?.length ? md.data.provinces : row.provinces) || [],
+  nearby: md?.data?.nearby || [],
+};
+
+const slug = row.slug;
+const title = data.title || row.name;
+const subtitle = data.subtitle || data.card_description || row.card_description || '';
+const description =
+  data.card_description ||
+  row.card_description ||
+  `Explore ${title}, a hub-based culinary experience in Afghanistan.`;
+
+const heroImage = getCulinaryImage({ slug, hero_image: data.hero_image, image: data.image });
+const galleryImages = getCulinaryGallery({ slug, gallery_images: data.gallery_images }).filter(
+  (src) => src !== heroImage
+).slice(0, 8);
+
+const venueLabel = publicVenueLabel(data);
+const venueTypeLabel = publicVenueTypeLabel(data);
+const routeLabel = routeContextLabel(data.route_context);
+const foodLinks = relatedFoodLinks(data);
+
+const hub = data.hub_slug ? getHubBySlug(data.hub_slug) : undefined;
+const hubName = hub?.title || hub?.name || String(data.hub_slug || '').replace(/-city$/, '');
+const hubHref = hub?.slug ? `/hubs/${hub.slug}/` : (data.hub_slug ? `/hubs/${data.hub_slug}/` : '/hubs/');
+
+const allTours = getTours();
+const explicitCulinaryTours = getCulinaryForTour(slug);
+// Also honor MD related_tours only when present (no invented day assignments)
+const relatedTourSlugs = Array.isArray(data.related_tours) ? data.related_tours : [];
+const relatedTours = [
+  ...explicitCulinaryTours,
+  ...relatedTourSlugs.map((s) => allTours.find((t) => t.slug === s)).filter(Boolean),
+]
+  .filter((t, i, arr) => arr.findIndex((x) => x.slug === t.slug) === i)
+  .slice(0, 6);
+
+const siblingCulinary = getCulinaryExperiences()
+  .filter((c) => c.slug !== slug)
+  .filter((c) => c.hub_slug === data.hub_slug)
+  .slice(0, 3);
+
+const contactHref = `/contact/?type=culinary-experience&experience=${encodeURIComponent(title)}`;
+---
+
+<BaseLayout title={`${title} | Culinary Experience | AfghanTours`} description={description} image={heroImage}>
+  <section class="culin-hero">
+    <img class="culin-hero-image" src={heroImage} alt={title} fetchpriority="high" />
+    <div class="culin-hero-overlay" aria-hidden="true"></div>
+    <div class="culin-hero-inner">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span>›</span>
+        <a href="/cultural-experiences/">Cultural Experiences</a>
+        <span>›</span>
+        <a href="/cultural-experiences/culinary/">Culinary</a>
+      </nav>
+      <div class="culin-hero-copy">
+        <p class="kicker">Culinary Experience</p>
+        <h1>{title}</h1>
+        <p class="hero-subtitle">{subtitle}</p>
+        <div class="hero-actions">
+          <a class="hero-primary" href="#experience-story">Explore the experience</a>
+          <a class="hero-secondary" href={contactHref}>Add it to my trip</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="culin-facts-shell">
+    <div class="culin-facts">
+      <div class="culin-fact">
+        <span>Route context</span>
+        <strong>{routeLabel}</strong>
+      </div>
+      <div class="culin-fact">
+        <span>Hub</span>
+        <strong><a href={hubHref}>{hubName || 'Afghanistan'}</a></strong>
+      </div>
+      <div class="culin-fact">
+        <span>Signature</span>
+        <strong>{data.signature_food || 'Regional cuisine'}</strong>
+      </div>
+      <div class="culin-fact">
+        <span>{venueLabel ? 'Venue' : 'Setting'}</span>
+        <strong>{venueLabel || venueTypeLabel || 'Local food culture'}</strong>
+      </div>
+    </div>
+  </section>
+
+  <main id="experience-story" class="culin-main">
+    <div class="culin-layout">
+      <article class="culin-story">
+        <p class="section-kicker">On the table</p>
+        <h2>The experience</h2>
+        <p class="story-lead">{description}</p>
+        {Content && (
+          <div class="culin-prose">
+            <Content />
+          </div>
+        )}
+      </article>
+
+      <aside class="culin-sidebar">
+        <div class="sidebar-card">
+          <p class="section-kicker">Plan Around It</p>
+          <h2>Fit this into a hub day</h2>
+          <p>
+            Culinary experiences are planned from operational hubs. Timing depends on
+            route, season, and local schedules — not a fixed public menu.
+          </p>
+          <div class="sidebar-details">
+            {data.duration && (
+              <div>
+                <span>Duration</span>
+                <strong>{data.duration}</strong>
+              </div>
+            )}
+            {data.best_season && (
+              <div>
+                <span>Best timing</span>
+                <strong>{data.best_season}</strong>
+              </div>
+            )}
+            {data.provinces?.length > 0 && (
+              <div>
+                <span>Province</span>
+                <strong>{data.provinces.join(', ')}</strong>
+              </div>
+            )}
+            <div>
+              <span>Hub</span>
+              <strong><a href={hubHref}>{hubName}</a></strong>
+            </div>
+          </div>
+          <a class="sidebar-primary" href={contactHref}>Build a trip around this</a>
+          <a class="sidebar-secondary" href="/cultural-experiences/culinary/">All culinary experiences</a>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  {galleryImages.length > 0 && (
+    <section class="culin-gallery-section">
+      <div class="culin-gallery-wrap">
+        <div class="section-heading">
+          <p class="section-kicker">Visual Story</p>
+          <h2>See the experience</h2>
+        </div>
+        <div class="culin-gallery">
+          {galleryImages.map((src, index) => (
+            <div class="culin-gallery-item">
+              <img src={src} alt={`${title} — view ${index + 1}`} loading={index < 2 ? 'eager' : 'lazy'} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {(foodLinks.length > 0 || (data.nearby || []).length > 0) && (
+    <section class="pairings-section">
+      <div class="pairings-wrap">
+        <div class="section-heading">
+          <p class="section-kicker">Build Context</p>
+          <h2>Food & nearby</h2>
+        </div>
+        <div class="pairing-columns">
+          {foodLinks.length > 0 && (
+            <div class="pairing-card">
+              <span class="pairing-number">01</span>
+              <h3>Related Food & Culture</h3>
+              <div class="pairing-pills">
+                {foodLinks.map((food) => (
+                  <a href={food.href}>{food.label}</a>
+                ))}
+              </div>
+            </div>
+          )}
+          {(data.nearby || []).length > 0 && (
+            <div class="pairing-card">
+              <span class="pairing-number">02</span>
+              <h3>Nearby & complementary</h3>
+              <div class="pairing-pills">
+                {data.nearby.map((place) => (
+                  <span>{place}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {relatedTours.length > 0 && (
+    <TourCardGrid
+      tours={relatedTours}
+      title={`Journeys connected to ${title}`}
+      intro="Only tours with an explicit culinary or editorial link are listed here — no invented itinerary day assignments."
+    />
+  )}
+
+  {siblingCulinary.length > 0 && (
+    <section class="more-culin">
+      <div class="more-culin-wrap">
+        <div class="section-heading">
+          <p class="section-kicker">Same Hub</p>
+          <h2>More culinary experiences from {hubName}</h2>
+        </div>
+        <div class="culin-mini-grid">
+          {siblingCulinary.map((item) => (
+            <a class="culin-mini-card" href={item.href}>
+              <img src={item.image} alt={item.name} loading="lazy" />
+              <div>
+                <p>{routeContextLabel(item.route_context)}</p>
+                <h3>{item.name}</h3>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="culin-final-cta">
+    <div class="culin-final-inner">
+      <div>
+        <p class="section-kicker">Custom Journey</p>
+        <h2>Travel through food, not around it.</h2>
+        <p>
+          Tell us which hubs, markets, bakeries, and regional dishes interest you.
+          We will fit them into a practical route.
+        </p>
+      </div>
+      <a href={contactHref}>Start planning</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .culin-hero {
+    position: relative;
+    min-height: clamp(560px, 70vh, 780px);
+    overflow: hidden;
+    background: #101820;
+    color: #fff;
+  }
+  .culin-hero-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .culin-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, rgba(6,11,16,.91) 0%, rgba(6,11,16,.70) 43%, rgba(6,11,16,.18) 76%),
+      linear-gradient(0deg, rgba(6,11,16,.82) 0%, transparent 62%);
+  }
+  .culin-hero-inner {
+    position: relative;
+    z-index: 2;
+    width: min(1280px, calc(100% - 2rem));
+    min-height: clamp(560px, 70vh, 780px);
+    margin: auto;
+    padding: clamp(2rem, 5vw, 4rem) 0 clamp(4rem, 8vw, 6rem);
+    display: flex;
+    flex-direction: column;
+  }
+  .breadcrumbs {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .55rem;
+    font-size: .78rem;
+    font-weight: 800;
+  }
+  .breadcrumbs a { color: rgba(255,255,255,.82); text-decoration: none; }
+  .breadcrumbs span { color: rgba(255,255,255,.4); }
+  .culin-hero-copy { margin-top: auto; max-width: 930px; }
+  .kicker, .section-kicker {
+    margin: 0;
+    color: #d6a33e;
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+  .culin-hero .kicker { color: #f1c56b; }
+  .culin-hero h1 {
+    margin: .65rem 0 1rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 6.5vw, 5.8rem);
+    line-height: .92;
+    letter-spacing: -.055em;
+  }
+  .hero-subtitle {
+    max-width: 720px;
+    margin: 0;
+    color: rgba(255,255,255,.88);
+    font-size: clamp(1.05rem, 1.7vw, 1.25rem);
+    line-height: 1.6;
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .8rem;
+    margin-top: 1.8rem;
+  }
+  .hero-actions a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 999px;
+    padding: .95rem 1.35rem;
+    font-size: .88rem;
+    font-weight: 900;
+    text-decoration: none;
+  }
+  .hero-primary { background: #d6a33e; color: #101820; }
+  .hero-secondary {
+    border: 1px solid rgba(255,255,255,.35);
+    background: rgba(5,10,15,.28);
+    color: #fff;
+  }
+  .culin-facts-shell { background: #fbf6ed; }
+  .culin-facts {
+    width: min(1120px, calc(100% - 2rem));
+    margin: auto;
+    transform: translateY(-2rem);
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    overflow: hidden;
+    border: 1px solid rgba(16,24,32,.08);
+    border-radius: 1.4rem;
+    background: #fff;
+    box-shadow: 0 18px 50px rgba(20,15,8,.12);
+  }
+  .culin-fact {
+    padding: 1.25rem 1.2rem;
+    border-right: 1px solid rgba(16,24,32,.08);
+  }
+  .culin-fact:last-child { border-right: 0; }
+  .culin-fact span {
+    display: block;
+    color: #777064;
+    font-size: .65rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+  .culin-fact strong, .culin-fact a {
+    display: block;
+    margin-top: .4rem;
+    color: #101820;
+    font-size: .91rem;
+    line-height: 1.38;
+    text-decoration: none;
+  }
+  .culin-main {
+    background: #fbf6ed;
+    color: #101820;
+    padding: clamp(2rem, 4vw, 4rem) 0 clamp(5rem, 8vw, 8rem);
+  }
+  .culin-layout {
+    width: min(1180px, calc(100% - 2rem));
+    margin: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+  .culin-story > h2, .sidebar-card h2, .section-heading h2, .culin-final-inner h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    letter-spacing: -.05em;
+  }
+  .culin-story > h2 {
+    margin: .5rem 0 1.2rem;
+    font-size: clamp(2.4rem, 4.5vw, 4.2rem);
+    line-height: .96;
+  }
+  .story-lead {
+    margin: 0 0 2.2rem;
+    color: #3f4549;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.15rem, 2vw, 1.4rem);
+    line-height: 1.55;
+  }
+  .culin-prose {
+    color: #333b40;
+    font-size: 1.04rem;
+    line-height: 1.82;
+  }
+  .culin-prose :global(h2), .culin-prose :global(h3) {
+    margin: 2.8rem 0 .85rem;
+    color: #101820;
+    font-family: Georgia, "Times New Roman", serif;
+    letter-spacing: -.035em;
+  }
+  .culin-prose :global(p) { margin: 0 0 1.35rem; }
+  .culin-prose :global(a) { color: #a4650d; }
+  .culin-sidebar { position: sticky; top: 6rem; }
+  .sidebar-card {
+    border: 1px solid rgba(16,24,32,.09);
+    border-radius: 1.5rem;
+    background: #fff;
+    padding: clamp(1.4rem, 2.4vw, 2rem);
+    box-shadow: 0 18px 46px rgba(20,15,8,.09);
+  }
+  .sidebar-card h2 {
+    margin: .5rem 0 .9rem;
+    font-size: clamp(1.7rem, 2.4vw, 2.2rem);
+    line-height: 1;
+  }
+  .sidebar-card > p:not(.section-kicker) { color: #596168; line-height: 1.68; }
+  .sidebar-details { display: grid; gap: .85rem; margin: 1.5rem 0; }
+  .sidebar-details div {
+    padding-top: .8rem;
+    border-top: 1px solid rgba(16,24,32,.08);
+  }
+  .sidebar-details span {
+    display: block;
+    color: #777064;
+    font-size: .65rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .11em;
+  }
+  .sidebar-details strong, .sidebar-details a {
+    display: block;
+    margin-top: .25rem;
+    font-size: .92rem;
+    color: inherit;
+    text-decoration: none;
+  }
+  .sidebar-primary, .sidebar-secondary {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    padding: .9rem 1rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: .84rem;
+    font-weight: 900;
+  }
+  .sidebar-primary { background: #d6a33e; color: #101820; }
+  .sidebar-secondary {
+    margin-top: .65rem;
+    border: 1px solid rgba(16,24,32,.14);
+    color: #101820;
+  }
+  .culin-gallery-section {
+    padding: clamp(4rem, 7vw, 7rem) 0;
+    background: #101820;
+    color: #fff;
+  }
+  .culin-gallery-wrap {
+    width: min(1280px, calc(100% - 2rem));
+    margin: auto;
+  }
+  .section-heading { max-width: 760px; margin-bottom: 2rem; }
+  .section-heading h2 {
+    margin: .5rem 0 .8rem;
+    font-size: clamp(2.4rem, 4.5vw, 4.2rem);
+    line-height: .96;
+  }
+  .culin-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    grid-auto-rows: 240px;
+    gap: .8rem;
+  }
+  .culin-gallery-item {
+    overflow: hidden;
+    border-radius: 1rem;
+    background: #202a31;
+  }
+  .culin-gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .pairings-section {
+    padding: clamp(4rem, 7vw, 7rem) 0;
+    background: #efe1cd;
+    color: #101820;
+  }
+  .pairings-wrap {
+    width: min(1180px, calc(100% - 2rem));
+    margin: auto;
+  }
+  .pairing-columns {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 1rem;
+  }
+  .pairing-card {
+    min-height: 200px;
+    border-radius: 1.4rem;
+    padding: clamp(1.5rem, 3vw, 2.2rem);
+    background: #fff;
+  }
+  .pairing-number {
+    color: #d6a33e;
+    font-family: Georgia, serif;
+    font-size: 2.5rem;
+  }
+  .pairing-card h3 {
+    margin: .5rem 0 1.3rem;
+    font-family: Georgia, serif;
+    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+    letter-spacing: -.04em;
+  }
+  .pairing-pills { display: flex; flex-wrap: wrap; gap: .55rem; }
+  .pairing-pills span, .pairing-pills a {
+    border-radius: 999px;
+    background: #fbf6ed;
+    padding: .55rem .8rem;
+    font-size: .79rem;
+    font-weight: 800;
+    color: inherit;
+    text-decoration: none;
+  }
+  .more-culin {
+    padding: clamp(4rem, 7vw, 7rem) 0;
+    background: #fbf6ed;
+  }
+  .more-culin-wrap {
+    width: min(1280px, calc(100% - 2rem));
+    margin: auto;
+  }
+  .culin-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 1rem;
+  }
+  .culin-mini-card {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 0;
+    overflow: hidden;
+    border-radius: 1.2rem;
+    background: #fff;
+    border: 1px solid rgba(16,24,32,.08);
+    text-decoration: none;
+    color: inherit;
+  }
+  .culin-mini-card img {
+    width: 120px;
+    height: 100%;
+    min-height: 120px;
+    object-fit: cover;
+  }
+  .culin-mini-card div { padding: 1rem; }
+  .culin-mini-card p {
+    margin: 0;
+    color: #a4650d;
+    font-size: .65rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+  .culin-mini-card h3 {
+    margin: .4rem 0 0;
+    font-family: Georgia, serif;
+    font-size: 1.25rem;
+    line-height: 1.1;
+  }
+  .culin-final-cta {
+    padding: clamp(4rem, 7vw, 7rem) 0;
+    background: #0b141b;
+    color: #fff;
+  }
+  .culin-final-inner {
+    width: min(1180px, calc(100% - 2rem));
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+  }
+  .culin-final-inner h2 {
+    margin: .5rem 0 1rem;
+    font-size: clamp(2.4rem, 4.5vw, 4.2rem);
+    line-height: .95;
+  }
+  .culin-final-inner p:not(.section-kicker) {
+    color: rgba(255,255,255,.68);
+    line-height: 1.7;
+  }
+  .culin-final-inner > a {
+    flex: 0 0 auto;
+    border-radius: 999px;
+    padding: 1rem 1.5rem;
+    background: #d6a33e;
+    color: #101820;
+    text-decoration: none;
+    font-weight: 900;
+  }
+  @media (max-width: 1020px) {
+    .culin-layout { grid-template-columns: 1fr; }
+    .culin-sidebar { position: static; }
+    .culin-mini-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 760px) {
+    .culin-facts { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .culin-gallery { grid-template-columns: 1fr; grid-auto-rows: 260px; }
+    .pairing-columns { grid-template-columns: 1fr; }
+    .culin-final-inner { flex-direction: column; align-items: flex-start; }
+  }
+</style>

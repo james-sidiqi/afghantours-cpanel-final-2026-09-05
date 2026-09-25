@@ -1,0 +1,58 @@
+# AfghanTours product separation redirects (Tour / Specialist / Return)
+# Prefer specialist/return/custom targets — no chains through /tours/
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Specialist services
+RewriteRule ^tours/photography-tour/?$ /specialist-services/photography-documentary/ [R=301,L]
+RewriteRule ^tours/scientific-expeditions/?$ /specialist-services/scientific-research/ [R=301,L]
+RewriteRule ^tours/media-support/?$ /specialist-services/media-journalist/ [R=301,L]
+RewriteRule ^tours/business-investment/?$ /specialist-services/business-investment/ [R=301,L]
+RewriteRule ^tours/noshaq-expedition-support/?$ /specialist-services/noshaq-expedition-support/ [R=301,L]
+RewriteRule ^tours/ski-expeditions/?$ /specialist-services/ski-expeditions/ [R=301,L]
+
+# Return journeys
+RewriteRule ^tours/veteran-return/?$ /return-journeys/veterans-contractors-diplomats/ [R=301,L]
+
+# Custom journey
+RewriteRule ^tours/custom-expedition/?$ /custom-requests/ [R=301,L]
+</IfModule>
+
+
+# Culinary Experiences — hub-based primary URLs
+# Flat cultural / restaurant aliases → /cultural-experiences/culinary/<slug>/
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Former cultural flat culinary URL
+RewriteRule ^cultural-experiences/chashma-e-dogh/?$ /cultural-experiences/culinary/chashma-e-dogh/ [R=301,L]
+RewriteRule ^cultural-experiences/chashma-e-dough/?$ /cultural-experiences/culinary/chashma-e-dogh/ [R=301,L]
+
+# Restaurant → culinary (KEEP AS CULINARY / MERGE)
+RewriteRule ^restaurants/adam-khan-chapli-kabob/?$ /cultural-experiences/culinary/adam-khan-chapli-kabob/ [R=301,L]
+RewriteRule ^restaurants/arg-restaurant-herat/?$ /cultural-experiences/culinary/arg-restaurant-herat/ [R=301,L]
+RewriteRule ^restaurants/aziz-bakery/?$ /cultural-experiences/culinary/aziz-bakery/ [R=301,L]
+RewriteRule ^restaurants/bakery-kabul/?$ /cultural-experiences/culinary/aziz-bakery/ [R=301,L]
+RewriteRule ^restaurants/chashma-e-dough/?$ /cultural-experiences/culinary/chashma-e-dogh/ [R=301,L]
+</IfModule>
+
+# Culinary slug rename (2026-09-25 hub architecture)
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^cultural-experiences/culinary/band-e-amir-dairy-market-quroot/?$ /cultural-experiences/culinary/band-e-amir-quroot-dairy/ [R=301,L]
+</IfModule>
+
+# Hub page slug aliases → canonical 8 runtime slugs
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^hubs/faizabad/?$ /hubs/faizabad-city/ [R=301,L]
+RewriteRule ^hubs/jalalabad/?$ /hubs/jalalabad-city/ [R=301,L]
+RewriteRule ^hubs/mazar-e-sharif-city/?$ /hubs/mazar-e-sharif/ [R=301,L]
+RewriteRule ^hubs/kabul/?$ /hubs/kabul-city/ [R=301,L]
+RewriteRule ^hubs/bamyan/?$ /hubs/bamyan-city/ [R=301,L]
+RewriteRule ^hubs/ghazni/?$ /hubs/ghazni-city/ [R=301,L]
+RewriteRule ^hubs/herat/?$ /hubs/herat-city/ [R=301,L]
+RewriteRule ^hubs/kandahar/?$ /hubs/kandahar-city/ [R=301,L]
+</IfModule>

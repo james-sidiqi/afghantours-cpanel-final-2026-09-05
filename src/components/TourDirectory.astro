@@ -46,7 +46,7 @@ const durationLabel = (d:any) => {
 const priceLabel = (tour:any) => {
   const raw = String(tour.price_from || tour.price || '').trim();
 
-  if (!raw) return 'Custom quote';
+  if (!raw) return 'Price on request';
   if (raw.toLowerCase() === 'inquire') return 'Request proposal';
 
   const numeric = Number(raw.replace(/[$,\s]/g, ''));

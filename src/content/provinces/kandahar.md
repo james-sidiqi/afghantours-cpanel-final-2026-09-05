@@ -27,6 +27,6 @@ Kandahar holds deep historical and cultural significance as the cradle of modern
 
 The Kandahar: The Durrani Empire itinerary includes scheduled days in Kandahar for Durrani and Hotak heritage, city orientation, and other planned stops subject to timing and access.
 
-[Plan a Custom Expedition →](/tours/custom-expedition/)
+[Plan a Custom Expedition →](/custom-requests/)
 
 [Ask the Kabul team on WhatsApp →](https://wa.me/93780123456)

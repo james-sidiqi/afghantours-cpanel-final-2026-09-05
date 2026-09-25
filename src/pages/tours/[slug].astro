@@ -6,6 +6,7 @@ import { hotels, dishes, locations } from "../../lib/data";
 import { parseCSV } from "../../lib/csv";
 import transportRaw from "../../../data/ground_transport.csv?raw";
 import inclusionsRaw from "../../../data/tour_inclusions.csv?raw";
+import { buildTourInquiryHref, buildCustomInquiryHref } from "../../lib/inquiry";
 
 export function getStaticPaths() {
   return getTours()
@@ -45,7 +46,7 @@ function humanize(value) {
 
 
 const tourName = tour.title || tour.name || "Afghanistan Tour";
-const isCustomJourney = tour.slug === "custom-expedition";
+const isCustomJourney = false;
 const heroImage =
   tour.hero_image ||
   tour.hero_image_path ||
@@ -393,35 +394,50 @@ for (const entry of itineraryFlow) {
 
     if (!code) continue;
 
+    const tags = String(attraction.tags || "")
+      .split(/[,|#]/)
+      .map((t) => String(t || "").trim())
+      .filter(Boolean)
+      .slice(0, 6);
+
+    const practical = [];
+    if (attraction.visit_duration_hours) practical.push({ label: "Duration", value: `${attraction.visit_duration_hours} hours` });
+    if (attraction.access_difficulty) practical.push({ label: "Access", value: String(attraction.access_difficulty) });
+    const season = [attraction.season_start, attraction.season_end].filter(Boolean).join("–");
+    if (season) practical.push({ label: "Season", value: season });
+    if (attraction.seasonal_notes) practical.push({ label: "Season note", value: String(attraction.seasonal_notes) });
+    if (attraction.recommended_time_of_day) practical.push({ label: "Best time", value: String(attraction.recommended_time_of_day) });
+    if (attraction.photography_rating) practical.push({ label: "Photography", value: String(attraction.photography_rating) });
+    if (attraction.cultural_sensitivity) practical.push({ label: "Sensitivity", value: String(attraction.cultural_sensitivity) });
+    if (attraction.notes) practical.push({ label: "Notes", value: String(attraction.notes) });
+
     itineraryAttractionData[code] = {
       code,
-      name:
-        attraction.name ||
-        attraction.title ||
-        "Attraction",
-
-      slug:
-        attraction.slug ||
-        "",
-
-      image:
-        imageFor(attraction),
-
+      name: attraction.name || attraction.title || "Attraction",
+      slug: attraction.slug || "",
+      image: imageFor(attraction),
       summary:
+        attraction.desc_short ||
         attraction.summary ||
         attraction.description ||
         "An attraction included in this part of the journey.",
-
+      description:
+        attraction.desc_long ||
+        attraction.long_description ||
+        attraction.description ||
+        attraction.desc_short ||
+        attraction.summary ||
+        "An attraction included in this part of the journey.",
       location:
         attraction.location_name ||
         attraction.location ||
         attraction.city ||
         "",
-
-      province:
-        attraction.province_name ||
-        attraction.province ||
-        "",
+      province: attraction.province_name || attraction.province || "",
+      region: attraction.region || "",
+      category: attraction.category || attraction.primary_category || "",
+      tags,
+      practical,
     };
   }
 }
@@ -490,6 +506,10 @@ const groupSize = tour.group_size_display || (
 const relatedTours = allTours
   .filter((item) => item.slug !== tour.slug)
   .filter((item) => {
+    const pc = String(item.product_class || "").toLowerCase();
+    return pc === "scheduled" || pc === "private-fixed";
+  })
+  .filter((item) => {
     const text = `${item.regions || ""} ${item.travel_style || ""} ${item.summary || ""}`.toLowerCase();
     return provinceTokens.some((province) => text.includes(String(province).toLowerCase()));
   })
@@ -499,10 +519,16 @@ const pageDescription =
   tour.summary ||
   tour.description ||
   "A guided Afghanistan journey built around realistic logistics, cultural access, and Kabul-based ground coordination.";
-const contactHref = `/contact/?tour=${encodeURIComponent(tourName)}`;
+const contactHref = buildTourInquiryHref(tour);
 ---
 
 <BaseLayout title={`${tourName} | AfghanTours`} description={pageDescription} image={heroImage}>
+  <div
+    hidden
+    data-product-class={String(tour.product_class || 'private-fixed')}
+    data-tour-code={String(tour.tour_code || tour.code || '')}
+    data-tour-slug={String(tour.slug || '')}
+  ></div>
   <article class="tour-detail">
     <div class="tour-shell tour-breadcrumbs" aria-label="Breadcrumb">
       <a href="/">Home</a><span>›</span><a href="/tours/">Tours</a><span>›</span><strong>{tourName}</strong>
@@ -525,7 +551,7 @@ const contactHref = `/contact/?tour=${encodeURIComponent(tourName)}`;
           {isCustomJourney ? (
   <a
     class="tour-button tour-button--ghost"
-    href={`/contact/?type=custom-tour&tour=${encodeURIComponent(tourName)}`}
+    href={buildCustomInquiryHref()}
   >
     Build my journey
   </a>
@@ -723,6 +749,8 @@ const contactHref = `/contact/?tour=${encodeURIComponent(tourName)}`;
                                         class="tour-highlight-link"
                                         type="button"
                                         data-attraction-popup={code}
+                                        data-day-number={entry.dayNumber}
+                                        data-day-title={day.title || day.location || ""}
                                         aria-label={`Open information about ${attractionName}`}
                                       >
                                         <span>{attractionName}</span>
@@ -803,7 +831,7 @@ const contactHref = `/contact/?tour=${encodeURIComponent(tourName)}`;
 
             <div class="tour-attraction-popup__body">
 
-              <p class="tour-kicker">
+              <p class="tour-kicker" data-attraction-kicker>
                 Today's highlight
               </p>
 
@@ -817,15 +845,27 @@ const contactHref = `/contact/?tour=${encodeURIComponent(tourName)}`;
                 data-attraction-location
               ></p>
 
+              <div class="tour-attraction-popup__tags" data-attraction-tags hidden></div>
+
               <p
                 class="tour-attraction-popup__description"
                 data-attraction-description
               ></p>
 
+              <div class="tour-attraction-popup__context" data-attraction-context hidden>
+                <p class="tour-attraction-popup__section-label">Itinerary context</p>
+                <p data-attraction-context-text></p>
+              </div>
+
+              <div class="tour-attraction-popup__practical" data-attraction-practical hidden>
+                <p class="tour-attraction-popup__section-label">Traveler notes</p>
+                <dl data-attraction-practical-list></dl>
+              </div>
+
               <div class="tour-attraction-popup__actions">
 
                 <button
-                  class="tour-button tour-button--primary"
+                  class="tour-button tour-button--ghost"
                   type="button"
                   data-attraction-close
                 >
@@ -833,11 +873,11 @@ const contactHref = `/contact/?tour=${encodeURIComponent(tourName)}`;
                 </button>
 
                 <a
-                  class="tour-button tour-button--ghost"
+                  class="tour-button tour-button--primary"
                   data-attraction-page
                   href="#"
                 >
-                  View attraction page
+                  Explore attraction
                 </a>
 
               </div>
@@ -1191,7 +1231,7 @@ const contactHref = `/contact/?tour=${encodeURIComponent(tourName)}`;
       itineraryAttractions = {};
     }
 
-    const openAttractionPopup = (code) => {
+    const openAttractionPopup = (code, dayMeta = {}) => {
       if (!attractionModal) return;
 
       const attraction = itineraryAttractions[code];
@@ -1213,19 +1253,46 @@ const contactHref = `/contact/?tour=${encodeURIComponent(tourName)}`;
       const pageLink =
         attractionModal.querySelector('[data-attraction-page]');
 
+      const kicker =
+        attractionModal.querySelector('[data-attraction-kicker]');
+
+      const tagsEl =
+        attractionModal.querySelector('[data-attraction-tags]');
+
+      const contextWrap =
+        attractionModal.querySelector('[data-attraction-context]');
+
+      const contextText =
+        attractionModal.querySelector('[data-attraction-context-text]');
+
+      const practicalWrap =
+        attractionModal.querySelector('[data-attraction-practical]');
+
+      const practicalList =
+        attractionModal.querySelector('[data-attraction-practical-list]');
+
+      const attractionName = attraction.name || 'Attraction';
+
       if (title) {
-        title.textContent = attraction.name || 'Attraction';
+        title.textContent = attractionName;
+      }
+
+      if (kicker) {
+        kicker.textContent = attraction.category
+          ? `${attraction.category}`
+          : "Today's highlight";
       }
 
       if (image) {
         image.src = attraction.image || '';
-        image.alt = attraction.name || 'Afghanistan attraction';
+        image.alt = attractionName;
       }
 
       if (location) {
         const place = [
           attraction.location,
-          attraction.province
+          attraction.province,
+          attraction.region
         ].filter(Boolean).join(' · ');
 
         location.textContent = place;
@@ -1234,15 +1301,54 @@ const contactHref = `/contact/?tour=${encodeURIComponent(tourName)}`;
 
       if (description) {
         description.textContent =
+          attraction.description ||
           attraction.summary ||
           'Part of this journey.';
       }
 
+      if (tagsEl) {
+        const tags = Array.isArray(attraction.tags) ? attraction.tags : [];
+        if (tags.length) {
+          tagsEl.innerHTML = tags
+            .map((tag) => `<span>${String(tag).replace(/[<>&]/g, '')}</span>`)
+            .join('');
+          tagsEl.hidden = false;
+        } else {
+          tagsEl.innerHTML = '';
+          tagsEl.hidden = true;
+        }
+      }
+
+      if (contextWrap && contextText) {
+        const dayBits = [];
+        if (dayMeta.dayNumber) dayBits.push(`Day ${dayMeta.dayNumber}`);
+        if (dayMeta.dayTitle) dayBits.push(dayMeta.dayTitle);
+        if (dayBits.length) {
+          contextText.textContent = `Included on ${dayBits.join(' — ')}.`;
+          contextWrap.hidden = false;
+        } else {
+          contextText.textContent = '';
+          contextWrap.hidden = true;
+        }
+      }
+
+      if (practicalWrap && practicalList) {
+        const notes = Array.isArray(attraction.practical) ? attraction.practical : [];
+        if (notes.length) {
+          practicalList.innerHTML = notes
+            .map((note) => `<div><dt>${String(note.label || '').replace(/[<>&]/g, '')}</dt><dd>${String(note.value || '').replace(/[<>&]/g, '')}</dd></div>`)
+            .join('');
+          practicalWrap.hidden = false;
+        } else {
+          practicalList.innerHTML = '';
+          practicalWrap.hidden = true;
+        }
+      }
+
       if (pageLink) {
         if (attraction.slug) {
-          pageLink.href =
-            `/attractions/${attraction.slug}/`;
-
+          pageLink.href = `/attractions/${attraction.slug}/`;
+          pageLink.textContent = `Explore ${attractionName}`;
           pageLink.hidden = false;
         } else {
           pageLink.hidden = true;
@@ -1273,7 +1379,11 @@ const contactHref = `/contact/?tour=${encodeURIComponent(tourName)}`;
     attractionTriggers.forEach((trigger) => {
       trigger.addEventListener('click', () => {
         openAttractionPopup(
-          trigger.dataset.attractionPopup || ''
+          trigger.dataset.attractionPopup || '',
+          {
+            dayNumber: trigger.dataset.dayNumber || '',
+            dayTitle: trigger.dataset.dayTitle || '',
+          }
         );
       });
     });
@@ -2055,27 +2165,106 @@ const contactHref = `/contact/?tour=${encodeURIComponent(tourName)}`;
       margin-top: 1.5rem;
     }
 
+    .tour-attraction-popup__tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+      margin-top: .85rem;
+    }
+
+    .tour-attraction-popup__tags span {
+      display: inline-flex;
+      padding: .28rem .65rem;
+      border-radius: 999px;
+      background: #f1ece2;
+      color: #3d3a34;
+      font-size: .68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    .tour-attraction-popup__section-label {
+      margin: 0 0 .45rem;
+      color: #8a6526;
+      font-size: .68rem;
+      font-weight: 900;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .tour-attraction-popup__context,
+    .tour-attraction-popup__practical {
+      margin-top: 1.1rem;
+      padding: .9rem 1rem;
+      border-radius: 14px;
+      background: #f7f3ea;
+    }
+
+    .tour-attraction-popup__context p:last-child,
+    .tour-attraction-popup__practical p:last-child {
+      margin: 0;
+      color: #555750;
+      font-size: .8rem;
+      line-height: 1.6;
+    }
+
+    .tour-attraction-popup__practical dl {
+      margin: 0;
+      display: grid;
+      gap: .45rem;
+    }
+
+    .tour-attraction-popup__practical dl > div {
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr);
+      gap: .65rem;
+      font-size: .78rem;
+    }
+
+    .tour-attraction-popup__practical dt {
+      margin: 0;
+      font-weight: 850;
+      color: #1b1b1b;
+    }
+
+    .tour-attraction-popup__practical dd {
+      margin: 0;
+      color: #555750;
+      line-height: 1.45;
+    }
+
+    .tour-attraction-popup__description {
+      max-height: none;
+    }
+
 
     @media (max-width: 700px) {
 
       .tour-attraction-popup {
-        padding: .55rem;
+        padding: 0;
+        align-items: end;
+        place-items: end center;
       }
 
       .tour-attraction-popup__panel {
         grid-template-columns: 1fr;
-
-        max-height:
-          calc(100vh - 1.1rem);
+        width: 100%;
+        max-height: min(92vh, 100%);
+        border-radius: 18px 18px 0 0;
+        overflow-y: auto;
+        overscroll-behavior: contain;
       }
 
       .tour-attraction-popup__image-wrap {
         min-height: 0;
-        height: 220px;
+        height: min(38vh, 260px);
+        position: sticky;
+        top: 0;
       }
 
       .tour-attraction-popup__body {
-        padding: 1.35rem 1.1rem 1.25rem;
+        padding: 1.35rem 1.1rem 1.6rem;
       }
 
       .tour-itinerary-flow {

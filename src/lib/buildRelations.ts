@@ -650,3 +650,60 @@ export function getPageContent(slug: string): Row | undefined {
 }
 
 export { normalizeImagePath, PLACEHOLDERS };
+
+/** Product-class helpers for Tour / Specialist / Return separation */
+export function isItineraryTour(tour: Row): boolean {
+  const pc = String(tour.product_class || '').toLowerCase();
+  if (pc === 'scheduled' || pc === 'private-fixed') return true;
+  // Fallback: genuine tours remaining in tours.csv after separation
+  return Boolean(tour.slug) && !['custom', 'specialist', 'return'].includes(pc);
+}
+
+export function getItineraryTours(): Row[] {
+  return getTours().filter(isItineraryTour);
+}
+
+export function getScheduledTours(): Row[] {
+  return getItineraryTours().filter((t) => String(t.product_class || '').toLowerCase() === 'scheduled');
+}
+
+export function getPrivateFixedTours(): Row[] {
+  return getItineraryTours().filter((t) => String(t.product_class || '').toLowerCase() !== 'scheduled');
+}
+
+export function getSpecialistServices(): Row[] {
+  return readCsv('specialist_services.csv').filter(active).map((row) => ({
+    ...row,
+    product_kind: 'specialist',
+    regions_supported_list: String(row.regions_supported || '')
+      .split(/[|;,]/)
+      .map((x) => x.trim())
+      .filter(Boolean),
+  }));
+}
+
+export function getSpecialistBySlug(slug: string): Row | undefined {
+  return getSpecialistServices().find((x) => x.slug === slug);
+}
+
+export function getReturnJourneys(): Row[] {
+  return readCsv('return_journeys.csv').filter(active).map((row) => ({
+    ...row,
+    product_kind: 'return',
+  }));
+}
+
+export function getReturnJourneyBySlug(slug: string): Row | undefined {
+  return getReturnJourneys().find((x) => x.slug === slug);
+}
+
+export function getCustomJourneys(): Row[] {
+  return readCsv('custom_journeys.csv').filter(active).map((row) => ({
+    ...row,
+    product_kind: 'custom',
+  }));
+}
+
+export function getCustomJourneyBySlug(slug: string): Row | undefined {
+  return getCustomJourneys().find((x) => x.slug === slug);
+}

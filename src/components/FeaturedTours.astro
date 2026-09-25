@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { getTours } from '../lib/buildRelations';
+import { buildTourInquiryHref } from '../lib/inquiry';
 
 interface Tour {
   slug: string;
@@ -184,7 +185,10 @@ if (!safeTours.length) {
   safeTours = tours.filter((tour: Tour) => tour?.slug);
 }
 
-safeTours = safeTours.slice(0, 10);
+safeTours = safeTours.slice(0, 10).map((tour: Tour) => ({
+  ...tour,
+  inquiryHref: buildTourInquiryHref(tour),
+}));
 ---
 
 <section id="featured-section" class="featured-tours-section" data-featured-section>
@@ -365,7 +369,7 @@ safeTours = safeTours.slice(0, 10);
     gallery.innerHTML = images.map((src) => `<img src="${src}" alt="${name}" loading="lazy" />`).join('');
 
     itinerary.href = `/tours/${tour.slug}/`;
-    contact.href = `/contact/?tour=${encodeURIComponent(tour.slug)}`;
+    contact.href = tour.inquiryHref || `/contact/?flow=private-fixed&entity_type=tour&entity_slug=${encodeURIComponent(tour.slug||'')}&entity_name=${encodeURIComponent(titleOfClient(tour))}&product_class=${encodeURIComponent(String(tour.product_class||'private-fixed'))}`;
 
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
