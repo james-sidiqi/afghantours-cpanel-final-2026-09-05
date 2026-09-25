@@ -1,6 +1,12 @@
 ---
-const { points = [] } = Astro.props;
-const mapId = `tour-map-${Math.random().toString(36).slice(2)}`;
+const { points = [], mapId: mapIdProp } = Astro.props;
+// Deterministic map id so builds stay reproducible if this component is used.
+const mapSeed = String(mapIdProp || Astro.url.pathname || 'tour')
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-+|-+$/g, '')
+  .slice(0, 56) || 'tour';
+const mapId = `tour-map-${mapSeed}`;
 ---
 
 <link

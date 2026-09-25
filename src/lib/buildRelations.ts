@@ -132,7 +132,8 @@ function readMarkdownFolder(folder: string): Row[] {
         const full = path.join(dir, file);
         const parsed = parseFrontmatter(readFileSafe(full));
         const slug = parsed.data.slug || parsed.data.tour_slug || parsed.data.attraction_slug || parsed.data.hotel_slug || parsed.data.region_slug || parsed.data.province_slug || parsed.data.hub_slug || slugify(file.replace(/\.md$/, ''));
-        return { ...parsed.data, slug, content: parsed.body, file: full };
+        // Repo-relative path only — absolute cwd paths break tracked-dist drift across machines.
+        return { ...parsed.data, slug, content: parsed.body, file: path.join(folder, file).split(path.sep).join('/') };
       });
   } catch { return []; }
 }

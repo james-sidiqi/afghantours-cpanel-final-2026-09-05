@@ -189,6 +189,35 @@ safeTours = safeTours.slice(0, 10).map((tour: Tour) => ({
   ...tour,
   inquiryHref: buildTourInquiryHref(tour),
 }));
+
+// Client script only needs a lean DTO. Spreading full tour rows embeds nested markdown
+// (including machine-absolute `file` paths) and breaks dist drift across CI vs local.
+const clientTours = safeTours.map((tour: any) => ({
+  slug: tour.slug,
+  title: tour.title,
+  name: tour.name,
+  season: tour.season,
+  duration_days: tour.duration_days,
+  travel_style: tour.travel_style,
+  style: tour.style,
+  activity_level: tour.activity_level,
+  summary: tour.summary,
+  description: tour.description,
+  hero_image: tour.hero_image,
+  hero_image_path: tour.hero_image_path,
+  image: tour.image,
+  overview_image: tour.overview_image,
+  overview_image_path: tour.overview_image_path,
+  thumbnail_image_path: tour.thumbnail_image_path,
+  gallery: Array.isArray(tour.gallery) ? tour.gallery : [],
+  hubs: Array.isArray(tour.hubs)
+    ? tour.hubs.map((h: any) => ({ name: h?.name, title: h?.title, slug: h?.slug }))
+    : [],
+  provinces: Array.isArray(tour.provinces)
+    ? tour.provinces.map((p: any) => ({ name: p?.name, title: p?.title, slug: p?.slug }))
+    : [],
+  inquiryHref: tour.inquiryHref,
+}));
 ---
 
 <section id="featured-section" class="featured-tours-section" data-featured-section>
@@ -269,7 +298,7 @@ safeTours = safeTours.slice(0, 10).map((tour: Tour) => ({
   </div>
 </section>
 
-<script define:vars={{ safeTours }}>
+<script define:vars={{ safeTours: clientTours }}>
   const panels = [...document.querySelectorAll('[data-featured-panel]')];
   const thumbs = [...document.querySelectorAll('[data-featured-select]')];
   const modal = document.querySelector('[data-featured-modal]');
