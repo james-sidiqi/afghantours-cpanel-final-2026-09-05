@@ -35,4 +35,4 @@ Qurut belongs to the road, the pastures, and the highland journey. Tasting it be
 
 ## Related Culinary Experience
 
-For the hub-based culinary stop planned from Bamyan, see [Band-e-Amir Dairy Market & Quroot](/cultural-experiences/culinary/band-e-amir-dairy-market-quroot/).
+For the hub-based culinary stop planned from Bamyan, see [Band-e-Amir Dairy Market & Quroot](/cultural-experiences/culinary/band-e-amir-quroot-dairy/).

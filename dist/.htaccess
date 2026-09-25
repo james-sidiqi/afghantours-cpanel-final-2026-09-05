@@ -37,3 +37,9 @@ RewriteRule ^restaurants/aziz-bakery/?$ /cultural-experiences/culinary/aziz-bake
 RewriteRule ^restaurants/bakery-kabul/?$ /cultural-experiences/culinary/aziz-bakery/ [R=301,L]
 RewriteRule ^restaurants/chashma-e-dough/?$ /cultural-experiences/culinary/chashma-e-dogh/ [R=301,L]
 </IfModule>
+
+# Culinary slug rename (2026-09-25 hub architecture)
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^cultural-experiences/culinary/band-e-amir-dairy-market-quroot/?$ /cultural-experiences/culinary/band-e-amir-quroot-dairy/ [R=301,L]
+</IfModule>

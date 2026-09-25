@@ -222,6 +222,8 @@ export function getCulinaryImage(item: any): string {
     item?.image_path,
     slug ? `${EXPERIENCE_ASSET_ROOTS.culinary}/${slug}/hero.webp` : null,
     slug ? `${EXPERIENCE_ASSET_ROOTS.culinary}/${slug}/thumb.webp` : null,
+    // Renamed culinary slug fallback
+    slug === 'band-e-amir-quroot-dairy' ? `${EXPERIENCE_ASSET_ROOTS.culinary}/band-e-amir-dairy-market-quroot/hero.webp` : null,
     // Legacy interim locations still present in this repo
     slug ? `/assets/images/cultural-experiences/${slug}/hero.webp` : null,
     slug ? `/assets/images/food/${slug}/hero.webp` : null,
@@ -255,5 +257,65 @@ export function getCulturalExperienceImage(item: any): string {
     slug ? `${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}/hero.webp` : null,
     slug ? `/assets/images/cultural-experiences/${slug}/hero.webp` : null,
   ], PLACEHOLDERS.attraction);
+}
+
+export function getCulturalExperienceGallery(item: any): string[] {
+  const slug = item?.slug || item?.id?.replace(/\.md$/, '');
+  const explicit = [
+    ...(Array.isArray(item?.gallery_images) ? item.gallery_images : []),
+    item?.gallery_image_1,
+    item?.gallery_image_2,
+    item?.gallery_image_3,
+  ].filter(Boolean).map((v) => normalizeImagePath(v, ''));
+
+  const discovered = slug
+    ? [
+        ...listPublicImages(`${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}`, true),
+        ...listPublicImages(`/assets/images/cultural-experiences/${slug}`, true),
+      ]
+    : [];
+
+  return [...new Set([...explicit, ...discovered].filter(Boolean))];
+}
+
+export function getActivityImage(item: any): string {
+  const slug = item?.slug || item?.activity_slug;
+  return firstExisting([
+    item?.hero_image,
+    item?.image,
+    item?.image_path,
+    slug ? `${EXPERIENCE_ASSET_ROOTS.activities}/${slug}/hero.webp` : null,
+    slug ? `${EXPERIENCE_ASSET_ROOTS.activities}/${slug}/thumb.webp` : null,
+    // Legacy / interim paths
+    slug === 'skiing' ? '/assets/images/page-assets/activities/skiing/01.webp' : null,
+    slug === 'sightseeing' ? '/assets/images/page-assets/activities/sightseeing/scenic/01.webp' : null,
+    slug === 'shopping' ? '/assets/images/page-assets/activities/sightseeing/shopping/01.webp' : null,
+    slug === 'hiking' ? '/assets/images/page-assets/website-ready/rocky-valley-hiking.webp' : null,
+    slug === 'horse-riding' ? '/assets/images/page-assets/about/travelers/horseback-cultural-experience.webp' : null,
+    slug === 'trekking' ? '/assets/images/featured-tours/trek-the-wakhan-corridor/hero.webp' : null,
+    slug === 'fishing' ? '/assets/images/page-assets/activities/other/01.webp' : null,
+    slug === 'cycling' ? '/assets/images/page-assets/website-ready/rocky-valley-hiking.webp' : null,
+    slug ? `/assets/images/activities/${slug}/hero.webp` : null,
+  ], PLACEHOLDERS.attraction);
+}
+
+export function getActivityGallery(item: any): string[] {
+  const slug = item?.slug || item?.activity_slug;
+  const explicit = [
+    ...(Array.isArray(item?.gallery_images) ? item.gallery_images : []),
+    item?.gallery_image_1,
+    item?.gallery_image_2,
+    item?.gallery_image_3,
+  ].filter(Boolean).map((v) => normalizeImagePath(v, ''));
+
+  const discovered = slug
+    ? [
+        ...listPublicImages(`${EXPERIENCE_ASSET_ROOTS.activities}/${slug}`, true),
+        ...listPublicImages(`/assets/images/activities/${slug}`, true),
+        ...listPublicImages(`/assets/images/page-assets/activities/${slug}`, true),
+      ]
+    : [];
+
+  return [...new Set([...explicit, ...discovered].filter(Boolean))];
 }
 

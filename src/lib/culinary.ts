@@ -134,8 +134,8 @@ export const FOOD_TO_CULINARY: Record<string, string[]> = {
   'kandahari-rosh': ['kandahari-rosh'],
   dogh: ['chashma-e-dogh'],
   doogh: ['chashma-e-dogh'],
-  'qurut-markets-of-bamyan': ['band-e-amir-dairy-market-quroot'],
-  qurut: ['band-e-amir-dairy-market-quroot'],
+  'qurut-markets-of-bamyan': ['band-e-amir-quroot-dairy'],
+  qurut: ['band-e-amir-quroot-dairy'],
   'kabuli-pulao': ['ghazni-palaw'],
   'kabuli-palaw': ['ghazni-palaw'],
 };

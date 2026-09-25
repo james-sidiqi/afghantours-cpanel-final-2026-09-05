@@ -12,7 +12,12 @@ import {
 
 import {
   getTours,
+  getHubBySlug,
 } from '../../lib/buildRelations';
+import {
+  getHubsForCultural,
+  accessTypeLabel,
+} from '../../lib/experiences';
 
 
 export async function getStaticPaths() {
@@ -456,6 +461,17 @@ const season =
 const contactHref =
   `/contact/?type=cultural-experience&experience=${encodeURIComponent(title)}`;
 
+const culturalHubRels = getHubsForCultural(slug);
+const culturalHubs = culturalHubRels.map((rel) => {
+  const hub = getHubBySlug(rel.hub_slug);
+  return {
+    ...rel,
+    title: hub?.title || hub?.name || String(rel.hub_slug || '').replace(/-city$/, ''),
+    href: hub?.slug ? `/hubs/${hub.slug}/` : `/hubs/${rel.hub_slug}/`,
+  };
+});
+
+
 const uniqueGalleryImages = (items = []) =>
   [...new Set(
     items
@@ -683,6 +699,28 @@ const uniqueGalleryImages = (items = []) =>
                 <strong>
                   {provinces.join(', ')}
                 </strong>
+              </div>
+            )}
+
+            {culturalHubs.length > 0 && (
+              <div>
+                <span>Travel hubs</span>
+                <strong>
+                  {culturalHubs.map((h, i) => (
+                    <>
+                      {i > 0 ? ', ' : ''}
+                      <a href={h.href}>{h.title}</a>
+                      <em style="font-style:normal;opacity:0.7;font-weight:500"> ({accessTypeLabel(h.access_type)})</em>
+                    </>
+                  ))}
+                </strong>
+              </div>
+            )}
+
+            {culturalHubs.length === 0 && (
+              <div>
+                <span>Travel hubs</span>
+                <strong>NEEDS JAMES REVIEW — hub links not locked</strong>
               </div>
             )}
 

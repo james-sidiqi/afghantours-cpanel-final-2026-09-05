@@ -1,0 +1,12 @@
+experience_slug,hub_slug,access_type,availability_note,priority,is_active
+adam-khan-chapli-kabob,jalalabad-city,in-hub,From culinary_experiences.csv hub_slug,10,1
+kunar-trout,jalalabad-city,day-trip,From culinary_experiences.csv hub_slug,10,1
+kandahari-rosh,kandahar-city,in-hub,From culinary_experiences.csv hub_slug,10,1
+chashma-e-dogh,kabul-city,near-hub,From culinary_experiences.csv hub_slug,10,1
+kabul-chainaki,kabul-city,in-hub,From culinary_experiences.csv hub_slug,10,1
+aziz-bakery,kabul-city,in-hub,From culinary_experiences.csv hub_slug,10,1
+bamyan-kabob,bamyan-city,in-hub,From culinary_experiences.csv hub_slug,10,1
+band-e-amir-quroot-dairy,bamyan-city,excursion,From culinary_experiences.csv hub_slug,10,1
+arg-restaurant-herat,herat-city,in-hub,From culinary_experiences.csv hub_slug,10,1
+ghazni-palaw,ghazni-city,in-hub,From culinary_experiences.csv hub_slug,10,1
+mansoor-kabob,mazar-e-sharif,near-hub,From culinary_experiences.csv hub_slug,10,1

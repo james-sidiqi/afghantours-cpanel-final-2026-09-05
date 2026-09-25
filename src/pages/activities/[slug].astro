@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { getActivities, getActivityBySlug, getHubsForActivity, accessTypeLabel } from '../../lib/experiences';
+import { getActivityImage, getActivityGallery } from '../../lib/images';
+import { getHubBySlug } from '../../lib/buildRelations';
+
+export async function getStaticPaths() {
+  const csv = getActivities();
+  const mdItems = await getCollection('activities');
+  const mdBySlug = new Map(mdItems.map((i) => [i.id.replace(/\.md$/, ''), i]));
+  return csv.map((row) => ({
+    params: { slug: row.slug },
+    props: { row, md: mdBySlug.get(row.slug) || null },
+  }));
+}
+
+const { row, md } = Astro.props;
+const Content = md ? (await render(md)).Content : null;
+const data = { ...row, ...(md?.data || {}) };
+const slug = row.slug;
+const title = data.title || row.name;
+const subtitle = data.subtitle || data.card_description || row.card_description || '';
+const description = data.card_description || row.card_description || `Explore ${title}, a hub-based activity in Afghanistan.`;
+const heroImage = getActivityImage({ slug, hero_image: data.hero_image, image: data.image });
+const galleryImages = getActivityGallery({ slug, gallery_images: data.gallery_images }).filter((src) => src !== heroImage).slice(0, 8);
+const hubRels = getHubsForActivity(slug);
+const hubs = hubRels.map((rel) => {
+  const hub = getHubBySlug(rel.hub_slug);
+  return {
+    ...rel,
+    title: hub?.title || hub?.name || String(rel.hub_slug).replace(/-city$/, ''),
+    href: hub?.slug ? `/hubs/${hub.slug}/` : `/hubs/${rel.hub_slug}/`,
+  };
+});
+const siblings = getActivities().filter((a) => a.slug !== slug).slice(0, 4);
+const contactHref = `/contact/?type=activity&activity=${encodeURIComponent(title)}`;
+---
+
+<BaseLayout title={`${title} | Activities | AfghanTours`} description={description} image={heroImage}>
+  <section class="act-detail-hero">
+    <div class="act-detail-wrap hero-grid">
+      <div>
+        <p class="section-kicker"><a href="/activities/">Activities</a></p>
+        <h1>{title}</h1>
+        {subtitle && <p class="lede">{subtitle}</p>}
+        <div class="meta">
+          {data.best_season && <span>Best season: {data.best_season}</span>}
+          {data.duration && <span>Duration: {data.duration}</span>}
+        </div>
+        <p class="cta-row">
+          <a class="primary" href={contactHref}>Ask about this activity</a>
+          <a class="secondary" href="/activities/">All activities</a>
+        </p>
+      </div>
+      <img class="hero-img" src={heroImage} alt={title} />
+    </div>
+  </section>
+
+  <section class="act-detail-body">
+    <div class="act-detail-wrap body-grid">
+      <article class="editorial-prose">
+        {Content ? <Content /> : <p>{description}</p>}
+      </article>
+      <aside class="sidebar">
+        <h2>Hubs</h2>
+        <p class="side-intro">Planned from these operational hubs when access allows.</p>
+        <ul>
+          {hubs.map((h) => (
+            <li>
+              <a href={h.href}>{h.title}</a>
+              <small>{accessTypeLabel(h.access_type)}</small>
+            </li>
+          ))}
+        </ul>
+        <a class="sidebar-secondary" href="/hubs/">Browse travel hubs →</a>
+      </aside>
+    </div>
+  </section>
+
+  {galleryImages.length > 0 && (
+    <section class="act-gallery">
+      <div class="act-detail-wrap">
+        <h2>Gallery</h2>
+        <div class="gal-grid">
+          {galleryImages.map((src) => <img src={src} alt="" loading="lazy" />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {siblings.length > 0 && (
+    <section class="act-siblings">
+      <div class="act-detail-wrap">
+        <h2>More activities</h2>
+        <div class="sib-grid">
+          {siblings.map((item) => (
+            <a class="sib-card" href={item.href}>
+              <img src={item.image} alt={item.name} loading="lazy" />
+              <strong>{item.name}</strong>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .act-detail-hero, .act-detail-body, .act-gallery, .act-siblings { background: #fbf6ed; color: #101820; padding: clamp(2.5rem, 5vw, 4.5rem) 0; }
+  .act-detail-wrap { width: min(1120px, calc(100% - 2rem)); margin: 0 auto; }
+  .section-kicker { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; opacity: 0.7; margin: 0 0 0.75rem; }
+  .section-kicker a { color: inherit; }
+  .hero-grid { display: grid; gap: 1.5rem; grid-template-columns: 1.1fr 0.9fr; align-items: center; }
+  @media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; } }
+  h1 { font-size: clamp(2rem, 4vw, 3rem); margin: 0 0 0.75rem; }
+  .lede { font-size: 1.1rem; line-height: 1.55; max-width: 40rem; }
+  .meta { display: flex; flex-wrap: wrap; gap: 0.75rem 1.25rem; margin: 1rem 0; opacity: 0.8; font-size: 0.95rem; }
+  .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .cta-row a { display: inline-flex; padding: 0.7rem 1rem; border-radius: 999px; text-decoration: none; font-weight: 600; }
+  .cta-row .primary { background: #101820; color: #fbf6ed; }
+  .cta-row .secondary { border: 1px solid rgba(16,24,32,0.25); color: #101820; }
+  .hero-img { width: 100%; border-radius: 18px; aspect-ratio: 4/3; object-fit: cover; }
+  .body-grid { display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 2rem; }
+  @media (max-width: 860px) { .body-grid { grid-template-columns: 1fr; } }
+  .editorial-prose :global(h2) { margin-top: 1.5rem; }
+  .editorial-prose :global(p), .editorial-prose :global(li) { line-height: 1.65; }
+  .sidebar { background: #fff; border-radius: 16px; padding: 1.25rem; box-shadow: 0 10px 30px rgba(16,24,32,0.06); height: fit-content; }
+  .sidebar h2 { margin: 0 0 0.5rem; font-size: 1.15rem; }
+  .side-intro { margin: 0 0 0.75rem; font-size: 0.9rem; opacity: 0.8; }
+  .sidebar ul { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; gap: 0.65rem; }
+  .sidebar li { display: grid; gap: 0.15rem; }
+  .sidebar a { color: inherit; font-weight: 600; }
+  .sidebar small { opacity: 0.65; }
+  .sidebar-secondary { font-size: 0.9rem; }
+  .gal-grid, .sib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.85rem; }
+  .gal-grid img, .sib-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 12px; }
+  .sib-card { text-decoration: none; color: inherit; display: grid; gap: 0.4rem; }
+</style>

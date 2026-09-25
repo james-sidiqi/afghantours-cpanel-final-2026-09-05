@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { getActivities, getHubsForActivity, accessTypeLabel, ACTIVE_HUB_SLUGS } from '../../lib/experiences';
+import { getActivityImage } from '../../lib/images';
+import { getHubBySlug } from '../../lib/buildRelations';
+
+const csv = getActivities();
+const mdItems = await getCollection('activities');
+const mdBySlug = new Map(mdItems.map((i) => [i.id.replace(/\.md$/, ''), i]));
+
+const items = csv.map((row) => {
+  const md = mdBySlug.get(row.slug);
+  const hubs = getHubsForActivity(row.slug);
+  return {
+    ...row,
+    title: md?.data?.title || row.name,
+    subtitle: md?.data?.subtitle || row.subtitle || row.card_description,
+    card_description: md?.data?.card_description || row.card_description,
+    image: getActivityImage({ slug: row.slug, hero_image: md?.data?.hero_image }),
+    hubs,
+  };
+});
+---
+
+<BaseLayout
+  title="Activities | AfghanTours"
+  description="Hub-based activities across Afghanistan — hiking, fishing, trekking, skiing, shopping, sightseeing, horse riding, and cycling planned from operational travel hubs."
+  image={items[0]?.image}
+>
+  <section class="act-hero">
+    <div class="act-wrap">
+      <p class="section-kicker">Activities</p>
+      <h1>Activities planned from Afghanistan’s travel hubs</h1>
+      <p>
+        Eight activity classes — hiking, fishing, trekking, skiing, shopping, sightseeing, horse riding, and cycling —
+        linked to operational hubs. Availability depends on season, access, and local arrangements. No invented venues or prices.
+      </p>
+      <p class="act-note">
+        Specialist expedition support (for example ski expeditions or Noshaq) stays under
+        <a href="/specialist-services/">Specialist Services</a> — not moved into this catalog.
+      </p>
+    </div>
+  </section>
+
+  <section class="act-list">
+    <div class="act-wrap">
+      <div class="act-grid">
+        {items.map((item) => (
+          <a class="act-card" href={item.href}>
+            <img src={item.image} alt={item.title} loading="lazy" />
+            <div class="act-card-copy">
+              <small>{item.hubs.length} hub{item.hubs.length === 1 ? '' : 's'}</small>
+              <h2>{item.title}</h2>
+              <p>{item.card_description || item.subtitle}</p>
+              <strong>Explore activity →</strong>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .act-hero, .act-list { background: #fbf6ed; color: #101820; padding: clamp(3rem, 6vw, 5rem) 0; }
+  .act-wrap { width: min(1120px, calc(100% - 2rem)); margin: 0 auto; }
+  .section-kicker { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; opacity: 0.7; margin: 0 0 0.75rem; }
+  .act-hero h1 { font-size: clamp(2rem, 4vw, 3rem); margin: 0 0 1rem; }
+  .act-hero p { max-width: 48rem; line-height: 1.6; }
+  .act-note { margin-top: 1rem; font-size: 0.95rem; }
+  .act-note a { text-decoration: underline; }
+  .act-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
+  .act-card { display: flex; flex-direction: column; background: #fff; border-radius: 16px; overflow: hidden; color: inherit; text-decoration: none; box-shadow: 0 10px 30px rgba(16,24,32,0.06); }
+  .act-card img { aspect-ratio: 16/10; object-fit: cover; width: 100%; }
+  .act-card-copy { padding: 1.1rem 1.2rem 1.35rem; display: grid; gap: 0.45rem; }
+  .act-card-copy small { opacity: 0.65; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.7rem; }
+  .act-card-copy h2 { margin: 0; font-size: 1.25rem; }
+  .act-card-copy p { margin: 0; line-height: 1.5; font-size: 0.95rem; opacity: 0.9; }
+  .act-card-copy strong { margin-top: 0.35rem; font-size: 0.9rem; }
+</style>

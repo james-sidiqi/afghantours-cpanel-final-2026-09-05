@@ -133,7 +133,7 @@ const plan = [
     note: 'No Bamyan-specific kabob venue photos; using generic kabob interim',
   },
   {
-    slug: 'band-e-amir-dairy-market-quroot',
+    slug: 'band-e-amir-quroot-dairy',
     heroes: [
       '/assets/images/food/produce/qurut-markets-of-bamyan/bamyan-qurut.webp',
       '/assets/images/food/produce/qurut-markets-of-bamyan/qurut-bamyan.webp',

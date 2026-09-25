@@ -13,7 +13,7 @@ related_food_slugs: ["qurut-markets-of-bamyan"]
 provinces: ["Bamyan"]
 best_season: "Spring–autumn"
 duration: "15–30 minutes"
-hero_image: "/assets/images/experiences/culinary/band-e-amir-dairy-market-quroot/hero.webp"
+hero_image: "/assets/images/experiences/culinary/band-e-amir-quroot-dairy/hero.webp"
 nearby: ["Band-e-Amir", "Bamyan City", "Koh-e-Baba"]
 ---
 
