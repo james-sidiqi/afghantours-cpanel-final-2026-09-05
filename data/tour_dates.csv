@@ -1,12 +1,4 @@
 tour_code,tour_slug,date_start,date_end,status,notes
-PHOT,photography-tour,Inquire,Inquire,on_request,Photographers and specialized media groups
-SCIE,scientific-expeditions,Inquire,Inquire,on_request,Research teams and scientific field studies
-NOSHAQ,noshaq-expeditions,Inquire,Inquire,on_request,Custom mountaineering and climbing dates
-MEDIA,media-support,Inquire,Inquire,on_request,Logistics and support for media production
-SKI,ski-expeditions,Inquire,Inquire,on_request,Custom back-country skiing dates
-BIZ,business-investment,Inquire,Inquire,on_request,Corporate and business delegation dates
-VET,veteran-return,Inquire,Inquire,on_request,Tailored itineraries for returning veterans
-CTME,custom-expedition,Inquire,Inquire,on_request,Custom bespoke itineraries on request
 TTWC,trek-the-wakhan-corridor,2026-07-01,2026-07-14,open,Summer high-altitude window
 TGHT,timurid-grandeur-herat-tour,2026-08-06,2026-08-12,open,Herat focus regional loop
 TGHT-EXT,timurid-grandeur-herat-tour-add-minaret-e-jam,2026-08-06,2026-08-17,limited,Optional post-tour extension from Herat to Minaret-e-Jam

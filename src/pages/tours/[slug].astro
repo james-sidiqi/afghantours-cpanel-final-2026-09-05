@@ -45,7 +45,7 @@ function humanize(value) {
 
 
 const tourName = tour.title || tour.name || "Afghanistan Tour";
-const isCustomJourney = tour.slug === "custom-expedition";
+const isCustomJourney = false;
 const heroImage =
   tour.hero_image ||
   tour.hero_image_path ||
@@ -489,6 +489,10 @@ const groupSize = tour.group_size_display || (
 
 const relatedTours = allTours
   .filter((item) => item.slug !== tour.slug)
+  .filter((item) => {
+    const pc = String(item.product_class || "").toLowerCase();
+    return pc === "scheduled" || pc === "private-fixed";
+  })
   .filter((item) => {
     const text = `${item.regions || ""} ${item.travel_style || ""} ${item.summary || ""}`.toLowerCase();
     return provinceTokens.some((province) => text.includes(String(province).toLowerCase()));

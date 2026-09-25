@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getReturnJourneys, getReturnJourneyBySlug } from '../../lib/buildRelations';
+
+export function getStaticPaths() {
+  return getReturnJourneys().map((journey) => ({
+    params: { slug: journey.slug },
+    props: { journey },
+  }));
+}
+
+const journey = Astro.props.journey || (Astro.params.slug ? getReturnJourneyBySlug(Astro.params.slug) : undefined);
+if (!journey) return Astro.redirect('/return-journeys/');
+
+const inquiryHref = `/contact/?type=return&journey=${encodeURIComponent(journey.slug)}&interest=${encodeURIComponent(journey.name)}`;
+const hero = journey.hero_image_path || journey.image_path || '/assets/images/placeholders/default-hero.webp';
+---
+<BaseLayout
+  title={`${journey.name} | Return Journeys | AfghanTours`}
+  description={journey.summary}
+  image={hero}
+>
+  <article class="rj">
+    <header class="rj-hero" style={`--rj-hero:url('${hero}')`}>
+      <div class="rj-wrap">
+        <p class="kicker">Return journey · inquiry-led</p>
+        <h1>{journey.name}</h1>
+        <p class="summary">{journey.summary}</p>
+        <a class="btn-primary" href={inquiryHref}>{journey.cta_label || 'Request a Return Journey'}</a>
+      </div>
+    </header>
+
+    <section class="rj-wrap rj-body">
+      <div class="notice">
+        <p class="notice-label">Not a tour package</p>
+        <p>
+          Return journeys have no fixed Day&nbsp;1–N itinerary, no published catalog duration, no fake
+          departure calendar, and no “From $X” package price. We scope a quotation after hearing your goals.
+        </p>
+      </div>
+
+      <h2>Who this is for</h2>
+      <p>{journey.audience}</p>
+      <p>{journey.description}</p>
+
+      {journey.examples_of_support && (
+        <div class="block">
+          <h2>What we can arrange</h2>
+          <p>{journey.examples_of_support}</p>
+        </div>
+      )}
+
+      {journey.possible_regions && (
+        <div class="block">
+          <h2>Locations</h2>
+          <p>{journey.possible_regions}</p>
+        </div>
+      )}
+
+      {journey.planning_notes && (
+        <div class="block">
+          <h2>Planning process</h2>
+          <p>{journey.planning_notes}</p>
+        </div>
+      )}
+
+      <div class="grid">
+        {journey.accommodation_note && <div class="tile"><h3>Accommodation</h3><p>{journey.accommodation_note}</p></div>}
+        {journey.transport_note && <div class="tile"><h3>Transport</h3><p>{journey.transport_note}</p></div>}
+        {journey.availability_note && <div class="tile"><h3>Operational considerations</h3><p>{journey.availability_note}</p></div>}
+      </div>
+
+      <div class="cta-band">
+        <h2>Request a Return Journey</h2>
+        <p>Share your goals, timing, and any privacy preferences. We reply from Kabul with what is workable.</p>
+        <a class="btn-primary" href={inquiryHref}>{journey.cta_label || 'Request a Return Journey'}</a>
+        <p class="cta-note"><a href="/specialist-services/">Specialist Services</a> · <a href="/custom-requests/">Build My Journey</a> · <a href="/tours/">Tour Packages</a></p>
+      </div>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .rj-wrap { width: min(860px, calc(100% - 2rem)); margin: 0 auto; }
+  .rj-hero { background: linear-gradient(120deg, rgba(16,24,32,.9), rgba(16,24,32,.55)), var(--rj-hero) center/cover; color: #fff; padding: clamp(3.5rem, 7vw, 5.5rem) 0; }
+  .kicker { margin: 0; color: #d6a548; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 900; }
+  .rj-hero h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.2rem, 4.5vw, 3.4rem); line-height: 1.05; margin: .55rem 0 1rem; }
+  .summary { max-width: 58ch; color: rgba(255,255,255,.88); line-height: 1.7; margin-bottom: 1.4rem; }
+  .btn-primary { display: inline-block; background: #b98237; color: #fff; text-decoration: none; padding: .95rem 1.25rem; border-radius: .35rem; font-size: .78rem; font-weight: 900; text-transform: uppercase; }
+  .rj-body { padding: 2.8rem 0 4.5rem; }
+  .notice { background: #f6f7fb; border: 1px solid rgba(30,58,95,.12); border-radius: 1rem; padding: 1.1rem 1.2rem; margin-bottom: 2rem; }
+  .notice-label { margin: 0 0 .35rem; color: #b88a2a; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 900; }
+  .notice p, .rj-body p, .tile p { color: #374151; line-height: 1.7; }
+  .rj-body h2 { font-family: Georgia, "Times New Roman", serif; font-size: 1.55rem; margin: 1.8rem 0 .55rem; color: #101820; }
+  .block { margin-top: 1.2rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.8rem; }
+  .tile { border: 1px solid #e5dccf; border-radius: .85rem; padding: 1rem 1.1rem; background: #fff; }
+  .tile h3 { margin: 0 0 .45rem; font-size: 1rem; }
+  .cta-band { margin-top: 2.8rem; background: #101820; color: #fff; border-radius: 1rem; padding: 2rem 1.5rem; text-align: center; }
+  .cta-band h2 { color: #fff; margin-top: 0; }
+  .cta-band p { color: rgba(255,255,255,.82); max-width: 52ch; margin: 0 auto 1.2rem; }
+  .cta-note { font-size: .85rem !important; margin-top: 1rem !important; }
+  .cta-note a { color: #d6a548; }
+</style>

@@ -1,88 +1,71 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FeaturedTours from '../components/FeaturedTours.astro';
-import CustomTours from '../components/CustomTours.astro';
 import TourDirectory from '../components/TourDirectory.astro';
-import { getTours } from '../lib/buildRelations';
+import { getItineraryTours, getScheduledTours, getPrivateFixedTours } from '../lib/buildRelations';
 
-const tours = getTours().filter((tour) => tour.is_active !== false && tour.slug);
+const itineraryTours = getItineraryTours().filter((tour) => tour.is_active !== false && tour.slug);
+const scheduled = getScheduledTours().filter((tour) => tour.is_active !== false && tour.slug);
+const privateFixed = getPrivateFixedTours().filter((tour) => tour.is_active !== false && tour.slug);
 
-/*
- * Custom journeys are services built collaboratively with the traveler.
- * They do not have fixed itineraries and therefore must not appear in
- * the regular tour directory or packaged-tour featured section.
- */
-const customJourneySlugs = new Set([
-  'photography-tour',
-  'scientific-expeditions',
-  'noshaq-expedition-support',
-  'media-support',
-  'ski-expeditions',
-  'business-investment',
-  'veteran-return',
-  'custom-expedition',
-]);
-
-const packagedTours = tours.filter(
-  (tour) => !customJourneySlugs.has(String(tour.slug))
-);
-
-const featuredTours = packagedTours
+const featuredTours = itineraryTours
   .filter((tour) => String(tour.is_featured ?? '').trim() === '1')
   .slice(0, 8);
-const directoryTours = tours.filter((tour) => String(tour.tour_type || "").toLowerCase() !== "custom");
 ---
 
 <BaseLayout
   title="Tours | AfghanTours"
-  description="Browse Afghanistan tours, cultural circuits, mountaineering expeditions, and custom journeys built around real access and local knowledge."
+  description="Browse Afghanistan scheduled tours and private fixed-itinerary journeys with defined routes, durations, and planned itineraries."
   image="/assets/images/heroes/tours/hero.webp"
 >
   <FeaturedTours tours={featuredTours} />
 
-  <CustomTours />
-
   <section class="tour-list-intro">
     <div>
-      <p>All Tours</p>
-      <h1>Browse Afghanistan Routes</h1>
+      <p>Tour Packages</p>
+      <h1>Scheduled Tours &amp; Private Fixed Itineraries</h1>
       <span>
-        Use the filters below to compare our published tours with defined routes, durations,
-        seasonal timing, and planned itineraries.
+        This catalog lists genuine itinerary-based tours only. Specialist logistics, return journeys,
+        and Build My Journey planning live on their own pages — they are not mixed into this tour grid.
       </span>
     </div>
   </section>
 
-  <TourDirectory tours={packagedTours} />
-
-  <section class="custom-cta">
-    <img
-        src="/assets/images/logo/custom-search.webp"
-        alt=""
-        class="custom-search-icon"
-        loading="lazy"
-        width="96"
-        height="96"
-      />
-    <div>
-      <h2>Didn’t Find What You’re Looking For?</h2>
-      <p>
-        Not every journey fits into a predefined itinerary. Whether you are a photographer,
-        filmmaker, veteran, researcher, mountaineer, journalist, or family group, we can develop
-        a private itinerary built around your interests, schedule, and comfort level.
-      </p>
-      <div class="cta-actions">
-        <a href="/contact/?type=custom-tour">Start Custom Inquiry</a>
-        <a href="/contact/">Contact Our Team</a>
-      </div>
+  <section class="class-band" id="scheduled-tours">
+    <div class="class-wrap">
+      <p class="class-kicker">A · Scheduled Tours</p>
+      <h2>Proposed seasonal departures</h2>
+      <p class="class-copy">Itinerary + duration + scheduled or proposed dates. Prices shown as Price on request unless an operator-verified figure is published.</p>
     </div>
-    <div class="cta-tags">
-      <span>Photographers</span>
-      <span>Filmmakers</span>
-      <span>Researchers</span>
-      <span>Veterans</span>
-      <span>Diaspora Travelers</span>
-      <span>Expeditions</span>
+    <TourDirectory tours={scheduled} />
+  </section>
+
+  <section class="class-band class-band--alt" id="private-tours">
+    <div class="class-wrap">
+      <p class="class-kicker">B · Private Fixed-Itinerary Tours</p>
+      <h2>Private dates on published routes</h2>
+      <p class="class-copy">Full itineraries with duration — run on private dates rather than a public group departure calendar.</p>
+    </div>
+    <TourDirectory tours={privateFixed} />
+  </section>
+
+  <section class="outbound">
+    <div class="outbound-grid">
+      <a href="/custom-requests/" class="outbound-card">
+        <p>C · Custom Journey</p>
+        <h3>Build My Journey</h3>
+        <span>No predetermined duration, itinerary, route, or package price — we scope a quotation with you.</span>
+      </a>
+      <a href="/specialist-services/" class="outbound-card">
+        <p>D · Specialist Services</p>
+        <h3>Proposal-led logistics</h3>
+        <span>Photography, research, media, business, mountaineering support — not tour packages.</span>
+      </a>
+      <a href="/return-journeys/" class="outbound-card">
+        <p>E · Return Journeys</p>
+        <h3>Diaspora &amp; veterans</h3>
+        <span>Heritage and return visits planned around personal history — distinct from leisure tours.</span>
+      </a>
     </div>
   </section>
 </BaseLayout>
@@ -91,16 +74,14 @@ const directoryTours = tours.filter((tour) => String(tour.tour_type || "").toLow
   .tour-list-intro {
     background: #ffffff;
     color: #101820;
-    padding: clamp(4rem, 6vw, 6rem) 0 1rem;
+    padding: clamp(3.5rem, 5vw, 5rem) 0 1rem;
     border-top: 1px solid rgba(16,24,32,.08);
   }
-
   .tour-list-intro > div {
     width: min(1180px, calc(100% - 2rem));
     margin: 0 auto;
     max-width: 900px;
   }
-
   .tour-list-intro p {
     margin: 0;
     color: #b46b00;
@@ -109,118 +90,73 @@ const directoryTours = tours.filter((tour) => String(tour.tour_type || "").toLow
     text-transform: uppercase;
     font-weight: 900;
   }
-
   .tour-list-intro h1 {
     font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(3rem, 5vw, 5rem);
-    line-height: .95;
-    letter-spacing: -.06em;
+    font-size: clamp(2.6rem, 4.5vw, 4.2rem);
+    line-height: .98;
+    letter-spacing: -.05em;
     margin: .5rem 0 1rem;
   }
-
   .tour-list-intro span {
     color: #4b5563;
     line-height: 1.75;
     font-size: 1.05rem;
   }
-
-  .custom-cta {
+  .class-band { padding-top: 1.5rem; }
+  .class-band--alt { background: #f7f4ee; padding-bottom: 1rem; }
+  .class-wrap {
     width: min(1180px, calc(100% - 2rem));
-    margin: 0 auto 5rem;
+    margin: 0 auto;
+    max-width: 900px;
+    padding-top: 1.5rem;
+  }
+  .class-kicker {
+    margin: 0;
+    color: #b46b00;
+    font-size: .72rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+  .class-wrap h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    margin: .4rem 0 .6rem;
+  }
+  .class-copy { color: #4b5563; line-height: 1.65; margin: 0 0 .5rem; }
+  .outbound {
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto 4.5rem;
+  }
+  .outbound-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  .outbound-card {
     background: #f7f0e6;
     border: 1px solid #dfd0bc;
     border-radius: .75rem;
-    box-shadow: 0 12px 34px rgba(50,36,18,.08);
-    padding: 2rem;
-    display: grid;
-    grid-template-columns: 90px 1fr .95fr;
-    gap: 1.5rem;
-    align-items: center;
-  }
-
-  .cta-icon {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background: #101820;
-    color: #d6a548;
-    display: grid;
-    place-items: center;
-    font-size: 2rem;
-  }
-
-  .custom-cta h2 {
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 2.4rem;
-    line-height: 1;
-    margin: 0 0 .7rem;
-  }
-
-  .custom-cta p {
-    line-height: 1.7;
-    color: #333;
-  }
-
-  .cta-actions {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    margin-top: 1.2rem;
-  }
-
-  .cta-actions a {
-    padding: .95rem 1.25rem;
-    border-radius: .35rem;
+    padding: 1.35rem 1.25rem;
     text-decoration: none;
+    color: inherit;
+    box-shadow: 0 10px 28px rgba(50,36,18,.06);
+  }
+  .outbound-card p {
+    margin: 0;
+    color: #b46b00;
+    font-size: .68rem;
+    letter-spacing: .16em;
     text-transform: uppercase;
-    font-size: .78rem;
     font-weight: 900;
   }
-
-  .cta-actions a:first-child {
-    background: #b98237;
-    color: #fff;
+  .outbound-card h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.45rem;
+    margin: .45rem 0 .55rem;
   }
-
-  .cta-actions a:last-child {
-    border: 1px solid #101820;
-    color: #101820;
+  .outbound-card span { color: #4b5563; line-height: 1.55; display: block; font-size: .95rem; }
+  @media (max-width: 900px) {
+    .outbound-grid { grid-template-columns: 1fr; }
   }
-
-  .cta-tags {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: .8rem;
-  }
-
-  .cta-tags span {
-    border: 1px solid #e3d7c5;
-    border-radius: .45rem;
-    padding: .85rem;
-    color: #5a5146;
-    font-weight: 800;
-    font-size: .88rem;
-  }
-
-  @media(max-width:850px) {
-    .custom-cta { grid-template-columns: 1fr; }
-    .cta-tags { grid-template-columns: 1fr 1fr; }
-  }
-
-  @media(max-width:520px) {
-    .cta-tags { grid-template-columns: 1fr; }
-  }
-
-  .custom-search-icon {
-    width: 96px !important;
-    height: 96px !important;
-    display: block !important;
-    flex: 0 0 96px !important;
-    object-fit: contain !important;
-    border-radius: 50% !important;
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-  }
-
 </style>

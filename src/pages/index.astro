@@ -3,9 +3,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import FeaturedTours from '../components/FeaturedTours.astro';
 import CustomTours from '../components/CustomTours.astro';
 import WhySection from '../components/WhySection.astro';
-import { getTours, getHubs, getAttractions, getHotels, getFoodItems } from '../lib/buildRelations';
+import { getItineraryTours, getHubs, getAttractions, getHotels, getFoodItems } from '../lib/buildRelations';
 
-const tours = getTours().filter((tour) => tour.is_active !== false && tour.slug);
+const tours = getItineraryTours().filter((tour) => tour.is_active !== false && tour.slug);
 const hubs = getHubs();
 const attractions = getAttractions();
 const hotels = getHotels();
@@ -56,7 +56,7 @@ import AboutTravelerGallery from '../components/AboutTravelerGallery.astro';
 
       <div class="hero-actions">
         <a href="/tours/">Explore Expeditions</a>
-        <a href="/tours/custom-expedition/">Plan a Custom Trip</a>
+        <a href="/custom-requests/">Plan a Custom Trip</a>
       </div>
     </div>
   </section>
