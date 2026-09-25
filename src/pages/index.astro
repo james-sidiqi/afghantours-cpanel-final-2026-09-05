@@ -54,6 +54,11 @@ import AboutTravelerGallery from '../components/AboutTravelerGallery.astro';
 
       <p class="hero-reality">Our itineraries are built around journeys we can realistically plan and support.</p>
 
+      <p class="hero-safety">
+        Your safety is planned, not promised.
+        <a href="/safety/">How we plan routes and risk</a>
+      </p>
+
       <div class="hero-actions">
         <a href="/tours/">Explore Expeditions</a>
         <a href="/custom-requests/">Plan a Custom Trip</a>
@@ -110,6 +115,26 @@ import AboutTravelerGallery from '../components/AboutTravelerGallery.astro';
     color: rgba(255,255,255,.9);
     font-weight: 800;
     letter-spacing: .01em;
+  }
+
+  .hero-safety {
+    margin: 0.85rem 0 0;
+    max-width: 42rem;
+    color: rgba(255, 248, 236, 0.92);
+    font-size: 1.02rem;
+    line-height: 1.55;
+    font-weight: 700;
+  }
+
+  .hero-safety a {
+    color: #f0d48a;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-weight: 800;
+  }
+
+  .hero-safety a:hover {
+    color: #fff8ec;
   }
 
   .trust-line {
