@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-25 (Asia/Kabul)  
 **Repo:** `james-sidiqi/afghantours-cpanel-final-2026-09-05`  
-**Candidate `main` tip:** `e87c107` (`e87c1078116fe6513e565db23f8608d70afb0e7a`)  
+**Candidate `main` tip:** `e87c107` (`b4415cba8b8f35e1e842d05acad768d680a98ad3`)  
 **Production deploy:** **NOT performed** — awaiting James deployment review
 
 ## Verdict

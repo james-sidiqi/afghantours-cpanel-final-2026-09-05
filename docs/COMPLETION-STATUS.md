@@ -7,7 +7,7 @@ Last updated: 2026-09-25 ~22:45 Asia/Kabul — dist-drift gate green on main
 **Phase 16 — STOP before production (James deploy review only)**
 
 ## final main SHA
-`e87c1078116fe6513e565db23f8608d70afb0e7a`
+`b4415cba8b8f35e1e842d05acad768d680a98ad3`
 
 ## Phase checklist
 | Phase | Status | Notes |
