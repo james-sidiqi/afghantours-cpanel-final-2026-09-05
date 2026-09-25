@@ -7,7 +7,7 @@ Last updated: 2026-09-25 ~22:12 Asia/Kabul
 **Phase 16 — STOP before production (James deploy review only)**
 
 ## final main SHA
-`96b2943`
+`f2b0019` (RC merge `96b2943` + status finalize)
 
 ## Phase checklist
 | Phase | Status | Notes |
