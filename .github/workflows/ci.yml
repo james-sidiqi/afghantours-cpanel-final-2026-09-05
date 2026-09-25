@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install PHP CLI
+        run: sudo apt-get update && sudo apt-get install -y php-cli
+
+      - name: npm ci
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: PHP lint inquiry handler
+        run: php -l public/tour-inquiry.php
+
+      - name: Site integrity (strict)
+        run: python3 scripts/site_integrity_audit.py . --strict
+
+      - name: Content slug audit
+        run: node scripts/audit-content-slugs.mjs
+
+      - name: Image audit
+        run: |
+          node scripts/audit-images.mjs | tee /tmp/img-audit.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('/tmp/img-audit.json'))
+          print('missing_count', d.get('missing_count'))
+          raise SystemExit(0 if d.get('missing_count', 1) == 0 else 1)
+          PY
+
+      - name: Tour sales funnel audit
+        run: python3 scripts/audit-tour-sales-funnel.py
+
+      - name: Inquiry entrypoint audit (rendered HTML)
+        run: node scripts/audit-inquiry-entrypoints.mjs
+
+      - name: Dist drift check (tracked dist must match build)
+        run: |
+          if git ls-files --error-unmatch dist/index.html >/dev/null 2>&1; then
+            git add -f dist/
+            if ! git diff --cached --quiet -- dist/; then
+              echo "Tracked dist/ drifts from npm run build output:"
+              git diff --cached --stat -- dist/ | head -80
+              exit 1
+            fi
+            echo "dist/ matches build (no drift)."
+          else
+            echo "dist/ not tracked; skip drift check."
+          fi
