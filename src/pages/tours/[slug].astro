@@ -522,6 +522,12 @@ const contactHref = `/contact/?tour=${encodeURIComponent(tourName)}`;
 ---
 
 <BaseLayout title={`${tourName} | AfghanTours`} description={pageDescription} image={heroImage}>
+  <div
+    hidden
+    data-product-class={String(tour.product_class || 'private-fixed')}
+    data-tour-code={String(tour.tour_code || tour.code || '')}
+    data-tour-slug={String(tour.slug || '')}
+  ></div>
   <article class="tour-detail">
     <div class="tour-shell tour-breadcrumbs" aria-label="Breadcrumb">
       <a href="/">Home</a><span>›</span><a href="/tours/">Tours</a><span>›</span><strong>{tourName}</strong>

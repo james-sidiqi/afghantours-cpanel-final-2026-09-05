@@ -5,20 +5,26 @@
     <button class="tour-inquiry-modal__close" type="button" data-tour-inquiry-close aria-label="Close inquiry form">×</button>
 
     <div class="tour-inquiry-modal__heading">
-      <p>Tour inquiry</p>
+      <p data-inquiry-eyebrow>Tour inquiry</p>
       <h2 id="tour-inquiry-title">Plan this journey</h2>
-      <span>Tell us your dates and group details. The tour you selected is already filled in.</span>
+      <span data-inquiry-lead>Tell us your dates and group details. Context from the page you were viewing is already filled in.</span>
     </div>
 
     <form class="tour-inquiry-form" data-tour-inquiry-form action="/tour-inquiry.php" method="post">
+      <input type="hidden" name="flow" data-inquiry-flow value="private-fixed" />
+      <input type="hidden" name="entity_type" data-inquiry-entity-type value="tour" />
+      <input type="hidden" name="entity_code" data-inquiry-entity-code />
+      <input type="hidden" name="entity_slug" data-inquiry-entity-slug />
+      <input type="hidden" name="entity_name" data-inquiry-entity-name />
+      <input type="hidden" name="product_class" data-inquiry-product-class />
       <input type="hidden" name="tour_slug" data-inquiry-tour-slug />
       <input type="hidden" name="tour_url" data-inquiry-tour-url />
       <input type="hidden" name="source_url" data-inquiry-source-url />
       <input class="tour-inquiry-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
       <label class="tour-inquiry-form__full">
-        Tour
-        <input name="tour" data-inquiry-tour readonly />
+        <span data-inquiry-entity-label>Tour</span>
+        <input name="tour_name" data-inquiry-tour readonly />
       </label>
 
       <div class="tour-inquiry-form__grid">
@@ -46,7 +52,7 @@
       <div class="tour-inquiry-form__grid">
         <label>
           Preferred travel dates
-          <input name="travel_dates" data-inquiry-date placeholder="Exact dates, month, or season" />
+          <input name="preferred_dates" data-inquiry-date placeholder="Exact dates, month, or season" />
         </label>
         <label>
           Number of travelers
@@ -56,7 +62,7 @@
 
       <label class="tour-inquiry-form__full">
         What should we know?
-        <textarea name="message" rows="5" placeholder="Interests, pace, hotel preferences, mobility needs, photography, private group requirements, or anything else that will help us plan."></textarea>
+        <textarea name="notes" rows="5" placeholder="Interests, pace, hotel preferences, mobility needs, photography, private group requirements, or anything else that will help us plan."></textarea>
       </label>
 
       <div class="tour-inquiry-form__note">
@@ -66,7 +72,7 @@
       <div class="tour-inquiry-form__status" data-inquiry-status aria-live="polite"></div>
 
       <div class="tour-inquiry-form__actions">
-        <button class="tour-inquiry-submit" type="submit">Send tour inquiry</button>
+        <button class="tour-inquiry-submit" type="submit">Send inquiry</button>
         <button class="tour-inquiry-cancel" type="button" data-tour-inquiry-close>Cancel</button>
       </div>
     </form>
@@ -81,12 +87,22 @@
 
     const tourInput = form.querySelector('[data-inquiry-tour]');
     const slugInput = form.querySelector('[data-inquiry-tour-slug]');
+    const entitySlugInput = form.querySelector('[data-inquiry-entity-slug]');
+    const entityNameInput = form.querySelector('[data-inquiry-entity-name]');
+    const entityCodeInput = form.querySelector('[data-inquiry-entity-code]');
+    const entityTypeInput = form.querySelector('[data-inquiry-entity-type]');
+    const flowInput = form.querySelector('[data-inquiry-flow]');
+    const productClassInput = form.querySelector('[data-inquiry-product-class]');
     const tourUrlInput = form.querySelector('[data-inquiry-tour-url]');
     const sourceUrlInput = form.querySelector('[data-inquiry-source-url]');
     const dateInput = form.querySelector('[data-inquiry-date]');
     const travelersInput = form.querySelector('[data-inquiry-travelers]');
     const status = form.querySelector('[data-inquiry-status]');
     const submit = form.querySelector('.tour-inquiry-submit');
+    const eyebrow = modal.querySelector('[data-inquiry-eyebrow]');
+    const lead = modal.querySelector('[data-inquiry-lead]');
+    const entityLabel = modal.querySelector('[data-inquiry-entity-label]');
+    const titleEl = modal.querySelector('#tour-inquiry-title');
 
     const humanize = (value = '') => String(value)
       .replace(/^\/+|\/+$/g, '')
@@ -104,15 +120,43 @@
       return h1?.textContent?.trim() || humanize(pageTourSlug());
     };
 
-    const openModal = ({ tour, slug, date, travelers } = {}) => {
+    const pageProductClass = () => {
+      const el = document.querySelector('[data-product-class]');
+      return el?.getAttribute('data-product-class') || '';
+    };
+
+    const flowFromProductClass = (productClass) => {
+      if (productClass === 'scheduled') return 'scheduled';
+      if (productClass === 'private-fixed') return 'private-fixed';
+      return 'private-fixed';
+    };
+
+    const openModal = ({ tour, slug, date, travelers, flow, entityType, entityCode, productClass } = {}) => {
       form.reset();
-      if (tourInput) tourInput.value = tour || pageTourTitle();
-      if (slugInput) slugInput.value = slug || pageTourSlug();
+      const resolvedSlug = slug || pageTourSlug();
+      const resolvedName = tour || pageTourTitle();
+      const resolvedClass = productClass || pageProductClass();
+      const resolvedFlow = flow || flowFromProductClass(resolvedClass);
+
+      if (tourInput) tourInput.value = resolvedName;
+      if (slugInput) slugInput.value = resolvedSlug;
+      if (entitySlugInput) entitySlugInput.value = resolvedSlug;
+      if (entityNameInput) entityNameInput.value = resolvedName;
+      if (entityCodeInput) entityCodeInput.value = entityCode || '';
+      if (entityTypeInput) entityTypeInput.value = entityType || 'tour';
+      if (flowInput) flowInput.value = resolvedFlow;
+      if (productClassInput) productClassInput.value = resolvedClass;
       if (tourUrlInput) tourUrlInput.value = window.location.href.split('#')[0];
-      if (sourceUrlInput) sourceUrlInput.value = document.referrer || window.location.href;
+      if (sourceUrlInput) sourceUrlInput.value = window.location.href.split('#')[0];
       if (dateInput && date) dateInput.value = date;
       if (travelersInput && travelers) travelersInput.value = travelers;
       if (status) status.textContent = '';
+
+      if (eyebrow) eyebrow.textContent = resolvedFlow === 'scheduled' ? 'Scheduled tour inquiry' : 'Tour inquiry';
+      if (entityLabel) entityLabel.textContent = 'Tour';
+      if (titleEl) titleEl.textContent = 'Plan this journey';
+      if (lead) lead.textContent = 'Tell us your dates and group details. The tour you selected is already filled in.';
+
       modal.hidden = false;
       document.documentElement.classList.add('tour-inquiry-open');
       setTimeout(() => form.querySelector('input[name="name"]')?.focus(), 40);
@@ -142,19 +186,24 @@
       let slug = trigger.getAttribute('data-tour-slug') || '';
       let date = trigger.getAttribute('data-tour-date') || '';
       let travelers = trigger.getAttribute('data-tour-travelers') || '';
+      let productClass = trigger.getAttribute('data-product-class') || '';
+      let flow = trigger.getAttribute('data-inquiry-flow') || '';
+      let entityCode = trigger.getAttribute('data-tour-code') || '';
 
       const rawHref = trigger.getAttribute('href');
       if (rawHref) {
         try {
           const url = new URL(rawHref, window.location.href);
           tour ||= url.searchParams.get('tour') || '';
-          date ||= url.searchParams.get('date') || url.searchParams.get('preferred_month') || '';
-          travelers ||= url.searchParams.get('group_size') || '';
+          date ||= url.searchParams.get('date') || url.searchParams.get('preferred_month') || url.searchParams.get('preferred_dates') || '';
+          travelers ||= url.searchParams.get('group_size') || url.searchParams.get('travelers') || '';
+          productClass ||= url.searchParams.get('product_class') || '';
+          flow ||= url.searchParams.get('flow') || url.searchParams.get('type') || '';
         } catch (_) {}
       }
 
       event.preventDefault();
-      openModal({ tour, slug, date, travelers });
+      openModal({ tour, slug, date, travelers, flow, productClass, entityCode });
     });
 
     document.addEventListener('submit', (event) => {
@@ -167,6 +216,7 @@
           slug: pageTourSlug(),
           date: data.get('preferred_month') || '',
           travelers: data.get('group_size') || '',
+          productClass: pageProductClass(),
         });
       }
     });
@@ -183,6 +233,9 @@
         return;
       }
 
+      // Keep entity_name aligned with the visible tour field.
+      if (entityNameInput && tourInput) entityNameInput.value = tourInput.value;
+
       if (submit) {
         submit.disabled = true;
         submit.textContent = 'Sending…';
@@ -197,20 +250,17 @@
         const result = await response.json().catch(() => ({}));
         if (!response.ok || result.ok === false) throw new Error(result.message || 'Unable to send inquiry.');
 
-        if (status) status.textContent = 'Thank you. Your tour inquiry has been sent to AfghanTours.';
+        if (status) status.textContent = 'Thank you. Your inquiry has been sent to AfghanTours.';
         form.querySelectorAll('input:not([readonly]):not([type="hidden"]), textarea').forEach((el) => { el.value = ''; });
+        setTimeout(closeModal, 1600);
       } catch (error) {
-        if (status) status.textContent = error?.message || 'Unable to send the inquiry. Please try again or contact us by WhatsApp.';
+        if (status) status.textContent = error?.message || 'Unable to send inquiry. Please email info@afghantours.com.';
       } finally {
         if (submit) {
           submit.disabled = false;
-          submit.textContent = 'Send tour inquiry';
+          submit.textContent = 'Send inquiry';
         }
       }
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !modal.hidden) closeModal();
     });
   })();
 </script>
@@ -242,7 +292,7 @@
   .tour-inquiry-submit:disabled { opacity: .65; cursor: wait; }
   .tour-inquiry-cancel { border: 1px solid #cdbfae; background: transparent; color: #101820; }
   .tour-inquiry-hp { position: absolute !important; left: -9999px !important; width: 1px !important; height: 1px !important; opacity: 0 !important; }
-  @media (max-width: 640px) {
+  @media (max-width: 720px) {
     .tour-inquiry-modal { padding: .45rem; }
     .tour-inquiry-modal__panel { max-height: calc(100vh - .9rem); border-radius: 1rem; }
     .tour-inquiry-modal__heading, .tour-inquiry-form { padding-left: 1rem; padding-right: 1rem; }

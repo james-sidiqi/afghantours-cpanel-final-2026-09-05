@@ -253,29 +253,43 @@ const trustItems = [
           </div>
         </div>
 
-        <form class="inquiry-form" action="mailto:info@afghantours.com" method="post" enctype="text/plain">
+        <form class="inquiry-form" id="contactInquiryForm" action="/tour-inquiry.php" method="post">
           <p class="form-eyebrow">Start Planning</p>
-          <h2>Tell us about your trip</h2>
+          <h2 id="contactFormHeading">Tell us about your trip</h2>
+
+          <input type="hidden" name="flow" id="flowInput" value="general" />
+          <input type="hidden" name="entity_type" id="entityTypeInput" value="general" />
+          <input type="hidden" name="entity_code" id="entityCodeInput" value="" />
+          <input type="hidden" name="entity_slug" id="entitySlugInput" value="" />
+          <input type="hidden" name="entity_name" id="entityNameInput" value="" />
+          <input type="hidden" name="source_url" id="sourceUrlInput" value="" />
+          <input type="hidden" name="preferred_hub" id="preferredHubInput" value="" />
+          <input class="tour-inquiry-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
           <div class="form-grid">
             <label>Name <input name="name" autocomplete="name" required /></label>
-            <label>Email or WhatsApp <input name="contact" autocomplete="email" required /></label>
+            <label>Country <input name="country" autocomplete="country-name" /></label>
           </div>
 
           <div class="form-grid">
-            <label>Country <input name="country" autocomplete="country-name" /></label>
+            <label>Email <input type="email" name="email" id="emailInput" autocomplete="email" /></label>
+            <label>WhatsApp <input name="whatsapp" id="whatsappInput" autocomplete="tel" placeholder="Include country code" /></label>
+          </div>
+
+          <div class="form-grid">
             <label>Number of Travelers <input name="travelers" inputmode="numeric" /></label>
+            <label>Travel Dates <input name="preferred_dates" id="datesInput" placeholder="Approximate dates or season" /></label>
           </div>
 
           <label>What are you interested in? <input id="interestInput" name="interest" placeholder="Private journey, photography, media, heritage, research, or another request" /></label>
-          <label>Travel Dates <input name="travel_dates" placeholder="Approximate dates or season" /></label>
-          <label>Tell us about your goals <textarea name="message" placeholder="What would you like this journey to accomplish? Tell us where you hope to go, the people or places important to you, your interests, approximate schedule, and any special requirements."></textarea></label>
+          <label>Tell us about your goals <textarea name="notes" id="messageInput" placeholder="What would you like this journey to accomplish? Tell us where you hope to go, the people or places important to you, your interests, approximate schedule, and any special requirements."></textarea></label>
 
           <div class="response-note">
-            <strong>Typical response time:</strong> within 24 hours. WhatsApp is usually fastest for urgent planning.
+            <strong>Typical response time:</strong> within 24 hours. Provide email or WhatsApp — either is enough. Direct alternatives: <a href="mailto:info@afghantours.com">info@afghantours.com</a> · <a href="https://wa.me/93780123456" target="_blank" rel="noopener noreferrer">WhatsApp</a>.
           </div>
 
-          <button type="submit">Send Inquiry</button>
+          <div class="form-status" id="contactFormStatus" aria-live="polite"></div>
+          <button type="submit" id="contactSubmitBtn">Send Inquiry</button>
         </form>
       </section>
 
@@ -358,7 +372,7 @@ const trustItems = [
                 before the itinerary is confirmed.
               </p>
               <div class="safety-actions">
-                <a class="primary-action" href="/tours/custom-expedition/">Plan a Custom Trip</a>
+                <a class="primary-action" href="/custom-requests/">Plan a Custom Trip</a>
                 <a href="https://wa.me/93780123456" target="_blank" rel="noopener noreferrer">
                   WhatsApp the Kabul team
                 </a>
@@ -381,63 +395,192 @@ const trustItems = [
 </BaseLayout>
 
 <script>
-  const params = new URLSearchParams(window.location.search);
-  const interestInput = document.getElementById('interestInput');
-  const customInterestNames = {
-    'private-bespoke': 'Private Bespoke Journey',
-    'photography-filmmaking': 'Photographers & Filmmakers',
-    'journalists-media': 'Journalists & Media Teams',
-    'veterans-return-visitors': 'Veterans & Return Visitors',
-    'afghan-diaspora-heritage': 'Afghan Diaspora & Heritage Travel',
-    'research-specialist': 'Researchers & Specialist Travel'
-  };
+  (() => {
+    const params = new URLSearchParams(window.location.search);
+    const form = document.getElementById('contactInquiryForm');
+    if (!form) return;
 
-  const niceTitle = (value) => {
-    if (!value) return '';
-    if (customInterestNames[value]) return customInterestNames[value];
+    const interestInput = document.getElementById('interestInput');
+    const message = document.getElementById('messageInput');
+    const datesInput = document.getElementById('datesInput');
+    const flowInput = document.getElementById('flowInput');
+    const entityTypeInput = document.getElementById('entityTypeInput');
+    const entityCodeInput = document.getElementById('entityCodeInput');
+    const entitySlugInput = document.getElementById('entitySlugInput');
+    const entityNameInput = document.getElementById('entityNameInput');
+    const sourceUrlInput = document.getElementById('sourceUrlInput');
+    const preferredHubInput = document.getElementById('preferredHubInput');
+    const status = document.getElementById('contactFormStatus');
+    const submitBtn = document.getElementById('contactSubmitBtn');
+    const heading = document.getElementById('contactFormHeading');
 
-    return value
-      .replace(/[-_]+/g, ' ')
-      .replace(/\b\w/g, (c) => c.toUpperCase());
-  };
+    const customInterestNames = {
+      'private-bespoke': 'Private Bespoke Journey',
+      'photography-filmmaking': 'Photographers & Filmmakers',
+      'journalists-media': 'Journalists & Media Teams',
+      'veterans-return-visitors': 'Veterans & Return Visitors',
+      'afghan-diaspora-heritage': 'Afghan Diaspora & Heritage Travel',
+      'research-specialist': 'Researchers & Specialist Travel',
+      'build-my-journey': 'Build My Journey',
+      'custom-tour': 'Build My Journey',
+    };
 
-  const interestSources = [
-    ['activity_name', 'Activity'],
-    ['activity', 'Activity'],
-    ['interest', 'Custom Journey'],
-    ['journey', 'Interested Journey'],
-    ['tour', 'Interested Tour'],
-    ['hub', 'Interested Hub'],
-    ['attraction', 'Interested Attraction'],
-    ['hotel', 'Interested Hotel'],
-    ['food', 'Interested Food & Culture Experience'],
-    ['type', 'Inquiry Type'],
-  ];
+    const niceTitle = (value) => {
+      if (!value) return '';
+      if (customInterestNames[value]) return customInterestNames[value];
+      return String(value).replace(/[-_]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+    };
 
-  for (const [key, label] of interestSources) {
-    const value = params.get(key);
-    if (value && interestInput) {
-      interestInput.value = `${label}: ${niceTitle(value)}`;
-      break;
+    const typeRaw = (params.get('type') || params.get('flow') || '').toLowerCase();
+    const typeMap = {
+      'specialist': 'specialist',
+      'return': 'return',
+      'activity': 'activity',
+      'custom': 'custom',
+      'custom-tour': 'custom',
+      'custom_tour': 'custom',
+      'scheduled': 'scheduled',
+      'private-fixed': 'private-fixed',
+      'private': 'private-fixed',
+      'tour': 'private-fixed',
+      'general': 'general',
+    };
+    let flow = typeMap[typeRaw] || 'general';
+
+    // Entity context BEFORE generic interest — specialist/return/activity must not be
+    // silently labeled as "Custom Journey" when `interest=` is also present.
+    const serviceSlug = params.get('service') || params.get('service_slug') || '';
+    const journeySlug = params.get('journey') || params.get('journey_slug') || '';
+    const activitySlug = params.get('activity') || params.get('activity_slug') || '';
+    const tourSlug = params.get('tour') || params.get('tour_slug') || '';
+    const activityName = params.get('activity_name') || '';
+    const interest = params.get('interest') || '';
+    const hub = params.get('hub') || '';
+    const dates = params.get('dates') || params.get('travel_dates') || params.get('preferred_dates') || '';
+
+    let entityType = 'general';
+    let entitySlug = '';
+    let entityName = '';
+    let interestLabel = '';
+
+    if (flow === 'specialist' || serviceSlug) {
+      flow = 'specialist';
+      entityType = 'specialist';
+      entitySlug = serviceSlug || interest;
+      entityName = interest || niceTitle(serviceSlug);
+      interestLabel = entityName ? `Specialist service: ${niceTitle(entityName)}` : 'Specialist service inquiry';
+    } else if (flow === 'return' || (journeySlug && typeRaw === 'return')) {
+      flow = 'return';
+      entityType = 'return';
+      entitySlug = journeySlug || interest;
+      entityName = interest || niceTitle(journeySlug);
+      interestLabel = entityName ? `Return journey: ${niceTitle(entityName)}` : 'Return journey inquiry';
+    } else if (flow === 'activity' || activitySlug || activityName) {
+      flow = 'activity';
+      entityType = 'activity';
+      entitySlug = activitySlug || interest;
+      entityName = activityName || niceTitle(activitySlug) || niceTitle(interest);
+      interestLabel = entityName ? `Activity: ${niceTitle(entityName)}` : 'Activity inquiry';
+    } else if (flow === 'custom' || typeRaw === 'custom-tour' || interest === 'build-my-journey') {
+      flow = 'custom';
+      entityType = 'custom';
+      entitySlug = 'custom-expedition';
+      entityName = 'Build My Journey';
+      interestLabel = 'Custom journey: Build My Journey';
+    } else if (tourSlug) {
+      flow = typeMap[typeRaw] || 'private-fixed';
+      entityType = 'tour';
+      entitySlug = tourSlug;
+      entityName = niceTitle(tourSlug);
+      interestLabel = `Tour: ${entityName}`;
+    } else if (journeySlug && typeRaw !== 'return') {
+      // CustomJourneys cards use ?journey=Label without type — treat as custom/general planning interest
+      flow = flow === 'general' ? 'custom' : flow;
+      entityType = 'custom';
+      entitySlug = '';
+      entityName = niceTitle(journeySlug);
+      interestLabel = `Interested journey: ${entityName}`;
+    } else if (hub) {
+      flow = 'general';
+      entityType = 'hub';
+      entitySlug = hub;
+      entityName = niceTitle(hub);
+      interestLabel = `Interested hub: ${entityName}`;
+    } else if (interest) {
+      interestLabel = `Interest: ${niceTitle(interest)}`;
+      entityName = niceTitle(interest);
     }
-  }
 
-  // Optional hub / dates fields when present (activity inquiry wiring)
-  const message = document.querySelector('textarea[name="message"]');
-  const hub = params.get('hub');
-  const dates = params.get('dates') || params.get('travel_dates');
-  const journey = params.get('journey');
-  const extras = [];
-  if (hub) extras.push(`Preferred hub: ${niceTitle(hub)}`);
-  if (dates) extras.push(`Preferred dates: ${dates}`);
-  if (journey === 'add-activity') extras.push('Request: add this activity to my journey planning.');
-  if (message && extras.length) {
-    const existing = message.value ? `${message.value}\n\n` : '';
-    message.value = `${existing}${extras.join('\n')}`;
-  }
+    if (flowInput) flowInput.value = flow;
+    if (entityTypeInput) entityTypeInput.value = entityType;
+    if (entitySlugInput) entitySlugInput.value = entitySlug;
+    if (entityNameInput) entityNameInput.value = entityName;
+    if (sourceUrlInput) sourceUrlInput.value = window.location.href.split('#')[0];
+    if (preferredHubInput && hub) preferredHubInput.value = hub;
+    if (interestInput && interestLabel) interestInput.value = interestLabel;
+    if (datesInput && dates) datesInput.value = dates;
+    if (heading) {
+      const headings = {
+        specialist: 'Request specialist support',
+        return: 'Request a return journey',
+        activity: 'Ask about this activity',
+        custom: 'Build your journey',
+        scheduled: 'Inquire about this tour',
+        'private-fixed': 'Inquire about this tour',
+      };
+      heading.textContent = headings[flow] || 'Tell us about your trip';
+    }
 
-  const datesInput = document.querySelector('input[name="travel_dates"]');
-  if (datesInput && dates) datesInput.value = dates;
+    const extras = [];
+    if (hub) extras.push(`Preferred hub: ${niceTitle(hub)}`);
+    if (dates) extras.push(`Preferred dates: ${dates}`);
+    if (params.get('journey') === 'add-activity') extras.push('Request: add this activity to my journey planning.');
+    if (message && extras.length) {
+      message.value = extras.join('\n');
+    }
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (status) status.textContent = '';
+
+      const data = new FormData(form);
+      const email = String(data.get('email') || '').trim();
+      const whatsapp = String(data.get('whatsapp') || '').trim();
+      if (!email && !whatsapp) {
+        if (status) status.textContent = 'Please enter an email address or WhatsApp number.';
+        return;
+      }
+
+      // Keep entity_name in sync with visible interest when user edits it.
+      if (entityNameInput && interestInput && interestInput.value && !entityNameInput.value) {
+        entityNameInput.value = interestInput.value;
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+      }
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' },
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || result.ok === false) throw new Error(result.message || 'Unable to send inquiry.');
+        if (status) status.textContent = 'Thank you. Your inquiry has been sent to AfghanTours.';
+        form.querySelectorAll('input:not([type="hidden"]):not(.tour-inquiry-hp), textarea').forEach((el) => { el.value = ''; });
+      } catch (error) {
+        if (status) status.textContent = error?.message || 'Unable to send inquiry. Please email info@afghantours.com.';
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Inquiry';
+        }
+      }
+    });
+  })();
 </script>
 
 <style>
