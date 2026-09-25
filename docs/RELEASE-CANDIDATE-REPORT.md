@@ -2,11 +2,12 @@
 
 **Date:** 2026-09-25 (Asia/Kabul)  
 **Repo:** `james-sidiqi/afghantours-cpanel-final-2026-09-05`  
-**Candidate `main` tip (pre-RC-merge):** `06237d4`  
 **Production deploy:** **NOT performed** — awaiting James deployment review
 
 ## Verdict
-**RELEASE CANDIDATE READY** for James cPanel deployment review.
+**RELEASE CANDIDATE READY** for James cPanel deployment review — **only after** this document’s `main` tip has **all CI green** (including Dist drift).
+
+> **Correction:** Earlier Phase-15 RC docs (through tip `57bb2d4`) were **premature**. GitHub Actions on that tip was **RED** solely because Dist drift failed (`Math.random()` attraction-popup scope IDs). Content/QA steps were already green. Fixed on branch `fix/ci-dist-drift` (deterministic scope IDs + regenerated tracked `dist/`).
 
 Engineering P0 = **0** · P1 = **0**
 
@@ -22,6 +23,12 @@ Engineering P0 = **0** · P1 = **0**
 | Inquiry entrypoints | **10/10 PASS** |
 | PHP lint | clean |
 | Sales funnel | pass criteria met |
+| Dist drift | **must be green on final `main`** (fixed: deterministic popup/map IDs) |
+
+## Dist drift root cause (gate fix)
+- **Cause:** nondeterministic `Math.random()` in `AttractionPopupGrid.astro` (`data-attraction-scope="attraction-popup-…"`), so every `npm run build` rewrote 137 tracked HTML files (attractions / destinations / hubs / regions).
+- **Also hardened:** `TourRouteMap.astro` map element id (same class of bug; not in current drift set).
+- **Fix:** pathname-derived stable IDs; regenerate `dist/` via `npm run build` only (no hand-edited HTML). Drift check left enabled.
 
 ## Merged PRs this drive
 | PR | Merge SHA | Title |
@@ -32,6 +39,8 @@ Engineering P0 = **0** · P1 = **0**
 | #6 | `65c2f18` | Canonical catalog matrix |
 | #7 | `3ba8410` | Tour image identity lock |
 | #8 | `06237d4` | SEO sitemap stubs + content verification |
+| #9 | `96b2943` | Release candidate docs (later corrected — CI was still red) |
+| dist-drift | *(this PR)* | Deterministic popup/map IDs + regenerated `dist/` |
 
 ## Brand locks confirmed
 - Header: Afghan Tours  
@@ -55,3 +64,4 @@ Follow `docs/DEPLOYMENT-CPANEL.md`. Keep tag `cpanel-backup-2026-09-24`. Upload 
 ## Explicit non-actions
 - Copiloted repo not overwritten  
 - afghantours.com / cPanel **not deployed** by this drive  
+- Catalog active states / FAQ business decisions **not** changed in the dist-drift gate fix  

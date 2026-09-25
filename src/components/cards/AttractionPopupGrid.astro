@@ -4,9 +4,16 @@ const {
   title = 'Attractions',
   intro = '',
   kicker = 'Route Highlights',
+  scopeId,
 } = Astro.props;
 
-const instanceId = `attraction-popup-${Math.random().toString(36).slice(2, 10)}`;
+// Deterministic scope id so tracked dist/ matches across CI builds (no Math.random).
+const scopeSeed = String(scopeId || Astro.url.pathname || 'page')
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-+|-+$/g, '')
+  .slice(0, 56) || 'page';
+const instanceId = `attraction-popup-${scopeSeed}`;
 
 const clean = (v) => String(v || '').trim();
 const strip = (v) => clean(v).replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim();
