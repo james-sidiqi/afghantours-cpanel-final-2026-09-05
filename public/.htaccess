@@ -56,3 +56,10 @@ RewriteRule ^hubs/ghazni/?$ /hubs/ghazni-city/ [R=301,L]
 RewriteRule ^hubs/herat/?$ /hubs/herat-city/ [R=301,L]
 RewriteRule ^hubs/kandahar/?$ /hubs/kandahar-city/ [R=301,L]
 </IfModule>
+
+# P1: phantom /regions/wakhan-northeast/ had no page (not in regions.csv).
+# Geography remains at /destinations/badakhshan/ and /attractions/wakhan-corridor/.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^regions/wakhan-northeast/?$ /destinations/badakhshan/ [R=301,L]
+</IfModule>
