@@ -346,7 +346,35 @@ export function getHotels(): Row[] {
         (r.hotel_id && r.hotel_id === hotel.hotel_id)
       )
       .map((room) => {
-        const discovered = listPublicImages(room.gallery_folder, true);
+        let discovered = listPublicImages(room.gallery_folder, true);
+
+        // When typed gallery subfolders are absent, match sibling files in the
+        // hero's rooms/ directory by room_type keywords (no unrelated borrowing).
+        if ((!discovered || discovered.length === 0) && room.hero_image) {
+          const hero = String(room.hero_image);
+          const roomsDir = hero.replace(/\/[^/]+$/, '/');
+          if (roomsDir.includes('/rooms/')) {
+            const roomType = String(room.room_type || '').toLowerCase();
+            const aliases: Record<string, string[]> = {
+              suite: ['suite'],
+              double: ['double-bedroom', 'double_bedroom', 'double-twin', 'double'],
+              two_twins: ['two-twin', 'two_twin', 'double-twin'],
+              four_twins: ['four-single', 'four_single', 'four-twin'],
+              standard: ['standard'],
+              triple_twins: ['triple'],
+              two_doubles: ['two-double', 'two_double'],
+              single_twin: ['single'],
+              quad_twins: ['quad', 'four-single', 'four_single'],
+              three_twins: ['three'],
+            };
+            const keys = aliases[roomType] || roomType.replace(/_/g, '-').split('-').filter(Boolean);
+            const siblings = listPublicImages(roomsDir, false).filter((src) => {
+              const base = String(src).split('/').pop()?.toLowerCase() || '';
+              return keys.some((k) => base.includes(k));
+            });
+            discovered = siblings;
+          }
+        }
 
         const galleryImages = unique([
           room.hero_image,
