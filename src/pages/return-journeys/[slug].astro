@@ -14,12 +14,31 @@ if (!journey) return Astro.redirect('/return-journeys/');
 
 const inquiryHref = `/contact/?type=return&journey=${encodeURIComponent(journey.slug)}&interest=${encodeURIComponent(journey.name)}`;
 const hero = journey.hero_image_path || journey.image_path || '/assets/images/placeholders/default-hero.webp';
-const diasporaGallery = journey.slug === 'diaspora' ? [
-  { src: '/assets/images/return-journeys/diaspora/family-trip.webp', alt: 'Afghan diaspora family trip' },
-  { src: '/assets/images/return-journeys/diaspora/family-trip-museum.webp', alt: 'Afghan diaspora family at a museum' },
-  { src: '/assets/images/return-journeys/diaspora/kid-fountain.webp', alt: 'Child beside a fountain in Afghanistan' },
-  { src: '/assets/images/return-journeys/diaspora/return-trips/return-airport.webp', alt: 'Return journey at an airport' },
-  { src: '/assets/images/return-journeys/diaspora/james-family/brothers/brothers-mountains.webp', alt: 'Brothers together in the mountains' },
+const diasporaExampleGallery = journey.slug === 'diaspora' ? [
+  {
+    src: '/assets/images/return-journeys/diaspora/james-family/father-son-airport/airport-tour.webp',
+    alt: "James's father during a visit to Kandahar Airfield",
+  },
+  {
+    src: '/assets/images/return-journeys/diaspora/james-family/father-son-airport/kaf-tower.webp',
+    alt: "James's father at the KAF tower",
+  },
+  {
+    src: '/assets/images/return-journeys/diaspora/james-family/father-son-airport/military-pic.webp',
+    alt: "Photograph of James's father in military uniform",
+  },
+  {
+    src: '/assets/images/return-journeys/diaspora/25-with-brother-c3e67f107c.webp',
+    alt: 'James with his brother at a historic site',
+  },
+  {
+    src: '/assets/images/return-journeys/diaspora/james-family/brothers/brothers.webp',
+    alt: 'James and his brother exploring a historic site together',
+  },
+  {
+    src: '/assets/images/return-journeys/diaspora/james-family/brothers/brothers-mountains.webp',
+    alt: 'James and his brother exploring snowy mountains together',
+  },
 ] : [];
 ---
 <BaseLayout
@@ -71,11 +90,21 @@ const diasporaGallery = journey.slug === 'diaspora' ? [
         </div>
       )}
 
-      {diasporaGallery.length > 0 && (
-        <section class="rj-gallery" aria-label="Diaspora return journey imagery">
-          <h2>Return journey imagery</h2>
+      {diasporaExampleGallery.length > 0 && (
+        <section class="rj-example" aria-labelledby="kandahar-example">
+          <p class="example-kicker">A personal example</p>
+          <h2 id="kandahar-example">Example return: Kandahar Airfield</h2>
+          <p>
+            James’s trip to Kandahar Airfield is a personal example of the kind of return that can matter:
+            reconnecting with a meaningful place and with family, then exploring together. It is an
+            operator/family example, not a fixed tour package.
+          </p>
+          <p>
+            Every journey is scoped after a conversation about your goals. There is no preset itinerary,
+            duration, or price attached to this example.
+          </p>
           <div class="gallery-grid">
-            {diasporaGallery.map((image) => (
+            {diasporaExampleGallery.map((image) => (
               <img src={image.src} alt={image.alt} loading="lazy" />
             ))}
           </div>
@@ -112,8 +141,11 @@ const diasporaGallery = journey.slug === 'diaspora' ? [
   .rj-body h2 { font-family: Georgia, "Times New Roman", serif; font-size: 1.55rem; margin: 1.8rem 0 .55rem; color: #101820; }
   .block { margin-top: 1.2rem; }
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 1.8rem; }
-  .rj-gallery { margin-top: 1.8rem; }
-  .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .75rem; }
+  .rj-example { margin-top: 2.4rem; padding: 1.4rem; border: 1px solid #e5dccf; border-radius: 1rem; background: #fffaf3; }
+  .example-kicker { margin: 0 0 .35rem; color: #b88a2a !important; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 900; }
+  .rj-example h2 { margin-top: 0; }
+  .rj-example p { max-width: 68ch; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .75rem; margin-top: 1.25rem; }
   .gallery-grid img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: .65rem; }
   .tile { border: 1px solid #e5dccf; border-radius: .85rem; padding: 1rem 1.1rem; background: #fff; }
   .tile h3 { margin: 0 0 .45rem; font-size: 1rem; }
