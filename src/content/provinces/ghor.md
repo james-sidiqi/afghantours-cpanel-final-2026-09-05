@@ -36,7 +36,7 @@ Villages along the Hari Rud keep their own schedule. This is a seasonal expediti
 
 If you want Jam on a spring or autumn itinerary, ask us before you lock your dates.
 
-[Plan a Custom Expedition →](/tours/custom-expedition/)
+[Plan a Custom Expedition →](/custom-requests/)
 
 [View the Minaret of Jam →](/attractions/minaret-of-jam/)
 

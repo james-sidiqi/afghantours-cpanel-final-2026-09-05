@@ -50,6 +50,6 @@ Emergency evacuation coverage is strongly recommended. Medical capability and re
 
 Travelers are expected to respect Afghan law and customs, cooperate with guides and drivers, and accept itinerary changes when conditions require them.
 
-[Plan a Custom Trip](/tours/custom-expedition/)
+[Plan a Custom Trip](/custom-requests/)
 
 [WhatsApp the Kabul team](https://wa.me/93780123456)

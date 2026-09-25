@@ -30,6 +30,6 @@ Kunduz sits on fertile plains nourished by northern rivers and has long been an 
 
 The Summer and Winter Circuits can use a route-dependent day in the Kunduz agricultural belt. Kunduz is not guaranteed on every departure; the northern day may instead use Samangan depending on access and road timing.
 
-[Plan a Custom Expedition →](/tours/custom-expedition/)
+[Plan a Custom Expedition →](/custom-requests/)
 
 [Ask the Kabul team on WhatsApp →](https://wa.me/93780123456)

@@ -27,6 +27,6 @@ Nangarhar is a key eastern province centered on Jalalabad, known for its warm cl
 
 Kabul & Surroundings includes a route-dependent eastern day toward Jalalabad and Nangarhar when access and timing are suitable. If conditions do not support the eastern route, that day remains in Kabul.
 
-[Plan a Custom Expedition →](/tours/custom-expedition/)
+[Plan a Custom Expedition →](/custom-requests/)
 
 [Ask the Kabul team on WhatsApp →](https://wa.me/93780123456)

@@ -27,6 +27,6 @@ Balkh is one of the oldest continuously inhabited regions in the world, often ca
 
 The live itineraries below include scheduled time in Mazar-e-Sharif, Ancient Balkh, or other stops within the province. Exact routing and sequence still depend on the operating plan.
 
-[Plan a Custom Expedition →](/tours/custom-expedition/)
+[Plan a Custom Expedition →](/custom-requests/)
 
 [Ask the Kabul team on WhatsApp →](https://wa.me/93780123456)

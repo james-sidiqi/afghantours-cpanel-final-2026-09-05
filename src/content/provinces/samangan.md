@@ -27,6 +27,6 @@ Samangan is home to significant Buddhist archaeological sites, including ancient
 
 Buzkashi Expedition and Treasures of the Silk Road include dedicated Samangan heritage days. The Summer and Winter Circuits can also use Samangan on a route-dependent northern day.
 
-[Plan a Custom Expedition →](/tours/custom-expedition/)
+[Plan a Custom Expedition →](/custom-requests/)
 
 [Ask the Kabul team on WhatsApp →](https://wa.me/93780123456)

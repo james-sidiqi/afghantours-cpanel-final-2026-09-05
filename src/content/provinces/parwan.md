@@ -27,6 +27,6 @@ Parwan connects Kabul with northern Afghanistan via key mountain passes. The pro
 
 Panjshir-focused journeys use Parwan as more than a transit corridor, with Jabal Saraj included in the live itinerary. We have deliberately not listed every tour that simply passes through the province on the road north or west.
 
-[Plan a Custom Expedition →](/tours/custom-expedition/)
+[Plan a Custom Expedition →](/custom-requests/)
 
 [Ask the Kabul team on WhatsApp →](https://wa.me/93780123456)

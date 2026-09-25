@@ -32,4 +32,4 @@ The itinerary can change when conditions require it.
 
 [Browse all tours](/tours/)
 
-[Design a custom journey](/tours/custom-expedition/)
+[Design a custom journey](/custom-requests/)

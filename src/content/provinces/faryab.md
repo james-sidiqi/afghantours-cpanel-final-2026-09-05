@@ -30,6 +30,6 @@ Faryab is part of Afghanistan’s northern plains and is known for its diverse c
 
 No fixed featured itinerary currently uses Faryab as a scheduled stop. We can assess it as part of a custom expedition based on route, season, access, and current operating conditions.
 
-[Plan a Custom Expedition →](/tours/custom-expedition/)
+[Plan a Custom Expedition →](/custom-requests/)
 
 [Ask the Kabul team on WhatsApp →](https://wa.me/93780123456)

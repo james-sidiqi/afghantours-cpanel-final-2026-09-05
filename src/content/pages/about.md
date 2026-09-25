@@ -58,6 +58,6 @@ Kabul, Afghanistan
 
 [View all tours](/tours/)
 
-[Plan a Custom Trip](/tours/custom-expedition/)
+[Plan a Custom Trip](/custom-requests/)
 
 [WhatsApp](https://wa.me/93780123456)
