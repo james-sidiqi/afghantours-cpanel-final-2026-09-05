@@ -1,13 +1,13 @@
 # AfghanTours cPanel — Completion Status
 
-Last updated: 2026-09-25 (Asia/Kabul) — post dist-drift gate fix (pending merge tip SHA)
+Last updated: 2026-09-25 ~22:45 Asia/Kabul — dist-drift gate green on main
 
 ## Current phase
 **Phase 15 COMPLETE — RELEASE CANDIDATE** (CI must be green on final `main`, including Dist drift)  
 **Phase 16 — STOP before production (James deploy review only)**
 
 ## final main SHA
-*(set to merge tip of `fix/ci-dist-drift` after merge + green Actions — was incorrectly claimed while Dist drift was RED on `57bb2d4`)*
+`e87c1078116fe6513e565db23f8608d70afb0e7a`
 
 ## Phase checklist
 | Phase | Status | Notes |
@@ -21,7 +21,7 @@ Last updated: 2026-09-25 (Asia/Kabul) — post dist-drift gate fix (pending merg
 | 6–13 | VERIFIED | `docs/CONTENT-PHASES-6-13-VERIFICATION.md` |
 | 14 | DONE | PR #8 |
 | 15 | DONE | PR #9 · RC report corrected after dist-drift fix |
-| 15b | IN PR | Dist drift: deterministic IDs + regenerated `dist/` |
+| 15b | DONE | PR #10 · Dist drift green on main |
 | 16 Production | **STOP** | Not deployed |
 
 ## Metrics

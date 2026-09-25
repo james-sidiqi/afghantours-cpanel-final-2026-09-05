@@ -2,6 +2,7 @@
 
 **Date:** 2026-09-25 (Asia/Kabul)  
 **Repo:** `james-sidiqi/afghantours-cpanel-final-2026-09-05`  
+**Candidate `main` tip:** `e87c107` (`e87c1078116fe6513e565db23f8608d70afb0e7a`)  
 **Production deploy:** **NOT performed** — awaiting James deployment review
 
 ## Verdict
@@ -40,7 +41,7 @@ Engineering P0 = **0** · P1 = **0**
 | #7 | `3ba8410` | Tour image identity lock |
 | #8 | `06237d4` | SEO sitemap stubs + content verification |
 | #9 | `96b2943` | Release candidate docs (later corrected — CI was still red) |
-| dist-drift | *(this PR)* | Deterministic popup/map IDs + regenerated `dist/` |
+| #10 | `e87c107` | Dist drift: deterministic IDs + lean FeaturedTours payload |
 
 ## Brand locks confirmed
 - Header: Afghan Tours  
