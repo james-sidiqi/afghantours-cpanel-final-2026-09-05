@@ -4,8 +4,8 @@ subtitle: "Family ceremony, hospitality, dress, and the grand Afghan table."
 card_description: "Learn about Afghan wedding traditions, feast culture, family ceremony, and the hospitality surrounding major celebrations."
 category: "Cultural Experiences"
 experience_type: "Living Traditions"
-hero_image: "/assets/images/page-assets/people/tourists/tourists-relaxing-tea.webp"
-image: "/assets/images/page-assets/people/tourists/tourists-relaxing-tea.webp"
+hero_image: "/assets/images/experiences/cultural/afghan-weddings/hero.webp"
+image: "/assets/images/experiences/cultural/afghan-weddings/thumb.webp"
 provinces: ["Kabul", "Balkh", "Herat", "Kandahar"]
 paired_foods: ["Narenj Palaw", "Mantu", "Kabob-e-Tekka"]
 best_season: "Year round"
