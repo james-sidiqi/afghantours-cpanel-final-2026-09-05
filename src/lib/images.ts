@@ -225,7 +225,7 @@ export function getCulinaryImage(item: any): string {
     // Renamed culinary slug fallback
     slug === 'band-e-amir-quroot-dairy' ? `${EXPERIENCE_ASSET_ROOTS.culinary}/band-e-amir-dairy-market-quroot/hero.webp` : null,
     // Legacy interim locations still present in this repo
-    slug ? `/assets/images/cultural-experiences/${slug}/hero.webp` : null,
+    slug ? `/assets/images/experiences/cultural/${slug}/hero.webp` : null,
     slug ? `/assets/images/food/${slug}/hero.webp` : null,
   ], PLACEHOLDERS.food);
 }
@@ -242,7 +242,7 @@ export function getCulinaryGallery(item: any): string[] {
   const discovered = slug
     ? [
         ...listPublicImages(`${EXPERIENCE_ASSET_ROOTS.culinary}/${slug}`, true),
-        ...listPublicImages(`/assets/images/cultural-experiences/${slug}`, true),
+        ...listPublicImages(`/assets/images/experiences/cultural/${slug}`, true),
       ]
     : [];
 
@@ -255,7 +255,7 @@ export function getCulturalExperienceImage(item: any): string {
     item?.hero_image,
     item?.image,
     slug ? `${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}/hero.webp` : null,
-    slug ? `/assets/images/cultural-experiences/${slug}/hero.webp` : null,
+    slug ? `/assets/images/experiences/cultural/${slug}/hero.webp` : null,
   ], PLACEHOLDERS.attraction);
 }
 
@@ -271,7 +271,7 @@ export function getCulturalExperienceGallery(item: any): string[] {
   const discovered = slug
     ? [
         ...listPublicImages(`${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}`, true),
-        ...listPublicImages(`/assets/images/cultural-experiences/${slug}`, true),
+        ...listPublicImages(`/assets/images/experiences/cultural/${slug}`, true),
       ]
     : [];
 

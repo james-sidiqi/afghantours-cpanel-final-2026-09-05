@@ -74,7 +74,7 @@ const culturalSlugs = [
 for (const slug of culturalSlugs) {
   const destHero = `/assets/images/experiences/cultural/${slug}/hero.webp`;
   const destThumb = `/assets/images/experiences/cultural/${slug}/thumb.webp`;
-  const legacyRoot = `/assets/images/cultural-experiences/${slug}`;
+  const legacyRoot = `/assets/images/experiences/cultural/${slug}`;
   const legacyImages = listImages(legacyRoot);
   const heroCandidates = [
     `${legacyRoot}/hero.webp`,
@@ -87,12 +87,12 @@ for (const slug of culturalSlugs) {
     'afghan-weddings': ['/assets/images/page-assets/people/tourists/tourists-relaxing-tea.webp'],
     'buzkashi': ['/assets/images/featured-tours/buzkashi-expedition/hero.webp'],
     'eid-and-celebrations': ['/assets/images/food/dishes/gosh-e-fil/hero.webp'],
-    'glassblowers-of-herat': ['/assets/images/hubs/herat-city/hero.webp', '/assets/images/cultural-experiences/glassblowers-of-herat/hero.webp'],
-    'gudiparan-bazi': ['/assets/images/cultural-experiences/gudiparan-bazi/hero.webp', ...listImages('/assets/images/cultural-experiences/gudiparan-bazi')],
-    'istalif-pottery': ['/assets/images/attractions/istalif-village/hero.webp', ...listImages('/assets/images/cultural-experiences/istalif-pottery')],
-    'kaftar-bazi': ['/assets/images/cultural-experiences/kaftar-bazi/kaftar-bazi.webp'],
+    'glassblowers-of-herat': ['/assets/images/hubs/herat-city/hero.webp', '/assets/images/experiences/cultural/glassblowers-of-herat/hero.webp'],
+    'gudiparan-bazi': ['/assets/images/experiences/cultural/gudiparan-bazi/hero.webp', ...listImages('/assets/images/experiences/cultural/gudiparan-bazi')],
+    'istalif-pottery': ['/assets/images/attractions/istalif-village/hero.webp', ...listImages('/assets/images/experiences/cultural/istalif-pottery')],
+    'kaftar-bazi': ['/assets/images/experiences/cultural/kaftar-bazi/kaftar-bazi.webp'],
     'kuchi-nomads': ['/assets/images/page-assets/people/cultural-interactions/kabul-village-kids.webp'],
-    'pahlawani': ['/assets/images/cultural-experiences/pahlawani/pahlawani.webp'],
+    'pahlawani': ['/assets/images/experiences/cultural/pahlawani/pahlawani.webp'],
     'paktika-livestock-markets': ['/assets/images/attractions/paktika-highlands/hero.webp'],
   };
   copyFirstExisting([...(mdHeroFallbacks[slug] || []), ...heroCandidates], destHero);

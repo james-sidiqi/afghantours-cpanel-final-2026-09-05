@@ -35,7 +35,6 @@ Routes are planned around drive times, seasons, road conditions, access, and loc
 
 When circumstances change, the itinerary may change with them.
 
-**Your safety is planned, not promised.**
 
 ### Letter of Invitation
 

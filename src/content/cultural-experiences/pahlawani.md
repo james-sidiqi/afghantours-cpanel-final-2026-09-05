@@ -4,7 +4,7 @@ subtitle: "Traditional Afghan wrestling, neighborhood pride, and street-side foo
 card_description: "Watch the honor, strength, and community atmosphere of Afghan wrestling when local tournaments are available."
 category: "Cultural Experiences"
 experience_type: "Spectacle, Sport & Sky"
-hero_image: "/assets/images/cultural-experiences/pahlawani/pahlawani.webp"
+hero_image: "/assets/images/experiences/cultural/pahlawani/hero.webp"
 image: "/assets/images/placeholders/default-attraction.webp"
 provinces: ["Kabul", "Ghazni", "Balkh"]
 paired_foods: ["Bolani"]
@@ -13,8 +13,8 @@ duration: "1–2 hours"
 related_tours: ["weekend-in-kabul", "kabul-surroundings", "custom-tours"]
 nearby: ["Kabul Neighborhoods", "Ghazni Old City", "Mazar"]
 gallery:
-  - "/assets/images/cultural-experiences/pahlawani/pahlawani.webp"
-  - "/assets/images/cultural-experiences/pahlawani/wrestling.webp"
+  - "/assets/images/experiences/cultural/pahlawani/hero.webp"
+  - "/assets/images/experiences/cultural/pahlawani/gallery/01.webp"
 ---
 
 Every Friday in different parts of Afghanistan, open spaces can transform into informal wrestling arenas. Spectators gather around a dirt ring as powerful competitors grip, lean, sweep, and throw in the tradition of **Pahlawani**.

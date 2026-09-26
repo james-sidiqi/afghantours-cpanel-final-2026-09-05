@@ -128,7 +128,7 @@ for (const category of categoryCandidates) {
  */
 for (const candidateSlug of slugCandidates) {
   dedicatedFolderCandidates.push(
-    `/assets/images/cultural-experiences/${candidateSlug}/`
+    `/assets/images/experiences/cultural/${candidateSlug}/`
   );
 }
 
@@ -1116,6 +1116,7 @@ const contactHref = `/contact/?food=${encodeURIComponent(title)}`;
     border-radius: 1rem;
     background: #222;
     cursor: zoom-in;
+    min-width: 0;
   }
 
   .food-gallery-featured {
@@ -1128,6 +1129,7 @@ const contactHref = `/contact/?food=${encodeURIComponent(title)}`;
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
     transition: transform .45s ease;
   }
 
