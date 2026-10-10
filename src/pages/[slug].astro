@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getEntry } from 'astro:content';
 
 export function getStaticPaths() {
   return [
@@ -186,7 +187,9 @@ const policyItems = {
 };
 
 // Long-form policy clauses (owner-supplied text, 10 Oct 2026). Rendered full width below the summary cards.
-// No cancellation/refund policy page exists in the repo or on the live site, so these live on /terms/.
+// The full Cancellation, Refund & Rescheduling Policy (effective 28 Sep 2026) exists but its text has not been
+// provided to the repo yet; its route is scaffolded and gated (src/content/legal/…). Until then these clauses
+// stay on /terms/ — the SAME text is staged in the legal file, so the two can never contradict each other.
 const policyClauses = {
   terms: [
     {
@@ -215,6 +218,10 @@ const policyClauses = {
     },
   ],
 };
+
+// Link to the dedicated policy page only once the owner's full text is merged (same gate as the route).
+const cancellationPolicy = await getEntry('legal', 'cancellation-refund-rescheduling');
+const cancellationPolicyLive = cancellationPolicy?.data.policy_full_text_received === true;
 
 const aboutItems = [
   ['Licensed Kabul Operator', 'AfghanTours.com is owned and operated by James Tourist & Travel Agency, a licensed Afghanistan travel operator based in Kabul.'],
@@ -403,6 +410,14 @@ const trustItems = [
               </article>
             </section>
           ))}
+
+          {Astro.params.slug === 'terms' && cancellationPolicyLive && (
+            <section class="policy-clause" id="cancellation-policy-link">
+              <article class="content-card">
+                <p><a href="/cancellation-refund-rescheduling/">Read the full Cancellation, Refund &amp; Rescheduling Policy</a></p>
+              </article>
+            </section>
+          )}
 
           {Astro.params.slug === 'safety' && (
             <section class="safety-closing">

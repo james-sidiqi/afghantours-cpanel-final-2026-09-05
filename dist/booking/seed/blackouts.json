@@ -1,51 +1,5 @@
 {
-  "_doc": "Holiday / blackout dates. Configurable data, never hardcoded. Unconfirmed entries are estimates and must be confirmed by admin.",
+  "_doc": "Other (non-religious) blackout dates, configurable, never hardcoded. Ramadan and Eid live in religious-calendar.json (Ramadan = advisory, Eid = five-day block for standard scheduled departures).",
   "version": 1,
-  "blackouts": [
-    {
-      "id": "BO-EID-FITR-2027",
-      "name": "Eid al-Fitr 2027",
-      "start_date": "2027-03-09",
-      "end_date": "2027-03-12",
-      "tags": [
-        "eid"
-      ],
-      "applies_to": [
-        "weekend-in-kabul"
-      ],
-      "blocking": true,
-      "confirmed": false,
-      "source": "astronomical estimate — admin must confirm (Umm al-Qura: 1 Shawwal 1448 = Tue 9 Mar 2027; local sighting may shift ±1 day; range includes +1 day margin)"
-    },
-    {
-      "id": "BO-EID-ADHA-2027",
-      "name": "Eid al-Adha 2027",
-      "start_date": "2027-05-16",
-      "end_date": "2027-05-20",
-      "tags": [
-        "eid"
-      ],
-      "applies_to": [
-        "weekend-in-kabul"
-      ],
-      "blocking": true,
-      "confirmed": false,
-      "source": "astronomical estimate — admin must confirm (Umm al-Qura: 10 Dhu al-Hijjah 1448 = Sun 16 May 2027; local sighting may shift ±1 day; range includes +1 day margin)"
-    },
-    {
-      "id": "ADV-RAMADAN-2027",
-      "name": "Ramadan 2027 (advisory)",
-      "start_date": "2027-02-08",
-      "end_date": "2027-03-08",
-      "tags": [
-        "ramadan"
-      ],
-      "applies_to": [
-        "*"
-      ],
-      "blocking": false,
-      "confirmed": false,
-      "source": "astronomical estimate — advisory only, not a blackout. James to decide whether any tours should avoid Ramadan."
-    }
-  ]
+  "blackouts": []
 }

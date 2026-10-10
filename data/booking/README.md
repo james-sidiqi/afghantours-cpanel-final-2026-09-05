@@ -7,7 +7,8 @@ This folder is the **single authoritative seed** for AfghanTours tour products (
 |---|---|
 | `tours-catalog.json` | 23 products: 13 tours (categories A/B/C), 8 custom/specialist services (D), 2 inactive (Wakhan, Minaret-e-Jam). Category, duration/nights, booking type (Scheduled Departure / Private Tour / Custom Journey / Specialist Service), group rule (5+ days: 6–18; ≤4 days: min 2, no standard max), private availability, operating window, reference price + `price_status`, legacy URL → current page for D. |
 | `departures.json` | Every departure (history, published, proposed). Fields per spec Part 4. Seed counts are always 0. |
-| `blackouts.json` | Configurable blackout / advisory periods (Eid estimates are `confirmed:false`). |
+| `religious-calendar.json` | Ramadan start/end + Eid al-Fitr / Eid al-Adha dates per year, each `estimated` or `confirmed` with a source note. Ramadan = advisory only; Eid = five-day block (day before … +3) for standard scheduled departures. Admin-editable in /manage/. |
+| `blackouts.json` | Other (non-religious) blackout periods. |
 | `settings.json` | `usd_confirmed` (false → show `$`), minimum, limited-places threshold, public count/capacity switches, contact, customer wording. |
 
 ## Who is authoritative when

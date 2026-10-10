@@ -8,6 +8,7 @@ import path from 'node:path';
 import { parse } from 'csv-parse/sync';
 import {
   STORED_STATUSES, groupRuleFor, isIsoDate, inclusiveDays, expectedEnd, weekday, computeStatus, isPublic, todayIn,
+  religiousPeriods, religiousFlags, eidConflicts, eidUnresolved,
 } from '../src/lib/booking/core.mjs';
 
 const ROOT = process.cwd();
@@ -16,6 +17,7 @@ const catalog = read('data/booking/tours-catalog.json');
 const { departures } = read('data/booking/departures.json');
 const { blackouts } = read('data/booking/blackouts.json');
 const settings = read('data/booking/settings.json');
+const calendar = read('data/booking/religious-calendar.json');
 const toursCsv = parse(readFileSync(path.join(ROOT, 'data/tours.csv'), 'utf8'), { columns: true, skip_empty_lines: true, bom: true });
 
 const errors = [];
@@ -95,6 +97,19 @@ for (const b of blackouts) {
   if (b.confirmed !== true && !/admin must confirm|advisory/i.test(String(b.source || ''))) err(`${b.id}: unconfirmed blackout must say it needs admin confirmation`);
   if (b.confirmed !== true) warn(`${b.id} (${b.start_date}–${b.end_date}) is an unconfirmed estimate — admin must confirm`);
 }
+// ---------- religious calendar ----------
+const periods = religiousPeriods(calendar);
+for (const y of calendar.years || []) {
+  if (!isIsoDate(y.ramadan?.start_date) || !isIsoDate(y.ramadan?.end_date) || y.ramadan.end_date < y.ramadan.start_date) err(`religious calendar ${y.year}: bad Ramadan dates`);
+  for (const k of ['ramadan', 'eid_al_fitr', 'eid_al_adha']) {
+    if (!['estimated', 'confirmed'].includes(y[k]?.state)) err(`religious calendar ${y.year} ${k}: state must be estimated|confirmed`);
+    if (!String(y[k]?.source || '').trim()) err(`religious calendar ${y.year} ${k}: source note required`);
+    if (y[k]?.state === 'estimated') warn(`religious calendar ${y.year} ${k} is an ESTIMATE (${y[k].date || `${y[k].start_date}–${y[k].end_date}`}) — confirm in /manage/ when announced`);
+  }
+  if (!isIsoDate(y.eid_al_fitr?.date) || !isIsoDate(y.eid_al_adha?.date)) err(`religious calendar ${y.year}: Eid dates required`);
+}
+const ramadanList = [];
+const eidList = [];
 const overlaps = (d, b) => d.start_date <= b.end_date && d.end_date >= b.start_date;
 const applies = (b, slug) => (b.applies_to || []).includes('*') || (b.applies_to || []).includes(slug);
 
@@ -138,7 +153,19 @@ for (const d of departures) {
   if ((d.status === 'proposed' || d.status === 'draft') && d.published) err(`${where}: proposed/draft departure is published`);
   if (d.published && d.end_date < seedAsOf) err(`${where}: published departure ended before seed date ${seedAsOf}`);
   if (d.published && d.end_date < today) warn(`${where}: ended ${d.end_date} — shown as Completed at runtime; mark completed in admin`);
-  if (d.published && d.max_capacity === null) warn(`${where}: published without max capacity — admin must set it`);
+  if (d.published && d.departure_type === 'shared' && groupRuleFor(t.duration_days, settings).applies && d.max_capacity === null) warn(`${where}: published 5+ day departure without max capacity — admin must set it`);
+  // Prices: a production reference is NOT approval. Proposed departures cannot be published until price_approved.
+  if (d.status === 'proposed' && d.price_approved !== false) err(`${where}: proposed departure must carry price_approved: false until the owner approves the price`);
+  if (d.published && d.status !== 'proposed' && d.price_approved !== true) warn(`${where}: published (pre-existing production departure) — price not yet owner-approved (reference_from_production)`);
+  // Religious calendar (generic overlap of the FULL inclusive range; nothing hard-coded per tour).
+  const rf = religiousFlags(d, calendar);
+  if (rf.ramadan.length && d.end_date >= today) ramadanList.push(`${d.id} (${d.published ? 'published' : d.status}) ${d.start_date}–${d.end_date}`);
+  const conflicts = eidConflicts(d, calendar);
+  const open = eidUnresolved(d, calendar);
+  if (conflicts.length && d.end_date >= today) {
+    eidList.push(`${d.id} (${d.published ? 'published' : d.status}) ${d.start_date}–${d.end_date} × ${conflicts.map((b) => `${b.name} block ${b.start}–${b.end}`).join(', ')}${open.length ? ' — REVIEW REQUIRED' : ' — reviewed'}`);
+    if (open.length) warn(`${where}: EID CONFLICT — ${conflicts.map((b) => `${b.name} block ${b.start}–${b.end} (${b.state})`).join(', ')}. Not moved or deleted; publish/approve blocked and hidden from the public feed until an admin records an override + note in /manage/.`);
+  }
   if (d.status === 'proposed' && (d.start_date < '2026-11-01' || d.end_date > '2027-12-31')) err(`${where}: proposed outside Nov 2026–Dec 2027`);
   if (d.price?.amount != null && Number(d.price.amount) !== Number(t.price?.reference_amount)) err(`${where}: price ${d.price.amount} differs from the tour reference price (no invented prices)`);
   if (t.slug === 'weekend-in-kabul') {
@@ -148,6 +175,7 @@ for (const d of departures) {
     if (d.arrival_option !== opt) err(`${where}: arrival_option ${d.arrival_option} ≠ weekday-derived ${opt}`);
   }
   for (const b of blackouts) {
+    if (/eid|ramadan/i.test(`${b.id} ${(b.tags || []).join(' ')}`)) err(`${b.id}: Ramadan/Eid belong in religious-calendar.json, not blackouts.json`);
     if (!applies(b, d.tour_slug) || !overlaps(d, b)) continue;
     if (!b.blocking) { if (d.published) warn(`${where}: published departure falls in advisory period ${b.id}`); continue; }
     if (d.status === 'proposed') err(`${where}: proposed departure overlaps blackout ${b.id}`);
@@ -162,6 +190,23 @@ for (const d of departures) {
 // no departures for inactive tours
 for (const d of departures) if (['trek-the-wakhan-corridor', 'timurid-grandeur-herat-tour-add-minaret-e-jam'].includes(d.tour_slug)) err(`${d.id}: inactive tour has a departure`);
 
+// ---------- policy text consistency (/terms/ clause vs staged legal file) ----------
+{
+  const terms = readFileSync(path.join(ROOT, 'src/pages/[slug].astro'), 'utf8');
+  const legalPath = path.join(ROOT, 'src/content/legal/cancellation-refund-rescheduling.md');
+  const legal = existsSync(legalPath) ? readFileSync(legalPath, 'utf8') : '';
+  if (!legal) err('src/content/legal/cancellation-refund-rescheduling.md missing (policy route scaffold)');
+  const minSentence = 'Scheduled or shared departures lasting four days or less require a minimum of two confirmed travelers.';
+  for (const [name, txt] of [['/terms/ clause', terms], ['legal staged additions', legal]]) {
+    if (!txt.includes(minSentence)) err(`${name}: minimum-group sentence for ≤4-day departures missing or changed`);
+    if (/four days or less require a minimum of six/i.test(txt)) err(`${name}: implies the 6 minimum applies to short departures`);
+  }
+  const flag = (legal.match(/^policy_full_text_received:\s*(true|false)/m) || [])[1];
+  if (flag !== 'true' && flag !== 'false') err('legal policy file: policy_full_text_received flag missing');
+  if (flag === 'true' && /MERGE POINT — FULL POLICY TEXT FROM THE OWNER GOES HERE/.test(legal)) err('legal policy flagged as received but the merge placeholder is still there');
+  if (flag === 'false') warn('Cancellation, Refund & Rescheduling Policy: full owner text not yet merged — route gated (not built publicly)');
+}
+
 const summary = {
   tours: tours.length,
   departures: departures.length,
@@ -172,6 +217,11 @@ const summary = {
   today,
 };
 console.log('BOOKING DATA VALIDATION', JSON.stringify(summary));
+console.log('RAMADAN ADVISORY (advisory only, booking allowed):', ramadanList.length);
+for (const r of ramadanList) console.log('  RAMADAN', r);
+console.log('EID BLOCKS:', periods.eid.map((b) => `${b.name} ${b.start}–${b.end} (${b.state})`).join('; '));
+console.log('EID CONFLICTS:', eidList.length);
+for (const r of eidList) console.log('  EID', r);
 for (const w of warnings) console.log('WARN ', w);
 for (const e of errors) console.log('ERROR', e);
 console.log(`${errors.length} error(s), ${warnings.length} warning(s)`);

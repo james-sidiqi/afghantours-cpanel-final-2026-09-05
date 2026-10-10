@@ -143,7 +143,6 @@ function atb_compute_status(array $dep, string $today, array $settings = []): ar
     $min = atb_int($dep['min_group_size'] ?? null, null); // null = not set by owner → never Confirmed
     $cap = atb_int($dep['max_capacity'] ?? null, null);
     $confirmed = max(0, (int)atb_int($dep['confirmed_count'] ?? 0, 0));
-    $threshold = (int)atb_int($settings['limited_places_threshold'] ?? null, 2);
     $remaining = $cap === null ? null : max($cap - $confirmed, 0);
     $out = static fn(string $k): array => [
         'key' => $k,
@@ -161,13 +160,11 @@ function atb_compute_status(array $dep, string $today, array $settings = []): ar
     if ($stored === 'closed') return $out('closed');
     if ($start <= $today) return $out('closed');
     $cutoff = $dep['booking_cutoff'] ?? null;
-    if (is_string($cutoff) && atb_is_iso_date($cutoff) && $today > $cutoff) return $out('closed');
+    if (($settings['auto_cutoff_close'] ?? false) === true && is_string($cutoff) && atb_is_iso_date($cutoff) && $today > $cutoff) return $out('closed');
     if (($dep['departure_type'] ?? 'shared') === 'private' || $stored === 'on_request') return $out('on_request');
     if ($remaining === 0) return $out('sold_out');
-    if ($min !== null && $min > 0 && $confirmed >= $min && ($dep['operational_approval'] ?? '') === 'approved') {
-        if ($remaining !== null && $remaining <= $threshold) return $out('limited');
-        return $out('confirmed');
-    }
+    if (($dep['limited_manual'] ?? false) === true) return $out('limited'); // manual only — never automatic
+    if ($min !== null && $min > 0 && $confirmed >= $min && ($dep['operational_approval'] ?? '') === 'approved') return $out('confirmed');
     return $out('open');
 }
 
@@ -256,6 +253,8 @@ function atb_public_departure(array $dep, ?array $tour, array $settings, string 
         'price_label' => atb_price_label(is_array($dep['price'] ?? null) ? $dep['price'] : ($tour['price'] ?? null), $settings),
         'arrival_option' => $dep['arrival_option'] ?? null,
         'public_notes' => atb_str($dep['public_notes'] ?? '', 300),
+        'advisories' => array_map(static fn($p) => ['type' => 'ramadan', 'text' => ATB_RAMADAN_COMPACT, 'period' => $p['name'], 'state' => $p['state'], 'period_label' => atb_period_label($p)],
+            atb_religious_flags($dep, (array)($settings['religious_calendar'] ?? []))['ramadan']),
     ];
     $cap = atb_int($dep['max_capacity'] ?? null, null);
     if (!empty($settings['show_public_capacity']) && $cap !== null) {
@@ -268,6 +267,105 @@ function atb_public_departure(array $dep, ?array $tour, array $settings, string 
         $out['confirmed_text'] = max(0, (int)atb_int($dep['confirmed_count'] ?? 0, 0)) . ' of ' . $out['min_group_size'] . ' travelers confirmed.';
     }
     return $out;
+}
+
+/* ------------------------------------------------------- religious calendar */
+// Mirrors src/lib/booking/core.mjs. Ramadan = advisory only. Eid = five-day block for standard scheduled departures.
+
+const ATB_RAMADAN_TITLE = 'Ramadan Travel Advisory';
+const ATB_RAMADAN_PARAGRAPHS = [
+    'This departure takes place during Ramadan.',
+    'AfghanTours remains open for business and tours continue to operate during Ramadan.',
+    'Travelers should expect some adjustments to normal daily routines. Restaurant and shop opening hours may change, daytime meal arrangements may require additional planning, and some visits or activities may be scheduled differently around prayer times and the evening iftar period.',
+    'Ramadan can also offer travelers a distinctive view of daily life in Afghanistan, particularly in the evenings when families and communities gather to break the fast.',
+    'AfghanTours will plan the departure around the operating conditions and opening hours in effect at the time and advise confirmed travelers of any material itinerary adjustments.',
+];
+const ATB_RAMADAN_COMPACT = 'Ramadan departure — tours continue to operate, with some adjustments to opening hours, meals and daily scheduling.';
+const ATB_EID_NOTICE = 'Eid operating period — standard scheduled departures are not available on these dates. If you need to travel during Eid, please contact AfghanTours to discuss a special arrangement.';
+const ATB_EID_CHECKLIST = [
+    'guide' => 'Guide', 'driver' => 'Driver', 'vehicle_availability' => 'Vehicle availability', 'hotels' => 'Hotels',
+    'domestic_transport' => 'Domestic transport', 'site_access' => 'Site access', 'meals' => 'Meals',
+    'local_operating_conditions' => 'Local operating conditions', 'itinerary_feasibility' => 'Itinerary feasibility',
+];
+
+function atb_ranges_overlap(string $aS, string $aE, string $bS, string $bE): bool {
+    return atb_is_iso_date($aS) && atb_is_iso_date($aE) && atb_is_iso_date($bS) && atb_is_iso_date($bE) && $aS <= $bE && $aE >= $bS;
+}
+
+/** @return array{ramadan:array,eid:array} */
+function atb_religious_periods(array $cal): array {
+    $before = (int)atb_int($cal['eid_block']['days_before'] ?? null, 1);
+    $after = (int)atb_int($cal['eid_block']['days_after'] ?? null, 3);
+    $names = ['eid_al_fitr' => 'Eid al-Fitr', 'eid_al_adha' => 'Eid al-Adha'];
+    $ram = []; $eid = [];
+    foreach ((array)($cal['years'] ?? []) as $y) {
+        $r = $y['ramadan'] ?? null;
+        if (is_array($r) && atb_is_iso_date($r['start_date'] ?? null) && atb_is_iso_date($r['end_date'] ?? null)) {
+            $ram[] = ['kind' => 'ramadan', 'name' => 'Ramadan ' . $y['year'], 'year' => $y['year'], 'start' => $r['start_date'], 'end' => $r['end_date'],
+                'state' => ($r['state'] ?? '') === 'confirmed' ? 'confirmed' : 'estimated', 'source' => (string)($r['source'] ?? '')];
+        }
+        foreach ($names as $kind => $label) {
+            $e = $y[$kind] ?? null;
+            if (!is_array($e) || !atb_is_iso_date($e['date'] ?? null)) continue;
+            $start = atb_add_days($e['date'], -$before);
+            $end = atb_add_days($e['date'], $after);
+            $eid[] = ['kind' => $kind, 'name' => $label . ' ' . $y['year'], 'year' => $y['year'], 'eid_date' => $e['date'], 'start' => $start, 'end' => $end,
+                'key' => $kind . ':' . $start . ':' . $end, 'state' => ($e['state'] ?? '') === 'confirmed' ? 'confirmed' : 'estimated', 'source' => (string)($e['source'] ?? '')];
+        }
+    }
+    return ['ramadan' => $ram, 'eid' => $eid];
+}
+
+function atb_religious_flags(array $dep, array $cal): array {
+    $p = atb_religious_periods($cal);
+    $s = (string)($dep['start_date'] ?? ''); $e = (string)($dep['end_date'] ?? '');
+    return [
+        'ramadan' => array_values(array_filter($p['ramadan'], static fn($x) => atb_ranges_overlap($s, $e, $x['start'], $x['end']))),
+        'eid' => array_values(array_filter($p['eid'], static fn($x) => atb_ranges_overlap($s, $e, $x['start'], $x['end']))),
+    ];
+}
+
+function atb_eid_conflicts(array $dep, array $cal): array {
+    if (($dep['departure_type'] ?? 'shared') === 'private') return [];
+    return atb_religious_flags($dep, $cal)['eid'];
+}
+
+function atb_eid_reviewed(array $dep, array $block): bool {
+    $r = $dep['eid_reviews'][$block['key']] ?? null;
+    return is_array($r) && ($r['override'] ?? false) === true && trim((string)($r['note'] ?? '')) !== '' && !empty($r['by']);
+}
+
+function atb_eid_unresolved(array $dep, array $cal): array {
+    return array_values(array_filter(atb_eid_conflicts($dep, $cal), static fn($b) => !atb_eid_reviewed($dep, $b)));
+}
+
+function atb_period_label(array $p): string {
+    return atb_format_range($p['start'], $p['end']) . (($p['state'] ?? '') === 'confirmed' ? '' : ' (expected)');
+}
+
+/** Blocks touching a date range (used for special-request manual review). */
+function atb_eid_blocks_for_range(string $start, string $end, array $cal): array {
+    if (!atb_is_iso_date($start)) return [];
+    if (!atb_is_iso_date($end)) $end = $start;
+    return array_values(array_filter(atb_religious_periods($cal)['eid'], static fn($b) => atb_ranges_overlap($start, $end, $b['start'], $b['end'])));
+}
+
+/** Upcoming Eid blocks for the public notice (only blocks that have not ended). */
+function atb_public_eid_blocks(array $cal, string $today): array {
+    $out = [];
+    foreach (atb_religious_periods($cal)['eid'] as $b) {
+        if ($b['end'] < $today) continue;
+        $out[] = ['name' => $b['name'], 'start' => $b['start'], 'end' => $b['end'], 'state' => $b['state'], 'label' => atb_period_label($b)];
+    }
+    return $out;
+}
+
+/** A booking counts toward the minimum only when accepted AND payment is recorded as received. */
+function atb_payment_received(array $tr): bool {
+    return ($tr['payment_received'] ?? false) === true || in_array($tr['payment_status'] ?? '', ['payment_received', 'deposit_recorded', 'paid_recorded'], true);
+}
+function atb_counts_toward_minimum(array $tr): bool {
+    return ($tr['status'] ?? '') === 'confirmed' && atb_payment_received($tr);
 }
 
 /* --------------------------------------------------------------- storage */
@@ -354,6 +452,7 @@ function atb_load_seed(): ?array {
     $dep = atb_read_json_file($dir . '/departures.json');
     $bo = atb_read_json_file($dir . '/blackouts.json');
     $set = atb_read_json_file($dir . '/settings.json');
+    $cal = atb_read_json_file($dir . '/religious-calendar.json');
     if (!$cat || !$dep || !$bo || !$set) {
         return null;
     }
@@ -366,6 +465,7 @@ function atb_load_seed(): ?array {
         'tours' => $cat['tours'] ?? [],
         'departures' => $dep['departures'] ?? [],
         'blackouts' => $bo['blackouts'] ?? [],
+        'religious_calendar' => $cal ?? ['years' => []],
         'settings' => $set,
         'updated_at' => atb_now_iso(),
     ];
@@ -399,6 +499,7 @@ function atb_load_inventory(): array {
             });
         }
         if (is_array($inv)) {
+            $inv = atb_migrate_inventory($inv);
             return $cache = [$inv, 'private_store'];
         }
     }
@@ -407,6 +508,21 @@ function atb_load_inventory(): array {
         return $cache = [$seed, 'seed_readonly'];
     }
     return $cache = [['tours' => [], 'departures' => [], 'blackouts' => [], 'settings' => [], 'categories' => []], 'unavailable'];
+}
+
+/**
+ * Bring an older private store up to the current model in memory (saved on the next admin write):
+ * religious calendar from the seed, Eid/Ramadan out of blackouts, no automatic Limited threshold.
+ */
+function atb_migrate_inventory(array $inv): array {
+    if (!isset($inv['religious_calendar']) || !is_array($inv['religious_calendar'])) {
+        $dir = atb_seed_dir();
+        $inv['religious_calendar'] = ($dir ? atb_read_json_file($dir . '/religious-calendar.json') : null) ?? ['years' => []];
+        $inv['blackouts'] = array_values(array_filter((array)($inv['blackouts'] ?? []), static fn($b) => !array_intersect((array)($b['tags'] ?? []), ['eid', 'ramadan'])));
+    }
+    unset($inv['settings']['limited_places_threshold']);
+    $inv['settings']['auto_cutoff_close'] = ($inv['settings']['auto_cutoff_close'] ?? false) === true;
+    return $inv;
 }
 
 function atb_reset_cache(): void {
@@ -457,7 +573,9 @@ function atb_counts(array $travelers): array {
         if ($id === '') continue;
         $n = max(1, (int)atb_int($t['party_size'] ?? 1, 1));
         $out[$id] ??= ['confirmed' => 0, 'pending' => 0];
-        if (($t['status'] ?? '') === 'confirmed') $out[$id]['confirmed'] += $n;
+        $out[$id] += ['accepted_unpaid' => 0];
+        if (atb_counts_toward_minimum($t)) $out[$id]['confirmed'] += $n;
+        elseif (($t['status'] ?? '') === 'confirmed') $out[$id]['accepted_unpaid'] += $n; // accepted, payment not recorded → does not count
         elseif (($t['status'] ?? '') === 'pending') $out[$id]['pending'] += $n;
     }
     return $out;
@@ -471,9 +589,10 @@ function atb_effective_departures(array $inv): array {
     $out = [];
     foreach ($inv['departures'] ?? [] as $d) {
         if ($useTravelers) {
-            $c = $counts[$d['id']] ?? ['confirmed' => 0, 'pending' => 0];
+            $c = $counts[$d['id']] ?? ['confirmed' => 0, 'pending' => 0, 'accepted_unpaid' => 0];
             $d['confirmed_count'] = $c['confirmed'];
             $d['pending_count'] = $c['pending'];
+            $d['accepted_unpaid_count'] = $c['accepted_unpaid'] ?? 0;
         }
         $cap = atb_int($d['max_capacity'] ?? null, null);
         $d['remaining_capacity'] = $cap === null ? null : max($cap - (int)($d['confirmed_count'] ?? 0), 0);
@@ -500,12 +619,15 @@ function atb_find_departure(array $deps, string $id): ?array {
 function atb_public_payload(?string $tourSlug = null): array {
     [$inv, $source] = atb_load_inventory();
     $settings = $inv['settings'] ?? [];
+    $cal = (array)($inv['religious_calendar'] ?? []);
+    $settings['religious_calendar'] = $cal;
     $today = atb_today($settings['timezone'] ?? 'Asia/Kabul');
     $deps = atb_effective_departures($inv);
     $list = [];
     foreach ($deps as $d) {
         if ($tourSlug !== null && $tourSlug !== '' && ($d['tour_slug'] ?? '') !== $tourSlug) continue;
         if (!atb_is_public($d, $today)) continue;
+        if (atb_eid_unresolved($d, $cal)) continue; // standard scheduled departure in an Eid block awaiting admin review
         $t = atb_tour($inv, (string)$d['tour_slug']);
         if ($t === null || ($t['active'] ?? true) === false || !in_array($t['category'] ?? '', ['A', 'B', 'C'], true)) continue;
         $list[] = atb_public_departure($d, $t, $settings, $today);
@@ -516,6 +638,8 @@ function atb_public_payload(?string $tourSlug = null): array {
         'today' => $today,
         'source' => $source === 'private_store' ? 'live' : ($source === 'seed_readonly' ? 'seed' : 'unavailable'),
         'usd_confirmed' => !empty($settings['usd_confirmed']),
+        'eid_blocks' => atb_public_eid_blocks($cal, $today),
+        'eid_notice' => ATB_EID_NOTICE,
         'departures' => $list,
     ];
 }
@@ -533,7 +657,7 @@ function atb_blackouts_for(array $inv, string $slug, string $start, string $end,
 }
 
 /** Validate a departure for creation/editing. Returns list of error strings. */
-function atb_validate_departure(array $dep, array $inv, string $today, bool $forPublish): array {
+function atb_validate_departure(array $dep, array $inv, string $today, bool $forPublish, bool $publishing = false): array {
     $errors = [];
     $t = atb_tour($inv, (string)($dep['tour_slug'] ?? ''));
     if ($t === null || !in_array($t['category'] ?? '', ['A', 'B', 'C'], true) || ($t['active'] ?? true) === false) {
@@ -574,6 +698,12 @@ function atb_validate_departure(array $dep, array $inv, string $today, bool $for
         if (in_array($dep['status'] ?? '', ['proposed', 'draft', 'cancelled', 'completed'], true)) $errors[] = 'Change the status to Scheduled (or On request) before publishing.';
         foreach (atb_blackouts_for($inv, (string)$dep['tour_slug'], $start, $end) as $b) {
             if (!empty($b['confirmed'])) $errors[] = 'Overlaps confirmed blackout: ' . ($b['name'] ?? $b['id']) . '.';
+        }
+    }
+    if ($publishing) {
+        if (($dep['price_approved'] ?? null) !== true) $errors[] = 'Price not approved: a production reference price is not approval. Tick "Price approved by owner" first.';
+        foreach (atb_eid_unresolved($dep, (array)($inv['religious_calendar'] ?? [])) as $b) {
+            $errors[] = 'Eid conflict: overlaps the ' . $b['name'] . ' operating period ' . $b['start'] . ' – ' . $b['end'] . ' (' . $b['state'] . '). Standard scheduled departures are not available then; record an owner/operational review override with a note first.';
         }
     }
     return $errors;

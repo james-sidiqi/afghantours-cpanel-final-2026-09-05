@@ -61,7 +61,16 @@ try:
     seed = json.load(open(ROOT / 'data/booking/departures.json'))['departures']
     proposed = {d['id'] for d in seed if d['status'] == 'proposed'}
     past = {d['id'] for d in seed if d['end_date'] < '2026-10-10'}
-    check(len(ids) == 8, f'8 published future departures public (got {len(ids)})')
+    check(len(ids) == 7, f'7 published future departures public — 8 minus the Eid-conflict one awaiting review (got {len(ids)})')
+    check('DEP-WKND-20270306' not in ids, 'published Weekend 6–8 Mar 2027 overlaps the Eid al-Fitr block → hidden pending admin review (not deleted)')
+    inv0 = json.load(open(private / 'booking' / 'inventory.json'))
+    check(any(d['id'] == 'DEP-WKND-20270306' and d['published'] is True for d in inv0['departures']), 'Eid-conflict departure still stored as published (not moved/deleted)')
+    eb0 = data.get('eid_blocks') or []
+    check(len(eb0) == 2 and eb0[0]['start'] == '2027-03-08' and eb0[0]['end'] == '2027-03-12' and eb0[0]['label'].endswith('(expected)') and eb0[1]['start'] == '2027-05-15', 'feed carries Eid blocks (day before … +3), estimated shown as "expected"')
+    check(data.get('eid_notice', '').startswith('Eid operating period — standard scheduled departures are not available on these dates.'), 'feed carries exact Eid notice')
+    ram = sorted(d['id'] for d in data['departures'] if d.get('advisories'))
+    check(ram == ['DEP-BSKI-20270209', 'DEP-BUZE-20270223', 'DEP-WNTC-20270216'], f'Ramadan advisory on exactly the published departures overlapping Ramadan (got {ram})')
+    check(all(d['selectable'] and d['status'] == 'open' for d in data['departures'] if d.get('advisories')), 'Ramadan departures stay open and selectable (advisory only)')
     check(not (set(ids) & proposed), 'no proposed departure is public')
     check(not (set(ids) & past), 'no past departure is public')
     check('DEP-KBLS-20261005' not in ids, 'departure ending today (in progress) not public')
@@ -70,12 +79,12 @@ try:
     longs = [d for d in data['departures'] if d['duration_days'] >= 5]
     shorts = [d for d in data['departures'] if d['duration_days'] <= 4]
     check(len(longs) == 7 and all(d['status'] == 'open' and d['status_label'] == 'Open' and d['status_text'] == 'Open — awaiting minimum 6 travelers' and d['min_group_size'] == 6 for d in longs), '5+ day seed departures: "Open — awaiting minimum 6 travelers"')
-    check(len(shorts) == 1 and shorts[0]['status_text'] == 'Open — awaiting minimum 2 travelers' and shorts[0]['min_group_size'] == 2, 'short (≤4-day) seed departure: "Open — awaiting minimum 2 travelers"')
+    check(len(shorts) == 0, 'the only short published departure (Weekend 6–8 Mar) is held back by the Eid rule')
     check(all(d['status'] in ('open', 'confirmed', 'limited', 'sold_out', 'closed') for d in data['departures']), 'public feed uses only the 5-status vocabulary')
     check('Available' not in body, 'no generic "Available" in public feed')
     code, body, _ = req(pub, '/booking/departures.php?tour=weekend-in-kabul')
     wk = json.loads(body)['departures']
-    check(len(wk) == 1 and wk[0]['arrival_option'] == 'sat-mon' and wk[0]['price_label'] == 'From $450 per person on shared departures', 'Weekend in Kabul feed: Sat–Mon arrival, From $450 per person on shared departures')
+    check(len(wk) == 0, 'Weekend in Kabul feed empty until the Eid conflict is reviewed')
     code, _, _ = req(pub, '/booking/departures.php?tour=../../etc')
     check(code == 400, 'endpoint rejects bad tour param')
 
@@ -94,6 +103,15 @@ try:
     wkf = dict(base_form, entity_name='Weekend in Kabul', entity_slug='weekend-in-kabul', entity_code='WKND', departure_id='DEP-WKND-20270306', booking_type='shared', dry_run='1')
     d = json.loads(req(pub, '/tour-inquiry.php', dict(wkf, travelers='1'), J)[1])
     check('below the 2-traveler minimum' in d['body'], 'short tour: 1 traveler shared → below 2')
+    check(d['ok'] and d['departure_check'] == 'eid_review_required' and d['manual_review'] is True and 'MANUAL REVIEW REQUIRED' in d['body'], 'Eid: inquiry on a departure awaiting Eid review is still accepted, routed to manual review')
+    d = json.loads(req(pub, '/tour-inquiry.php', dict(base_form, flow='private-fixed', entity_name='Panjshir', entity_slug='panjshir-valley-emeralds-history', travelers='2', booking_type='private', preferred_dates='2027-05-16 to 2027-05-18', dry_run='1'), J)[1])
+    check(d['ok'] and d['manual_review'] is True and 'Eid al-Adha 2027' in d['body'] and 'Do not confirm or promise' in d['body'], 'Eid: private special request in the Eid al-Adha block → manual review, never auto-confirmed')
+    d = json.loads(req(pub, '/tour-inquiry.php', dict(base_form, flow='custom', entity_type='custom', entity_name='Custom journey', preferred_dates='2027-03-09', travelers='4', dry_run='1'), J)[1])
+    check(d['ok'] and d['manual_review'] is True, 'Eid: custom-journey request during Eid al-Fitr → manual review')
+    d = json.loads(req(pub, '/tour-inquiry.php', dict(base_form, flow='private-fixed', entity_name='Panjshir', entity_slug='panjshir-valley-emeralds-history', travelers='2', booking_type='private', preferred_dates='2027-05-20 to 2027-05-22', dry_run='1'), J)[1])
+    check(d['ok'] and d['manual_review'] is False, 'Eid: request starting the day after the block → no manual review')
+    d = json.loads(req(pub, '/tour-inquiry.php', dict(base_form, entity_name='Bamyan Skiing', entity_slug='bamyan-skiing-tour', departure_id='DEP-BSKI-20270209', travelers='2', booking_type='shared', dry_run='1'), J)[1])
+    check(d['ok'] and d['departure_check'] == 'verified:open' and d['manual_review'] is False, 'Ramadan departure: booking request accepted normally (advisory only)')
     for n in ('2', '3', '6'):
         d = json.loads(req(pub, '/tour-inquiry.php', dict(wkf, travelers=n), J)[1])
         check('meets the 2-traveler minimum' in d['body'], f'short tour: {n} travelers shared → meets 2')
@@ -123,7 +141,11 @@ try:
     check('Shared / private: private' in mail and 'Arrival option: Friday–Sunday' in mail and 'Private request — quoted separately; no group minimum applies.' in mail, 'email body carries private/arrival/group-minimum lines')
     check('Admin reference: INQ-' in mail and 'Name: Test Traveler' in mail and 'WhatsApp: +10000000000' in mail and 'Country: Testland' in mail, 'existing email fields intact + admin reference')
     inq = [json.loads(l) for l in (private / 'booking' / 'inquiries.jsonl').read_text().splitlines()]
-    check(len(inq) == 1 and inq[0]['booking_type'] == 'private' and inq[0]['extension_nights'] == '1' and inq[0]['accommodation'] == 'Upgrade where available', 'inquiry stored in private JSONL with Part 7 fields')
+    check(len(inq) >= 1 and inq[0]['booking_type'] == 'private' and inq[0]['extension_nights'] == '1' and inq[0]['accommodation'] == 'Upgrade where available', 'inquiry stored in private JSONL with Part 7 fields')
+    code, body, _ = req(pub, '/tour-inquiry.php', dict(base_form, flow='private-fixed', name='Eid Requester', entity_name='Panjshir', entity_slug='panjshir-valley-emeralds-history', travelers='2', booking_type='private', preferred_dates='2027-03-10'), J)
+    inq = [json.loads(l) for l in (private / 'booking' / 'inquiries.jsonl').read_text().splitlines()]
+    eidq = [x for x in inq if x['name'] == 'Eid Requester']
+    check(code == 200 and eidq and eidq[0]['manual_review']['reason'] == 'eid' and eidq[0]['manual_review']['auto_confirm'] is False and 'itinerary_feasibility' in eidq[0]['manual_review']['checklist'], 'Eid special request stored with manual-review flag + checklist')
     # shared request on a real departure, real submit
     code, body, _ = req(pub, '/tour-inquiry.php', dict(f, travelers='2', dry_run=''), J)
     check(code == 200, 'shared departure request (real submit) ok')
@@ -171,13 +193,19 @@ try:
     check('is 8 days inclusive' in body, 'edit rejects end date that does not match duration')
     code, body, _ = req(adm, '/manage/?a=update', dict(base_upd, min_group_size='6', max_capacity='18', internal_notes='INTERNAL-SECRET-NOTE'))
     check('Saved.' in body, 'back to standard 6–18')
+    code, body, _ = req(adm, '/manage/?a=op', {'csrf': csrf, 'id': new_id, 'op': 'publish'})
+    check('Price not approved' in body, 'publish blocked until the price is owner-approved (reference ≠ approval)')
+    code, body, _ = req(adm, '/manage/?a=op', {'csrf': csrf, 'id': new_id, 'op': 'approve'})
+    check('price is not owner-approved' in body, 'operational approval of an unpublished departure blocked until price approved')
+    code, body, _ = req(adm, '/manage/?a=update', dict(base_upd, min_group_size='6', max_capacity='18', internal_notes='INTERNAL-SECRET-NOTE', price_approved='1'))
+    check('Saved.' in body and 'Price approved by james' in body, 'price approval recorded with who/when')
     req(adm, '/manage/?a=op', {'csrf': csrf, 'id': new_id, 'op': 'publish'})
     code, body, _ = req(pub, '/booking/departures.php?tour=kandahar-durrani-empire-tour')
     nd = [x for x in json.loads(body)['departures'] if x['id'] == new_id]
     check(nd and nd[0]['status'] == 'open' and nd[0]['status_text'] == 'Open — awaiting minimum 6 travelers', 'published → public as "Open — awaiting minimum 6 travelers"')
     check('INTERNAL-SECRET-NOTE' not in body, 'internal notes never public')
-    def add_trav(name, status, size='1'):
-        return req(adm, '/manage/?a=traveler', {'csrf': csrf, 'op': 'add', 'departure_id': new_id, 'name': name, 'party_size': size, 'email': name.lower() + '@example.com', 'status': status, 'payment_status': 'not_recorded'})
+    def add_trav(name, status, size='1', pay='payment_received'):
+        return req(adm, '/manage/?a=traveler', {'csrf': csrf, 'op': 'add', 'departure_id': new_id, 'name': name, 'party_size': size, 'email': name.lower() + '@example.com', 'status': status, 'payment_status': pay})
     def pub_status():
         b = req(pub, '/booking/departures.php?tour=kandahar-durrani-empire-tour')[1]
         return [x for x in json.loads(b)['departures'] if x['id'] == new_id][0]['status'], b
@@ -191,6 +219,10 @@ try:
     cb = req(adm, f'/manage/?a=confirmation&traveler={tid}')[1]
     check('Your booking is confirmed.' in cb and 'Departure status at time of booking: Open — awaiting minimum 6 travelers' in cb and 'Required minimum group size: 6 travelers' in cb and 'Amount paid:' in cb and 'Balance due date:' in cb, 'booking confirmation record has the spec fields')
     check('unconfirmed' not in cb.lower(), 'accepted booking never called "unconfirmed"')
+    add_trav('Unpaid Uma', 'confirmed', '1', 'not_recorded'); s, b = pub_status()
+    check(s == 'open', 'accepted booking without payment received does not count (5 + 1 unpaid → open)')
+    eb = req(adm, f'/manage/?a=edit&id={new_id}')[1]
+    check('Accepted, payment not recorded (not counted): 1' in eb and 'not counted' in eb, 'admin shows accepted-unpaid separately')
     add_trav('Dave', 'confirmed'); s, b = pub_status()
     check(s == 'open', '6 confirmed but not approved → still open (no auto-confirm)')
     eb = req(adm, f'/manage/?a=edit&id={new_id}')[1]
@@ -200,7 +232,9 @@ try:
     eb = req(adm, f'/manage/?a=edit&id={new_id}')[1]
     check('Departure confirmed on: <strong>2026-10-10' in eb, 'date departure became confirmed recorded')
     add_trav('Erin', 'confirmed', '10'); s, b = pub_status()
-    check(s == 'limited', '16 of 18 → Limited')
+    check(s == 'confirmed', '16 of 18 → still Confirmed (no automatic Limited threshold)')
+    req(adm, '/manage/?a=op', {'csrf': csrf, 'id': new_id, 'op': 'mark_limited'}); s, b = pub_status()
+    check(s == 'limited', 'admin marks Limited manually → Limited')
     add_trav('Finn', 'confirmed', '2'); s, b = pub_status()
     check(s == 'sold_out', '18 of 18 → Sold out')
     check(all(n not in b for n in ['Alice', 'Bob', 'Carol', 'Dave', 'Erin', 'alice@example.com']), 'traveler names/emails never in public endpoint')
@@ -218,7 +252,53 @@ try:
     code, body, _ = req(adm, '/manage/?a=create', {'csrf': csrf, 'tour_slug': 'noshaq-expedition-support', 'start_date': '2027-07-01', 'departure_type': 'shared', 'min_group_size': '3', 'status': 'draft'})
     check('Choose a tour' in body or 'categories A, B or C' in body, 'no departures for category D services')
     # blackout + settings + inquiries pages
-    code, body, _ = req(adm, '/manage/?a=blackouts'); check('Eid al-Fitr 2027' in body and 'estimate' in body, 'blackouts page lists unconfirmed Eid estimates')
+    code, body, _ = req(adm, '/manage/?a=calendar'); check('Eid al-Fitr 2027 operating block' in body and '2027-03-08 → 2027-03-12' in body and 'estimated' in body and 'Ramadan 2027 (advisory)' in body, 'religious calendar page: Ramadan advisory + Eid blocks, estimated state')
+    # ---- Eid conflict flag + review in /manage/ ----
+    code, body, _ = req(adm, '/manage/?view=upcoming')
+    check('Eid conflict — review required' in body and 'Ramadan advisory' in body, 'departure list flags Eid conflict and Ramadan advisory')
+    code, body, _ = req(adm, '/manage/?a=edit&id=DEP-WKND-20270306')
+    check('EID CONFLICT — owner/operational review required' in body and 'has not been moved or deleted' in body, 'edit page shows the Eid conflict flag')
+    code, body, _ = req(adm, '/manage/?a=op', {'csrf': csrf, 'id': 'DEP-WKND-20270306', 'op': 'approve'})
+    check('Not approved: Eid conflict' in body, 'operational approval blocked while the Eid conflict is unreviewed')
+    code, body, _ = req(adm, '/manage/?a=op', {'csrf': csrf, 'id': 'DEP-WKND-20270306', 'op': 'eid_review', 'block_key': 'eid_al_fitr:2027-03-08:2027-03-12', 'note': ''})
+    check('explicit override' in body, 'Eid review needs an explicit override + note')
+    code, body, _ = req(adm, '/manage/?a=op', {'csrf': csrf, 'id': 'DEP-WKND-20270306', 'op': 'eid_review', 'block_key': 'eid_al_fitr:2027-03-08:2027-03-12', 'note': 'Test: owner approved operating 8 Mar (Chaand Raat)', 'override': '1'})
+    check('Eid review recorded' in body, 'Eid review override recorded')
+    wk = json.loads(req(pub, '/booking/departures.php?tour=weekend-in-kabul')[1])['departures']
+    check(len(wk) == 1 and wk[0]['id'] == 'DEP-WKND-20270306' and wk[0]['advisories'] and wk[0]['price_label'] == 'From $450 per person on shared departures', 'after review the departure is public again (with its Ramadan advisory)')
+    # calendar change: move Eid al-Adha onto a published departure → recalculated, flagged, hidden; old override invalid if block moves
+    cal_form = {'csrf': csrf, 'y[0][year]': '2027', 'y[0][ramadan_start]': '2027-02-08', 'y[0][ramadan_end]': '2027-03-08', 'y[0][ramadan_state]': 'estimated', 'y[0][ramadan_source]': 'test', 'y[0][fitr]': '2027-03-10', 'y[0][fitr_state]': 'estimated', 'y[0][fitr_source]': 'test', 'y[0][adha]': '2027-04-21', 'y[0][adha_state]': 'confirmed', 'y[0][adha_source]': 'test'}
+    code, body, _ = req(adm, '/manage/?a=calendar_save', cal_form)
+    check('DEP-ADTS-20270420 × Eid al-Adha 2027' in body and 'DEP-WKND-20270306 ×' not in body, 'Eid date change revalidates: new conflict flagged (ADTS 20 Apr), Weekend no longer in block')
+    ids2 = [d['id'] for d in json.loads(req(pub, '/booking/departures.php')[1])['departures']]
+    check('DEP-ADTS-20270420' not in ids2 and 'DEP-WKND-20270306' in ids2, 'feed recalculated after the Eid change')
+    cal_form.update({'y[0][fitr]': '2027-03-09', 'y[0][adha]': '2027-05-16', 'y[0][adha_state]': 'estimated'})
+    req(adm, '/manage/?a=calendar_save', cal_form)
+    ids3 = [d['id'] for d in json.loads(req(pub, '/booking/departures.php')[1])['departures']]
+    check('DEP-ADTS-20270420' in ids3 and 'DEP-WKND-20270306' in ids3, 'restored calendar: override for the same block dates still valid')
+    # new departure inside an Eid block cannot be published even with an approved price
+    nb = req(adm, '/manage/?a=create', {'csrf': csrf, 'tour_slug': 'kabul-surroundings', 'start_date': '2027-05-17', 'end_date': '', 'departure_type': 'shared', 'min_group_size': '', 'max_capacity': '', 'status': 'scheduled', 'price_amount': '', 'price_status': 'price_on_request', 'price_approved': '1'})[1]
+    nid = re.search(r'(DEP-[A-Z]+-20270517)', nb).group(1)
+    code, body, _ = req(adm, '/manage/?a=op', {'csrf': csrf, 'id': nid, 'op': 'publish'})
+    check('Eid conflict' in body and 'Not published' in body, 'new standard departure inside the Eid al-Adha block cannot be published')
+    # private departure in the block: booking needs the manual-review note before confirmation
+    pb = req(adm, '/manage/?a=create', {'csrf': csrf, 'tour_slug': 'panjshir-valley-emeralds-history', 'start_date': '2027-05-16', 'end_date': '', 'departure_type': 'private', 'min_group_size': '1', 'max_capacity': '', 'status': 'on_request', 'price_amount': '', 'price_status': 'price_on_request'})[1]
+    pid = re.search(r'(DEP-[A-Z]+-20270516-P)', pb).group(1)
+    check('Eid special request — MANUAL REVIEW' in pb, 'private departure in Eid block flagged for manual review')
+    code, body, _ = req(adm, '/manage/?a=traveler', {'csrf': csrf, 'op': 'add', 'departure_id': pid, 'name': 'Solo Sam', 'party_size': '1', 'status': 'confirmed', 'payment_status': 'not_recorded'})
+    check('manual review required' in body and 'Solo Sam' not in body.split('Add traveler')[0], 'private Eid booking cannot be confirmed without the review note')
+    code, body, _ = req(adm, '/manage/?a=traveler', {'csrf': csrf, 'op': 'add', 'departure_id': pid, 'name': 'Solo Sam', 'party_size': '1', 'status': 'confirmed', 'payment_status': 'not_recorded', 'eid_review_note': 'Guide+driver confirmed, hotel open, site access ok'})
+    check('Traveler added' in body and 'ATB-2' in body, 'private solo booking confirmed after manual review; booking reference issued')
+    trs = json.load(open(private / 'booking' / 'travelers.json'))['travelers']
+    sam = [t for t in trs if t['name'] == 'Solo Sam'][0]
+    check(all(k in sam for k in ('booking_reference', 'terms_acceptance', 'policy_acceptance')) and sam['terms_acceptance'] is None, 'booking record carries Terms/Cancellation acceptance fields (data model only, not forced)')
+    # inquiry manual review checklist
+    code, body, _ = req(adm, '/manage/?a=inquiries'); check('manual review: eid' in body, 'inquiries list flags manual review')
+    eid_inq = eidq[0]['id']
+    code, body, _ = req(adm, f'/manage/?a=inquiry&id={eid_inq}')
+    check('MANUAL REVIEW' in body and 'Itinerary feasibility' in body and 'Local operating conditions' in body, 'inquiry shows the Eid review checklist')
+    code, body, _ = req(adm, '/manage/?a=inquiry', {'csrf': csrf, 'id': eid_inq, 'op': 'review', 'chk_guide': '1', 'note_guide': 'Edrees available', 'review_status': 'open'})
+    check('Manual review saved' in body and 'Edrees available' in body, 'checklist notes saved')
     code, body, _ = req(adm, '/manage/?a=inquiries'); check('Test Traveler' in body, 'stored inquiries listed for admin review')
     # viewer cannot write
     vw, _ = opener(); _, b, _ = req(vw, '/manage/?a=login'); vc = re.search(r'name="csrf" value="([^"]+)"', b).group(1)
@@ -252,7 +332,7 @@ try:
         time.sleep(0.6)
         r = urllib.request.urlopen(f'http://127.0.0.1:{port2}/booking/departures.php', timeout=5)
         d2 = json.loads(r.read())
-        check(d2['ok'] and d2['source'] == 'seed' and len(d2['departures']) == 8, 'no private folder: public feed falls back to read-only seed')
+        check(d2['ok'] and d2['source'] == 'seed' and len(d2['departures']) == 7, 'no private folder: public feed falls back to read-only seed (Eid rule applied)')
         r = urllib.request.urlopen(urllib.request.Request(f'http://127.0.0.1:{port2}/tour-inquiry.php', data=urllib.parse.urlencode(solo).encode(), headers=J), timeout=5)
         d3 = json.loads(r.read())
         check(d3['ok'] and mail2.exists() and 'Admin reference' not in mail2.read_text(), 'no private folder: inquiry still emailed (email-only)')

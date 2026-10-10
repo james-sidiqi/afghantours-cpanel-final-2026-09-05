@@ -14,7 +14,6 @@
     "short_tour_shared_max": null,
     "private_min": 1
   },
-  "limited_places_threshold": 2,
   "show_public_confirmed_counts": false,
   "show_public_capacity": false,
   "contact": {
@@ -28,5 +27,7 @@
     "private_pricing": "Private departure available; price on request.",
     "group_size_long": "Group size: 6–18 travelers / Minimum to operate: 6 travelers / Need a different group arrangement? Contact us.",
     "weekend_price": "From $450 per person on shared departures. Private departures available; price on request."
-  }
+  },
+  "auto_cutoff_close": false,
+  "_status_rules": "Limited is set manually per departure (no automatic threshold). Sold out is automatic only where a capacity exists. Booking cutoffs do not close departures unless auto_cutoff_close is true (off until the owner approves a cutoff rule)."
 }

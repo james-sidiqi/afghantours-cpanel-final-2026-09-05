@@ -1,5 +1,21 @@
 import { defineCollection, z, reference } from 'astro:content';
 
+// Legal documents rendered on their own routes. A document stays unpublished (no route, noindex, not in
+// sitemap/nav) until the owner's full text is merged and policy_full_text_received is flipped to true.
+const legalCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    effective_date: z.string(),
+    version: z.string().nullable().default(null),
+    legal_entity: z.string(),
+    operating_as: z.string(),
+    license: z.string(),
+    policy_full_text_received: z.boolean().default(false),
+    description: z.string().optional(),
+  }),
+});
+
 const provincesCollection = defineCollection({
   type: 'content',
   schema: z.object({
@@ -190,6 +206,7 @@ const activitiesCollection = defineCollection({
 });
 
 export const collections = {
+  legal: legalCollection,
   provinces: provincesCollection,
   regions: regionsCollection,
   hubs: hubsCollection,

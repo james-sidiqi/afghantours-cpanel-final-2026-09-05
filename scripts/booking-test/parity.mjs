@@ -2,7 +2,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { publicDeparture } from '../../src/lib/booking/core.mjs';
 const deps = JSON.parse(readFileSync('data/booking/departures.json', 'utf8')).departures;
-const settings = JSON.parse(readFileSync('data/booking/settings.json', 'utf8'));
+const settings = { ...JSON.parse(readFileSync('data/booking/settings.json', 'utf8')), religious_calendar: JSON.parse(readFileSync('data/booking/religious-calendar.json', 'utf8')) };
 const today = '2026-10-10';
 const rows = Object.fromEntries(deps.map((d) => [d.id, publicDeparture(d, null, settings, today)]));
 writeFileSync(new URL('./.parity.json', import.meta.url), JSON.stringify({ today, rows }));

@@ -10,11 +10,14 @@
 import catalogJson from '../../../data/booking/tours-catalog.json';
 import departuresJson from '../../../data/booking/departures.json';
 import settingsJson from '../../../data/booking/settings.json';
-import { publicDeparturesFor, priceLabel, todayIn } from './core.mjs';
+import calendarJson from '../../../data/booking/religious-calendar.json';
+import { publicDeparturesFor, priceLabel, todayIn, religiousPeriods, periodLabel } from './core.mjs';
 
 export type Row = Record<string, any>;
 
-export const bookingSettings: Row = settingsJson as Row;
+export const religiousCalendar: Row = calendarJson as Row;
+// Calendar travels with the settings object so the shared core can add Ramadan advisories / drop unresolved Eid conflicts.
+export const bookingSettings: Row = { ...(settingsJson as Row), religious_calendar: religiousCalendar };
 export const bookingCatalog: Row = catalogJson as Row;
 const departures: Row[] = (departuresJson as Row).departures;
 
@@ -58,4 +61,11 @@ export function bookingDepartureRows(): Row[] {
       departure_id: d.id,
     })),
   );
+}
+
+/** Eid operating blocks that have not ended at snapshot time (public notice). Estimated dates say "expected". */
+export function upcomingEidBlocks(): Row[] {
+  return religiousPeriods(religiousCalendar).eid
+    .filter((b: Row) => b.end >= snapshotToday)
+    .map((b: Row) => ({ name: b.name, start: b.start, end: b.end, state: b.state, label: periodLabel(b) }));
 }

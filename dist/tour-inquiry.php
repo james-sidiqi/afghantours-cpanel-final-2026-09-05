@@ -336,12 +336,14 @@ if ($departureId !== '' && !preg_match('/^[A-Za-z0-9-]{3,60}$/', $departureId)) 
 // departures can be requested (past / closed / proposed ones cannot be requested as scheduled dates).
 $departureCheck = $departureId !== '' ? 'not_checked' : 'none';
 $groupNote = '';
+$atbEidOpen = [];
 if ($departureId !== '' && $bookingAvailable) {
     try {
         [$atbInv, $atbSource] = atb_load_inventory();
         $atbSettings = $atbInv['settings'] ?? [];
         $atbToday = atb_today($atbSettings['timezone'] ?? 'Asia/Kabul');
         $atbDep = atb_find_departure(atb_effective_departures($atbInv), $departureId);
+        $atbEidOpen = $atbDep ? atb_eid_unresolved($atbDep, (array)($atbInv['religious_calendar'] ?? [])) : [];
         if ($atbSource === 'unavailable') {
             $departureCheck = 'inventory_unavailable';
         } elseif ($atbDep === null || !atb_is_public($atbDep, $atbToday)) {
@@ -352,7 +354,7 @@ if ($departureId !== '' && $bookingAvailable) {
             respond_html_error(409, $msg);
         } else {
             $atbStatus = atb_compute_status($atbDep, $atbToday, $atbSettings);
-            if (!$atbStatus['selectable']) {
+            if (!$atbStatus['selectable'] && !$atbEidOpen) {
                 $msg = 'That departure is ' . strtolower($atbStatus['label']) . ' and not open for requests. Please choose another date, or ask us about dates.';
                 if (wants_json() || $dryRunRequested) {
                     respond_json(409, ['ok' => false, 'message' => $msg]);
@@ -362,7 +364,8 @@ if ($departureId !== '' && $bookingAvailable) {
             // Authoritative dates win over whatever the browser sent.
             $departureStart = (string)$atbDep['start_date'];
             $departureEnd = (string)$atbDep['end_date'];
-            $departureCheck = 'verified:' . $atbStatus['key'];
+            // Eid conflict awaiting review: still accept the inquiry, but route it to manual review (never a normal confirmation).
+            $departureCheck = $atbEidOpen ? 'eid_review_required' : 'verified:' . $atbStatus['key'];
             if ($bookingType === '') {
                 $bookingType = ($atbDep['departure_type'] ?? 'shared') === 'private' ? 'private' : 'shared';
             }
@@ -422,6 +425,36 @@ if ($entityType === '') {
     };
 }
 
+// Eid: inquiries are always accepted; any request whose dates touch an Eid operating block
+// (private / custom / specialist special requests, or a departure awaiting Eid review) goes to MANUAL REVIEW.
+$manualReview = null;
+if ($bookingAvailable) {
+    try {
+        [$atbInv3] = atb_load_inventory();
+        $calR = (array)($atbInv3['religious_calendar'] ?? []);
+        $rs = $departureStart; $re = $departureEnd;
+        if (!atb_is_iso_date($rs) && preg_match_all('/\b(\d{4}-\d{2}-\d{2})\b/', $preferredDates, $m)) {
+            $ds = array_values(array_filter($m[1], 'atb_is_iso_date'));
+            sort($ds);
+            if ($ds) { $rs = $ds[0]; $re = $ds[count($ds) - 1]; }
+        }
+        $hits = atb_is_iso_date($rs) ? atb_eid_blocks_for_range($rs, atb_is_iso_date($re) ? $re : $rs, $calR) : [];
+        $reviewed = isset($atbDep) && is_array($atbDep) && !$atbEidOpen && ($atbDep['departure_type'] ?? 'shared') !== 'private';
+        if ($hits && !$reviewed) {
+            $manualReview = [
+                'reason' => 'eid',
+                'label' => 'Eid special request',
+                'blocks' => array_map(static fn($b) => $b['name'] . ' ' . $b['start'] . '–' . $b['end'] . ' (' . $b['state'] . ')', $hits),
+                'detail' => 'Requested dates ' . $rs . ($re !== $rs ? ' to ' . $re : '') . ' touch the Eid operating period. Standard scheduled departures are not available then; review guide, driver, vehicle availability, hotels, domestic transport, site access, meals, local operating conditions and itinerary feasibility before offering anything.',
+                'checklist' => array_keys(ATB_EID_CHECKLIST),
+                'auto_confirm' => false,
+            ];
+        }
+    } catch (Throwable $e) {
+        error_log('[afghantours inquiry] Eid check failed: ' . $e->getMessage());
+    }
+}
+
 $classification = flow_label($flow);
 $displayName = $entityName !== '' ? $entityName : ($entitySlug !== '' ? $entitySlug : 'General inquiry');
 $displayName = sanitize_header_value($displayName, MAX_SUBJECT_ENTITY);
@@ -465,6 +498,12 @@ if ($departureId !== '' || $bookingType !== '' || $arrivalOption !== '' || $exte
 if ($groupNote !== '') {
     $lines[] = 'Group minimum: ' . $groupNote;
 }
+if ($manualReview !== null) {
+    $lines[] = '';
+    $lines[] = 'MANUAL REVIEW REQUIRED — ' . $manualReview['label'] . ': ' . implode('; ', $manualReview['blocks']) . '.';
+    $lines[] = $manualReview['detail'];
+    $lines[] = 'Do not confirm or promise this request until the review is complete.';
+}
 $lines[] = 'Note: this is a request only — nothing is confirmed or paid until the team confirms it.';
 
 $optionalBlocks = [
@@ -498,6 +537,7 @@ $inquiryRecord = [
     'extension_nights' => $extensionNights, 'extras' => $extras, 'transport' => $transport, 'activities' => $activities,
     'cultural_interests' => $culturalInterests, 'experience_level' => $experienceLevel, 'available_time' => $availableTime,
     'interest' => $interest, 'notes' => $notes, 'group_minimum' => $groupNote,
+    'manual_review' => $manualReview,
 ];
 
 if ($dryRunRequested) {
@@ -507,6 +547,7 @@ if ($dryRunRequested) {
         'stored' => false,
         'message' => INQUIRY_CONFIRMATION,
         'departure_check' => $departureCheck,
+        'manual_review' => $manualReview !== null,
         'flow' => $flow,
         'classification' => $classification,
         'subject' => $subject,

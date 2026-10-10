@@ -6,7 +6,7 @@ import path from 'node:path';
 const src = path.resolve('data/booking');
 const dest = path.resolve('dist/booking/seed');
 await mkdir(dest, { recursive: true });
-for (const f of ['tours-catalog.json', 'departures.json', 'blackouts.json', 'settings.json']) {
+for (const f of ['tours-catalog.json', 'departures.json', 'blackouts.json', 'settings.json', 'religious-calendar.json']) {
   await copyFile(path.join(src, f), path.join(dest, f));
 }
 await writeFile(path.join(dest, '.htaccess'), `# Booking seed (import source only) — never served.

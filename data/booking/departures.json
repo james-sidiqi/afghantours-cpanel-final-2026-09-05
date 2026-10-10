@@ -36,7 +36,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-KBLS-20260813",
@@ -71,7 +72,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-SUMC-20260820",
@@ -107,7 +109,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20260820",
@@ -142,7 +145,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-TSRA-20260907",
@@ -177,7 +181,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-CAD-20260912",
@@ -213,7 +218,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-ADTF-20260921",
@@ -248,7 +254,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-PVEH-20260928",
@@ -283,7 +290,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-KBLS-20261005",
@@ -318,7 +326,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-ADTF-20261012",
@@ -353,7 +362,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-KTDE-20261026",
@@ -388,7 +398,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20261106",
@@ -423,7 +434,8 @@
       },
       "arrival_option": "fri-sun",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-ADTF-20261107",
@@ -458,7 +470,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-KBLS-20261114",
@@ -493,7 +506,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-KTDE-20261121",
@@ -528,7 +542,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20261121",
@@ -563,7 +578,8 @@
       },
       "arrival_option": "sat-mon",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20261204",
@@ -598,7 +614,8 @@
       },
       "arrival_option": "fri-sun",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-WNTC-20261205",
@@ -634,7 +651,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-BUZE-20261219",
@@ -669,7 +687,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20261219",
@@ -704,7 +723,8 @@
       },
       "arrival_option": "sat-mon",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270101",
@@ -739,7 +759,8 @@
       },
       "arrival_option": "fri-sun",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-WNTC-20270109",
@@ -774,7 +795,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-BSKI-20270116",
@@ -809,7 +831,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270116",
@@ -844,7 +867,8 @@
       },
       "arrival_option": "sat-mon",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270205",
@@ -879,7 +903,8 @@
       },
       "arrival_option": "fri-sun",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-BSKI-20270209",
@@ -916,7 +941,8 @@
       "advisories": [
         "ADV-RAMADAN-2027"
       ],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WNTC-20270216",
@@ -953,7 +979,8 @@
       "advisories": [
         "ADV-RAMADAN-2027"
       ],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270220",
@@ -990,7 +1017,8 @@
       "advisories": [
         "ADV-RAMADAN-2027"
       ],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-BUZE-20270223",
@@ -1027,7 +1055,8 @@
       "advisories": [
         "ADV-RAMADAN-2027"
       ],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-BSKI-20270227",
@@ -1064,7 +1093,8 @@
       "advisories": [
         "ADV-RAMADAN-2027"
       ],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270305",
@@ -1101,7 +1131,8 @@
       "advisories": [
         "ADV-RAMADAN-2027"
       ],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270306",
@@ -1138,7 +1169,8 @@
       "advisories": [
         "ADV-RAMADAN-2027"
       ],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-BUZE-20270313",
@@ -1173,7 +1205,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-ADTS-20270320",
@@ -1208,7 +1241,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270320",
@@ -1243,7 +1277,8 @@
       },
       "arrival_option": "sat-mon",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-KTDE-20270327",
@@ -1278,7 +1313,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270402",
@@ -1313,7 +1349,8 @@
       },
       "arrival_option": "fri-sun",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-KBLS-20270410",
@@ -1348,7 +1385,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270417",
@@ -1383,7 +1421,8 @@
       },
       "arrival_option": "sat-mon",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-ADTS-20270420",
@@ -1418,7 +1457,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-ADTS-20270501",
@@ -1453,7 +1493,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270507",
@@ -1488,7 +1529,8 @@
       },
       "arrival_option": "fri-sun",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-CAD-20270522",
@@ -1523,7 +1565,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-PVEH-20270529",
@@ -1558,7 +1601,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270604",
@@ -1593,7 +1637,8 @@
       },
       "arrival_option": "fri-sun",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-KBLS-20270612",
@@ -1628,7 +1673,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-SUMC-20270612",
@@ -1663,7 +1709,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270619",
@@ -1698,7 +1745,8 @@
       },
       "arrival_option": "sat-mon",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270702",
@@ -1733,7 +1781,8 @@
       },
       "arrival_option": "fri-sun",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-SUMC-20270710",
@@ -1768,7 +1817,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270717",
@@ -1803,7 +1853,8 @@
       },
       "arrival_option": "sat-mon",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270806",
@@ -1838,7 +1889,8 @@
       },
       "arrival_option": "fri-sun",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-SUMC-20270807",
@@ -1873,7 +1925,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270821",
@@ -1908,7 +1961,8 @@
       },
       "arrival_option": "sat-mon",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-PVEH-20270828",
@@ -1943,7 +1997,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270903",
@@ -1978,7 +2033,8 @@
       },
       "arrival_option": "fri-sun",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-CAD-20270904",
@@ -2013,7 +2069,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-KBLS-20270911",
@@ -2048,7 +2105,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-ADTF-20270918",
@@ -2083,7 +2141,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20270918",
@@ -2118,7 +2177,8 @@
       },
       "arrival_option": "sat-mon",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20271001",
@@ -2153,7 +2213,8 @@
       },
       "arrival_option": "fri-sun",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-ADTF-20271016",
@@ -2188,7 +2249,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20271016",
@@ -2223,7 +2285,8 @@
       },
       "arrival_option": "sat-mon",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-KTDE-20271023",
@@ -2258,7 +2321,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20271105",
@@ -2293,7 +2357,8 @@
       },
       "arrival_option": "fri-sun",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-ADTF-20271106",
@@ -2328,7 +2393,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-KBLS-20271113",
@@ -2363,7 +2429,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20271120",
@@ -2398,7 +2465,8 @@
       },
       "arrival_option": "sat-mon",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20271203",
@@ -2433,7 +2501,8 @@
       },
       "arrival_option": "fri-sun",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     },
     {
       "id": "DEP-WNTC-20271204",
@@ -2468,7 +2537,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-BUZE-20271218",
@@ -2503,7 +2573,8 @@
       },
       "arrival_option": null,
       "advisories": [],
-      "capacity_source": "rule_5plus_days_6_18"
+      "capacity_source": "rule_5plus_days_6_18",
+      "price_approved": false
     },
     {
       "id": "DEP-WKND-20271218",
@@ -2538,7 +2609,8 @@
       },
       "arrival_option": "sat-mon",
       "advisories": [],
-      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
+      "price_approved": false
     }
   ]
 }

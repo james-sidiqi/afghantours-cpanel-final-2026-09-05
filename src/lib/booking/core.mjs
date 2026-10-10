@@ -13,7 +13,11 @@
  *  - Confirmed needs confirmed travelers >= min_group_size AND operational approval. Never automatic.
  *  - One public vocabulary: Open — awaiting minimum N travelers / Confirmed / Limited / Sold out / Closed.
  *    Cancelled, completed (past), private and proposed departures are internal and never public.
- *  - Only confirmed travelers count. Pending inquiries do not.
+ *  - Only bookings that are accepted AND have payment recorded as received count. Inquiries never count.
+ *  - Limited is MANUAL only (limited_manual). Sold out is automatic only where a capacity exists.
+ *    Booking cutoffs close a departure only when settings.auto_cutoff_close === true (off until approved).
+ *  - Ramadan = advisory only (never blocks or closes). Eid = five-day block (day before … +3) for
+ *    standard scheduled departures; conflicts need an explicit admin review/override.
  *  - Ended departures are "Completed" and never selectable. Started ones are "Closed".
  *  - Proposed/draft departures are never public.
  */
@@ -85,7 +89,6 @@ export function computeStatus(dep, today, settings = {}) {
   const min = toInt(dep.min_group_size, null); // null = minimum not set by the owner → never Confirmed
   const cap = toInt(dep.max_capacity, null);
   const confirmed = Math.max(0, toInt(dep.confirmed_count, 0));
-  const threshold = toInt(settings.limited_places_threshold, 2);
   const remaining = cap === null ? null : Math.max(cap - confirmed, 0);
   const out = (key) => ({ key, label: STATUS[key], selectable: SELECTABLE.has(key), remaining });
 
@@ -95,18 +98,17 @@ export function computeStatus(dep, today, settings = {}) {
   if (stored === 'cancelled') return out('cancelled');
   if (stored === 'closed') return out('closed');
   if (dep.start_date <= today) return out('closed');
-  if (dep.booking_cutoff && isIsoDate(dep.booking_cutoff) && today > dep.booking_cutoff) return out('closed');
+  if (settings.auto_cutoff_close === true && dep.booking_cutoff && isIsoDate(dep.booking_cutoff) && today > dep.booking_cutoff) return out('closed');
   if (dep.departure_type === 'private' || stored === 'on_request') return out('on_request');
   if (remaining === 0) return out('sold_out');
-  if (min !== null && min > 0 && confirmed >= min && dep.operational_approval === 'approved') {
-    if (remaining !== null && remaining <= threshold) return out('limited');
-    return out('confirmed');
-  }
+  if (dep.limited_manual === true) return out('limited'); // manual only — never automatic
+  if (min !== null && min > 0 && confirmed >= min && dep.operational_approval === 'approved') return out('confirmed');
   return out('open');
 }
 
 /** Public = published, not proposed/draft, and not ended. */
 export function isPublic(dep, today) {
+  // NB: callers listing departures also drop unresolved Eid conflicts (see publicDeparturesFor).
   const stored = String(dep.status || '').toLowerCase();
   if (dep.published !== true) return false;
   if (stored === 'proposed' || stored === 'draft' || stored === 'cancelled' || stored === 'completed') return false;
@@ -190,6 +192,7 @@ export function publicDeparture(dep, tour, settings, today) {
     price_label: priceLabel(dep.price || tour?.price, settings),
     arrival_option: dep.arrival_option || null,
     public_notes: String(dep.public_notes || ''),
+    advisories: religiousFlags(dep, settings.religious_calendar || {}).ramadan.map((p) => ({ type: 'ramadan', text: RAMADAN_COMPACT, period: p.name, state: p.state, period_label: periodLabel(p) })),
   };
   const cap = toInt(dep.max_capacity, null);
   if (settings.show_public_capacity && cap !== null) {
@@ -204,7 +207,7 @@ export function publicDeparture(dep, tour, settings, today) {
 
 export function publicDeparturesFor(slug, departures, tour, settings, today) {
   return departures
-    .filter((d) => d.tour_slug === slug && isPublic(d, today))
+    .filter((d) => d.tour_slug === slug && isPublic(d, today) && eidUnresolved(d, settings.religious_calendar || {}).length === 0)
     .sort((a, b) => a.start_date.localeCompare(b.start_date))
     .map((d) => publicDeparture(d, tour, settings, today));
 }
@@ -228,4 +231,91 @@ export function groupRuleFor(durationDays, settings = {}) {
     return { applies: true, min: toInt(settings.group_rule?.long_min, 6), max: toInt(settings.group_rule?.long_max, 18) };
   }
   return { applies: false, min: toInt(settings.group_rule?.short_tour_shared_min, 2), max: null };
+}
+
+/** A booking counts toward the minimum only when accepted AND payment is recorded as received. */
+export function countsTowardMinimum(tr) {
+  return tr?.status === 'confirmed' && paymentReceived(tr);
+}
+export function paymentReceived(tr) {
+  return tr?.payment_received === true || ['payment_received', 'deposit_recorded', 'paid_recorded'].includes(tr?.payment_status);
+}
+
+/* ------------------------------------------------------------------ religious calendar */
+
+export const RAMADAN_ADVISORY_TITLE = 'Ramadan Travel Advisory';
+export const RAMADAN_ADVISORY_PARAGRAPHS = [
+  'This departure takes place during Ramadan.',
+  'AfghanTours remains open for business and tours continue to operate during Ramadan.',
+  'Travelers should expect some adjustments to normal daily routines. Restaurant and shop opening hours may change, daytime meal arrangements may require additional planning, and some visits or activities may be scheduled differently around prayer times and the evening iftar period.',
+  'Ramadan can also offer travelers a distinctive view of daily life in Afghanistan, particularly in the evenings when families and communities gather to break the fast.',
+  'AfghanTours will plan the departure around the operating conditions and opening hours in effect at the time and advise confirmed travelers of any material itinerary adjustments.',
+];
+export const RAMADAN_COMPACT = 'Ramadan departure — tours continue to operate, with some adjustments to opening hours, meals and daily scheduling.';
+export const EID_NOTICE = 'Eid operating period — standard scheduled departures are not available on these dates. If you need to travel during Eid, please contact AfghanTours to discuss a special arrangement.';
+export const EID_REVIEW_CHECKLIST = ['guide', 'driver', 'vehicle_availability', 'hotels', 'domestic_transport', 'site_access', 'meals', 'local_operating_conditions', 'itinerary_feasibility'];
+const EID_NAMES = { eid_al_fitr: 'Eid al-Fitr', eid_al_adha: 'Eid al-Adha' };
+
+/** Inclusive overlap of two ISO date ranges. */
+export function rangesOverlap(aStart, aEnd, bStart, bEnd) {
+  return isIsoDate(aStart) && isIsoDate(aEnd) && isIsoDate(bStart) && isIsoDate(bEnd) && aStart <= bEnd && aEnd >= bStart;
+}
+
+/** Flatten the configured calendar into Ramadan periods and Eid five-day blocks. */
+export function religiousPeriods(cal = {}) {
+  const before = toInt(cal.eid_block?.days_before, 1);
+  const after = toInt(cal.eid_block?.days_after, 3);
+  const ramadan = [];
+  const eid = [];
+  for (const y of cal.years || []) {
+    const r = y.ramadan;
+    if (r && isIsoDate(r.start_date) && isIsoDate(r.end_date)) {
+      ramadan.push({ kind: 'ramadan', name: `Ramadan ${y.year}`, year: y.year, start: r.start_date, end: r.end_date, state: r.state === 'confirmed' ? 'confirmed' : 'estimated', source: r.source || '' });
+    }
+    for (const kind of ['eid_al_fitr', 'eid_al_adha']) {
+      const e = y[kind];
+      if (!e || !isIsoDate(e.date)) continue;
+      const start = addDays(e.date, -before);
+      const end = addDays(e.date, after);
+      eid.push({ kind, name: `${EID_NAMES[kind]} ${y.year}`, year: y.year, eid_date: e.date, start, end, key: `${kind}:${start}:${end}`, state: e.state === 'confirmed' ? 'confirmed' : 'estimated', source: e.source || '' });
+    }
+  }
+  return { ramadan, eid };
+}
+
+/** Ramadan + Eid overlaps for a departure's FULL inclusive range. */
+export function religiousFlags(dep, cal = {}) {
+  const { ramadan, eid } = religiousPeriods(cal);
+  const s = dep.start_date;
+  const e = dep.end_date;
+  return {
+    ramadan: ramadan.filter((p) => rangesOverlap(s, e, p.start, p.end)),
+    eid: eid.filter((p) => rangesOverlap(s, e, p.start, p.end)),
+  };
+}
+
+/** Eid blocks apply to standard scheduled (shared) departures. Private/custom go to manual review instead. */
+export function eidConflicts(dep, cal = {}) {
+  if (dep.departure_type === 'private') return [];
+  return religiousFlags(dep, cal).eid;
+}
+
+/** An Eid conflict is resolved only by an explicit admin override + note recorded for THIS block (date changes invalidate it). */
+export function eidReviewed(dep, block) {
+  const r = (dep.eid_reviews || {})[block.key];
+  return !!(r && r.override === true && String(r.note || '').trim() !== '' && r.by);
+}
+export function eidUnresolved(dep, cal = {}) {
+  return eidConflicts(dep, cal).filter((b) => !eidReviewed(dep, b));
+}
+
+/** Short "Mon 8 – Fri 12 Mar 2027 (expected)" label; estimated dates are never presented as final. */
+export function periodLabel(p) {
+  return `${formatRange(p.start, p.end)}${p.state === 'confirmed' ? '' : ' (expected)'}`;
+}
+
+/** Special (private/custom/specialist) request touching an Eid block → manual review. Free-text dates are scanned for ISO dates. */
+export function eidManualReview(range, cal = {}) {
+  const { eid } = religiousPeriods(cal);
+  return eid.filter((b) => rangesOverlap(range.start, range.end || range.start, b.start, b.end));
 }

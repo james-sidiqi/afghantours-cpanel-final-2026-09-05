@@ -98,7 +98,7 @@ function page(string $title, string $body, ?array $user): never {
     unset($_SESSION['flash']);
     $nav = '';
     if ($user) {
-        $nav = '<nav><a href="' . h(url()) . '">Departures</a><a href="' . h(url(['a' => 'new'])) . '">New departure</a><a href="' . h(url(['a' => 'inquiries'])) . '">Inquiries</a><a href="' . h(url(['a' => 'tours'])) . '">Tours &amp; pricing</a><a href="' . h(url(['a' => 'blackouts'])) . '">Blackout dates</a><a href="' . h(url(['a' => 'settings'])) . '">Settings</a>'
+        $nav = '<nav><a href="' . h(url()) . '">Departures</a><a href="' . h(url(['a' => 'new'])) . '">New departure</a><a href="' . h(url(['a' => 'inquiries'])) . '">Inquiries</a><a href="' . h(url(['a' => 'tours'])) . '">Tours &amp; pricing</a><a href="' . h(url(['a' => 'calendar'])) . '">Religious calendar</a><a href="' . h(url(['a' => 'blackouts'])) . '">Other blackout dates</a><a href="' . h(url(['a' => 'settings'])) . '">Settings</a>'
             . '<form method="post" action="' . h(url(['a' => 'logout'])) . '" class="inline">' . csrf_field() . '<button class="link">Sign out ' . h($user['name']) . '</button></form></nav>';
     }
     $f = $flash ? '<p class="flash flash--' . h($flash[0]) . '">' . h($flash[1]) . '</p>' : '';
@@ -108,7 +108,7 @@ function page(string $title, string $body, ?array $user): never {
         . 'header strong{font:700 1.1rem Georgia,"Times New Roman",serif}header nav{display:flex;flex-wrap:wrap;gap:.3rem 1rem;align-items:center}header a,header .link{color:#f0d79a;text-decoration:none;font-weight:700;font-size:.85rem}'
         . 'main{max-width:1180px;margin:0 auto;padding:1.25rem}h1{font:700 1.8rem/1.1 Georgia,"Times New Roman",serif;margin:.5rem 0 1rem}h2{font:700 1.2rem Georgia,serif;margin:1.6rem 0 .6rem}'
         . 'table{width:100%;border-collapse:collapse;background:#fff;font-size:.85rem}th,td{border-bottom:1px solid #e6e1d6;padding:.5rem .55rem;text-align:left;vertical-align:top}th{background:#f6f2ea;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em}'
-        . '.wrap{overflow-x:auto}.muted{color:#6b6d66;font-size:.8rem}.tag{display:inline-block;padding:.1rem .45rem;border-radius:999px;background:#f1ebdf;font-size:.72rem;font-weight:700}.tag--warn{background:#fbe7c6}.tag--pub{background:#dceee0}'
+        . '.wrap{overflow-x:auto}.muted{color:#6b6d66;font-size:.8rem}.tag{display:inline-block;padding:.1rem .45rem;border-radius:999px;background:#f1ebdf;font-size:.72rem;font-weight:700}.tag--warn{background:#fbe7c6}.tag--pub{background:#dceee0}.tag--err{background:#f6c9bf;color:#6d1d0f}'
         . 'form.card,.card{background:#fff;border:1px solid #e0dacd;border-radius:10px;padding:1rem;margin:0 0 1rem}label{display:block;font-weight:700;font-size:.8rem;margin:.55rem 0 .2rem}'
         . 'input,select,textarea{width:100%;box-sizing:border-box;padding:.55rem .6rem;border:1px solid #cbc6ba;border-radius:7px;font:inherit;background:#fff}textarea{min-height:70px}'
         . '.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0 1rem}button{background:#111917;color:#fff;border:0;border-radius:999px;padding:.55rem 1rem;font-weight:800;cursor:pointer;margin:.35rem .35rem 0 0}'
@@ -194,6 +194,8 @@ if ($method === 'POST' && !$canEdit) {
 $settings = $inv['settings'] ?? [];
 $today = atb_today($settings['timezone'] ?? 'Asia/Kabul');
 $deps = atb_effective_departures($inv);
+$cal = (array)($inv['religious_calendar'] ?? []);
+$settings['religious_calendar'] = $cal;
 $toursBySlug = [];
 foreach ($inv['tours'] as $t) $toursBySlug[$t['slug']] = $t;
 
@@ -255,7 +257,11 @@ if (in_array($action, ['create', 'update'], true) && $method === 'POST') {
         'public_counts_approved' => post('public_counts_approved') === '1',
         'arrival_option' => $slug === 'weekend-in-kabul' && atb_is_iso_date($start) ? ([5 => 'fri-sun', 6 => 'sat-mon'][atb_weekday($start)] ?? null) : null,
         'date_check_override' => post('date_check_override') === '1',
+        'limited_manual' => post('limited_manual') === '1',
+        'price_approved' => post('price_approved') === '1',
     ]);
+    if ($dep['price_approved'] && empty($base['price_approved'])) { $dep['price_approved_by'] = $user['name']; $dep['price_approved_at'] = atb_now_iso(); }
+    if (!$dep['price_approved']) unset($dep['price_approved_by'], $dep['price_approved_at']);
     $dep['price'] = [
         'amount' => $amount === '' ? null : (is_numeric($amount) && (float)$amount > 0 ? (float)$amount : -1),
         'currency' => 'USD',
@@ -292,15 +298,34 @@ if ($action === 'op' && $method === 'POST') {
     switch ($op) {
         case 'publish':
             if (($d['status'] ?? '') === 'proposed' || ($d['status'] ?? '') === 'draft') $d['status'] = 'scheduled';
-            $errs = atb_validate_departure($d, $inv, $today, true);
+            $errs = atb_validate_departure($d, $inv, $today, true, true);
             if ($errs) redirect(['a' => 'edit', 'id' => $id], 'Not published: ' . implode(' ', $errs), 'err');
             $d['published'] = true; $d['published_at'] = atb_now_iso(); $d['published_by'] = $user['name'];
             $msg = 'Published — now visible on the tour page.';
             break;
         case 'unpublish': $d['published'] = false; $msg = 'Unpublished — hidden from customers.'; break;
-        case 'approve': $d['operational_approval'] = 'approved'; $d['approved_by'] = $user['name']; $d['approved_at'] = atb_now_iso(); $msg = 'Operational approval recorded. It shows as Confirmed only once the minimum of confirmed travelers is reached.'; break;
+        case 'approve':
+            if ($u = atb_eid_unresolved($d, $cal)) redirect(['a' => 'edit', 'id' => $id], 'Not approved: Eid conflict with ' . $u[0]['name'] . ' (' . $u[0]['start'] . ' – ' . $u[0]['end'] . '). Record the owner/operational review override first.', 'err');
+            if (empty($d['published']) && ($d['price_approved'] ?? null) !== true) redirect(['a' => 'edit', 'id' => $id], 'Not approved: the price is not owner-approved yet (a production reference is not approval).', 'err');
+            $d['operational_approval'] = 'approved'; $d['approved_by'] = $user['name']; $d['approved_at'] = atb_now_iso(); $msg = 'Operational approval recorded. It shows as Confirmed only once the minimum of confirmed travelers is reached.'; break;
         case 'unapprove': $d['operational_approval'] = 'pending'; $msg = 'Approval withdrawn.'; break;
         case 'close': $d['status'] = 'closed'; $msg = 'Closed for requests.'; break;
+        case 'mark_limited': $d['limited_manual'] = true; $msg = 'Marked Limited (manual).'; break;
+        case 'unmark_limited': $d['limited_manual'] = false; $msg = 'Limited flag removed.'; break;
+        case 'eid_review':
+            $key = post('block_key');
+            $blk = null;
+            foreach (atb_eid_conflicts($d, $cal) as $b) if ($b['key'] === $key) $blk = $b;
+            if (!$blk) redirect(['a' => 'edit', 'id' => $id], 'That Eid block no longer applies to this departure (dates changed?). Reload.', 'err');
+            $note = atb_str(post('note'), 1000);
+            if (post('override') !== '1' || $note === '') redirect(['a' => 'edit', 'id' => $id], 'Tick the explicit override and write who decided and why.', 'err');
+            $d['eid_reviews'][$key] = ['override' => true, 'note' => $note, 'by' => $user['name'], 'at' => atb_now_iso(), 'block' => ['name' => $blk['name'], 'start' => $blk['start'], 'end' => $blk['end'], 'state' => $blk['state']]];
+            $msg = 'Eid review recorded for ' . $blk['name'] . ' (' . $blk['start'] . ' – ' . $blk['end'] . '). It applies only to these block dates — if the Eid date changes, review again.';
+            break;
+        case 'eid_review_withdraw':
+            unset($d['eid_reviews'][post('block_key')]);
+            $msg = 'Eid review withdrawn.';
+            break;
         case 'reopen': $d['status'] = 'scheduled'; $msg = 'Reopened.'; break;
         case 'cancel': $d['status'] = 'cancelled'; $msg = 'Cancelled. Contact assigned travelers directly.'; break;
         case 'complete':
@@ -324,7 +349,18 @@ if ($action === 'op' && $method === 'POST') {
 
 /* ---- booking records (booking status is separate from departure status) ---- */
 const BOOKING_STATUS = ['pending' => 'Requested (not yet accepted)', 'confirmed' => 'Booking confirmed', 'cancelled' => 'Booking cancelled'];
-const PAYMENT_NOTE = ['not_recorded' => 'Not recorded', 'deposit_recorded' => 'Deposit recorded', 'paid_recorded' => 'Paid in full recorded'];
+// Deposit/payment rules are not defined yet (owner decision) — staff only record whether payment was received.
+const PAYMENT_NOTE = ['not_recorded' => 'Payment not recorded', 'payment_received' => 'Payment received (recorded by admin)'];
+function payment_value(string $v): ?string {
+    if (in_array($v, ['deposit_recorded', 'paid_recorded'], true)) $v = 'payment_received'; // legacy values
+    return array_key_exists($v, PAYMENT_NOTE) ? $v : null;
+}
+function new_booking_reference(): string { return 'ATB-' . gmdate('Y') . '-' . strtoupper(bin2hex(random_bytes(3))); }
+/** Private/custom special request inside an Eid block → manual review before any confirmation. */
+function eid_review_needed(?array $dep, array $cal): array {
+    if (!$dep || ($dep['departure_type'] ?? '') !== 'private') return [];
+    return atb_religious_flags($dep, $cal)['eid'];
+}
 
 function money_or_null(string $v): ?float { return $v !== '' && is_numeric($v) && (float)$v >= 0 ? round((float)$v, 2) : null; }
 
@@ -336,6 +372,12 @@ function stamp_booking(array &$tr, ?array $dep, string $today, array $settings, 
     $tr['booking_confirmed_by'] = $actor;
     $tr['departure_status_at_booking'] = $dep ? atb_status_text($st['key'], $dep, $settings) : 'unknown';
     $tr['required_minimum_at_booking'] = $dep['min_group_size'] ?? null;
+    if (empty($tr['booking_reference'])) $tr['booking_reference'] = new_booking_reference();
+}
+/** Future transactional bookings: acceptance of Terms + Cancellation policy (data model only; no acceptance UI yet). */
+function acceptance_defaults(array &$tr): void {
+    $tr += ['booking_reference' => null, 'terms_acceptance' => null, 'policy_acceptance' => null];
+    // Shape when recorded: ['document' => 'terms'|'cancellation-refund-rescheduling', 'version' => '…', 'effective_date' => 'YYYY-MM-DD', 'accepted_at' => ISO-8601, 'method' => '…']
 }
 
 /** Record the date a departure first became Confirmed (minimum confirmed travelers + operational approval). */
@@ -370,17 +412,23 @@ if ($action === 'traveler' && $method === 'POST') {
         if ($name === '') redirect(['a' => 'edit', 'id' => $depId], 'Traveler name is required.', 'err');
         $size = max(1, min(50, (int)atb_int(post('party_size'), 1)));
         $status = in_array(post('status'), ['pending', 'confirmed'], true) ? post('status') : 'pending';
+        $depRow = atb_find_departure($deps, $depId);
+        if ($status === 'confirmed' && eid_review_needed($depRow, $cal) && trim(post('eid_review_note')) === '') {
+            redirect(['a' => 'edit', 'id' => $depId], 'Eid special request — manual review required (guide, driver, vehicle, hotels, domestic transport, site access, meals, local conditions, feasibility). Record the review note before confirming.', 'err');
+        }
         $travelers[] = [
             'id' => 'TRV-' . bin2hex(random_bytes(5)), 'departure_id' => $depId, 'name' => $name,
             'email' => atb_str(post('email'), 190), 'whatsapp' => atb_str(post('whatsapp'), 40), 'country' => atb_str(post('country'), 80),
             'party_size' => $size, 'status' => $status,
-            'payment_status' => in_array(post('payment_status'), ['not_recorded', 'deposit_recorded', 'paid_recorded'], true) ? post('payment_status') : 'not_recorded',
+            'payment_status' => payment_value(post('payment_status')) ?? 'not_recorded',
+            'eid_review_note' => atb_str(post('eid_review_note'), 1000),
             'inquiry_id' => atb_str(post('inquiry_id'), 60), 'notes' => atb_str(post('notes'), 1000),
             'amount_paid' => money_or_null(post('amount_paid')), 'balance_due' => money_or_null(post('balance_due')),
             'balance_due_date' => atb_is_iso_date(post('balance_due_date')) ? post('balance_due_date') : null, 'currency' => 'USD',
             'created_at' => atb_now_iso(), 'created_by' => $user['name'],
         ];
         $new = array_key_last($travelers);
+        acceptance_defaults($travelers[$new]);
         stamp_booking($travelers[$new], atb_find_departure($deps, $depId), $today, $settings, $user['name']);
         atb_save_travelers($travelers, $user['name'], 'traveler_add', ['departure_id' => $depId, 'status' => $status, 'party_size' => $size]);
         sync_departure_confirmed_on($depId, $user['name'], $today);
@@ -390,8 +438,13 @@ if ($action === 'traveler' && $method === 'POST') {
         $tid = post('traveler_id');
         foreach ($travelers as &$tr) {
             if (($tr['id'] ?? '') !== $tid || ($tr['departure_id'] ?? '') !== $depId) continue;
+            if (isset($_POST['eid_review_note'])) $tr['eid_review_note'] = atb_str(post('eid_review_note'), 1000);
+            if (post('status') === 'confirmed' && ($tr['status'] ?? '') !== 'confirmed' && eid_review_needed(atb_find_departure($deps, $depId), $cal) && trim((string)($tr['eid_review_note'] ?? '')) === '') {
+                redirect(['a' => 'edit', 'id' => $depId], 'Eid special request — manual review required before this booking can be confirmed. Record the review note.', 'err');
+            }
             if (in_array(post('status'), ['pending', 'confirmed', 'cancelled'], true)) $tr['status'] = post('status');
-            if (in_array(post('payment_status'), ['not_recorded', 'deposit_recorded', 'paid_recorded'], true)) $tr['payment_status'] = post('payment_status');
+            if (payment_value(post('payment_status')) !== null) $tr['payment_status'] = payment_value(post('payment_status'));
+            acceptance_defaults($tr);
             foreach (['amount_paid', 'balance_due'] as $mk) if (isset($_POST[$mk])) $tr[$mk] = money_or_null(post($mk));
             if (isset($_POST['balance_due_date'])) $tr['balance_due_date'] = atb_is_iso_date(post('balance_due_date')) ? post('balance_due_date') : null;
             stamp_booking($tr, atb_find_departure($deps, $depId), $today, $settings, $user['name']);
@@ -462,9 +515,51 @@ if ($action === 'settings_save' && $method === 'POST') {
     $inv['settings']['usd_confirmed'] = post('usd_confirmed') === '1';
     $inv['settings']['show_public_capacity'] = post('show_public_capacity') === '1';
     $inv['settings']['show_public_confirmed_counts'] = post('show_public_confirmed_counts') === '1';
-    $inv['settings']['limited_places_threshold'] = max(1, min(10, (int)atb_int(post('limited_places_threshold'), 2)));
+    unset($inv['settings']['limited_places_threshold']); // Limited is manual per departure
     save_or_fail($inv, $user, 'settings_update', [], ['a' => 'settings']);
     redirect(['a' => 'settings'], 'Settings saved.');
+}
+
+/* ---- religious calendar (Ramadan advisory, Eid five-day blocks) ---- */
+function eid_conflict_snapshot(array $deps, array $cal, string $today): array {
+    $out = [];
+    foreach ($deps as $d) {
+        if (($d['end_date'] ?? '') < $today || in_array($d['status'] ?? '', ['cancelled', 'completed'], true)) continue;
+        if (!empty($d['published']) || in_array($d['status'] ?? '', ['proposed', 'draft', 'scheduled', 'on_request'], true)) {
+            foreach (atb_eid_unresolved($d, $cal) as $b) $out[] = $d['id'] . ' × ' . $b['name'];
+        }
+    }
+    return $out;
+}
+if ($action === 'calendar_save' && $method === 'POST') {
+    $years = [];
+    $err = [];
+    foreach ((array)($_POST['y'] ?? []) as $row) {
+        if (!is_array($row)) continue;
+        $year = (int)atb_int($row['year'] ?? null, 0);
+        if ($year < 2024 || $year > 2100) { if (trim((string)($row['year'] ?? '')) !== '') $err[] = 'Bad year.'; continue; }
+        $g = static fn(string $k) => atb_str($row[$k] ?? '', 500);
+        $state = static fn(string $k) => ($row[$k] ?? '') === 'confirmed' ? 'confirmed' : 'estimated';
+        foreach (['ramadan_start', 'ramadan_end', 'fitr', 'adha'] as $k) if (!atb_is_iso_date($g($k))) $err[] = $year . ': ' . $k . ' must be a date.';
+        if (atb_is_iso_date($g('ramadan_start')) && atb_is_iso_date($g('ramadan_end')) && $g('ramadan_end') < $g('ramadan_start')) $err[] = $year . ': Ramadan ends before it starts.';
+        $years[] = [
+            'year' => $year,
+            'ramadan' => ['start_date' => $g('ramadan_start'), 'end_date' => $g('ramadan_end'), 'state' => $state('ramadan_state'), 'source' => $g('ramadan_source')],
+            'eid_al_fitr' => ['date' => $g('fitr'), 'state' => $state('fitr_state'), 'source' => $g('fitr_source')],
+            'eid_al_adha' => ['date' => $g('adha'), 'state' => $state('adha_state'), 'source' => $g('adha_source')],
+        ];
+    }
+    if ($err) redirect(['a' => 'calendar'], implode(' ', $err), 'err');
+    usort($years, static fn($a, $b) => $a['year'] <=> $b['year']);
+    $before = eid_conflict_snapshot($deps, $cal, $today);
+    $inv['religious_calendar']['years'] = $years;
+    $inv['religious_calendar'] += ['eid_block' => ['days_before' => 1, 'days_after' => 3]];
+    $newCal = $inv['religious_calendar'];
+    $after = eid_conflict_snapshot($deps, $newCal, $today);
+    $inv['religious_calendar']['last_revalidation'] = ['at' => atb_now_iso(), 'by' => $user['name'], 'unresolved_eid_conflicts' => $after];
+    save_or_fail($inv, $user, 'religious_calendar_update', ['new_conflicts' => array_values(array_diff($after, $before)), 'unresolved' => $after], ['a' => 'calendar']);
+    $new = array_values(array_diff($after, $before));
+    redirect(['a' => 'calendar'], 'Religious calendar saved; all departures revalidated. ' . ($after ? count($after) . ' unresolved Eid conflict(s)' . ($new ? ' (new: ' . implode(', ', $new) . ')' : '') . ' — see Departures.' : 'No unresolved Eid conflicts.'), $after ? 'err' : 'ok');
 }
 
 /* ---- inquiries ---- */
@@ -474,6 +569,13 @@ if ($action === 'inquiry' && $method === 'POST') {
     if ($op === 'status' && in_array(post('status'), ['new', 'contacted', 'approved', 'declined', 'closed'], true)) {
         atb_update_inquiry($id, ['status' => post('status')], $user['name']);
         redirect(['a' => 'inquiry', 'id' => $id], 'Inquiry status updated.');
+    }
+    if ($op === 'review') {
+        $notes = [];
+        foreach (ATB_EID_CHECKLIST as $k => $label) $notes[$k] = ['checked' => post('chk_' . $k) === '1', 'note' => atb_str(post('note_' . $k), 300)];
+        $state = in_array(post('review_status'), ['open', 'feasible', 'not_feasible'], true) ? post('review_status') : 'open';
+        atb_update_inquiry($id, ['manual_review_checklist' => $notes, 'manual_review_status' => $state], $user['name']);
+        redirect(['a' => 'inquiry', 'id' => $id], 'Manual review saved. Nothing is sent to the traveler from here.');
     }
     if ($op === 'assign') {
         $depId = post('departure_id');
@@ -511,7 +613,8 @@ function booking_confirmation_text(array $tr, ?array $d, ?array $t, string $toda
         'Amount paid' => $money($tr['amount_paid'] ?? null),
         'Remaining balance' => $money($tr['balance_due'] ?? null),
         'Balance due date' => (string)($tr['balance_due_date'] ?? 'not applicable / not set'),
-        'Booking reference' => (string)$tr['id'],
+        'Booking reference' => (string)($tr['booking_reference'] ?? $tr['id']),
+        'Payment' => atb_payment_received($tr) ? 'received (recorded)' : 'not recorded yet',
     ];
     $lines = ['Dear ' . $tr['name'] . ',', '', 'Thank you for booking with AfghanTours. Your booking is confirmed.', ''];
     foreach ($fields as $k => $v) if ($k !== 'Departure status now') $lines[] = $k . ': ' . $v;
@@ -521,16 +624,34 @@ function booking_confirmation_text(array $tr, ?array $d, ?array $t, string $toda
     } else {
         $lines[] = 'This departure is confirmed and will operate.';
     }
+    if ($d && ($rams = atb_religious_flags($d, (array)($settings['religious_calendar'] ?? []))['ramadan'])) {
+        $lines[] = '';
+        $lines[] = ATB_RAMADAN_TITLE . ' (' . atb_period_label($rams[0]) . ')';
+        foreach (ATB_RAMADAN_PARAGRAPHS as $para) { $lines[] = ''; $lines[] = $para; }
+    }
     $lines = array_merge($lines, ['', 'With best wishes,', 'AfghanTours', 'James Tourist & Travel Agency · Operating as AfghanTours.com · Tour Operator License ATO-KBL-1617', 'info@afghantours.com · WhatsApp +93 780 123 456']);
     return ['fields' => $fields, 'email' => implode("\n", $lines)];
 }
 
+function religious_tags(array $d, array $cal): string {
+    $o = '';
+    $f = atb_religious_flags($d, $cal);
+    if ($f['ramadan']) $o .= ' <span class="tag">Ramadan advisory</span>';
+    $unres = atb_eid_unresolved($d, $cal);
+    if ($unres) $o .= ' <span class="tag tag--err">Eid conflict — review required</span>';
+    elseif (atb_eid_conflicts($d, $cal)) $o .= ' <span class="tag tag--warn">Eid — reviewed override</span>';
+    if (!atb_eid_conflicts($d, $cal) && $f['eid']) $o .= ' <span class="tag tag--warn">Eid — private: manual review</span>';
+    return $o;
+}
 function status_tag(array $d, string $today, array $settings): string {
     $st = atb_compute_status($d, $today, $settings);
-    $pub = (!empty($d['published']) && atb_is_public($d, $today)) ? '<span class="tag tag--pub">public</span>' : '<span class="tag">not public</span>';
+    $isPub = !empty($d['published']) && atb_is_public($d, $today);
+    $held = $isPub && atb_eid_unresolved($d, (array)($settings['religious_calendar'] ?? []));
+    $pub = $held ? '<span class="tag tag--err">published · hidden until Eid review</span>' : ($isPub ? '<span class="tag tag--pub">public</span>' : '<span class="tag">not public</span>');
     $warn = (isset($d['date_check']['ok']) && $d['date_check']['ok'] === false) ? ' <span class="tag tag--warn">date check</span>' : '';
     $cap = ($d['max_capacity'] ?? null) === null && in_array($d['status'] ?? '', ['scheduled', 'on_request'], true) ? ' <span class="tag tag--warn">no capacity</span>' : '';
-    return h($st['label']) . '<br>' . $pub . $warn . $cap;
+    $price = in_array($d['status'] ?? '', ['proposed', 'draft'], true) && ($d['price_approved'] ?? null) !== true ? ' <span class="tag tag--warn">price not approved</span>' : '';
+    return h($st['label']) . '<br>' . $pub . $warn . $cap . $price . religious_tags($d, (array)($settings['religious_calendar'] ?? []));
 }
 
 if ($action === 'departures') {
@@ -546,7 +667,7 @@ if ($action === 'departures') {
         };
     });
     usort($rows, static fn($a, $b) => strcmp($a['start_date'], $b['start_date']));
-    $b = '<h1>Departures</h1><p class="muted">Inventory source: <strong>' . h($source) . '</strong> · revision ' . h($inv['revision'] ?? '') . ' · today (Kabul) ' . h($today) . '. Only <em>confirmed</em> travelers count toward the minimum. Nothing becomes Confirmed without your approval.</p>';
+    $b = '<h1>Departures</h1><p class="muted">Inventory source: <strong>' . h($source) . '</strong> · revision ' . h($inv['revision'] ?? '') . ' · today (Kabul) ' . h($today) . '. Only bookings that are accepted <em>and</em> have payment recorded as received count toward the minimum; inquiries never count. Nothing becomes Confirmed without your approval. Ramadan = advisory only; Eid conflicts must be reviewed before publish/approve.</p>';
     $b .= '<p class="filters">';
     foreach (['upcoming' => 'Upcoming (scheduled)', 'proposed' => 'Proposed / draft', 'history' => 'History', 'all' => 'All'] as $k => $l) {
         $b .= '<a href="' . h(url(['view' => $k, 'tour' => $tourFilter])) . '"' . ($view === $k ? ' style="text-decoration:underline"' : '') . '>' . h($l) . '</a>';
@@ -579,14 +700,17 @@ function departure_form(array $inv, array $d, bool $isNew, bool $canEdit): strin
         . '<div><label for="price_status">Price status</label>' . select('price_status', ['reference_from_production' => 'Reference from production (needs review)', 'approved' => 'Approved', 'price_on_request' => 'Price on request'], (string)($d['price']['price_status'] ?? 'reference_from_production')) . '</div>'
         . '</div><label for="public_notes">Public note (shown to customers)</label><input name="public_notes" id="public_notes" maxlength="300" value="' . h($d['public_notes'] ?? '') . '">'
         . '<label for="internal_notes">Internal notes (staff only, never public)</label><textarea name="internal_notes" id="internal_notes">' . h($d['internal_notes'] ?? '') . '</textarea>'
-        . '<label><input type="checkbox" name="public_counts_approved" value="1" style="width:auto"' . (!empty($d['public_counts_approved']) ? ' checked' : '') . '> Allow “x of 3 travelers confirmed” on the site (also needs the global setting)</label>'
-        . '<label><input type="checkbox" name="date_check_override" value="1" style="width:auto"' . (!empty($d['date_check_override']) ? ' checked' : '') . '> Keep dates even though they do not match the tour duration</label>';
+        . '<label><input type="checkbox" name="public_counts_approved" value="1" style="width:auto"' . (!empty($d['public_counts_approved']) ? ' checked' : '') . '> Allow “x of N travelers confirmed” on the site (also needs the global setting)</label>'
+        . '<label><input type="checkbox" name="date_check_override" value="1" style="width:auto"' . (!empty($d['date_check_override']) ? ' checked' : '') . '> Keep dates even though they do not match the tour duration</label>'
+        . '<label><input type="checkbox" name="price_approved" value="1" style="width:auto"' . (($d['price_approved'] ?? false) === true ? ' checked' : '') . '> Price approved by owner (a production reference price is not approval; required before publishing a proposed departure)</label>'
+        . (!empty($d['price_approved_by']) ? '<p class="muted">Price approved by ' . h($d['price_approved_by']) . ' at ' . h($d['price_approved_at'] ?? '') . '</p>' : '')
+        . '<label><input type="checkbox" name="limited_manual" value="1" style="width:auto"' . (!empty($d['limited_manual']) ? ' checked' : '') . '> Show as Limited (manual — there is no automatic “few places” threshold)</label>';
     return $f . ($canEdit ? '<button>' . ($isNew ? 'Create (not public)' : 'Save') . '</button>' : '<p class="muted">Read-only.</p>') . '</form>';
 }
 
 if ($action === 'new') {
     if (!$canEdit) fail_page(403, 'Read-only account', 'Your account cannot create departures.', $user);
-    page('New departure', '<h1>New departure</h1><p class="muted">New departures start as Draft and are never public until you set a maximum capacity and publish. Category D services and inactive tours cannot have departures.</p>' . departure_form($inv, ['departure_type' => 'shared', 'min_group_size' => 3, 'status' => 'draft'], true, true), $user);
+    page('New departure', '<h1>New departure</h1><p class="muted">New departures start as Draft and are never public until you set a maximum capacity and publish. Category D services and inactive tours cannot have departures.</p>' . departure_form($inv, ['departure_type' => 'shared', 'status' => 'draft'], true, true), $user);
 }
 
 if ($action === 'edit') {
@@ -595,29 +719,51 @@ if ($action === 'edit') {
     if (!$d) fail_page(404, 'Not found', 'No departure with that id.', $user);
     $t = $toursBySlug[$d['tour_slug']] ?? ['name' => $d['tour_slug'], 'duration_days' => 0];
     $st = atb_compute_status($d, $today, $settings);
-    $b = '<h1>' . h($t['name']) . '</h1><p><strong>' . h(atb_format_range($d['start_date'], $d['end_date'])) . '</strong> · ' . h($d['id']) . ' · customer status: <strong>' . h($st['label']) . '</strong> · ' . (atb_is_public($d, $today) ? 'public' : 'not public') . '</p>';
+    $b = '<h1>' . h($t['name']) . '</h1><p><strong>' . h(atb_format_range($d['start_date'], $d['end_date'])) . '</strong> · ' . h($d['id']) . ' · customer status: <strong>' . h($st['label']) . '</strong> · ' . (atb_is_public($d, $today) ? (atb_eid_unresolved($d, $cal) ? 'published, hidden from customers until the Eid review' : 'public') : 'not public') . '</p>';
     if (isset($d['date_check']['ok']) && $d['date_check']['ok'] === false) {
         $b .= '<p class="flash flash--err">Date check: ' . h($d['start_date'] . ' – ' . $d['end_date']) . ' is ' . h(atb_inclusive_days($d['start_date'], $d['end_date'])) . ' days inclusive; the tour is ' . h($t['duration_days']) . ' days. Expected end ' . h(atb_expected_end($d['start_date'], (int)$t['duration_days'])) . '. ' . h($d['date_check']['note'] ?? '') . '</p>';
     }
+    $rf = atb_religious_flags($d, $cal);
+    foreach ($rf['ramadan'] as $p) {
+        $b .= '<div class="card"><strong>Ramadan advisory</strong> (' . h($p['name'] . ': ' . atb_period_label($p)) . ' · ' . h($p['state']) . '). Advisory only — the departure stays bookable and is never closed for Ramadan. Customers see: “' . h(ATB_RAMADAN_COMPACT) . '”</div>';
+    }
+    foreach (atb_eid_conflicts($d, $cal) as $blk) {
+        $rev = $d['eid_reviews'][$blk['key']] ?? null;
+        $ok = atb_eid_reviewed($d, $blk);
+        $b .= '<div class="card" style="border-color:' . ($ok ? '#d7b46a' : '#c0533a') . '"><strong>' . ($ok ? 'Eid — reviewed override on record' : 'EID CONFLICT — owner/operational review required') . '</strong><p>This standard scheduled departure overlaps the ' . h($blk['name']) . ' operating period <strong>' . h(atb_period_label($blk)) . '</strong> (' . h($blk['start'] . ' – ' . $blk['end']) . ', Eid day ' . h($blk['eid_date']) . ', ' . h($blk['state']) . '). It has not been moved or deleted. '
+            . ($ok ? 'Override by ' . h($rev['by']) . ' at ' . h($rev['at']) . ': “' . h($rev['note']) . '”' : 'Publishing and operational approval are blocked, and it is hidden from the public tour page, until an admin records an explicit override with a note.') . '</p>';
+        if ($canEdit && !$ok) {
+            $b .= '<form method="post" action="' . h(url(['a' => 'op'])) . '">' . csrf_field() . '<input type="hidden" name="id" value="' . h($d['id']) . '"><input type="hidden" name="op" value="eid_review"><input type="hidden" name="block_key" value="' . h($blk['key']) . '">'
+                . '<label for="eidnote">Review note (who decided, what was checked: guide, driver, vehicle, hotels, domestic transport, site access, meals, local operating conditions, itinerary feasibility)</label><textarea id="eidnote" name="note" required></textarea>'
+                . '<label><input type="checkbox" name="override" value="1" style="width:auto" required> Explicit override: operate this standard departure during the Eid operating period</label><button>Record Eid review override</button></form>';
+        } elseif ($canEdit) {
+            $b .= '<form class="inline" method="post" action="' . h(url(['a' => 'op'])) . '">' . csrf_field() . '<input type="hidden" name="id" value="' . h($d['id']) . '"><input type="hidden" name="op" value="eid_review_withdraw"><input type="hidden" name="block_key" value="' . h($blk['key']) . '"><button class="alt">Withdraw override</button></form>';
+        }
+        $b .= '</div>';
+    }
+    if (($d['departure_type'] ?? '') === 'private' && $rf['eid']) {
+        $b .= '<div class="card" style="border-color:#c0533a"><strong>Eid special request — MANUAL REVIEW</strong><p>This private departure falls in ' . h($rf['eid'][0]['name']) . ' (' . h(atb_period_label($rf['eid'][0])) . '). Never promise it can be accommodated. A booking can only be confirmed after a review note is recorded (guide, driver, vehicle availability, hotels, domestic transport, site access, meals, local operating conditions, itinerary feasibility).</p></div>';
+    }
     if ($canEdit) {
-        $ops = ['publish' => 'Publish', 'unpublish' => 'Unpublish', 'approve' => 'Approve operationally', 'unapprove' => 'Withdraw approval', 'close' => 'Close', 'reopen' => 'Reopen', 'cancel' => 'Cancel departure', 'complete' => 'Mark completed'];
+        $ops = ['publish' => 'Publish', 'unpublish' => 'Unpublish', 'approve' => 'Approve operationally', 'unapprove' => 'Withdraw approval', 'close' => 'Close', 'reopen' => 'Reopen', 'cancel' => 'Cancel departure', 'complete' => 'Mark completed', (!empty($d['limited_manual']) ? 'unmark_limited' : 'mark_limited') => (!empty($d['limited_manual']) ? 'Remove Limited' : 'Mark Limited (manual)')];
         if (isset($d['date_check']['ok']) && $d['date_check']['ok'] === false) $ops['fix_end'] = 'Fix end date to ' . atb_expected_end($d['start_date'], (int)$t['duration_days']);
         $b .= '<div class="card"><strong>Actions</strong><br>';
         foreach ($ops as $op => $label) {
             $b .= '<form class="inline" method="post" action="' . h(url(['a' => 'op'])) . '">' . csrf_field() . '<input type="hidden" name="id" value="' . h($d['id']) . '"><input type="hidden" name="op" value="' . h($op) . '"><button class="' . (in_array($op, ['publish', 'approve'], true) ? '' : 'alt') . '">' . h($label) . '</button></form>';
         }
-        $b .= '<p class="muted">Approval: <strong>' . h($d['operational_approval'] ?? 'pending') . '</strong>. Confirmed travelers: <strong>' . h($d['confirmed_count']) . '</strong> of minimum ' . h($d['min_group_size']) . '. Pending: ' . h($d['pending_count']) . '. Remaining capacity: ' . h($d['remaining_capacity'] ?? 'not set') . '.</p></div>';
+        $b .= '<p class="muted">Approval: <strong>' . h($d['operational_approval'] ?? 'pending') . '</strong>. Counting toward minimum (accepted + payment received): <strong>' . h($d['confirmed_count']) . '</strong> of minimum ' . h($d['min_group_size']) . '. Accepted, payment not recorded (not counted): ' . h($d['accepted_unpaid_count'] ?? 0) . '. Requests pending: ' . h($d['pending_count']) . ' (inquiries never count). Remaining capacity: ' . h($d['remaining_capacity'] ?? 'not set') . '.</p></div>';
     }
     $b .= '<h2>Details</h2>' . departure_form($inv, $d, false, $canEdit);
     $travelers = array_filter(atb_load_travelers(), static fn($x) => ($x['departure_id'] ?? '') === $d['id']);
     $b .= '<h2>Bookings on this departure</h2><p class="muted">Staff-only. <strong>Booking status</strong> (per traveler) is separate from the <strong>departure status</strong> above: a booking can be confirmed while the departure is still open and awaiting its minimum. Payment fields are manual notes — no payment is processed or verified here.</p>'
         . '<p class="muted">Departure confirmed on: <strong>' . h($d['confirmed_on'] ?? 'not yet (needs minimum + approval)') . '</strong></p><div class="wrap"><table><thead><tr><th>Name</th><th>Party</th><th>Contact</th><th>Booking status · payment · paid / balance / due</th><th></th></tr></thead><tbody>';
     foreach ($travelers as $tr) {
-        $b .= '<tr><td>' . h($tr['name']) . ($tr['inquiry_id'] ? '<br><span class="muted">' . h($tr['inquiry_id']) . '</span>' : '') . '</td><td>' . h($tr['party_size']) . '</td><td>' . h($tr['email']) . '<br>' . h($tr['whatsapp']) . '</td>'
+        $b .= '<tr><td>' . h($tr['name']) . ($tr['inquiry_id'] ? '<br><span class="muted">' . h($tr['inquiry_id']) . '</span>' : '') . (!empty($tr['booking_reference']) ? '<br><span class="muted">' . h($tr['booking_reference']) . '</span>' : '') . (($tr['status'] ?? '') === 'confirmed' && !atb_payment_received($tr) ? '<br><span class="tag tag--warn">accepted · payment not recorded · not counted</span>' : '') . '</td><td>' . h($tr['party_size']) . '</td><td>' . h($tr['email']) . '<br>' . h($tr['whatsapp']) . '</td>'
             . '<td>' . ($canEdit ? '<form method="post" action="' . h(url(['a' => 'traveler'])) . '">' . csrf_field() . '<input type="hidden" name="op" value="update"><input type="hidden" name="departure_id" value="' . h($d['id']) . '"><input type="hidden" name="traveler_id" value="' . h($tr['id']) . '"><div class="grid">'
-                . '<div>' . select('status', BOOKING_STATUS, (string)$tr['status']) . '</div><div>' . select('payment_status', PAYMENT_NOTE, (string)$tr['payment_status']) . '</div>'
+                . '<div>' . select('status', BOOKING_STATUS, (string)$tr['status']) . '</div><div>' . select('payment_status', PAYMENT_NOTE, payment_value((string)$tr['payment_status']) ?? 'not_recorded') . '</div>'
+                . (eid_review_needed($d, $cal) ? '<div><input name="eid_review_note" placeholder="Eid manual review note (required to confirm)" value="' . h($tr['eid_review_note'] ?? '') . '"></div>' : '')
                 . '<div><input name="amount_paid" placeholder="Amount paid" value="' . h($tr['amount_paid'] ?? '') . '"></div><div><input name="balance_due" placeholder="Balance" value="' . h($tr['balance_due'] ?? '') . '"></div><div><input type="date" name="balance_due_date" value="' . h($tr['balance_due_date'] ?? '') . '"></div></div><button class="alt">Update</button></form>'
-                : h((BOOKING_STATUS[$tr['status']] ?? $tr['status']) . ' · ' . (PAYMENT_NOTE[$tr['payment_status']] ?? $tr['payment_status']))) . '</td>'
+                : h((BOOKING_STATUS[$tr['status']] ?? $tr['status']) . ' · ' . (PAYMENT_NOTE[payment_value((string)$tr['payment_status']) ?? 'not_recorded']))) . '</td>'
             . '<td>' . (($tr['status'] ?? '') === 'confirmed' ? '<a href="' . h(url(['a' => 'confirmation', 'traveler' => $tr['id']])) . '">Booking confirmation</a>' : '') . '</td></tr>';
     }
     if (!$travelers) $b .= '<tr><td colspan="6" class="muted">No travelers assigned.</td></tr>';
@@ -626,9 +772,10 @@ if ($action === 'edit') {
         $b .= '<form class="card" method="post" action="' . h(url(['a' => 'traveler'])) . '">' . csrf_field() . '<input type="hidden" name="op" value="add"><input type="hidden" name="departure_id" value="' . h($d['id']) . '"><strong>Add traveler</strong><div class="grid">'
             . '<div><label for="tn">Name</label><input id="tn" name="name" required></div><div><label for="tp">Party size</label><input id="tp" type="number" min="1" max="50" name="party_size" value="1"></div>'
             . '<div><label for="te">Email</label><input id="te" type="email" name="email"></div><div><label for="tw">WhatsApp</label><input id="tw" name="whatsapp"></div><div><label for="tc">Country</label><input id="tc" name="country"></div>'
-            . '<div><label for="status">Booking status</label>' . select('status', ['pending' => BOOKING_STATUS['pending'], 'confirmed' => 'Booking confirmed (committed, paying)'], 'pending') . '</div>'
+            . '<div><label for="status">Booking status</label>' . select('status', ['pending' => BOOKING_STATUS['pending'], 'confirmed' => 'Booking confirmed (accepted)'], 'pending') . '</div>'
             . '<div><label for="amount_paid">Amount paid (USD, manual)</label><input id="amount_paid" name="amount_paid"></div><div><label for="balance_due">Balance (USD)</label><input id="balance_due" name="balance_due"></div><div><label for="balance_due_date">Balance due date</label><input type="date" id="balance_due_date" name="balance_due_date"></div>'
-            . '<div><label for="payment_status">Payment (manual note)</label>' . select('payment_status', ['not_recorded' => 'Not recorded', 'deposit_recorded' => 'Deposit recorded', 'paid_recorded' => 'Paid recorded'], 'not_recorded') . '</div></div>'
+            . '<div><label for="payment_status">Payment</label>' . select('payment_status', PAYMENT_NOTE, 'not_recorded') . '</div>'
+            . (eid_review_needed($d, $cal) ? '<div><label for="eid_review_note">Eid manual review note</label><input id="eid_review_note" name="eid_review_note" placeholder="required to confirm"></div>' : '') . '</div>'
             . '<label for="tnotes">Notes</label><input id="tnotes" name="notes"><button>Add traveler</button></form>';
     }
     page($t['name'] . ' ' . $d['start_date'], $b, $user);
@@ -656,7 +803,7 @@ if ($action === 'tours') {
 }
 
 if ($action === 'blackouts') {
-    $b = '<h1>Blackout dates</h1><p class="muted">Blocking blackouts stop new departures from being published on those dates for the tours they apply to (use * for all tours). Eid dates are pre-filled as unconfirmed estimates — confirm them once announced.</p><div class="wrap"><table><thead><tr><th>Name</th><th>Dates</th><th>Applies to</th><th>Type</th><th>Confirmed</th><th></th></tr></thead><tbody>';
+    $b = '<h1>Blackout dates</h1><p class="muted">Blocking blackouts stop new departures from being published on those dates for the tours they apply to (use * for all tours). Ramadan and Eid are managed under Religious calendar.</p><div class="wrap"><table><thead><tr><th>Name</th><th>Dates</th><th>Applies to</th><th>Type</th><th>Confirmed</th><th></th></tr></thead><tbody>';
     foreach ($inv['blackouts'] as $bo) {
         $b .= '<tr><td>' . h($bo['name']) . '<br><span class="muted">' . h($bo['source'] ?? '') . '</span></td><td>' . h($bo['start_date'] . ' → ' . $bo['end_date']) . '</td><td>' . h(implode(', ', $bo['applies_to'] ?? [])) . '</td><td>' . (!empty($bo['blocking']) ? 'blocking' : 'advisory') . '</td><td>' . (!empty($bo['confirmed']) ? 'yes' : '<span class="tag tag--warn">estimate</span>') . '</td><td>';
         if ($canEdit) {
@@ -674,13 +821,46 @@ if ($action === 'blackouts') {
     page('Blackout dates', $b, $user);
 }
 
+if ($action === 'calendar') {
+    $years = (array)($cal['years'] ?? []);
+    $per = atb_religious_periods($cal);
+    $b = '<h1>Religious calendar</h1><p class="muted"><strong>Ramadan</strong> is advisory only: departures stay bookable and show the Ramadan advisory. <strong>Eid al-Fitr / Eid al-Adha</strong>: standard scheduled departures are not available from the day before Eid to the third day after (5 days). Saving revalidates every published and proposed departure; any new conflict is flagged on Departures and blocks publish/approve until reviewed. Estimated dates are shown to customers as “expected”.</p>';
+    $b .= '<div class="wrap"><table><thead><tr><th>Period</th><th>Dates</th><th>State</th></tr></thead><tbody>';
+    foreach (array_merge($per['ramadan'], $per['eid']) as $p) $b .= '<tr><td>' . h($p['name']) . ($p['kind'] !== 'ramadan' ? ' operating block' : ' (advisory)') . '</td><td>' . h($p['start'] . ' → ' . $p['end']) . ($p['kind'] !== 'ramadan' ? '<br><span class="muted">Eid day ' . h($p['eid_date']) . '</span>' : '') . '</td><td>' . ($p['state'] === 'confirmed' ? 'confirmed' : '<span class="tag tag--warn">estimated</span>') . '<br><span class="muted">' . h($p['source']) . '</span></td></tr>';
+    $b .= '</tbody></table></div>';
+    $unres = eid_conflict_snapshot($deps, $cal, $today);
+    $b .= '<p class="' . ($unres ? 'flash flash--err' : 'muted') . '">Unresolved Eid conflicts now: ' . ($unres ? h(implode('; ', $unres)) : 'none') . '</p>';
+    $stateSel = static fn(string $n, string $v) => select($n, ['estimated' => 'Estimated', 'confirmed' => 'Confirmed'], $v);
+    $b .= '<form class="card" method="post" action="' . h(url(['a' => 'calendar_save'])) . '">' . csrf_field();
+    $rows = $years;
+    $rows[] = ['year' => '', 'ramadan' => [], 'eid_al_fitr' => [], 'eid_al_adha' => []];
+    foreach ($rows as $i => $y) {
+        $n = static fn(string $k) => 'y[' . $i . '][' . $k . ']';
+        $b .= '<h2>' . ($y['year'] === '' ? 'Add a year' : h($y['year'])) . '</h2><div class="grid">'
+            . '<div><label>Year</label><input name="' . $n('year') . '" value="' . h($y['year']) . '"' . ($canEdit ? '' : ' disabled') . '></div>'
+            . '<div><label>Ramadan start</label><input type="date" name="' . $n('ramadan_start') . '" value="' . h($y['ramadan']['start_date'] ?? '') . '"></div>'
+            . '<div><label>Ramadan end (last day)</label><input type="date" name="' . $n('ramadan_end') . '" value="' . h($y['ramadan']['end_date'] ?? '') . '"></div>'
+            . '<div><label>Ramadan state</label>' . $stateSel($n('ramadan_state'), (string)($y['ramadan']['state'] ?? 'estimated')) . '</div>'
+            . '<div><label>Eid al-Fitr date</label><input type="date" name="' . $n('fitr') . '" value="' . h($y['eid_al_fitr']['date'] ?? '') . '"></div>'
+            . '<div><label>Eid al-Fitr state</label>' . $stateSel($n('fitr_state'), (string)($y['eid_al_fitr']['state'] ?? 'estimated')) . '</div>'
+            . '<div><label>Eid al-Adha date</label><input type="date" name="' . $n('adha') . '" value="' . h($y['eid_al_adha']['date'] ?? '') . '"></div>'
+            . '<div><label>Eid al-Adha state</label>' . $stateSel($n('adha_state'), (string)($y['eid_al_adha']['state'] ?? 'estimated')) . '</div></div>'
+            . '<label>Ramadan source note</label><input name="' . $n('ramadan_source') . '" value="' . h($y['ramadan']['source'] ?? '') . '">'
+            . '<label>Eid al-Fitr source note</label><input name="' . $n('fitr_source') . '" value="' . h($y['eid_al_fitr']['source'] ?? '') . '">'
+            . '<label>Eid al-Adha source note</label><input name="' . $n('adha_source') . '" value="' . h($y['eid_al_adha']['source'] ?? '') . '">';
+    }
+    $b .= ($canEdit ? '<button>Save and revalidate departures</button>' : '<p class="muted">Read-only.</p>') . '</form>';
+    if (!empty($cal['last_revalidation'])) $b .= '<p class="muted">Last revalidation ' . h($cal['last_revalidation']['at'] ?? '') . ' by ' . h($cal['last_revalidation']['by'] ?? '') . '.</p>';
+    page('Religious calendar', $b, $user);
+}
+
 if ($action === 'settings') {
     $chk = static fn(string $k) => !empty($settings[$k]) ? ' checked' : '';
     $b = '<h1>Settings</h1><form class="card" method="post" action="' . h(url(['a' => 'settings_save'])) . '">' . csrf_field()
         . '<label><input type="checkbox" name="usd_confirmed" value="1" style="width:auto"' . $chk('usd_confirmed') . '> Dollar prices are confirmed as USD (shows “USD” instead of “$”)</label>'
         . '<label><input type="checkbox" name="show_public_capacity" value="1" style="width:auto"' . $chk('show_public_capacity') . '> Show maximum capacity / remaining places publicly (only where capacity is set)</label>'
-        . '<label><input type="checkbox" name="show_public_confirmed_counts" value="1" style="width:auto"' . $chk('show_public_confirmed_counts') . '> Allow “x of 3 travelers confirmed” (each departure must also opt in)</label>'
-        . '<label>“Limited places” when this many or fewer remain</label><input type="number" min="1" max="10" name="limited_places_threshold" value="' . h($settings['limited_places_threshold'] ?? 2) . '" style="max-width:120px">'
+        . '<label><input type="checkbox" name="show_public_confirmed_counts" value="1" style="width:auto"' . $chk('show_public_confirmed_counts') . '> Allow “x of N travelers confirmed” (each departure must also opt in)</label>'
+        . '<p class="muted">Limited is set manually on each departure (no automatic threshold). Sold out is automatic only where a capacity is set. Booking cutoffs do <strong>not</strong> close departures (' . (!empty($settings['auto_cutoff_close']) ? 'automatic cutoff closing is ON' : 'automatic cutoff closing is off until a cutoff rule is approved') . ').</p>'
         . ($canEdit ? '<button>Save settings</button>' : '') . '</form><p class="muted">Seed imported ' . h($inv['seed']['imported_at'] ?? '') . ' (seed as of ' . h($inv['seed']['seed_as_of'] ?? '') . '). Contact shown on the site: ' . h(($settings['contact']['email'] ?? '') . ' · ' . ($settings['contact']['whatsapp_display'] ?? '')) . '.</p>';
     page('Settings', $b, $user);
 }
@@ -689,7 +869,7 @@ if ($action === 'inquiries') {
     $rows = atb_load_inquiries();
     $b = '<h1>Inquiries</h1><p class="muted">Every website request is stored here as well as emailed to info@afghantours.com. Newest first.</p><div class="wrap"><table><thead><tr><th>Received (UTC)</th><th>Name</th><th>Tour / departure</th><th>Travelers</th><th>Type</th><th>Status</th></tr></thead><tbody>';
     foreach ($rows as $r) {
-        $b .= '<tr><td><a href="' . h(url(['a' => 'inquiry', 'id' => $r['id']])) . '">' . h($r['received_at']) . '</a></td><td>' . h($r['name'] ?? '') . '</td><td>' . h($r['entity_name'] ?? '') . '<br><span class="muted">' . h($r['departure_id'] ?? '') . '</span></td><td>' . h($r['travelers'] ?? '') . '</td><td>' . h($r['booking_type'] ?? '') . '</td><td>' . h($r['status'] ?? 'new') . '</td></tr>';
+        $b .= '<tr><td><a href="' . h(url(['a' => 'inquiry', 'id' => $r['id']])) . '">' . h($r['received_at']) . '</a></td><td>' . h($r['name'] ?? '') . '</td><td>' . h($r['entity_name'] ?? '') . '<br><span class="muted">' . h($r['departure_id'] ?? '') . '</span></td><td>' . h($r['travelers'] ?? '') . '</td><td>' . h($r['booking_type'] ?? '') . '</td><td>' . h($r['status'] ?? 'new') . (!empty($r['manual_review']) ? ' <span class="tag tag--err">manual review: ' . h($r['manual_review']['reason'] ?? '') . '</span>' : '') . '</td></tr>';
     }
     if (!$rows) $b .= '<tr><td colspan="6" class="muted">No inquiries stored yet.</td></tr>';
     page('Inquiries', $b . '</tbody></table></div>', $user);
@@ -706,6 +886,16 @@ if ($action === 'inquiry') {
         $b .= '<tr><th style="width:200px">' . h($k) . '</th><td>' . nl2br(h($v)) . '</td></tr>';
     }
     $b .= '</table></div>';
+    if (!empty($r['manual_review'])) {
+        $mr = $r['manual_review'];
+        $cl = (array)($r['manual_review_checklist'] ?? []);
+        $b .= '<form class="card" method="post" action="' . h(url(['a' => 'inquiry'])) . '" style="border-color:#c0533a">' . csrf_field() . '<input type="hidden" name="id" value="' . h($r['id']) . '"><input type="hidden" name="op" value="review">'
+            . '<strong>MANUAL REVIEW — ' . h($mr['label'] ?? 'Eid special request') . '</strong><p class="muted">' . h($mr['detail'] ?? '') . ' Never auto-confirm and never promise an Eid request can be accommodated.</p><div class="grid">';
+        foreach (ATB_EID_CHECKLIST as $k => $label) {
+            $b .= '<div><label><input type="checkbox" name="chk_' . h($k) . '" value="1" style="width:auto"' . (!empty($cl[$k]['checked']) ? ' checked' : '') . ($canEdit ? '' : ' disabled') . '> ' . h($label) . '</label><input name="note_' . h($k) . '" value="' . h($cl[$k]['note'] ?? '') . '" placeholder="note"' . ($canEdit ? '' : ' disabled') . '></div>';
+        }
+        $b .= '</div><label for="review_status">Review outcome</label>' . select('review_status', ['open' => 'Open — not yet reviewed', 'feasible' => 'Reviewed — feasible (quote/offer manually)', 'not_feasible' => 'Reviewed — not feasible'], (string)($r['manual_review_status'] ?? 'open')) . ($canEdit ? '<button>Save review</button>' : '') . '</form>';
+    }
     if ($canEdit) {
         $b .= '<form class="card" method="post" action="' . h(url(['a' => 'inquiry'])) . '">' . csrf_field() . '<input type="hidden" name="id" value="' . h($r['id']) . '"><input type="hidden" name="op" value="status"><label for="status">Status</label>' . select('status', ['new' => 'New', 'contacted' => 'Contacted', 'approved' => 'Booking approved', 'declined' => 'Declined', 'closed' => 'Closed'], (string)($r['status'] ?? 'new')) . '<button class="alt">Update status</button></form>';
         $opts = ['' => 'Choose a departure'];

@@ -5,7 +5,8 @@
  * Runtime: replaces the rows with /booking/departures.php (the live private inventory).
  * Choosing a date opens the inquiry modal with the departure prefilled. It never confirms a place.
  */
-import { bookingSettings, getCatalogTour, publicSnapshot } from '../../lib/booking/site';
+import { bookingSettings, getCatalogTour, publicSnapshot, upcomingEidBlocks } from '../../lib/booking/site';
+import { RAMADAN_ADVISORY_TITLE, RAMADAN_ADVISORY_PARAGRAPHS, EID_NOTICE } from '../../lib/booking/core.mjs';
 
 interface Props {
   slug: string;
@@ -25,6 +26,9 @@ const groupLines = longRule
   ? String(wording.group_size_long || 'Group size: 6–18 travelers / Minimum to operate: 6 travelers / Need a different group arrangement? Contact us.').split(' / ')
   : [];
 const next = departures.find((d) => d.selectable);
+const anyRamadan = departures.some((d) => (d.advisories || []).some((a: any) => a.type === 'ramadan'));
+// Eid notice is about standard scheduled departures, so it is shown for scheduled products (A/B), not private-first C routes.
+const eidBlocks = category === 'C' ? [] : upcomingEidBlocks();
 
 const heading = category === 'C' ? 'Group departures (when announced)' : 'Group departures';
 const privateLead = isWeekend
@@ -93,9 +97,22 @@ const common = {
         <span class="tdp-row__date">{d.date_label}</span>
         <span class="tdp-row__status">{d.status_text}</span>
         {d.confirmed_text && <span class="tdp-row__status">{d.confirmed_text}</span>}
+        {(d.advisories || []).map((a: any) => <span class="tdp-row__advisory">{a.text}</span>)}
         <span class="tdp-row__cta">{d.cta}</span>
       </button>
     ))}
+  </div>
+
+  <details class="tdp-advisory" data-ramadan-advisory hidden={!anyRamadan}>
+    <summary>{RAMADAN_ADVISORY_TITLE}</summary>
+    {RAMADAN_ADVISORY_PARAGRAPHS.map((p) => <p>{p}</p>)}
+  </details>
+
+  <div class="tdp-eid" data-eid-notice data-show={category === 'C' ? '' : '1'} hidden={eidBlocks.length === 0}>
+    <p>{EID_NOTICE}</p>
+    <ul data-eid-list>
+      {eidBlocks.map((b) => <li>{b.name}: {b.label}</li>)}
+    </ul>
   </div>
 
   <p class="tdp-empty" data-departure-empty hidden={departures.length > 0 || category === 'C'}>
@@ -195,6 +212,7 @@ const common = {
         const lines = [['tdp-row__date', d.date_label], ['tdp-row__status', d.status_text]];
         if (d.confirmed_text) lines.push(['tdp-row__status', d.confirmed_text]);
         if (d.remaining_places != null) lines.push(['tdp-row__status', `${d.remaining_places} places remaining`]);
+        (d.advisories || []).forEach((a) => lines.push(['tdp-row__advisory', a.text]));
         lines.push(['tdp-row__cta', d.cta]);
         lines.forEach(([cls, text]) => {
           const s = document.createElement('span');
@@ -215,7 +233,17 @@ const common = {
       .then((r) => (r.ok ? r.json() : null))
       .then((data) => {
         if (!data || data.ok !== true || !Array.isArray(data.departures)) return;
-        render(data.departures.filter((d) => d.tour_slug === root.dataset.tourSlug));
+        const mine = data.departures.filter((d) => d.tour_slug === root.dataset.tourSlug);
+        render(mine);
+        const adv = root.querySelector('[data-ramadan-advisory]');
+        if (adv) adv.hidden = !mine.some((d) => (d.advisories || []).some((a) => a.type === 'ramadan'));
+        const eid = root.querySelector('[data-eid-notice]');
+        if (eid && Array.isArray(data.eid_blocks)) {
+          const ul = eid.querySelector('[data-eid-list]');
+          ul.textContent = '';
+          data.eid_blocks.forEach((blk) => { const li = document.createElement('li'); li.textContent = `${blk.name}: ${blk.label}`; ul.appendChild(li); });
+          eid.hidden = eid.dataset.show !== '1' || data.eid_blocks.length === 0;
+        }
         root.dataset.source = 'live';
         refresh();
       })
@@ -245,6 +273,14 @@ const common = {
   .tdp-row__status { grid-column: 1; color: #62645d; font-size: .68rem; line-height: 1.4; }
   .tdp-row__cta { grid-column: 2; grid-row: 1 / span 3; align-self: center; color: #7b5b23; font-size: .66rem; font-weight: 900; letter-spacing: .02em; white-space: nowrap; text-decoration: underline; text-underline-offset: 3px; }
   .tdp-row:disabled .tdp-row__cta { text-decoration: none; color: #6e7069; }
+  .tdp-row__advisory { grid-column: 1; margin-top: .2rem; padding-left: .55rem; border-left: 2px solid #c9a24a; color: #5a4a26; font-size: .66rem; line-height: 1.45; }
+  .tdp-advisory { margin: .6rem 0 0; padding: .55rem .7rem; border: 1px solid #e3d6b4; border-radius: 8px; background: #fbf7ee; font-size: .68rem; line-height: 1.55; color: #4b4d48; }
+  .tdp-advisory[hidden], .tdp-eid[hidden] { display: none; }
+  .tdp-advisory summary { cursor: pointer; font-weight: 800; color: #1c1d1b; }
+  .tdp-advisory p { margin: .45rem 0 0; }
+  .tdp-eid { margin: .6rem 0 0; padding: .55rem .7rem; border: 1px solid #d8d4c9; border-radius: 8px; background: #f6f4ef; font-size: .68rem; line-height: 1.55; color: #3f413c; }
+  .tdp-eid p { margin: 0; }
+  .tdp-eid ul { margin: .35rem 0 0; padding-left: 1rem; }
   .tdp-empty { margin: .55rem 0 0; color: #5f615a; font-size: .72rem; line-height: 1.5; }
   .tdp-note { margin: .7rem 0 0; color: #6b6d66; font-size: .64rem; line-height: 1.5; }
   .tdp-note a { color: inherit; text-decoration: underline; }
@@ -267,5 +303,6 @@ const common = {
     .tdp-row__date { font-size: .9rem; }
     .tdp-row__status { font-size: .76rem; }
     .tdp-row__cta { font-size: .74rem; }
+    .tdp-row__advisory, .tdp-advisory, .tdp-eid { font-size: .76rem; }
   }
 </style>
