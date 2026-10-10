@@ -19,6 +19,14 @@ const MAX_SUBJECT_ENTITY = 160;
 const MAX_FIELD = 500;
 const MAX_NOTES = 4000;
 const MAX_URL = 500;
+const INQUIRY_CONFIRMATION = 'Your request has been received. Our team will confirm availability, arrangements, and next steps.';
+
+// Optional booking inventory (departures, private inquiry store). Email-only if absent.
+$bookingLib = __DIR__ . '/booking/lib/booking.php';
+$bookingAvailable = is_file($bookingLib);
+if ($bookingAvailable) {
+    require_once $bookingLib;
+}
 
 function field(string $name): string {
     return trim((string)($_POST[$name] ?? ''));
@@ -271,6 +279,25 @@ $notes = clamp_field(first_nonempty('notes', 'message'), MAX_NOTES);
 $country = clamp_field(field('country'), 80);
 $interest = clamp_field(field('interest'), MAX_FIELD);
 
+// Booking fields (spec Part 7). All optional; existing fields above are unchanged.
+$departureId = clamp_field(field('departure_id'), 60);
+$departureStart = clamp_field(field('departure_start'), 10);
+$departureEnd = clamp_field(field('departure_end'), 10);
+$bookingType = strtolower(clamp_field(field('booking_type'), 20));
+if (!in_array($bookingType, ['shared', 'private'], true)) {
+    $bookingType = '';
+}
+$arrivalOption = strtolower(clamp_field(field('arrival_option'), 20));
+if (!in_array($arrivalOption, ['fri-sun', 'sat-mon'], true)) {
+    $arrivalOption = '';
+}
+$extensionNights = clamp_field(field('extension_nights'), 10);
+$extrasRaw = $_POST['extras'] ?? '';
+if (is_array($extrasRaw)) {
+    $extrasRaw = implode('; ', array_map(static fn($v) => is_scalar($v) ? (string)$v : '', $extrasRaw));
+}
+$extras = clamp_field((string)$extrasRaw, MAX_FIELD);
+
 if ($name === '') {
     $msg = 'Please provide your name.';
     if (wants_json() || $dryRunRequested) {
@@ -296,6 +323,67 @@ if ($email !== '' && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 $email = sanitize_header_value($email, MAX_EMAIL);
+
+if ($departureId !== '' && !preg_match('/^[A-Za-z0-9-]{3,60}$/', $departureId)) {
+    $msg = 'That departure reference is not valid. Please choose a date again or ask us about dates.';
+    if (wants_json() || $dryRunRequested) {
+        respond_json(400, ['ok' => false, 'message' => $msg]);
+    }
+    respond_html_error(400, $msg);
+}
+
+// Verify a selected departure against the authoritative inventory: only published, open, future
+// departures can be requested (past / closed / proposed ones cannot be requested as scheduled dates).
+$departureCheck = $departureId !== '' ? 'not_checked' : 'none';
+$groupNote = '';
+if ($departureId !== '' && $bookingAvailable) {
+    try {
+        [$atbInv, $atbSource] = atb_load_inventory();
+        $atbSettings = $atbInv['settings'] ?? [];
+        $atbToday = atb_today($atbSettings['timezone'] ?? 'Asia/Kabul');
+        $atbDep = atb_find_departure(atb_effective_departures($atbInv), $departureId);
+        if ($atbSource === 'unavailable') {
+            $departureCheck = 'inventory_unavailable';
+        } elseif ($atbDep === null || !atb_is_public($atbDep, $atbToday)) {
+            $msg = 'That departure is not open for requests. Please choose another date, or ask us about dates.';
+            if (wants_json() || $dryRunRequested) {
+                respond_json(409, ['ok' => false, 'message' => $msg]);
+            }
+            respond_html_error(409, $msg);
+        } else {
+            $atbStatus = atb_compute_status($atbDep, $atbToday, $atbSettings);
+            if (!$atbStatus['selectable']) {
+                $msg = 'That departure is ' . strtolower($atbStatus['label']) . ' and not open for requests. Please choose another date, or ask us about dates.';
+                if (wants_json() || $dryRunRequested) {
+                    respond_json(409, ['ok' => false, 'message' => $msg]);
+                }
+                respond_html_error(409, $msg);
+            }
+            // Authoritative dates win over whatever the browser sent.
+            $departureStart = (string)$atbDep['start_date'];
+            $departureEnd = (string)$atbDep['end_date'];
+            $departureCheck = 'verified:' . $atbStatus['key'];
+            if ($bookingType === '') {
+                $bookingType = ($atbDep['departure_type'] ?? 'shared') === 'private' ? 'private' : 'shared';
+            }
+            if ($entitySlug === '') {
+                $entitySlug = (string)$atbDep['tour_slug'];
+            }
+        }
+    } catch (Throwable $e) {
+        error_log('[afghantours inquiry] departure check failed: ' . $e->getMessage());
+        $departureCheck = 'inventory_error';
+    }
+}
+if ($bookingAvailable) {
+    $note = atb_group_minimum_note($travelers, $bookingType !== '' ? $bookingType : 'shared', 3);
+    $groupNote = match ($note) {
+        'private' => 'Private request — quoted separately; no group minimum applies.',
+        'below_minimum' => 'Shared request for ' . (int)$travelers . ' traveler(s): below the 3-traveler minimum. Accept as a request; the departure stays pending until 3 travelers are confirmed and operations approve it.',
+        'meets_minimum' => 'Shared request for ' . (int)$travelers . ' travelers: meets the 3-traveler minimum once they are confirmed (still needs operational approval).',
+        default => 'Number of travelers not given.',
+    };
+}
 
 // Tour flows: require an entity name/slug so staff know which tour.
 // Non-tour flows must NOT require tour_code / tour_name.
@@ -344,6 +432,25 @@ $lines = [
     'Preferred hub: ' . ($preferredHub !== '' ? $preferredHub : '(not provided)'),
 ];
 
+if ($departureId !== '' || $bookingType !== '' || $arrivalOption !== '' || $extensionNights !== '' || $extras !== '') {
+    $lines[] = '';
+    $lines[] = 'Departure ID: ' . ($departureId !== '' ? $departureId : '(none — dates to be discussed)');
+    $lines[] = 'Departure dates: ' . ($departureStart !== '' ? $departureStart . ' to ' . $departureEnd : '(none)');
+    $lines[] = 'Departure check: ' . $departureCheck;
+    $lines[] = 'Shared / private: ' . ($bookingType !== '' ? $bookingType : '(not sure)');
+    if ($arrivalOption !== '') {
+        $lines[] = 'Arrival option: ' . ($arrivalOption === 'fri-sun' ? 'Friday–Sunday' : 'Saturday–Monday');
+    }
+    $lines[] = 'Extra nights: ' . ($extensionNights !== '' ? $extensionNights : '(none)');
+    if ($extras !== '') {
+        $lines[] = 'Additional options: ' . $extras;
+    }
+}
+if ($groupNote !== '') {
+    $lines[] = 'Group minimum: ' . $groupNote;
+}
+$lines[] = 'Note: this is a request only — nothing is confirmed or paid until the team confirms it.';
+
 $optionalBlocks = [
     'Accommodation' => $accommodation,
     'Transport' => $transport,
@@ -365,10 +472,25 @@ $lines[] = $notes !== '' ? $notes : '(none)';
 
 $body = implode("\n", $lines);
 
+$inquiryRecord = [
+    'flow' => $flow, 'classification' => $classification, 'entity_type' => $entityType, 'entity_name' => $entityName,
+    'entity_slug' => $entitySlug, 'entity_code' => $entityCode, 'product_class' => $productClass, 'source_url' => $sourceUrl,
+    'name' => $name, 'email' => $email, 'whatsapp' => $whatsapp, 'country' => $country,
+    'preferred_dates' => $preferredDates, 'travelers' => $travelers, 'preferred_hub' => $preferredHub,
+    'departure_id' => $departureId, 'departure_start' => $departureStart, 'departure_end' => $departureEnd, 'departure_check' => $departureCheck,
+    'booking_type' => $bookingType, 'arrival_option' => $arrivalOption, 'accommodation' => $accommodation,
+    'extension_nights' => $extensionNights, 'extras' => $extras, 'transport' => $transport, 'activities' => $activities,
+    'cultural_interests' => $culturalInterests, 'experience_level' => $experienceLevel, 'available_time' => $availableTime,
+    'interest' => $interest, 'notes' => $notes, 'group_minimum' => $groupNote,
+];
+
 if ($dryRunRequested) {
     respond_json(200, [
         'ok' => true,
         'dry_run' => true,
+        'stored' => false,
+        'message' => INQUIRY_CONFIRMATION,
+        'departure_check' => $departureCheck,
         'flow' => $flow,
         'classification' => $classification,
         'subject' => $subject,
@@ -392,7 +514,27 @@ if ($email !== '') {
     $headers[] = 'Reply-To: ' . $email;
 }
 
+// Store a copy for the admin inquiry list (private folder). Never blocks the email path.
+$storedId = null;
+if ($bookingAvailable) {
+    try {
+        $storedId = atb_store_inquiry($inquiryRecord);
+    } catch (Throwable $e) {
+        error_log('[afghantours inquiry] store failed: ' . $e->getMessage());
+        $storedId = null;
+    }
+}
+if ($storedId !== null) {
+    $body .= "\n\nAdmin reference: " . $storedId;
+}
+
 $sent = @mail($to, $subject, $body, implode("\r\n", $headers));
+
+if (!$sent && $storedId !== null) {
+    // Email failed but the request is safely stored for the team; do not ask the traveler to resend.
+    error_log('[afghantours inquiry] mail() failed; stored as ' . $storedId);
+    $sent = true;
+}
 
 if (!$sent) {
     $msg = 'Your inquiry could not be sent from the server. Please contact info@afghantours.com or WhatsApp the Kabul team.';
@@ -405,7 +547,7 @@ if (!$sent) {
 if (wants_json()) {
     respond_json(200, [
         'ok' => true,
-        'message' => 'Inquiry sent.',
+        'message' => INQUIRY_CONFIRMATION,
         'flow' => $flow,
         'classification' => $classification,
     ]);
@@ -443,7 +585,7 @@ $returnLabel = match ($flow) {
 <body>
   <main>
     <h1>Thank you.</h1>
-    <p>Your inquiry has been sent to AfghanTours. We will reply using the contact information you provided.</p>
+    <p><?= htmlspecialchars(INQUIRY_CONFIRMATION, ENT_QUOTES, 'UTF-8') ?></p>
     <a href="<?= htmlspecialchars($returnHref, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($returnLabel, ENT_QUOTES, 'UTF-8') ?></a>
   </main>
 </body>

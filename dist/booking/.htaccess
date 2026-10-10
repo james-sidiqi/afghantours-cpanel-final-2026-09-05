@@ -1,0 +1,14 @@
+# AfghanTours booking: only departures.php is reachable here.
+Options -Indexes
+<FilesMatch "\.(json|jsonl|log|md|txt|bak|tmp)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>

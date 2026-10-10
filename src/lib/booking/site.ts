@@ -19,7 +19,10 @@ export const bookingCatalog: Row = catalogJson as Row;
 const departures: Row[] = (departuresJson as Row).departures;
 
 /** Snapshot date = build day in Kabul. Runtime JS re-evaluates against the live endpoint. */
-export const snapshotToday: string = process.env.BOOKING_TODAY || todayIn(bookingSettings.timezone || 'Asia/Kabul');
+// Build snapshot date is pinned to the seed's `seed_as_of` so `npm run build` is deterministic (dist drift
+// check). The live PHP feed and the client-side script always use the real Kabul date, and the client hides
+// any snapshot row that has already started, so a stale snapshot never offers a past departure.
+export const snapshotToday: string = process.env.BOOKING_TODAY || bookingSettings.seed_as_of || todayIn(bookingSettings.timezone || 'Asia/Kabul');
 
 export function getCatalogTour(slug: string): Row | undefined {
   return bookingCatalog.tours.find((t: Row) => t.slug === slug);

@@ -8,8 +8,9 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "postbuild": "node scripts/generate-sitemap.mjs",
-    "audit:site": "python3 scripts/site_integrity_audit.py ."
+    "postbuild": "node scripts/generate-sitemap.mjs && node scripts/booking-copy-seed.mjs",
+    "audit:site": "python3 scripts/site_integrity_audit.py .",
+    "test:booking": "bash scripts/test-booking.sh"
   },
   "dependencies": {
     "@astrojs/tailwind": "^5.1.2",

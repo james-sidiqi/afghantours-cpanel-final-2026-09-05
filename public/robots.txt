@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /manage/
+Disallow: /booking/
 
 Sitemap: https://afghantours.com/sitemap.xml
