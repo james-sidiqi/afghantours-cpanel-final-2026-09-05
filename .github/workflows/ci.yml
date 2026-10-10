@@ -44,6 +44,9 @@ jobs:
       - name: Cancellation policy (built site — public route, sitemap, verbatim text, single source)
         run: node --test scripts/booking-test/policy.test.mjs
 
+      - name: Internal links (built site)
+        run: node scripts/check-internal-links.mjs
+
       - name: Site integrity (strict)
         run: python3 scripts/site_integrity_audit.py . --strict
 

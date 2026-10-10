@@ -4,6 +4,7 @@ import { getCollection, render } from 'astro:content';
 import { RESTAURANT_TO_CULINARY } from '../../lib/culinary';
 
 export async function getStaticPaths() {
+  const DUPLICATE_RESTAURANTS = { 'spoghmai-restaurant-qargha': '/restaurants/spoghmai-restaurant/' };
   const items = await getCollection('restaurants');
 
   return items.map((item) => {
@@ -12,7 +13,8 @@ export async function getStaticPaths() {
       params: { slug },
       props: {
         item,
-        redirectTo: RESTAURANT_TO_CULINARY[slug] || null,
+        // spoghmai-restaurant-qargha.md is a byte-identical duplicate of spoghmai-restaurant.md → one canonical page.
+        redirectTo: RESTAURANT_TO_CULINARY[slug] || DUPLICATE_RESTAURANTS[slug] || null,
       },
     };
   });

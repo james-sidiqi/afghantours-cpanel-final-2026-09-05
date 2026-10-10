@@ -4,7 +4,7 @@
   "seed_as_of": "2026-10-10",
   "timezone": "Asia/Kabul",
   "currency": "USD",
-  "usd_confirmed": false,
+  "usd_confirmed": true,
   "group_rule": {
     "_doc": "Owner decision 10 Oct 2026 (controlling). Scheduled group tours of long_tour_min_days+ days: minimum long_min confirmed travelers, normal maximum long_max (exceptions only when approved per departure). Scheduled/shared departures of fewer days: minimum short_tour_shared_min, NO standard maximum (product-specific max only from approved data). Private tours may operate for 1 traveler (separately quoted). Custom Journeys / Specialist Services: group size defined in the individual proposal.",
     "long_tour_min_days": 5,
@@ -32,5 +32,54 @@
   "_status_rules": "Limited is set manually per departure (no automatic threshold). Sold out is automatic only where a capacity exists. Booking cutoffs do not close departures unless auto_cutoff_close is true (off until the owner approves a cutoff rule).",
   "long_tour_min_group_review_days": 45,
   "long_tour_final_booking_cutoff_days": 7,
-  "_long_tour_rules": "Owner decision 10 Oct 2026 18:56 — long (5+ day) shared departures only: minimum-group decision when days_until_departure <= long_tour_min_group_review_days (45); final booking cutoff (booking_window_closed, NOT the Closed status) when days_until <= long_tour_final_booking_cutoff_days (7). Days computed on Asia/Kabul dates. Short tours unaffected."
+  "_long_tour_rules": "Owner decision 10 Oct 2026 18:56 — long (5+ day) shared departures only: minimum-group decision when days_until_departure <= long_tour_min_group_review_days (45); final booking cutoff (booking_window_closed, NOT the Closed status) when days_until <= long_tour_final_booking_cutoff_days (7). Days computed on Asia/Kabul dates. Short tours unaffected.",
+  "price_display_prefix": "$",
+  "_currency_doc": "Owner 10 Oct 2026 20:47: \"$\" = USD (confirmed). Public labels keep the \"$\" symbol (e.g. \"From $450 per person on shared departures\"); price_display_prefix controls it.",
+  "short_tour_min_group_review_days": 14,
+  "_short_tour_rules": "Owner 10 Oct 2026 20:47: scheduled/shared departures of 4 days or less are reviewed for the minimum group 14 days before departure (same pattern as the 45-day long-tour review: known below-minimum with no decision is removed from normal booking; legacy unknown stays manual-contact). No final booking cutoff for short tours.",
+  "payments": {
+    "_doc": "Owner 10 Oct 2026 20:47 — rules/data only, no gateway. Standard scheduled and private bookings: deposit 25% of the confirmed price; balance due 30 days before departure; a booking accepted 30 days or less before departure is due 100% on confirmation. Custom Journeys / Specialist Services: terms per the written proposal/confirmation (no forced 25%). A booking is confirmed only after (1) acceptance by AfghanTours, (2) Terms & Conditions + Cancellation, Refund & Rescheduling Policy acceptance recorded, (3) the deposit (or full amount) recorded as received.",
+    "gateway_enabled": false,
+    "deposit_percent": 25,
+    "balance_due_days_before_departure": 30,
+    "full_payment_if_accepted_within_days": 30,
+    "proposal_terms_booking_types": [
+      "custom_journey",
+      "specialist_service"
+    ]
+  },
+  "standard_exclusions": {
+    "_doc": "Owner 10 Oct 2026 20:47. Shown on every tour page unless the tour (frontmatter `exclusions`) or the booking confirmation states otherwise.",
+    "lead_in": "Unless specifically stated as included in your itinerary or booking confirmation, the following are not included:",
+    "items": [
+      "International airfare",
+      "Afghan visa fees and other personal visa or document costs",
+      "Travel insurance",
+      "Medical treatment and emergency evacuation costs",
+      "Personal expenses",
+      "Laundry and personal purchases",
+      "Optional activities or services not listed as included",
+      "Tips and gratuities",
+      "Meals and drinks not specifically listed as included",
+      "Independently arranged accommodation or transportation",
+      "Bank charges, card charges, payment-provider fees and currency-conversion charges where applicable"
+    ]
+  },
+  "legal_documents": {
+    "_doc": "Documents a traveler accepts before a transactional payment (booking-side step in /manage/, never on inquiries). Flip terms.full_text_received + effective_date/version when the owner's final Terms text is published.",
+    "terms": {
+      "name": "Terms & Conditions",
+      "url": "https://afghantours.com/terms/",
+      "effective_date": null,
+      "version": null,
+      "full_text_received": false
+    },
+    "policy": {
+      "name": "Cancellation, Refund & Rescheduling Policy",
+      "url": "https://afghantours.com/cancellation-refund-rescheduling/",
+      "effective_date": "2026-09-28",
+      "version": null,
+      "full_text_received": true
+    }
+  }
 }

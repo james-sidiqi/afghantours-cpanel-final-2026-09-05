@@ -5,6 +5,8 @@
 RewriteEngine On
 
 # Specialist services
+RewriteRule ^faqs/?$ /faq/ [R=301,L]
+RewriteRule ^restaurants/spoghmai-restaurant-qargha/?$ /restaurants/spoghmai-restaurant/ [R=301,L]
 RewriteRule ^tours/photography-tour/?$ /specialist-services/photography-documentary/ [R=301,L]
 RewriteRule ^tours/scientific-expeditions/?$ /specialist-services/scientific-research/ [R=301,L]
 RewriteRule ^tours/media-support/?$ /specialist-services/media-journalist/ [R=301,L]

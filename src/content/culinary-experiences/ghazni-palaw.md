@@ -29,4 +29,4 @@ Exact dining venues are confirmed by operators. No invented restaurant names, me
 
 ## Cultural Pairing: Kabuli Pulao Tradition
 
-Travelers who already know [Kabuli pulao](/food-culture/dishes/kabuli-pulao/) will recognize the broader rice tradition; Ghazni palaw is the local stop for that hospitality on a hub day.
+Travelers who already know [Kabuli pulao](/food-culture/kabuli-pulao/) will recognize the broader rice tradition; Ghazni palaw is the local stop for that hospitality on a hub day.

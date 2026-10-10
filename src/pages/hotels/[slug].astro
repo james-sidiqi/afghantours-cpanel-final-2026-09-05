@@ -22,6 +22,11 @@ function splitPipe(value) {
 const displayName = hotel.display_name || hotel.title || hotel.hotel_name || hotel.name || "Hotel";
 const subtitle = hotel.subtitle || "";
 const hub = hotel.hub_name || hotel.city || hotel.destination_code || "Afghanistan";
+// Two properties can share a name (e.g. Royal Hotel in Bamyan and Kandahar): add the city from existing data to the page title.
+const nameOf = (h) => h.display_name || h.title || h.hotel_name || h.name || "Hotel";
+const sharedName = getHotels().filter((h) => h?.slug && nameOf(h) === displayName).length > 1;
+const titleCity = hotel.city || hotel.hub_name || "";
+const pageTitle = sharedName && titleCity && !displayName.includes(titleCity) ? `${displayName}, ${titleCity}` : displayName;
 const propertyImages =
   Array.isArray(hotel.property_images) && hotel.property_images.length
     ? hotel.property_images
@@ -51,7 +56,7 @@ const heroImage = propertyImages[0] || "/assets/images/placeholders/default-hote
 ---
 
 <BaseLayout
-  title={`${displayName} | AfghanTours Hotels`}
+  title={`${pageTitle} | AfghanTours Hotels`}
   description={hotel.description || `Hotel reference for ${hub}.`}
   image={heroImage}
 >

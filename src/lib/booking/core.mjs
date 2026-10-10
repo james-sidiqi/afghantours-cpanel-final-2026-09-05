@@ -115,10 +115,16 @@ export function exceptionApproved(dep) {
 export function longTourWindow(dep, today, settings = {}) {
   const longDays = toInt(settings.group_rule?.long_tour_min_days, 5);
   const duration = toInt(dep.duration_days, null) ?? (isIsoDate(dep.start_date) && isIsoDate(dep.end_date) ? inclusiveDays(dep.start_date, dep.end_date) : 0);
-  const reviewDays = toInt(settings.long_tour_min_group_review_days, 45);
-  const cutoffDays = toInt(settings.long_tour_final_booking_cutoff_days, 7);
-  const applies = dep.departure_type !== 'private' && duration >= longDays && isIsoDate(dep.start_date);
+  const isLong = duration >= longDays;
+  // Short (≤4-day) shared departures: same review pattern at short_tour_min_group_review_days (14), but no final booking cutoff.
+  const shortReview = toInt(settings.short_tour_min_group_review_days, null);
+  const applies = dep.departure_type !== 'private' && isIsoDate(dep.start_date) && duration > 0 && (isLong || shortReview !== null);
   if (!applies) return { applies: false, state: 'none', booking_window_closed: false };
+  if (!isLong) return reviewWindow(dep, today, { kind: 'short', reviewDays: shortReview, cutoffDays: null });
+  return reviewWindow(dep, today, { kind: 'long', reviewDays: toInt(settings.long_tour_min_group_review_days, 45), cutoffDays: toInt(settings.long_tour_final_booking_cutoff_days, 7) });
+}
+
+function reviewWindow(dep, today, { kind, reviewDays, cutoffDays }) {
   const daysUntil = daysBetween(today, dep.start_date);
   const unknown = countStatus(dep) === 'unknown';
   const min = toInt(dep.min_group_size, null);
@@ -131,23 +137,25 @@ export function longTourWindow(dep, today, settings = {}) {
   else if (exceptionApproved(dep)) state = 'exception';
   else if (reviewDue && unknown) state = 'unknown'; // stays visible, manual contact only, until reconciled
   else if (reviewDue) state = minReached ? 'approval_required' : 'min_not_reached';
+  const hasCutoff = cutoffDays !== null;
   return {
     applies: true,
+    kind,
     days_until: daysUntil,
     review_days: reviewDays,
     cutoff_days: cutoffDays,
     review_date: addDays(dep.start_date, -reviewDays),
-    cutoff_date: addDays(dep.start_date, -cutoffDays),
+    cutoff_date: hasCutoff ? addDays(dep.start_date, -cutoffDays) : null,
     review_due: reviewDue,
     review_overdue: daysUntil < reviewDays && (state === 'min_not_reached' || state === 'approval_required'),
-    legacy_error: daysUntil < 30 && state === 'min_not_reached',
+    legacy_error: kind === 'long' && daysUntil < 30 && state === 'min_not_reached',
     count_status: unknown ? 'unknown' : 'verified',
     unknown_review: state === 'unknown',
-    unknown_immediate: state === 'unknown' && daysUntil <= cutoffDays,
+    unknown_immediate: hasCutoff && state === 'unknown' && daysUntil <= cutoffDays,
     manual_contact: state === 'unknown',
     min_reached: minReached,
     state,
-    booking_window_closed: daysUntil <= cutoffDays,
+    booking_window_closed: hasCutoff && daysUntil <= cutoffDays,
   };
 }
 
@@ -209,7 +217,9 @@ export function priceLabel(price, settings = {}) {
   if (!Number.isFinite(amount) || amount <= 0 || status === 'price_on_request' || price?.display_on_site === false) {
     return 'Price on request';
   }
-  const value = settings.usd_confirmed ? `USD ${money(amount)}` : `$${money(amount)}`;
+  // "$" = USD (owner-confirmed). price_display_prefix (seed: "$") keeps the owner's exact wording; legacy: usd_confirmed → "USD ".
+  const prefix = typeof settings.price_display_prefix === 'string' ? settings.price_display_prefix : (settings.usd_confirmed ? 'USD ' : '$');
+  const value = `${prefix}${money(amount)}`;
   // Private-only products (category C) keep the production "from" figure without claiming a shared basis.
   return price?.basis === 'private_reference' ? `From ${value} per person` : `From ${value} per person on shared departures`;
 }
@@ -289,7 +299,7 @@ export function publicDeparture(dep, tour, settings, today) {
     out.booking_window_closed = lw.booking_window_closed;
     out.last_minute = lw.booking_window_closed;
     out.cta = lw.booking_window_closed ? LAST_MINUTE_CTA : CONTACT_CTA;
-  } else if (lw.applies && countStatus(dep) === 'unknown' && st.key === 'open' && toInt(dep.min_group_size, null)) {
+  } else if (lw.applies && lw.kind === 'long' && countStatus(dep) === 'unknown' && st.key === 'open' && toInt(dep.min_group_size, null)) {
     // Never imply a known count ("awaiting …") from unknown legacy data.
     out.status_text = `Open — minimum ${toInt(dep.min_group_size, null)} travelers to operate`;
   }
@@ -341,10 +351,11 @@ export function groupRuleFor(durationDays, settings = {}) {
 
 /** A booking counts toward the minimum only when accepted AND payment is recorded as received. */
 export function countsTowardMinimum(tr) {
-  return tr?.status === 'confirmed' && paymentReceived(tr);
+  // Owner 10 Oct 2026 20:47: counts after acceptance by AfghanTours + the 25% deposit (or full payment) recorded as received.
+  return ['accepted', 'confirmed'].includes(tr?.status) && paymentReceived(tr);
 }
 export function paymentReceived(tr) {
-  return tr?.payment_received === true || ['payment_received', 'deposit_recorded', 'paid_recorded'].includes(tr?.payment_status);
+  return tr?.payment_received === true || ['payment_received', 'deposit_received', 'deposit_recorded', 'paid_recorded'].includes(tr?.payment_status);
 }
 
 /* ------------------------------------------------------------------ religious calendar */

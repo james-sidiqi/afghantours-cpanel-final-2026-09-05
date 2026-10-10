@@ -1763,6 +1763,208 @@
       "count_status": "unknown",
       "manual_contact": false,
       "status_text": "Open — awaiting minimum 2 travelers"
+    },
+    {
+      "name": "short 15d / 1 verified → Open (14-day review not yet due)",
+      "days": 15,
+      "dep": {
+        "duration_days": 3,
+        "min_group_size": 2,
+        "max_capacity": null,
+        "departure_type": "shared",
+        "traveler_count_status": "verified",
+        "confirmed_count": 1
+      },
+      "settings": {
+        "short_tour_min_group_review_days": 14
+      },
+      "count_status": "verified",
+      "status": "open",
+      "listed": true,
+      "cta": "Request a Place",
+      "bwc": false,
+      "manual_contact": false,
+      "status_text": "Open — awaiting minimum 2 travelers"
+    },
+    {
+      "name": "short 14d / 1 verified, no decision → review (removed from normal booking)",
+      "days": 14,
+      "dep": {
+        "duration_days": 3,
+        "min_group_size": 2,
+        "max_capacity": null,
+        "departure_type": "shared",
+        "traveler_count_status": "verified",
+        "confirmed_count": 1
+      },
+      "settings": {
+        "short_tour_min_group_review_days": 14
+      },
+      "count_status": "verified",
+      "status": "review",
+      "listed": false,
+      "cta": "Ask About Dates",
+      "bwc": false,
+      "manual_contact": false
+    },
+    {
+      "name": "short 10d / 2 + operational approval → Confirmed, still bookable (no short-tour cutoff)",
+      "days": 10,
+      "dep": {
+        "duration_days": 3,
+        "min_group_size": 2,
+        "max_capacity": null,
+        "departure_type": "shared",
+        "traveler_count_status": "verified",
+        "confirmed_count": 2,
+        "operational_approval": "approved"
+      },
+      "settings": {
+        "short_tour_min_group_review_days": 14
+      },
+      "count_status": "verified",
+      "status": "confirmed",
+      "listed": true,
+      "cta": "Join This Departure",
+      "bwc": false,
+      "manual_contact": false
+    },
+    {
+      "name": "short 10d / 2 without operational approval → review",
+      "days": 10,
+      "dep": {
+        "duration_days": 3,
+        "min_group_size": 2,
+        "max_capacity": null,
+        "departure_type": "shared",
+        "traveler_count_status": "verified",
+        "confirmed_count": 2
+      },
+      "settings": {
+        "short_tour_min_group_review_days": 14
+      },
+      "count_status": "verified",
+      "status": "review",
+      "listed": false,
+      "cta": "Ask About Dates",
+      "bwc": false,
+      "manual_contact": false
+    },
+    {
+      "name": "short 3d / 2 + approval → Confirmed, normal booking (no last-minute cutoff for short tours)",
+      "days": 3,
+      "dep": {
+        "duration_days": 3,
+        "min_group_size": 2,
+        "max_capacity": null,
+        "departure_type": "shared",
+        "traveler_count_status": "verified",
+        "confirmed_count": 2,
+        "operational_approval": "approved"
+      },
+      "settings": {
+        "short_tour_min_group_review_days": 14
+      },
+      "count_status": "verified",
+      "status": "confirmed",
+      "listed": true,
+      "cta": "Join This Departure",
+      "bwc": false,
+      "manual_contact": false
+    },
+    {
+      "name": "short 10d / 1 + approved exception → Confirmed",
+      "days": 10,
+      "dep": {
+        "duration_days": 3,
+        "min_group_size": 2,
+        "max_capacity": null,
+        "departure_type": "shared",
+        "traveler_count_status": "verified",
+        "confirmed_count": 1,
+        "min_group_exception": {
+          "approved": true,
+          "note": "James approved 5 (trade group)",
+          "pricing_review_ack": true,
+          "by": "james"
+        },
+        "operational_approval": "approved",
+        "price_approved": true
+      },
+      "settings": {
+        "short_tour_min_group_review_days": 14
+      },
+      "count_status": "verified",
+      "status": "confirmed",
+      "listed": true,
+      "cta": "Join This Departure",
+      "bwc": false,
+      "manual_contact": false
+    },
+    {
+      "name": "short 10d legacy unknown → visible, manual contact",
+      "days": 10,
+      "dep": {
+        "duration_days": 3,
+        "min_group_size": 2,
+        "max_capacity": null,
+        "departure_type": "shared",
+        "traveler_count_status": "unknown",
+        "confirmed_count": null
+      },
+      "settings": {
+        "short_tour_min_group_review_days": 14
+      },
+      "count_status": "unknown",
+      "status": "open",
+      "listed": true,
+      "cta": "Contact us for availability",
+      "bwc": false,
+      "manual_contact": true,
+      "status_text": "Availability on request"
+    },
+    {
+      "name": "short 20d legacy unknown → unchanged Open wording before the review",
+      "days": 20,
+      "dep": {
+        "duration_days": 3,
+        "min_group_size": 2,
+        "max_capacity": null,
+        "departure_type": "shared",
+        "traveler_count_status": "unknown",
+        "confirmed_count": null
+      },
+      "settings": {
+        "short_tour_min_group_review_days": 14
+      },
+      "count_status": "unknown",
+      "status": "open",
+      "listed": true,
+      "cta": "Request a Place",
+      "bwc": false,
+      "manual_contact": false,
+      "status_text": "Open — awaiting minimum 2 travelers"
+    },
+    {
+      "name": "regression: short 10d / 1 verified with no short-tour review configured → Open (pre-14-day behaviour)",
+      "days": 10,
+      "dep": {
+        "duration_days": 3,
+        "min_group_size": 2,
+        "max_capacity": null,
+        "departure_type": "shared",
+        "traveler_count_status": "verified",
+        "confirmed_count": 1
+      },
+      "settings": {
+        "short_tour_min_group_review_days": null
+      },
+      "count_status": "verified",
+      "status": "open",
+      "listed": true,
+      "cta": "Request a Place",
+      "bwc": false,
+      "manual_contact": false
     }
   ]
 }

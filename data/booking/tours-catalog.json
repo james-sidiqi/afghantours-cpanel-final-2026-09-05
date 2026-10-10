@@ -40,11 +40,16 @@
         "reference_amount": 450,
         "currency": "USD",
         "basis": "per_person_from",
-        "price_status": "reference_from_production",
+        "price_status": "approved",
         "production_display_2026_10_10": "From $450",
         "main_8f73e1f_display": "Price on request",
         "display_on_site": true,
-        "needs_james_review": true
+        "needs_james_review": false,
+        "approval": {
+          "by": "James (owner instruction 10 Oct 2026 20:47)",
+          "at": "2026-10-10T20:47:00+04:30",
+          "note": "Current published production \"From\" price approved; \"$\" = USD."
+        }
       },
       "operating_window": {
         "text": "Year-round, excluding Eid al-Fitr and Eid al-Adha (dates confirmed by admin)",
@@ -114,11 +119,16 @@
         "reference_amount": 2100,
         "currency": "USD",
         "basis": "per_person_from",
-        "price_status": "reference_from_production",
+        "price_status": "approved",
         "production_display_2026_10_10": "From $2,100",
         "main_8f73e1f_display": "Price on request",
         "display_on_site": true,
-        "needs_james_review": true
+        "needs_james_review": false,
+        "approval": {
+          "by": "James (owner instruction 10 Oct 2026 20:47)",
+          "at": "2026-10-10T20:47:00+04:30",
+          "note": "Current published production \"From\" price approved; \"$\" = USD."
+        }
       },
       "operating_window": {
         "text": "December–February",
@@ -165,11 +175,16 @@
         "reference_amount": 1950,
         "currency": "USD",
         "basis": "per_person_from",
-        "price_status": "reference_from_production",
+        "price_status": "approved",
         "production_display_2026_10_10": "From $1,950",
         "main_8f73e1f_display": "Price on request",
         "display_on_site": true,
-        "needs_james_review": true
+        "needs_james_review": false,
+        "approval": {
+          "by": "James (owner instruction 10 Oct 2026 20:47)",
+          "at": "2026-10-10T20:47:00+04:30",
+          "note": "Current published production \"From\" price approved; \"$\" = USD."
+        }
       },
       "operating_window": {
         "text": "June–August",
@@ -216,11 +231,16 @@
         "reference_amount": 2450,
         "currency": "USD",
         "basis": "per_person_from",
-        "price_status": "reference_from_production",
+        "price_status": "approved",
         "production_display_2026_10_10": "From $2,450",
         "main_8f73e1f_display": "Price on request",
         "display_on_site": true,
-        "needs_james_review": true
+        "needs_james_review": false,
+        "approval": {
+          "by": "James (owner instruction 10 Oct 2026 20:47)",
+          "at": "2026-10-10T20:47:00+04:30",
+          "note": "Current published production \"From\" price approved; \"$\" = USD."
+        }
       },
       "operating_window": {
         "text": "Mid-December to 1 April",
@@ -267,11 +287,16 @@
         "reference_amount": 1890,
         "currency": "USD",
         "basis": "per_person_from",
-        "price_status": "reference_from_production",
+        "price_status": "approved",
         "production_display_2026_10_10": "From $1,890",
         "main_8f73e1f_display": "From $1,890",
         "display_on_site": true,
-        "needs_james_review": true
+        "needs_james_review": false,
+        "approval": {
+          "by": "James (owner instruction 10 Oct 2026 20:47)",
+          "at": "2026-10-10T20:47:00+04:30",
+          "note": "Current published production \"From\" price approved; \"$\" = USD."
+        }
       },
       "operating_window": {
         "text": "March–May",
@@ -316,11 +341,16 @@
         "reference_amount": 1950,
         "currency": "USD",
         "basis": "per_person_from",
-        "price_status": "reference_from_production",
+        "price_status": "approved",
         "production_display_2026_10_10": "From $1,950",
         "main_8f73e1f_display": "From $1,950",
         "display_on_site": true,
-        "needs_james_review": true
+        "needs_james_review": false,
+        "approval": {
+          "by": "James (owner instruction 10 Oct 2026 20:47)",
+          "at": "2026-10-10T20:47:00+04:30",
+          "note": "Current published production \"From\" price approved; \"$\" = USD."
+        }
       },
       "operating_window": {
         "text": "September–November",
@@ -365,11 +395,16 @@
         "reference_amount": 990,
         "currency": "USD",
         "basis": "per_person_from",
-        "price_status": "reference_from_production",
+        "price_status": "approved",
         "production_display_2026_10_10": "From $990",
         "main_8f73e1f_display": "From $990",
         "display_on_site": true,
-        "needs_james_review": true
+        "needs_james_review": false,
+        "approval": {
+          "by": "James (owner instruction 10 Oct 2026 20:47)",
+          "at": "2026-10-10T20:47:00+04:30",
+          "note": "Current published production \"From\" price approved; \"$\" = USD."
+        }
       },
       "operating_window": {
         "text": "Year-round",
@@ -414,11 +449,16 @@
         "reference_amount": 1250,
         "currency": "USD",
         "basis": "per_person_from",
-        "price_status": "reference_from_production",
+        "price_status": "approved",
         "production_display_2026_10_10": "From $1,250",
         "main_8f73e1f_display": "From $1,250",
         "display_on_site": true,
-        "needs_james_review": true
+        "needs_james_review": false,
+        "approval": {
+          "by": "James (owner instruction 10 Oct 2026 20:47)",
+          "at": "2026-10-10T20:47:00+04:30",
+          "note": "Current published production \"From\" price approved; \"$\" = USD."
+        }
       },
       "operating_window": {
         "text": "Year-round, subject to conditions",
@@ -463,11 +503,16 @@
         "reference_amount": 1300,
         "currency": "USD",
         "basis": "per_person_from",
-        "price_status": "reference_from_production",
+        "price_status": "approved",
         "production_display_2026_10_10": "From $1,300",
         "main_8f73e1f_display": "From $1,300",
         "display_on_site": true,
-        "needs_james_review": true
+        "needs_james_review": false,
+        "approval": {
+          "by": "James (owner instruction 10 Oct 2026 20:47)",
+          "at": "2026-10-10T20:47:00+04:30",
+          "note": "Current published production \"From\" price approved; \"$\" = USD."
+        }
       },
       "operating_window": {
         "text": "10 January – 10 March",
@@ -512,11 +557,12 @@
         "reference_amount": 750,
         "currency": "USD",
         "basis": "per_person_from",
-        "price_status": "reference_from_production",
+        "price_status": "price_on_request",
         "production_display_2026_10_10": "From $750",
         "main_8f73e1f_display": "From $750",
-        "display_on_site": true,
-        "needs_james_review": true
+        "display_on_site": false,
+        "needs_james_review": false,
+        "note_20261010": "Owner 10 Oct 2026 20:47: Private Tours / Custom Journeys / Specialist Services show \"Price on request\" unless a price is explicitly approved. Reference kept for internal use only."
       },
       "operating_window": {
         "text": "May–September",
@@ -562,11 +608,16 @@
         "reference_amount": 1250,
         "currency": "USD",
         "basis": "per_person_from",
-        "price_status": "reference_from_production",
+        "price_status": "approved",
         "production_display_2026_10_10": "From $1,250",
         "main_8f73e1f_display": "From $1,250",
         "display_on_site": true,
-        "needs_james_review": true
+        "needs_james_review": false,
+        "approval": {
+          "by": "James (owner instruction 10 Oct 2026 20:47)",
+          "at": "2026-10-10T20:47:00+04:30",
+          "note": "Current published production \"From\" price approved; \"$\" = USD."
+        }
       },
       "operating_window": {
         "text": "September–April preferred",
@@ -611,11 +662,12 @@
         "reference_amount": 2450,
         "currency": "USD",
         "basis": "private_reference",
-        "price_status": "reference_from_production",
+        "price_status": "price_on_request",
         "production_display_2026_10_10": "From $2,450",
         "main_8f73e1f_display": "From $2,450",
-        "display_on_site": true,
-        "needs_james_review": true
+        "display_on_site": false,
+        "needs_james_review": false,
+        "note_20261010": "Owner 10 Oct 2026 20:47: Private Tours / Custom Journeys / Specialist Services show \"Price on request\" unless a price is explicitly approved. Reference kept for internal use only."
       },
       "operating_window": {
         "text": "Year-round, subject to conditions",
@@ -661,11 +713,12 @@
         "reference_amount": 1850,
         "currency": "USD",
         "basis": "private_reference",
-        "price_status": "reference_from_production",
+        "price_status": "price_on_request",
         "production_display_2026_10_10": "From $1,850",
         "main_8f73e1f_display": "From $1,850",
-        "display_on_site": true,
-        "needs_james_review": true
+        "display_on_site": false,
+        "needs_james_review": false,
+        "note_20261010": "Owner 10 Oct 2026 20:47: Private Tours / Custom Journeys / Specialist Services show \"Price on request\" unless a price is explicitly approved. Reference kept for internal use only."
       },
       "operating_window": {
         "text": "Year-round",
@@ -714,7 +767,8 @@
         "production_display_2026_10_10": "Price on request",
         "main_8f73e1f_display": "Custom quotation (specialist/custom page)",
         "display_on_site": false,
-        "needs_james_review": false
+        "needs_james_review": false,
+        "note_20261010": "Owner 10 Oct 2026 20:47: Private Tours / Custom Journeys / Specialist Services show \"Price on request\" unless a price is explicitly approved. Reference kept for internal use only."
       },
       "operating_window": {
         "text": "Year-round; route dependent",
@@ -750,11 +804,12 @@
         "reference_amount": 2000,
         "currency": "USD",
         "basis": "per_person_from",
-        "price_status": "reference_from_production_not_displayed_on_main",
+        "price_status": "price_on_request",
         "production_display_2026_10_10": "From $2,000",
         "main_8f73e1f_display": "Custom quotation (specialist/custom page)",
         "display_on_site": false,
-        "needs_james_review": true
+        "needs_james_review": false,
+        "note_20261010": "Owner 10 Oct 2026 20:47: Private Tours / Custom Journeys / Specialist Services show \"Price on request\" unless a price is explicitly approved. Reference kept for internal use only."
       },
       "operating_window": {
         "text": "15 June – 31 August",
@@ -793,11 +848,12 @@
         "reference_amount": 2850,
         "currency": "USD",
         "basis": "per_person_from",
-        "price_status": "reference_from_production_not_displayed_on_main",
+        "price_status": "price_on_request",
         "production_display_2026_10_10": "From $2,850",
         "main_8f73e1f_display": "Custom quotation (specialist/custom page)",
         "display_on_site": false,
-        "needs_james_review": true
+        "needs_james_review": false,
+        "note_20261010": "Owner 10 Oct 2026 20:47: Private Tours / Custom Journeys / Specialist Services show \"Price on request\" unless a price is explicitly approved. Reference kept for internal use only."
       },
       "operating_window": {
         "text": "Year-round",
@@ -811,7 +867,8 @@
       },
       "flags": [
         "Production /tours/photography-tour/ shows From $2,850 and 12 days; main's destination page is quotation-only. Not displayed until James decides.",
-        "Live page itinerary repeats Days 3–5 as Days 10–12; main replaces the page with the specialist page (no day-by-day itinerary)."
+        "Live page itinerary repeats Days 3–5 as Days 10–12; main replaces the page with the specialist page (no day-by-day itinerary).",
+        "Owner 10 Oct 2026 20:47: classified as Specialist Service."
       ],
       "booking_type": "specialist_service",
       "booking_types": [
@@ -836,11 +893,12 @@
         "reference_amount": 4500,
         "currency": "USD",
         "basis": "per_person_from",
-        "price_status": "reference_from_production_not_displayed_on_main",
+        "price_status": "price_on_request",
         "production_display_2026_10_10": "From $4,500",
         "main_8f73e1f_display": "Custom quotation (specialist/custom page)",
         "display_on_site": false,
-        "needs_james_review": true
+        "needs_james_review": false,
+        "note_20261010": "Owner 10 Oct 2026 20:47: Private Tours / Custom Journeys / Specialist Services show \"Price on request\" unless a price is explicitly approved. Reference kept for internal use only."
       },
       "operating_window": {
         "text": "Year-round",
@@ -882,7 +940,8 @@
         "production_display_2026_10_10": "Price on request",
         "main_8f73e1f_display": "Custom quotation (specialist/custom page)",
         "display_on_site": false,
-        "needs_james_review": false
+        "needs_james_review": false,
+        "note_20261010": "Owner 10 Oct 2026 20:47: Private Tours / Custom Journeys / Specialist Services show \"Price on request\" unless a price is explicitly approved. Reference kept for internal use only."
       },
       "operating_window": {
         "text": "Winter / snow-dependent",
@@ -923,7 +982,8 @@
         "production_display_2026_10_10": "Price on request",
         "main_8f73e1f_display": "Custom quotation (specialist/custom page)",
         "display_on_site": false,
-        "needs_james_review": false
+        "needs_james_review": false,
+        "note_20261010": "Owner 10 Oct 2026 20:47: Private Tours / Custom Journeys / Specialist Services show \"Price on request\" unless a price is explicitly approved. Reference kept for internal use only."
       },
       "operating_window": {
         "text": "Year-round",
@@ -963,7 +1023,8 @@
         "production_display_2026_10_10": "Price on request",
         "main_8f73e1f_display": "Custom quotation (specialist/custom page)",
         "display_on_site": false,
-        "needs_james_review": false
+        "needs_james_review": false,
+        "note_20261010": "Owner 10 Oct 2026 20:47: Private Tours / Custom Journeys / Specialist Services show \"Price on request\" unless a price is explicitly approved. Reference kept for internal use only."
       },
       "operating_window": {
         "text": "Year-round",
@@ -1003,7 +1064,8 @@
         "production_display_2026_10_10": "Price on request",
         "main_8f73e1f_display": "Custom quotation (specialist/custom page)",
         "display_on_site": false,
-        "needs_james_review": false
+        "needs_james_review": false,
+        "note_20261010": "Owner 10 Oct 2026 20:47: Private Tours / Custom Journeys / Specialist Services show \"Price on request\" unless a price is explicitly approved. Reference kept for internal use only."
       },
       "operating_window": {
         "text": "Year-round",
@@ -1016,9 +1078,10 @@
         "guidance_only": true
       },
       "flags": [
-        "Booking type set to \"Custom Journey\" (return journeys are planned around each traveler) — owner to confirm vs \"Specialist Service\"."
+        "Booking type set to \"Custom Journey\" (return journeys are planned around each traveler) — owner to confirm vs \"Specialist Service\".",
+        "Owner 10 Oct 2026 20:47: classified as Specialist Service."
       ],
-      "booking_type": "custom_journey",
+      "booking_type": "specialist_service",
       "booking_types": [
         "custom_journey"
       ]

@@ -510,6 +510,9 @@ const inclusions = [...globalInclusions, ...specificInclusions]
   .sort((a, b) => Number(a.sort_order || 999) - Number(b.sort_order || 999))
   .filter((row, index, rows) => rows.findIndex((other) => String(other.title).toLowerCase() === String(row.title).toLowerCase()) === index)
   .slice(0, 10);
+// Owner 10 Oct 2026: standard exclusions unless the tour supplies its own authoritative list (frontmatter `exclusions`).
+const tourExclusions = Array.isArray(tour?.exclusions) && tour.exclusions.length ? tour.exclusions : (bookingSettings.standard_exclusions?.items || []);
+const exclusionsLeadIn = bookingSettings.standard_exclusions?.lead_in || '';
 
 const dates = Array.isArray(tour.dates) ? tour.dates : [];
 const scheduledDates = dates.filter((row) => {
@@ -703,6 +706,13 @@ const contactHref = buildTourInquiryHref(tour);
                   </ul>
                 </div>
               )}
+            </div>
+          )}
+          {tourExclusions.length > 0 && (
+            <div class="tour-not-included" id="not-included">
+              <h3>Not included</h3>
+              <p>{exclusionsLeadIn}</p>
+              <ul>{tourExclusions.map((item) => <li>{item}</li>)}</ul>
             </div>
           )}
         </section>
@@ -2314,5 +2324,10 @@ const contactHref = buildTourInquiryHref(tour);
       }
     }
 
+  .tour-not-included { margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid rgba(16,24,32,.1); }
+  .tour-not-included h3 { margin: 0 0 .4rem; }
+  .tour-not-included p { margin: 0 0 .6rem; color: var(--at-text, #4b5563); line-height: 1.6; }
+  .tour-not-included ul { margin: 0; padding-left: 1.1rem; columns: 2; column-gap: 2rem; color: var(--at-text, #4b5563); line-height: 1.6; }
+  @media (max-width: 640px) { .tour-not-included ul { columns: 1; } }
 </style>
 </BaseLayout>

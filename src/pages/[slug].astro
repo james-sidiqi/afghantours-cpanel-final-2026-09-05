@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getEntry } from 'astro:content';
+import { LEGAL_IDENTITY } from '../lib/legal';
 
 export function getStaticPaths() {
   return [
@@ -191,6 +192,14 @@ const policyItems = {
 const cancellationPolicy = await getEntry('legal', 'cancellation-refund-rescheduling');
 const cancellationPolicyLive = cancellationPolicy?.data.policy_full_text_received === true;
 
+// Terms & Conditions / Privacy Policy: the owner's final text drops into src/content/legal/{terms-and-conditions,privacy-policy}.md
+// word for word. Until full_text_received is true the interim summary below is shown (no invented legal text).
+const legalDocSlug = Astro.params.slug === 'terms' ? 'terms-and-conditions' : Astro.params.slug === 'privacy' ? 'privacy-policy' : null;
+const legalDoc = legalDocSlug ? await getEntry('legal', legalDocSlug) : null;
+const legalDocLive = legalDoc?.data.full_text_received === true;
+const LegalDocContent = legalDocLive ? (await legalDoc.render()).Content : null;
+const showIdentity = ['terms', 'privacy', 'contact'].includes(Astro.params.slug);
+
 const aboutItems = [
   ['Licensed Kabul Operator', 'AfghanTours.com is owned and operated by James Tourist & Travel Agency, a licensed Afghanistan travel operator based in Kabul.'],
   ['American-Led, Kabul-Based', 'The company is led by an American citizen with more than 15 years of continuous experience living and working inside Afghanistan.'],
@@ -330,6 +339,7 @@ const trustItems = [
           ))}
         </div>
       </section>
+      {showIdentity && <p class="legal-identity" data-legal-identity>{LEGAL_IDENTITY}</p>}
     </main>
   ) : (
     <main class="simple-page">
@@ -361,14 +371,23 @@ const trustItems = [
         </section>
       ) : page.type === 'policy' ? (
         <>
-          <section class="policy-grid">
-            {(policyItems[Astro.params.slug] || []).map(([heading, text]) => (
-              <article>
-                <h2>{heading}</h2>
-                <p>{text}</p>
+          {legalDocLive && LegalDocContent ? (
+            <section class="legal-doc-full">
+              <article class="content-card" data-legal-document={legalDocSlug}>
+                {legalDoc.data.effective_date && <p class="legal-doc-meta">Effective Date: {legalDoc.data.effective_date}</p>}
+                <LegalDocContent />
               </article>
-            ))}
-          </section>
+            </section>
+          ) : (
+            <section class="policy-grid" data-legal-interim={legalDocSlug || ''}>
+              {(policyItems[Astro.params.slug] || []).map(([heading, text]) => (
+                <article>
+                  <h2>{heading}</h2>
+                  <p>{text}</p>
+                </article>
+              ))}
+            </section>
+          )}
 
           {Astro.params.slug === 'terms' && cancellationPolicyLive && (
             <section class="policy-clause" id="cancellation-refund-rescheduling" data-policy-pointer>
@@ -410,6 +429,7 @@ const trustItems = [
           ))}
         </section>
       )}
+      {showIdentity && <p class="legal-identity" data-legal-identity>{LEGAL_IDENTITY}</p>}
     </main>
   )}
 </BaseLayout>
@@ -774,4 +794,7 @@ const trustItems = [
   }
   .policy-pointer__link { color: #8a5a12; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
   [data-policy-pointer] p + p { margin-top: .9rem; }
+  .legal-identity { max-width: 1180px; margin: 2rem auto 0; padding: 0 1rem; text-align: center; font-size: .86rem; color: #4b5563; }
+  .legal-doc-full { max-width: 860px; margin: 0 auto; }
+  .legal-doc-meta { font-weight: 700; }
 </style>

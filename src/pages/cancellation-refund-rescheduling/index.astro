@@ -7,6 +7,7 @@
  */
 import { getEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { LEGAL_IDENTITY } from '../../lib/legal';
 
 const entry = await getEntry('legal', 'cancellation-refund-rescheduling');
 if (!entry) throw new Error('legal/cancellation-refund-rescheduling.md missing');
@@ -23,6 +24,7 @@ const d = entry.data;
       <h1>{d.title}</h1>
       <Content />
     </article>
+    <p class="legal-doc__identity" data-legal-identity>{LEGAL_IDENTITY}</p>
     <p class="legal-doc__related"><a href="/terms/">Terms</a> · <a href="/privacy/">Privacy Policy</a> · <a href="/contact/">Contact</a></p>
   </main>
 </BaseLayout>
@@ -38,4 +40,5 @@ const d = entry.data;
   .legal-doc a { color: #8a5a12; text-decoration: underline; text-underline-offset: 2px; }
   .legal-doc article :global(ul) { padding-left: 1.2rem; }
   .legal-doc__related { margin-top: 1.5rem; color: #6b6d66; }
+  .legal-doc__identity { margin-top: 1.5rem; font-size: .86rem; color: #4b5563; }
 </style>

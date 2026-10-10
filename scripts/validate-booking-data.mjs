@@ -121,7 +121,9 @@ for (const d of departures) {
   if (ids.has(d.id)) err(`duplicate departure id ${d.id}`);
   ids.add(d.id);
   const key = `${d.tour_slug}|${d.start_date}|${d.departure_type}`;
-  if (keyset.has(key)) err(`${where}: duplicate departure for same tour/start/type`);
+  const twin = departures.find((o) => o !== d && `${o.tour_slug}|${o.start_date}|${o.departure_type}` === key);
+  if (twin && d.status !== 'proposed' && twin.status !== 'proposed' && keyset.has(key)) err(`${where}: duplicate departure for same tour/start/type`);
+  else if (twin && d.status === 'proposed' && twin.status !== 'proposed') warn(`${where}: proposed departure duplicates ${twin.id} (same tour/start/type) — do not publish; withdraw it in /manage/`);
   keyset.add(key);
   const t = bySlug.get(d.tour_slug);
   if (!t) { err(`${where}: unknown tour ${d.tour_slug}`); continue; }
@@ -207,6 +209,7 @@ for (const d of departures) if (['trek-the-wakhan-corridor', 'timurid-grandeur-h
     'scheduled/shared departures lasting 5 days or more require a minimum of 6 confirmed travelers and normally accept a maximum of 18 travelers;',
     'scheduled/shared departures lasting 4 days or less require a minimum of 2 confirmed travelers and do not have a standard maximum unless a departure-specific capacity is stated.',
     'For scheduled/shared departures lasting 5 days or more, we normally review whether the minimum group size has been reached 45 days before departure.',
+    'For scheduled/shared departures lasting 4 days or less, we normally review whether the minimum group size has been reached 14 days before departure.',
     'If James Tourist & Travel Agency cancels a scheduled departure because the required minimum number of travelers has not been reached, we will refund 100% of the amount paid to James Tourist & Travel Agency for that tour.',
   ]) if (!legal.includes(sentence)) err(`legal policy: required sentence missing or changed: "${sentence.slice(0, 70)}…"`);
   // one authoritative document: /terms/ must not carry its own copy of the policy clauses
@@ -218,6 +221,7 @@ for (const d of departures) if (['trek-the-wakhan-corridor', 'timurid-grandeur-h
   if (settings.wording?.group_size_long && !/6–18 travelers.*Minimum to operate: 6/.test(settings.wording.group_size_long)) err('settings.wording.group_size_long contradicts the policy (6–18, minimum 6)');
   if (settings.group_rule && (settings.group_rule.long_tour_min_days !== 5 || settings.group_rule.long_min !== 6 || settings.group_rule.long_max !== 18 || settings.group_rule.short_tour_shared_min !== 2)) err('settings.group_rule differs from the policy defaults (5+ days: 6–18; ≤4 days: 2)');
   if (settings.long_tour_min_group_review_days !== 45) err('long_tour_min_group_review_days must match the policy (45 days)');
+  if (settings.short_tour_min_group_review_days !== 14) err('short_tour_min_group_review_days must match the policy (14 days)');
 }
 
 // ---------- long-tour minimum-group review / final cutoff (owner decision 10 Oct 2026 18:56) ----------

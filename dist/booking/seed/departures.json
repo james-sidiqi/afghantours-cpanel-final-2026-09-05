@@ -59,7 +59,7 @@
         "amount": 990,
         "currency": "USD",
         "basis": "per_person_shared_from",
-        "price_status": "reference_from_production"
+        "price_status": "approved"
       },
       "booking_cutoff": null,
       "operational_approval": "pending",
@@ -75,9 +75,14 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false,
+      "price_approved": true,
       "traveler_count_status": "unknown",
-      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/.",
+      "price_approval": {
+        "by": "James (owner instruction 10 Oct 2026 20:47)",
+        "at": "2026-10-10T20:47:00+04:30",
+        "note": "Existing production \"From\" price approved (USD)."
+      }
     },
     {
       "id": "DEP-SUMC-20260820",
@@ -97,7 +102,7 @@
         "amount": 1950,
         "currency": "USD",
         "basis": "per_person_shared_from",
-        "price_status": "reference_from_production"
+        "price_status": "approved"
       },
       "booking_cutoff": null,
       "operational_approval": "pending",
@@ -114,9 +119,14 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false,
+      "price_approved": true,
       "traveler_count_status": "unknown",
-      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/.",
+      "price_approval": {
+        "by": "James (owner instruction 10 Oct 2026 20:47)",
+        "at": "2026-10-10T20:47:00+04:30",
+        "note": "Existing production \"From\" price approved (USD)."
+      }
     },
     {
       "id": "DEP-WKND-20260820",
@@ -136,7 +146,7 @@
         "amount": 450,
         "currency": "USD",
         "basis": "per_person_shared_from",
-        "price_status": "reference_from_production"
+        "price_status": "approved"
       },
       "booking_cutoff": null,
       "operational_approval": "pending",
@@ -152,9 +162,14 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false,
+      "price_approved": true,
       "traveler_count_status": "unknown",
-      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/.",
+      "price_approval": {
+        "by": "James (owner instruction 10 Oct 2026 20:47)",
+        "at": "2026-10-10T20:47:00+04:30",
+        "note": "Existing production \"From\" price approved (USD)."
+      }
     },
     {
       "id": "DEP-TSRA-20260907",
@@ -212,7 +227,7 @@
         "amount": 1250,
         "currency": "USD",
         "basis": "per_person_shared_from",
-        "price_status": "reference_from_production"
+        "price_status": "approved"
       },
       "booking_cutoff": null,
       "operational_approval": "pending",
@@ -229,9 +244,14 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false,
+      "price_approved": true,
       "traveler_count_status": "unknown",
-      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/.",
+      "price_approval": {
+        "by": "James (owner instruction 10 Oct 2026 20:47)",
+        "at": "2026-10-10T20:47:00+04:30",
+        "note": "Existing production \"From\" price approved (USD)."
+      }
     },
     {
       "id": "DEP-ADTF-20260921",
@@ -251,7 +271,7 @@
         "amount": 1950,
         "currency": "USD",
         "basis": "per_person_shared_from",
-        "price_status": "reference_from_production"
+        "price_status": "approved"
       },
       "booking_cutoff": null,
       "operational_approval": "pending",
@@ -267,9 +287,14 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false,
+      "price_approved": true,
       "traveler_count_status": "unknown",
-      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/.",
+      "price_approval": {
+        "by": "James (owner instruction 10 Oct 2026 20:47)",
+        "at": "2026-10-10T20:47:00+04:30",
+        "note": "Existing production \"From\" price approved (USD)."
+      }
     },
     {
       "id": "DEP-PVEH-20260928",
@@ -327,7 +352,7 @@
         "amount": 990,
         "currency": "USD",
         "basis": "per_person_shared_from",
-        "price_status": "reference_from_production"
+        "price_status": "approved"
       },
       "booking_cutoff": null,
       "operational_approval": "pending",
@@ -343,9 +368,14 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false,
+      "price_approved": true,
       "traveler_count_status": "unknown",
-      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/.",
+      "price_approval": {
+        "by": "James (owner instruction 10 Oct 2026 20:47)",
+        "at": "2026-10-10T20:47:00+04:30",
+        "note": "Existing production \"From\" price approved (USD)."
+      }
     },
     {
       "id": "DEP-ADTF-20261012",
@@ -365,7 +395,7 @@
         "amount": 1950,
         "currency": "USD",
         "basis": "per_person_shared_from",
-        "price_status": "reference_from_production"
+        "price_status": "approved"
       },
       "booking_cutoff": null,
       "operational_approval": "pending",
@@ -381,9 +411,14 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false,
+      "price_approved": true,
       "traveler_count_status": "unknown",
-      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/.",
+      "price_approval": {
+        "by": "James (owner instruction 10 Oct 2026 20:47)",
+        "at": "2026-10-10T20:47:00+04:30",
+        "note": "Existing production \"From\" price approved (USD)."
+      }
     },
     {
       "id": "DEP-KTDE-20261026",
@@ -403,7 +438,7 @@
         "amount": 1250,
         "currency": "USD",
         "basis": "per_person_shared_from",
-        "price_status": "reference_from_production"
+        "price_status": "approved"
       },
       "booking_cutoff": null,
       "operational_approval": "pending",
@@ -419,9 +454,14 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false,
+      "price_approved": true,
       "traveler_count_status": "unknown",
-      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/.",
+      "price_approval": {
+        "by": "James (owner instruction 10 Oct 2026 20:47)",
+        "at": "2026-10-10T20:47:00+04:30",
+        "note": "Existing production \"From\" price approved (USD)."
+      }
     },
     {
       "id": "DEP-WKND-20261106",
@@ -650,7 +690,7 @@
       "tour_code": "WNTC",
       "tour_slug": "winter-circuit",
       "start_date": "2026-12-05",
-      "end_date": "2026-12-17",
+      "end_date": "2026-12-16",
       "duration_days": 12,
       "departure_type": "shared",
       "min_group_size": 6,
@@ -663,7 +703,7 @@
         "amount": 2100,
         "currency": "USD",
         "basis": "per_person_shared_from",
-        "price_status": "reference_from_production"
+        "price_status": "approved"
       },
       "booking_cutoff": null,
       "operational_approval": "pending",
@@ -672,17 +712,22 @@
       "internal_notes": "Imported from tour_dates.csv / production 2026-10-10 (csv status 'open', note: Early winter circuit route). Existing future departure — kept published. Max capacity not set (admin must set). Live csv label \"open\" is not used; status is computed.",
       "source": "production_2026-10-10",
       "date_check": {
-        "inclusive_days": 13,
+        "inclusive_days": 12,
         "expected_end": "2026-12-16",
-        "ok": false,
-        "note": "MISMATCH: 2026-12-05–2026-12-17 is 13 days inclusive but the tour is 12 days (expected end 2026-12-16). Not changed — flagged for James."
+        "ok": true,
+        "note": "Owner 10 Oct 2026 20:47: corrected from 5–17 Dec to 5–16 Dec 2026 (12 days)."
       },
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false,
+      "price_approved": true,
       "traveler_count_status": "unknown",
-      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/.",
+      "price_approval": {
+        "by": "James (owner instruction 10 Oct 2026 20:47)",
+        "at": "2026-10-10T20:47:00+04:30",
+        "note": "Existing production \"From\" price approved (USD)."
+      }
     },
     {
       "id": "DEP-BUZE-20261219",
@@ -961,7 +1006,7 @@
         "amount": 1300,
         "currency": "USD",
         "basis": "per_person_shared_from",
-        "price_status": "reference_from_production"
+        "price_status": "approved"
       },
       "booking_cutoff": null,
       "operational_approval": "pending",
@@ -979,9 +1024,14 @@
         "ADV-RAMADAN-2027"
       ],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false,
+      "price_approved": true,
       "traveler_count_status": "unknown",
-      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/.",
+      "price_approval": {
+        "by": "James (owner instruction 10 Oct 2026 20:47)",
+        "at": "2026-10-10T20:47:00+04:30",
+        "note": "Existing production \"From\" price approved (USD)."
+      }
     },
     {
       "id": "DEP-WNTC-20270216",
@@ -1001,7 +1051,7 @@
         "amount": 2100,
         "currency": "USD",
         "basis": "per_person_shared_from",
-        "price_status": "reference_from_production"
+        "price_status": "approved"
       },
       "booking_cutoff": null,
       "operational_approval": "pending",
@@ -1019,9 +1069,14 @@
         "ADV-RAMADAN-2027"
       ],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false,
+      "price_approved": true,
       "traveler_count_status": "unknown",
-      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/.",
+      "price_approval": {
+        "by": "James (owner instruction 10 Oct 2026 20:47)",
+        "at": "2026-10-10T20:47:00+04:30",
+        "note": "Existing production \"From\" price approved (USD)."
+      }
     },
     {
       "id": "DEP-WKND-20270220",
@@ -1080,7 +1135,7 @@
         "amount": 2450,
         "currency": "USD",
         "basis": "per_person_shared_from",
-        "price_status": "reference_from_production"
+        "price_status": "approved"
       },
       "booking_cutoff": null,
       "operational_approval": "pending",
@@ -1098,9 +1153,14 @@
         "ADV-RAMADAN-2027"
       ],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false,
+      "price_approved": true,
       "traveler_count_status": "unknown",
-      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/.",
+      "price_approval": {
+        "by": "James (owner instruction 10 Oct 2026 20:47)",
+        "at": "2026-10-10T20:47:00+04:30",
+        "note": "Existing production \"From\" price approved (USD)."
+      }
     },
     {
       "id": "DEP-BSKI-20270227",
@@ -1184,8 +1244,8 @@
       "id": "DEP-WKND-20270306",
       "tour_code": "WKND",
       "tour_slug": "weekend-in-kabul",
-      "start_date": "2027-03-06",
-      "end_date": "2027-03-08",
+      "start_date": "2027-03-05",
+      "end_date": "2027-03-07",
       "duration_days": 3,
       "departure_type": "shared",
       "min_group_size": 2,
@@ -1198,7 +1258,7 @@
         "amount": 450,
         "currency": "USD",
         "basis": "per_person_shared_from",
-        "price_status": "reference_from_production"
+        "price_status": "approved"
       },
       "booking_cutoff": null,
       "operational_approval": "pending",
@@ -1208,17 +1268,23 @@
       "source": "production_2026-10-10",
       "date_check": {
         "inclusive_days": 3,
-        "expected_end": "2027-03-08",
-        "ok": true
+        "expected_end": "2027-03-07",
+        "ok": true,
+        "note": "Owner 10 Oct 2026 20:47: moved from 6–8 Mar to 5–7 Mar 2027 (Fri–Sun) — clear of the expected Eid al-Fitr block (8–12 Mar); Ramadan advisory still applies. Departure ID kept stable."
       },
-      "arrival_option": "sat-mon",
+      "arrival_option": "fri-sun",
       "advisories": [
         "ADV-RAMADAN-2027"
       ],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false,
+      "price_approved": true,
       "traveler_count_status": "unknown",
-      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/.",
+      "price_approval": {
+        "by": "James (owner instruction 10 Oct 2026 20:47)",
+        "at": "2026-10-10T20:47:00+04:30",
+        "note": "Existing production \"From\" price approved (USD)."
+      }
     },
     {
       "id": "DEP-BUZE-20270313",
@@ -1497,7 +1563,7 @@
         "amount": 1890,
         "currency": "USD",
         "basis": "per_person_shared_from",
-        "price_status": "reference_from_production"
+        "price_status": "approved"
       },
       "booking_cutoff": null,
       "operational_approval": "pending",
@@ -1513,9 +1579,14 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false,
+      "price_approved": true,
       "traveler_count_status": "unknown",
-      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/.",
+      "price_approval": {
+        "by": "James (owner instruction 10 Oct 2026 20:47)",
+        "at": "2026-10-10T20:47:00+04:30",
+        "note": "Existing production \"From\" price approved (USD)."
+      }
     },
     {
       "id": "DEP-ADTS-20270501",

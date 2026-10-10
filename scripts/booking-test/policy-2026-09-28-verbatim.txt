@@ -44,7 +44,7 @@ Unless otherwise stated for a specific departure:
 
 A scheduled departure becomes confirmed to operate once the applicable minimum has been reached and James Tourist & Travel Agency has provided operational approval.
 
-For scheduled/shared departures lasting 5 days or more, we normally review whether the minimum group size has been reached 45 days before departure.
+For scheduled/shared departures lasting 5 days or more, we normally review whether the minimum group size has been reached 45 days before departure. For scheduled/shared departures lasting 4 days or less, we normally review whether the minimum group size has been reached 14 days before departure.
 
 If the minimum has not been reached at that point, James Tourist & Travel Agency may:
 

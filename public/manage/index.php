@@ -415,12 +415,68 @@ if ($action === 'op' && $method === 'POST') {
 }
 
 /* ---- booking records (booking status is separate from departure status) ---- */
-const BOOKING_STATUS = ['pending' => 'Requested (not yet accepted)', 'confirmed' => 'Booking confirmed', 'cancelled' => 'Booking cancelled'];
-// Deposit/payment rules are not defined yet (owner decision) — staff only record whether payment was received.
-const PAYMENT_NOTE = ['not_recorded' => 'Payment not recorded', 'payment_received' => 'Payment received (recorded by admin)'];
+const BOOKING_STATUS = ['pending' => 'Requested (not yet accepted)', 'accepted' => 'Accepted by AfghanTours — awaiting Terms/Policy acceptance and deposit', 'confirmed' => 'Booking confirmed', 'cancelled' => 'Booking cancelled'];
+// Owner 10 Oct 2026 20:47 (rules/data only, no gateway): 25% deposit; balance due 30 days before departure;
+// accepted 30 days or less before departure → 100% due on confirmation. Staff record what was received; nothing is processed here.
+const PAYMENT_NOTE = ['not_recorded' => 'Payment not recorded', 'deposit_received' => 'Deposit received (recorded by admin)', 'payment_received' => 'Paid in full (recorded by admin)'];
+const ACCEPTANCE_METHODS = ['email_reply' => 'Written acceptance by email', 'signed_form' => 'Signed booking form', 'online_form' => 'Online booking form', 'in_person' => 'In person (signed)'];
 function payment_value(string $v): ?string {
-    if (in_array($v, ['deposit_recorded', 'paid_recorded'], true)) $v = 'payment_received'; // legacy values
+    if ($v === 'deposit_recorded') $v = 'deposit_received'; // legacy values
+    if ($v === 'paid_recorded') $v = 'payment_received';
     return array_key_exists($v, PAYMENT_NOTE) ? $v : null;
+}
+/** Legal documents a traveler accepts before a transactional payment (Terms & Conditions + the Policy). */
+function legal_documents(array $settings): array {
+    $docs = (array)($settings['legal_documents'] ?? []);
+    return [
+        'terms' => ($docs['terms'] ?? []) + ['name' => 'Terms & Conditions', 'url' => 'https://afghantours.com/terms/', 'effective_date' => null, 'version' => null, 'full_text_received' => false],
+        'policy' => ($docs['policy'] ?? []) + ['name' => 'Cancellation, Refund & Rescheduling Policy', 'url' => 'https://afghantours.com/cancellation-refund-rescheduling/', 'effective_date' => '2026-09-28', 'version' => null, 'full_text_received' => true],
+    ];
+}
+/** Standard payment terms for a scheduled or private booking (custom/specialist: per written proposal). */
+function payment_terms_for(array $tr, ?array $dep, array $settings, string $acceptedOn): array {
+    $p = (array)($settings['payments'] ?? []);
+    $pct = (float)($p['deposit_percent'] ?? 25);
+    $balDays = (int)($p['balance_due_days_before_departure'] ?? 30);
+    $fullDays = (int)($p['full_payment_if_accepted_within_days'] ?? 30);
+    $price = isset($tr['confirmed_price']) && is_numeric($tr['confirmed_price']) ? (float)$tr['confirmed_price'] : null;
+    $start = (string)($dep['start_date'] ?? '');
+    $full = atb_is_iso_date($start) && atb_days_between($acceptedOn, $start) <= $fullDays;
+    return [
+        'mode' => 'standard', 'deposit_percent' => $pct, 'accepted_on' => $acceptedOn, 'confirmed_price' => $price,
+        'deposit_amount' => $price === null ? null : round($price * $pct / 100, 2),
+        'full_payment_due_on_confirmation' => $full,
+        'amount_due_on_confirmation' => $price === null ? null : ($full ? $price : round($price * $pct / 100, 2)),
+        'balance_due_date' => $full || !atb_is_iso_date($start) ? null : atb_add_days($start, -$balDays),
+    ];
+}
+/** Why a booking cannot be marked confirmed yet (null = all three conditions met). */
+function confirmation_blockers(array $tr): array {
+    $why = [];
+    if (empty($tr['terms_acceptance'])) $why[] = 'Terms & Conditions acceptance not recorded';
+    if (empty($tr['policy_acceptance'])) $why[] = 'Cancellation, Refund & Rescheduling Policy acceptance not recorded';
+    $pay = payment_value((string)($tr['payment_status'] ?? '')) ?? 'not_recorded';
+    $fullDue = !empty($tr['payment_terms']['full_payment_due_on_confirmation']);
+    if ($fullDue && $pay !== 'payment_received') $why[] = 'booking accepted 30 days or less before departure — 100% payment must be recorded';
+    elseif (!$fullDue && $pay === 'not_recorded') $why[] = '25% deposit not recorded as received';
+    return $why;
+}
+/** First time a booking is accepted (or confirmed): reference, acceptance date and the payment terms snapshot. */
+function stamp_acceptance(array &$tr, ?array $dep, string $today, array $settings): void {
+    if (!in_array($tr['status'] ?? '', ['accepted', 'confirmed'], true)) return;
+    if (empty($tr['booking_reference'])) $tr['booking_reference'] = new_booking_reference();
+    if (empty($tr['accepted_on'])) $tr['accepted_on'] = $today;
+    if (empty($tr['payment_terms']) || (isset($tr['confirmed_price']) && ($tr['payment_terms']['confirmed_price'] ?? null) !== $tr['confirmed_price'])) {
+        $tr['payment_terms'] = payment_terms_for($tr, $dep, $settings, (string)$tr['accepted_on']);
+    }
+    if (($tr['balance_due_date'] ?? null) === null && !empty($tr['payment_terms']['balance_due_date'])) $tr['balance_due_date'] = $tr['payment_terms']['balance_due_date'];
+}
+/** Record a traveler's acceptance of one legal document (booking-side step; never required on inquiries). */
+function acceptance_record(string $doc, array $tr, array $settings, string $method, string $acceptedAt, string $actor): array {
+    $d = legal_documents($settings)[$doc];
+    return ['document' => $doc === 'terms' ? 'terms-and-conditions' : 'cancellation-refund-rescheduling', 'document_name' => $d['name'], 'document_url' => $d['url'],
+        'effective_date' => $d['effective_date'], 'version' => $d['version'], 'document_final' => !empty($d['full_text_received']),
+        'booking_reference' => $tr['booking_reference'] ?? null, 'accepted_at' => $acceptedAt, 'method' => $method, 'recorded_by' => $actor, 'recorded_at' => atb_now_iso()];
 }
 function new_booking_reference(): string { return 'ATB-' . gmdate('Y') . '-' . strtoupper(bin2hex(random_bytes(3))); }
 /** Private/custom special request inside an Eid block → manual review before any confirmation. */
@@ -478,7 +534,7 @@ if ($action === 'traveler' && $method === 'POST') {
         $name = atb_str(post('name'), 120);
         if ($name === '') redirect(['a' => 'edit', 'id' => $depId], 'Traveler name is required.', 'err');
         $size = max(1, min(50, (int)atb_int(post('party_size'), 1)));
-        $status = in_array(post('status'), ['pending', 'confirmed'], true) ? post('status') : 'pending';
+        $status = in_array(post('status'), ['pending', 'accepted', 'confirmed'], true) ? post('status') : 'pending';
         $depRow = atb_find_departure($deps, $depId);
         if ($status === 'confirmed' && eid_review_needed($depRow, $cal) && trim(post('eid_review_note')) === '') {
             redirect(['a' => 'edit', 'id' => $depId], 'Eid special request — manual review required (guide, driver, vehicle, hotels, domestic transport, site access, meals, local conditions, feasibility). Record the review note before confirming.', 'err');
@@ -492,10 +548,19 @@ if ($action === 'traveler' && $method === 'POST') {
             'inquiry_id' => atb_str(post('inquiry_id'), 60), 'notes' => atb_str(post('notes'), 1000),
             'amount_paid' => money_or_null(post('amount_paid')), 'balance_due' => money_or_null(post('balance_due')),
             'balance_due_date' => atb_is_iso_date(post('balance_due_date')) ? post('balance_due_date') : null, 'currency' => 'USD',
+            'confirmed_price' => money_or_null(post('confirmed_price')),
             'created_at' => atb_now_iso(), 'created_by' => $user['name'],
         ];
         $new = array_key_last($travelers);
         acceptance_defaults($travelers[$new]);
+        stamp_acceptance($travelers[$new], $depRow, $today, $settings);
+        $method = array_key_exists(post('acceptance_method'), ACCEPTANCE_METHODS) ? post('acceptance_method') : '';
+        foreach (['terms', 'policy'] as $doc) {
+            if (post('accept_' . $doc) === '1' && $method !== '' && $status !== 'pending') $travelers[$new][$doc . '_acceptance'] = acceptance_record($doc, $travelers[$new], $settings, $method, atb_now_iso(), $user['name']);
+        }
+        if ($status === 'confirmed' && ($why = confirmation_blockers($travelers[$new]))) {
+            redirect(['a' => 'edit', 'id' => $depId], 'Not confirmed: ' . implode('; ', $why) . '. Save it as Accepted first, then record the missing items.', 'err');
+        }
         stamp_booking($travelers[$new], atb_find_departure($deps, $depId), $today, $settings, $user['name']);
         atb_save_travelers($travelers, $user['name'], 'traveler_add', ['departure_id' => $depId, 'status' => $status, 'party_size' => $size]);
         sync_departure_confirmed_on($depId, $user['name'], $today);
@@ -514,6 +579,24 @@ if ($action === 'traveler' && $method === 'POST') {
         atb_save_travelers($travelers, $user['name'], 'traveler_move_proposed', ['departure_id' => $depId, 'traveler_id' => $tid, 'to' => $to]);
         redirect(['a' => 'edit', 'id' => $depId], 'Move proposed to ' . $to . ' — pending traveler confirmation. The booking stays on this departure until you move it after they agree.');
     }
+    if ($op === 'record_acceptance') { // booking-side legal acceptance step (never on inquiries)
+        $tid = post('traveler_id');
+        $method = post('acceptance_method');
+        if (!array_key_exists($method, ACCEPTANCE_METHODS)) redirect(['a' => 'edit', 'id' => $depId], 'Choose how the traveler accepted.', 'err');
+        $at = post('accepted_at');
+        $atIso = preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/', $at) ? (new DateTimeImmutable($at, new DateTimeZone('Asia/Kabul')))->format(DATE_ATOM) : atb_now_iso();
+        $docs = array_values(array_filter(['terms', 'policy'], static fn($x) => post('accept_' . $x) === '1'));
+        if (!$docs) redirect(['a' => 'edit', 'id' => $depId], 'Tick the document(s) the traveler accepted.', 'err');
+        foreach ($travelers as &$tr) {
+            if (($tr['id'] ?? '') !== $tid || ($tr['departure_id'] ?? '') !== $depId) continue;
+            if (!in_array($tr['status'] ?? '', ['accepted', 'confirmed'], true)) redirect(['a' => 'edit', 'id' => $depId], 'Accept the booking first (acceptance is recorded against its booking reference).', 'err');
+            acceptance_defaults($tr);
+            foreach ($docs as $doc) $tr[$doc . '_acceptance'] = acceptance_record($doc, $tr, $settings, $method, $atIso, $user['name']);
+        }
+        unset($tr);
+        atb_save_travelers($travelers, $user['name'], 'legal_acceptance_recorded', ['departure_id' => $depId, 'traveler_id' => $tid, 'documents' => $docs, 'method' => $method]);
+        redirect(['a' => 'edit', 'id' => $depId], 'Acceptance recorded: ' . implode(' + ', array_map(static fn($x) => legal_documents($settings)[$x]['name'], $docs)) . '.');
+    }
     if ($op === 'update') {
         $tid = post('traveler_id');
         foreach ($travelers as &$tr) {
@@ -522,9 +605,15 @@ if ($action === 'traveler' && $method === 'POST') {
             if (post('status') === 'confirmed' && ($tr['status'] ?? '') !== 'confirmed' && eid_review_needed(atb_find_departure($deps, $depId), $cal) && trim((string)($tr['eid_review_note'] ?? '')) === '') {
                 redirect(['a' => 'edit', 'id' => $depId], 'Eid special request — manual review required before this booking can be confirmed. Record the review note.', 'err');
             }
-            if (in_array(post('status'), ['pending', 'confirmed', 'cancelled'], true)) $tr['status'] = post('status');
+            $prevStatus = (string)($tr['status'] ?? 'pending');
+            if (in_array(post('status'), ['pending', 'accepted', 'confirmed', 'cancelled'], true)) $tr['status'] = post('status');
             if (payment_value(post('payment_status')) !== null) $tr['payment_status'] = payment_value(post('payment_status'));
+            if (isset($_POST['confirmed_price'])) $tr['confirmed_price'] = money_or_null(post('confirmed_price'));
             acceptance_defaults($tr);
+            stamp_acceptance($tr, atb_find_departure($deps, $depId), $today, $settings);
+            if (($tr['status'] ?? '') === 'confirmed' && $prevStatus !== 'confirmed' && ($why = confirmation_blockers($tr))) {
+                redirect(['a' => 'edit', 'id' => $depId], 'Not confirmed: ' . implode('; ', $why) . '.', 'err');
+            }
             foreach (['amount_paid', 'balance_due'] as $mk) if (isset($_POST[$mk])) $tr[$mk] = money_or_null(post($mk));
             if (isset($_POST['balance_due_date'])) $tr['balance_due_date'] = atb_is_iso_date(post('balance_due_date')) ? post('balance_due_date') : null;
             stamp_booking($tr, atb_find_departure($deps, $depId), $today, $settings, $user['name']);
@@ -597,6 +686,7 @@ if ($action === 'settings_save' && $method === 'POST') {
     $inv['settings']['show_public_confirmed_counts'] = post('show_public_confirmed_counts') === '1';
     unset($inv['settings']['limited_places_threshold']); // Limited is manual per departure
     $inv['settings']['long_tour_min_group_review_days'] = max(1, min(365, (int)atb_int(post('long_tour_min_group_review_days'), 45)));
+    $inv['settings']['short_tour_min_group_review_days'] = max(1, min(365, (int)atb_int(post('short_tour_min_group_review_days'), 14)));
     $inv['settings']['long_tour_final_booking_cutoff_days'] = max(0, min(60, (int)atb_int(post('long_tour_final_booking_cutoff_days'), 7)));
     save_or_fail($inv, $user, 'settings_update', [], ['a' => 'settings']);
     redirect(['a' => 'settings'], 'Settings saved.');
@@ -696,7 +786,10 @@ function booking_confirmation_text(array $tr, ?array $d, ?array $t, string $toda
         'Remaining balance' => $money($tr['balance_due'] ?? null),
         'Balance due date' => (string)($tr['balance_due_date'] ?? 'not applicable / not set'),
         'Booking reference' => (string)($tr['booking_reference'] ?? $tr['id']),
-        'Payment' => atb_payment_received($tr) ? 'received (recorded)' : 'not recorded yet',
+        'Payment' => PAYMENT_NOTE[payment_value((string)($tr['payment_status'] ?? '')) ?? 'not_recorded'],
+        'Payment terms' => !empty($tr['payment_terms']['full_payment_due_on_confirmation']) ? '100% due on confirmation (booked 30 days or less before departure)' : '25% deposit to confirm; balance due 30 days before departure' . (!empty($tr['payment_terms']['balance_due_date']) ? ' (' . $tr['payment_terms']['balance_due_date'] . ')' : ''),
+        'Terms & Conditions accepted' => !empty($tr['terms_acceptance']) ? substr((string)$tr['terms_acceptance']['accepted_at'], 0, 10) . ' (' . (ACCEPTANCE_METHODS[$tr['terms_acceptance']['method']] ?? $tr['terms_acceptance']['method']) . ')' : 'not recorded',
+        'Cancellation, Refund & Rescheduling Policy accepted' => !empty($tr['policy_acceptance']) ? substr((string)$tr['policy_acceptance']['accepted_at'], 0, 10) . ' (' . (ACCEPTANCE_METHODS[$tr['policy_acceptance']['method']] ?? $tr['policy_acceptance']['method']) . ')' : 'not recorded',
     ];
     $lines = ['Dear ' . $tr['name'] . ',', '', 'Thank you for booking with AfghanTours. Your booking is confirmed.', ''];
     foreach ($fields as $k => $v) if ($k !== 'Departure status now') $lines[] = $k . ': ' . $v;
@@ -711,7 +804,7 @@ function booking_confirmation_text(array $tr, ?array $d, ?array $t, string $toda
         $lines[] = ATB_RAMADAN_TITLE . ' (' . atb_period_label($rams[0]) . ')';
         foreach (ATB_RAMADAN_PARAGRAPHS as $para) { $lines[] = ''; $lines[] = $para; }
     }
-    $lines = array_merge($lines, ['', 'With best wishes,', 'AfghanTours', 'James Tourist & Travel Agency · Operating as AfghanTours.com · Tour Operator License ATO-KBL-1617', 'info@afghantours.com · WhatsApp +93 780 123 456']);
+    $lines = array_merge($lines, ['', 'With best wishes,', 'AfghanTours', 'James Tourist & Travel Agency / Operating as AfghanTours.com / Tour Operator License ATO-KBL-1617', 'info@afghantours.com · WhatsApp +93 780 123 456']);
     return ['fields' => $fields, 'email' => implode("\n", $lines)];
 }
 
@@ -746,7 +839,8 @@ function long_tags(array $d, string $today, array $settings): string {
     if ($lw['state'] === 'exception') $o .= ' <span class="tag tag--pub">approved exception</span>';
     if (!empty($d['min_group_exception']['approved']) && $lw['state'] !== 'exception') $o .= ' <span class="tag tag--warn">exception recorded — needs ' . (($d['price_approved'] ?? null) !== true ? 'price re-approval' : 'operational approval') . '</span>';
     if ($lw['booking_window_closed']) $o .= ' <span class="tag tag--warn">final cutoff reached (' . h($lw['cutoff_date']) . ')</span>';
-    else $o .= ' <span class="tag">cutoff ' . h($lw['cutoff_date']) . '</span>';
+    elseif (!empty($lw['cutoff_date'])) $o .= ' <span class="tag">cutoff ' . h($lw['cutoff_date']) . '</span>';
+    if (($lw['kind'] ?? '') === 'short') $o .= ' <span class="tag">short tour · 14-day review</span>';
     if (($d['status'] ?? '') === 'closed') $o .= ' <span class="tag tag--warn">manual Closed</span>';
     return $o;
 }
@@ -855,7 +949,7 @@ if ($action === 'edit') {
     $lw = atb_long_tour_window($d, $today, $settings);
     if ($lw['applies'] && ($d['start_date'] ?? '') > $today && !in_array($d['status'] ?? '', ['cancelled', 'completed'], true)) {
         $need = in_array($lw['state'], ['min_not_reached', 'approval_required', 'unknown'], true);
-        $b .= '<div class="card" style="border-color:' . ($need ? ($lw['review_overdue'] ? '#c0533a' : '#d7b46a') : '#e0dacd') . '"><strong>Long-tour minimum-group review</strong> · ' . h($lw['days_until']) . ' days until departure · review date <strong>' . h($lw['review_date']) . '</strong> (' . h($lw['review_days']) . ' days before) · final booking cutoff <strong>' . h($lw['cutoff_date']) . '</strong> (' . h($lw['cutoff_days']) . ' days before)'
+        $b .= '<div class="card" style="border-color:' . ($need ? ($lw['review_overdue'] ? '#c0533a' : '#d7b46a') : '#e0dacd') . '"><strong>' . (($lw['kind'] ?? '') === 'short' ? 'Short-tour' : 'Long-tour') . ' minimum-group review</strong> · ' . h($lw['days_until']) . ' days until departure · review date <strong>' . h($lw['review_date']) . '</strong> (' . h($lw['review_days']) . ' days before)' . (!empty($lw['cutoff_date']) ? ' · final booking cutoff <strong>' . h($lw['cutoff_date']) . '</strong> (' . h($lw['cutoff_days']) . ' days before)' : ' · no final booking cutoff (short tour)')
             . '<p>' . h(match ($lw['state']) {
                 'open' => 'Before the review date: public as Open — awaiting minimum while bookings come in.',
                 'confirmed' => 'Confirmed (minimum reached + operational approval). Public' . ($lw['booking_window_closed'] ? '; final cutoff reached — customers see “Contact us for last-minute availability”.' : ' and bookable subject to capacity.'),
@@ -905,15 +999,20 @@ if ($action === 'edit') {
     $b .= '<h2>Bookings on this departure</h2><p class="muted">Staff-only. <strong>Booking status</strong> (per traveler) is separate from the <strong>departure status</strong> above: a booking can be confirmed while the departure is still open and awaiting its minimum. Payment fields are manual notes — no payment is processed or verified here.</p>'
         . '<p class="muted">Departure confirmed on: <strong>' . h($d['confirmed_on'] ?? 'not yet (needs minimum + approval)') . '</strong></p><div class="wrap"><table><thead><tr><th>Name</th><th>Party</th><th>Contact</th><th>Booking status · payment · paid / balance / due</th><th></th></tr></thead><tbody>';
     foreach ($travelers as $tr) {
-        $b .= '<tr><td>' . h($tr['name']) . ($tr['inquiry_id'] ? '<br><span class="muted">' . h($tr['inquiry_id']) . '</span>' : '') . (!empty($tr['booking_reference']) ? '<br><span class="muted">' . h($tr['booking_reference']) . '</span>' : '') . (($tr['status'] ?? '') === 'confirmed' && !atb_payment_received($tr) ? '<br><span class="tag tag--warn">accepted · payment not recorded · not counted</span>' : '') . '</td><td>' . h($tr['party_size']) . '</td><td>' . h($tr['email']) . '<br>' . h($tr['whatsapp']) . '</td>'
+        $b .= '<tr><td>' . h($tr['name']) . ($tr['inquiry_id'] ? '<br><span class="muted">' . h($tr['inquiry_id']) . '</span>' : '') . (!empty($tr['booking_reference']) ? '<br><span class="muted">' . h($tr['booking_reference']) . '</span>' : '') . (in_array($tr['status'] ?? '', ['accepted', 'confirmed'], true) && !atb_payment_received($tr) ? '<br><span class="tag tag--warn">accepted · deposit not recorded · not counted</span>' : '')
+            . (in_array($tr['status'] ?? '', ['accepted', 'confirmed'], true) ? '<br><span class="tag ' . (!empty($tr['terms_acceptance']) ? 'tag--pub' : 'tag--warn') . '">Terms ' . (!empty($tr['terms_acceptance']) ? 'accepted' . (empty($tr['terms_acceptance']['document_final']) ? ' (interim Terms — final text pending)' : '') : 'not accepted') . '</span> <span class="tag ' . (!empty($tr['policy_acceptance']) ? 'tag--pub' : 'tag--warn') . '">Policy ' . (!empty($tr['policy_acceptance']) ? 'accepted' : 'not accepted') . '</span>'
+                . (!empty($tr['payment_terms']) ? '<br><span class="muted">' . (!empty($tr['payment_terms']['full_payment_due_on_confirmation']) ? '100% due on confirmation' : '25% deposit' . ($tr['payment_terms']['deposit_amount'] !== null ? ' = USD ' . h(number_format((float)$tr['payment_terms']['deposit_amount'], 2)) : '') . ' · balance due ' . h($tr['payment_terms']['balance_due_date'] ?? '—')) . '</span>' : '') : '')
+            . '</td><td>' . h($tr['party_size']) . '</td><td>' . h($tr['email']) . '<br>' . h($tr['whatsapp']) . '</td>'
             . '<td>' . ($canEdit ? '<form method="post" action="' . h(url(['a' => 'traveler'])) . '">' . csrf_field() . '<input type="hidden" name="op" value="update"><input type="hidden" name="departure_id" value="' . h($d['id']) . '"><input type="hidden" name="traveler_id" value="' . h($tr['id']) . '"><div class="grid">'
                 . '<div>' . select('status', BOOKING_STATUS, (string)$tr['status']) . '</div><div>' . select('payment_status', PAYMENT_NOTE, payment_value((string)$tr['payment_status']) ?? 'not_recorded') . '</div>'
                 . (eid_review_needed($d, $cal) ? '<div><input name="eid_review_note" placeholder="Eid manual review note (required to confirm)" value="' . h($tr['eid_review_note'] ?? '') . '"></div>' : '')
+                . '<div><input name="confirmed_price" placeholder="Confirmed price (USD)" value="' . h($tr['confirmed_price'] ?? '') . '"></div>'
                 . '<div><input name="amount_paid" placeholder="Amount paid" value="' . h($tr['amount_paid'] ?? '') . '"></div><div><input name="balance_due" placeholder="Balance" value="' . h($tr['balance_due'] ?? '') . '"></div><div><input type="date" name="balance_due_date" value="' . h($tr['balance_due_date'] ?? '') . '"></div></div><button class="alt">Update</button></form>'
                 : h((BOOKING_STATUS[$tr['status']] ?? $tr['status']) . ' · ' . (PAYMENT_NOTE[payment_value((string)$tr['payment_status']) ?? 'not_recorded']))) . '</td>'
-            . '<td>' . (($tr['status'] ?? '') === 'confirmed' ? '<a href="' . h(url(['a' => 'confirmation', 'traveler' => $tr['id']])) . '">Booking confirmation</a>' : '')
+            . '<td>' . (($tr['status'] ?? '') === 'confirmed' ? '<a href="' . h(url(['a' => 'confirmation', 'traveler' => $tr['id']])) . '">Booking confirmation</a>' : (($tr['status'] ?? '') === 'accepted' ? '<span class="muted">Confirm once: ' . h(implode('; ', confirmation_blockers($tr)) ?: 'ready — set status to Booking confirmed') . '</span>' : ''))
             . (!empty($tr['low_numbers_refund']['due']) ? '<br><span class="tag tag--err">100% low-numbers refund due · not executed</span>' : '')
             . (!empty($tr['private_offer']) ? '<br><span class="tag">private option offered</span>' : '')
+            . ($canEdit && in_array($tr['status'] ?? '', ['accepted', 'confirmed'], true) && (empty($tr['terms_acceptance']) || empty($tr['policy_acceptance'])) ? '<form method="post" data-acceptance-form action="' . h(url(['a' => 'traveler'])) . '">' . csrf_field() . '<input type="hidden" name="op" value="record_acceptance"><input type="hidden" name="departure_id" value="' . h($d['id']) . '"><input type="hidden" name="traveler_id" value="' . h($tr['id']) . '"><strong>Record legal acceptance</strong><br><label style="font-weight:400"><input type="checkbox" name="accept_terms" value="1" style="width:auto"' . (empty($tr['terms_acceptance']) ? ' checked' : ' disabled') . '> Terms &amp; Conditions</label> <label style="font-weight:400"><input type="checkbox" name="accept_policy" value="1" style="width:auto"' . (empty($tr['policy_acceptance']) ? ' checked' : ' disabled') . '> Cancellation, Refund &amp; Rescheduling Policy</label>' . select('acceptance_method', ['' => 'How accepted…'] + ACCEPTANCE_METHODS, '') . '<input type="datetime-local" name="accepted_at" title="When accepted (Kabul time); blank = now"><button class="alt">Record acceptance</button></form>' : '')
             . (!empty($tr['proposed_move']) ? '<br><span class="tag tag--warn">move to ' . h($tr['proposed_move']['to_departure_id']) . ' pending traveler confirmation</span>' : '')
             . ($canEdit && ($tr['status'] ?? '') !== 'cancelled' ? '<form method="post" action="' . h(url(['a' => 'traveler'])) . '">' . csrf_field() . '<input type="hidden" name="op" value="propose_move"><input type="hidden" name="departure_id" value="' . h($d['id']) . '"><input type="hidden" name="traveler_id" value="' . h($tr['id']) . '"><input name="to_departure_id" placeholder="DEP-… to propose"><button class="alt">Propose move</button></form>' : '')
             . '</td></tr>';
@@ -924,9 +1023,11 @@ if ($action === 'edit') {
         $b .= '<form class="card" method="post" action="' . h(url(['a' => 'traveler'])) . '">' . csrf_field() . '<input type="hidden" name="op" value="add"><input type="hidden" name="departure_id" value="' . h($d['id']) . '"><strong>Add traveler</strong><div class="grid">'
             . '<div><label for="tn">Name</label><input id="tn" name="name" required></div><div><label for="tp">Party size</label><input id="tp" type="number" min="1" max="50" name="party_size" value="1"></div>'
             . '<div><label for="te">Email</label><input id="te" type="email" name="email"></div><div><label for="tw">WhatsApp</label><input id="tw" name="whatsapp"></div><div><label for="tc">Country</label><input id="tc" name="country"></div>'
-            . '<div><label for="status">Booking status</label>' . select('status', ['pending' => BOOKING_STATUS['pending'], 'confirmed' => 'Booking confirmed (accepted)'], 'pending') . '</div>'
+            . '<div><label for="status">Booking status</label>' . select('status', ['pending' => BOOKING_STATUS['pending'], 'accepted' => BOOKING_STATUS['accepted'], 'confirmed' => 'Booking confirmed (needs Terms + Policy acceptance and deposit)'], 'pending') . '</div>'
+            . '<div><label for="confirmed_price">Confirmed price (USD, whole booking)</label><input id="confirmed_price" name="confirmed_price"></div>'
+            . '<div><label for="acceptance_method">Legal acceptance (Terms + Policy)</label>' . select('acceptance_method', ['' => 'Not yet recorded'] + ACCEPTANCE_METHODS, '') . '<input type="hidden" name="accept_terms" value="1"><input type="hidden" name="accept_policy" value="1"></div>'
             . '<div><label for="amount_paid">Amount paid (USD, manual)</label><input id="amount_paid" name="amount_paid"></div><div><label for="balance_due">Balance (USD)</label><input id="balance_due" name="balance_due"></div><div><label for="balance_due_date">Balance due date</label><input type="date" id="balance_due_date" name="balance_due_date"></div>'
-            . '<div><label for="payment_status">Payment</label>' . select('payment_status', PAYMENT_NOTE, 'not_recorded') . '</div>'
+            . '<div><label for="payment_status">Payment (25% deposit; 100% if booked ≤30 days out)</label>' . select('payment_status', PAYMENT_NOTE, 'not_recorded') . '</div>'
             . (eid_review_needed($d, $cal) ? '<div><label for="eid_review_note">Eid manual review note</label><input id="eid_review_note" name="eid_review_note" placeholder="required to confirm"></div>' : '') . '</div>'
             . '<label for="tnotes">Notes</label><input id="tnotes" name="notes"><button>Add traveler</button></form>';
     }
@@ -1009,12 +1110,13 @@ if ($action === 'calendar') {
 if ($action === 'settings') {
     $chk = static fn(string $k) => !empty($settings[$k]) ? ' checked' : '';
     $b = '<h1>Settings</h1><form class="card" method="post" action="' . h(url(['a' => 'settings_save'])) . '">' . csrf_field()
-        . '<label><input type="checkbox" name="usd_confirmed" value="1" style="width:auto"' . $chk('usd_confirmed') . '> Dollar prices are confirmed as USD (shows “USD” instead of “$”)</label>'
+        . '<label><input type="checkbox" name="usd_confirmed" value="1" style="width:auto"' . $chk('usd_confirmed') . '> Dollar prices are confirmed as USD (public labels keep “$” — owner wording)</label>'
         . '<label><input type="checkbox" name="show_public_capacity" value="1" style="width:auto"' . $chk('show_public_capacity') . '> Show maximum capacity / remaining places publicly (only where capacity is set)</label>'
         . '<label><input type="checkbox" name="show_public_confirmed_counts" value="1" style="width:auto"' . $chk('show_public_confirmed_counts') . '> Allow “x of N travelers confirmed” (each departure must also opt in)</label>'
+        . '<div class="grid"><div><label for="srd">Short shared tours (4 days or less): minimum-group decision, days before departure</label><input id="srd" type="number" min="1" max="365" name="short_tour_min_group_review_days" value="' . h($settings['short_tour_min_group_review_days'] ?? 14) . '"></div></div>'
         . '<div class="grid"><div><label for="lrd">Long tours (5+ days): minimum-group decision, days before departure</label><input id="lrd" type="number" min="1" max="365" name="long_tour_min_group_review_days" value="' . h($settings['long_tour_min_group_review_days'] ?? 45) . '"></div>'
         . '<div><label for="lcd">Long tours: final booking cutoff, days before departure</label><input id="lcd" type="number" min="0" max="60" name="long_tour_final_booking_cutoff_days" value="' . h($settings['long_tour_final_booking_cutoff_days'] ?? 7) . '"></div></div>'
-        . '<p class="muted">Inside the cutoff a Confirmed long departure stays visible; its button becomes “Contact us for last-minute availability” (manual review, never counts toward capacity). This is not the Closed status. Short tours are not affected.</p>'
+        . '<p class="muted">Inside the cutoff a Confirmed long departure stays visible; its button becomes “Contact us for last-minute availability” (manual review, never counts toward capacity). This is not the Closed status. Short tours have no final cutoff (their minimum-group review is at the short-tour setting above).</p>'
         . '<p class="muted">Limited is set manually on each departure (no automatic threshold). Sold out is automatic only where a capacity is set. Booking cutoffs do <strong>not</strong> close departures (' . (!empty($settings['auto_cutoff_close']) ? 'automatic cutoff closing is ON' : 'automatic cutoff closing is off until a cutoff rule is approved') . ').</p>'
         . ($canEdit ? '<button>Save settings</button>' : '') . '</form><p class="muted">Seed imported ' . h($inv['seed']['imported_at'] ?? '') . ' (seed as of ' . h($inv['seed']['seed_as_of'] ?? '') . '). Contact shown on the site: ' . h(($settings['contact']['email'] ?? '') . ' · ' . ($settings['contact']['whatsapp_display'] ?? '')) . '.</p>';
     page('Settings', $b, $user);

@@ -175,10 +175,17 @@ function atb_long_tour_window(array $dep, string $today, array $settings = []): 
     $start = (string)($dep['start_date'] ?? '');
     $end = (string)($dep['end_date'] ?? '');
     $duration = atb_int($dep['duration_days'] ?? null, null) ?? ((atb_is_iso_date($start) && atb_is_iso_date($end)) ? atb_inclusive_days($start, $end) : 0);
-    $reviewDays = (int)atb_int($settings['long_tour_min_group_review_days'] ?? null, 45);
-    $cutoffDays = (int)atb_int($settings['long_tour_final_booking_cutoff_days'] ?? null, 7);
-    $applies = ($dep['departure_type'] ?? 'shared') !== 'private' && $duration >= $longDays && atb_is_iso_date($start);
+    $isLong = $duration >= $longDays;
+    // Short (≤4-day) shared departures: same review pattern at short_tour_min_group_review_days (14), no final booking cutoff.
+    $shortReview = atb_int($settings['short_tour_min_group_review_days'] ?? null, null);
+    $applies = ($dep['departure_type'] ?? 'shared') !== 'private' && atb_is_iso_date($start) && $duration > 0 && ($isLong || $shortReview !== null);
     if (!$applies) return ['applies' => false, 'state' => 'none', 'booking_window_closed' => false];
+    if (!$isLong) return atb_review_window($dep, $today, 'short', (int)$shortReview, null);
+    return atb_review_window($dep, $today, 'long', (int)atb_int($settings['long_tour_min_group_review_days'] ?? null, 45), (int)atb_int($settings['long_tour_final_booking_cutoff_days'] ?? null, 7));
+}
+
+function atb_review_window(array $dep, string $today, string $kind, int $reviewDays, ?int $cutoffDays): array {
+    $start = (string)($dep['start_date'] ?? '');
     $daysUntil = atb_days_between($today, $start);
     $unknown = atb_count_status($dep) === 'unknown';
     $min = atb_int($dep['min_group_size'] ?? null, null);
@@ -191,23 +198,25 @@ function atb_long_tour_window(array $dep, string $today, array $settings = []): 
     elseif (atb_exception_approved($dep)) $state = 'exception';
     elseif ($reviewDue && $unknown) $state = 'unknown'; // stays visible, manual contact only, until reconciled
     elseif ($reviewDue) $state = $minReached ? 'approval_required' : 'min_not_reached';
+    $hasCutoff = $cutoffDays !== null;
     return [
         'applies' => true,
+        'kind' => $kind,
         'days_until' => $daysUntil,
         'review_days' => $reviewDays,
         'cutoff_days' => $cutoffDays,
         'review_date' => atb_add_days($start, -$reviewDays),
-        'cutoff_date' => atb_add_days($start, -$cutoffDays),
+        'cutoff_date' => $hasCutoff ? atb_add_days($start, -$cutoffDays) : null,
         'review_due' => $reviewDue,
         'review_overdue' => $daysUntil < $reviewDays && in_array($state, ['min_not_reached', 'approval_required'], true),
-        'legacy_error' => $daysUntil < 30 && $state === 'min_not_reached',
+        'legacy_error' => $kind === 'long' && $daysUntil < 30 && $state === 'min_not_reached',
         'count_status' => $unknown ? 'unknown' : 'verified',
         'unknown_review' => $state === 'unknown',
-        'unknown_immediate' => $state === 'unknown' && $daysUntil <= $cutoffDays,
+        'unknown_immediate' => $hasCutoff && $state === 'unknown' && $daysUntil <= $cutoffDays,
         'manual_contact' => $state === 'unknown',
         'min_reached' => $minReached,
         'state' => $state,
-        'booking_window_closed' => $daysUntil <= $cutoffDays,
+        'booking_window_closed' => $hasCutoff && $daysUntil <= $cutoffDays,
     ];
 }
 
@@ -269,7 +278,8 @@ function atb_price_label(?array $price, array $settings = []): string {
         return 'Price on request';
     }
     $num = number_format((float)$amount, 0, '.', ',');
-    $v = 'From ' . (!empty($settings['usd_confirmed']) ? 'USD ' . $num : '$' . $num) . ' per person';
+    $prefix = is_string($settings['price_display_prefix'] ?? null) ? $settings['price_display_prefix'] : (!empty($settings['usd_confirmed']) ? 'USD ' : '$');
+    $v = 'From ' . $prefix . $num . ' per person';
     return ($price['basis'] ?? '') === 'private_reference' ? $v : $v . ' on shared departures';
 }
 
@@ -345,7 +355,7 @@ function atb_public_departure(array $dep, ?array $tour, array $settings, string 
         $out['booking_window_closed'] = $lw['booking_window_closed'];
         $out['last_minute'] = $lw['booking_window_closed'];
         $out['cta'] = $lw['booking_window_closed'] ? ATB_LAST_MINUTE_CTA : ATB_CONTACT_CTA;
-    } elseif ($lw['applies'] && atb_count_status($dep) === 'unknown' && $st['key'] === 'open' && atb_int($dep['min_group_size'] ?? null, null)) {
+    } elseif ($lw['applies'] && ($lw['kind'] ?? '') === 'long' && atb_count_status($dep) === 'unknown' && $st['key'] === 'open' && atb_int($dep['min_group_size'] ?? null, null)) {
         $out['status_text'] = 'Open — minimum ' . atb_int($dep['min_group_size'], null) . ' travelers to operate';
     }
     if ($lw['applies'] && $lw['booking_window_closed'] && in_array($st['key'], ['confirmed', 'limited'], true) && empty($out['manual_contact'])) {
@@ -460,10 +470,11 @@ function atb_public_eid_blocks(array $cal, string $today): array {
 
 /** A booking counts toward the minimum only when accepted AND payment is recorded as received. */
 function atb_payment_received(array $tr): bool {
-    return ($tr['payment_received'] ?? false) === true || in_array($tr['payment_status'] ?? '', ['payment_received', 'deposit_recorded', 'paid_recorded'], true);
+    return ($tr['payment_received'] ?? false) === true || in_array($tr['payment_status'] ?? '', ['payment_received', 'deposit_received', 'deposit_recorded', 'paid_recorded'], true);
 }
 function atb_counts_toward_minimum(array $tr): bool {
-    return ($tr['status'] ?? '') === 'confirmed' && atb_payment_received($tr);
+    // Owner 10 Oct 2026 20:47: counts after acceptance by AfghanTours + the 25% deposit (or full payment) recorded as received.
+    return in_array($tr['status'] ?? '', ['accepted', 'confirmed'], true) && atb_payment_received($tr);
 }
 
 /* --------------------------------------------------------------- storage */
@@ -682,7 +693,7 @@ function atb_counts(array $travelers): array {
         $out[$id] ??= ['confirmed' => 0, 'pending' => 0];
         $out[$id] += ['accepted_unpaid' => 0];
         if (atb_counts_toward_minimum($t)) $out[$id]['confirmed'] += $n;
-        elseif (($t['status'] ?? '') === 'confirmed') $out[$id]['accepted_unpaid'] += $n; // accepted, payment not recorded → does not count
+        elseif (in_array($t['status'] ?? '', ['accepted', 'confirmed'], true)) $out[$id]['accepted_unpaid'] += $n; // accepted, payment not recorded → does not count
         elseif (($t['status'] ?? '') === 'pending') $out[$id]['pending'] += $n;
     }
     return $out;
@@ -754,6 +765,7 @@ function atb_public_payload(?string $tourSlug = null): array {
         'today' => $today,
         'source' => $source === 'private_store' ? 'live' : ($source === 'seed_readonly' ? 'seed' : 'unavailable'),
         'usd_confirmed' => !empty($settings['usd_confirmed']),
+        'price_display_prefix' => is_string($settings['price_display_prefix'] ?? null) ? $settings['price_display_prefix'] : null,
         'eid_blocks' => atb_public_eid_blocks($cal, $today),
         'eid_notice' => ATB_EID_NOTICE,
         'departures' => $list,
@@ -785,6 +797,14 @@ function atb_validate_departure(array $dep, array $inv, string $today, bool $for
     if (!atb_is_iso_date($start) || !atb_is_iso_date($end)) {
         $errors[] = 'Start and end dates must be valid dates (YYYY-MM-DD).';
         return $errors;
+    }
+    if ($forPublish) {
+        foreach ((array)($inv['departures'] ?? []) as $o) {
+            if (($o['id'] ?? '') === ($dep['id'] ?? null) || empty($o['published']) || in_array($o['status'] ?? '', ['cancelled', 'proposed', 'draft'], true)) continue;
+            if (($o['tour_slug'] ?? '') === ($dep['tour_slug'] ?? '') && ($o['start_date'] ?? '') === $start && (($o['departure_type'] ?? 'shared') === ($dep['departure_type'] ?? 'shared'))) {
+                $errors[] = 'Another published departure (' . $o['id'] . ') already starts on ' . $start . ' for this tour — do not publish a duplicate.';
+            }
+        }
     }
     if ($end < $start) $errors[] = 'End date is before start date.';
     $days = (int)$t['duration_days'];
