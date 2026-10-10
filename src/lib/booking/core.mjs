@@ -42,7 +42,8 @@ export const STATUS = {
 };
 export const PUBLIC_STATUSES = ['open', 'confirmed', 'limited', 'sold_out', 'closed'];
 
-export const STORED_STATUSES = ['proposed', 'draft', 'scheduled', 'on_request', 'closed', 'cancelled', 'completed'];
+// 'withdrawn' = superseded/withdrawn proposal: kept for the record, never publishable, never public.
+export const STORED_STATUSES = ['proposed', 'draft', 'scheduled', 'on_request', 'closed', 'cancelled', 'completed', 'withdrawn'];
 export const SELECTABLE = new Set(['open', 'confirmed', 'limited']);
 
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
@@ -174,7 +175,7 @@ export function computeStatus(dep, today, settings = {}) {
   if (stored === 'proposed' || stored === 'draft') return out('proposed');
   if (!isIsoDate(dep.start_date) || !isIsoDate(dep.end_date)) return out('closed');
   if (dep.end_date < today || stored === 'completed') return out('completed');
-  if (stored === 'cancelled') return out('cancelled');
+  if (stored === 'cancelled' || stored === 'withdrawn') return out('cancelled');
   if (stored === 'closed') return out('closed');
   if (dep.start_date <= today) return out('closed');
   if (settings.auto_cutoff_close === true && dep.booking_cutoff && isIsoDate(dep.booking_cutoff) && today > dep.booking_cutoff) return out('closed');
@@ -200,7 +201,7 @@ export function isPublic(dep, today) {
   // NB: callers listing departures also drop unresolved Eid conflicts (see publicDeparturesFor).
   const stored = String(dep.status || '').toLowerCase();
   if (dep.published !== true) return false;
-  if (stored === 'proposed' || stored === 'draft' || stored === 'cancelled' || stored === 'completed') return false;
+  if (stored === 'proposed' || stored === 'draft' || stored === 'cancelled' || stored === 'completed' || stored === 'withdrawn') return false;
   if (dep.departure_type === 'private' || stored === 'on_request') return false;
   if (!isIsoDate(dep.end_date) || dep.end_date < today) return false;
   return true;

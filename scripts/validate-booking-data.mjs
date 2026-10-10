@@ -121,7 +121,8 @@ for (const d of departures) {
   if (ids.has(d.id)) err(`duplicate departure id ${d.id}`);
   ids.add(d.id);
   const key = `${d.tour_slug}|${d.start_date}|${d.departure_type}`;
-  const twin = departures.find((o) => o !== d && `${o.tour_slug}|${o.start_date}|${o.departure_type}` === key);
+  const twin = d.status === 'withdrawn' ? null : departures.find((o) => o !== d && o.status !== 'withdrawn' && `${o.tour_slug}|${o.start_date}|${o.departure_type}` === key);
+  if (d.status === 'withdrawn' && d.published === true) err(`${where}: withdrawn departure must not be published`);
   if (twin && d.status !== 'proposed' && twin.status !== 'proposed' && keyset.has(key)) err(`${where}: duplicate departure for same tour/start/type`);
   else if (twin && d.status === 'proposed' && twin.status !== 'proposed') warn(`${where}: proposed departure duplicates ${twin.id} (same tour/start/type) — do not publish; withdraw it in /manage/`);
   keyset.add(key);

@@ -1213,7 +1213,7 @@
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
-      "status": "proposed",
+      "status": "withdrawn",
       "published": false,
       "price": {
         "amount": 450,
@@ -1225,7 +1225,7 @@
       "operational_approval": "pending",
       "public_counts_approved": false,
       "public_notes": "",
-      "internal_notes": "System-proposed within the operating window. Not public until an admin sets max capacity, approves and publishes.",
+      "internal_notes": "Superseded by published Weekend in Kabul departure 5–7 March 2027.",
       "source": "proposed_2026-10-10",
       "date_check": {
         "inclusive_days": 3,
@@ -1238,7 +1238,13 @@
       ],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
       "price_approved": false,
-      "traveler_count_status": "verified"
+      "traveler_count_status": "verified",
+      "withdrawn": {
+        "reason": "superseded",
+        "superseded_by": "DEP-WKND-20270306",
+        "by": "James (owner instruction 10 Oct 2026 21:24)",
+        "at": "2026-10-10T21:24:00+04:30"
+      }
     },
     {
       "id": "DEP-WKND-20270306",
