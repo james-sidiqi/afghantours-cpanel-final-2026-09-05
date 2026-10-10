@@ -186,3 +186,9 @@ test('duplicate restaurant/hotel titles made unique', () => {
   assert.ok(!read('sitemap.xml').includes('/restaurants/spoghmai-restaurant-qargha/'));
 });
 test('sitemap is deterministic (no lastmod)', () => assert.ok(!read('sitemap.xml').includes('<lastmod>')));
+test('no backup, archive, source-map or env files ship in the public build', () => {
+  const bad = [];
+  const walk = (d) => { for (const e of readdirSync(d, { withFileTypes: true })) { const p = path.join(d, e.name); if (e.isDirectory()) walk(p); else if (/\.(bak|old|orig|swp|zip|tar|gz|tgz|sql|map)$|\.before-|^\.env|~$/i.test(e.name)) bad.push(path.relative(DIST, p)); } };
+  walk(DIST);
+  assert.deepEqual(bad, []);
+});
