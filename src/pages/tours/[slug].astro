@@ -7,6 +7,7 @@ import { parseCSV } from "../../lib/csv";
 import transportRaw from "../../../data/ground_transport.csv?raw";
 import inclusionsRaw from "../../../data/tour_inclusions.csv?raw";
 import { buildTourInquiryHref, buildCustomInquiryHref } from "../../lib/inquiry";
+import { buildAttractionTopMeta, buildAttractionTravelerNotes, formatVisitDuration } from '../../lib/attractionMeta';
 
 export function getStaticPaths() {
   return getTours()
@@ -394,22 +395,30 @@ for (const entry of itineraryFlow) {
 
     if (!code) continue;
 
-    const tags = String(attraction.tags || "")
-      .split(/[,|#]/)
-      .map((t) => String(t || "").trim())
-      .filter(Boolean)
-      .slice(0, 6);
-
-    const practical = [];
-    if (attraction.visit_duration_hours) practical.push({ label: "Duration", value: `${attraction.visit_duration_hours} hours` });
-    if (attraction.access_difficulty) practical.push({ label: "Access", value: String(attraction.access_difficulty) });
+    const province = attraction.province_name || attraction.province || "";
+    const region = attraction.region || "";
+    const category = attraction.category || attraction.primary_category || "";
     const season = [attraction.season_start, attraction.season_end].filter(Boolean).join("–");
-    if (season) practical.push({ label: "Season", value: season });
+
+    const topMeta = buildAttractionTopMeta({
+      category,
+      region,
+      access: attraction.access_difficulty,
+    });
+
+    const noteRows = buildAttractionTravelerNotes({
+      slug: attraction.slug || "",
+      province,
+      region,
+      visit_duration_hours: attraction.visit_duration_hours,
+      season,
+      omitFitness: true,
+    });
+
+    // Keep a few optional operational notes after the core traveler-note rows.
+    const practical = noteRows.map(([label, value]) => ({ label, value }));
     if (attraction.seasonal_notes) practical.push({ label: "Season note", value: String(attraction.seasonal_notes) });
     if (attraction.recommended_time_of_day) practical.push({ label: "Best time", value: String(attraction.recommended_time_of_day) });
-    if (attraction.photography_rating) practical.push({ label: "Photography", value: String(attraction.photography_rating) });
-    if (attraction.cultural_sensitivity) practical.push({ label: "Sensitivity", value: String(attraction.cultural_sensitivity) });
-    if (attraction.notes) practical.push({ label: "Notes", value: String(attraction.notes) });
 
     itineraryAttractionData[code] = {
       code,
@@ -433,10 +442,10 @@ for (const entry of itineraryFlow) {
         attraction.location ||
         attraction.city ||
         "",
-      province: attraction.province_name || attraction.province || "",
-      region: attraction.region || "",
-      category: attraction.category || attraction.primary_category || "",
-      tags,
+      province,
+      region,
+      category,
+      tags: topMeta,
       practical,
     };
   }
@@ -2226,8 +2235,10 @@ const contactHref = buildTourInquiryHref(tour);
 
     .tour-attraction-popup__practical dl > div {
       display: grid;
-      grid-template-columns: 110px minmax(0, 1fr);
-      gap: .65rem;
+      grid-template-columns: minmax(120px, 38%) minmax(0, 1fr);
+      column-gap: .85rem;
+      row-gap: .2rem;
+      align-items: start;
       font-size: .78rem;
     }
 
@@ -2235,6 +2246,13 @@ const contactHref = buildTourInquiryHref(tour);
       margin: 0;
       font-weight: 850;
       color: #1b1b1b;
+      line-height: 1.35;
+    }
+
+    .tour-attraction-popup__practical dd {
+      margin: 0;
+      line-height: 1.35;
+      word-break: break-word;
     }
 
     .tour-attraction-popup__practical dd {

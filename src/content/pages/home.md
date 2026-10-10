@@ -2,13 +2,12 @@
 title: "Home"
 ---
 
-# Afghanistan, Reimagined
+# Experience Afghanistan
 
 Not the headlines. The hospitality. The history. The highlands.
 
 AfghanTours is a licensed, American-led tour operator based in Kabul. We plan private journeys with local guides, Letter of Invitation support for every booked tour, and routes that can change when the road, the weather, or access changes.
 
-Our itineraries are built around journeys we can realistically plan and support.
 
 ## Trust
 

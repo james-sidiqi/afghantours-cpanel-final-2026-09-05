@@ -62,4 +62,4 @@ CI runs the same checks and fails if tracked `dist/` drifts from a fresh build.
 
 - Header: **Afghan Tours**
 - Footer: **James Tourist & Travel Agency**
-- Safety: **Your safety is planned, not promised.**
+- Safety: inherent risk / route-aware planning language only — do **not** use “Your safety is planned, not promised.”

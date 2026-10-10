@@ -2,7 +2,7 @@
 title: "Safety"
 ---
 
-### Your safety is planned, not promised.
+### Inherent risk
 
 Travel in Afghanistan carries inherent risk. AfghanTours does not promise that a destination is safe or that conditions will remain unchanged.
 

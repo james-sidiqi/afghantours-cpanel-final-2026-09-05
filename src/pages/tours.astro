@@ -15,7 +15,7 @@ const featuredTours = itineraryTours
 
 <BaseLayout
   title="Tours | AfghanTours"
-  description="Browse Afghanistan scheduled tours and private fixed-itinerary journeys with defined routes, durations, and planned itineraries."
+  description="Explore scheduled and private Afghanistan tours, with routes and itineraries planned from Kabul."
   image="/assets/images/heroes/tours/hero.webp"
 >
   <FeaturedTours tours={featuredTours} />
@@ -25,26 +25,25 @@ const featuredTours = itineraryTours
       <p>Tour Packages</p>
       <h1>Scheduled Tours &amp; Private Fixed Itineraries</h1>
       <span>
-        This catalog lists genuine itinerary-based tours only. Specialist logistics, return journeys,
-        and Build My Journey planning live on their own pages — they are not mixed into this tour grid.
+        Choose a scheduled departure or a private journey on one of our established routes. For something different, build a custom journey around your own dates and interests.
       </span>
     </div>
   </section>
 
   <section class="class-band" id="scheduled-tours">
     <div class="class-wrap">
-      <p class="class-kicker">A · Scheduled Tours</p>
-      <h2>Proposed seasonal departures</h2>
-      <p class="class-copy">Itinerary + duration + scheduled or proposed dates. Prices shown as Price on request unless an operator-verified figure is published.</p>
+      <p class="class-kicker">Scheduled Tours</p>
+      <h2>Seasonal departures</h2>
+      <p class="class-copy">Travel on a planned route with a published duration and departure window. Where a verified starting price is available, we show it.</p>
     </div>
     <TourDirectory tours={scheduled} />
   </section>
 
   <section class="class-band class-band--alt" id="private-tours">
     <div class="class-wrap">
-      <p class="class-kicker">B · Private Fixed-Itinerary Tours</p>
-      <h2>Private dates on published routes</h2>
-      <p class="class-copy">Full itineraries with duration — run on private dates rather than a public group departure calendar.</p>
+      <p class="class-kicker">Private Tours</p>
+      <h2>Choose your dates on an established route</h2>
+      <p class="class-copy">Travel privately on a defined itinerary, with dates arranged around your schedule.</p>
     </div>
     <TourDirectory tours={privateFixed} />
   </section>
@@ -52,19 +51,19 @@ const featuredTours = itineraryTours
   <section class="outbound">
     <div class="outbound-grid">
       <a href="/custom-requests/" class="outbound-card">
-        <p>C · Custom Journey</p>
+        <p>Custom Journey</p>
         <h3>Build My Journey</h3>
-        <span>No predetermined duration, itinerary, route, or package price — we scope a quotation with you.</span>
+        <span>Start with your dates and interests. We will shape the route, pace, accommodation, and quotation with you.</span>
       </a>
       <a href="/specialist-services/" class="outbound-card">
-        <p>D · Specialist Services</p>
-        <h3>Proposal-led logistics</h3>
-        <span>Photography, research, media, business, mountaineering support — not tour packages.</span>
+        <p>Specialist Services</p>
+        <h3>Travel support for specialist work</h3>
+        <span>Photography, research, media, business, mountaineering, and other purpose-built travel.</span>
       </a>
       <a href="/return-journeys/" class="outbound-card">
-        <p>E · Return Journeys</p>
-        <h3>Diaspora &amp; veterans</h3>
-        <span>Heritage and return visits planned around personal history — distinct from leisure tours.</span>
+        <p>Return Journeys</p>
+        <h3>Return with purpose</h3>
+        <span>Heritage, diaspora, veteran, and personal return visits planned around the places that matter to you.</span>
       </a>
     </div>
   </section>
@@ -72,8 +71,8 @@ const featuredTours = itineraryTours
 
 <style>
   .tour-list-intro {
-    background: #ffffff;
-    color: #101820;
+    background: var(--at-white);
+    color: var(--at-ink);
     padding: clamp(3.5rem, 5vw, 5rem) 0 1rem;
     border-top: 1px solid rgba(16,24,32,.08);
   }
@@ -84,26 +83,26 @@ const featuredTours = itineraryTours
   }
   .tour-list-intro p {
     margin: 0;
-    color: #b46b00;
+    color: var(--at-gold-text);
     font-size: .72rem;
     letter-spacing: .22em;
     text-transform: uppercase;
     font-weight: 900;
   }
   .tour-list-intro h1 {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: var(--font-display);
     font-size: clamp(2.6rem, 4.5vw, 4.2rem);
     line-height: .98;
     letter-spacing: -.05em;
     margin: .5rem 0 1rem;
   }
   .tour-list-intro span {
-    color: #4b5563;
+    color: var(--at-text);
     line-height: 1.75;
     font-size: 1.05rem;
   }
   .class-band { padding-top: 1.5rem; }
-  .class-band--alt { background: #f7f4ee; padding-bottom: 1rem; }
+  .class-band--alt { background: var(--at-paper); padding-bottom: 1rem; }
   .class-wrap {
     width: min(1180px, calc(100% - 2rem));
     margin: 0 auto;
@@ -112,18 +111,18 @@ const featuredTours = itineraryTours
   }
   .class-kicker {
     margin: 0;
-    color: #b46b00;
+    color: var(--at-gold-text);
     font-size: .72rem;
     letter-spacing: .18em;
     text-transform: uppercase;
     font-weight: 900;
   }
   .class-wrap h2 {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: var(--font-display);
     font-size: clamp(1.8rem, 3vw, 2.4rem);
     margin: .4rem 0 .6rem;
   }
-  .class-copy { color: #4b5563; line-height: 1.65; margin: 0 0 .5rem; }
+  .class-copy { color: var(--at-text); line-height: 1.65; margin: 0 0 .5rem; }
   .outbound {
     width: min(1180px, calc(100% - 2rem));
     margin: 0 auto 4.5rem;
@@ -134,8 +133,8 @@ const featuredTours = itineraryTours
     gap: 1rem;
   }
   .outbound-card {
-    background: #f7f0e6;
-    border: 1px solid #dfd0bc;
+    background: var(--at-paper);
+    border: 1px solid var(--border-soft);
     border-radius: .75rem;
     padding: 1.35rem 1.25rem;
     text-decoration: none;
@@ -144,18 +143,18 @@ const featuredTours = itineraryTours
   }
   .outbound-card p {
     margin: 0;
-    color: #b46b00;
+    color: var(--at-gold-text);
     font-size: .68rem;
     letter-spacing: .16em;
     text-transform: uppercase;
     font-weight: 900;
   }
   .outbound-card h3 {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: var(--font-display);
     font-size: 1.45rem;
     margin: .45rem 0 .55rem;
   }
-  .outbound-card span { color: #4b5563; line-height: 1.55; display: block; font-size: .95rem; }
+  .outbound-card span { color: var(--at-text); line-height: 1.55; display: block; font-size: .95rem; }
   @media (max-width: 900px) {
     .outbound-grid { grid-template-columns: 1fr; }
   }

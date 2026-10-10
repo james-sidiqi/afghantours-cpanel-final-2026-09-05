@@ -74,10 +74,10 @@ const plan = [
   {
     slug: 'adam-khan-chapli-kabob',
     heroes: [
-      '/assets/images/cultural-experiences/adam-khan-chapli-kabob/hero.webp',
+      '/assets/images/experiences/culinary/adam-khan-chapli-kabob/hero.webp',
       '/assets/images/food/adam-khan-chapli/hero.webp',
     ],
-    galleryFrom: ['/assets/images/cultural-experiences/adam-khan-chapli-kabob'],
+    galleryFrom: ['/assets/images/experiences/culinary/adam-khan-chapli-kabob'],
   },
   {
     slug: 'kunar-trout',
@@ -98,11 +98,11 @@ const plan = [
   {
     slug: 'chashma-e-dogh',
     heroes: [
-      '/assets/images/cultural-experiences/chashma-e-dogh/hero.webp',
+      '/assets/images/experiences/culinary/chashma-e-dogh/hero.webp',
       '/assets/images/food/chashma-e-dough/hero.webp',
     ],
     galleryFrom: [
-      '/assets/images/cultural-experiences/chashma-e-dogh',
+      '/assets/images/experiences/culinary/chashma-e-dogh',
       '/assets/images/food/chashma-e-dough',
     ],
   },
@@ -118,10 +118,10 @@ const plan = [
   {
     slug: 'aziz-bakery',
     heroes: [
-      '/assets/images/cultural-experiences/aziz-bakery/hero.webp',
+      '/assets/images/experiences/culinary/aziz-bakery/hero.webp',
       '/assets/images/food/bakery-kabul/hero.webp',
     ],
-    galleryFrom: ['/assets/images/cultural-experiences/aziz-bakery'],
+    galleryFrom: ['/assets/images/experiences/culinary/aziz-bakery'],
   },
   {
     slug: 'bamyan-kabob',
@@ -144,10 +144,10 @@ const plan = [
   {
     slug: 'arg-restaurant-herat',
     heroes: [
-      '/assets/images/cultural-experiences/arg-restaurant-herat/hero.webp',
+      '/assets/images/experiences/culinary/arg-restaurant-herat/hero.webp',
       '/assets/images/hotels/herat/arg/hero.webp',
     ],
-    galleryFrom: ['/assets/images/cultural-experiences/arg-restaurant-herat'],
+    galleryFrom: ['/assets/images/experiences/culinary/arg-restaurant-herat'],
   },
   {
     slug: 'ghazni-palaw',
@@ -199,7 +199,7 @@ for (const sibling of ['cultural', 'activities']) {
   if (!fs.existsSync(readme)) {
     fs.writeFileSync(
       readme,
-      `# experiences/${sibling}\n\nLong-term sibling of experiences/culinary. Migrate cultural experience and activity assets here over time. Do not delete legacy /assets/images/cultural-experiences/ until refs are migrated and byte-identical confirmation is complete.\n`
+      `# experiences/${sibling}\n\nLong-term sibling of experiences/culinary. Migrate cultural experience and activity assets here over time. Legacy /assets/images/experiences/cultural/ has been migrated to experiences/{cultural,culinary} and food/* trees.\n`
     );
   }
 }

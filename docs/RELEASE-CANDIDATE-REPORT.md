@@ -48,7 +48,7 @@ Engineering P0 = **0** · P1 = **0**
 ## Brand locks confirmed
 - Header: Afghan Tours  
 - Footer: James Tourist & Travel Agency  
-- Safety: “Your safety is planned, not promised.”  
+- Safety: no “Your safety is planned, not promised.” slogan (James rejected)  
 - Leadership: James + Edrees only  
 
 ## P0 / P1 / P2

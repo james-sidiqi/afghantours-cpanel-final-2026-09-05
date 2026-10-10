@@ -4,7 +4,7 @@ subtitle: "Kabul’s pigeon-flying culture, rooftop rivalries, and quiet urban r
 card_description: "Experience Kabul rooftops, pigeon lofts, and the social world of kaftar bazi when private access can be arranged."
 category: "Cultural Experiences"
 experience_type: "Spectacle, Sport & Sky"
-hero_image: "/assets/images/cultural-experiences/kaftar-bazi/kaftar-bazi.webp"
+hero_image: "/assets/images/experiences/cultural/kaftar-bazi/hero.webp"
 image: "/assets/images/hubs/kabul-city/hero.webp"
 provinces: ["Kabul"]
 paired_foods: ["Cardamom Tea", "Noql"]
@@ -13,9 +13,9 @@ duration: "1–2 hours"
 related_tours: ["weekend-in-kabul", "kabul-surroundings", "custom-tours"]
 nearby: ["Old Kabul", "Kabul Rooftops", "Chicken Street"]
 gallery:
-  - "/assets/images/cultural-experiences/kaftar-bazi/kaftar-bazi.webp"
-  - "/assets/images/cultural-experiences/kaftar-bazi/pigeons-flying.webp"
-  - "/assets/images/cultural-experiences/kaftar-bazi/pigeons.webp"
+  - "/assets/images/experiences/cultural/kaftar-bazi/hero.webp"
+  - "/assets/images/experiences/cultural/kaftar-bazi/gallery/01.webp"
+  - "/assets/images/experiences/cultural/kaftar-bazi/gallery/02.webp"
 ---
 
 As the late afternoon light softens over Kabul, attention often shifts upward. On rooftops across the city, pigeon keepers release their flocks into the sky and guide them with whistles, cloths, poles, and practiced instinct.

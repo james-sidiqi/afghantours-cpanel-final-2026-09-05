@@ -16,7 +16,7 @@ Recommended:
 ### Fill in
 
 Headline:
-Explore Afghanistan Beyond the Headlines
+Experience Afghanistan
 
 Subheadline:
 Professionally coordinated cultural, historical, and adventure travel across Afghanistan’s most remarkable regions.

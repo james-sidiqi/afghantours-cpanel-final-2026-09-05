@@ -11,4 +11,3 @@ Conditions can vary by province, season, weather, road access, altitude, infrast
 
 AfghanTours plans journeys around current operating information, practical road movement, local coordination, and realistic overnight points.
 
-**Your safety is planned, not promised.**

@@ -9,7 +9,7 @@ Brand: licensed Kabul operator (James Tourist & Travel Agency, ATO-KBL-1617), Am
 **Chrome locks**
 - Header brand: **Afghan Tours** only
 - Footer legal: **James Tourist & Travel Agency**
-- Safety line: **Your safety is planned, not promised.**
+- Safety: do **not** use “Your safety is planned, not promised.” (James rejected). Prefer inherent-risk / route-aware planning language.
 
 Locked:
 
@@ -35,7 +35,7 @@ Always: **live canonical routes only**; KEEP good existing copy; one concrete im
 **Retired public tour URLs (do not link):**
 `/tours/photography-tour/`, `/tours/scientific-expeditions/`, `/tours/media-support/`, `/tours/business-investment/`, `/tours/noshaq-expedition-support/`, `/tours/ski-expeditions/`, `/tours/veteran-return/`, `/tours/custom-expedition/` — these 301 to specialist / return / custom-requests. Prefer the canonical targets in new copy.
 
-Reuse: “We do not sell fantasy itineraries.” “Your safety is planned, not promised.” “Afghanistan is not a checkbox. It is a conversation.”
+Reuse: “We do not sell fantasy itineraries.” “Afghanistan is not a checkbox. It is a conversation.” Do not reuse “Your safety is planned, not promised.”
 
 Inquiry links: use `src/lib/inquiry.ts` helpers (`buildTourInquiryHref`, etc.) — canonical params `flow`, `entity_type`, `entity_code`, `entity_slug`, `entity_name`, `product_class`.
 

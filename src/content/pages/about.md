@@ -20,7 +20,6 @@ The question everyone asks is whether a trip is “safe.” We will not answer t
 
 We answer it with routing, local coordination, and a willingness to change the day.
 
-**Your safety is planned, not promised.**
 
 ## Letter of Invitation and permits
 
