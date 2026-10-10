@@ -5,7 +5,15 @@
   "timezone": "Asia/Kabul",
   "currency": "USD",
   "usd_confirmed": false,
-  "shared_min_group_default": 3,
+  "group_rule": {
+    "_doc": "Owner decision 10 Oct 2026 (controlling). Scheduled group tours of long_tour_min_days+ days: minimum long_min confirmed travelers, normal maximum long_max (exceptions only when approved per departure). Scheduled/shared departures of fewer days: minimum short_tour_shared_min, NO standard maximum (product-specific max only from approved data). Private tours may operate for 1 traveler (separately quoted). Custom Journeys / Specialist Services: group size defined in the individual proposal.",
+    "long_tour_min_days": 5,
+    "long_min": 6,
+    "long_max": 18,
+    "short_tour_shared_min": 2,
+    "short_tour_shared_max": null,
+    "private_min": 1
+  },
   "limited_places_threshold": 2,
   "show_public_confirmed_counts": false,
   "show_public_capacity": false,
@@ -15,9 +23,10 @@
     "whatsapp_link": "https://wa.me/93780123456"
   },
   "wording": {
-    "awaiting_minimum": "Awaiting group confirmation — minimum 3 travelers.",
     "confirmation_message": "Your request has been received. Our team will confirm availability, arrangements, and next steps.",
     "selection_note": "Choosing a date sends a request. It does not confirm a place — we confirm availability and arrangements with you first.",
-    "private_pricing": "Private tours are quoted separately; the shared per-person rate does not apply."
+    "private_pricing": "Private departure available; price on request.",
+    "group_size_long": "Group size: 6–18 travelers / Minimum to operate: 6 travelers / Need a different group arrangement? Contact us.",
+    "weekend_price": "From $450 per person on shared departures. Private departures available; price on request."
   }
 }

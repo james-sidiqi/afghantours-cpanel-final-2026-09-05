@@ -236,6 +236,7 @@ if (in_array($action, ['create', 'update'], true) && $method === 'POST') {
     $end = post('end_date');
     if ($end === '' && atb_is_iso_date($start)) $end = atb_expected_end($start, (int)$t['duration_days']);
     $type = post('departure_type') === 'private' ? 'private' : 'shared';
+    $rule = atb_group_rule((int)$t['duration_days'], $settings);
     $amount = post('price_amount');
     $dep = array_replace($base, [
         'tour_code' => $t['code'],
@@ -244,8 +245,9 @@ if (in_array($action, ['create', 'update'], true) && $method === 'POST') {
         'end_date' => $end,
         'duration_days' => (int)$t['duration_days'],
         'departure_type' => $type,
-        'min_group_size' => nullable_int(post('min_group_size')) ?? ($type === 'private' ? 1 : 3),
-        'max_capacity' => nullable_int(post('max_capacity')),
+        'min_group_size' => nullable_int(post('min_group_size')) ?? ($type === 'private' ? 1 : $rule['min']),
+        'max_capacity' => nullable_int(post('max_capacity')) ?? ($type === 'shared' && $rule['applies'] ? $rule['max'] : null),
+        'group_exception_note' => atb_str(post('group_exception_note'), 500),
         'status' => post('status') ?: ($isNew ? 'draft' : ($base['status'] ?? 'draft')),
         'booking_cutoff' => post('booking_cutoff') !== '' ? post('booking_cutoff') : null,
         'public_notes' => atb_str(post('public_notes'), 300),
@@ -316,7 +318,45 @@ if ($action === 'op' && $method === 'POST') {
     }
     unset($d);
     save_or_fail($inv, $user, 'departure_' . $op, ['id' => $id], ['a' => 'edit', 'id' => $id]);
+    if (in_array($op, ['approve', 'unapprove'], true)) sync_departure_confirmed_on($id, $user['name'], $today);
     redirect(['a' => 'edit', 'id' => $id], $msg);
+}
+
+/* ---- booking records (booking status is separate from departure status) ---- */
+const BOOKING_STATUS = ['pending' => 'Requested (not yet accepted)', 'confirmed' => 'Booking confirmed', 'cancelled' => 'Booking cancelled'];
+const PAYMENT_NOTE = ['not_recorded' => 'Not recorded', 'deposit_recorded' => 'Deposit recorded', 'paid_recorded' => 'Paid in full recorded'];
+
+function money_or_null(string $v): ?float { return $v !== '' && is_numeric($v) && (float)$v >= 0 ? round((float)$v, 2) : null; }
+
+/** Stamp booking-time facts the first time a booking is confirmed (spec 10 Oct Part 1 §5). */
+function stamp_booking(array &$tr, ?array $dep, string $today, array $settings, string $actor): void {
+    if (($tr['status'] ?? '') !== 'confirmed' || !empty($tr['booking_confirmed_at'])) return;
+    $st = $dep ? atb_compute_status($dep, $today, $settings) : ['key' => 'unknown'];
+    $tr['booking_confirmed_at'] = atb_now_iso();
+    $tr['booking_confirmed_by'] = $actor;
+    $tr['departure_status_at_booking'] = $dep ? atb_status_text($st['key'], $dep, $settings) : 'unknown';
+    $tr['required_minimum_at_booking'] = $dep['min_group_size'] ?? null;
+}
+
+/** Record the date a departure first became Confirmed (minimum confirmed travelers + operational approval). */
+function sync_departure_confirmed_on(string $depId, string $actor, string $today): void {
+    // Read the file fresh: atb_load_inventory() is cached per request and may predate a save made in this request.
+    $inv = atb_read_json_file(atb_data_dir() . DIRECTORY_SEPARATOR . 'inventory.json');
+    if (!is_array($inv)) return;
+    $eff = atb_find_departure(atb_effective_departures($inv), $depId);
+    if (!$eff) return;
+    $min = atb_int($eff['min_group_size'] ?? null, null);
+    $reached = $min && (int)$eff['confirmed_count'] >= $min && ($eff['operational_approval'] ?? '') === 'approved';
+    foreach ($inv['departures'] as &$d) {
+        if ($d['id'] !== $depId) continue;
+        if ($reached && empty($d['confirmed_on'])) { $d['confirmed_on'] = $today; $changed = true; }
+        if (!$reached && !empty($d['confirmed_on']) && empty($d['confirmed_on_locked'])) { $d['confirmed_on_history'][] = $d['confirmed_on']; $d['confirmed_on'] = null; $changed = true; }
+    }
+    unset($d);
+    if (!empty($changed)) {
+        try { atb_save_inventory($inv, $actor, 'departure_confirmed_on_sync', ['id' => $depId]); }
+        catch (Throwable $e) { error_log('[afghantours admin] confirmed_on sync failed: ' . $e->getMessage()); }
+    }
 }
 
 /* ---- travelers ---- */
@@ -336,10 +376,15 @@ if ($action === 'traveler' && $method === 'POST') {
             'party_size' => $size, 'status' => $status,
             'payment_status' => in_array(post('payment_status'), ['not_recorded', 'deposit_recorded', 'paid_recorded'], true) ? post('payment_status') : 'not_recorded',
             'inquiry_id' => atb_str(post('inquiry_id'), 60), 'notes' => atb_str(post('notes'), 1000),
+            'amount_paid' => money_or_null(post('amount_paid')), 'balance_due' => money_or_null(post('balance_due')),
+            'balance_due_date' => atb_is_iso_date(post('balance_due_date')) ? post('balance_due_date') : null, 'currency' => 'USD',
             'created_at' => atb_now_iso(), 'created_by' => $user['name'],
         ];
+        $new = array_key_last($travelers);
+        stamp_booking($travelers[$new], atb_find_departure($deps, $depId), $today, $settings, $user['name']);
         atb_save_travelers($travelers, $user['name'], 'traveler_add', ['departure_id' => $depId, 'status' => $status, 'party_size' => $size]);
-        redirect(['a' => 'edit', 'id' => $depId], 'Traveler added as ' . $status . '.');
+        sync_departure_confirmed_on($depId, $user['name'], $today);
+        redirect(['a' => 'edit', 'id' => $depId], 'Traveler added — ' . BOOKING_STATUS[$status] . '.');
     }
     if ($op === 'update') {
         $tid = post('traveler_id');
@@ -347,10 +392,14 @@ if ($action === 'traveler' && $method === 'POST') {
             if (($tr['id'] ?? '') !== $tid || ($tr['departure_id'] ?? '') !== $depId) continue;
             if (in_array(post('status'), ['pending', 'confirmed', 'cancelled'], true)) $tr['status'] = post('status');
             if (in_array(post('payment_status'), ['not_recorded', 'deposit_recorded', 'paid_recorded'], true)) $tr['payment_status'] = post('payment_status');
+            foreach (['amount_paid', 'balance_due'] as $mk) if (isset($_POST[$mk])) $tr[$mk] = money_or_null(post($mk));
+            if (isset($_POST['balance_due_date'])) $tr['balance_due_date'] = atb_is_iso_date(post('balance_due_date')) ? post('balance_due_date') : null;
+            stamp_booking($tr, atb_find_departure($deps, $depId), $today, $settings, $user['name']);
             $tr['updated_at'] = atb_now_iso(); $tr['updated_by'] = $user['name'];
         }
         unset($tr);
         atb_save_travelers($travelers, $user['name'], 'traveler_update', ['departure_id' => $depId, 'traveler_id' => $tid, 'status' => post('status')]);
+        sync_departure_confirmed_on($depId, $user['name'], $today);
         redirect(['a' => 'edit', 'id' => $depId], 'Traveler updated.');
     }
     redirect(['a' => 'edit', 'id' => $depId], 'Unknown traveler action.', 'err');
@@ -445,6 +494,37 @@ if ($action === 'inquiry' && $method === 'POST') {
 
 /* ================================================================ views */
 
+/** Booking confirmation record + email template (spec 10 Oct Part 1 §5). */
+function booking_confirmation_text(array $tr, ?array $d, ?array $t, string $today, array $settings): array {
+    $money = static fn($v) => $v === null || $v === '' ? 'not recorded' : 'USD ' . number_format((float)$v, 2);
+    $depStatus = $d ? atb_status_text(atb_compute_status($d, $today, $settings)['key'], $d, $settings) : 'unknown';
+    $min = $d['min_group_size'] ?? null;
+    $fields = [
+        'Tour' => (string)($t['name'] ?? ($d['tour_slug'] ?? '')),
+        'Departure dates' => $d ? atb_format_range((string)$d['start_date'], (string)$d['end_date']) : '',
+        'Traveler(s)' => (string)$tr['name'] . ' (party of ' . (int)($tr['party_size'] ?? 1) . ')',
+        'Booking status' => BOOKING_STATUS[$tr['status']] ?? (string)$tr['status'],
+        'Departure status at time of booking' => (string)($tr['departure_status_at_booking'] ?? $depStatus),
+        'Departure status now' => $depStatus,
+        'Required minimum group size' => $min ? $min . ' travelers' : 'to be confirmed by AfghanTours',
+        'Date departure became confirmed' => (string)($d['confirmed_on'] ?? 'not yet — we will tell you as soon as it is'),
+        'Amount paid' => $money($tr['amount_paid'] ?? null),
+        'Remaining balance' => $money($tr['balance_due'] ?? null),
+        'Balance due date' => (string)($tr['balance_due_date'] ?? 'not applicable / not set'),
+        'Booking reference' => (string)$tr['id'],
+    ];
+    $lines = ['Dear ' . $tr['name'] . ',', '', 'Thank you for booking with AfghanTours. Your booking is confirmed.', ''];
+    foreach ($fields as $k => $v) if ($k !== 'Departure status now') $lines[] = $k . ': ' . $v;
+    $lines[] = '';
+    if (empty($d['confirmed_on'])) {
+        $lines[] = 'Your place is booked. This scheduled departure is still open and awaiting its minimum number of travelers' . ($min ? ' (' . $min . ')' : '') . '. We will let you know as soon as the departure is confirmed. If the minimum is not reached, we will offer you another departure, an alternative itinerary, a private version of the journey at a separately quoted price, or cancellation with a 100% refund of the amount paid to James Tourist & Travel Agency for this tour (see our Scheduled Departures and Minimum Group Size policy).';
+    } else {
+        $lines[] = 'This departure is confirmed and will operate.';
+    }
+    $lines = array_merge($lines, ['', 'With best wishes,', 'AfghanTours', 'James Tourist & Travel Agency · Operating as AfghanTours.com · Tour Operator License ATO-KBL-1617', 'info@afghantours.com · WhatsApp +93 780 123 456']);
+    return ['fields' => $fields, 'email' => implode("\n", $lines)];
+}
+
 function status_tag(array $d, string $today, array $settings): string {
     $st = atb_compute_status($d, $today, $settings);
     $pub = (!empty($d['published']) && atb_is_public($d, $today)) ? '<span class="tag tag--pub">public</span>' : '<span class="tag">not public</span>';
@@ -490,8 +570,9 @@ function departure_form(array $inv, array $d, bool $isNew, bool $canEdit): strin
         . '<div><label for="start_date">Start date</label><input type="date" name="start_date" id="start_date" required value="' . h($d['start_date'] ?? '') . '"></div>'
         . '<div><label for="end_date">End date <span class="muted">(blank = start + duration − 1)</span></label><input type="date" name="end_date" id="end_date" value="' . h($d['end_date'] ?? '') . '"></div>'
         . '<div><label for="departure_type">Type</label>' . select('departure_type', ['shared' => 'Shared group', 'private' => 'Private (quoted separately)'], (string)($d['departure_type'] ?? 'shared')) . '</div>'
-        . '<div><label for="min_group_size">Minimum travelers</label><input type="number" min="1" name="min_group_size" id="min_group_size" value="' . h($d['min_group_size'] ?? 3) . '"></div>'
+        . '<div><label for="min_group_size">Minimum travelers</label><input type="number" min="1" name="min_group_size" id="min_group_size" value="' . h($d['min_group_size'] ?? '') . '" placeholder="6 for 5+ day tours; owner sets for ≤4 days"></div>'
         . '<div><label for="max_capacity">Maximum capacity</label><input type="number" min="1" name="max_capacity" id="max_capacity" value="' . h($d['max_capacity'] ?? '') . '" placeholder="required before publishing"></div>'
+        . '<div><label for="group_exception_note">Approved group-size exception</label><input name="group_exception_note" id="group_exception_note" value="' . h($d['group_exception_note'] ?? '') . '" placeholder="Only when numbers differ from 6–18 — who approved and why"></div>'
         . '<div><label for="status">Status</label>' . select('status', ['draft' => 'Draft', 'proposed' => 'Proposed', 'scheduled' => 'Scheduled', 'on_request' => 'On request', 'closed' => 'Closed', 'cancelled' => 'Cancelled', 'completed' => 'Completed'], (string)($d['status'] ?? 'draft')) . '</div>'
         . '<div><label for="booking_cutoff">Booking cutoff</label><input type="date" name="booking_cutoff" id="booking_cutoff" value="' . h($d['booking_cutoff'] ?? '') . '"></div>'
         . '<div><label for="price_amount">Shared price from (USD per person)</label><input name="price_amount" id="price_amount" inputmode="decimal" value="' . h($d['price']['amount'] ?? '') . '" placeholder="blank = Price on request"></div>'
@@ -529,11 +610,15 @@ if ($action === 'edit') {
     }
     $b .= '<h2>Details</h2>' . departure_form($inv, $d, false, $canEdit);
     $travelers = array_filter(atb_load_travelers(), static fn($x) => ($x['departure_id'] ?? '') === $d['id']);
-    $b .= '<h2>Travelers</h2><p class="muted">Staff-only. Payment status is a manual note — no payment is processed or verified here.</p><div class="wrap"><table><thead><tr><th>Name</th><th>Party</th><th>Contact</th><th>Status</th><th>Payment (recorded)</th><th></th></tr></thead><tbody>';
+    $b .= '<h2>Bookings on this departure</h2><p class="muted">Staff-only. <strong>Booking status</strong> (per traveler) is separate from the <strong>departure status</strong> above: a booking can be confirmed while the departure is still open and awaiting its minimum. Payment fields are manual notes — no payment is processed or verified here.</p>'
+        . '<p class="muted">Departure confirmed on: <strong>' . h($d['confirmed_on'] ?? 'not yet (needs minimum + approval)') . '</strong></p><div class="wrap"><table><thead><tr><th>Name</th><th>Party</th><th>Contact</th><th>Booking status · payment · paid / balance / due</th><th></th></tr></thead><tbody>';
     foreach ($travelers as $tr) {
         $b .= '<tr><td>' . h($tr['name']) . ($tr['inquiry_id'] ? '<br><span class="muted">' . h($tr['inquiry_id']) . '</span>' : '') . '</td><td>' . h($tr['party_size']) . '</td><td>' . h($tr['email']) . '<br>' . h($tr['whatsapp']) . '</td>'
-            . '<td colspan="3">' . ($canEdit ? '<form class="inline" method="post" action="' . h(url(['a' => 'traveler'])) . '">' . csrf_field() . '<input type="hidden" name="op" value="update"><input type="hidden" name="departure_id" value="' . h($d['id']) . '"><input type="hidden" name="traveler_id" value="' . h($tr['id']) . '">'
-                . select('status', ['pending' => 'Pending', 'confirmed' => 'Confirmed', 'cancelled' => 'Cancelled'], (string)$tr['status']) . select('payment_status', ['not_recorded' => 'Not recorded', 'deposit_recorded' => 'Deposit recorded', 'paid_recorded' => 'Paid recorded'], (string)$tr['payment_status']) . '<button class="alt">Update</button></form>' : h($tr['status'] . ' · ' . $tr['payment_status'])) . '</td></tr>';
+            . '<td>' . ($canEdit ? '<form method="post" action="' . h(url(['a' => 'traveler'])) . '">' . csrf_field() . '<input type="hidden" name="op" value="update"><input type="hidden" name="departure_id" value="' . h($d['id']) . '"><input type="hidden" name="traveler_id" value="' . h($tr['id']) . '"><div class="grid">'
+                . '<div>' . select('status', BOOKING_STATUS, (string)$tr['status']) . '</div><div>' . select('payment_status', PAYMENT_NOTE, (string)$tr['payment_status']) . '</div>'
+                . '<div><input name="amount_paid" placeholder="Amount paid" value="' . h($tr['amount_paid'] ?? '') . '"></div><div><input name="balance_due" placeholder="Balance" value="' . h($tr['balance_due'] ?? '') . '"></div><div><input type="date" name="balance_due_date" value="' . h($tr['balance_due_date'] ?? '') . '"></div></div><button class="alt">Update</button></form>'
+                : h((BOOKING_STATUS[$tr['status']] ?? $tr['status']) . ' · ' . (PAYMENT_NOTE[$tr['payment_status']] ?? $tr['payment_status']))) . '</td>'
+            . '<td>' . (($tr['status'] ?? '') === 'confirmed' ? '<a href="' . h(url(['a' => 'confirmation', 'traveler' => $tr['id']])) . '">Booking confirmation</a>' : '') . '</td></tr>';
     }
     if (!$travelers) $b .= '<tr><td colspan="6" class="muted">No travelers assigned.</td></tr>';
     $b .= '</tbody></table></div>';
@@ -541,7 +626,8 @@ if ($action === 'edit') {
         $b .= '<form class="card" method="post" action="' . h(url(['a' => 'traveler'])) . '">' . csrf_field() . '<input type="hidden" name="op" value="add"><input type="hidden" name="departure_id" value="' . h($d['id']) . '"><strong>Add traveler</strong><div class="grid">'
             . '<div><label for="tn">Name</label><input id="tn" name="name" required></div><div><label for="tp">Party size</label><input id="tp" type="number" min="1" max="50" name="party_size" value="1"></div>'
             . '<div><label for="te">Email</label><input id="te" type="email" name="email"></div><div><label for="tw">WhatsApp</label><input id="tw" name="whatsapp"></div><div><label for="tc">Country</label><input id="tc" name="country"></div>'
-            . '<div><label for="status">Status</label>' . select('status', ['pending' => 'Pending', 'confirmed' => 'Confirmed (paying, committed)'], 'pending') . '</div>'
+            . '<div><label for="status">Booking status</label>' . select('status', ['pending' => BOOKING_STATUS['pending'], 'confirmed' => 'Booking confirmed (committed, paying)'], 'pending') . '</div>'
+            . '<div><label for="amount_paid">Amount paid (USD, manual)</label><input id="amount_paid" name="amount_paid"></div><div><label for="balance_due">Balance (USD)</label><input id="balance_due" name="balance_due"></div><div><label for="balance_due_date">Balance due date</label><input type="date" id="balance_due_date" name="balance_due_date"></div>'
             . '<div><label for="payment_status">Payment (manual note)</label>' . select('payment_status', ['not_recorded' => 'Not recorded', 'deposit_recorded' => 'Deposit recorded', 'paid_recorded' => 'Paid recorded'], 'not_recorded') . '</div></div>'
             . '<label for="tnotes">Notes</label><input id="tnotes" name="notes"><button>Add traveler</button></form>';
     }
@@ -630,6 +716,21 @@ if ($action === 'inquiry') {
         $b .= '<form class="card" method="post" action="' . h(url(['a' => 'inquiry'])) . '">' . csrf_field() . '<input type="hidden" name="id" value="' . h($r['id']) . '"><input type="hidden" name="op" value="assign"><label for="departure_id">Assign to departure (adds a pending traveler)</label>' . select('departure_id', $opts, (string)($r['departure_id'] ?? '')) . '<button>Assign</button></form>';
     }
     page('Inquiry', $b, $user);
+}
+
+if ($action === 'confirmation') {
+    $tid = isset($_GET['traveler']) && is_string($_GET['traveler']) ? $_GET['traveler'] : '';
+    $tr = null;
+    foreach (atb_load_travelers() as $x) if (($x['id'] ?? '') === $tid) $tr = $x;
+    if (!$tr) fail_page(404, 'Not found', 'Booking not found.', $user);
+    $d = atb_find_departure($deps, (string)$tr['departure_id']);
+    $t = $d ? ($toursBySlug[$d['tour_slug']] ?? null) : null;
+    $page = booking_confirmation_text($tr, $d, $t, $today, $settings);
+    $b = '<h1>Booking confirmation</h1><p class="muted">Generated from the booking and departure records. Nothing is sent from here — copy the text into your email to the traveler after checking it. ' . ($tr['status'] !== 'confirmed' ? '<strong>This booking is not confirmed yet.</strong>' : '') . '</p>'
+        . '<div class="card"><table>' ;
+    foreach ($page['fields'] as $k => $v) $b .= '<tr><th>' . h($k) . '</th><td>' . h($v) . '</td></tr>';
+    $b .= '</table></div><h2>Email text</h2><textarea style="min-height:420px" readonly>' . h($page['email']) . '</textarea>';
+    page('Booking confirmation', $b, $user);
 }
 
 fail_page(404, 'Not found', 'Unknown page.', $user);

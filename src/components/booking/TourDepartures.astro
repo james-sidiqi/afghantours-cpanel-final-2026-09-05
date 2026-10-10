@@ -19,15 +19,19 @@ const category = String(tour.category || 'C');
 const departures = publicSnapshot(slug);
 const isWeekend = Array.isArray(tour.arrival_options) && tour.arrival_options.length > 0;
 const wording = bookingSettings.wording || {};
-const min = tour.shared_min_group || 3;
+const min = tour.shared_min_group ?? null; // 6 for 5+ day scheduled tours; 2 for shared departures of 4 days or less
+const longRule = tour.group_rule === 'long_6_18';
+const groupLines = longRule
+  ? String(wording.group_size_long || 'Group size: 6–18 travelers / Minimum to operate: 6 travelers / Need a different group arrangement? Contact us.').split(' / ')
+  : [];
 const next = departures.find((d) => d.selectable);
 
 const heading = category === 'C' ? 'Group departures (when announced)' : 'Group departures';
 const privateLead = isWeekend
-  ? 'Travel privately, even on your own — no group minimum. Private pricing is quoted separately.'
+  ? 'Travel privately, even on your own — no group minimum. Private departures available; price on request.'
   : category === 'C'
-    ? 'This route normally runs privately on your dates. Private pricing is quoted separately.'
-    : 'The same route on your own dates. Private pricing is quoted separately from the shared rate.';
+    ? 'This route normally runs privately on your dates. Private departure available; price on request.'
+    : 'The same route on your own dates — you do not need a scheduled date to book. Private departure available; price on request.';
 const common = {
   'data-tour-title': name,
   'data-tour-slug': slug,
@@ -46,10 +50,9 @@ const common = {
   data-tour-code={code}
   data-product-class={productClass}
   data-category={category}
-  data-min={String(min)}
+  data-min={min === null ? '' : String(min)}
   data-weekend={isWeekend ? '1' : ''}
   data-tour-days={String(tour.duration_days || '')}
-  data-awaiting={wording.awaiting_minimum || ''}
 >
   {isWeekend && (
     <div class="tdp-weekend">
@@ -100,9 +103,20 @@ const common = {
   </p>
   <p class="tdp-empty" data-arrival-empty hidden>No published dates for this arrival yet — ask us and we will look at it.</p>
 
+  {longRule && (departures.length > 0 || category !== 'C') && (
+    <ul class="tdp-group" aria-label="Group size">
+      <li>{groupLines[0]}</li>
+      <li>{groupLines[1]}</li>
+      <li><a href="/contact/">{groupLines[2]}</a></li>
+    </ul>
+  )}
   {(departures.length > 0 || category !== 'C') && (
     <p class="tdp-note">
-      Shared departures go ahead once at least {min} travelers are confirmed and our team approves the departure. {wording.selection_note}
+      {longRule
+        ? `A scheduled departure is confirmed to operate once ${min} travelers are confirmed and our team approves it. `
+        : `Shared departures need a minimum of ${min ?? 2} confirmed travelers and our team's approval to operate. Private departures can run for 1 traveler. `}
+      {wording.selection_note}{' '}
+      <a href="/terms/#scheduled-departures-minimum-group-size">Minimum group size policy</a>.
     </p>
   )}
 
@@ -211,6 +225,10 @@ const common = {
 </script>
 
 <style is:global>
+  .tdp-group { list-style: none; margin: .9rem 0 0; padding: 0; font-size: .9rem; line-height: 1.5; }
+  .tdp-group li { margin: 0; }
+  .tdp-group li:first-child { font-weight: 700; }
+  .tdp-group a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
   /* Global on purpose: rows are re-rendered from the live endpoint. All selectors are tdp-prefixed. */
   .tdp { margin-top: 1rem; border-top: 1px solid #d8d4c9; padding-top: 1rem; }
   .tdp-head { display: flex; justify-content: space-between; gap: .7rem; align-items: baseline; }
@@ -229,6 +247,7 @@ const common = {
   .tdp-row:disabled .tdp-row__cta { text-decoration: none; color: #6e7069; }
   .tdp-empty { margin: .55rem 0 0; color: #5f615a; font-size: .72rem; line-height: 1.5; }
   .tdp-note { margin: .7rem 0 0; color: #6b6d66; font-size: .64rem; line-height: 1.5; }
+  .tdp-note a { color: inherit; text-decoration: underline; }
   .tdp-private { margin-top: 1rem; padding-top: .9rem; border-top: 1px solid #ece8df; }
   .tdp-private strong { display: block; font: 700 .98rem/1.25 Georgia, "Times New Roman", serif; }
   .tdp-private p { margin: .35rem 0 .7rem; color: #62645d; font-size: .7rem; line-height: 1.5; }

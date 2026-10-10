@@ -376,11 +376,27 @@ if ($departureId !== '' && $bookingAvailable) {
     }
 }
 if ($bookingAvailable) {
-    $note = atb_group_minimum_note($travelers, $bookingType !== '' ? $bookingType : 'shared', 3);
+    // Minimum comes from the selected departure, else from the tour's group rule (6 for 5+ day tours; owner-set for ≤4 days).
+    $groupMin = null;
+    try {
+        if (isset($atbDep) && is_array($atbDep)) {
+            $groupMin = atb_int($atbDep['min_group_size'] ?? null, null);
+        } elseif ($entitySlug !== '') {
+            [$atbInv2] = atb_load_inventory();
+            $atbTour = atb_tour($atbInv2, $entitySlug);
+            if ($atbTour && in_array($atbTour['category'] ?? '', ['A', 'B', 'C'], true)) {
+                $groupMin = atb_group_rule((int)($atbTour['duration_days'] ?? 0), (array)($atbInv2['settings'] ?? []))['min'];
+            }
+        }
+    } catch (Throwable $e) {
+        $groupMin = null;
+    }
+    $note = atb_group_minimum_note($travelers, $bookingType !== '' ? $bookingType : 'shared', $groupMin);
     $groupNote = match ($note) {
         'private' => 'Private request — quoted separately; no group minimum applies.',
-        'below_minimum' => 'Shared request for ' . (int)$travelers . ' traveler(s): below the 3-traveler minimum. Accept as a request; the departure stays pending until 3 travelers are confirmed and operations approve it.',
-        'meets_minimum' => 'Shared request for ' . (int)$travelers . ' travelers: meets the 3-traveler minimum once they are confirmed (still needs operational approval).',
+        'below_minimum' => 'Shared request for ' . (int)$travelers . ' traveler(s), below the ' . $groupMin . '-traveler minimum to operate. Accept as a request/booking; the departure stays open until ' . $groupMin . ' travelers are confirmed and operations approve it.',
+        'meets_minimum' => 'Shared request for ' . (int)$travelers . ' travelers: meets the ' . $groupMin . '-traveler minimum once they are confirmed (still needs operational approval).',
+        'minimum_not_set' => 'Shared request for ' . (int)$travelers . ' traveler(s). No group minimum is set for this tour yet (owner decision).',
         default => 'Number of travelers not given.',
     };
 }

@@ -185,6 +185,37 @@ const policyItems = {
   ],
 };
 
+// Long-form policy clauses (owner-supplied text, 10 Oct 2026). Rendered full width below the summary cards.
+// No cancellation/refund policy page exists in the repo or on the live site, so these live on /terms/.
+const policyClauses = {
+  terms: [
+    {
+      id: 'scheduled-departures-minimum-group-size',
+      heading: 'Scheduled Departures and Minimum Group Size',
+      paragraphs: [
+        'Some published tours operate as scheduled group departures and require a minimum number of confirmed travelers before the departure is guaranteed to operate.',
+        'Unless otherwise stated for a specific departure, scheduled group tours lasting five days or more require a minimum of six confirmed travelers and normally accept a maximum of eighteen travelers. Scheduled or shared departures lasting four days or less require a minimum of two confirmed travelers. The minimum that applies to your departure is stated in the tour information or in your booking confirmation.',
+        "A traveler's individual booking may be confirmed while the scheduled departure remains open and awaiting the required minimum number of travelers. AfghanTours will advise booked travelers when the departure becomes confirmed.",
+        'If the required minimum is not reached, James Tourist & Travel Agency may offer another scheduled departure, an alternative itinerary, a private version of the journey at a separately quoted price, or cancellation of the scheduled departure.',
+        'If James Tourist & Travel Agency cancels a scheduled departure because the required minimum number of travelers has not been reached, it will refund 100% of the amount paid to James Tourist & Travel Agency for that tour.',
+        'This does not include independently purchased airfare, visas, insurance, accommodation, transportation, or other services not purchased from James Tourist & Travel Agency.',
+        'The standard maximum of eighteen travelers may be adjusted for specially arranged groups or other approved departures. Travelers, organizations, or trade partners seeking an exception should contact AfghanTours.',
+        'Tours sold as private journeys are not subject to the scheduled-group minimum unless specifically stated in the applicable proposal or booking confirmation. Private pricing may differ from advertised shared-departure pricing.',
+      ],
+    },
+    {
+      id: 'payments-currency-refunds',
+      heading: 'Payments, Currency and Refunds',
+      paragraphs: [
+        'Prices may be quoted in US dollars or in another currency stated in your quotation or booking confirmation.',
+        'Some payment providers process payments in Afghani (AFN) or another settlement currency. Where a refund is made, the amount you receive may be affected by exchange-rate movements, and by bank, card, currency-conversion, or payment-provider fees.',
+        'An approved refund is calculated under the policy that applies to your booking and is not automatically adjusted for exchange-rate changes between the date of payment and the date of refund.',
+        'Details of the payment method and currency used for your booking are given at checkout or in your booking confirmation.',
+      ],
+    },
+  ],
+};
+
 const aboutItems = [
   ['Licensed Kabul Operator', 'AfghanTours.com is owned and operated by James Tourist & Travel Agency, a licensed Afghanistan travel operator based in Kabul.'],
   ['American-Led, Kabul-Based', 'The company is led by an American citizen with more than 15 years of continuous experience living and working inside Afghanistan.'],
@@ -363,6 +394,15 @@ const trustItems = [
               </article>
             ))}
           </section>
+
+          {(policyClauses[Astro.params.slug] || []).map((clause) => (
+            <section class="policy-clause" id={clause.id}>
+              <article class="content-card">
+                <h2>{clause.heading}</h2>
+                {clause.paragraphs.map((para) => <p>{para}</p>)}
+              </article>
+            </section>
+          ))}
 
           {Astro.params.slug === 'safety' && (
             <section class="safety-closing">
@@ -677,6 +717,8 @@ const trustItems = [
   details p,.content-card p,.policy-grid p{color:#4b5563;line-height:1.8}
   .policy-grid{width:min(1180px,100%);margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
   .policy-grid article{width:auto}
+  .policy-clause{width:min(1180px,100%);margin:1rem auto 0}
+  .policy-clause .content-card{width:auto}
   .policy-grid h2,.content-card h2{font-family:Georgia,"Times New Roman",serif;font-size:2rem;line-height:1;margin:.2rem 0 1rem}
   .safety-closing{width:min(980px,100%);margin:2rem auto 0;background:#0f1a18;color:#fff;border-radius:1.5rem;padding:clamp(2rem,4vw,3.4rem);box-shadow:0 18px 50px rgba(21,16,9,.12)}
   .safety-closing h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.4rem,4vw,4rem);line-height:.98;letter-spacing:-.04em;margin:.6rem 0 1rem;color:#fff}

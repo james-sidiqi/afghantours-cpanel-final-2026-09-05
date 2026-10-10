@@ -1,18 +1,22 @@
 ---
-import { getCatalogTour, publicSnapshot, tourPriceLabel } from '../lib/booking/site';
+import { bookingCatalog, getCatalogTour, publicSnapshot, tourPriceLabel } from '../lib/booking/site';
 interface Props { tours: any[]; showFilters?: boolean; id?: string }
 
 const { tours = [], showFilters = true, id = 'tour-directory' } = Astro.props;
 
-const CATEGORY_BADGE: Record<string, string> = {
-  A: 'Scheduled group tour',
-  B: 'Group dates or private',
-  C: 'Private tour',
-};
+// Booking type first (spec 10 Oct Part 1 §1, §12); travel style stays a secondary descriptor.
 const badgeFor = (tour: any) => {
-  const cat = getCatalogTour(tour.slug)?.category;
-  if (cat && CATEGORY_BADGE[cat]) return CATEGORY_BADGE[cat];
-  return String(tour.product_class || '').toLowerCase() === 'scheduled' ? 'Scheduled departure' : 'Private fixed itinerary';
+  const c = getCatalogTour(tour.slug);
+  const labels = bookingCatalog.booking_types || {};
+  const out = (c?.booking_types || []).map((k: string) => labels[k]).filter(Boolean).join(' · ');
+  return out || 'Private Tour';
+};
+const groupLineFor = (tour: any) => {
+  const c = getCatalogTour(tour.slug) || {};
+  if (c.category === 'C') return 'Private on your dates · no group minimum';
+  if (c.group_rule === 'long_6_18') return 'Group size 6–18 · minimum 6 to operate · private on request';
+  if (c.booking_type === 'private_tour') return `Private from 1 traveler · shared departures minimum ${c.shared_min_group ?? 2}`;
+  return `Shared departures minimum ${c.shared_min_group ?? 2} · private from 1 traveler`;
 };
 const nextDeparture = (tour: any) => publicSnapshot(tour.slug).find((d: any) => d.selectable);
 
@@ -110,8 +114,9 @@ const priceLabel = (tour:any) => {
               <span>▣ {tour.season || 'Season varies'}</span>
             </div>
             <p class="tour-price">{priceLabel(tour)}</p>
-            {(() => { const n = nextDeparture(tour); return n ? <p class="tour-next" data-next-start={n.start_date}>Next group departure: {n.date_label}</p> : null; })()}
-            <p>{[tour.style, tour.activity_level, tour.group_size].filter(Boolean).slice(0,3).join(' • ') || 'Private journey'}</p>
+            <p class="tour-group">{groupLineFor(tour)}</p>
+            {(() => { const n = nextDeparture(tour); return n ? <p class="tour-next" data-next-start={n.start_date}>Next departure: {n.date_label} — {n.status_text}</p> : null; })()}
+            <p>{[tour.style, tour.activity_level].filter(Boolean).join(' • ') || 'Private journey'}</p>
             <a href={`/tours/${tour.slug}/`}>View Tour Details →</a>
           </div>
         </article>
@@ -209,6 +214,7 @@ const priceLabel = (tour:any) => {
   .tour-body p{font-size:.84rem;color:#5a554e;margin:1rem 0 1.2rem}
   .tour-body .tour-price{margin:.85rem 0 .1rem;color:#9a5d04;font-size:1rem;font-weight:900}
   .tour-body .tour-next{margin:.35rem 0 0;color:#4b4d48;font-size:.8rem;font-weight:700}
+  .tour-body .tour-group{margin:.35rem 0 0;color:#4b4d48;font-size:.8rem}
   .tour-directory--plain{padding:1.25rem 0 3.5rem}
   .tour-body a{color:#a86920;text-decoration:none;text-transform:uppercase;font-size:.78rem;font-weight:900;letter-spacing:.04em}
 

@@ -5,7 +5,7 @@ This folder is the **single authoritative seed** for AfghanTours tour products (
 
 | File | What it holds |
 |---|---|
-| `tours-catalog.json` | 23 products: 13 tours (categories A/B/C), 8 custom/specialist services (D), 2 inactive (Wakhan, Minaret-e-Jam). Category, duration/nights, shared minimum (3), private availability, operating window, reference price + `price_status`, legacy URL → current page for D. |
+| `tours-catalog.json` | 23 products: 13 tours (categories A/B/C), 8 custom/specialist services (D), 2 inactive (Wakhan, Minaret-e-Jam). Category, duration/nights, booking type (Scheduled Departure / Private Tour / Custom Journey / Specialist Service), group rule (5+ days: 6–18; ≤4 days: min 2, no standard max), private availability, operating window, reference price + `price_status`, legacy URL → current page for D. |
 | `departures.json` | Every departure (history, published, proposed). Fields per spec Part 4. Seed counts are always 0. |
 | `blackouts.json` | Configurable blackout / advisory periods (Eid estimates are `confirmed:false`). |
 | `settings.json` | `usd_confirmed` (false → show `$`), minimum, limited-places threshold, public count/capacity switches, contact, customer wording. |
@@ -25,13 +25,29 @@ This folder is the **single authoritative seed** for AfghanTours tour products (
 Traveler names/contacts live only in `<private>/booking/travelers.json` and `<private>/booking/inquiries.jsonl`, never in this
 folder, the public endpoint, or `dist/`.
 
+## Group size rules (controlling, 10 Oct 2026)
+
+| Product | Minimum to operate | Maximum |
+|---|---|---|
+| Scheduled group tour, 5+ days | 6 confirmed travelers | normally 18 (per-departure exception only when approved, recorded in `group_exception_note`) |
+| Scheduled / shared departure, 4 days or less (Weekend in Kabul, Panjshir) | 2 confirmed travelers | no standard maximum (product-specific only from approved data) |
+| Private tour | 1 traveler, quoted separately | — |
+| Custom Journey / Specialist Service | defined in the individual proposal | — |
+
+Rules live in `settings.json → group_rule`; the validator and the PHP admin refuse other numbers without a recorded exception.
+
 ## Status model
 
 Stored (admin) status: `proposed | draft | scheduled | on_request | closed | cancelled | completed`.
-Customer status is **computed** (`src/lib/booking/core.mjs` and the PHP mirror):
-Completed (ended) → Cancelled → Closed (manual, started, or past cutoff) → On Request (private) → Sold Out (capacity set and 0 left)
-→ Confirmed Departure / Limited Places (≥ minimum **confirmed** travelers **and** operational approval) → Available — Awaiting Minimum.
-Only confirmed travelers count. Nothing becomes Confirmed automatically.
+Public status is **computed** (`src/lib/booking/core.mjs` and the PHP mirror) and uses ONE vocabulary:
+**Open — awaiting minimum N travelers** (N = the departure's real minimum) / **Confirmed** / **Limited** / **Sold out** / **Closed**.
+Confirmed needs ≥ minimum **confirmed** travelers **and** operational approval — never automatic. Pending requests never count.
+Cancelled, completed (past), private and proposed departures are internal states and never appear in the public feed.
+
+**Booking status** (per traveler: requested / booking confirmed / cancelled) is stored separately from the departure status.
+A booking can be confirmed while its departure is still Open; the admin "Booking confirmation" record shows tour, dates,
+travelers, booking status, departure status at the time of booking, required minimum, the date the departure became
+confirmed, amount paid, balance and due date.
 
 ## Dates
 

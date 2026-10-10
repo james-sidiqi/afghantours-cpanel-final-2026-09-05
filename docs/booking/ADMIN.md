@@ -32,12 +32,12 @@ None of these is ever copied into `dist/` or returned by `/booking/departures.ph
 
 1. **Departures** (home): filter Upcoming / Proposed & draft / History / All. Each row shows stored status, computed customer
    status, confirmed/pending counts, approval, published flag and date-check warnings.
-2. **Review a proposed departure** → *Edit*: set **maximum capacity** (required before publishing), check dates (end date
+2. **Review a proposed departure** → *Edit*: 5+ day shared departures default to minimum 6 / maximum 18; shared departures of 4 days or less to minimum 2 with no standard maximum. Other numbers need an **approved group-size exception** note, check dates (end date
    auto = start + days − 1; mismatches are refused unless "keep existing production dates" is ticked), price, cutoff, public note.
-   Then *Publish*. It appears publicly as **Available — Awaiting Minimum**.
+   Then *Publish*. It appears publicly as **Open — awaiting minimum 6 travelers** (or 2 for shared departures of 4 days or less).
 3. **Travelers**: add each traveler/party as *pending*; switch to *confirmed* only when they have committed and paid
    (payment status is a manual note: not recorded / deposit recorded / paid recorded — **no online payment is wired**).
-   Only confirmed travelers count toward the minimum of 3.
+   Only confirmed travelers count toward the minimum (6 for 5+ day tours, 2 for ≤4-day shared departures). Booking status is separate: a booking can be confirmed while the departure is still open. Open a confirmed booking's **Booking confirmation** to get the record and an email text to send yourself (nothing is sent automatically).
 4. **Approve** (operational approval). The departure shows **Confirmed Departure** only when confirmed ≥ minimum **and**
    approved; **Limited Places** when few seats remain; **Sold Out** at capacity. Nothing is confirmed automatically.
 5. **Close** (stop requests), **Cancel**, **Complete** (only on/after the end date), **Unpublish**, **Reopen**.
@@ -49,4 +49,4 @@ None of these is ever copied into `dist/` or returned by `/booking/departures.ph
 8. **Blackout dates**: add / confirm / delete. Eid 2027 dates are pre-filled as *estimates* — confirm or correct them.
    Publishing a departure that overlaps a confirmed blocking blackout is refused.
 9. **Settings**: `usd_confirmed` (shows "USD" instead of "$"), limited-places threshold, show confirmed counts publicly
-   ("2 of 3 travelers confirmed"), show capacity publicly. All default off.
+   ("2 of 6 travelers confirmed"), show capacity publicly. All default off.

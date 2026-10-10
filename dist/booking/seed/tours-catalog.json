@@ -5,7 +5,7 @@
   "categories": {
     "A": {
       "label": "Scheduled Group Tours",
-      "summary": "Published group departures. Shared departures go ahead once at least three travelers are confirmed."
+      "summary": "Published group departures. Tours of five days or more operate with 6–18 travelers; shorter shared departures need 2. Private versions are quoted separately."
     },
     "B": {
       "label": "Scheduled & Private Tours",
@@ -16,7 +16,7 @@
       "summary": "Run privately on your dates. Occasional group departures are announced when they are set."
     },
     "D": {
-      "label": "Custom & Specialist Services",
+      "label": "Custom Journeys & Specialist Services",
       "summary": "Planned around your brief and quoted individually — no fixed departure calendar."
     }
   },
@@ -33,7 +33,7 @@
       "url": "/tours/weekend-in-kabul/",
       "page_type": "tour",
       "departures_mode": "scheduled_group",
-      "shared_min_group": 3,
+      "shared_min_group": 2,
       "private_available": true,
       "private_pricing": "quoted_separately",
       "price": {
@@ -59,7 +59,7 @@
       "capacity_reference": {
         "max_capacity": null,
         "live_group_text": "Private or 2-8 travelers",
-        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+        "note": "Owner decision 10 Oct 2026: shared departures of 4 days or less need a minimum of 2 confirmed travelers; no standard maximum. Live text \"Private or 2-8 travelers\" kept for reference only."
       },
       "flags": [
         "Production shows \"From $450\"; origin/main 8f73e1f shows \"Price on request\". Kept production value as reference (not auto-restored/removed) — James to approve or withdraw."
@@ -86,7 +86,14 @@
       ],
       "blackout_tags": [
         "eid"
-      ]
+      ],
+      "booking_type": "scheduled_departure",
+      "booking_types": [
+        "scheduled_departure",
+        "private_tour"
+      ],
+      "shared_max_group": null,
+      "group_rule": "short_min_2"
     },
     {
       "code": "WNTC",
@@ -100,7 +107,7 @@
       "url": "/tours/winter-circuit/",
       "page_type": "tour",
       "departures_mode": "scheduled_group",
-      "shared_min_group": 3,
+      "shared_min_group": 6,
       "private_available": true,
       "private_pricing": "quoted_separately",
       "price": {
@@ -124,13 +131,20 @@
         "guidance_only": true
       },
       "capacity_reference": {
-        "max_capacity": null,
+        "max_capacity": 18,
         "live_group_text": "Private or 2-8 travelers",
-        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+        "note": "Rule (spec 10 Oct 2026): minimum 6 / normal maximum 18 for scheduled group tours of 5+ days; per-departure exceptions only from approved data. Live text \"Private or 2-8 travelers\" is superseded."
       },
       "flags": [
         "Production shows \"From $2,100\"; origin/main 8f73e1f shows \"Price on request\". Kept production value as reference (not auto-restored/removed) — James to approve or withdraw."
-      ]
+      ],
+      "booking_type": "scheduled_departure",
+      "booking_types": [
+        "scheduled_departure",
+        "private_tour"
+      ],
+      "shared_max_group": 18,
+      "group_rule": "long_6_18"
     },
     {
       "code": "SUMC",
@@ -144,7 +158,7 @@
       "url": "/tours/summer-circuit/",
       "page_type": "tour",
       "departures_mode": "scheduled_group",
-      "shared_min_group": 3,
+      "shared_min_group": 6,
       "private_available": true,
       "private_pricing": "quoted_separately",
       "price": {
@@ -168,13 +182,20 @@
         "guidance_only": true
       },
       "capacity_reference": {
-        "max_capacity": null,
+        "max_capacity": 18,
         "live_group_text": "Private or 2-8 travelers",
-        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+        "note": "Rule (spec 10 Oct 2026): minimum 6 / normal maximum 18 for scheduled group tours of 5+ days; per-departure exceptions only from approved data. Live text \"Private or 2-8 travelers\" is superseded."
       },
       "flags": [
         "Production shows \"From $1,950\"; origin/main 8f73e1f shows \"Price on request\". Kept production value as reference (not auto-restored/removed) — James to approve or withdraw."
-      ]
+      ],
+      "booking_type": "scheduled_departure",
+      "booking_types": [
+        "scheduled_departure",
+        "private_tour"
+      ],
+      "shared_max_group": 18,
+      "group_rule": "long_6_18"
     },
     {
       "code": "BUZE",
@@ -188,7 +209,7 @@
       "url": "/tours/buzkashi-expedition/",
       "page_type": "tour",
       "departures_mode": "scheduled_group",
-      "shared_min_group": 3,
+      "shared_min_group": 6,
       "private_available": true,
       "private_pricing": "quoted_separately",
       "price": {
@@ -212,13 +233,20 @@
         "guidance_only": true
       },
       "capacity_reference": {
-        "max_capacity": null,
+        "max_capacity": 18,
         "live_group_text": "Private or 2-8 travelers",
-        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+        "note": "Rule (spec 10 Oct 2026): minimum 6 / normal maximum 18 for scheduled group tours of 5+ days; per-departure exceptions only from approved data. Live text \"Private or 2-8 travelers\" is superseded."
       },
       "flags": [
         "Production shows \"From $2,450\"; origin/main 8f73e1f shows \"Price on request\". Kept production value as reference (not auto-restored/removed) — James to approve or withdraw."
-      ]
+      ],
+      "booking_type": "scheduled_departure",
+      "booking_types": [
+        "scheduled_departure",
+        "private_tour"
+      ],
+      "shared_max_group": 18,
+      "group_rule": "long_6_18"
     },
     {
       "code": "ADTS",
@@ -232,7 +260,7 @@
       "url": "/tours/afghanistan-discovery-tour-spring/",
       "page_type": "tour",
       "departures_mode": "scheduled_group",
-      "shared_min_group": 3,
+      "shared_min_group": 6,
       "private_available": true,
       "private_pricing": "quoted_separately",
       "price": {
@@ -256,11 +284,18 @@
         "guidance_only": true
       },
       "capacity_reference": {
-        "max_capacity": null,
+        "max_capacity": 18,
         "live_group_text": "Private or 2-8 travelers",
-        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+        "note": "Rule (spec 10 Oct 2026): minimum 6 / normal maximum 18 for scheduled group tours of 5+ days; per-departure exceptions only from approved data. Live text \"Private or 2-8 travelers\" is superseded."
       },
-      "flags": []
+      "flags": [],
+      "booking_type": "scheduled_departure",
+      "booking_types": [
+        "scheduled_departure",
+        "private_tour"
+      ],
+      "shared_max_group": 18,
+      "group_rule": "long_6_18"
     },
     {
       "code": "ADTF",
@@ -274,7 +309,7 @@
       "url": "/tours/afghanistan-discovery-tour-fall/",
       "page_type": "tour",
       "departures_mode": "scheduled_group",
-      "shared_min_group": 3,
+      "shared_min_group": 6,
       "private_available": true,
       "private_pricing": "quoted_separately",
       "price": {
@@ -298,11 +333,18 @@
         "guidance_only": true
       },
       "capacity_reference": {
-        "max_capacity": null,
+        "max_capacity": 18,
         "live_group_text": "Private or 2-8 travelers",
-        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+        "note": "Rule (spec 10 Oct 2026): minimum 6 / normal maximum 18 for scheduled group tours of 5+ days; per-departure exceptions only from approved data. Live text \"Private or 2-8 travelers\" is superseded."
       },
-      "flags": []
+      "flags": [],
+      "booking_type": "scheduled_departure",
+      "booking_types": [
+        "scheduled_departure",
+        "private_tour"
+      ],
+      "shared_max_group": 18,
+      "group_rule": "long_6_18"
     },
     {
       "code": "KBLS",
@@ -316,7 +358,7 @@
       "url": "/tours/kabul-surroundings/",
       "page_type": "tour",
       "departures_mode": "scheduled_and_private",
-      "shared_min_group": 3,
+      "shared_min_group": 6,
       "private_available": true,
       "private_pricing": "quoted_separately",
       "price": {
@@ -340,11 +382,18 @@
         "guidance_only": true
       },
       "capacity_reference": {
-        "max_capacity": null,
+        "max_capacity": 18,
         "live_group_text": "Private or 2-8 travelers",
-        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+        "note": "Rule (spec 10 Oct 2026): minimum 6 / normal maximum 18 for scheduled group tours of 5+ days; per-departure exceptions only from approved data. Live text \"Private or 2-8 travelers\" is superseded."
       },
-      "flags": []
+      "flags": [],
+      "booking_type": "scheduled_departure",
+      "booking_types": [
+        "scheduled_departure",
+        "private_tour"
+      ],
+      "shared_max_group": 18,
+      "group_rule": "long_6_18"
     },
     {
       "code": "CAD",
@@ -358,7 +407,7 @@
       "url": "/tours/central-afghanistan-discovery/",
       "page_type": "tour",
       "departures_mode": "scheduled_and_private",
-      "shared_min_group": 3,
+      "shared_min_group": 6,
       "private_available": true,
       "private_pricing": "quoted_separately",
       "price": {
@@ -382,11 +431,18 @@
         "guidance_only": true
       },
       "capacity_reference": {
-        "max_capacity": null,
+        "max_capacity": 18,
         "live_group_text": "Private or 2-6 travelers",
-        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+        "note": "Rule (spec 10 Oct 2026): minimum 6 / normal maximum 18 for scheduled group tours of 5+ days; per-departure exceptions only from approved data. Live text \"Private or 2-6 travelers\" is superseded."
       },
-      "flags": []
+      "flags": [],
+      "booking_type": "scheduled_departure",
+      "booking_types": [
+        "scheduled_departure",
+        "private_tour"
+      ],
+      "shared_max_group": 18,
+      "group_rule": "long_6_18"
     },
     {
       "code": "BSKI",
@@ -400,7 +456,7 @@
       "url": "/tours/bamyan-skiing-tour/",
       "page_type": "tour",
       "departures_mode": "scheduled_and_private",
-      "shared_min_group": 3,
+      "shared_min_group": 6,
       "private_available": true,
       "private_pricing": "quoted_separately",
       "price": {
@@ -424,11 +480,18 @@
         "guidance_only": true
       },
       "capacity_reference": {
-        "max_capacity": null,
+        "max_capacity": 18,
         "live_group_text": "Private or 2-8 travelers",
-        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+        "note": "Rule (spec 10 Oct 2026): minimum 6 / normal maximum 18 for scheduled group tours of 5+ days; per-departure exceptions only from approved data. Live text \"Private or 2-8 travelers\" is superseded."
       },
-      "flags": []
+      "flags": [],
+      "booking_type": "scheduled_departure",
+      "booking_types": [
+        "scheduled_departure",
+        "private_tour"
+      ],
+      "shared_max_group": 18,
+      "group_rule": "long_6_18"
     },
     {
       "code": "PVEH",
@@ -442,7 +505,7 @@
       "url": "/tours/panjshir-valley-emeralds-history/",
       "page_type": "tour",
       "departures_mode": "scheduled_and_private",
-      "shared_min_group": 3,
+      "shared_min_group": 2,
       "private_available": true,
       "private_pricing": "quoted_separately",
       "price": {
@@ -468,9 +531,17 @@
       "capacity_reference": {
         "max_capacity": null,
         "live_group_text": "Private or 2-8 travelers",
-        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+        "note": "Owner decision 10 Oct 2026: shared departures of 4 days or less need a minimum of 2 confirmed travelers; no standard maximum. Live text \"Private or 2-8 travelers\" kept for reference only."
       },
-      "flags": []
+      "flags": [],
+      "booking_type": "private_tour",
+      "booking_types": [
+        "private_tour",
+        "scheduled_departure"
+      ],
+      "shared_max_group": null,
+      "group_rule": "short_min_2",
+      "private_min_travelers": 1
     },
     {
       "code": "KTDE",
@@ -484,7 +555,7 @@
       "url": "/tours/kandahar-durrani-empire-tour/",
       "page_type": "tour",
       "departures_mode": "scheduled_and_private",
-      "shared_min_group": 3,
+      "shared_min_group": 6,
       "private_available": true,
       "private_pricing": "quoted_separately",
       "price": {
@@ -508,11 +579,18 @@
         "guidance_only": true
       },
       "capacity_reference": {
-        "max_capacity": null,
+        "max_capacity": 18,
         "live_group_text": "Private or 2-8 travelers",
-        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+        "note": "Rule (spec 10 Oct 2026): minimum 6 / normal maximum 18 for scheduled group tours of 5+ days; per-departure exceptions only from approved data. Live text \"Private or 2-8 travelers\" is superseded."
       },
-      "flags": []
+      "flags": [],
+      "booking_type": "scheduled_departure",
+      "booking_types": [
+        "scheduled_departure",
+        "private_tour"
+      ],
+      "shared_max_group": 18,
+      "group_rule": "long_6_18"
     },
     {
       "code": "TSRA",
@@ -526,13 +604,13 @@
       "url": "/tours/treasures-of-silk-road-afghanistan/",
       "page_type": "tour",
       "departures_mode": "primarily_private",
-      "shared_min_group": 3,
+      "shared_min_group": 6,
       "private_available": true,
       "private_pricing": "quoted_separately",
       "price": {
         "reference_amount": 2450,
         "currency": "USD",
-        "basis": "per_person_from",
+        "basis": "private_reference",
         "price_status": "reference_from_production",
         "production_display_2026_10_10": "From $2,450",
         "main_8f73e1f_display": "From $2,450",
@@ -550,11 +628,19 @@
         "guidance_only": true
       },
       "capacity_reference": {
-        "max_capacity": null,
+        "max_capacity": 18,
         "live_group_text": "Private or 2-8 travelers",
-        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+        "note": "Rule (spec 10 Oct 2026): minimum 6 / normal maximum 18 for scheduled group tours of 5+ days; per-departure exceptions only from approved data. Live text \"Private or 2-8 travelers\" is superseded."
       },
-      "flags": []
+      "flags": [
+        "Private Tour: production \"from\" price kept as reference without a \"shared departures\" claim; the group size it assumes is not stated — James to confirm the basis."
+      ],
+      "booking_type": "private_tour",
+      "booking_types": [
+        "private_tour"
+      ],
+      "shared_max_group": 18,
+      "group_rule": "long_6_18"
     },
     {
       "code": "TGHT",
@@ -568,13 +654,13 @@
       "url": "/tours/timurid-grandeur-herat-tour/",
       "page_type": "tour",
       "departures_mode": "primarily_private",
-      "shared_min_group": 3,
+      "shared_min_group": 6,
       "private_available": true,
       "private_pricing": "quoted_separately",
       "price": {
         "reference_amount": 1850,
         "currency": "USD",
-        "basis": "per_person_from",
+        "basis": "private_reference",
         "price_status": "reference_from_production",
         "production_display_2026_10_10": "From $1,850",
         "main_8f73e1f_display": "From $1,850",
@@ -592,11 +678,19 @@
         "guidance_only": true
       },
       "capacity_reference": {
-        "max_capacity": null,
+        "max_capacity": 18,
         "live_group_text": "Private or 2-8 travelers",
-        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+        "note": "Rule (spec 10 Oct 2026): minimum 6 / normal maximum 18 for scheduled group tours of 5+ days; per-departure exceptions only from approved data. Live text \"Private or 2-8 travelers\" is superseded."
       },
-      "flags": []
+      "flags": [
+        "Private Tour: production \"from\" price kept as reference without a \"shared departures\" claim; the group size it assumes is not stated — James to confirm the basis."
+      ],
+      "booking_type": "private_tour",
+      "booking_types": [
+        "private_tour"
+      ],
+      "shared_max_group": 18,
+      "group_rule": "long_6_18"
     },
     {
       "code": "CTME",
@@ -632,7 +726,11 @@
         ],
         "guidance_only": true
       },
-      "flags": []
+      "flags": [],
+      "booking_type": "custom_journey",
+      "booking_types": [
+        "custom_journey"
+      ]
     },
     {
       "code": "NOSHAQ",
@@ -671,7 +769,11 @@
       "flags": [
         "Production /tours/noshaq-expedition-support/ shows From $2,000 and 21 days; main's destination page is quotation-only. Not displayed until James decides."
       ],
-      "activity_note": "Specialist technical/mountaineering support — distinct from sightseeing tours."
+      "activity_note": "Specialist technical/mountaineering support — distinct from sightseeing tours.",
+      "booking_type": "specialist_service",
+      "booking_types": [
+        "specialist_service"
+      ]
     },
     {
       "code": "PHOT",
@@ -710,6 +812,10 @@
       "flags": [
         "Production /tours/photography-tour/ shows From $2,850 and 12 days; main's destination page is quotation-only. Not displayed until James decides.",
         "Live page itinerary repeats Days 3–5 as Days 10–12; main replaces the page with the specialist page (no day-by-day itinerary)."
+      ],
+      "booking_type": "specialist_service",
+      "booking_types": [
+        "specialist_service"
       ]
     },
     {
@@ -748,6 +854,10 @@
       },
       "flags": [
         "Production /tours/scientific-expeditions/ shows From $4,500 and 14 days; main's destination page is quotation-only. Not displayed until James decides."
+      ],
+      "booking_type": "specialist_service",
+      "booking_types": [
+        "specialist_service"
       ]
     },
     {
@@ -785,7 +895,11 @@
         "guidance_only": true
       },
       "flags": [],
-      "activity_note": "Specialist ski/snow logistics — distinct from the published Bamyan Skiing Tour."
+      "activity_note": "Specialist ski/snow logistics — distinct from the published Bamyan Skiing Tour.",
+      "booking_type": "specialist_service",
+      "booking_types": [
+        "specialist_service"
+      ]
     },
     {
       "code": "BIZZ",
@@ -821,7 +935,11 @@
         ],
         "guidance_only": true
       },
-      "flags": []
+      "flags": [],
+      "booking_type": "specialist_service",
+      "booking_types": [
+        "specialist_service"
+      ]
     },
     {
       "code": "MEDIA",
@@ -857,7 +975,11 @@
         ],
         "guidance_only": true
       },
-      "flags": []
+      "flags": [],
+      "booking_type": "specialist_service",
+      "booking_types": [
+        "specialist_service"
+      ]
     },
     {
       "code": "VETS",
@@ -893,7 +1015,13 @@
         ],
         "guidance_only": true
       },
-      "flags": []
+      "flags": [
+        "Booking type set to \"Custom Journey\" (return journeys are planned around each traveler) — owner to confirm vs \"Specialist Service\"."
+      ],
+      "booking_type": "custom_journey",
+      "booking_types": [
+        "custom_journey"
+      ]
     },
     {
       "code": "TTWC",
@@ -907,7 +1035,9 @@
       "departures_mode": "none",
       "flags": [
         "Intentionally inactive (no page, no departures). Do not reactivate without James."
-      ]
+      ],
+      "booking_type": null,
+      "booking_types": []
     },
     {
       "code": "TGHT-EXT",
@@ -921,7 +1051,15 @@
       "departures_mode": "none",
       "flags": [
         "Intentionally inactive (no page, no departures). Do not reactivate without James."
-      ]
+      ],
+      "booking_type": null,
+      "booking_types": []
     }
-  ]
+  ],
+  "booking_types": {
+    "scheduled_departure": "Scheduled Departure",
+    "private_tour": "Private Tour",
+    "custom_journey": "Custom Journey",
+    "specialist_service": "Specialist Service"
+  }
 }

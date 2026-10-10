@@ -11,8 +11,8 @@
       "end_date": "2026-08-12",
       "duration_days": 7,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "completed",
@@ -35,7 +35,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-KBLS-20260813",
@@ -45,8 +46,8 @@
       "end_date": "2026-08-18",
       "duration_days": 6,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "completed",
@@ -69,7 +70,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-SUMC-20260820",
@@ -79,8 +81,8 @@
       "end_date": "2026-08-28",
       "duration_days": 8,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "completed",
@@ -104,7 +106,8 @@
         "note": "MISMATCH: 2026-08-20–2026-08-28 is 9 days inclusive but the tour is 8 days (expected end 2026-08-27). Not changed — flagged for James."
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20260820",
@@ -114,7 +117,7 @@
       "end_date": "2026-08-22",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -138,7 +141,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-TSRA-20260907",
@@ -148,8 +152,8 @@
       "end_date": "2026-09-16",
       "duration_days": 10,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "completed",
@@ -172,7 +176,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-CAD-20260912",
@@ -182,8 +187,8 @@
       "end_date": "2026-09-19",
       "duration_days": 7,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "completed",
@@ -207,7 +212,8 @@
         "note": "MISMATCH: 2026-09-12–2026-09-19 is 8 days inclusive but the tour is 7 days (expected end 2026-09-18). Not changed — flagged for James."
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-ADTF-20260921",
@@ -217,8 +223,8 @@
       "end_date": "2026-09-29",
       "duration_days": 9,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "completed",
@@ -241,7 +247,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-PVEH-20260928",
@@ -251,7 +258,7 @@
       "end_date": "2026-10-01",
       "duration_days": 4,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -275,7 +282,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-KBLS-20261005",
@@ -285,8 +293,8 @@
       "end_date": "2026-10-10",
       "duration_days": 6,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "closed",
@@ -309,7 +317,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-ADTF-20261012",
@@ -319,8 +328,8 @@
       "end_date": "2026-10-20",
       "duration_days": 9,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "scheduled",
@@ -343,7 +352,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-KTDE-20261026",
@@ -353,8 +363,8 @@
       "end_date": "2026-10-31",
       "duration_days": 6,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "scheduled",
@@ -377,7 +387,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20261106",
@@ -387,7 +398,7 @@
       "end_date": "2026-11-08",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -411,7 +422,8 @@
         "ok": true
       },
       "arrival_option": "fri-sun",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-ADTF-20261107",
@@ -421,8 +433,8 @@
       "end_date": "2026-11-15",
       "duration_days": 9,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -445,7 +457,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-KBLS-20261114",
@@ -455,8 +468,8 @@
       "end_date": "2026-11-19",
       "duration_days": 6,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -479,7 +492,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-KTDE-20261121",
@@ -489,8 +503,8 @@
       "end_date": "2026-11-26",
       "duration_days": 6,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -513,7 +527,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20261121",
@@ -523,7 +538,7 @@
       "end_date": "2026-11-23",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -547,7 +562,8 @@
         "ok": true
       },
       "arrival_option": "sat-mon",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-WKND-20261204",
@@ -557,7 +573,7 @@
       "end_date": "2026-12-06",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -581,7 +597,8 @@
         "ok": true
       },
       "arrival_option": "fri-sun",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-WNTC-20261205",
@@ -591,8 +608,8 @@
       "end_date": "2026-12-17",
       "duration_days": 12,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "scheduled",
@@ -616,7 +633,8 @@
         "note": "MISMATCH: 2026-12-05–2026-12-17 is 13 days inclusive but the tour is 12 days (expected end 2026-12-16). Not changed — flagged for James."
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-BUZE-20261219",
@@ -626,8 +644,8 @@
       "end_date": "2026-12-28",
       "duration_days": 10,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -650,7 +668,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20261219",
@@ -660,7 +679,7 @@
       "end_date": "2026-12-21",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -684,7 +703,8 @@
         "ok": true
       },
       "arrival_option": "sat-mon",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-WKND-20270101",
@@ -694,7 +714,7 @@
       "end_date": "2027-01-03",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -718,7 +738,8 @@
         "ok": true
       },
       "arrival_option": "fri-sun",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-WNTC-20270109",
@@ -728,8 +749,8 @@
       "end_date": "2027-01-20",
       "duration_days": 12,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -752,7 +773,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-BSKI-20270116",
@@ -762,8 +784,8 @@
       "end_date": "2027-01-20",
       "duration_days": 5,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -786,7 +808,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20270116",
@@ -796,7 +819,7 @@
       "end_date": "2027-01-18",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -820,7 +843,8 @@
         "ok": true
       },
       "arrival_option": "sat-mon",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-WKND-20270205",
@@ -830,7 +854,7 @@
       "end_date": "2027-02-07",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -854,7 +878,8 @@
         "ok": true
       },
       "arrival_option": "fri-sun",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-BSKI-20270209",
@@ -864,8 +889,8 @@
       "end_date": "2027-02-13",
       "duration_days": 5,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "scheduled",
@@ -890,7 +915,8 @@
       "arrival_option": null,
       "advisories": [
         "ADV-RAMADAN-2027"
-      ]
+      ],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WNTC-20270216",
@@ -900,8 +926,8 @@
       "end_date": "2027-02-27",
       "duration_days": 12,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "scheduled",
@@ -926,7 +952,8 @@
       "arrival_option": null,
       "advisories": [
         "ADV-RAMADAN-2027"
-      ]
+      ],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20270220",
@@ -936,7 +963,7 @@
       "end_date": "2027-02-22",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -962,7 +989,8 @@
       "arrival_option": "sat-mon",
       "advisories": [
         "ADV-RAMADAN-2027"
-      ]
+      ],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-BUZE-20270223",
@@ -972,8 +1000,8 @@
       "end_date": "2027-03-04",
       "duration_days": 10,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "scheduled",
@@ -998,7 +1026,8 @@
       "arrival_option": null,
       "advisories": [
         "ADV-RAMADAN-2027"
-      ]
+      ],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-BSKI-20270227",
@@ -1008,8 +1037,8 @@
       "end_date": "2027-03-03",
       "duration_days": 5,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -1034,7 +1063,8 @@
       "arrival_option": null,
       "advisories": [
         "ADV-RAMADAN-2027"
-      ]
+      ],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20270305",
@@ -1044,7 +1074,7 @@
       "end_date": "2027-03-07",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -1070,7 +1100,8 @@
       "arrival_option": "fri-sun",
       "advisories": [
         "ADV-RAMADAN-2027"
-      ]
+      ],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-WKND-20270306",
@@ -1080,7 +1111,7 @@
       "end_date": "2027-03-08",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -1106,7 +1137,8 @@
       "arrival_option": "sat-mon",
       "advisories": [
         "ADV-RAMADAN-2027"
-      ]
+      ],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-BUZE-20270313",
@@ -1116,8 +1148,8 @@
       "end_date": "2027-03-22",
       "duration_days": 10,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -1140,7 +1172,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-ADTS-20270320",
@@ -1150,8 +1183,8 @@
       "end_date": "2027-03-28",
       "duration_days": 9,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -1174,7 +1207,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20270320",
@@ -1184,7 +1218,7 @@
       "end_date": "2027-03-22",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -1208,7 +1242,8 @@
         "ok": true
       },
       "arrival_option": "sat-mon",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-KTDE-20270327",
@@ -1218,8 +1253,8 @@
       "end_date": "2027-04-01",
       "duration_days": 6,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -1242,7 +1277,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20270402",
@@ -1252,7 +1288,7 @@
       "end_date": "2027-04-04",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -1276,7 +1312,8 @@
         "ok": true
       },
       "arrival_option": "fri-sun",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-KBLS-20270410",
@@ -1286,8 +1323,8 @@
       "end_date": "2027-04-15",
       "duration_days": 6,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -1310,7 +1347,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20270417",
@@ -1320,7 +1358,7 @@
       "end_date": "2027-04-19",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -1344,7 +1382,8 @@
         "ok": true
       },
       "arrival_option": "sat-mon",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-ADTS-20270420",
@@ -1354,8 +1393,8 @@
       "end_date": "2027-04-28",
       "duration_days": 9,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "scheduled",
@@ -1378,7 +1417,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-ADTS-20270501",
@@ -1388,8 +1428,8 @@
       "end_date": "2027-05-09",
       "duration_days": 9,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -1412,7 +1452,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20270507",
@@ -1422,7 +1463,7 @@
       "end_date": "2027-05-09",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -1446,7 +1487,8 @@
         "ok": true
       },
       "arrival_option": "fri-sun",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-CAD-20270522",
@@ -1456,8 +1498,8 @@
       "end_date": "2027-05-28",
       "duration_days": 7,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -1480,7 +1522,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-PVEH-20270529",
@@ -1490,7 +1533,7 @@
       "end_date": "2027-06-01",
       "duration_days": 4,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -1514,7 +1557,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-WKND-20270604",
@@ -1524,7 +1568,7 @@
       "end_date": "2027-06-06",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -1548,7 +1592,8 @@
         "ok": true
       },
       "arrival_option": "fri-sun",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-KBLS-20270612",
@@ -1558,8 +1603,8 @@
       "end_date": "2027-06-17",
       "duration_days": 6,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -1582,7 +1627,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-SUMC-20270612",
@@ -1592,8 +1638,8 @@
       "end_date": "2027-06-19",
       "duration_days": 8,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -1616,7 +1662,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20270619",
@@ -1626,7 +1673,7 @@
       "end_date": "2027-06-21",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -1650,7 +1697,8 @@
         "ok": true
       },
       "arrival_option": "sat-mon",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-WKND-20270702",
@@ -1660,7 +1708,7 @@
       "end_date": "2027-07-04",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -1684,7 +1732,8 @@
         "ok": true
       },
       "arrival_option": "fri-sun",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-SUMC-20270710",
@@ -1694,8 +1743,8 @@
       "end_date": "2027-07-17",
       "duration_days": 8,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -1718,7 +1767,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20270717",
@@ -1728,7 +1778,7 @@
       "end_date": "2027-07-19",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -1752,7 +1802,8 @@
         "ok": true
       },
       "arrival_option": "sat-mon",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-WKND-20270806",
@@ -1762,7 +1813,7 @@
       "end_date": "2027-08-08",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -1786,7 +1837,8 @@
         "ok": true
       },
       "arrival_option": "fri-sun",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-SUMC-20270807",
@@ -1796,8 +1848,8 @@
       "end_date": "2027-08-14",
       "duration_days": 8,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -1820,7 +1872,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20270821",
@@ -1830,7 +1883,7 @@
       "end_date": "2027-08-23",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -1854,7 +1907,8 @@
         "ok": true
       },
       "arrival_option": "sat-mon",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-PVEH-20270828",
@@ -1864,7 +1918,7 @@
       "end_date": "2027-08-31",
       "duration_days": 4,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -1888,7 +1942,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-WKND-20270903",
@@ -1898,7 +1953,7 @@
       "end_date": "2027-09-05",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -1922,7 +1977,8 @@
         "ok": true
       },
       "arrival_option": "fri-sun",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-CAD-20270904",
@@ -1932,8 +1988,8 @@
       "end_date": "2027-09-10",
       "duration_days": 7,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -1956,7 +2012,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-KBLS-20270911",
@@ -1966,8 +2023,8 @@
       "end_date": "2027-09-16",
       "duration_days": 6,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -1990,7 +2047,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-ADTF-20270918",
@@ -2000,8 +2058,8 @@
       "end_date": "2027-09-26",
       "duration_days": 9,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -2024,7 +2082,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20270918",
@@ -2034,7 +2093,7 @@
       "end_date": "2027-09-20",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -2058,7 +2117,8 @@
         "ok": true
       },
       "arrival_option": "sat-mon",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-WKND-20271001",
@@ -2068,7 +2128,7 @@
       "end_date": "2027-10-03",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -2092,7 +2152,8 @@
         "ok": true
       },
       "arrival_option": "fri-sun",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-ADTF-20271016",
@@ -2102,8 +2163,8 @@
       "end_date": "2027-10-24",
       "duration_days": 9,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -2126,7 +2187,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20271016",
@@ -2136,7 +2198,7 @@
       "end_date": "2027-10-18",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -2160,7 +2222,8 @@
         "ok": true
       },
       "arrival_option": "sat-mon",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-KTDE-20271023",
@@ -2170,8 +2233,8 @@
       "end_date": "2027-10-28",
       "duration_days": 6,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -2194,7 +2257,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20271105",
@@ -2204,7 +2268,7 @@
       "end_date": "2027-11-07",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -2228,7 +2292,8 @@
         "ok": true
       },
       "arrival_option": "fri-sun",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-ADTF-20271106",
@@ -2238,8 +2303,8 @@
       "end_date": "2027-11-14",
       "duration_days": 9,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -2262,7 +2327,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-KBLS-20271113",
@@ -2272,8 +2338,8 @@
       "end_date": "2027-11-18",
       "duration_days": 6,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -2296,7 +2362,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20271120",
@@ -2306,7 +2373,7 @@
       "end_date": "2027-11-22",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -2330,7 +2397,8 @@
         "ok": true
       },
       "arrival_option": "sat-mon",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-WKND-20271203",
@@ -2340,7 +2408,7 @@
       "end_date": "2027-12-05",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -2364,7 +2432,8 @@
         "ok": true
       },
       "arrival_option": "fri-sun",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     },
     {
       "id": "DEP-WNTC-20271204",
@@ -2374,8 +2443,8 @@
       "end_date": "2027-12-15",
       "duration_days": 12,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -2398,7 +2467,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-BUZE-20271218",
@@ -2408,8 +2478,8 @@
       "end_date": "2027-12-27",
       "duration_days": 10,
       "departure_type": "shared",
-      "min_group_size": 3,
-      "max_capacity": null,
+      "min_group_size": 6,
+      "max_capacity": 18,
       "confirmed_count": 0,
       "pending_count": 0,
       "status": "proposed",
@@ -2432,7 +2502,8 @@
         "ok": true
       },
       "arrival_option": null,
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_5plus_days_6_18"
     },
     {
       "id": "DEP-WKND-20271218",
@@ -2442,7 +2513,7 @@
       "end_date": "2027-12-20",
       "duration_days": 3,
       "departure_type": "shared",
-      "min_group_size": 3,
+      "min_group_size": 2,
       "max_capacity": null,
       "confirmed_count": 0,
       "pending_count": 0,
@@ -2466,7 +2537,8 @@
         "ok": true
       },
       "arrival_option": "sat-mon",
-      "advisories": []
+      "advisories": [],
+      "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max"
     }
   ]
 }

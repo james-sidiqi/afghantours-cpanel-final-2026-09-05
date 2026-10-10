@@ -10,19 +10,21 @@ foreach ($fx['cases'] as $c) {
     $ok($st['key'] === $c['expect'], "status {$c['name']} → {$st['key']} (want {$c['expect']})");
     if (array_key_exists('expect_public', $c)) $ok(atb_is_public($c['dep'], $c['today']) === $c['expect_public'], "public {$c['name']}");
 }
-foreach ($fx['group_minimum'] as $g) $ok(atb_group_minimum_note($g['travelers'], $g['type'], 3) === $g['expect'], "group {$g['travelers']} {$g['type']}");
+foreach ($fx['group_minimum'] as $g) $ok(atb_group_minimum_note($g['travelers'], $g['type'], $g['min']) === $g['expect'], "group ({$g['label']}) {$g['travelers']} {$g['type']}");
+foreach ($fx['group_rule'] as $r) $ok(atb_group_rule($r['days'], $fx['settings']) === ['applies' => $r['applies'], 'min' => $r['min'], 'max' => $r['max']], "group rule {$r['days']} days");
+foreach ($fx['status_text'] as $t) $ok(atb_status_text('open', ['min_group_size' => $t['min']]) === $t['expect'], "status wording min {$t['min']}");
 foreach ($fx['dates'] as $d) {
     $ok(atb_expected_end($d['start'], $d['days']) === $d['end'], "end {$d['start']}+{$d['days']}");
     $ok(atb_inclusive_days($d['start'], $d['end']) === $d['days'], "days {$d['start']}");
 }
 foreach ($fx['prices'] as $p) $ok(atb_price_label($p['price'], ['usd_confirmed' => $p['usd_confirmed']]) === $p['expect'], "price {$p['expect']}");
 $ok(atb_format_range('2026-12-05', '2026-12-16') === 'Sat 5 Dec – Wed 16 Dec 2026', 'format range');
-$pub = atb_public_departure(['id' => 'X', 'tour_slug' => 's', 'status' => 'scheduled', 'published' => true, 'start_date' => '2026-12-05', 'end_date' => '2026-12-16', 'duration_days' => 12, 'min_group_size' => 3, 'max_capacity' => 8, 'confirmed_count' => 2, 'internal_notes' => 'secret', 'operational_approval' => 'approved', 'price' => ['amount' => 2100, 'price_status' => 'reference_from_production']], null, [], '2026-10-10');
+$pub = atb_public_departure(['id' => 'X', 'tour_slug' => 's', 'status' => 'scheduled', 'departure_type' => 'shared', 'published' => true, 'start_date' => '2026-12-05', 'end_date' => '2026-12-16', 'duration_days' => 12, 'min_group_size' => 6, 'max_capacity' => 18, 'confirmed_count' => 2, 'internal_notes' => 'secret', 'operational_approval' => 'approved', 'price' => ['amount' => 2100, 'price_status' => 'reference_from_production']], null, [], '2026-10-10');
 foreach (['internal_notes', 'operational_approval', 'confirmed_count', 'pending_count', 'max_capacity', 'travelers'] as $k) $ok(!array_key_exists($k, $pub), "no $k in public");
 $ok(!str_contains(json_encode($pub), 'secret'), 'no secret');
-$ok($pub['status_text'] === 'Awaiting group confirmation — minimum 3 travelers.', 'awaiting wording');
+$ok($pub['status_text'] === 'Open — awaiting minimum 6 travelers', 'open wording');
 $ok($pub['cta'] === 'Request a Place', 'cta');
-$ok($pub['price_label'] === 'From $2,100 per person', 'price label');
+$ok($pub['price_label'] === 'From $2,100 per person on shared departures', 'price label');
 
 // JS parity: the snapshot labels the build produced must equal PHP output for the seed.
 $seed = json_decode((string)file_get_contents(__DIR__ . '/../../data/booking/departures.json'), true)['departures'];

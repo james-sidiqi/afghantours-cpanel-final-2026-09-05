@@ -314,6 +314,7 @@ Please provide either an email address or WhatsApp number so our Kabul team can 
     const groupHint = form.querySelector('[data-inquiry-group-hint]');
     const CONFIRMATION = 'Your request has been received. Our team will confirm availability, arrangements, and next steps.';
     let isWeekend = false;
+    let groupMin = null;
 
     const updateHint = () => {
       if (!groupHint) return;
@@ -324,10 +325,12 @@ Please provide either an email address or WhatsApp number so our Kabul team can 
         text = isWeekend
           ? 'Private Weekend in Kabul works for 1 or 2 travelers too — no group minimum. Private pricing is quoted separately from the shared rate.'
           : 'Private tours are quoted separately; the shared per-person rate does not apply.';
-      } else if (type === 'shared' && n > 0 && n < 3) {
-        text = `Shared departures go ahead once at least 3 travelers are confirmed. You can still request a place for ${n === 1 ? '1 traveler' : '2 travelers'} — we will keep you updated${isWeekend ? ', or arrange a private weekend for you' : ''}.`;
-      } else if (type === 'shared' && n >= 3) {
-        text = 'Thank you — we will confirm availability and whether the departure has operational approval before anything is confirmed.';
+      } else if (type === 'shared' && n > 0 && groupMin && n < groupMin) {
+        text = `This departure operates once ${groupMin} travelers are confirmed. You can still request ${n === 1 ? 'a place for 1 traveler' : `places for ${n} travelers`} — your booking can be confirmed while the departure is open, and we will tell you when the departure itself is confirmed.`;
+      } else if (type === 'shared' && n > 0 && !groupMin) {
+        text = `We will confirm availability for ${n === 1 ? '1 traveler' : `${n} travelers`} and how this shared departure is operating${isWeekend ? ' — or arrange a private weekend for you' : ''}.`;
+      } else if (type === 'shared' && n > 0) {
+        text = 'Thank you — we will confirm availability and arrangements with you before anything is confirmed.';
       }
       groupHint.textContent = text;
       groupHint.hidden = !text;
@@ -367,8 +370,10 @@ Please provide either an email address or WhatsApp number so our Kabul team can 
       return el?.getAttribute('data-tour-code') || '';
     };
 
-    const openModal = ({ tour, slug, date, travelers, flow, entityType, entityCode, productClass, departureId, departureStart, departureEnd, type, arrivalOption, weekend } = {}) => {
+    const openModal = ({ tour, slug, date, travelers, flow, entityType, entityCode, productClass, departureId, departureStart, departureEnd, type, arrivalOption, weekend, days } = {}) => {
       form.reset();
+      // Owner decision 10 Oct 2026: 5+ day scheduled group tours need 6 to operate; shared departures of 4 days or less need 2.
+      groupMin = Number(days) >= 5 ? 6 : Number(days) > 0 ? 2 : null;
       isWeekend = Boolean(weekend) || pageTourSlug() === 'weekend-in-kabul';
       if (depId) depId.value = departureId || '';
       if (depStart) depStart.value = departureStart || '';
@@ -449,6 +454,7 @@ Please provide either an email address or WhatsApp number so our Kabul team can 
       const type = trigger.getAttribute('data-booking-type') || '';
       const arrivalOption = trigger.getAttribute('data-arrival-option') || '';
       const weekend = trigger.getAttribute('data-weekend') === '1';
+      const days = Number(trigger.getAttribute('data-tour-days') || 0);
 
       if (rawHref) {
         try {
@@ -466,7 +472,7 @@ Please provide either an email address or WhatsApp number so our Kabul team can 
       }
 
       event.preventDefault();
-      openModal({ tour, slug, date, travelers, flow, productClass, entityCode, departureId, departureStart, departureEnd, type, arrivalOption, weekend });
+      openModal({ tour, slug, date, travelers, flow, productClass, entityCode, departureId, departureStart, departureEnd, type, arrivalOption, weekend, days });
     });
 
     document.addEventListener('submit', (event) => {

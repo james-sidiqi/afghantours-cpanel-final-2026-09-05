@@ -7,7 +7,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { parse } from 'csv-parse/sync';
 import {
-  STORED_STATUSES, isIsoDate, inclusiveDays, expectedEnd, weekday, computeStatus, isPublic, todayIn,
+  STORED_STATUSES, groupRuleFor, isIsoDate, inclusiveDays, expectedEnd, weekday, computeStatus, isPublic, todayIn,
 } from '../src/lib/booking/core.mjs';
 
 const ROOT = process.cwd();
@@ -58,7 +58,14 @@ for (const t of tours.filter((x) => ['A', 'B', 'C'].includes(x.category))) {
   if (String(row.is_active) !== '1') err(`${t.slug}: catalog active but tours.csv inactive`);
   if (Number(row.duration_days) !== t.duration_days) err(`${t.slug}: duration ${t.duration_days} ≠ tours.csv ${row.duration_days}`);
   if (t.nights !== t.duration_days - 1) err(`${t.slug}: nights must be duration − 1`);
-  if (t.shared_min_group !== 3) err(`${t.slug}: shared minimum must be 3 (spec Part 3)`);
+  const rule = groupRuleFor(t.duration_days, settings);
+  if (rule.applies) {
+    if (t.shared_min_group !== rule.min || t.shared_max_group !== rule.max) err(`${t.slug}: ${t.duration_days}-day scheduled tour must be ${rule.min}–${rule.max} (spec 10 Oct Part 1 §2)`);
+  } else if (t.shared_min_group !== rule.min || (t.shared_max_group ?? null) !== null) {
+    err(`${t.slug}: ≤4-day shared departures need minimum ${rule.min} and no standard maximum (owner decision 10 Oct 2026)`);
+  }
+  const labels = catalog.booking_types || {};
+  if (!t.booking_type || !labels[t.booking_type]) err(`${t.slug}: missing booking_type`);
   const p = t.price || {};
   if (p.reference_amount != null && !(Number(p.reference_amount) > 0)) err(`${t.slug}: bad reference price`);
   if (p.currency && p.currency !== 'USD') err(`${t.slug}: currency must be USD (stored)`);
@@ -118,8 +125,13 @@ for (const d of departures) {
   if (d.date_check && d.date_check.ok !== (days === t.duration_days)) err(`${where}: date_check.ok is wrong`);
   if (!STORED_STATUSES.includes(d.status)) err(`${where}: stored status ${d.status} not allowed (Confirmed/Sold Out/Limited are computed, never stored)`);
   if (!['shared', 'private'].includes(d.departure_type)) err(`${where}: bad departure_type`);
-  if (d.min_group_size !== 3 && d.departure_type === 'shared') err(`${where}: shared minimum must be 3`);
-  if (d.max_capacity !== null && !(Number.isInteger(d.max_capacity) && d.max_capacity >= d.min_group_size)) err(`${where}: max_capacity must be null or an integer ≥ minimum`);
+  if (d.departure_type === 'shared') {
+    const r = groupRuleFor(t.duration_days, settings);
+    const exception = typeof d.group_exception_note === 'string' && d.group_exception_note.trim() !== '';
+    if (r.applies && !exception && (d.min_group_size !== r.min || d.max_capacity !== r.max)) err(`${where}: shared ${t.duration_days}-day departure must be ${r.min}–${r.max} unless an approved exception is recorded`);
+    if (!r.applies && !exception && (d.min_group_size !== r.min || d.max_capacity !== null)) err(`${where}: ≤4-day shared departure must have minimum ${r.min} and no standard maximum (unless an approved exception is recorded)`);
+  }
+  if (d.max_capacity !== null && !(Number.isInteger(d.max_capacity) && (d.min_group_size === null || d.max_capacity >= d.min_group_size))) err(`${where}: max_capacity must be null or an integer ≥ minimum`);
   if (d.confirmed_count !== 0 || d.pending_count !== 0) err(`${where}: seed counts must be 0 — no invented bookings`);
   if (d.operational_approval === 'approved') err(`${where}: seed must not pre-approve departures`);
   if (d.public_counts_approved) err(`${where}: seed must not pre-approve public counts`);

@@ -67,10 +67,15 @@ try:
     check('DEP-KBLS-20261005' not in ids, 'departure ending today (in progress) not public')
     forbidden = ['internal_notes', 'operational_approval', 'confirmed_count', 'pending_count', 'travelers', 'email', 'whatsapp', 'source', 'date_check', 'max_capacity']
     check(all(k not in d for d in data['departures'] for k in forbidden), 'public payload has no internal/PII fields')
-    check(all(d['status'] == 'available_awaiting_minimum' and d['status_text'] == 'Awaiting group confirmation — minimum 3 travelers.' for d in data['departures']), 'all seed departures: Awaiting group confirmation — minimum 3 travelers.')
+    longs = [d for d in data['departures'] if d['duration_days'] >= 5]
+    shorts = [d for d in data['departures'] if d['duration_days'] <= 4]
+    check(len(longs) == 7 and all(d['status'] == 'open' and d['status_label'] == 'Open' and d['status_text'] == 'Open — awaiting minimum 6 travelers' and d['min_group_size'] == 6 for d in longs), '5+ day seed departures: "Open — awaiting minimum 6 travelers"')
+    check(len(shorts) == 1 and shorts[0]['status_text'] == 'Open — awaiting minimum 2 travelers' and shorts[0]['min_group_size'] == 2, 'short (≤4-day) seed departure: "Open — awaiting minimum 2 travelers"')
+    check(all(d['status'] in ('open', 'confirmed', 'limited', 'sold_out', 'closed') for d in data['departures']), 'public feed uses only the 5-status vocabulary')
+    check('Available' not in body, 'no generic "Available" in public feed')
     code, body, _ = req(pub, '/booking/departures.php?tour=weekend-in-kabul')
     wk = json.loads(body)['departures']
-    check(len(wk) == 1 and wk[0]['arrival_option'] == 'sat-mon' and wk[0]['price_label'] == 'From $450 per person', 'Weekend in Kabul feed: Sat–Mon arrival, From $450 per person')
+    check(len(wk) == 1 and wk[0]['arrival_option'] == 'sat-mon' and wk[0]['price_label'] == 'From $450 per person on shared departures', 'Weekend in Kabul feed: Sat–Mon arrival, From $450 per person on shared departures')
     code, _, _ = req(pub, '/booking/departures.php?tour=../../etc')
     check(code == 400, 'endpoint rejects bad tour param')
 
@@ -80,11 +85,25 @@ try:
     f = dict(base_form, entity_name='Winter Circuit', entity_slug='winter-circuit', entity_code='WNTC', departure_id='DEP-WNTC-20261205', travelers='1', booking_type='shared', dry_run='1')
     code, body, _ = req(pub, '/tour-inquiry.php', f, J)
     d = json.loads(body)
-    check(code == 200 and d['departure_check'] == 'verified:available_awaiting_minimum' and 'below the 3-traveler minimum' in d['body'], '1 traveler shared request accepted, flagged below minimum')
-    f.update(travelers='2'); d = json.loads(req(pub, '/tour-inquiry.php', f, J)[1])
-    check('Shared request for 2 traveler(s): below the 3-traveler minimum' in d['body'], '2 travelers → below minimum note')
-    f.update(travelers='3'); d = json.loads(req(pub, '/tour-inquiry.php', f, J)[1])
-    check('meets the 3-traveler minimum once they are confirmed (still needs operational approval)' in d['body'], '3 travelers → meets minimum, still needs approval')
+    check(code == 200 and d['departure_check'] == 'verified:open' and 'below the 6-traveler minimum to operate' in d['body'], 'long tour: 1 traveler shared request accepted, flagged below 6')
+    for n in ('2', '3'):
+        f.update(travelers=n); d = json.loads(req(pub, '/tour-inquiry.php', f, J)[1])
+        check(f'Shared request for {n} traveler(s), below the 6-traveler minimum' in d['body'], f'long tour: {n} travelers → below 6 note')
+    f.update(travelers='6'); d = json.loads(req(pub, '/tour-inquiry.php', f, J)[1])
+    check('meets the 6-traveler minimum once they are confirmed (still needs operational approval)' in d['body'], 'long tour: 6 travelers → meets minimum, still needs approval')
+    wkf = dict(base_form, entity_name='Weekend in Kabul', entity_slug='weekend-in-kabul', entity_code='WKND', departure_id='DEP-WKND-20270306', booking_type='shared', dry_run='1')
+    d = json.loads(req(pub, '/tour-inquiry.php', dict(wkf, travelers='1'), J)[1])
+    check('below the 2-traveler minimum' in d['body'], 'short tour: 1 traveler shared → below 2')
+    for n in ('2', '3', '6'):
+        d = json.loads(req(pub, '/tour-inquiry.php', dict(wkf, travelers=n), J)[1])
+        check('meets the 2-traveler minimum' in d['body'], f'short tour: {n} travelers shared → meets 2')
+    d = json.loads(req(pub, '/tour-inquiry.php', dict(wkf, departure_id='', travelers='1', booking_type='private'), J)[1])
+    check('no group minimum applies' in d['body'], 'short tour: 1 traveler private → no minimum')
+    d = json.loads(req(pub, '/tour-inquiry.php', dict(base_form, entity_name='Panjshir', entity_slug='panjshir-valley-emeralds-history', travelers='1', booking_type='private', dry_run='1'), J)[1])
+    check(d['ok'] and 'no group minimum applies' in d['body'], 'Panjshir: solo private request accepted')
+    d = json.loads(req(pub, '/tour-inquiry.php', dict(base_form, entity_name='Kandahar', entity_slug='kandahar-durrani-empire-tour', travelers='3', booking_type='shared', dry_run='1'), J)[1])
+    check('below the 6-traveler minimum' in d['body'], 'no departure chosen: tour rule (6) still applied for a 6-day tour')
+    f.update(travelers='3')
     check(d['message'] == 'Your request has been received. Our team will confirm availability, arrangements, and next steps.', 'exact spec confirmation message')
     code, body, _ = req(pub, '/tour-inquiry.php', dict(f, departure_id='DEP-ADTF-20260921'), J)
     check(code == 409, 'past departure cannot be requested (409)')
@@ -110,7 +129,7 @@ try:
     check(code == 200, 'shared departure request (real submit) ok')
     code, body, _ = req(pub, '/booking/departures.php?tour=winter-circuit')
     w = json.loads(body)['departures']
-    check(all(x['status'] == 'available_awaiting_minimum' for x in w), 'inquiries do not change public status (pending/unpaid never count)')
+    check(all(x['status'] == 'open' for x in w), 'inquiries do not change public status (pending/unpaid never count)')
     check('Test Traveler' not in body and 'traveler@example.com' not in body, 'no inquiry PII in public endpoint')
     # legacy fields still work without booking fields
     code, body, _ = req(pub, '/tour-inquiry.php', {'name': 'Legacy', 'email': 'l@example.com', 'tour': 'Kabul & Surroundings', 'tour_slug': 'kabul-surroundings', 'travelers': '2', 'message': 'hi', 'dry_run': '1'}, J)
@@ -131,23 +150,31 @@ try:
     code, body, _ = req(adm, '/manage/?view=proposed')
     check(body.count('DEP-') >= len(proposed), 'admin lists proposed departures')
     # create departure
-    code, body, _ = req(adm, '/manage/?a=create', {'csrf': csrf, 'tour_slug': 'kandahar-durrani-empire-tour', 'start_date': '2027-01-09', 'end_date': '', 'departure_type': 'shared', 'min_group_size': '3', 'max_capacity': '', 'status': 'draft', 'price_amount': '1250', 'price_status': 'reference_from_production'})
+    code, body, _ = req(adm, '/manage/?a=create', {'csrf': csrf, 'tour_slug': 'kandahar-durrani-empire-tour', 'start_date': '2027-01-09', 'end_date': '', 'departure_type': 'shared', 'min_group_size': '', 'max_capacity': '', 'status': 'draft', 'price_amount': '1250', 'price_status': 'reference_from_production'})
     check('Departure created (not public)' in body and '2027-01-14' in body, 'create departure; end auto = start + 6 − 1')
+    check('name="min_group_size" id="min_group_size" value="6"' in body and 'name="max_capacity" id="max_capacity" value="18"' in body, 'new 6-day shared departure defaults to 6–18')
     new_id = 'DEP-KTDE-20270109'
     code, body, _ = req(adm, '/booking/departures.php?tour=kandahar-durrani-empire-tour')
     check(new_id not in body, 'new draft not public')
-    code, body, _ = req(adm, '/manage/?a=op', {'csrf': csrf, 'id': new_id, 'op': 'publish'})
-    check('Set a maximum capacity before publishing' in body, 'publish blocked without max capacity')
-    code, body, _ = req(adm, '/manage/?a=update', {'csrf': csrf, 'id': new_id, 'tour_slug': 'kandahar-durrani-empire-tour', 'start_date': '2027-01-09', 'end_date': '2027-01-16', 'departure_type': 'shared', 'min_group_size': '3', 'max_capacity': '6', 'status': 'draft', 'price_amount': '1250', 'price_status': 'reference_from_production'})
+    base_upd = {'csrf': csrf, 'id': new_id, 'tour_slug': 'kandahar-durrani-empire-tour', 'start_date': '2027-01-09', 'end_date': '', 'departure_type': 'shared', 'status': 'draft', 'price_amount': '1250', 'price_status': 'reference_from_production'}
+    code, body, _ = req(adm, '/manage/?a=update', dict(base_upd, min_group_size='3', max_capacity='18'))
+    check('minimum of 6 and a normal maximum of 18' in body, 'long tour: minimum 3 rejected (must be 6)')
+    code, body, _ = req(adm, '/manage/?a=update', dict(base_upd, min_group_size='6', max_capacity='20'))
+    check('minimum of 6 and a normal maximum of 18' in body, 'long tour: capacity 20 rejected without approved exception')
+    code, body, _ = req(adm, '/manage/?a=update', dict(base_upd, min_group_size='6', max_capacity='20', group_exception_note='Trade partner group, approved by James 2026-10-10'))
+    check('Saved.' in body, 'long tour: capacity 20 accepted with recorded exception')
+    wk_new = req(adm, '/manage/?a=create', {'csrf': csrf, 'tour_slug': 'weekend-in-kabul', 'start_date': '2027-04-02', 'end_date': '', 'departure_type': 'shared', 'min_group_size': '3', 'max_capacity': '', 'status': 'draft', 'price_amount': '450', 'price_status': 'reference_from_production'})[1]
+    check('minimum of 2 confirmed travelers' in wk_new, 'short tour: shared minimum 3 rejected (must be 2)')
+    wk_new = req(adm, '/manage/?a=create', {'csrf': csrf, 'tour_slug': 'weekend-in-kabul', 'start_date': '2027-04-02', 'end_date': '', 'departure_type': 'shared', 'min_group_size': '', 'max_capacity': '', 'status': 'draft', 'price_amount': '450', 'price_status': 'reference_from_production'})[1]
+    check('Departure created' in wk_new and 'name="min_group_size" id="min_group_size" value="2"' in wk_new and 'name="max_capacity" id="max_capacity" value=""' in wk_new, 'short tour: defaults to minimum 2, no standard maximum')
+    code, body, _ = req(adm, '/manage/?a=update', dict(base_upd, end_date='2027-01-16', min_group_size='6', max_capacity='18'))
     check('is 8 days inclusive' in body, 'edit rejects end date that does not match duration')
-    code, body, _ = req(adm, '/manage/?a=update', {'csrf': csrf, 'id': new_id, 'tour_slug': 'kandahar-durrani-empire-tour', 'start_date': '2027-01-09', 'end_date': '', 'departure_type': 'shared', 'min_group_size': '2', 'max_capacity': '6', 'status': 'draft', 'price_amount': '1250', 'price_status': 'reference_from_production'})
-    check('minimum of 3 travelers' in body, 'shared minimum below 3 rejected')
-    code, body, _ = req(adm, '/manage/?a=update', {'csrf': csrf, 'id': new_id, 'tour_slug': 'kandahar-durrani-empire-tour', 'start_date': '2027-01-09', 'end_date': '', 'departure_type': 'shared', 'min_group_size': '3', 'max_capacity': '4', 'status': 'draft', 'price_amount': '1250', 'price_status': 'reference_from_production', 'internal_notes': 'INTERNAL-SECRET-NOTE'})
-    check('Saved.' in body, 'set capacity 4')
+    code, body, _ = req(adm, '/manage/?a=update', dict(base_upd, min_group_size='6', max_capacity='18', internal_notes='INTERNAL-SECRET-NOTE'))
+    check('Saved.' in body, 'back to standard 6–18')
     req(adm, '/manage/?a=op', {'csrf': csrf, 'id': new_id, 'op': 'publish'})
     code, body, _ = req(pub, '/booking/departures.php?tour=kandahar-durrani-empire-tour')
     nd = [x for x in json.loads(body)['departures'] if x['id'] == new_id]
-    check(nd and nd[0]['status'] == 'available_awaiting_minimum', 'published → public as Available — Awaiting Minimum')
+    check(nd and nd[0]['status'] == 'open' and nd[0]['status_text'] == 'Open — awaiting minimum 6 travelers', 'published → public as "Open — awaiting minimum 6 travelers"')
     check('INTERNAL-SECRET-NOTE' not in body, 'internal notes never public')
     def add_trav(name, status, size='1'):
         return req(adm, '/manage/?a=traveler', {'csrf': csrf, 'op': 'add', 'departure_id': new_id, 'name': name, 'party_size': size, 'email': name.lower() + '@example.com', 'status': status, 'payment_status': 'not_recorded'})
@@ -155,18 +182,33 @@ try:
         b = req(pub, '/booking/departures.php?tour=kandahar-durrani-empire-tour')[1]
         return [x for x in json.loads(b)['departures'] if x['id'] == new_id][0]['status'], b
     add_trav('Alice', 'confirmed'); add_trav('Bob', 'confirmed'); add_trav('Pending Pat', 'pending', '3')
-    s, b = pub_status(); check(s == 'available_awaiting_minimum', '2 confirmed + 3 pending → still awaiting minimum')
-    add_trav('Carol', 'confirmed'); s, b = pub_status()
-    check(s == 'available_awaiting_minimum', '3 confirmed but not approved → still awaiting (no auto-confirm)')
+    s, b = pub_status(); check(s == 'open', '2 confirmed + 3 pending → still open')
+    add_trav('Carol', 'confirmed', '3'); s, b = pub_status()
+    check(s == 'open', '5 confirmed → still open (minimum 6)')
+    # booking confirmation: booking confirmed while the departure is still open
+    eb = req(adm, f'/manage/?a=edit&id={new_id}')[1]
+    tid = re.search(r'a=confirmation&amp;traveler=(TRV-[0-9a-f]+)', eb).group(1)
+    cb = req(adm, f'/manage/?a=confirmation&traveler={tid}')[1]
+    check('Your booking is confirmed.' in cb and 'Departure status at time of booking: Open — awaiting minimum 6 travelers' in cb and 'Required minimum group size: 6 travelers' in cb and 'Amount paid:' in cb and 'Balance due date:' in cb, 'booking confirmation record has the spec fields')
+    check('unconfirmed' not in cb.lower(), 'accepted booking never called "unconfirmed"')
+    add_trav('Dave', 'confirmed'); s, b = pub_status()
+    check(s == 'open', '6 confirmed but not approved → still open (no auto-confirm)')
+    eb = req(adm, f'/manage/?a=edit&id={new_id}')[1]
+    check('Departure confirmed on: <strong>not yet' in eb, 'departure confirmed-on not set before approval')
     req(adm, '/manage/?a=op', {'csrf': csrf, 'id': new_id, 'op': 'approve'}); s, b = pub_status()
-    check(s == 'limited', '3 confirmed + approved, capacity 4 → Limited Places (1 left)')
-    add_trav('Dan', 'confirmed'); s, b = pub_status()
-    check(s == 'sold_out', 'capacity reached → Sold Out')
-    check(all(n not in b for n in ['Alice', 'Bob', 'Carol', 'Dan', 'alice@example.com']), 'traveler names/emails never in public endpoint')
+    check(s == 'confirmed', '6 confirmed + approved → Confirmed')
+    eb = req(adm, f'/manage/?a=edit&id={new_id}')[1]
+    check('Departure confirmed on: <strong>2026-10-10' in eb, 'date departure became confirmed recorded')
+    add_trav('Erin', 'confirmed', '10'); s, b = pub_status()
+    check(s == 'limited', '16 of 18 → Limited')
+    add_trav('Finn', 'confirmed', '2'); s, b = pub_status()
+    check(s == 'sold_out', '18 of 18 → Sold out')
+    check(all(n not in b for n in ['Alice', 'Bob', 'Carol', 'Dave', 'Erin', 'alice@example.com']), 'traveler names/emails never in public endpoint')
     code, body, _ = req(pub, '/tour-inquiry.php', dict(f, departure_id=new_id, entity_slug='kandahar-durrani-empire-tour'), J)
     check(code == 409, 'sold-out departure not requestable')
-    req(adm, '/manage/?a=op', {'csrf': csrf, 'id': new_id, 'op': 'cancel'}); s, b = pub_status()
-    check(s == 'cancelled', 'cancel → Cancelled')
+    req(adm, '/manage/?a=op', {'csrf': csrf, 'id': new_id, 'op': 'cancel'})
+    b = req(pub, '/booking/departures.php?tour=kandahar-durrani-empire-tour')[1]
+    check(new_id not in b, 'cancelled departure removed from public feed (internal state only)')
     code, body, _ = req(adm, '/manage/?a=op', {'csrf': csrf, 'id': new_id, 'op': 'complete'})
     check('only on or after its end date' in body, 'cannot mark a future departure completed')
     # winter date fix action available + works

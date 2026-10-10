@@ -25,16 +25,17 @@ if (!defined('ATB_LIB')) {
 
 const ATB_SCHEMA = 1;
 const ATB_STORED_STATUSES = ['proposed', 'draft', 'scheduled', 'on_request', 'closed', 'cancelled', 'completed'];
-const ATB_SELECTABLE = ['available_awaiting_minimum', 'confirmed', 'limited', 'on_request'];
+const ATB_SELECTABLE = ['open', 'confirmed', 'limited'];
+// Public vocabulary (spec 10 Oct 2026 Part 1 §4): open, confirmed, limited, sold_out, closed. The rest are internal.
 const ATB_STATUS_LABELS = [
-    'available_awaiting_minimum' => 'Available — Awaiting Minimum',
-    'confirmed' => 'Confirmed Departure',
-    'limited' => 'Limited Places',
-    'sold_out' => 'Sold Out',
-    'on_request' => 'On Request',
+    'open' => 'Open',
+    'confirmed' => 'Confirmed',
+    'limited' => 'Limited',
+    'sold_out' => 'Sold out',
     'closed' => 'Closed',
+    'on_request' => 'Private — on request',
     'cancelled' => 'Cancelled',
-    'completed' => 'Completed',
+    'completed' => 'Completed (past)',
     'proposed' => 'Proposed (not public)',
 ];
 
@@ -139,7 +140,7 @@ function atb_str(mixed $v, int $max = 500): string {
 /** @return array{key:string,label:string,selectable:bool,remaining:?int} */
 function atb_compute_status(array $dep, string $today, array $settings = []): array {
     $stored = strtolower((string)($dep['status'] ?? ''));
-    $min = atb_int($dep['min_group_size'] ?? null, atb_int($settings['shared_min_group_default'] ?? null, 3));
+    $min = atb_int($dep['min_group_size'] ?? null, null); // null = not set by owner → never Confirmed
     $cap = atb_int($dep['max_capacity'] ?? null, null);
     $confirmed = max(0, (int)atb_int($dep['confirmed_count'] ?? 0, 0));
     $threshold = (int)atb_int($settings['limited_places_threshold'] ?? null, 2);
@@ -163,25 +164,27 @@ function atb_compute_status(array $dep, string $today, array $settings = []): ar
     if (is_string($cutoff) && atb_is_iso_date($cutoff) && $today > $cutoff) return $out('closed');
     if (($dep['departure_type'] ?? 'shared') === 'private' || $stored === 'on_request') return $out('on_request');
     if ($remaining === 0) return $out('sold_out');
-    if ($confirmed >= $min && ($dep['operational_approval'] ?? '') === 'approved') {
+    if ($min !== null && $min > 0 && $confirmed >= $min && ($dep['operational_approval'] ?? '') === 'approved') {
         if ($remaining !== null && $remaining <= $threshold) return $out('limited');
         return $out('confirmed');
     }
-    return $out('available_awaiting_minimum');
+    return $out('open');
 }
 
 function atb_is_public(array $dep, string $today): bool {
     $stored = strtolower((string)($dep['status'] ?? ''));
     if (($dep['published'] ?? false) !== true) return false;
-    if ($stored === 'proposed' || $stored === 'draft') return false;
+    if (in_array($stored, ['proposed', 'draft', 'cancelled', 'completed', 'on_request'], true)) return false;
+    if (($dep['departure_type'] ?? 'shared') === 'private') return false;
     $end = (string)($dep['end_date'] ?? '');
     return atb_is_iso_date($end) && $end >= $today;
 }
 
-function atb_group_minimum_note(mixed $travelers, string $type, int $min = 3): string {
+function atb_group_minimum_note(mixed $travelers, string $type, ?int $min = null): string {
     $n = (int)atb_int($travelers, 0);
     if ($type === 'private') return 'private';
     if ($n <= 0) return 'unknown';
+    if (!$min) return 'minimum_not_set';
     return $n >= $min ? 'meets_minimum' : 'below_minimum';
 }
 
@@ -192,7 +195,8 @@ function atb_price_label(?array $price, array $settings = []): string {
         return 'Price on request';
     }
     $num = number_format((float)$amount, 0, '.', ',');
-    return 'From ' . (!empty($settings['usd_confirmed']) ? 'USD ' . $num : '$' . $num) . ' per person';
+    $v = 'From ' . (!empty($settings['usd_confirmed']) ? 'USD ' . $num : '$' . $num) . ' per person';
+    return ($price['basis'] ?? '') === 'private_reference' ? $v : $v . ' on shared departures';
 }
 
 function atb_format_range(string $start, string $end): string {
@@ -203,22 +207,32 @@ function atb_format_range(string $start, string $end): string {
 }
 
 function atb_status_text(string $key, array $dep, array $settings = []): string {
-    $min = (int)atb_int($dep['min_group_size'] ?? 3, 3);
-    if ($key === 'available_awaiting_minimum') {
-        $w = (string)($settings['wording']['awaiting_minimum'] ?? 'Awaiting group confirmation — minimum 3 travelers.');
-        return (string)preg_replace('/minimum \d+/', 'minimum ' . $min, $w);
-    }
-    if ($key === 'on_request') return 'On request — private departure';
-    return ATB_STATUS_LABELS[$key] ?? 'Ask us';
+    $min = atb_int($dep['min_group_size'] ?? null, null);
+    return match ($key) {
+        'open' => $min ? 'Open — awaiting minimum ' . $min . ' travelers' : 'Open — group minimum to be confirmed',
+        'confirmed' => 'Confirmed — this departure will operate',
+        'limited' => 'Limited — few places left',
+        'sold_out' => 'Sold out',
+        'closed' => 'Closed — no longer taking requests',
+        default => ATB_STATUS_LABELS[$key] ?? 'Ask us',
+    };
 }
 
 function atb_cta(string $key): string {
     return match ($key) {
-        'available_awaiting_minimum' => 'Request a Place',
+        'open' => 'Request a Place',
         'confirmed', 'limited' => 'Join This Departure',
-        'on_request' => 'Request Private Tour',
         default => 'Ask About Dates',
     };
+}
+
+/** 5+ day scheduled group tours → min 6 / normal max 18; shared ≤4-day departures → min 2, no standard max (owner decision 10 Oct 2026). */
+function atb_group_rule(int $durationDays, array $settings = []): array {
+    $r = (array)($settings['group_rule'] ?? []);
+    if ($durationDays >= (int)atb_int($r['long_tour_min_days'] ?? null, 5)) {
+        return ['applies' => true, 'min' => (int)atb_int($r['long_min'] ?? null, 6), 'max' => (int)atb_int($r['long_max'] ?? null, 18)];
+    }
+    return ['applies' => false, 'min' => atb_int($r['short_tour_shared_min'] ?? null, 2), 'max' => null];
 }
 
 /** Whitelisted public projection — never traveler data, internal notes or approval metadata. */
@@ -233,7 +247,7 @@ function atb_public_departure(array $dep, ?array $tour, array $settings, string 
         'duration_days' => (int)($dep['duration_days'] ?? 0),
         'date_label' => atb_format_range((string)$dep['start_date'], (string)$dep['end_date']),
         'departure_type' => ($dep['departure_type'] ?? '') === 'private' ? 'private' : 'shared',
-        'min_group_size' => (int)atb_int($dep['min_group_size'] ?? 3, 3),
+        'min_group_size' => atb_int($dep['min_group_size'] ?? null, null),
         'status' => $st['key'],
         'status_label' => $st['label'],
         'status_text' => atb_status_text($st['key'], $dep, $settings),
@@ -250,7 +264,7 @@ function atb_public_departure(array $dep, ?array $tour, array $settings, string 
             $out['remaining_places'] = $st['remaining'];
         }
     }
-    if (!empty($settings['show_public_confirmed_counts']) && ($dep['public_counts_approved'] ?? false) === true && $out['departure_type'] === 'shared') {
+    if (!empty($settings['show_public_confirmed_counts']) && ($dep['public_counts_approved'] ?? false) === true && $out['departure_type'] === 'shared' && $out['min_group_size']) {
         $out['confirmed_text'] = max(0, (int)atb_int($dep['confirmed_count'] ?? 0, 0)) . ' of ' . $out['min_group_size'] . ' travelers confirmed.';
     }
     return $out;
@@ -540,14 +554,22 @@ function atb_validate_departure(array $dep, array $inv, string $today, bool $for
     if (!in_array($dep['status'] ?? '', ATB_STORED_STATUSES, true)) $errors[] = 'Unknown status.';
     if (!in_array($dep['departure_type'] ?? '', ['shared', 'private'], true)) $errors[] = 'Type must be shared or private.';
     $min = atb_int($dep['min_group_size'] ?? null, null);
-    if ($min === null || $min < 1) $errors[] = 'Minimum group size must be at least 1.';
-    if (($dep['departure_type'] ?? '') === 'shared' && $min !== null && $min < 3) $errors[] = 'Shared group departures need a minimum of 3 travelers (policy).';
     $cap = $dep['max_capacity'] ?? null;
+    $shared = ($dep['departure_type'] ?? '') === 'shared';
+    $rule = atb_group_rule((int)($t['duration_days'] ?? 0), (array)($inv['settings'] ?? []));
+    $exception = trim((string)($dep['group_exception_note'] ?? '')) !== '';
+    if ($min !== null && $min < 1) $errors[] = 'Minimum group size must be at least 1.';
+    if ($shared && $rule['applies'] && !$exception && ($min !== $rule['min'] || ($cap !== null && $cap > $rule['max']))) {
+        $errors[] = 'Scheduled group tours of 5+ days operate with a minimum of ' . $rule['min'] . ' and a normal maximum of ' . $rule['max'] . ' travelers. Record the approved exception to use other numbers.';
+    }
+    if ($shared && !$rule['applies'] && !$exception && $min !== $rule['min']) $errors[] = 'Shared departures of 4 days or less operate with a minimum of ' . $rule['min'] . ' confirmed travelers. Record the approved exception to use another number.';
+    if (!$shared && $min === null) $errors[] = 'Minimum group size must be at least 1.';
     if ($cap !== null && (!is_int($cap) || ($min !== null && $cap < $min))) $errors[] = 'Maximum capacity must be a whole number at least the minimum.';
     $cut = $dep['booking_cutoff'] ?? null;
     if ($cut !== null && (!atb_is_iso_date($cut) || $cut > $start)) $errors[] = 'Booking cutoff must be a date on or before the start date.';
     if ($forPublish) {
-        if ($cap === null) $errors[] = 'Set a maximum capacity before publishing.';
+        if (!$shared) $errors[] = 'Private departures are individual bookings and are never listed publicly.';
+        if ($shared && $rule['applies'] && $cap === null) $errors[] = 'Set a maximum capacity before publishing.';
         if ($start <= $today) $errors[] = 'Only future departures can be published.';
         if (in_array($dep['status'] ?? '', ['proposed', 'draft', 'cancelled', 'completed'], true)) $errors[] = 'Change the status to Scheduled (or On request) before publishing.';
         foreach (atb_blackouts_for($inv, (string)$dep['tour_slug'], $start, $end) as $b) {

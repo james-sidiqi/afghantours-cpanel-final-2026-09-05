@@ -52,7 +52,7 @@ A compact weekend itinerary featuring Darulaman Palace, Bagh-e Babur, Shah-e-Du 
 ### Practical Details
 - **Activity level:** Easy to Moderate  
 - **Best season:** Year-round  
-- **Group size:** Shared departures need a minimum of 3 confirmed travelers. Private weekends are available for 1–2 travelers (or more), quoted separately.  
+- **Group size:** Shared departures need a minimum of 2 confirmed travelers. Private weekends are available even for 1 traveler, quoted separately.  
 
 ---
 

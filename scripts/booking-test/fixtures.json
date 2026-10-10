@@ -1,44 +1,582 @@
 {
-  "_doc": "Shared status fixtures: run by scripts/booking-test/core.test.mjs (JS) AND scripts/booking-test/test-core.php (PHP) so both runtimes agree.",
-  "settings": { "shared_min_group_default": 3, "limited_places_threshold": 2 },
-  "cases": [
-    { "name": "1 confirmed traveler → awaiting minimum", "today": "2026-10-10", "dep": { "status": "scheduled", "start_date": "2026-12-05", "end_date": "2026-12-16", "min_group_size": 3, "max_capacity": 8, "confirmed_count": 1, "operational_approval": "pending" }, "expect": "available_awaiting_minimum" },
-    { "name": "2 confirmed travelers → awaiting minimum", "today": "2026-10-10", "dep": { "status": "scheduled", "start_date": "2026-12-05", "end_date": "2026-12-16", "min_group_size": 3, "max_capacity": 8, "confirmed_count": 2, "operational_approval": "approved" }, "expect": "available_awaiting_minimum" },
-    { "name": "3 confirmed but NOT approved → still awaiting (no auto-confirm)", "today": "2026-10-10", "dep": { "status": "scheduled", "start_date": "2026-12-05", "end_date": "2026-12-16", "min_group_size": 3, "max_capacity": 8, "confirmed_count": 3, "operational_approval": "pending" }, "expect": "available_awaiting_minimum" },
-    { "name": "3 confirmed + approved → confirmed", "today": "2026-10-10", "dep": { "status": "scheduled", "start_date": "2026-12-05", "end_date": "2026-12-16", "min_group_size": 3, "max_capacity": 8, "confirmed_count": 3, "operational_approval": "approved" }, "expect": "confirmed" },
-    { "name": "pending travelers never count", "today": "2026-10-10", "dep": { "status": "scheduled", "start_date": "2026-12-05", "end_date": "2026-12-16", "min_group_size": 3, "max_capacity": 8, "confirmed_count": 0, "pending_count": 9, "operational_approval": "approved" }, "expect": "available_awaiting_minimum" },
-    { "name": "confirmed + approved + 2 left → limited", "today": "2026-10-10", "dep": { "status": "scheduled", "start_date": "2026-12-05", "end_date": "2026-12-16", "min_group_size": 3, "max_capacity": 6, "confirmed_count": 4, "operational_approval": "approved" }, "expect": "limited" },
-    { "name": "remaining 0 → sold out", "today": "2026-10-10", "dep": { "status": "scheduled", "start_date": "2026-12-05", "end_date": "2026-12-16", "min_group_size": 3, "max_capacity": 6, "confirmed_count": 6, "operational_approval": "approved" }, "expect": "sold_out" },
-    { "name": "no capacity set → never sold out / limited", "today": "2026-10-10", "dep": { "status": "scheduled", "start_date": "2026-12-05", "end_date": "2026-12-16", "min_group_size": 3, "max_capacity": null, "confirmed_count": 12, "operational_approval": "approved" }, "expect": "confirmed" },
-    { "name": "ended → completed (never available)", "today": "2026-10-10", "dep": { "status": "scheduled", "start_date": "2026-09-21", "end_date": "2026-09-29", "min_group_size": 3, "confirmed_count": 0 }, "expect": "completed" },
-    { "name": "ends today → closed (in progress)", "today": "2026-10-10", "dep": { "status": "scheduled", "start_date": "2026-10-05", "end_date": "2026-10-10", "min_group_size": 3 }, "expect": "closed" },
-    { "name": "starts today → closed", "today": "2026-10-12", "dep": { "status": "scheduled", "start_date": "2026-10-12", "end_date": "2026-10-20", "min_group_size": 3 }, "expect": "closed" },
-    { "name": "cutoff passed → closed", "today": "2026-11-20", "dep": { "status": "scheduled", "start_date": "2026-12-05", "end_date": "2026-12-16", "booking_cutoff": "2026-11-15", "min_group_size": 3 }, "expect": "closed" },
-    { "name": "manually closed", "today": "2026-10-10", "dep": { "status": "closed", "start_date": "2026-12-05", "end_date": "2026-12-16", "min_group_size": 3 }, "expect": "closed" },
-    { "name": "cancelled", "today": "2026-10-10", "dep": { "status": "cancelled", "start_date": "2026-12-05", "end_date": "2026-12-16", "min_group_size": 3 }, "expect": "cancelled" },
-    { "name": "past cancelled → completed (history)", "today": "2027-01-10", "dep": { "status": "cancelled", "start_date": "2026-12-05", "end_date": "2026-12-16", "min_group_size": 3 }, "expect": "completed" },
-    { "name": "private departure → on request", "today": "2026-10-10", "dep": { "status": "scheduled", "departure_type": "private", "start_date": "2026-12-05", "end_date": "2026-12-16", "min_group_size": 1 }, "expect": "on_request" },
-    { "name": "proposed is never public", "today": "2026-10-10", "dep": { "status": "proposed", "published": true, "start_date": "2026-12-05", "end_date": "2026-12-16", "min_group_size": 3 }, "expect": "proposed", "expect_public": false },
-    { "name": "published scheduled is public", "today": "2026-10-10", "dep": { "status": "scheduled", "published": true, "start_date": "2026-12-05", "end_date": "2026-12-16", "min_group_size": 3 }, "expect": "available_awaiting_minimum", "expect_public": true },
-    { "name": "unpublished scheduled is not public", "today": "2026-10-10", "dep": { "status": "scheduled", "published": false, "start_date": "2026-12-05", "end_date": "2026-12-16", "min_group_size": 3 }, "expect": "available_awaiting_minimum", "expect_public": false },
-    { "name": "past published is not public", "today": "2026-10-10", "dep": { "status": "scheduled", "published": true, "start_date": "2026-08-20", "end_date": "2026-08-22", "min_group_size": 3 }, "expect": "completed", "expect_public": false }
-  ],
-  "group_minimum": [
-    { "travelers": 1, "type": "shared", "expect": "below_minimum" },
-    { "travelers": 2, "type": "shared", "expect": "below_minimum" },
-    { "travelers": 3, "type": "shared", "expect": "meets_minimum" },
-    { "travelers": 1, "type": "private", "expect": "private" },
-    { "travelers": "", "type": "shared", "expect": "unknown" }
-  ],
-  "dates": [
-    { "start": "2026-12-05", "days": 12, "end": "2026-12-16" },
-    { "start": "2027-02-23", "days": 10, "end": "2027-03-04" },
-    { "start": "2027-03-06", "days": 3, "end": "2027-03-08" },
-    { "start": "2028-02-27", "days": 5, "end": "2028-03-02" }
-  ],
-  "prices": [
-    { "price": { "amount": 1950, "price_status": "reference_from_production" }, "usd_confirmed": false, "expect": "From $1,950 per person" },
-    { "price": { "amount": 1950, "price_status": "approved" }, "usd_confirmed": true, "expect": "From USD 1,950 per person" },
-    { "price": { "amount": null, "price_status": "price_on_request" }, "usd_confirmed": false, "expect": "Price on request" }
-  ]
+ "_doc": "Shared JS/PHP fixtures. Rules: 5+ day scheduled 6–18; shared ≤4 days min 2, no standard max; private from 1.",
+ "settings": {
+  "limited_places_threshold": 2,
+  "group_rule": {
+   "long_tour_min_days": 5,
+   "long_min": 6,
+   "long_max": 18,
+   "short_tour_shared_min": 2
+  }
+ },
+ "cases": [
+  {
+   "name": "long: 1 confirmed → open",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "shared",
+    "min_group_size": 6,
+    "max_capacity": 18,
+    "confirmed_count": 1,
+    "operational_approval": "approved"
+   },
+   "expect": "open"
+  },
+  {
+   "name": "long: 2 confirmed → open",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "shared",
+    "min_group_size": 6,
+    "max_capacity": 18,
+    "confirmed_count": 2,
+    "operational_approval": "approved"
+   },
+   "expect": "open"
+  },
+  {
+   "name": "long: 3 confirmed → open (3 is NOT enough any more)",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "shared",
+    "min_group_size": 6,
+    "max_capacity": 18,
+    "confirmed_count": 3,
+    "operational_approval": "approved"
+   },
+   "expect": "open"
+  },
+  {
+   "name": "long: 5 confirmed + approved → open",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "shared",
+    "min_group_size": 6,
+    "max_capacity": 18,
+    "confirmed_count": 5,
+    "operational_approval": "approved"
+   },
+   "expect": "open"
+  },
+  {
+   "name": "long: 6 confirmed NOT approved → open (no auto-confirm)",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "shared",
+    "min_group_size": 6,
+    "max_capacity": 18,
+    "confirmed_count": 6,
+    "operational_approval": "pending"
+   },
+   "expect": "open"
+  },
+  {
+   "name": "long: 6 confirmed + approved → confirmed",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "shared",
+    "min_group_size": 6,
+    "max_capacity": 18,
+    "confirmed_count": 6,
+    "operational_approval": "approved"
+   },
+   "expect": "confirmed"
+  },
+  {
+   "name": "long: pending travelers never count",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "shared",
+    "min_group_size": 6,
+    "max_capacity": 18,
+    "confirmed_count": 0,
+    "pending_count": 12,
+    "operational_approval": "approved"
+   },
+   "expect": "open"
+  },
+  {
+   "name": "long: 16 of 18 + approved → limited",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "shared",
+    "min_group_size": 6,
+    "max_capacity": 18,
+    "confirmed_count": 16,
+    "operational_approval": "approved"
+   },
+   "expect": "limited"
+  },
+  {
+   "name": "long: 18 of 18 → sold out",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "shared",
+    "min_group_size": 6,
+    "max_capacity": 18,
+    "confirmed_count": 18,
+    "operational_approval": "approved"
+   },
+   "expect": "sold_out"
+  },
+  {
+   "name": "short: 1 confirmed + approved → open",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2027-03-06",
+    "end_date": "2027-03-08",
+    "departure_type": "shared",
+    "min_group_size": 2,
+    "max_capacity": null,
+    "confirmed_count": 1,
+    "operational_approval": "approved"
+   },
+   "expect": "open"
+  },
+  {
+   "name": "short: 2 confirmed NOT approved → open",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2027-03-06",
+    "end_date": "2027-03-08",
+    "departure_type": "shared",
+    "min_group_size": 2,
+    "max_capacity": null,
+    "confirmed_count": 2,
+    "operational_approval": "pending"
+   },
+   "expect": "open"
+  },
+  {
+   "name": "short: 2 confirmed + approved → confirmed",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2027-03-06",
+    "end_date": "2027-03-08",
+    "departure_type": "shared",
+    "min_group_size": 2,
+    "max_capacity": null,
+    "confirmed_count": 2,
+    "operational_approval": "approved"
+   },
+   "expect": "confirmed"
+  },
+  {
+   "name": "short: no standard max → never sold out/limited",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2027-03-06",
+    "end_date": "2027-03-08",
+    "departure_type": "shared",
+    "min_group_size": 2,
+    "max_capacity": null,
+    "confirmed_count": 40,
+    "operational_approval": "approved"
+   },
+   "expect": "confirmed"
+  },
+  {
+   "name": "no minimum recorded → never confirmed",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2027-03-06",
+    "end_date": "2027-03-08",
+    "departure_type": "shared",
+    "min_group_size": null,
+    "confirmed_count": 9,
+    "operational_approval": "approved"
+   },
+   "expect": "open"
+  },
+  {
+   "name": "ended → completed (never bookable)",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-09-21",
+    "end_date": "2026-09-29",
+    "departure_type": "shared",
+    "min_group_size": 6,
+    "confirmed_count": 0
+   },
+   "expect": "completed"
+  },
+  {
+   "name": "ends today → closed (in progress)",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-10-05",
+    "end_date": "2026-10-10",
+    "departure_type": "shared",
+    "min_group_size": 6
+   },
+   "expect": "closed"
+  },
+  {
+   "name": "starts today → closed",
+   "today": "2026-10-12",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-10-12",
+    "end_date": "2026-10-20",
+    "departure_type": "shared",
+    "min_group_size": 6
+   },
+   "expect": "closed"
+  },
+  {
+   "name": "cutoff passed → closed",
+   "today": "2026-11-20",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "shared",
+    "booking_cutoff": "2026-11-15",
+    "min_group_size": 6
+   },
+   "expect": "closed"
+  },
+  {
+   "name": "manually closed",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "closed",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "shared",
+    "min_group_size": 6
+   },
+   "expect": "closed"
+  },
+  {
+   "name": "cancelled (internal) → not public",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "cancelled",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "shared",
+    "published": true,
+    "min_group_size": 6
+   },
+   "expect": "cancelled",
+   "expect_public": false
+  },
+  {
+   "name": "past cancelled → completed (history)",
+   "today": "2027-01-10",
+   "dep": {
+    "status": "cancelled",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "shared",
+    "min_group_size": 6
+   },
+   "expect": "completed"
+  },
+  {
+   "name": "private departure → internal on_request, never public",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "private",
+    "published": true,
+    "min_group_size": 1
+   },
+   "expect": "on_request",
+   "expect_public": false
+  },
+  {
+   "name": "proposed is never public",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "proposed",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "shared",
+    "published": true,
+    "min_group_size": 6
+   },
+   "expect": "proposed",
+   "expect_public": false
+  },
+  {
+   "name": "published scheduled is public",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "shared",
+    "published": true,
+    "min_group_size": 6
+   },
+   "expect": "open",
+   "expect_public": true
+  },
+  {
+   "name": "unpublished scheduled is not public",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-12-05",
+    "end_date": "2026-12-16",
+    "departure_type": "shared",
+    "published": false,
+    "min_group_size": 6
+   },
+   "expect": "open",
+   "expect_public": false
+  },
+  {
+   "name": "past published is not public",
+   "today": "2026-10-10",
+   "dep": {
+    "status": "scheduled",
+    "start_date": "2026-08-20",
+    "end_date": "2026-08-22",
+    "departure_type": "shared",
+    "published": true,
+    "min_group_size": 6
+   },
+   "expect": "completed",
+   "expect_public": false
+  }
+ ],
+ "group_minimum": [
+  {
+   "travelers": 1,
+   "type": "shared",
+   "min": 6,
+   "label": "long",
+   "expect": "below_minimum"
+  },
+  {
+   "travelers": 1,
+   "type": "shared",
+   "min": 2,
+   "label": "short",
+   "expect": "below_minimum"
+  },
+  {
+   "travelers": 1,
+   "type": "private",
+   "min": 2,
+   "label": "short-private",
+   "expect": "private"
+  },
+  {
+   "travelers": 2,
+   "type": "shared",
+   "min": 6,
+   "label": "long",
+   "expect": "below_minimum"
+  },
+  {
+   "travelers": 2,
+   "type": "shared",
+   "min": 2,
+   "label": "short",
+   "expect": "meets_minimum"
+  },
+  {
+   "travelers": 2,
+   "type": "private",
+   "min": 2,
+   "label": "short-private",
+   "expect": "private"
+  },
+  {
+   "travelers": 3,
+   "type": "shared",
+   "min": 6,
+   "label": "long",
+   "expect": "below_minimum"
+  },
+  {
+   "travelers": 3,
+   "type": "shared",
+   "min": 2,
+   "label": "short",
+   "expect": "meets_minimum"
+  },
+  {
+   "travelers": 3,
+   "type": "private",
+   "min": 2,
+   "label": "short-private",
+   "expect": "private"
+  },
+  {
+   "travelers": 6,
+   "type": "shared",
+   "min": 6,
+   "label": "long",
+   "expect": "meets_minimum"
+  },
+  {
+   "travelers": 6,
+   "type": "shared",
+   "min": 2,
+   "label": "short",
+   "expect": "meets_minimum"
+  },
+  {
+   "travelers": 6,
+   "type": "private",
+   "min": 2,
+   "label": "short-private",
+   "expect": "private"
+  },
+  {
+   "travelers": 1,
+   "type": "private",
+   "min": 6,
+   "label": "long-private",
+   "expect": "private"
+  },
+  {
+   "travelers": "",
+   "type": "shared",
+   "min": 6,
+   "label": "long",
+   "expect": "unknown"
+  },
+  {
+   "travelers": 3,
+   "type": "shared",
+   "min": null,
+   "label": "no-min",
+   "expect": "minimum_not_set"
+  }
+ ],
+ "group_rule": [
+  {
+   "days": 3,
+   "applies": false,
+   "min": 2,
+   "max": null
+  },
+  {
+   "days": 4,
+   "applies": false,
+   "min": 2,
+   "max": null
+  },
+  {
+   "days": 5,
+   "applies": true,
+   "min": 6,
+   "max": 18
+  },
+  {
+   "days": 12,
+   "applies": true,
+   "min": 6,
+   "max": 18
+  }
+ ],
+ "status_text": [
+  {
+   "min": 6,
+   "expect": "Open — awaiting minimum 6 travelers"
+  },
+  {
+   "min": 2,
+   "expect": "Open — awaiting minimum 2 travelers"
+  }
+ ],
+ "dates": [
+  {
+   "start": "2026-12-05",
+   "days": 12,
+   "end": "2026-12-16"
+  },
+  {
+   "start": "2027-02-23",
+   "days": 10,
+   "end": "2027-03-04"
+  },
+  {
+   "start": "2027-03-06",
+   "days": 3,
+   "end": "2027-03-08"
+  },
+  {
+   "start": "2028-02-27",
+   "days": 5,
+   "end": "2028-03-02"
+  }
+ ],
+ "prices": [
+  {
+   "price": {
+    "amount": 1950,
+    "price_status": "reference_from_production"
+   },
+   "usd_confirmed": false,
+   "expect": "From $1,950 per person on shared departures"
+  },
+  {
+   "price": {
+    "amount": 1950,
+    "price_status": "approved"
+   },
+   "usd_confirmed": true,
+   "expect": "From USD 1,950 per person on shared departures"
+  },
+  {
+   "price": {
+    "amount": 2450,
+    "price_status": "reference_from_production",
+    "basis": "private_reference"
+   },
+   "usd_confirmed": false,
+   "expect": "From $2,450 per person"
+  },
+  {
+   "price": {
+    "amount": null,
+    "price_status": "price_on_request"
+   },
+   "usd_confirmed": false,
+   "expect": "Price on request"
+  }
+ ]
 }
