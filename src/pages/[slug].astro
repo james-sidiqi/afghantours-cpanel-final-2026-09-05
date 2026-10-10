@@ -180,46 +180,14 @@ const policyItems = {
     ['Information sharing', 'Necessary details may be shared with operational partners only when needed for hotels, transport, guiding, documentation, or itinerary planning.'],
   ],
   terms: [
-    ['Inquiries are not bookings', 'Submitting an inquiry does not create a confirmed booking. A journey is confirmed only after itinerary, price, and payment terms are agreed.'],
+    ['Inquiries are not bookings', 'Submitting an inquiry does not create a confirmed booking. How and when a booking is confirmed, including deposits and payment, is set out in our Cancellation, Refund & Rescheduling Policy (link below).'],
     ['Changes and availability', 'Hotels, vehicles, flights, routes, permits, and prices may change based on timing, access, weather, and operational conditions.'],
     ['Traveler responsibility', 'Travelers must follow local guidance, respect Afghan culture and law, and avoid unauthorized photography or activity.'],
   ],
 };
 
-// Long-form policy clauses (owner-supplied text, 10 Oct 2026). Rendered full width below the summary cards.
-// The full Cancellation, Refund & Rescheduling Policy (effective 28 Sep 2026) exists but its text has not been
-// provided to the repo yet; its route is scaffolded and gated (src/content/legal/…). Until then these clauses
-// stay on /terms/ — the SAME text is staged in the legal file, so the two can never contradict each other.
-const policyClauses = {
-  terms: [
-    {
-      id: 'scheduled-departures-minimum-group-size',
-      heading: 'Scheduled Departures and Minimum Group Size',
-      paragraphs: [
-        'Some published tours operate as scheduled group departures and require a minimum number of confirmed travelers before the departure is guaranteed to operate.',
-        'Unless otherwise stated for a specific departure, scheduled group tours lasting five days or more require a minimum of six confirmed travelers and normally accept a maximum of eighteen travelers. Scheduled or shared departures lasting four days or less require a minimum of two confirmed travelers. The minimum that applies to your departure is stated in the tour information or in your booking confirmation.',
-        "A traveler's individual booking may be confirmed while the scheduled departure remains open and awaiting the required minimum number of travelers. AfghanTours will advise booked travelers when the departure becomes confirmed.",
-        'If the required minimum is not reached, James Tourist & Travel Agency may offer another scheduled departure, an alternative itinerary, a private version of the journey at a separately quoted price, or cancellation of the scheduled departure.',
-        'If James Tourist & Travel Agency cancels a scheduled departure because the required minimum number of travelers has not been reached, it will refund 100% of the amount paid to James Tourist & Travel Agency for that tour.',
-        'This does not include independently purchased airfare, visas, insurance, accommodation, transportation, or other services not purchased from James Tourist & Travel Agency.',
-        'The standard maximum of eighteen travelers may be adjusted for specially arranged groups or other approved departures. Travelers, organizations, or trade partners seeking an exception should contact AfghanTours.',
-        'Tours sold as private journeys are not subject to the scheduled-group minimum unless specifically stated in the applicable proposal or booking confirmation. Private pricing may differ from advertised shared-departure pricing.',
-      ],
-    },
-    {
-      id: 'payments-currency-refunds',
-      heading: 'Payments, Currency and Refunds',
-      paragraphs: [
-        'Prices may be quoted in US dollars or in another currency stated in your quotation or booking confirmation.',
-        'Some payment providers process payments in Afghani (AFN) or another settlement currency. Where a refund is made, the amount you receive may be affected by exchange-rate movements, and by bank, card, currency-conversion, or payment-provider fees.',
-        'An approved refund is calculated under the policy that applies to your booking and is not automatically adjusted for exchange-rate changes between the date of payment and the date of refund.',
-        'Details of the payment method and currency used for your booking are given at checkout or in your booking confirmation.',
-      ],
-    },
-  ],
-};
-
-// Link to the dedicated policy page only once the owner's full text is merged (same gate as the route).
+// The Cancellation, Refund & Rescheduling Policy (effective 28 Sep 2026) is one authoritative document at
+// /cancellation-refund-rescheduling/ (src/content/legal/…). /terms/ carries only a pointer + link — no duplicate text.
 const cancellationPolicy = await getEntry('legal', 'cancellation-refund-rescheduling');
 const cancellationPolicyLive = cancellationPolicy?.data.policy_full_text_received === true;
 
@@ -402,19 +370,14 @@ const trustItems = [
             ))}
           </section>
 
-          {(policyClauses[Astro.params.slug] || []).map((clause) => (
-            <section class="policy-clause" id={clause.id}>
-              <article class="content-card">
-                <h2>{clause.heading}</h2>
-                {clause.paragraphs.map((para) => <p>{para}</p>)}
-              </article>
-            </section>
-          ))}
-
           {Astro.params.slug === 'terms' && cancellationPolicyLive && (
-            <section class="policy-clause" id="cancellation-policy-link">
+            <section class="policy-clause" id="cancellation-refund-rescheduling" data-policy-pointer>
+              {/* Old anchors kept so earlier links to /terms/#… still land here. */}
+              <span id="scheduled-departures-minimum-group-size"></span><span id="payments-currency-refunds"></span><span id="cancellation-policy-link"></span>
               <article class="content-card">
-                <p><a href="/cancellation-refund-rescheduling/">Read the full Cancellation, Refund &amp; Rescheduling Policy</a></p>
+                <h2>Cancellation, Refund &amp; Rescheduling</h2>
+                <p>Cancellations, refunds, rescheduling, minimum group sizes for scheduled departures, and payment currency are covered by our Cancellation, Refund &amp; Rescheduling Policy.</p>
+                <p><a class="policy-pointer__link" href="/cancellation-refund-rescheduling/">Read the Cancellation, Refund &amp; Rescheduling Policy →</a></p>
               </article>
             </section>
           )}
@@ -809,4 +772,6 @@ const trustItems = [
     .form-grid{grid-template-columns:1fr}
     .map-box,.map-box iframe{min-height:340px}
   }
+  .policy-pointer__link { color: #8a5a12; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  [data-policy-pointer] p + p { margin-top: .9rem; }
 </style>

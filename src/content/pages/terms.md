@@ -52,7 +52,7 @@ AfghanTours reserves the right to:
 - Substitute accommodations or routes of comparable standard
 - Adjust schedules to respond to changing conditions
 
-Such changes do not constitute grounds for refund.
+Refunds, cancellations and rescheduling, including for itinerary changes, are governed by our [Cancellation, Refund & Rescheduling Policy](/cancellation-refund-rescheduling/).
 
 ---
 

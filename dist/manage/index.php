@@ -702,7 +702,7 @@ function booking_confirmation_text(array $tr, ?array $d, ?array $t, string $toda
     foreach ($fields as $k => $v) if ($k !== 'Departure status now') $lines[] = $k . ': ' . $v;
     $lines[] = '';
     if (empty($d['confirmed_on'])) {
-        $lines[] = 'Your place is booked. This scheduled departure is still open and awaiting its minimum number of travelers' . ($min ? ' (' . $min . ')' : '') . '. We will let you know as soon as the departure is confirmed. If the minimum is not reached, we will offer you another departure, an alternative itinerary, a private version of the journey at a separately quoted price, or cancellation with a 100% refund of the amount paid to James Tourist & Travel Agency for this tour (see our Scheduled Departures and Minimum Group Size policy).';
+        $lines[] = 'Your place is booked. This scheduled departure is still open and awaiting its minimum number of travelers' . ($min ? ' (' . $min . ')' : '') . '. We will let you know as soon as the departure is confirmed. What happens if the minimum is not reached, including refunds, is set out under Scheduled Departures and Minimum Group Size in our Cancellation, Refund & Rescheduling Policy: https://afghantours.com/cancellation-refund-rescheduling/#scheduled-departures-minimum-group-size';
     } else {
         $lines[] = 'This departure is confirmed and will operate.';
     }

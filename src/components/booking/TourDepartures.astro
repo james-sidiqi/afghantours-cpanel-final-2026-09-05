@@ -135,10 +135,11 @@ const common = {
   {(departures.length > 0 || category !== 'C') && (
     <p class="tdp-note">
       {longRule
-        ? `A scheduled departure is confirmed to operate once ${min} travelers are confirmed and our team approves it. `
+        ? `A scheduled departure is confirmed to operate once ${min} travelers are confirmed and our team approves it.`
         : `Shared departures need a minimum of ${min ?? 2} confirmed travelers and our team's approval to operate. Private departures can run for 1 traveler. `}
       {wording.selection_note}{' '}
-      <a href="/terms/#scheduled-departures-minimum-group-size">Minimum group size policy</a>.
+      Minimum group size, the 45-day review and low-numbers refunds:{' '}
+      <a href="/cancellation-refund-rescheduling/#scheduled-departures-minimum-group-size">Cancellation, Refund &amp; Rescheduling Policy</a>.
     </p>
   )}
 

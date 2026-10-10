@@ -194,21 +194,30 @@ for (const d of departures) {
 // no departures for inactive tours
 for (const d of departures) if (['trek-the-wakhan-corridor', 'timurid-grandeur-herat-tour-add-minaret-e-jam'].includes(d.tour_slug)) err(`${d.id}: inactive tour has a departure`);
 
-// ---------- policy text consistency (/terms/ clause vs staged legal file) ----------
+// ---------- Cancellation, Refund & Rescheduling Policy (owner text merged verbatim 10 Oct 2026) ----------
 {
   const terms = readFileSync(path.join(ROOT, 'src/pages/[slug].astro'), 'utf8');
   const legalPath = path.join(ROOT, 'src/content/legal/cancellation-refund-rescheduling.md');
   const legal = existsSync(legalPath) ? readFileSync(legalPath, 'utf8') : '';
-  if (!legal) err('src/content/legal/cancellation-refund-rescheduling.md missing (policy route scaffold)');
-  const minSentence = 'Scheduled or shared departures lasting four days or less require a minimum of two confirmed travelers.';
-  for (const [name, txt] of [['/terms/ clause', terms], ['legal staged additions', legal]]) {
-    if (!txt.includes(minSentence)) err(`${name}: minimum-group sentence for ≤4-day departures missing or changed`);
-    if (/four days or less require a minimum of six/i.test(txt)) err(`${name}: implies the 6 minimum applies to short departures`);
-  }
+  if (!legal) err('src/content/legal/cancellation-refund-rescheduling.md missing');
   const flag = (legal.match(/^policy_full_text_received:\s*(true|false)/m) || [])[1];
-  if (flag !== 'true' && flag !== 'false') err('legal policy file: policy_full_text_received flag missing');
-  if (flag === 'true' && /MERGE POINT — FULL POLICY TEXT FROM THE OWNER GOES HERE/.test(legal)) err('legal policy flagged as received but the merge placeholder is still there');
-  if (flag === 'false') warn('Cancellation, Refund & Rescheduling Policy: full owner text not yet merged — route gated (not built publicly)');
+  if (flag !== 'true') err('legal policy: policy_full_text_received must be true (full owner text merged)');
+  if (/MERGE POINT|STAGED OWNER-APPROVED ADDITIONS/.test(legal)) err('legal policy: staged additions / merge placeholder still present (would duplicate text)');
+  for (const sentence of [
+    'scheduled/shared departures lasting 5 days or more require a minimum of 6 confirmed travelers and normally accept a maximum of 18 travelers;',
+    'scheduled/shared departures lasting 4 days or less require a minimum of 2 confirmed travelers and do not have a standard maximum unless a departure-specific capacity is stated.',
+    'For scheduled/shared departures lasting 5 days or more, we normally review whether the minimum group size has been reached 45 days before departure.',
+    'If James Tourist & Travel Agency cancels a scheduled departure because the required minimum number of travelers has not been reached, we will refund 100% of the amount paid to James Tourist & Travel Agency for that tour.',
+  ]) if (!legal.includes(sentence)) err(`legal policy: required sentence missing or changed: "${sentence.slice(0, 70)}…"`);
+  // one authoritative document: /terms/ must not carry its own copy of the policy clauses
+  if (/require a minimum of (six|6) confirmed travelers|will refund 100% of the amount paid/.test(terms)) err('/terms/ duplicates cancellation/minimum-group policy text — keep only the pointer + link');
+  // UI copy must agree with the policy (6–18 long, 2 short, 45-day review, 100% low-numbers refund)
+  const ui = readFileSync(path.join(ROOT, 'src/components/booking/TourDepartures.astro'), 'utf8');
+  if (!ui.includes('/cancellation-refund-rescheduling/#scheduled-departures-minimum-group-size')) err('tour departures UI must link to the policy (#scheduled-departures-minimum-group-size)');
+  if (/refund 100%|\d+% of the tour price|administrative fee/.test(ui)) err('tour departures UI restates policy terms — link to the policy instead');
+  if (settings.wording?.group_size_long && !/6–18 travelers.*Minimum to operate: 6/.test(settings.wording.group_size_long)) err('settings.wording.group_size_long contradicts the policy (6–18, minimum 6)');
+  if (settings.group_rule && (settings.group_rule.long_tour_min_days !== 5 || settings.group_rule.long_min !== 6 || settings.group_rule.long_max !== 18 || settings.group_rule.short_tour_shared_min !== 2)) err('settings.group_rule differs from the policy defaults (5+ days: 6–18; ≤4 days: 2)');
+  if (settings.long_tour_min_group_review_days !== 45) err('long_tour_min_group_review_days must match the policy (45 days)');
 }
 
 // ---------- long-tour minimum-group review / final cutoff (owner decision 10 Oct 2026 18:56) ----------

@@ -226,6 +226,7 @@ try:
     cb = req(adm, f'/manage/?a=confirmation&traveler={tid}')[1]
     check('Your booking is confirmed.' in cb and 'Departure status at time of booking: Open — awaiting minimum 6 travelers' in cb and 'Required minimum group size: 6 travelers' in cb and 'Amount paid:' in cb and 'Balance due date:' in cb, 'booking confirmation record has the spec fields')
     check('unconfirmed' not in cb.lower(), 'accepted booking never called "unconfirmed"')
+    check('cancellation-refund-rescheduling/#scheduled-departures-minimum-group-size' in cb and 'refund 100%' not in cb and '100% refund' not in cb, 'confirmation template links to the policy instead of restating its refund terms')
     add_trav('Unpaid Uma', 'confirmed', '1', 'not_recorded'); s, b = pub_status()
     check(s == 'open', 'accepted booking without payment received does not count (5 + 1 unpaid → open)')
     eb = req(adm, f'/manage/?a=edit&id={new_id}')[1]

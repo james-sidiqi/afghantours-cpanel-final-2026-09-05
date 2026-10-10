@@ -1,7 +1,7 @@
 import { defineCollection, z, reference } from 'astro:content';
 
-// Legal documents rendered on their own routes. A document stays unpublished (no route, noindex, not in
-// sitemap/nav) until the owner's full text is merged and policy_full_text_received is flipped to true.
+// Legal documents rendered on their own public routes. policy_full_text_received must be true (owner's full
+// text merged verbatim); the page build fails otherwise so a partial policy can never be published.
 const legalCollection = defineCollection({
   type: 'content',
   schema: z.object({
@@ -11,6 +11,7 @@ const legalCollection = defineCollection({
     legal_entity: z.string(),
     operating_as: z.string(),
     license: z.string(),
+    address: z.string().optional(),
     policy_full_text_received: z.boolean().default(false),
     description: z.string().optional(),
   }),

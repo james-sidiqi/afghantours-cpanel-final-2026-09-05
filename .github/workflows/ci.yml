@@ -41,6 +41,9 @@ jobs:
           for f in public/booking/departures.php public/booking/lib/booking.php public/manage/index.php scripts/booking/hash-password.php; do php -l "$f"; done
           python3 scripts/booking-test/integration.py
 
+      - name: Cancellation policy (built site — public route, sitemap, verbatim text, single source)
+        run: node --test scripts/booking-test/policy.test.mjs
+
       - name: Site integrity (strict)
         run: python3 scripts/site_integrity_audit.py . --strict
 
