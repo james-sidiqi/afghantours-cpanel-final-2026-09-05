@@ -129,10 +129,13 @@ $action = isset($_GET['a']) && is_string($_GET['a']) ? $_GET['a'] : 'departures'
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
 if (empty($cfg['admin_users'])) {
-    fail_page(503, 'Admin not configured', 'Create the private config file (see docs/booking/ADMIN.md) with at least one user and a password hash. Nothing is editable until then.', null);
+    // Setup details stay in the server log and docs/booking/ADMIN.md; visitors only get a generic message.
+    error_log('[afghantours manage] admin config missing or has no users');
+    fail_page(503, 'Temporarily unavailable', 'This page is temporarily unavailable. Please try again later.', null);
 }
 if (!atb_store_available()) {
-    fail_page(503, 'Private store unavailable', 'The private booking folder is missing or not writable. See docs/booking/ADMIN.md.', null);
+    error_log('[afghantours manage] private booking store missing or not writable');
+    fail_page(503, 'Temporarily unavailable', 'This page is temporarily unavailable. Please try again later.', null);
 }
 
 if ($method === 'POST') {

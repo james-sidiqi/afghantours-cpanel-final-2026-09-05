@@ -433,10 +433,11 @@ try:
         d3 = json.loads(r.read())
         check(d3['ok'] and mail2.exists() and 'Admin reference' not in mail2.read_text(), 'no private folder: inquiry still emailed (email-only)')
         try:
-            urllib.request.urlopen(f'http://127.0.0.1:{port2}/manage/', timeout=5); code3 = 200
+            urllib.request.urlopen(f'http://127.0.0.1:{port2}/manage/', timeout=5); code3 = 200; body3 = ''
         except urllib.error.HTTPError as e:
-            code3 = e.code
-        check(code3 == 503, 'no private folder/config: admin shows not-configured (503), nothing editable')
+            code3 = e.code; body3 = e.read().decode('utf-8', 'replace')
+        check(code3 == 503, 'no private folder/config: admin unavailable (503), nothing editable')
+        check('ADMIN.md' not in body3 and 'not configured' not in body3.lower() and 'private' not in body3.lower(), 'unconfigured admin shows only a generic message (no setup diagnostics or doc paths)')
     finally:
         srv2.terminate()
 finally:
