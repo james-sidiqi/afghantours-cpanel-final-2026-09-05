@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PaymentResult from '../../components/payments/PaymentResult.astro';
+---
+<BaseLayout title="Payment submitted | Afghan Tours" description="Your payment was submitted through HesabPay." robots="noindex">
+  <PaymentResult title="Thank you — payment submitted" primaryHref="/" primaryLabel="Back to Afghan Tours" secondaryHref="/contact/" secondaryLabel="Contact us">
+    <p>HesabPay has returned you to Afghan Tours. Our team will check the payment against your booking reference and confirm with you by email.</p>
+    <p>Please keep your booking reference and any receipt HesabPay shows or sends you.</p>
+  </PaymentResult>
+</BaseLayout>

@@ -63,3 +63,19 @@ RewriteRule ^hubs/kandahar/?$ /hubs/kandahar-city/ [R=301,L]
 RewriteEngine On
 RewriteRule ^regions/wakhan-northeast/?$ /destinations/badakhshan/ [R=301,L]
 </IfModule>
+
+# Payments (HesabPay): never serve config, examples, or payment logs if one is ever
+# copied under the web root by mistake. Real config lives OUTSIDE the docroot (/home/jamesbon/afghantours-private/).
+<FilesMatch "^(hesabpay-config.*|.*\.example\.php|payments\.log)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^(afghantours-private|payments-data)(/|$) - [F,L]
+</IfModule>
