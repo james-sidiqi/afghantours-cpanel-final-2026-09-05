@@ -1,3 +1,21 @@
+# Canonical host + scheme (owner 10 Oct 2026): every request ends on https://afghantours.com, path + query kept.
+# One hop for www (http or https). HTTPS / X-Forwarded-Proto checks keep it loop-free behind LiteSpeed or a proxy.
+# /.well-known/ is left alone so cPanel AutoSSL / domain validation keeps working.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/\.well-known/
+RewriteCond %{HTTP_HOST} ^www\.afghantours\.com$ [NC]
+RewriteRule ^ https://afghantours.com%{REQUEST_URI} [R=301,L,NE]
+RewriteCond %{REQUEST_URI} !^/\.well-known/
+RewriteCond %{HTTP_HOST} ^afghantours\.com$ [NC]
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !^https$ [NC]
+RewriteRule ^ https://afghantours.com%{REQUEST_URI} [R=301,L,NE]
+</IfModule>
+
+# No directory listings (individual files, e.g. /data/maps/*.json, stay readable).
+Options -Indexes
+
 # AfghanTours product separation redirects (Tour / Specialist / Return)
 # Prefer specialist/return/custom targets — no chains through /tours/
 
