@@ -7,7 +7,8 @@ import { parseCSV } from "../../lib/csv";
 import transportRaw from "../../../data/ground_transport.csv?raw";
 import inclusionsRaw from "../../../data/tour_inclusions.csv?raw";
 import { buildTourInquiryHref, buildCustomInquiryHref } from "../../lib/inquiry";
-import { buildAttractionTopMeta, buildAttractionTravelerNotes, formatVisitDuration } from '../../lib/attractionMeta';
+import TourDepartures from "../../components/booking/TourDepartures.astro";
+import { getCatalogTour, getCategory, tourPriceLabel, bookingSettings } from "../../lib/booking/site";
 
 export function getStaticPaths() {
   return getTours()
@@ -367,6 +368,9 @@ const itineraryFlow = sortedItinerary.map((day, index) => {
   if (showHub) {
     for (let cursor = index; cursor < sortedItinerary.length; cursor += 1) {
       if (itineraryHubKey(sortedItinerary[cursor]) !== hubKey) break;
+      // Nights, not days: the final itinerary day is the departure day and has no overnight
+      // (a 12-day tour has 11 nights). Spec Part 9 #1.
+      if (cursor === sortedItinerary.length - 1) break;
       hubCount += 1;
     }
   }
@@ -395,30 +399,22 @@ for (const entry of itineraryFlow) {
 
     if (!code) continue;
 
-    const province = attraction.province_name || attraction.province || "";
-    const region = attraction.region || "";
-    const category = attraction.category || attraction.primary_category || "";
+    const tags = String(attraction.tags || "")
+      .split(/[,|#]/)
+      .map((t) => String(t || "").trim())
+      .filter(Boolean)
+      .slice(0, 6);
+
+    const practical = [];
+    if (attraction.visit_duration_hours) practical.push({ label: "Duration", value: `${attraction.visit_duration_hours} hours` });
+    if (attraction.access_difficulty) practical.push({ label: "Access", value: String(attraction.access_difficulty) });
     const season = [attraction.season_start, attraction.season_end].filter(Boolean).join("–");
-
-    const topMeta = buildAttractionTopMeta({
-      category,
-      region,
-      access: attraction.access_difficulty,
-    });
-
-    const noteRows = buildAttractionTravelerNotes({
-      slug: attraction.slug || "",
-      province,
-      region,
-      visit_duration_hours: attraction.visit_duration_hours,
-      season,
-      omitFitness: true,
-    });
-
-    // Keep a few optional operational notes after the core traveler-note rows.
-    const practical = noteRows.map(([label, value]) => ({ label, value }));
+    if (season) practical.push({ label: "Season", value: season });
     if (attraction.seasonal_notes) practical.push({ label: "Season note", value: String(attraction.seasonal_notes) });
     if (attraction.recommended_time_of_day) practical.push({ label: "Best time", value: String(attraction.recommended_time_of_day) });
+    if (attraction.photography_rating) practical.push({ label: "Photography", value: String(attraction.photography_rating) });
+    if (attraction.cultural_sensitivity) practical.push({ label: "Sensitivity", value: String(attraction.cultural_sensitivity) });
+    if (attraction.notes) practical.push({ label: "Notes", value: String(attraction.notes) });
 
     itineraryAttractionData[code] = {
       code,
@@ -442,10 +438,10 @@ for (const entry of itineraryFlow) {
         attraction.location ||
         attraction.city ||
         "",
-      province,
-      region,
-      category,
-      tags: topMeta,
+      province: attraction.province_name || attraction.province || "",
+      region: attraction.region || "",
+      category: attraction.category || attraction.primary_category || "",
+      tags,
       practical,
     };
   }
@@ -504,13 +500,18 @@ const scheduledDates = dates.filter((row) => {
   const start = String(row?.date_start || "").trim().toLowerCase();
   return start && start !== "inquire";
 });
-const price = formatPrice(tour.price_from || tour.price_display);
-const duration = tour.duration_days && Number(tour.duration_days) > 0 ? `${tour.duration_days} days` : (tour.duration_display || "Flexible duration");
-const groupSize = tour.group_size_display || (
-  tour.min_group_size && tour.max_group_size
-    ? `${tour.min_group_size}–${tour.max_group_size} travelers`
-    : "Private / small group"
-);
+// Price comes from the booking catalog (data/booking/tours-catalog.json) so listing and detail share one basis.
+const catalogTour = getCatalogTour(tour.slug) || {};
+const bookingCategory = String(catalogTour.category || "C");
+const price = tourPriceLabel(tour.slug);
+const duration = catalogTour.duration_display
+  || (tour.duration_days && Number(tour.duration_days) > 0 ? `${tour.duration_days} days` : (tour.duration_display || "Flexible duration"));
+// Group policy (spec Part 3): shared departures need 3 confirmed travelers; private is quoted separately.
+const groupSize = bookingCategory === "C"
+  ? "Private · group dates when announced"
+  : catalogTour.arrival_options
+    ? "Shared: min. 3 · Private: 1+"
+    : "Shared: min. 3 · Private on request";
 
 const relatedTours = allTours
   .filter((item) => item.slug !== tour.slug)
@@ -529,13 +530,15 @@ const pageDescription =
   tour.description ||
   "A guided Afghanistan journey built around realistic logistics, cultural access, and Kabul-based ground coordination.";
 const productClassKey = String(tour.product_class || '').toLowerCase() === 'scheduled' ? 'scheduled' : 'private-fixed';
-const productClassLabel = productClassKey === 'scheduled' ? 'Scheduled departure' : 'Private fixed itinerary';
-const tourNoteTitle = productClassKey === 'scheduled'
-  ? 'Proposed seasonal departures.'
-  : 'Built around your dates.';
-const tourNoteBody = productClassKey === 'scheduled'
-  ? 'This itinerary has scheduled or proposed departure windows. Ask about joining a published date, or running the same route privately.'
-  : 'This is a published fixed itinerary run on private dates — adjustable around your interests, pace, and available travel window.';
+const productClassLabel = getCategory(bookingCategory).label || (productClassKey === 'scheduled' ? 'Scheduled departure' : 'Private fixed itinerary');
+const tourNoteTitle = bookingCategory === 'A'
+  ? 'Group departures and private dates.'
+  : bookingCategory === 'B'
+    ? 'Selected group dates, or privately.'
+    : 'Built around your dates.';
+const tourNoteBody = bookingCategory === 'C'
+  ? 'This is a published fixed itinerary run on private dates — adjustable around your interests, pace, and available travel window.'
+  : `Join a published group departure — it goes ahead once at least ${catalogTour.shared_min_group || 3} travelers are confirmed — or run the same route privately on your own dates.`;
 
 const contactHref = buildTourInquiryHref(tour);
 ---
@@ -1079,7 +1082,7 @@ const contactHref = buildTourInquiryHref(tour);
           <div class="tour-summary-label">Tour summary</div>
           <h2 class="tour-plan-card__title">{tourName}</h2>
           <div class="tour-plan-card__price">{price}</div>
-          <p class="tour-plan-card__sub">Final pricing depends on group size, route, hotel level, domestic flights, and travel dates.</p>
+          <p class="tour-plan-card__sub">Final pricing depends on group size, route, hotel level, domestic flights, and travel dates. {bookingSettings.wording?.private_pricing}</p>
 
           <dl class="tour-plan-facts">
             <div><dt>Duration</dt><dd>{duration}</dd></div>
@@ -1088,48 +1091,12 @@ const contactHref = buildTourInquiryHref(tour);
             <div><dt>Season</dt><dd>{tour.season || "Route dependent"}</dd></div>
           </dl>
 
-          {scheduledDates.length > 0 ? (
-            <div class="tour-date-selector">
-              <div class="tour-date-selector__heading">
-                <h3>Select tour date</h3>
-                <span>Published departures</span>
-              </div>
-              <div class="tour-date-selector__rows">
-                {scheduledDates.slice(0, 5).map((date) => (
-                  <a class="tour-date-choice" href={`${contactHref}&date=${encodeURIComponent(dateLabel(date))}`}>
-                    <span class="tour-date-choice__radio" aria-hidden="true"></span>
-                    <span class="tour-date-choice__date">{dateLabel(date)}</span>
-                    <span class="tour-date-choice__status">{statusLabel(date.status)}</span>
-                  </a>
-                ))}
-              </div>
-              <p class="tour-date-selector__note">Daily plans may be adjusted for weather, road conditions, local requirements, access, or other operational considerations.</p>
-            </div>
-          ) : (
-            <form class="tour-date-planner" action="/contact/" method="get">
-              <input type="hidden" name="tour" value={tourName} />
-              <h3>Plan your departure</h3>
-              <p>This journey can be arranged around your preferred dates and group size.</p>
-              <label>
-                Preferred travel month
-                <input type="month" name="preferred_month" />
-              </label>
-              <label>
-                Group size
-                <select name="group_size">
-                  <option value="">Select group size</option>
-                  <option>1 traveler</option>
-                  <option>2 travelers</option>
-                  <option>3–4 travelers</option>
-                  <option>5–6 travelers</option>
-                  <option>7+ travelers</option>
-                </select>
-              </label>
-              <button class="tour-button tour-button--primary tour-button--wide" type="submit">Plan this tour</button>
-            </form>
-          )}
-
-          {scheduledDates.length > 0 && <a class="tour-button tour-button--primary tour-button--wide" href={contactHref}>Ask about this tour</a>}
+          <TourDepartures
+            slug={tour.slug}
+            name={tourName}
+            code={String(tour.tour_code || tour.code || "")}
+            productClass={productClassKey}
+          />
           <a class="tour-plan-link" href="/contact/">Request a custom itinerary</a>
         </div>
 
@@ -2235,10 +2202,8 @@ const contactHref = buildTourInquiryHref(tour);
 
     .tour-attraction-popup__practical dl > div {
       display: grid;
-      grid-template-columns: minmax(120px, 38%) minmax(0, 1fr);
-      column-gap: .85rem;
-      row-gap: .2rem;
-      align-items: start;
+      grid-template-columns: 110px minmax(0, 1fr);
+      gap: .65rem;
       font-size: .78rem;
     }
 
@@ -2246,13 +2211,6 @@ const contactHref = buildTourInquiryHref(tour);
       margin: 0;
       font-weight: 850;
       color: #1b1b1b;
-      line-height: 1.35;
-    }
-
-    .tour-attraction-popup__practical dd {
-      margin: 0;
-      line-height: 1.35;
-      word-break: break-word;
     }
 
     .tour-attraction-popup__practical dd {

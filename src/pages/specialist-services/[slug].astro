@@ -17,6 +17,8 @@ const inquiryHref = buildSpecialistInquiryHref(service);
 const regions = Array.isArray(service.regions_supported_list)
   ? service.regions_supported_list
   : String(service.regions_supported || '').split(/[|;,]/).map((x) => x.trim()).filter(Boolean);
+// Spec Part 9 #9: services with no fixed route must not list every region as if it were a route.
+const allRegions = ['west', 'central', 'north', 'east', 'south'].every((r) => regions.map((x) => x.toLowerCase()).includes(r));
 const hero = service.hero_image_path || service.image_path || '/assets/images/placeholders/default-hero.webp';
 ---
 <BaseLayout
@@ -47,12 +49,11 @@ const hero = service.hero_image_path || service.image_path || '/assets/images/pl
       <p>{service.audience || 'Specialist teams'}</p>
       <p class="desc">{service.description}</p>
 
-      {regions.length > 0 && (
-        <div class="block">
-          <h2>Regions we can discuss</h2>
-          <p>{regions.join(' · ')}</p>
-        </div>
-      )}
+      <div class="block">
+        <h2>Route</h2>
+        <p>Route designed around your requirements.</p>
+        {regions.length > 0 && !allRegions && <p>Regions we can discuss: {regions.join(' · ')}</p>}
+      </div>
 
       {service.support_note && (
         <div class="block">

@@ -20,12 +20,40 @@
       <input type="hidden" name="tour_slug" data-inquiry-tour-slug />
       <input type="hidden" name="tour_url" data-inquiry-tour-url />
       <input type="hidden" name="source_url" data-inquiry-source-url />
+      <input type="hidden" name="departure_id" data-inquiry-departure-id />
+      <input type="hidden" name="departure_start" data-inquiry-departure-start />
+      <input type="hidden" name="departure_end" data-inquiry-departure-end />
+      <input type="hidden" name="extras" data-inquiry-extras />
       <input class="tour-inquiry-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
       <label class="tour-inquiry-form__full">
         <span data-inquiry-entity-label>Tour</span>
         <input name="tour_name" data-inquiry-tour readonly />
       </label>
+
+      <label class="tour-inquiry-form__full" data-inquiry-departure-row hidden>
+        <span>Selected departure</span>
+        <input data-inquiry-departure-label readonly />
+      </label>
+
+      <div class="tour-inquiry-form__grid">
+        <label>
+          Shared or private
+          <select name="booking_type" data-inquiry-booking-type>
+            <option value="">Not sure yet</option>
+            <option value="shared">Join a shared group departure</option>
+            <option value="private">Private tour</option>
+          </select>
+        </label>
+        <label data-inquiry-arrival-row hidden>
+          Arrival
+          <select name="arrival_option" data-inquiry-arrival>
+            <option value="">No preference</option>
+            <option value="fri-sun">Friday–Sunday</option>
+            <option value="sat-mon">Saturday–Monday</option>
+          </select>
+        </label>
+      </div>
 
       <div class="tour-inquiry-form__grid">
         <label>
@@ -56,23 +84,54 @@
         </label>
         <label>
           Number of travelers
-          <input name="travelers" data-inquiry-travelers inputmode="numeric" placeholder="e.g. 2" />
+          <input name="travelers" data-inquiry-travelers type="number" min="1" max="50" step="1" inputmode="numeric" placeholder="e.g. 2" />
         </label>
       </div>
 
+      <p class="tour-inquiry-form__hint" data-inquiry-group-hint hidden aria-live="polite"></p>
+
+      <div class="tour-inquiry-form__grid">
+        <label>
+          Accommodation preference
+          <select name="accommodation">
+            <option value="">Standard hotels on the itinerary</option>
+            <option value="Upgrade where available">Upgrade where available</option>
+            <option value="Discuss with the team">Discuss with the team</option>
+          </select>
+        </label>
+        <label>
+          Extra nights (optional)
+          <select name="extension_nights">
+            <option value="">None</option>
+            <option value="1">1 extra night</option>
+            <option value="2">2 extra nights</option>
+            <option value="3">3 extra nights</option>
+            <option value="4+">4 or more</option>
+          </select>
+        </label>
+      </div>
+
+      <fieldset class="tour-inquiry-form__extras" data-inquiry-extras-row hidden>
+        <legend>Additional options</legend>
+        <label><input type="checkbox" value="Extra hotel night" data-inquiry-extra /> Extra hotel night</label>
+        <label><input type="checkbox" value="Additional sightseeing" data-inquiry-extra /> Additional sightseeing</label>
+        <label><input type="checkbox" value="Custom arrival/departure arrangements" data-inquiry-extra /> Custom arrival/departure arrangements</label>
+      </fieldset>
+
       <label class="tour-inquiry-form__full">
-        What should we know?
+        Additional requests
         <textarea name="notes" rows="5" placeholder="Interests, pace, hotel preferences, mobility needs, photography, private group requirements, or anything else that will help us plan."></textarea>
       </label>
 
       <div class="tour-inquiry-form__note">
         Please provide either an email address or WhatsApp number so our Kabul team can reply.
+        Sending this form is a request — it does not confirm a place or take payment.
       </div>
 
       <div class="tour-inquiry-form__status" data-inquiry-status aria-live="polite"></div>
 
       <div class="tour-inquiry-form__actions">
-        <button class="tour-inquiry-submit" type="submit">Send inquiry</button>
+        <button class="tour-inquiry-submit" type="submit">Send request</button>
         <button class="tour-inquiry-cancel" type="button" data-tour-inquiry-close>Cancel</button>
       </div>
     </form>
@@ -103,6 +162,39 @@
     const lead = modal.querySelector('[data-inquiry-lead]');
     const entityLabel = modal.querySelector('[data-inquiry-entity-label]');
     const titleEl = modal.querySelector('#tour-inquiry-title');
+    const depId = form.querySelector('[data-inquiry-departure-id]');
+    const depStart = form.querySelector('[data-inquiry-departure-start]');
+    const depEnd = form.querySelector('[data-inquiry-departure-end]');
+    const depRow = form.querySelector('[data-inquiry-departure-row]');
+    const depLabel = form.querySelector('[data-inquiry-departure-label]');
+    const bookingType = form.querySelector('[data-inquiry-booking-type]');
+    const arrivalRow = form.querySelector('[data-inquiry-arrival-row]');
+    const arrival = form.querySelector('[data-inquiry-arrival]');
+    const extrasRow = form.querySelector('[data-inquiry-extras-row]');
+    const extrasHidden = form.querySelector('[data-inquiry-extras]');
+    const groupHint = form.querySelector('[data-inquiry-group-hint]');
+    const CONFIRMATION = 'Your request has been received. Our team will confirm availability, arrangements, and next steps.';
+    let isWeekend = false;
+
+    const updateHint = () => {
+      if (!groupHint) return;
+      const n = Number(travelersInput?.value || 0);
+      const type = bookingType?.value || '';
+      let text = '';
+      if (type === 'private') {
+        text = isWeekend
+          ? 'Private Weekend in Kabul works for 1 or 2 travelers too — no group minimum. Private pricing is quoted separately from the shared rate.'
+          : 'Private tours are quoted separately; the shared per-person rate does not apply.';
+      } else if (type === 'shared' && n > 0 && n < 3) {
+        text = `Shared departures go ahead once at least 3 travelers are confirmed. You can still request a place for ${n === 1 ? '1 traveler' : '2 travelers'} — we will keep you updated${isWeekend ? ', or arrange a private weekend for you' : ''}.`;
+      } else if (type === 'shared' && n >= 3) {
+        text = 'Thank you — we will confirm availability and whether the departure has operational approval before anything is confirmed.';
+      }
+      groupHint.textContent = text;
+      groupHint.hidden = !text;
+    };
+    travelersInput?.addEventListener('input', updateHint);
+    bookingType?.addEventListener('change', updateHint);
 
     const humanize = (value = '') => String(value)
       .replace(/^\/+|\/+$/g, '')
@@ -136,8 +228,18 @@
       return el?.getAttribute('data-tour-code') || '';
     };
 
-    const openModal = ({ tour, slug, date, travelers, flow, entityType, entityCode, productClass } = {}) => {
+    const openModal = ({ tour, slug, date, travelers, flow, entityType, entityCode, productClass, departureId, departureStart, departureEnd, type, arrivalOption, weekend } = {}) => {
       form.reset();
+      isWeekend = Boolean(weekend) || pageTourSlug() === 'weekend-in-kabul';
+      if (depId) depId.value = departureId || '';
+      if (depStart) depStart.value = departureStart || '';
+      if (depEnd) depEnd.value = departureEnd || '';
+      if (depRow) depRow.hidden = !departureId;
+      if (depLabel) depLabel.value = departureId ? (date || `${departureStart} – ${departureEnd}`) : '';
+      if (bookingType) bookingType.value = type || (departureId ? 'shared' : '');
+      if (arrivalRow) arrivalRow.hidden = !isWeekend;
+      if (arrival) arrival.value = arrivalOption || '';
+      if (extrasRow) extrasRow.hidden = !isWeekend;
       const resolvedSlug = slug || pageTourSlug();
       const resolvedName = tour || pageTourTitle();
       const resolvedClass = productClass || pageProductClass();
@@ -157,11 +259,16 @@
       if (dateInput && date) dateInput.value = date;
       if (travelersInput && travelers) travelersInput.value = travelers;
       if (status) status.textContent = '';
+      updateHint();
 
       if (eyebrow) eyebrow.textContent = resolvedFlow === 'scheduled' ? 'Scheduled tour inquiry' : 'Tour inquiry';
       if (entityLabel) entityLabel.textContent = 'Tour';
       if (titleEl) titleEl.textContent = 'Plan this journey';
-      if (lead) lead.textContent = 'Tell us your dates and group details. The tour you selected is already filled in.';
+      if (lead) lead.textContent = departureId
+        ? 'Request a place on this departure. Our team confirms availability and arrangements with you — nothing is confirmed automatically.'
+        : 'Tell us your dates and group details. The tour you selected is already filled in.';
+      if (titleEl && departureId) titleEl.textContent = 'Request a place';
+      if (titleEl && type === 'private') titleEl.textContent = 'Request a private tour';
 
       modal.hidden = false;
       document.documentElement.classList.add('tour-inquiry-open');
@@ -197,6 +304,12 @@
       let productClass = trigger.getAttribute('data-product-class') || '';
       let flow = trigger.getAttribute('data-inquiry-flow') || '';
       let entityCode = trigger.getAttribute('data-tour-code') || '';
+      const departureId = trigger.getAttribute('data-departure-id') || '';
+      const departureStart = trigger.getAttribute('data-departure-start') || '';
+      const departureEnd = trigger.getAttribute('data-departure-end') || '';
+      const type = trigger.getAttribute('data-booking-type') || '';
+      const arrivalOption = trigger.getAttribute('data-arrival-option') || '';
+      const weekend = trigger.getAttribute('data-weekend') === '1';
 
       if (rawHref) {
         try {
@@ -214,7 +327,7 @@
       }
 
       event.preventDefault();
-      openModal({ tour, slug, date, travelers, flow, productClass, entityCode });
+      openModal({ tour, slug, date, travelers, flow, productClass, entityCode, departureId, departureStart, departureEnd, type, arrivalOption, weekend });
     });
 
     document.addEventListener('submit', (event) => {
@@ -246,6 +359,11 @@
 
       // Keep entity_name aligned with the visible tour field.
       if (entityNameInput && tourInput) entityNameInput.value = tourInput.value;
+      if (extrasHidden) {
+        extrasHidden.value = [...form.querySelectorAll('[data-inquiry-extra]:checked')].map((el) => el.value).join('; ');
+        data.set('extras', extrasHidden.value);
+      }
+      if (entityNameInput) data.set('entity_name', entityNameInput.value);
 
       if (submit) {
         submit.disabled = true;
@@ -261,15 +379,15 @@
         const result = await response.json().catch(() => ({}));
         if (!response.ok || result.ok === false) throw new Error(result.message || 'Unable to send inquiry.');
 
-        if (status) status.textContent = 'Thank you. Your inquiry has been sent to AfghanTours.';
-        form.querySelectorAll('input:not([readonly]):not([type="hidden"]), textarea').forEach((el) => { el.value = ''; });
-        setTimeout(closeModal, 1600);
+        if (status) status.textContent = result.message || CONFIRMATION;
+        form.querySelectorAll('input:not([readonly]):not([type="hidden"]):not([type="checkbox"]), textarea').forEach((el) => { el.value = ''; });
+        setTimeout(closeModal, 4000);
       } catch (error) {
         if (status) status.textContent = error?.message || 'Unable to send inquiry. Please email info@afghantours.com.';
       } finally {
         if (submit) {
           submit.disabled = false;
-          submit.textContent = 'Send inquiry';
+          submit.textContent = 'Send request';
         }
       }
     });
@@ -290,6 +408,13 @@
   .tour-inquiry-form { padding: 1.35rem 1.7rem 1.7rem; }
   .tour-inquiry-form__grid { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
   .tour-inquiry-form label { display: grid; gap: .38rem; margin: 0 0 .9rem; color: #101820; font-size: .78rem; font-weight: 900; }
+  .tour-inquiry-form [hidden] { display: none !important; }
+  .tour-inquiry-form select { width: 100%; box-sizing: border-box; border: 1px solid #d6c8b4; border-radius: .72rem; background: #fff; color: #101820; padding: .85rem .9rem; font: inherit; min-height: 48px; }
+  .tour-inquiry-form__hint { margin: -.2rem 0 .9rem; padding: .7rem .85rem; border-left: 3px solid #c99027; background: #fbf6ec; color: #4d473e; font-size: .8rem; line-height: 1.5; }
+  .tour-inquiry-form__extras { margin: 0 0 .9rem; padding: 0; border: 0; }
+  .tour-inquiry-form__extras legend { margin-bottom: .45rem; font-size: .78rem; font-weight: 900; }
+  .tour-inquiry-form__extras label { display: flex !important; align-items: center; gap: .55rem; margin: 0 0 .35rem !important; font-weight: 700 !important; }
+  .tour-inquiry-form__extras input { width: auto !important; }
   .tour-inquiry-form input, .tour-inquiry-form textarea { width: 100%; box-sizing: border-box; border: 1px solid #d6c8b4; border-radius: .72rem; background: #fff; color: #101820; padding: .85rem .9rem; font: inherit; }
   .tour-inquiry-form input[readonly] { background: #f2eadf; font-weight: 800; }
   .tour-inquiry-form input:focus, .tour-inquiry-form textarea:focus { outline: 2px solid rgba(214,162,58,.28); border-color: #c99027; }

@@ -2,11 +2,22 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FeaturedTours from '../components/FeaturedTours.astro';
 import TourDirectory from '../components/TourDirectory.astro';
-import { getItineraryTours, getScheduledTours, getPrivateFixedTours } from '../lib/buildRelations';
+import { getItineraryTours } from '../lib/buildRelations';
+import { catalogByCategory, getCategory } from '../lib/booking/site';
 
 const itineraryTours = getItineraryTours().filter((tour) => tour.is_active !== false && tour.slug);
-const scheduled = getScheduledTours().filter((tour) => tour.is_active !== false && tour.slug);
-const privateFixed = getPrivateFixedTours().filter((tour) => tour.is_active !== false && tour.slug);
+// Classification A–D comes from data/booking/tours-catalog.json (James's spec, Part 2).
+const inCategory = (key: string) => {
+  const order = catalogByCategory(key).map((t) => t.slug);
+  return itineraryTours
+    .filter((tour) => order.includes(tour.slug))
+    .sort((a, b) => order.indexOf(a.slug) - order.indexOf(b.slug));
+};
+const groupTours = inCategory('A');
+const groupAndPrivate = inCategory('B');
+const privateTours = inCategory('C');
+const services = catalogByCategory('D');
+const cat = { A: getCategory('A'), B: getCategory('B'), C: getCategory('C'), D: getCategory('D') };
 
 const featuredTours = itineraryTours
   .filter((tour) => String(tour.is_featured ?? '').trim() === '1')
@@ -15,7 +26,7 @@ const featuredTours = itineraryTours
 
 <BaseLayout
   title="Tours | AfghanTours"
-  description="Explore scheduled and private Afghanistan tours, with routes and itineraries planned from Kabul."
+  description="Afghanistan group tours with published departures, private tours on established routes, and custom or specialist travel planned from Kabul."
   image="/assets/images/heroes/tours/hero.webp"
 >
   <FeaturedTours tours={featuredTours} />
@@ -23,56 +34,70 @@ const featuredTours = itineraryTours
   <section class="tour-list-intro">
     <div>
       <p>Tour Packages</p>
-      <h1>Scheduled Tours &amp; Private Fixed Itineraries</h1>
+      <h1>Group Departures &amp; Private Tours</h1>
       <span>
-        Choose a scheduled departure or a private journey on one of our established routes. For something different, build a custom journey around your own dates and interests.
+        Join a published group departure, travel privately on one of our established routes, or ask us to plan
+        something around your own brief. Group departures go ahead once at least three travelers are confirmed.
       </span>
+      <nav class="class-jump" aria-label="Tour categories">
+        <a href="#scheduled-tours">{cat.A.label}</a>
+        <a href="#scheduled-private-tours">{cat.B.label}</a>
+        <a href="#private-tours">{cat.C.label}</a>
+        <a href="#custom-specialist">{cat.D.label}</a>
+      </nav>
     </div>
   </section>
 
   <section class="class-band" id="scheduled-tours">
     <div class="class-wrap">
-      <p class="class-kicker">Scheduled Tours</p>
-      <h2>Seasonal departures</h2>
-      <p class="class-copy">Travel on a planned route with a published duration and departure window. Where a verified starting price is available, we show it.</p>
+      <p class="class-kicker">A · {cat.A.label}</p>
+      <h2>Published group departures</h2>
+      <p class="class-copy">{cat.A.summary} Each tour can also run privately.</p>
     </div>
-    <TourDirectory tours={scheduled} />
+    <TourDirectory tours={groupTours} showFilters={false} id="tour-directory-a" />
   </section>
 
-  <section class="class-band class-band--alt" id="private-tours">
+  <section class="class-band class-band--alt" id="scheduled-private-tours">
     <div class="class-wrap">
-      <p class="class-kicker">Private Tours</p>
-      <h2>Choose your dates on an established route</h2>
-      <p class="class-copy">Travel privately on a defined itinerary, with dates arranged around your schedule.</p>
+      <p class="class-kicker">B · {cat.B.label}</p>
+      <h2>Selected group dates, or your own</h2>
+      <p class="class-copy">{cat.B.summary}</p>
     </div>
-    <TourDirectory tours={privateFixed} />
+    <TourDirectory tours={groupAndPrivate} showFilters={false} id="tour-directory-b" />
   </section>
 
-  <section class="outbound">
-    <div class="outbound-grid">
-      <a href="/custom-requests/" class="outbound-card">
-        <p>Custom Journey</p>
-        <h3>Build My Journey</h3>
-        <span>Start with your dates and interests. We will shape the route, pace, accommodation, and quotation with you.</span>
-      </a>
-      <a href="/specialist-services/" class="outbound-card">
-        <p>Specialist Services</p>
-        <h3>Travel support for specialist work</h3>
-        <span>Photography, research, media, business, mountaineering, and other purpose-built travel.</span>
-      </a>
-      <a href="/return-journeys/" class="outbound-card">
-        <p>Return Journeys</p>
-        <h3>Return with purpose</h3>
-        <span>Heritage, diaspora, veteran, and personal return visits planned around the places that matter to you.</span>
-      </a>
+  <section class="class-band" id="private-tours">
+    <div class="class-wrap">
+      <p class="class-kicker">C · {cat.C.label}</p>
+      <h2>Private dates on established routes</h2>
+      <p class="class-copy">{cat.C.summary}</p>
+    </div>
+    <TourDirectory tours={privateTours} showFilters={false} id="tour-directory-c" />
+  </section>
+
+  <section class="class-band class-band--alt services" id="custom-specialist">
+    <div class="class-wrap">
+      <p class="class-kicker">D · {cat.D.label}</p>
+      <h2>Planned around your brief</h2>
+      <p class="class-copy">{cat.D.summary} Route designed around your requirements.</p>
+      <ul class="service-list">
+        {services.map((svc) => (
+          <li><a href={svc.current_page}>{svc.name}</a></li>
+        ))}
+      </ul>
+      <p class="service-more">
+        <a href="/custom-requests/">Build My Journey</a>
+        <a href="/specialist-services/">All specialist services</a>
+        <a href="/return-journeys/">Return journeys</a>
+      </p>
     </div>
   </section>
 </BaseLayout>
 
 <style>
   .tour-list-intro {
-    background: var(--at-white);
-    color: var(--at-ink);
+    background: #ffffff;
+    color: #101820;
     padding: clamp(3.5rem, 5vw, 5rem) 0 1rem;
     border-top: 1px solid rgba(16,24,32,.08);
   }
@@ -83,26 +108,26 @@ const featuredTours = itineraryTours
   }
   .tour-list-intro p {
     margin: 0;
-    color: var(--at-gold-text);
+    color: #b46b00;
     font-size: .72rem;
     letter-spacing: .22em;
     text-transform: uppercase;
     font-weight: 900;
   }
   .tour-list-intro h1 {
-    font-family: var(--font-display);
+    font-family: Georgia, "Times New Roman", serif;
     font-size: clamp(2.6rem, 4.5vw, 4.2rem);
     line-height: .98;
     letter-spacing: -.05em;
     margin: .5rem 0 1rem;
   }
   .tour-list-intro span {
-    color: var(--at-text);
+    color: #4b5563;
     line-height: 1.75;
     font-size: 1.05rem;
   }
   .class-band { padding-top: 1.5rem; }
-  .class-band--alt { background: var(--at-paper); padding-bottom: 1rem; }
+  .class-band--alt { background: #f7f4ee; padding-bottom: 1rem; }
   .class-wrap {
     width: min(1180px, calc(100% - 2rem));
     margin: 0 auto;
@@ -111,18 +136,29 @@ const featuredTours = itineraryTours
   }
   .class-kicker {
     margin: 0;
-    color: var(--at-gold-text);
+    color: #b46b00;
     font-size: .72rem;
     letter-spacing: .18em;
     text-transform: uppercase;
     font-weight: 900;
   }
   .class-wrap h2 {
-    font-family: var(--font-display);
+    font-family: Georgia, "Times New Roman", serif;
     font-size: clamp(1.8rem, 3vw, 2.4rem);
     margin: .4rem 0 .6rem;
   }
-  .class-copy { color: var(--at-text); line-height: 1.65; margin: 0 0 .5rem; }
+  .class-copy { color: #4b5563; line-height: 1.65; margin: 0 0 .5rem; }
+  .class-jump { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; margin-top: 1.4rem; }
+  .class-jump a { color: #101820; font-size: .86rem; font-weight: 800; text-decoration: underline; text-decoration-color: #d9a02d; text-underline-offset: 4px; }
+  .services { padding-bottom: 4rem; }
+  .service-list { list-style: none; margin: 1.25rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid #e3d8c6; }
+  .service-list li { border-bottom: 1px solid #e3d8c6; }
+  .service-list a { display: block; padding: .95rem 0; color: #101820; font-family: Georgia, "Times New Roman", serif; font-size: 1.2rem; text-decoration: none; }
+  .service-list a:hover { color: #9a5d04; }
+  .service-list li:nth-child(odd) a { padding-right: 1.5rem; }
+  .service-more { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; margin: 1.3rem 0 0; }
+  .service-more a { color: #9a5d04; font-size: .78rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; }
+  @media (max-width: 640px) { .service-list { grid-template-columns: 1fr; } .service-list li:nth-child(odd) a { padding-right: 0; } }
   .outbound {
     width: min(1180px, calc(100% - 2rem));
     margin: 0 auto 4.5rem;
@@ -133,8 +169,8 @@ const featuredTours = itineraryTours
     gap: 1rem;
   }
   .outbound-card {
-    background: var(--at-paper);
-    border: 1px solid var(--border-soft);
+    background: #f7f0e6;
+    border: 1px solid #dfd0bc;
     border-radius: .75rem;
     padding: 1.35rem 1.25rem;
     text-decoration: none;
@@ -143,18 +179,18 @@ const featuredTours = itineraryTours
   }
   .outbound-card p {
     margin: 0;
-    color: var(--at-gold-text);
+    color: #b46b00;
     font-size: .68rem;
     letter-spacing: .16em;
     text-transform: uppercase;
     font-weight: 900;
   }
   .outbound-card h3 {
-    font-family: var(--font-display);
+    font-family: Georgia, "Times New Roman", serif;
     font-size: 1.45rem;
     margin: .45rem 0 .55rem;
   }
-  .outbound-card span { color: var(--at-text); line-height: 1.55; display: block; font-size: .95rem; }
+  .outbound-card span { color: #4b5563; line-height: 1.55; display: block; font-size: .95rem; }
   @media (max-width: 900px) {
     .outbound-grid { grid-template-columns: 1fr; }
   }

@@ -1,0 +1,252 @@
+---
+/**
+ * Departure calendar block for a tour detail page (sidebar).
+ * Build time: renders the seed snapshot (published, not ended) — the no-JS / SEO fallback.
+ * Runtime: replaces the rows with /booking/departures.php (the live private inventory).
+ * Choosing a date opens the inquiry modal with the departure prefilled. It never confirms a place.
+ */
+import { bookingSettings, getCatalogTour, publicSnapshot } from '../../lib/booking/site';
+
+interface Props {
+  slug: string;
+  name: string;
+  code: string;
+  productClass: string;
+}
+const { slug, name, code, productClass } = Astro.props;
+const tour = getCatalogTour(slug) || {};
+const category = String(tour.category || 'C');
+const departures = publicSnapshot(slug);
+const isWeekend = Array.isArray(tour.arrival_options) && tour.arrival_options.length > 0;
+const wording = bookingSettings.wording || {};
+const min = tour.shared_min_group || 3;
+const next = departures.find((d) => d.selectable);
+
+const heading = category === 'C' ? 'Group departures (when announced)' : 'Group departures';
+const privateLead = isWeekend
+  ? 'Travel privately, even on your own — no group minimum. Private pricing is quoted separately.'
+  : category === 'C'
+    ? 'This route normally runs privately on your dates. Private pricing is quoted separately.'
+    : 'The same route on your own dates. Private pricing is quoted separately from the shared rate.';
+const common = {
+  'data-tour-title': name,
+  'data-tour-slug': slug,
+  'data-tour-code': code,
+  'data-tour-days': String(tour.duration_days || ''),
+  'data-weekend': isWeekend ? '1' : '',
+};
+---
+
+<section
+  class="tdp"
+  aria-label={`${name} departures`}
+  data-booking-departures
+  data-tour-slug={slug}
+  data-tour-name={name}
+  data-tour-code={code}
+  data-product-class={productClass}
+  data-category={category}
+  data-min={String(min)}
+  data-weekend={isWeekend ? '1' : ''}
+  data-tour-days={String(tour.duration_days || '')}
+  data-awaiting={wording.awaiting_minimum || ''}
+>
+  {isWeekend && (
+    <div class="tdp-weekend">
+      <p class="tdp-weekend__length">3 days / 2 nights</p>
+      <fieldset class="tdp-arrival">
+        <legend>Choose your arrival</legend>
+        <label><input type="radio" name="tdp-arrival" value="" checked /> <span>Any</span></label>
+        {tour.arrival_options.map((opt: any) => (
+          <label><input type="radio" name="tdp-arrival" value={opt.key} /> <span>{opt.label}</span></label>
+        ))}
+      </fieldset>
+    </div>
+  )}
+
+  <div class="tdp-head" data-departure-head hidden={category === 'C' && departures.length === 0}>
+    <h3>{heading}</h3>
+    <span data-next-departure>{next ? `Next: ${next.date_label}` : ''}</span>
+  </div>
+
+  <div class="tdp-rows" data-departure-list hidden={departures.length === 0}>
+    {departures.map((d) => (
+      <button
+        type="button"
+        class="tdp-row"
+        data-tour-inquiry
+        data-inquiry-flow="scheduled"
+        data-product-class={productClass}
+        data-booking-type={d.departure_type}
+        data-departure-id={d.id}
+        data-departure-start={d.start_date}
+        data-departure-end={d.end_date}
+        data-tour-date={d.date_label}
+        data-arrival-option={d.arrival_option || ''}
+        data-selectable={d.selectable ? '1' : ''}
+        disabled={!d.selectable}
+        {...common}
+      >
+        <span class="tdp-row__date">{d.date_label}</span>
+        <span class="tdp-row__status">{d.status_text}</span>
+        {d.confirmed_text && <span class="tdp-row__status">{d.confirmed_text}</span>}
+        <span class="tdp-row__cta">{d.cta}</span>
+      </button>
+    ))}
+  </div>
+
+  <p class="tdp-empty" data-departure-empty hidden={departures.length > 0 || category === 'C'}>
+    No group dates are published at the moment. Ask us about dates, or travel privately.
+  </p>
+  <p class="tdp-empty" data-arrival-empty hidden>No published dates for this arrival yet — ask us and we will look at it.</p>
+
+  {(departures.length > 0 || category !== 'C') && (
+    <p class="tdp-note">
+      Shared departures go ahead once at least {min} travelers are confirmed and our team approves the departure. {wording.selection_note}
+    </p>
+  )}
+
+  <div class="tdp-private">
+    <strong>{isWeekend ? 'Private Weekend in Kabul' : 'Private departure'}</strong>
+    <p>{privateLead}</p>
+    <button type="button" class="tdp-button tdp-button--dark" data-tour-inquiry data-inquiry-flow="private-fixed" data-product-class={productClass} data-booking-type="private" {...common}>Request Private Tour</button>
+  </div>
+
+  {isWeekend && (
+    <ul class="tdp-extras" aria-label="Additional options">
+      {(tour.extras || []).map((x: string) => <li>{x}</li>)}
+    </ul>
+  )}
+
+  <button type="button" class="tdp-button" data-tour-inquiry data-inquiry-flow={productClass === 'scheduled' ? 'scheduled' : 'private-fixed'} data-product-class={productClass} data-booking-type="" {...common}>Ask About Dates</button>
+</section>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector('[data-booking-departures]');
+    if (!root) return;
+    const list = root.querySelector('[data-departure-list]');
+    const empty = root.querySelector('[data-departure-empty]');
+    const arrivalEmpty = root.querySelector('[data-arrival-empty]');
+    const head = root.querySelector('[data-departure-head]');
+    const nextEl = root.querySelector('[data-next-departure]');
+    const category = root.dataset.category;
+    const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kabul', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+
+    const refresh = () => {
+      const arrival = root.querySelector('input[name="tdp-arrival"]:checked')?.value || '';
+      const rows = [...list.querySelectorAll('.tdp-row')];
+      let shown = 0;
+      let next = null;
+      rows.forEach((row) => {
+        const started = (row.dataset.departureStart || '') <= today;
+        if (started) { row.remove(); return; }
+        const match = !arrival || row.dataset.arrivalOption === arrival;
+        row.hidden = !match;
+        if (match) {
+          shown += 1;
+          if (!next && row.dataset.selectable === '1') next = row;
+        }
+      });
+      const total = list.querySelectorAll('.tdp-row').length;
+      list.hidden = shown === 0;
+      if (empty) empty.hidden = total > 0 || category === 'C';
+      if (arrivalEmpty) arrivalEmpty.hidden = !(arrival && total > 0 && shown === 0);
+      if (head) head.hidden = category === 'C' && total === 0;
+      if (nextEl) nextEl.textContent = next ? `Next: ${next.dataset.tourDate}` : '';
+    };
+
+    const render = (departures) => {
+      list.textContent = '';
+      departures.forEach((d) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'tdp-row';
+        b.setAttribute('data-tour-inquiry', '');
+        b.dataset.inquiryFlow = 'scheduled';
+        b.dataset.productClass = root.dataset.productClass || '';
+        b.dataset.bookingType = d.departure_type;
+        b.dataset.departureId = d.id;
+        b.dataset.departureStart = d.start_date;
+        b.dataset.departureEnd = d.end_date;
+        b.dataset.tourDate = d.date_label;
+        b.dataset.arrivalOption = d.arrival_option || '';
+        b.dataset.selectable = d.selectable ? '1' : '';
+        b.dataset.tourTitle = root.dataset.tourName || '';
+        b.dataset.tourSlug = root.dataset.tourSlug || '';
+        b.dataset.tourCode = root.dataset.tourCode || '';
+        b.dataset.tourDays = root.dataset.tourDays || '';
+        b.dataset.weekend = root.dataset.weekend || '';
+        b.disabled = !d.selectable;
+        const lines = [['tdp-row__date', d.date_label], ['tdp-row__status', d.status_text]];
+        if (d.confirmed_text) lines.push(['tdp-row__status', d.confirmed_text]);
+        if (d.remaining_places != null) lines.push(['tdp-row__status', `${d.remaining_places} places remaining`]);
+        lines.push(['tdp-row__cta', d.cta]);
+        lines.forEach(([cls, text]) => {
+          const s = document.createElement('span');
+          s.className = cls;
+          s.textContent = text;
+          b.appendChild(s);
+        });
+        list.appendChild(b);
+      });
+    };
+
+    root.querySelectorAll('input[name="tdp-arrival"]').forEach((input) => input.addEventListener('change', refresh));
+    refresh();
+
+    const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    const timer = setTimeout(() => ctrl?.abort(), 5000);
+    fetch(`/booking/departures.php?tour=${encodeURIComponent(root.dataset.tourSlug || '')}`, { headers: { Accept: 'application/json' }, signal: ctrl?.signal })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!data || data.ok !== true || !Array.isArray(data.departures)) return;
+        render(data.departures.filter((d) => d.tour_slug === root.dataset.tourSlug));
+        root.dataset.source = 'live';
+        refresh();
+      })
+      .catch(() => {})
+      .finally(() => clearTimeout(timer));
+  })();
+</script>
+
+<style is:global>
+  /* Global on purpose: rows are re-rendered from the live endpoint. All selectors are tdp-prefixed. */
+  .tdp { margin-top: 1rem; border-top: 1px solid #d8d4c9; padding-top: 1rem; }
+  .tdp-head { display: flex; justify-content: space-between; gap: .7rem; align-items: baseline; }
+  .tdp-head[hidden], .tdp-rows[hidden], .tdp-empty[hidden] { display: none; }
+  .tdp-head h3 { margin: 0; font-size: .9rem; }
+  .tdp-head span { color: #6e7069; font-size: .66rem; text-align: right; }
+  .tdp-rows { margin-top: .55rem; border: 1px solid #c8c5bc; border-radius: 10px; overflow: hidden; }
+  .tdp-row { display: grid; grid-template-columns: 1fr auto; column-gap: .6rem; row-gap: .15rem; width: 100%; align-items: center; padding: .8rem .75rem; border: 0; border-bottom: 1px solid #dedbd3; background: #fff; color: inherit; text-align: left; font: inherit; cursor: pointer; }
+  .tdp-row:last-child { border-bottom: 0; }
+  .tdp-row[hidden] { display: none; }
+  .tdp-row:hover:not(:disabled), .tdp-row:focus-visible { background: var(--tour-soft, #f6f2ea); outline: none; }
+  .tdp-row:disabled { cursor: default; opacity: .7; }
+  .tdp-row__date { grid-column: 1; font-size: .78rem; font-weight: 800; color: #1c1d1b; }
+  .tdp-row__status { grid-column: 1; color: #62645d; font-size: .68rem; line-height: 1.4; }
+  .tdp-row__cta { grid-column: 2; grid-row: 1 / span 3; align-self: center; color: #7b5b23; font-size: .66rem; font-weight: 900; letter-spacing: .02em; white-space: nowrap; text-decoration: underline; text-underline-offset: 3px; }
+  .tdp-row:disabled .tdp-row__cta { text-decoration: none; color: #6e7069; }
+  .tdp-empty { margin: .55rem 0 0; color: #5f615a; font-size: .72rem; line-height: 1.5; }
+  .tdp-note { margin: .7rem 0 0; color: #6b6d66; font-size: .64rem; line-height: 1.5; }
+  .tdp-private { margin-top: 1rem; padding-top: .9rem; border-top: 1px solid #ece8df; }
+  .tdp-private strong { display: block; font: 700 .98rem/1.25 Georgia, "Times New Roman", serif; }
+  .tdp-private p { margin: .35rem 0 .7rem; color: #62645d; font-size: .7rem; line-height: 1.5; }
+  .tdp-button { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 44px; margin-top: .6rem; border: 1px solid #1c1d1b; border-radius: 999px; padding: .7rem 1rem; background: transparent; color: #1c1d1b; font: inherit; font-size: .8rem; font-weight: 900; cursor: pointer; }
+  .tdp-button--dark { background: var(--tour-dark, #111917); border-color: var(--tour-dark, #111917); color: #fff; }
+  .tdp-button:hover { background: #d9a02d; border-color: #d9a02d; color: #111b16; }
+  .tdp-weekend { margin-bottom: 1rem; }
+  .tdp-weekend__length { margin: 0 0 .55rem; font-size: .8rem; font-weight: 900; }
+  .tdp-arrival { margin: 0; padding: 0; border: 0; display: flex; flex-wrap: wrap; gap: .45rem; }
+  .tdp-arrival legend { margin-bottom: .45rem; font-size: .72rem; font-weight: 800; color: #4b4d48; }
+  .tdp-arrival label { display: inline-flex; align-items: center; gap: .35rem; min-height: 40px; padding: .45rem .75rem; border: 1px solid #cbc8c0; border-radius: 999px; font-size: .72rem; font-weight: 800; cursor: pointer; }
+  .tdp-arrival input { accent-color: #1c1d1b; margin: 0; }
+  .tdp-arrival label:has(input:checked) { border-color: #1c1d1b; background: var(--tour-soft, #f6f2ea); }
+  .tdp-extras { margin: .8rem 0 0; padding: 0 0 0 1rem; color: #62645d; font-size: .7rem; line-height: 1.6; }
+  @media (max-width: 760px) {
+    .tdp-row { padding: .95rem .8rem; }
+    .tdp-row__date { font-size: .9rem; }
+    .tdp-row__status { font-size: .76rem; }
+    .tdp-row__cta { font-size: .74rem; }
+  }
+</style>
