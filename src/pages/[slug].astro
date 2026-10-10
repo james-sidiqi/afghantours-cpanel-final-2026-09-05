@@ -175,16 +175,7 @@ const policyItems = {
       'Travelers are expected to respect Afghan law and customs, cooperate with guides and drivers, arrive on time for planned movement, and accept itinerary changes when conditions require them.'
     ],
   ],
-  privacy: [
-    ['Information collected', 'We may collect your name, email, WhatsApp number, nationality, dates, group size, interests, and inquiry details.'],
-    ['How information is used', 'Information is used to respond to inquiries, prepare itinerary options, and coordinate requested travel services.'],
-    ['Information sharing', 'Necessary details may be shared with operational partners only when needed for hotels, transport, guiding, documentation, or itinerary planning.'],
-  ],
-  terms: [
-    ['Inquiries are not bookings', 'Submitting an inquiry does not create a confirmed booking. How and when a booking is confirmed, including deposits and payment, is set out in our Cancellation, Refund & Rescheduling Policy (link below).'],
-    ['Changes and availability', 'Hotels, vehicles, flights, routes, permits, and prices may change based on timing, access, weather, and operational conditions.'],
-    ['Traveler responsibility', 'Travelers must follow local guidance, respect Afghan culture and law, and avoid unauthorized photography or activity.'],
-  ],
+  // terms / privacy: the owner's full documents (src/content/legal/) replace the interim summaries.
 };
 
 // The Cancellation, Refund & Rescheduling Policy (effective 28 Sep 2026) is one authoritative document at
@@ -198,7 +189,8 @@ const legalDocSlug = Astro.params.slug === 'terms' ? 'terms-and-conditions' : As
 const legalDoc = legalDocSlug ? await getEntry('legal', legalDocSlug) : null;
 const legalDocLive = legalDoc?.data.full_text_received === true;
 const LegalDocContent = legalDocLive ? (await legalDoc.render()).Content : null;
-const showIdentity = ['terms', 'privacy', 'contact'].includes(Astro.params.slug);
+// Terms/Privacy carry the identity inside the owner's document once published (plus the site footer).
+const showIdentity = Astro.params.slug === 'contact' || (['terms', 'privacy'].includes(Astro.params.slug) && !legalDocLive);
 
 const aboutItems = [
   ['Licensed Kabul Operator', 'AfghanTours.com is owned and operated by James Tourist & Travel Agency, a licensed Afghanistan travel operator based in Kabul.'],
@@ -374,7 +366,7 @@ const trustItems = [
           {legalDocLive && LegalDocContent ? (
             <section class="legal-doc-full">
               <article class="content-card" data-legal-document={legalDocSlug}>
-                {legalDoc.data.effective_date && <p class="legal-doc-meta">Effective Date: {legalDoc.data.effective_date}</p>}
+                <h2 class="legal-doc-title">{legalDoc.data.title}</h2>
                 <LegalDocContent />
               </article>
             </section>
@@ -389,7 +381,11 @@ const trustItems = [
             </section>
           )}
 
-          {Astro.params.slug === 'terms' && cancellationPolicyLive && (
+          {Astro.params.slug === 'terms' && legalDocLive && (
+            /* Old anchors kept so earlier links to /terms/#… still land on the document. */
+            <span id="scheduled-departures-minimum-group-size"></span>
+          )}
+          {Astro.params.slug === 'terms' && cancellationPolicyLive && !legalDocLive && (
             <section class="policy-clause" id="cancellation-refund-rescheduling" data-policy-pointer>
               {/* Old anchors kept so earlier links to /terms/#… still land here. */}
               <span id="scheduled-departures-minimum-group-size"></span><span id="payments-currency-refunds"></span><span id="cancellation-policy-link"></span>
@@ -796,5 +792,11 @@ const trustItems = [
   [data-policy-pointer] p + p { margin-top: .9rem; }
   .legal-identity { max-width: 1180px; margin: 2rem auto 0; padding: 0 1rem; text-align: center; font-size: .86rem; color: #4b5563; }
   .legal-doc-full { max-width: 860px; margin: 0 auto; }
-  .legal-doc-meta { font-weight: 700; }
+  .legal-doc-full :global(h2) { font-family: Georgia, 'Times New Roman', serif; margin: 2rem 0 .6rem; scroll-margin-top: 6rem; }
+  .legal-doc-full :global(.legal-doc-title) { margin-top: 0; font-size: clamp(1.7rem, 3vw, 2.2rem); }
+  .legal-doc-full :global(p), .legal-doc-full :global(li) { line-height: 1.7; }
+  .legal-doc-full :global(p) { margin: 0 0 1rem; }
+  .legal-doc-full :global(ul) { margin: 0 0 1rem; padding-left: 1.2rem; list-style: disc; }
+  .legal-doc-full :global(ul.legal-numbered) { list-style: none; padding-left: .4rem; }
+  .legal-doc-full :global(a) { color: #8a5a12; text-decoration: underline; text-underline-offset: 2px; }
 </style>

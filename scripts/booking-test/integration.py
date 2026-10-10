@@ -214,7 +214,7 @@ try:
     check('INTERNAL-SECRET-NOTE' not in body, 'internal notes never public')
     def add_trav(name, status, size='1', pay='payment_received'):
         form = {'csrf': csrf, 'op': 'add', 'departure_id': new_id, 'name': name, 'party_size': size, 'email': name.lower() + '@example.com', 'status': status, 'payment_status': pay}
-        if status in ('accepted', 'confirmed'): form.update({'acceptance_method': 'email_reply', 'accept_terms': '1', 'accept_policy': '1'})
+        if status in ('accepted', 'confirmed'): form.update({'acceptance_method': 'email_reply', 'accept_terms': '1', 'accept_policy': '1', 'accept_government': '1'})
         return req(adm, '/manage/?a=traveler', form)
     def pub_status():
         b = req(pub, '/booking/departures.php?tour=kandahar-durrani-empire-tour')[1]
@@ -233,6 +233,15 @@ try:
     code, body, _ = add_trav('Unpaid Uma', 'confirmed', '1', 'not_recorded')
     check('Not confirmed' in body and '25% deposit not recorded' in body, 'booking cannot be confirmed before the 25% deposit is recorded')
     add_trav('Unpaid Uma', 'accepted', '1', 'not_recorded'); s, b = pub_status()
+    code, body, _ = req(adm, '/manage/?a=traveler', {'csrf': csrf, 'op': 'add', 'departure_id': new_id, 'name': 'Nogov Nell', 'party_size': '1', 'status': 'confirmed', 'payment_status': 'payment_received', 'acceptance_method': 'email_reply', 'accept_terms': '1', 'accept_policy': '1'})
+    check('Not confirmed' in body and 'Government travel permissions acknowledgement not recorded' in body, 'booking cannot be confirmed without the Government travel permissions acknowledgement')
+    req(adm, '/manage/?a=traveler', {'csrf': csrf, 'op': 'add', 'departure_id': new_id, 'name': 'Rec Rita', 'party_size': '1', 'status': 'accepted', 'payment_status': 'not_recorded'})
+    rita = [t for t in json.load(open(private / 'booking' / 'travelers.json'))['travelers'] if t['name'] == 'Rec Rita'][0]
+    eb = req(adm, f'/manage/?a=edit&id={new_id}')[1]
+    check('name="accept_government"' in eb and 'provincial travel permissions, notifications, or access approvals.' in eb, 'acceptance step offers the Government travel permissions acknowledgement with its exact text')
+    code, body, _ = req(adm, '/manage/?a=traveler', {'csrf': csrf, 'op': 'record_acceptance', 'departure_id': new_id, 'traveler_id': rita['id'], 'acceptance_method': 'signed_form', 'accept_terms': '1', 'accept_policy': '1', 'accept_government': '1'})
+    check('Acceptance recorded: Terms & Conditions + Cancellation, Refund & Rescheduling Policy + Government travel permissions' in body.replace('&amp;', '&'), 'recording step stores all three acknowledgements')
+    code, body, _ = req(adm, '/manage/?a=traveler', {'csrf': csrf, 'op': 'update', 'departure_id': new_id, 'traveler_id': rita['id'], 'status': 'cancelled', 'payment_status': 'not_recorded'})
     check(s == 'open', 'accepted booking without payment received does not count (5 + 1 unpaid → open)')
     eb = req(adm, f'/manage/?a=edit&id={new_id}')[1]
     check('Accepted, payment not recorded (not counted): 1' in eb and 'not counted' in eb, 'admin shows accepted-unpaid separately')
@@ -310,12 +319,14 @@ try:
     check('Eid special request — MANUAL REVIEW' in pb, 'private departure in Eid block flagged for manual review')
     code, body, _ = req(adm, '/manage/?a=traveler', {'csrf': csrf, 'op': 'add', 'departure_id': pid, 'name': 'Solo Sam', 'party_size': '1', 'status': 'confirmed', 'payment_status': 'not_recorded'})
     check('manual review required' in body and 'Solo Sam' not in body.split('Add traveler')[0], 'private Eid booking cannot be confirmed without the review note')
-    code, body, _ = req(adm, '/manage/?a=traveler', {'csrf': csrf, 'op': 'add', 'departure_id': pid, 'name': 'Solo Sam', 'party_size': '1', 'status': 'confirmed', 'payment_status': 'deposit_received', 'acceptance_method': 'email_reply', 'accept_terms': '1', 'accept_policy': '1', 'eid_review_note': 'Guide+driver confirmed, hotel open, site access ok'})
+    code, body, _ = req(adm, '/manage/?a=traveler', {'csrf': csrf, 'op': 'add', 'departure_id': pid, 'name': 'Solo Sam', 'party_size': '1', 'status': 'confirmed', 'payment_status': 'deposit_received', 'acceptance_method': 'email_reply', 'accept_terms': '1', 'accept_policy': '1', 'accept_government': '1', 'eid_review_note': 'Guide+driver confirmed, hotel open, site access ok'})
     check('Traveler added' in body and 'ATB-2' in body, 'private solo booking confirmed after manual review; booking reference issued')
     trs = json.load(open(private / 'booking' / 'travelers.json'))['travelers']
     sam = [t for t in trs if t['name'] == 'Solo Sam'][0]
     ta, pa = sam.get('terms_acceptance') or {}, sam.get('policy_acceptance') or {}
-    check(ta.get('document') == 'terms-and-conditions' and pa.get('document') == 'cancellation-refund-rescheduling' and pa.get('effective_date') == '2026-09-28' and ta.get('booking_reference') == sam['booking_reference'] and ta.get('method') == 'email_reply' and ta.get('accepted_at') and ta.get('document_final') is False, 'confirmed booking carries Terms + Policy acceptance records (reference, document, effective date/version, timestamp, method)')
+    check(ta.get('document') == 'terms-and-conditions' and pa.get('document') == 'cancellation-refund-rescheduling' and pa.get('effective_date') == '2026-09-28' and ta.get('booking_reference') == sam['booking_reference'] and ta.get('method') == 'email_reply' and ta.get('accepted_at') and ta.get('document_final') is True and ta.get('effective_date') == '2026-10-10', 'confirmed booking carries Terms + Policy acceptance records (reference, document, effective date/version, timestamp, method)')
+    ga = sam.get('government_acknowledgement') or {}
+    check(ga.get('document_name') == 'Government travel permissions' and ga.get('acknowledgement_text') == 'I understand that travel within Afghanistan may require AfghanTours to provide relevant identification and itinerary information to Afghan government authorities before or during my trip for permits, registrations, provincial travel permissions, notifications, or access approvals.' and ga.get('booking_reference') == sam['booking_reference'] and ga.get('accepted_at'), 'booking stores the Government travel permissions acknowledgement (exact text, timestamp, booking reference)')
     pt = sam.get('payment_terms') or {}
     check(pt.get('deposit_percent') == 25 and pt.get('full_payment_due_on_confirmation') is False and pt.get('balance_due_date') == '2027-04-16', 'payment terms: 25% deposit, balance due 30 days before departure (16 Apr 2027)')
     # ---- short-tour (≤4 days) 14-day minimum-group review ----
@@ -360,7 +371,7 @@ try:
     check('Minimum not reached — operational decision required · REVIEW OVERDUE' in body, 'known below-minimum shows the overdue decision flag')
     code, body, _ = req(adm, '/manage/?a=op', {'csrf': csrf, 'id': 'DEP-KTDE-20261026', 'op': 'approve_exception', 'note': 'try'})
     check('needs the approval note/reason, the pricing-review acknowledgement and operational approval' in body, 'decision B requires note + pricing review + operational approval')
-    req(adm, '/manage/?a=traveler', {'csrf': csrf, 'op': 'add', 'departure_id': 'DEP-KTDE-20261026', 'name': 'Kara', 'party_size': '1', 'email': 'kara@example.com', 'status': 'confirmed', 'payment_status': 'payment_received', 'acceptance_method': 'email_reply', 'accept_terms': '1', 'accept_policy': '1'})
+    req(adm, '/manage/?a=traveler', {'csrf': csrf, 'op': 'add', 'departure_id': 'DEP-KTDE-20261026', 'name': 'Kara', 'party_size': '1', 'email': 'kara@example.com', 'status': 'confirmed', 'payment_status': 'payment_received', 'acceptance_method': 'email_reply', 'accept_terms': '1', 'accept_policy': '1', 'accept_government': '1'})
     code, body, _ = req(adm, '/manage/?a=op', {'csrf': csrf, 'id': 'DEP-KTDE-20261026', 'op': 'offer_private', 'note': 'Private 6-day Kandahar quoted separately'})
     check('Private option recorded' in body and 'private option offered' in body, 'decision C records a private offer on bookings (no conversion)')
     kara = [t for t in json.load(open(private / 'booking' / 'travelers.json'))['travelers'] if t['name'] == 'Kara'][0]

@@ -11,7 +11,7 @@ const read = (p) => readFileSync(path.join(DIST, p), 'utf8');
 const POLICY = 'cancellation-refund-rescheduling/index.html';
 const decode = (s) => s.replace(/&nbsp;/g, ' ').replace(/&#x27;|&#39;/g, "'").replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(+n)).replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16))).replace(/&amp;/g, '&');
 const text = (html) => decode(html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
-const norm = (s) => s.replace(/[*_#>`]/g, ' ').replace(/\s+/g, ' ').trim();
+const norm = (s) => s.replace(/[*_#>`]/g, ' ').replace(/\s+/g, ' ').replace(/ ([;,.:])/g, '$1').trim();
 const policyArticle = () => { const h = read(POLICY); const m = h.match(/<article[^>]*data-policy-document[^>]*>([\s\S]*?)<\/article>/); assert.ok(m, 'policy article present'); return m[1]; };
 // Owner's text as received (copied unchanged from specs/policy-2026-09-28-verbatim.txt).
 const source = readFileSync(path.join(ROOT, 'scripts/booking-test/policy-2026-09-28-verbatim.txt'), 'utf8');
@@ -46,9 +46,25 @@ const POLICY_CLAUSES = [/refund 100%|100% of the amount paid/i, /administrative 
 test('/terms/ links to the policy and contains no duplicated policy clauses', () => {
   const h = read('terms/index.html');
   assert.ok(h.includes('href="/cancellation-refund-rescheduling/"'), 'terms links to policy');
-  assert.ok(/data-policy-pointer/.test(h), 'pointer section');
+  assert.ok(/data-policy-pointer/.test(h) || /data-legal-document="terms-and-conditions"/.test(h), 'pointer section, or the owner\'s full Terms (which link to the policy)');
   const main = text(h);
-  for (const re of POLICY_CLAUSES) assert.ok(!re.test(main) && !re.test(h.replace(/<footer[\s\S]*<\/footer>/, '')), `terms duplicates policy clause ${re}`);
+  // The owner's final Terms (10 Oct 2026) state the group-size and review rules themselves (sections 3–4) and leave
+  // refunds to the policy (section 12). Refund/cancellation clauses must never be duplicated on /terms/.
+  const termsLive = /data-legal-document="terms-and-conditions"/.test(h);
+  const ownerStated = [/require a minimum of (6|six) confirmed travelers/i, /45 days before departure/i];
+  for (const re of POLICY_CLAUSES.filter((r) => !(termsLive && ownerStated.some((o) => o.source === r.source)))) assert.ok(!re.test(main) && !re.test(h.replace(/<footer[\s\S]*<\/footer>/, '')), `terms duplicates policy clause ${re}`);
+  if (termsLive) assert.ok(/Refunds are governed by the separate <a href="\/cancellation-refund-rescheduling\/">Cancellation, Refund (&amp;|&#x26;|&) Rescheduling Policy<\/a>/.test(h), 'section 12 links the policy name');
+});
+test('/terms/ section 25 links the Privacy Policy name; all three legal routes public, indexable, in the sitemap', () => {
+  assert.ok(/handled according to the <a href="\/privacy\/">AfghanTours\.com Privacy Policy<\/a>/.test(read('terms/index.html')));
+  const sm = read('sitemap.xml');
+  for (const r of ['terms', 'privacy', 'cancellation-refund-rescheduling']) {
+    const h = read(`${r}/index.html`);
+    assert.ok(!/<meta name="robots" content="[^"]*noindex/i.test(h), `${r} indexable`);
+    assert.ok(h.includes(`<link rel="canonical" href="https://afghantours.com/${r}/"`), `${r} canonical`);
+    assert.ok(sm.includes(`<loc>https://afghantours.com/${r}/</loc>`), `${r} in sitemap`);
+  }
+  assert.ok(!read('terms/index.html').includes('data-legal-interim') && !read('privacy/index.html').includes('data-legal-interim'), 'no interim summaries');
 });
 test('footer lists the policy next to the other legal pages', () => {
   for (const p of ['terms/index.html', 'index.html', 'faq/index.html']) {
@@ -82,19 +98,24 @@ test('general inquiry forms do not require policy acceptance', () => {
     assert.ok(!/<input[^>]*(policy|terms)_?accept[^>]*>/i.test(h), `${p}: acceptance field`);
     assert.ok(!/<input[^>]*type="checkbox"[^>]*required[^>]*>[^<]*(polic|terms)/i.test(h), `${p}: required policy checkbox`);
   }
-  assert.ok(!/policy_accept|terms_accept|accept_policy/.test(readFileSync(path.join(ROOT, 'public/tour-inquiry.php'), 'utf8')), 'inquiry handler requires no acceptance');
+  assert.ok(!/policy_accept|terms_accept|accept_policy|accept_government|government_acknowledgement/.test(readFileSync(path.join(ROOT, 'public/tour-inquiry.php'), 'utf8')), 'inquiry handler requires no acceptance or acknowledgement');
 });
 test('no proposed departure is public in the built site', () => {
   const seed = JSON.parse(readFileSync(path.join(ROOT, 'data/booking/departures.json'), 'utf8')).departures;
-  const proposed = seed.filter((d) => d.status === 'proposed');
-  assert.equal(proposed.length, 55);
+  const proposed = seed.filter((d) => d.status === 'proposed' || d.status === 'withdrawn');
+  assert.equal(proposed.length, 55, 'the 55 proposals are all kept (54 proposed + 1 withdrawn duplicate)');
+  const wd = seed.filter((d) => d.status === 'withdrawn');
+  assert.ok(wd.length === 1 && wd[0].id === 'DEP-WKND-20270305' && wd[0].published === false && wd[0].internal_notes === 'Superseded by published Weekend in Kabul departure 5–7 March 2027.', 'duplicate Weekend proposal withdrawn, not deleted');
   assert.ok(proposed.every((d) => d.published === false && d.price_approved === false && d.operational_approval === 'pending'), 'proposed stay unpublished / price not approved / ops pending');
   const pages = html.filter((p) => p.includes(`${path.sep}tours${path.sep}`)).map((p) => readFileSync(p, 'utf8')).join('\n');
   for (const d of proposed) assert.ok(!pages.includes(`data-departure-id="${d.id}"`), d.id);
 });
 test('payments are disabled (no payment UI or endpoints in this build)', () => {
   assert.ok(!existsSync(path.join(DIST, 'pay')) && !existsSync(path.join(DIST, 'payments')) && !existsSync(path.join(DIST, 'checkout')), 'no payment routes');
-  for (const p of html) assert.ok(!/hesab|checkout|pay now/i.test(text(readFileSync(p, 'utf8'))), `payment wording in ${p}`);
+  // The owner's Terms/Privacy documents describe payment providers generically; everything else must carry no payment UI wording.
+  const strip = (h) => h.replace(/<article[^>]*data-legal-document[\s\S]*?<\/article>/g, '');
+  for (const p of html) assert.ok(!/hesab|checkout|pay now/i.test(text(strip(readFileSync(p, 'utf8')))), `payment wording in ${p}`);
+  for (const p of ['terms/index.html', 'privacy/index.html']) assert.ok(!/hesab/i.test(read(p)), `no provider named in ${p}`);
 });
 test('Eid presentation: compact collapsible info when no displayed departure conflicts', () => {
   for (const p of ['tours/winter-circuit/index.html', 'tours/weekend-in-kabul/index.html', 'tours/bamyan-skiing-tour/index.html']) {
@@ -121,7 +142,7 @@ for (const [slug, file, page] of [['terms-and-conditions', 'terms-and-conditions
       assert.ok(existsSync(src), `verbatim source ${data.source_file} present`);
       const m = h.match(new RegExp(`<article[^>]*data-legal-document="${slug}"[^>]*>([\\s\\S]*?)</article>`));
       assert.ok(m, 'full document rendered');
-      const rendered = norm(text(m[1]).replace(/^Effective Date: \S+ /, ''));
+      const rendered = norm(text(m[1]));
       assert.equal(rendered, norm(readFileSync(src, 'utf8')));
     } else {
       assert.equal(body.trim(), '', 'no legal text written while the owner text is pending');

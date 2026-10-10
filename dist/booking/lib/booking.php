@@ -24,7 +24,8 @@ if (!defined('ATB_LIB')) {
 }
 
 const ATB_SCHEMA = 1;
-const ATB_STORED_STATUSES = ['proposed', 'draft', 'scheduled', 'on_request', 'closed', 'cancelled', 'completed'];
+// 'withdrawn' = superseded/withdrawn proposal: kept for the record, never publishable, never public.
+const ATB_STORED_STATUSES = ['proposed', 'draft', 'scheduled', 'on_request', 'closed', 'cancelled', 'completed', 'withdrawn'];
 const ATB_SELECTABLE = ['open', 'confirmed', 'limited'];
 // Public vocabulary (spec 10 Oct 2026 Part 1 §4): open, confirmed, limited, sold_out, closed. The rest are internal.
 const ATB_STATUS_LABELS = [
@@ -239,7 +240,7 @@ function atb_compute_status(array $dep, string $today, array $settings = []): ar
     if ($stored === 'proposed' || $stored === 'draft') return $out('proposed');
     if (!atb_is_iso_date($start) || !atb_is_iso_date($end)) return $out('closed');
     if ($end < $today || $stored === 'completed') return $out('completed');
-    if ($stored === 'cancelled') return $out('cancelled');
+    if ($stored === 'cancelled' || $stored === 'withdrawn') return $out('cancelled');
     if ($stored === 'closed') return $out('closed');
     if ($start <= $today) return $out('closed');
     $cutoff = $dep['booking_cutoff'] ?? null;
@@ -257,7 +258,7 @@ function atb_compute_status(array $dep, string $today, array $settings = []): ar
 function atb_is_public(array $dep, string $today): bool {
     $stored = strtolower((string)($dep['status'] ?? ''));
     if (($dep['published'] ?? false) !== true) return false;
-    if (in_array($stored, ['proposed', 'draft', 'cancelled', 'completed', 'on_request'], true)) return false;
+    if (in_array($stored, ['proposed', 'draft', 'cancelled', 'completed', 'on_request', 'withdrawn'], true)) return false;
     if (($dep['departure_type'] ?? 'shared') === 'private') return false;
     $end = (string)($dep['end_date'] ?? '');
     return atb_is_iso_date($end) && $end >= $today;
@@ -831,7 +832,7 @@ function atb_validate_departure(array $dep, array $inv, string $today, bool $for
         if (!$shared) $errors[] = 'Private departures are individual bookings and are never listed publicly.';
         if ($shared && $rule['applies'] && $cap === null) $errors[] = 'Set a maximum capacity before publishing.';
         if ($start <= $today) $errors[] = 'Only future departures can be published.';
-        if (in_array($dep['status'] ?? '', ['proposed', 'draft', 'cancelled', 'completed'], true)) $errors[] = 'Change the status to Scheduled (or On request) before publishing.';
+        if (in_array($dep['status'] ?? '', ['proposed', 'draft', 'cancelled', 'completed', 'withdrawn'], true)) $errors[] = 'Change the status to Scheduled (or On request) before publishing.';
         foreach (atb_blackouts_for($inv, (string)$dep['tour_slug'], $start, $end) as $b) {
             if (!empty($b['confirmed'])) $errors[] = 'Overlaps confirmed blackout: ' . ($b['name'] ?? $b['id']) . '.';
         }

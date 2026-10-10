@@ -66,13 +66,13 @@
     ]
   },
   "legal_documents": {
-    "_doc": "Documents a traveler accepts before a transactional payment (booking-side step in /manage/, never on inquiries). Flip terms.full_text_received + effective_date/version when the owner's final Terms text is published.",
+    "_doc": "Documents a traveler accepts before a transactional payment (booking-side step in /manage/, never on inquiries), plus the 'Government travel permissions' acknowledgement. Existing acceptance records keep the version/effective date they were recorded against.",
     "terms": {
       "name": "Terms & Conditions",
       "url": "https://afghantours.com/terms/",
-      "effective_date": null,
+      "effective_date": "2026-10-10",
       "version": null,
-      "full_text_received": false
+      "full_text_received": true
     },
     "policy": {
       "name": "Cancellation, Refund & Rescheduling Policy",
