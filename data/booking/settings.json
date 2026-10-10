@@ -1,0 +1,23 @@
+{
+  "_doc": "Booking settings seed (runtime copy lives in the private store).",
+  "version": 1,
+  "seed_as_of": "2026-10-10",
+  "timezone": "Asia/Kabul",
+  "currency": "USD",
+  "usd_confirmed": false,
+  "shared_min_group_default": 3,
+  "limited_places_threshold": 2,
+  "show_public_confirmed_counts": false,
+  "show_public_capacity": false,
+  "contact": {
+    "email": "info@afghantours.com",
+    "whatsapp_display": "+93 780 123 456",
+    "whatsapp_link": "https://wa.me/93780123456"
+  },
+  "wording": {
+    "awaiting_minimum": "Awaiting group confirmation — minimum 3 travelers.",
+    "confirmation_message": "Your request has been received. Our team will confirm availability, arrangements, and next steps.",
+    "selection_note": "Choosing a date sends a request. It does not confirm a place — we confirm availability and arrangements with you first.",
+    "private_pricing": "Private tours are quoted separately; the shared per-person rate does not apply."
+  }
+}

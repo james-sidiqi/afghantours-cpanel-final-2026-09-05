@@ -38,3 +38,6 @@ afghantours-files-with-sizes.txt
 .vscode/
 .idea/
 audit-out/
+
+# Booking/payments private store (never commit)
+afghantours-private/

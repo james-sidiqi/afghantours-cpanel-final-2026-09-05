@@ -1,0 +1,927 @@
+{
+  "_doc": "AfghanTours tour product catalog (booking fields). Seed for the private inventory store. See data/booking/README.md.",
+  "version": 1,
+  "seed_as_of": "2026-10-10",
+  "categories": {
+    "A": {
+      "label": "Scheduled Group Tours",
+      "summary": "Published group departures. Shared departures go ahead once at least three travelers are confirmed."
+    },
+    "B": {
+      "label": "Scheduled & Private Tours",
+      "summary": "Selected group departures, or the same route privately on your dates."
+    },
+    "C": {
+      "label": "Private Tours",
+      "summary": "Run privately on your dates. Occasional group departures are announced when they are set."
+    },
+    "D": {
+      "label": "Custom & Specialist Services",
+      "summary": "Planned around your brief and quoted individually — no fixed departure calendar."
+    }
+  },
+  "tours": [
+    {
+      "code": "WKND",
+      "slug": "weekend-in-kabul",
+      "name": "Weekend in Kabul",
+      "category": "A",
+      "duration_days": 3,
+      "nights": 2,
+      "active": true,
+      "listed_on_tours_page": true,
+      "url": "/tours/weekend-in-kabul/",
+      "page_type": "tour",
+      "departures_mode": "scheduled_group",
+      "shared_min_group": 3,
+      "private_available": true,
+      "private_pricing": "quoted_separately",
+      "price": {
+        "reference_amount": 450,
+        "currency": "USD",
+        "basis": "per_person_from",
+        "price_status": "reference_from_production",
+        "production_display_2026_10_10": "From $450",
+        "main_8f73e1f_display": "Price on request",
+        "display_on_site": true,
+        "needs_james_review": true
+      },
+      "operating_window": {
+        "text": "Year-round, excluding Eid al-Fitr and Eid al-Adha (dates confirmed by admin)",
+        "ranges": [
+          {
+            "from": "01-01",
+            "to": "12-31"
+          }
+        ],
+        "guidance_only": true
+      },
+      "capacity_reference": {
+        "max_capacity": null,
+        "live_group_text": "Private or 2-8 travelers",
+        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+      },
+      "flags": [
+        "Production shows \"From $450\"; origin/main 8f73e1f shows \"Price on request\". Kept production value as reference (not auto-restored/removed) — James to approve or withdraw."
+      ],
+      "duration_display": "3 days / 2 nights",
+      "arrival_options": [
+        {
+          "key": "fri-sun",
+          "label": "Friday–Sunday",
+          "start_weekday": 5
+        },
+        {
+          "key": "sat-mon",
+          "label": "Saturday–Monday",
+          "start_weekday": 6
+        }
+      ],
+      "private_min_travelers": 1,
+      "extras": [
+        "Private tour for 1–2 travelers",
+        "Extra hotel night",
+        "Additional sightseeing",
+        "Custom arrival/departure arrangements"
+      ],
+      "blackout_tags": [
+        "eid"
+      ]
+    },
+    {
+      "code": "WNTC",
+      "slug": "winter-circuit",
+      "name": "Winter Circuit",
+      "category": "A",
+      "duration_days": 12,
+      "nights": 11,
+      "active": true,
+      "listed_on_tours_page": true,
+      "url": "/tours/winter-circuit/",
+      "page_type": "tour",
+      "departures_mode": "scheduled_group",
+      "shared_min_group": 3,
+      "private_available": true,
+      "private_pricing": "quoted_separately",
+      "price": {
+        "reference_amount": 2100,
+        "currency": "USD",
+        "basis": "per_person_from",
+        "price_status": "reference_from_production",
+        "production_display_2026_10_10": "From $2,100",
+        "main_8f73e1f_display": "Price on request",
+        "display_on_site": true,
+        "needs_james_review": true
+      },
+      "operating_window": {
+        "text": "December–February",
+        "ranges": [
+          {
+            "from": "12-01",
+            "to": "02-28"
+          }
+        ],
+        "guidance_only": true
+      },
+      "capacity_reference": {
+        "max_capacity": null,
+        "live_group_text": "Private or 2-8 travelers",
+        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+      },
+      "flags": [
+        "Production shows \"From $2,100\"; origin/main 8f73e1f shows \"Price on request\". Kept production value as reference (not auto-restored/removed) — James to approve or withdraw."
+      ]
+    },
+    {
+      "code": "SUMC",
+      "slug": "summer-circuit",
+      "name": "Summer Circuit",
+      "category": "A",
+      "duration_days": 8,
+      "nights": 7,
+      "active": true,
+      "listed_on_tours_page": true,
+      "url": "/tours/summer-circuit/",
+      "page_type": "tour",
+      "departures_mode": "scheduled_group",
+      "shared_min_group": 3,
+      "private_available": true,
+      "private_pricing": "quoted_separately",
+      "price": {
+        "reference_amount": 1950,
+        "currency": "USD",
+        "basis": "per_person_from",
+        "price_status": "reference_from_production",
+        "production_display_2026_10_10": "From $1,950",
+        "main_8f73e1f_display": "Price on request",
+        "display_on_site": true,
+        "needs_james_review": true
+      },
+      "operating_window": {
+        "text": "June–August",
+        "ranges": [
+          {
+            "from": "06-01",
+            "to": "08-31"
+          }
+        ],
+        "guidance_only": true
+      },
+      "capacity_reference": {
+        "max_capacity": null,
+        "live_group_text": "Private or 2-8 travelers",
+        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+      },
+      "flags": [
+        "Production shows \"From $1,950\"; origin/main 8f73e1f shows \"Price on request\". Kept production value as reference (not auto-restored/removed) — James to approve or withdraw."
+      ]
+    },
+    {
+      "code": "BUZE",
+      "slug": "buzkashi-expedition",
+      "name": "Buzkashi Expedition",
+      "category": "A",
+      "duration_days": 10,
+      "nights": 9,
+      "active": true,
+      "listed_on_tours_page": true,
+      "url": "/tours/buzkashi-expedition/",
+      "page_type": "tour",
+      "departures_mode": "scheduled_group",
+      "shared_min_group": 3,
+      "private_available": true,
+      "private_pricing": "quoted_separately",
+      "price": {
+        "reference_amount": 2450,
+        "currency": "USD",
+        "basis": "per_person_from",
+        "price_status": "reference_from_production",
+        "production_display_2026_10_10": "From $2,450",
+        "main_8f73e1f_display": "Price on request",
+        "display_on_site": true,
+        "needs_james_review": true
+      },
+      "operating_window": {
+        "text": "Mid-December to 1 April",
+        "ranges": [
+          {
+            "from": "12-15",
+            "to": "04-01"
+          }
+        ],
+        "guidance_only": true
+      },
+      "capacity_reference": {
+        "max_capacity": null,
+        "live_group_text": "Private or 2-8 travelers",
+        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+      },
+      "flags": [
+        "Production shows \"From $2,450\"; origin/main 8f73e1f shows \"Price on request\". Kept production value as reference (not auto-restored/removed) — James to approve or withdraw."
+      ]
+    },
+    {
+      "code": "ADTS",
+      "slug": "afghanistan-discovery-tour-spring",
+      "name": "Afghanistan Discovery Tour Spring",
+      "category": "A",
+      "duration_days": 9,
+      "nights": 8,
+      "active": true,
+      "listed_on_tours_page": true,
+      "url": "/tours/afghanistan-discovery-tour-spring/",
+      "page_type": "tour",
+      "departures_mode": "scheduled_group",
+      "shared_min_group": 3,
+      "private_available": true,
+      "private_pricing": "quoted_separately",
+      "price": {
+        "reference_amount": 1890,
+        "currency": "USD",
+        "basis": "per_person_from",
+        "price_status": "reference_from_production",
+        "production_display_2026_10_10": "From $1,890",
+        "main_8f73e1f_display": "From $1,890",
+        "display_on_site": true,
+        "needs_james_review": true
+      },
+      "operating_window": {
+        "text": "March–May",
+        "ranges": [
+          {
+            "from": "03-01",
+            "to": "05-31"
+          }
+        ],
+        "guidance_only": true
+      },
+      "capacity_reference": {
+        "max_capacity": null,
+        "live_group_text": "Private or 2-8 travelers",
+        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+      },
+      "flags": []
+    },
+    {
+      "code": "ADTF",
+      "slug": "afghanistan-discovery-tour-fall",
+      "name": "Afghanistan Discovery Tour Fall",
+      "category": "A",
+      "duration_days": 9,
+      "nights": 8,
+      "active": true,
+      "listed_on_tours_page": true,
+      "url": "/tours/afghanistan-discovery-tour-fall/",
+      "page_type": "tour",
+      "departures_mode": "scheduled_group",
+      "shared_min_group": 3,
+      "private_available": true,
+      "private_pricing": "quoted_separately",
+      "price": {
+        "reference_amount": 1950,
+        "currency": "USD",
+        "basis": "per_person_from",
+        "price_status": "reference_from_production",
+        "production_display_2026_10_10": "From $1,950",
+        "main_8f73e1f_display": "From $1,950",
+        "display_on_site": true,
+        "needs_james_review": true
+      },
+      "operating_window": {
+        "text": "September–November",
+        "ranges": [
+          {
+            "from": "09-01",
+            "to": "11-30"
+          }
+        ],
+        "guidance_only": true
+      },
+      "capacity_reference": {
+        "max_capacity": null,
+        "live_group_text": "Private or 2-8 travelers",
+        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+      },
+      "flags": []
+    },
+    {
+      "code": "KBLS",
+      "slug": "kabul-surroundings",
+      "name": "Kabul & Surroundings",
+      "category": "B",
+      "duration_days": 6,
+      "nights": 5,
+      "active": true,
+      "listed_on_tours_page": true,
+      "url": "/tours/kabul-surroundings/",
+      "page_type": "tour",
+      "departures_mode": "scheduled_and_private",
+      "shared_min_group": 3,
+      "private_available": true,
+      "private_pricing": "quoted_separately",
+      "price": {
+        "reference_amount": 990,
+        "currency": "USD",
+        "basis": "per_person_from",
+        "price_status": "reference_from_production",
+        "production_display_2026_10_10": "From $990",
+        "main_8f73e1f_display": "From $990",
+        "display_on_site": true,
+        "needs_james_review": true
+      },
+      "operating_window": {
+        "text": "Year-round",
+        "ranges": [
+          {
+            "from": "01-01",
+            "to": "12-31"
+          }
+        ],
+        "guidance_only": true
+      },
+      "capacity_reference": {
+        "max_capacity": null,
+        "live_group_text": "Private or 2-8 travelers",
+        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+      },
+      "flags": []
+    },
+    {
+      "code": "CAD",
+      "slug": "central-afghanistan-discovery",
+      "name": "Central Afghanistan Discovery",
+      "category": "B",
+      "duration_days": 7,
+      "nights": 6,
+      "active": true,
+      "listed_on_tours_page": true,
+      "url": "/tours/central-afghanistan-discovery/",
+      "page_type": "tour",
+      "departures_mode": "scheduled_and_private",
+      "shared_min_group": 3,
+      "private_available": true,
+      "private_pricing": "quoted_separately",
+      "price": {
+        "reference_amount": 1250,
+        "currency": "USD",
+        "basis": "per_person_from",
+        "price_status": "reference_from_production",
+        "production_display_2026_10_10": "From $1,250",
+        "main_8f73e1f_display": "From $1,250",
+        "display_on_site": true,
+        "needs_james_review": true
+      },
+      "operating_window": {
+        "text": "Year-round, subject to conditions",
+        "ranges": [
+          {
+            "from": "01-01",
+            "to": "12-31"
+          }
+        ],
+        "guidance_only": true
+      },
+      "capacity_reference": {
+        "max_capacity": null,
+        "live_group_text": "Private or 2-6 travelers",
+        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+      },
+      "flags": []
+    },
+    {
+      "code": "BSKI",
+      "slug": "bamyan-skiing-tour",
+      "name": "Bamyan Skiing Tour",
+      "category": "B",
+      "duration_days": 5,
+      "nights": 4,
+      "active": true,
+      "listed_on_tours_page": true,
+      "url": "/tours/bamyan-skiing-tour/",
+      "page_type": "tour",
+      "departures_mode": "scheduled_and_private",
+      "shared_min_group": 3,
+      "private_available": true,
+      "private_pricing": "quoted_separately",
+      "price": {
+        "reference_amount": 1300,
+        "currency": "USD",
+        "basis": "per_person_from",
+        "price_status": "reference_from_production",
+        "production_display_2026_10_10": "From $1,300",
+        "main_8f73e1f_display": "From $1,300",
+        "display_on_site": true,
+        "needs_james_review": true
+      },
+      "operating_window": {
+        "text": "10 January – 10 March",
+        "ranges": [
+          {
+            "from": "01-10",
+            "to": "03-10"
+          }
+        ],
+        "guidance_only": true
+      },
+      "capacity_reference": {
+        "max_capacity": null,
+        "live_group_text": "Private or 2-8 travelers",
+        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+      },
+      "flags": []
+    },
+    {
+      "code": "PVEH",
+      "slug": "panjshir-valley-emeralds-history",
+      "name": "Panjshir Valley: Emeralds & History",
+      "category": "B",
+      "duration_days": 4,
+      "nights": 3,
+      "active": true,
+      "listed_on_tours_page": true,
+      "url": "/tours/panjshir-valley-emeralds-history/",
+      "page_type": "tour",
+      "departures_mode": "scheduled_and_private",
+      "shared_min_group": 3,
+      "private_available": true,
+      "private_pricing": "quoted_separately",
+      "price": {
+        "reference_amount": 750,
+        "currency": "USD",
+        "basis": "per_person_from",
+        "price_status": "reference_from_production",
+        "production_display_2026_10_10": "From $750",
+        "main_8f73e1f_display": "From $750",
+        "display_on_site": true,
+        "needs_james_review": true
+      },
+      "operating_window": {
+        "text": "May–September",
+        "ranges": [
+          {
+            "from": "05-01",
+            "to": "09-30"
+          }
+        ],
+        "guidance_only": true
+      },
+      "capacity_reference": {
+        "max_capacity": null,
+        "live_group_text": "Private or 2-8 travelers",
+        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+      },
+      "flags": []
+    },
+    {
+      "code": "KTDE",
+      "slug": "kandahar-durrani-empire-tour",
+      "name": "Kandahar: The Durrani Empire",
+      "category": "B",
+      "duration_days": 6,
+      "nights": 5,
+      "active": true,
+      "listed_on_tours_page": true,
+      "url": "/tours/kandahar-durrani-empire-tour/",
+      "page_type": "tour",
+      "departures_mode": "scheduled_and_private",
+      "shared_min_group": 3,
+      "private_available": true,
+      "private_pricing": "quoted_separately",
+      "price": {
+        "reference_amount": 1250,
+        "currency": "USD",
+        "basis": "per_person_from",
+        "price_status": "reference_from_production",
+        "production_display_2026_10_10": "From $1,250",
+        "main_8f73e1f_display": "From $1,250",
+        "display_on_site": true,
+        "needs_james_review": true
+      },
+      "operating_window": {
+        "text": "September–April preferred",
+        "ranges": [
+          {
+            "from": "09-01",
+            "to": "04-30"
+          }
+        ],
+        "guidance_only": true
+      },
+      "capacity_reference": {
+        "max_capacity": null,
+        "live_group_text": "Private or 2-8 travelers",
+        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+      },
+      "flags": []
+    },
+    {
+      "code": "TSRA",
+      "slug": "treasures-of-silk-road-afghanistan",
+      "name": "Treasures of the Silk Road",
+      "category": "C",
+      "duration_days": 10,
+      "nights": 9,
+      "active": true,
+      "listed_on_tours_page": true,
+      "url": "/tours/treasures-of-silk-road-afghanistan/",
+      "page_type": "tour",
+      "departures_mode": "primarily_private",
+      "shared_min_group": 3,
+      "private_available": true,
+      "private_pricing": "quoted_separately",
+      "price": {
+        "reference_amount": 2450,
+        "currency": "USD",
+        "basis": "per_person_from",
+        "price_status": "reference_from_production",
+        "production_display_2026_10_10": "From $2,450",
+        "main_8f73e1f_display": "From $2,450",
+        "display_on_site": true,
+        "needs_james_review": true
+      },
+      "operating_window": {
+        "text": "Year-round, subject to conditions",
+        "ranges": [
+          {
+            "from": "01-01",
+            "to": "12-31"
+          }
+        ],
+        "guidance_only": true
+      },
+      "capacity_reference": {
+        "max_capacity": null,
+        "live_group_text": "Private or 2-8 travelers",
+        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+      },
+      "flags": []
+    },
+    {
+      "code": "TGHT",
+      "slug": "timurid-grandeur-herat-tour",
+      "name": "The Timurid Grandeur of Herat",
+      "category": "C",
+      "duration_days": 7,
+      "nights": 6,
+      "active": true,
+      "listed_on_tours_page": true,
+      "url": "/tours/timurid-grandeur-herat-tour/",
+      "page_type": "tour",
+      "departures_mode": "primarily_private",
+      "shared_min_group": 3,
+      "private_available": true,
+      "private_pricing": "quoted_separately",
+      "price": {
+        "reference_amount": 1850,
+        "currency": "USD",
+        "basis": "per_person_from",
+        "price_status": "reference_from_production",
+        "production_display_2026_10_10": "From $1,850",
+        "main_8f73e1f_display": "From $1,850",
+        "display_on_site": true,
+        "needs_james_review": true
+      },
+      "operating_window": {
+        "text": "Year-round",
+        "ranges": [
+          {
+            "from": "01-01",
+            "to": "12-31"
+          }
+        ],
+        "guidance_only": true
+      },
+      "capacity_reference": {
+        "max_capacity": null,
+        "live_group_text": "Private or 2-8 travelers",
+        "note": "Live page states only a group-size range; no per-departure maximum is approved. Admin must set max capacity per departure."
+      },
+      "flags": []
+    },
+    {
+      "code": "CTME",
+      "slug": "custom-expedition",
+      "name": "Custom Expedition",
+      "category": "D",
+      "active": true,
+      "listed_on_tours_page": false,
+      "url": "/tours/custom-expedition/",
+      "page_type": "custom_specialist",
+      "current_page": "/custom-requests/",
+      "current_page_kind": "custom",
+      "departures_mode": "inquiry_only",
+      "route_text": "Route designed around your requirements",
+      "live_duration_text": "Flexible duration",
+      "price": {
+        "reference_amount": null,
+        "currency": null,
+        "basis": "quotation",
+        "price_status": "price_on_request",
+        "production_display_2026_10_10": "Price on request",
+        "main_8f73e1f_display": "Custom quotation (specialist/custom page)",
+        "display_on_site": false,
+        "needs_james_review": false
+      },
+      "operating_window": {
+        "text": "Year-round; route dependent",
+        "ranges": [
+          {
+            "from": "01-01",
+            "to": "12-31"
+          }
+        ],
+        "guidance_only": true
+      },
+      "flags": []
+    },
+    {
+      "code": "NOSHAQ",
+      "slug": "noshaq-expedition-support",
+      "name": "Noshaq Expedition Support",
+      "category": "D",
+      "active": true,
+      "listed_on_tours_page": false,
+      "url": "/tours/noshaq-expedition-support/",
+      "page_type": "custom_specialist",
+      "current_page": "/specialist-services/noshaq-expedition-support/",
+      "current_page_kind": "specialist",
+      "departures_mode": "inquiry_only",
+      "route_text": "Route designed around your requirements",
+      "live_duration_text": "21 days",
+      "price": {
+        "reference_amount": 2000,
+        "currency": "USD",
+        "basis": "per_person_from",
+        "price_status": "reference_from_production_not_displayed_on_main",
+        "production_display_2026_10_10": "From $2,000",
+        "main_8f73e1f_display": "Custom quotation (specialist/custom page)",
+        "display_on_site": false,
+        "needs_james_review": true
+      },
+      "operating_window": {
+        "text": "15 June – 31 August",
+        "ranges": [
+          {
+            "from": "06-15",
+            "to": "08-31"
+          }
+        ],
+        "guidance_only": true
+      },
+      "flags": [
+        "Production /tours/noshaq-expedition-support/ shows From $2,000 and 21 days; main's destination page is quotation-only. Not displayed until James decides."
+      ],
+      "activity_note": "Specialist technical/mountaineering support — distinct from sightseeing tours."
+    },
+    {
+      "code": "PHOT",
+      "slug": "photography-tour",
+      "name": "Photography Tour",
+      "category": "D",
+      "active": true,
+      "listed_on_tours_page": false,
+      "url": "/tours/photography-tour/",
+      "page_type": "custom_specialist",
+      "current_page": "/specialist-services/photography-documentary/",
+      "current_page_kind": "specialist",
+      "departures_mode": "inquiry_only",
+      "route_text": "Route designed around your requirements",
+      "live_duration_text": "12 days",
+      "price": {
+        "reference_amount": 2850,
+        "currency": "USD",
+        "basis": "per_person_from",
+        "price_status": "reference_from_production_not_displayed_on_main",
+        "production_display_2026_10_10": "From $2,850",
+        "main_8f73e1f_display": "Custom quotation (specialist/custom page)",
+        "display_on_site": false,
+        "needs_james_review": true
+      },
+      "operating_window": {
+        "text": "Year-round",
+        "ranges": [
+          {
+            "from": "01-01",
+            "to": "12-31"
+          }
+        ],
+        "guidance_only": true
+      },
+      "flags": [
+        "Production /tours/photography-tour/ shows From $2,850 and 12 days; main's destination page is quotation-only. Not displayed until James decides.",
+        "Live page itinerary repeats Days 3–5 as Days 10–12; main replaces the page with the specialist page (no day-by-day itinerary)."
+      ]
+    },
+    {
+      "code": "SCIE",
+      "slug": "scientific-expeditions",
+      "name": "Scientific Expeditions",
+      "category": "D",
+      "active": true,
+      "listed_on_tours_page": false,
+      "url": "/tours/scientific-expeditions/",
+      "page_type": "custom_specialist",
+      "current_page": "/specialist-services/scientific-research/",
+      "current_page_kind": "specialist",
+      "departures_mode": "inquiry_only",
+      "route_text": "Route designed around your requirements",
+      "live_duration_text": "14 days",
+      "price": {
+        "reference_amount": 4500,
+        "currency": "USD",
+        "basis": "per_person_from",
+        "price_status": "reference_from_production_not_displayed_on_main",
+        "production_display_2026_10_10": "From $4,500",
+        "main_8f73e1f_display": "Custom quotation (specialist/custom page)",
+        "display_on_site": false,
+        "needs_james_review": true
+      },
+      "operating_window": {
+        "text": "Year-round",
+        "ranges": [
+          {
+            "from": "01-01",
+            "to": "12-31"
+          }
+        ],
+        "guidance_only": true
+      },
+      "flags": [
+        "Production /tours/scientific-expeditions/ shows From $4,500 and 14 days; main's destination page is quotation-only. Not displayed until James decides."
+      ]
+    },
+    {
+      "code": "SKI",
+      "slug": "ski-expeditions",
+      "name": "Ski Expeditions",
+      "category": "D",
+      "active": true,
+      "listed_on_tours_page": false,
+      "url": "/tours/ski-expeditions/",
+      "page_type": "custom_specialist",
+      "current_page": "/specialist-services/ski-expeditions/",
+      "current_page_kind": "specialist",
+      "departures_mode": "inquiry_only",
+      "route_text": "Route designed around your requirements",
+      "live_duration_text": "Custom duration",
+      "price": {
+        "reference_amount": null,
+        "currency": null,
+        "basis": "quotation",
+        "price_status": "price_on_request",
+        "production_display_2026_10_10": "Price on request",
+        "main_8f73e1f_display": "Custom quotation (specialist/custom page)",
+        "display_on_site": false,
+        "needs_james_review": false
+      },
+      "operating_window": {
+        "text": "Winter / snow-dependent",
+        "ranges": [
+          {
+            "from": "01-01",
+            "to": "12-31"
+          }
+        ],
+        "guidance_only": true
+      },
+      "flags": [],
+      "activity_note": "Specialist ski/snow logistics — distinct from the published Bamyan Skiing Tour."
+    },
+    {
+      "code": "BIZZ",
+      "slug": "business-investment",
+      "name": "Business & Investment",
+      "category": "D",
+      "active": true,
+      "listed_on_tours_page": false,
+      "url": "/tours/business-investment/",
+      "page_type": "custom_specialist",
+      "current_page": "/specialist-services/business-investment/",
+      "current_page_kind": "specialist",
+      "departures_mode": "inquiry_only",
+      "route_text": "Route designed around your requirements",
+      "live_duration_text": "Custom duration",
+      "price": {
+        "reference_amount": null,
+        "currency": null,
+        "basis": "quotation",
+        "price_status": "price_on_request",
+        "production_display_2026_10_10": "Price on request",
+        "main_8f73e1f_display": "Custom quotation (specialist/custom page)",
+        "display_on_site": false,
+        "needs_james_review": false
+      },
+      "operating_window": {
+        "text": "Year-round",
+        "ranges": [
+          {
+            "from": "01-01",
+            "to": "12-31"
+          }
+        ],
+        "guidance_only": true
+      },
+      "flags": []
+    },
+    {
+      "code": "MEDIA",
+      "slug": "media-support",
+      "name": "Media Support",
+      "category": "D",
+      "active": true,
+      "listed_on_tours_page": false,
+      "url": "/tours/media-support/",
+      "page_type": "custom_specialist",
+      "current_page": "/specialist-services/media-journalist/",
+      "current_page_kind": "specialist",
+      "departures_mode": "inquiry_only",
+      "route_text": "Route designed around your requirements",
+      "live_duration_text": "Custom duration",
+      "price": {
+        "reference_amount": null,
+        "currency": null,
+        "basis": "quotation",
+        "price_status": "price_on_request",
+        "production_display_2026_10_10": "Price on request",
+        "main_8f73e1f_display": "Custom quotation (specialist/custom page)",
+        "display_on_site": false,
+        "needs_james_review": false
+      },
+      "operating_window": {
+        "text": "Year-round",
+        "ranges": [
+          {
+            "from": "01-01",
+            "to": "12-31"
+          }
+        ],
+        "guidance_only": true
+      },
+      "flags": []
+    },
+    {
+      "code": "VETS",
+      "slug": "veteran-return",
+      "name": "Veteran Return",
+      "category": "D",
+      "active": true,
+      "listed_on_tours_page": false,
+      "url": "/tours/veteran-return/",
+      "page_type": "custom_specialist",
+      "current_page": "/return-journeys/veterans-contractors-diplomats/",
+      "current_page_kind": "return",
+      "departures_mode": "inquiry_only",
+      "route_text": "Route designed around your requirements",
+      "live_duration_text": "Custom duration",
+      "price": {
+        "reference_amount": null,
+        "currency": null,
+        "basis": "quotation",
+        "price_status": "price_on_request",
+        "production_display_2026_10_10": "Price on request",
+        "main_8f73e1f_display": "Custom quotation (specialist/custom page)",
+        "display_on_site": false,
+        "needs_james_review": false
+      },
+      "operating_window": {
+        "text": "Year-round",
+        "ranges": [
+          {
+            "from": "01-01",
+            "to": "12-31"
+          }
+        ],
+        "guidance_only": true
+      },
+      "flags": []
+    },
+    {
+      "code": "TTWC",
+      "slug": "trek-the-wakhan-corridor",
+      "name": "Trek the Wakhan Corridor",
+      "category": "inactive",
+      "active": false,
+      "listed_on_tours_page": false,
+      "url": null,
+      "page_type": "inactive",
+      "departures_mode": "none",
+      "flags": [
+        "Intentionally inactive (no page, no departures). Do not reactivate without James."
+      ]
+    },
+    {
+      "code": "TGHT-EXT",
+      "slug": "timurid-grandeur-herat-tour-add-minaret-e-jam",
+      "name": "The Timurid Grandeur of Herat + Minaret-e-Jam",
+      "category": "inactive",
+      "active": false,
+      "listed_on_tours_page": false,
+      "url": null,
+      "page_type": "inactive",
+      "departures_mode": "none",
+      "flags": [
+        "Intentionally inactive (no page, no departures). Do not reactivate without James."
+      ]
+    }
+  ]
+}

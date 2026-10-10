@@ -22,6 +22,12 @@ jobs:
       - name: npm ci
         run: npm ci
 
+      - name: Booking data validation (seed inventory)
+        run: node scripts/validate-booking-data.mjs
+
+      - name: Booking core unit tests (JS)
+        run: node --test scripts/booking-test/
+
       - name: Build
         run: npm run build
 
