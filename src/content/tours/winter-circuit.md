@@ -34,3 +34,4 @@ The northern route, the choice between road and flight, and access to Bamyan can
 Winter travel requires additional schedule flexibility. Road movement, domestic flights, overnight points, and activity sequencing are reviewed against current weather, road access, daylight, and local operating conditions before and during the journey.
 
 Letter of Invitation support is included for booked travel. We do not issue visas.
+

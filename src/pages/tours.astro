@@ -26,7 +26,7 @@ const featuredTours = itineraryTours
 
 <BaseLayout
   title="Tours | AfghanTours"
-  description="Afghanistan group tours with published departures, private tours on established routes, and custom or specialist travel planned from Kabul."
+  description="Explore scheduled and private Afghanistan tours, with routes and itineraries planned from Kabul."
   image="/assets/images/heroes/tours/hero.webp"
 >
   <FeaturedTours tours={featuredTours} />
@@ -36,8 +36,7 @@ const featuredTours = itineraryTours
       <p>Tour Packages</p>
       <h1>Group Departures &amp; Private Tours</h1>
       <span>
-        Join a published group departure, travel privately on one of our established routes, or ask us to plan
-        something around your own brief. Scheduled group tours of five days or more operate with 6–18 travelers; private journeys have no group minimum.
+        Choose a scheduled departure or a private journey on one of our established routes. For something different, build a custom journey around your own dates and interests. Scheduled group tours of five days or more operate with 6–18 travelers; private journeys have no group minimum.
       </span>
       <nav class="class-jump" aria-label="Tour categories">
         <a href="#scheduled-tours">{cat.A.label}</a>
@@ -50,7 +49,7 @@ const featuredTours = itineraryTours
 
   <section class="class-band" id="scheduled-tours">
     <div class="class-wrap">
-      <p class="class-kicker">A · {cat.A.label}</p>
+      <p class="class-kicker">{cat.A.label}</p>
       <h2>Published group departures</h2>
       <p class="class-copy">{cat.A.summary} Each tour can also run privately.</p>
     </div>
@@ -59,7 +58,7 @@ const featuredTours = itineraryTours
 
   <section class="class-band class-band--alt" id="scheduled-private-tours">
     <div class="class-wrap">
-      <p class="class-kicker">B · {cat.B.label}</p>
+      <p class="class-kicker">{cat.B.label}</p>
       <h2>Selected group dates, or your own</h2>
       <p class="class-copy">{cat.B.summary}</p>
     </div>
@@ -68,7 +67,7 @@ const featuredTours = itineraryTours
 
   <section class="class-band" id="private-tours">
     <div class="class-wrap">
-      <p class="class-kicker">C · {cat.C.label}</p>
+      <p class="class-kicker">{cat.C.label}</p>
       <h2>Private dates on established routes</h2>
       <p class="class-copy">{cat.C.summary}</p>
     </div>
@@ -77,7 +76,7 @@ const featuredTours = itineraryTours
 
   <section class="class-band class-band--alt services" id="custom-specialist">
     <div class="class-wrap">
-      <p class="class-kicker">D · {cat.D.label}</p>
+      <p class="class-kicker">{cat.D.label}</p>
       <h2>Planned around your brief</h2>
       <p class="class-copy">{cat.D.summary} Route designed around your requirements.</p>
       <ul class="service-list">
@@ -96,8 +95,8 @@ const featuredTours = itineraryTours
 
 <style>
   .tour-list-intro {
-    background: #ffffff;
-    color: #101820;
+    background: var(--at-white);
+    color: var(--at-ink);
     padding: clamp(3.5rem, 5vw, 5rem) 0 1rem;
     border-top: 1px solid rgba(16,24,32,.08);
   }
@@ -108,26 +107,26 @@ const featuredTours = itineraryTours
   }
   .tour-list-intro p {
     margin: 0;
-    color: #b46b00;
+    color: var(--at-gold-text);
     font-size: .72rem;
     letter-spacing: .22em;
     text-transform: uppercase;
     font-weight: 900;
   }
   .tour-list-intro h1 {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: var(--font-display);
     font-size: clamp(2.6rem, 4.5vw, 4.2rem);
     line-height: .98;
     letter-spacing: -.05em;
     margin: .5rem 0 1rem;
   }
   .tour-list-intro span {
-    color: #4b5563;
+    color: var(--at-text);
     line-height: 1.75;
     font-size: 1.05rem;
   }
   .class-band { padding-top: 1.5rem; }
-  .class-band--alt { background: #f7f4ee; padding-bottom: 1rem; }
+  .class-band--alt { background: var(--at-paper); padding-bottom: 1rem; }
   .class-wrap {
     width: min(1180px, calc(100% - 2rem));
     margin: 0 auto;
@@ -136,18 +135,18 @@ const featuredTours = itineraryTours
   }
   .class-kicker {
     margin: 0;
-    color: #b46b00;
+    color: var(--at-gold-text);
     font-size: .72rem;
     letter-spacing: .18em;
     text-transform: uppercase;
     font-weight: 900;
   }
   .class-wrap h2 {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: var(--font-display);
     font-size: clamp(1.8rem, 3vw, 2.4rem);
     margin: .4rem 0 .6rem;
   }
-  .class-copy { color: #4b5563; line-height: 1.65; margin: 0 0 .5rem; }
+  .class-copy { color: var(--at-text); line-height: 1.65; margin: 0 0 .5rem; }
   .class-jump { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; margin-top: 1.4rem; }
   .class-jump a { color: #101820; font-size: .86rem; font-weight: 800; text-decoration: underline; text-decoration-color: #d9a02d; text-underline-offset: 4px; }
   .services { padding-bottom: 4rem; }
@@ -169,8 +168,8 @@ const featuredTours = itineraryTours
     gap: 1rem;
   }
   .outbound-card {
-    background: #f7f0e6;
-    border: 1px solid #dfd0bc;
+    background: var(--at-paper);
+    border: 1px solid var(--border-soft);
     border-radius: .75rem;
     padding: 1.35rem 1.25rem;
     text-decoration: none;
@@ -179,18 +178,18 @@ const featuredTours = itineraryTours
   }
   .outbound-card p {
     margin: 0;
-    color: #b46b00;
+    color: var(--at-gold-text);
     font-size: .68rem;
     letter-spacing: .16em;
     text-transform: uppercase;
     font-weight: 900;
   }
   .outbound-card h3 {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: var(--font-display);
     font-size: 1.45rem;
     margin: .45rem 0 .55rem;
   }
-  .outbound-card span { color: #4b5563; line-height: 1.55; display: block; font-size: .95rem; }
+  .outbound-card span { color: var(--at-text); line-height: 1.55; display: block; font-size: .95rem; }
   @media (max-width: 900px) {
     .outbound-grid { grid-template-columns: 1fr; }
   }
