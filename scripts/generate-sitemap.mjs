@@ -1,4 +1,4 @@
-import { readdir, stat, readFile, writeFile } from 'node:fs/promises';
+import { readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = path.resolve('dist');
@@ -46,10 +46,11 @@ for (const file of files) {
   else if (relative.endsWith('/index.html')) pathname = '/' + relative.slice(0, -'index.html'.length);
   else pathname = '/' + relative.replace(/\.html$/, '/');
 
-  const s = await stat(file);
-  urls.push({ loc: `${site}${pathname}`, lastmod: s.mtime.toISOString().slice(0, 10) });
+  // No <lastmod>: a build-time/mtime date made the tracked dist/ drift every day (CI red on later dates).
+  // Omitting it is valid per sitemaps.org and keeps the output deterministic.
+  urls.push({ loc: `${site}${pathname}` });
 }
 urls.sort((a, b) => a.loc.localeCompare(b.loc));
-const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `  <url><loc>${esc(u.loc)}</loc><lastmod>${u.lastmod}</lastmod></url>`).join('\n')}\n</urlset>\n`;
+const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map(u => `  <url><loc>${esc(u.loc)}</loc></url>`).join('\n')}\n</urlset>\n`;
 await writeFile(path.join(root, 'sitemap.xml'), xml, 'utf8');
 console.log(`Generated sitemap.xml with ${urls.length} URLs (skipped ${skipped} redirect/noindex stubs)`);
