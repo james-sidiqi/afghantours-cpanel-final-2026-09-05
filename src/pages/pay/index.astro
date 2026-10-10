@@ -1,0 +1,150 @@
+---
+/**
+ * /pay/ — pay an amount Afghan Tours has invoiced (HesabPay hosted checkout).
+ * Hidden feature: noindex, not in sitemap, not linked from nav/footer until James enables it.
+ * Prices are never published here; the customer enters the invoiced amount.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// HesabPay docs: item prices are treated as AFN. Must match 'currency' in the private PHP config.
+const PAYMENT_CURRENCY = 'AFN';
+---
+<BaseLayout
+  title="Pay for your booking | Afghan Tours"
+  description="Pay an amount invoiced by Afghan Tours by card through HesabPay."
+  robots="noindex"
+>
+  <section class="pay-page">
+    <div class="pay-grid">
+      <div class="pay-copy">
+        <p class="pay-eyebrow">Payments</p>
+        <h1>Pay for your booking</h1>
+        <p class="pay-lead">
+          Use this page to pay an amount our team has invoiced you. Enter the booking reference and
+          amount exactly as they appear on your invoice.
+        </p>
+        <ol class="pay-steps">
+          <li><strong>Enter your details.</strong> Booking reference, invoiced amount, name and email.</li>
+          <li><strong>Pay by card on HesabPay.</strong> You will leave afghantours.com and complete payment on HesabPay's secure page.</li>
+          <li><strong>We confirm.</strong> Our team checks the payment against your booking reference and confirms with you by email.</li>
+        </ol>
+        <p class="pay-small">
+          We do not publish prices on this page. If you do not have an invoice or booking reference yet,
+          please <a href="/contact/">contact us</a> first.
+        </p>
+        {/* TODO(James): add approved refund / cancellation / payment terms wording or a link to /terms/ here. Do not invent it. */}
+      </div>
+
+      <form class="pay-form" id="payForm" action="/payments/create-session.php" method="post" novalidate>
+        <p class="pay-eyebrow">Card payment via HesabPay</p>
+        <h2>Payment details</h2>
+
+        <div class="pay-notice" id="payDisabledNotice" hidden>
+          <strong>Online payment is not available yet.</strong>
+          Please contact our team to arrange payment for your booking:
+          <a href="mailto:info@afghantours.com">info@afghantours.com</a> ·
+          <a href="https://wa.me/93780123456" target="_blank" rel="noopener noreferrer"><span class="pay-nowrap">WhatsApp +93 780 123 456</span></a>.
+        </div>
+
+        <input type="hidden" name="currency" value={PAYMENT_CURRENCY} />
+        <input class="pay-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+        <div class="pay-row">
+          <label><span>Booking reference</span>
+            <input name="booking_reference" required maxlength="40" pattern="[A-Za-z0-9][A-Za-z0-9 ._/\-]{1,39}" placeholder="As shown on your invoice" autocomplete="off" />
+          </label>
+          <label><span>Amount (<span id="payCurrency">{PAYMENT_CURRENCY}</span>)</span>
+            <input name="amount" required inputmode="decimal" pattern="\d{1,9}(\.\d{1,2})?" placeholder="Invoiced amount" autocomplete="off" />
+          </label>
+        </div>
+        <div class="pay-row">
+          <label><span>Name of person paying</span>
+            <input name="name" required maxlength="120" autocomplete="name" />
+          </label>
+          <label><span>Email</span>
+            <input type="email" name="email" required maxlength="190" autocomplete="email" />
+          </label>
+        </div>
+        <label><span>What is this payment for? <span class="pay-opt">(optional)</span></span>
+          <input name="description" maxlength="200" placeholder="For example: deposit, balance" />
+        </label>
+        <label><span>Notes <span class="pay-opt">(optional)</span></span>
+          <textarea name="notes" maxlength="1000"></textarea>
+        </label>
+
+        <div class="pay-response" id="payStatus" aria-live="polite"></div>
+        <button type="submit" id="paySubmit">Continue to HesabPay</button>
+        <p class="pay-small pay-small--form">
+          Card details are entered on HesabPay's page, not on afghantours.com.
+          Questions? <a href="mailto:info@afghantours.com">info@afghantours.com</a> ·
+          <a href="https://wa.me/93780123456" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+        </p>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('payForm') as HTMLFormElement | null;
+  const notice = document.getElementById('payDisabledNotice');
+  const submit = document.getElementById('paySubmit') as HTMLButtonElement | null;
+  const statusEl = document.getElementById('payStatus');
+  const currencyEl = document.getElementById('payCurrency');
+
+  // Ask the server whether online payment is switched on. If PHP is not available
+  // (e.g. local static preview) leave the form as-is; the server still enforces the mode.
+  fetch('/payments/status.php', { headers: { Accept: 'application/json' }, cache: 'no-store' })
+    .then((r) => (r.ok ? r.json() : null))
+    .then((s) => {
+      if (!s || s.ok !== true) return;
+      if (s.currency && currencyEl) currencyEl.textContent = String(s.currency);
+      if (s.enabled === false) {
+        notice?.removeAttribute('hidden');
+        if (submit) { submit.disabled = true; submit.textContent = 'Online payment not available yet'; }
+      }
+    })
+    .catch(() => {});
+
+  form?.addEventListener('submit', (event) => {
+    if (!form.checkValidity()) {
+      event.preventDefault();
+      form.reportValidity();
+      if (statusEl) statusEl.textContent = 'Please check the highlighted fields.';
+      return;
+    }
+    if (submit) { submit.disabled = true; submit.textContent = 'Opening HesabPay…'; }
+  });
+</script>
+
+<style>
+  .pay-page { background:#fbf6ed; color:#101820; }
+  .pay-grid { width:min(1180px,calc(100% - 2rem)); margin:0 auto; display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:2.5rem; align-items:start; padding:clamp(3.5rem,7vw,6.5rem) 0 clamp(3.5rem,7vw,6rem); }
+  .pay-eyebrow { margin:0; color:#b97816; text-transform:uppercase; letter-spacing:.24em; font-size:.75rem; font-weight:900; }
+  .pay-copy h1 { font-family:Georgia,"Times New Roman",serif; font-size:clamp(2.6rem,5vw,4.6rem); line-height:.96; letter-spacing:-.045em; margin:.8rem 0 1.1rem; color:#101820; }
+  .pay-lead { max-width:560px; font-size:1.08rem; line-height:1.8; color:#314154; margin:0 0 1.4rem; }
+  .pay-steps { margin:0 0 1.4rem; padding-left:1.2rem; display:grid; gap:.7rem; max-width:560px; color:#374151; line-height:1.65; }
+  .pay-steps strong { color:#101820; }
+  .pay-small { color:#4b5563; font-size:.92rem; line-height:1.6; max-width:560px; }
+  .pay-small a { color:#101820; font-weight:800; }
+  .pay-form { background:#fff; border:1px solid rgba(16,24,32,.1); border-radius:1.5rem; box-shadow:0 18px 50px rgba(21,16,9,.1); padding:clamp(1.4rem,3vw,2.3rem); box-sizing:border-box; min-width:0; }
+  .pay-form h2 { font-family:Georgia,"Times New Roman",serif; font-size:clamp(2rem,3.5vw,3rem); line-height:.95; letter-spacing:-.045em; margin:.45rem 0 1.25rem; color:#101820; }
+  .pay-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .pay-form label { display:grid; gap:.4rem; margin-bottom:1rem; font-weight:900; font-size:.86rem; color:#101820; }
+  .pay-opt { font-weight:600; color:#6b7280; }
+  .pay-nowrap { white-space:nowrap; }
+  .pay-form input, .pay-form textarea { width:100%; border:1px solid #d8c9b5; border-radius:.75rem; background:#fff; padding:.95rem; font:inherit; font-weight:400; color:#101820; box-sizing:border-box; }
+  .pay-form input:focus, .pay-form textarea:focus { outline:2px solid rgba(214,162,58,.35); border-color:#d6a23a; }
+  .pay-form textarea { min-height:110px; resize:vertical; }
+  .pay-hp { position:absolute !important; left:-9999px !important; width:1px !important; height:1px !important; opacity:0 !important; }
+  .pay-notice { border-radius:1rem; background:#fdf1d8; border:1px solid #e8c77d; padding:.95rem 1rem; color:#5b4410; font-size:.92rem; line-height:1.6; margin:0 0 1.2rem; }
+  .pay-notice a { color:#101820; font-weight:800; }
+  .pay-response { min-height:1.2rem; color:#9a3412; font-size:.9rem; margin:.2rem 0 .6rem; }
+  .pay-form button { display:inline-flex; align-items:center; justify-content:center; width:100%; border:0; border-radius:999px; background:#101820; color:#fff; padding:1rem 1.25rem; font:inherit; font-weight:900; cursor:pointer; }
+  .pay-form button:hover:not(:disabled) { background:#d6a23a; color:#101820; }
+  .pay-form button:disabled { background:#9ca3af; cursor:not-allowed; }
+  .pay-small--form { margin:.9rem 0 0; font-size:.85rem; }
+  @media (max-width:900px) {
+    .pay-grid { grid-template-columns:1fr; gap:1.6rem; padding-top:2.6rem; }
+    .pay-row { grid-template-columns:1fr; gap:0; }
+  }
+</style>

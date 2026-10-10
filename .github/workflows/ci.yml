@@ -17,7 +17,7 @@ jobs:
           cache: npm
 
       - name: Install PHP CLI
-        run: sudo apt-get update && sudo apt-get install -y php-cli
+        run: sudo apt-get update && sudo apt-get install -y php-cli php-curl
 
       - name: npm ci
         run: npm ci
@@ -27,6 +27,12 @@ jobs:
 
       - name: PHP lint inquiry handler
         run: php -l public/tour-inquiry.php
+
+      - name: PHP lint payments (HesabPay)
+        run: for f in public/payments/*.php public/payments/lib/*.php config/hesabpay-config.example.php; do php -l "$f" || exit 1; done
+
+      - name: Payments test harness (local stub, no real HesabPay calls)
+        run: bash scripts/test-payments.sh
 
       - name: Site integrity (strict)
         run: python3 scripts/site_integrity_audit.py . --strict

@@ -1,0 +1,25 @@
+# AfghanTours payments: only the three public endpoints are reachable.
+# Config, logs, records and examples must never be served from here.
+<FilesMatch "\.(log|json|ini|example|md|txt|bak)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+<FilesMatch "^hesabpay-config">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+Options -Indexes
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+  Header set Cache-Control "no-store"
+</IfModule>

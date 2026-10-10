@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PaymentResult from '../../components/payments/PaymentResult.astro';
+---
+<BaseLayout title="Payment not completed | Afghan Tours" description="Your HesabPay payment was not completed." robots="noindex">
+  <PaymentResult title="Payment not completed" primaryHref="/pay/" primaryLabel="Try again" secondaryHref="/contact/" secondaryLabel="Contact us">
+    <p>The payment was cancelled or could not be completed on HesabPay's page.</p>
+    <p>You can try again, or contact our team and we will help you arrange payment for your booking.</p>
+  </PaymentResult>
+</BaseLayout>

@@ -38,3 +38,10 @@ afghantours-files-with-sizes.txt
 .vscode/
 .idea/
 audit-out/
+
+# Payments (HesabPay) — real config and payment records never go in git
+afghantours-private/
+payments-data/
+hesabpay-config.php
+!config/hesabpay-config.example.php
+payments-test-tmp/
