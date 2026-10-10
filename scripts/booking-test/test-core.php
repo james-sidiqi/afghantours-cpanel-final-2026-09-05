@@ -53,6 +53,31 @@ $ok(str_contains($errs, 'Price not approved') && str_contains($errs, 'Eid confli
 $pd['price_approved'] = true; $pd['eid_reviews'] = ['eid_al_fitr:2027-03-08:2027-03-12' => ['override' => true, 'note' => 'owner approved', 'by' => 'james']];
 $ok(atb_validate_departure($pd, $inv, '2026-10-10', true, true) === [], 'publish allowed after price approval + Eid override');
 
+foreach ($fx['long_window'] as $lw) {
+    $start = atb_add_days('2026-10-10', $lw['days']);
+    $dep = array_replace(['id' => 'LW', 'tour_slug' => 't', 'status' => 'scheduled', 'published' => true, 'start_date' => $start, 'end_date' => atb_add_days($start, (int)($lw['dep']['duration_days'] ?? 1) - 1)], $lw['dep']);
+    $st = atb_compute_status($dep, '2026-10-10', $fx['settings']);
+    $ok($st['key'] === $lw['status'], "long window status: {$lw['name']} → {$st['key']}");
+    $listed = atb_is_listed($dep, '2026-10-10', $fx['settings']);
+    $ok($listed === $lw['listed'], "long window listed: {$lw['name']}");
+    $pub = atb_public_departure($dep, null, $fx['settings'], '2026-10-10');
+    $ok($pub['cta'] === $lw['cta'] && $pub['booking_window_closed'] === $lw['bwc'], "long window cta/cutoff: {$lw['name']} → {$pub['cta']}");
+}
+foreach ($fx['count_status'] as $c) {
+    $start = atb_add_days('2026-10-10', $c['days']);
+    $dep = array_replace(['id' => 'CS', 'tour_slug' => 't', 'status' => 'scheduled', 'published' => true, 'start_date' => $start, 'end_date' => atb_add_days($start, (int)($c['dep']['duration_days'] ?? 1) - 1)], $c['dep']);
+    $S = array_replace($fx['settings'], $c['settings'] ?? []);
+    $pub = atb_public_departure($dep, null, $S, '2026-10-10');
+    $okc = atb_count_status($dep) === $c['count_status'] && atb_compute_status($dep, '2026-10-10', $S)['key'] === $c['status'] && atb_is_listed($dep, '2026-10-10', $S) === $c['listed'] && $pub['cta'] === $c['cta'] && $pub['booking_window_closed'] === $c['bwc'];
+    if (array_key_exists('manual_contact', $c)) $okc = $okc && $pub['manual_contact'] === $c['manual_contact'];
+    if (!empty($c['status_text'])) $okc = $okc && $pub['status_text'] === $c['status_text'];
+    if (!empty($c['no_confirmed_text'])) $okc = $okc && !isset($pub['confirmed_text']);
+    foreach ($c['forbid'] ?? [] as $fw) $okc = $okc && stripos($pub['status_text'] . ' ' . ($pub['confirmed_text'] ?? '') . ' ' . $pub['cta'], $fw) === false;
+    $ok($okc, "count status: {$c['name']} → {$pub['status']} / {$pub['cta']} / {$pub['status_text']}");
+}
+$w = static fn(int $n) => atb_long_tour_window(['status' => 'scheduled', 'departure_type' => 'shared', 'duration_days' => 9, 'min_group_size' => 6, 'start_date' => atb_add_days('2026-10-10', $n)], '2026-10-10', $fx['settings']);
+$ok($w(46)['review_due'] === false && $w(45)['review_due'] === true && $w(8)['booking_window_closed'] === false && $w(7)['booking_window_closed'] === true && $w(56)['review_date'] === '2026-10-21', 'long window boundaries');
+
 // JS parity: the snapshot labels the build produced must equal PHP output for the seed.
 $seed = json_decode((string)file_get_contents(__DIR__ . '/../../data/booking/departures.json'), true)['departures'];
 $settings = json_decode((string)file_get_contents(__DIR__ . '/../../data/booking/settings.json'), true);
@@ -63,7 +88,14 @@ if (is_file($parity)) {
     foreach ($seed as $d) {
         $p = atb_public_departure($d, null, $settings, $js['today']);
         $j = $js['rows'][$d['id']] ?? null;
-        $ok($j !== null && $j['status'] === $p['status'] && $j['date_label'] === $p['date_label'] && $j['price_label'] === $p['price_label'] && $j['status_text'] === $p['status_text'] && $j['cta'] === $p['cta'] && json_encode($j['advisories']) === json_encode($p['advisories']), "parity {$d['id']}");
+        $ok($j !== null && $j['status'] === $p['status'] && $j['date_label'] === $p['date_label'] && $j['price_label'] === $p['price_label'] && $j['status_text'] === $p['status_text'] && $j['cta'] === $p['cta'] && json_encode($j['advisories']) === json_encode($p['advisories']) && $j['booking_window_closed'] === $p['booking_window_closed'] && $j['selectable'] === $p['selectable'], "parity {$d['id']}");
+    }
+    foreach (($js['extra'] ?? []) as $t => $rowsT) {
+        foreach ($seed as $d) {
+            $p = atb_public_departure($d, null, $settings, $t);
+            $j = $rowsT[$d['id']] ?? null;
+            $ok($j !== null && $j['status'] === $p['status'] && $j['cta'] === $p['cta'] && $j['status_text'] === $p['status_text'] && $j['booking_window_closed'] === $p['booking_window_closed'] && $j['selectable'] === $p['selectable'] && $j['manual_contact'] === $p['manual_contact'] && $j['last_minute'] === $p['last_minute'] && $j['listed'] === atb_is_listed($d, $t, $settings), "parity@$t {$d['id']}");
+        }
     }
 }
 echo "PHP core tests: $pass passed, $fail failed\n";

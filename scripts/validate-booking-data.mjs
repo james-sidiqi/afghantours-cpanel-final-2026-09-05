@@ -8,7 +8,7 @@ import path from 'node:path';
 import { parse } from 'csv-parse/sync';
 import {
   STORED_STATUSES, groupRuleFor, isIsoDate, inclusiveDays, expectedEnd, weekday, computeStatus, isPublic, todayIn,
-  religiousPeriods, religiousFlags, eidConflicts, eidUnresolved,
+  religiousPeriods, religiousFlags, eidConflicts, eidUnresolved, longTourWindow, isListed,
 } from '../src/lib/booking/core.mjs';
 
 const ROOT = process.cwd();
@@ -147,7 +147,11 @@ for (const d of departures) {
     if (!r.applies && !exception && (d.min_group_size !== r.min || d.max_capacity !== null)) err(`${where}: ≤4-day shared departure must have minimum ${r.min} and no standard maximum (unless an approved exception is recorded)`);
   }
   if (d.max_capacity !== null && !(Number.isInteger(d.max_capacity) && (d.min_group_size === null || d.max_capacity >= d.min_group_size))) err(`${where}: max_capacity must be null or an integer ≥ minimum`);
-  if (d.confirmed_count !== 0 || d.pending_count !== 0) err(`${where}: seed counts must be 0 — no invented bookings`);
+  // Owner correction 19:01 — unknown ≠ zero. Legacy rows: unknown with null counts; system-managed rows: verified zero.
+  if (!['unknown', 'verified'].includes(d.traveler_count_status)) err(`${where}: traveler_count_status must be "unknown" or "verified"`);
+  else if (d.traveler_count_status === 'unknown' && (d.confirmed_count !== null || d.pending_count !== null)) err(`${where}: unknown traveler count must be null, never 0`);
+  else if (d.traveler_count_status === 'verified' && (d.confirmed_count !== 0 || d.pending_count !== 0)) err(`${where}: seed counts must be 0 — no invented bookings`);
+  if (d.traveler_count_status === 'unknown' && !String(d.source || '').startsWith('production_')) err(`${where}: only legacy (production-imported) departures may have an unknown count`);
   if (d.operational_approval === 'approved') err(`${where}: seed must not pre-approve departures`);
   if (d.public_counts_approved) err(`${where}: seed must not pre-approve public counts`);
   if ((d.status === 'proposed' || d.status === 'draft') && d.published) err(`${where}: proposed/draft departure is published`);
@@ -207,6 +211,21 @@ for (const d of departures) if (['trek-the-wakhan-corridor', 'timurid-grandeur-h
   if (flag === 'false') warn('Cancellation, Refund & Rescheduling Policy: full owner text not yet merged — route gated (not built publicly)');
 }
 
+// ---------- long-tour minimum-group review / final cutoff (owner decision 10 Oct 2026 18:56) ----------
+for (const k of ['long_tour_min_group_review_days', 'long_tour_final_booking_cutoff_days']) if (!Number.isInteger(settings[k])) err(`settings.${k} must be an integer`);
+const S2 = { ...settings, religious_calendar: calendar };
+const longReport = [];
+for (const d of departures) {
+  if (!d.published || d.end_date < today || ['cancelled', 'completed'].includes(d.status)) continue;
+  const lw = longTourWindow(d, today, S2);
+  if (!lw.applies) continue;
+  const st = computeStatus(d, today, S2);
+  longReport.push(`${d.id} ${d.start_date}–${d.end_date}: ${lw.days_until} days out · review date ${lw.review_date} · final cutoff ${lw.cutoff_date} · count ${lw.count_status} · state ${lw.state}${lw.booking_window_closed ? ' · booking window closed' : ''} · ${isListed(d, today, S2) ? `listed (${st.key})` : 'HIDDEN pending decision'}`);
+  if (lw.state === 'unknown') warn(`${d.id}: Traveler count unknown — ${lw.unknown_immediate ? 'immediate' : 'minimum-group'} review required (${lw.days_until} days out). Visible as manual contact ("${lw.booking_window_closed ? 'Contact us for last-minute availability' : 'Contact us for availability'}") until reconciled in /manage/.`);
+  else if (lw.count_status === 'unknown') warn(`${d.id}: traveler count unknown (legacy) — reconcile before the review date ${lw.review_date}.`);
+  if (st.key === 'review') warn(`${d.id}: long departure ${lw.days_until} days out is below its minimum with no approved exception — "Minimum not reached — operational decision required"${lw.review_overdue ? ` (review overdue since ${lw.review_date})` : ''}${lw.legacy_error ? '; under minimum inside 30 days' : ''}. Hidden from public booking until an admin decides (A–D).`);
+}
+
 const summary = {
   tours: tours.length,
   departures: departures.length,
@@ -220,6 +239,8 @@ console.log('BOOKING DATA VALIDATION', JSON.stringify(summary));
 console.log('RAMADAN ADVISORY (advisory only, booking allowed):', ramadanList.length);
 for (const r of ramadanList) console.log('  RAMADAN', r);
 console.log('EID BLOCKS:', periods.eid.map((b) => `${b.name} ${b.start}–${b.end} (${b.state})`).join('; '));
+console.log('LONG-TOUR WINDOW (published, not ended):', longReport.length);
+for (const r of longReport) console.log('  LONG', r);
 console.log('EID CONFLICTS:', eidList.length);
 for (const r of eidList) console.log('  EID', r);
 for (const w of warnings) console.log('WARN ', w);

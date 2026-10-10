@@ -271,7 +271,7 @@ if (in_array($action, ['create', 'update'], true) && $method === 'POST') {
     if ($type === 'private') $dep['price']['amount'] = null; // private = separate quotation, never the shared rate
     if (($dep['price']['amount'] ?? null) === -1) redirect($isNew ? ['a' => 'new'] : ['a' => 'edit', 'id' => $dep['id']], 'Price must be a positive number or blank.', 'err');
     if ($isNew) {
-        $dep += ['published' => false, 'operational_approval' => 'pending', 'confirmed_count' => 0, 'pending_count' => 0, 'source' => 'admin', 'created_at' => atb_now_iso(), 'created_by' => $user['name']];
+        $dep += ['published' => false, 'operational_approval' => 'pending', 'confirmed_count' => 0, 'pending_count' => 0, 'traveler_count_status' => 'verified', 'source' => 'admin', 'created_at' => atb_now_iso(), 'created_by' => $user['name']];
         $dep['id'] = atb_new_departure_id($inv['departures'], (string)$t['code'], $start, $type);
     }
     $dep['date_check'] = atb_is_iso_date($start) && atb_is_iso_date($end)
@@ -322,6 +322,60 @@ if ($action === 'op' && $method === 'POST') {
             $d['eid_reviews'][$key] = ['override' => true, 'note' => $note, 'by' => $user['name'], 'at' => atb_now_iso(), 'block' => ['name' => $blk['name'], 'start' => $blk['start'], 'end' => $blk['end'], 'state' => $blk['state']]];
             $msg = 'Eid review recorded for ' . $blk['name'] . ' (' . $blk['start'] . ' – ' . $blk['end'] . '). It applies only to these block dates — if the Eid date changes, review again.';
             break;
+        case 'reconcile': // legacy count reconciliation — records numbers only; never creates customer records
+            $q = post('qualifying_count'); $pn = post('pending_count'); $operating = post('operating');
+            $note = atb_str(post('note'), 1000);
+            if (!preg_match('/^\d{1,3}$/', $q) || !preg_match('/^\d{1,3}$/', $pn) || !in_array($operating, ['yes', 'no'], true) || $note === '') {
+                redirect(['a' => 'edit', 'id' => $id], 'Reconciliation needs the qualifying count, the pending/non-qualifying count, operating yes/no and a review note.', 'err');
+            }
+            $sys = atb_counts(atb_load_travelers())[$id] ?? ['confirmed' => 0, 'pending' => 0];
+            $opApproved = post('operational_approval') === '1' && $operating === 'yes';
+            $d['reconciliation'] = [
+                'qualifying_count' => (int)$q, 'pending_count' => (int)$pn, 'operating' => $operating === 'yes',
+                'operational_approval' => $opApproved, 'note' => $note, 'reconciled_by' => $user['name'], 'reconciled_at' => atb_now_iso(),
+                'system_records_at_reconciliation' => ['confirmed' => (int)$sys['confirmed'], 'pending' => (int)$sys['pending']],
+                'offline_qualifying' => max(0, (int)$q - (int)$sys['confirmed']), 'offline_pending' => max(0, (int)$pn - (int)$sys['pending']),
+            ];
+            $d['traveler_count_status'] = 'verified';
+            $d['confirmed_count'] = (int)$q; $d['pending_count'] = (int)$pn;
+            if ($opApproved) { $d['operational_approval'] = 'approved'; $d['approved_by'] = $user['name']; $d['approved_at'] = atb_now_iso(); }
+            $d['decisions'][] = ['decision' => 'count_reconciled', 'qualifying' => (int)$q, 'pending' => (int)$pn, 'operating' => $operating, 'note' => $note, 'by' => $user['name'], 'at' => atb_now_iso()];
+            $msg = 'Traveler count reconciled (' . (int)$q . ' qualifying, ' . (int)$pn . ' pending/non-qualifying). Normal rules now apply.' . ($operating === 'no' ? ' Marked NOT operating — record decision A (cancel for insufficient numbers) or another decision.' : '') . ' No customer records were created.';
+            break;
+        case 'cancel_low_numbers': // decision A
+            $note = atb_str(post('note'), 1000);
+            if ($note === '') redirect(['a' => 'edit', 'id' => $id], 'Record why the departure is cancelled for insufficient numbers (and any alternatives offered).', 'err');
+            $d['status'] = 'cancelled';
+            $d['cancel_reason'] = 'insufficient_numbers';
+            $d['cancellation'] = ['reason' => 'insufficient_numbers', 'note' => $note, 'by' => $user['name'], 'at' => atb_now_iso()];
+            $d['decisions'][] = ['decision' => 'A_cancel_insufficient_numbers', 'note' => $note, 'by' => $user['name'], 'at' => atb_now_iso()];
+            $lowNumbersCancelled = true;
+            $msg = 'Cancelled for insufficient numbers. Affected bookings are marked “100% low-numbers refund due” — no refund is executed from here; process it manually and contact each traveler.';
+            break;
+        case 'approve_exception': // decision B
+            $note = atb_str(post('note'), 1000);
+            if ($note === '' || post('pricing_review_ack') !== '1' || post('operational_approval') !== '1') {
+                redirect(['a' => 'edit', 'id' => $id], 'An exception needs the approval note/reason, the pricing-review acknowledgement and operational approval.', 'err');
+            }
+            if ($u = atb_eid_unresolved($d, $cal)) redirect(['a' => 'edit', 'id' => $id], 'Resolve the Eid conflict first.', 'err');
+            $d['min_group_exception'] = ['approved' => true, 'note' => $note, 'pricing_review_ack' => true, 'by' => $user['name'], 'at' => atb_now_iso(), 'count_status_at_approval' => atb_count_status($d), 'system_confirmed_at_approval' => (int)((atb_counts(atb_load_travelers())[$id] ?? [])['confirmed'] ?? 0)];
+            $d['operational_approval'] = 'approved'; $d['approved_by'] = $user['name']; $d['approved_at'] = atb_now_iso();
+            $d['price_approved'] = false; unset($d['price_approved_by'], $d['price_approved_at']); // shared rate is not kept automatically
+            $d['decisions'][] = ['decision' => 'B_operate_by_exception', 'note' => $note, 'by' => $user['name'], 'at' => atb_now_iso()];
+            $msg = 'Exception recorded with operational approval. Price approval was cleared — review the price for this group and tick “Price approved by owner” again; until then the departure stays hidden.';
+            break;
+        case 'withdraw_exception':
+            unset($d['min_group_exception']);
+            $d['decisions'][] = ['decision' => 'B_exception_withdrawn', 'by' => $user['name'], 'at' => atb_now_iso()];
+            $msg = 'Exception withdrawn.';
+            break;
+        case 'offer_private': // decision C
+            $note = atb_str(post('note'), 1000);
+            if ($note === '') redirect(['a' => 'edit', 'id' => $id], 'Describe the private option offered (price is quoted separately).', 'err');
+            $d['decisions'][] = ['decision' => 'C_private_option_offered', 'note' => $note, 'by' => $user['name'], 'at' => atb_now_iso()];
+            $privateOffer = $note;
+            $msg = 'Private option recorded on the affected bookings (no automatic conversion; quote separately and wait for each traveler).';
+            break;
         case 'eid_review_withdraw':
             unset($d['eid_reviews'][post('block_key')]);
             $msg = 'Eid review withdrawn.';
@@ -343,6 +397,19 @@ if ($action === 'op' && $method === 'POST') {
     }
     unset($d);
     save_or_fail($inv, $user, 'departure_' . $op, ['id' => $id], ['a' => 'edit', 'id' => $id]);
+    if (!empty($lowNumbersCancelled) || !empty($privateOffer)) {
+        $travelers = atb_load_travelers();
+        foreach ($travelers as &$tr) {
+            if (($tr['departure_id'] ?? '') !== $id || ($tr['status'] ?? '') === 'cancelled') continue;
+            if (!empty($lowNumbersCancelled)) {
+                $tr['low_numbers_refund'] = ['due' => true, 'percent' => 100, 'basis' => 'amount paid to James Tourist & Travel Agency for this tour', 'executed' => false, 'noted_at' => atb_now_iso(), 'noted_by' => $user['name']];
+            } else {
+                $tr['private_offer'] = ['note' => $privateOffer, 'status' => 'offered', 'offered_at' => atb_now_iso(), 'by' => $user['name']];
+            }
+        }
+        unset($tr);
+        atb_save_travelers($travelers, $user['name'], !empty($lowNumbersCancelled) ? 'low_numbers_refund_noted' : 'private_offer_recorded', ['departure_id' => $id]);
+    }
     if (in_array($op, ['approve', 'unapprove'], true)) sync_departure_confirmed_on($id, $user['name'], $today);
     redirect(['a' => 'edit', 'id' => $id], $msg);
 }
@@ -434,6 +501,19 @@ if ($action === 'traveler' && $method === 'POST') {
         sync_departure_confirmed_on($depId, $user['name'], $today);
         redirect(['a' => 'edit', 'id' => $depId], 'Traveler added — ' . BOOKING_STATUS[$status] . '.');
     }
+    if ($op === 'propose_move') { // decision D: recorded only — the traveler must confirm; nothing is moved automatically
+        $tid = post('traveler_id');
+        $to = post('to_departure_id');
+        if ($to === $depId || atb_find_departure($deps, $to) === null) redirect(['a' => 'edit', 'id' => $depId], 'Choose another existing departure.', 'err');
+        foreach ($travelers as &$tr) {
+            if (($tr['id'] ?? '') === $tid && ($tr['departure_id'] ?? '') === $depId) {
+                $tr['proposed_move'] = ['to_departure_id' => $to, 'status' => 'pending_traveler_confirmation', 'proposed_at' => atb_now_iso(), 'by' => $user['name']];
+            }
+        }
+        unset($tr);
+        atb_save_travelers($travelers, $user['name'], 'traveler_move_proposed', ['departure_id' => $depId, 'traveler_id' => $tid, 'to' => $to]);
+        redirect(['a' => 'edit', 'id' => $depId], 'Move proposed to ' . $to . ' — pending traveler confirmation. The booking stays on this departure until you move it after they agree.');
+    }
     if ($op === 'update') {
         $tid = post('traveler_id');
         foreach ($travelers as &$tr) {
@@ -516,6 +596,8 @@ if ($action === 'settings_save' && $method === 'POST') {
     $inv['settings']['show_public_capacity'] = post('show_public_capacity') === '1';
     $inv['settings']['show_public_confirmed_counts'] = post('show_public_confirmed_counts') === '1';
     unset($inv['settings']['limited_places_threshold']); // Limited is manual per departure
+    $inv['settings']['long_tour_min_group_review_days'] = max(1, min(365, (int)atb_int(post('long_tour_min_group_review_days'), 45)));
+    $inv['settings']['long_tour_final_booking_cutoff_days'] = max(0, min(60, (int)atb_int(post('long_tour_final_booking_cutoff_days'), 7)));
     save_or_fail($inv, $user, 'settings_update', [], ['a' => 'settings']);
     redirect(['a' => 'settings'], 'Settings saved.');
 }
@@ -643,6 +725,31 @@ function religious_tags(array $d, array $cal): string {
     if (!atb_eid_conflicts($d, $cal) && $f['eid']) $o .= ' <span class="tag tag--warn">Eid — private: manual review</span>';
     return $o;
 }
+function long_tags(array $d, string $today, array $settings): string {
+    $lw = atb_long_tour_window($d, $today, $settings);
+    if (!$lw['applies'] || ($d['start_date'] ?? '') <= $today || in_array($d['status'] ?? '', ['cancelled', 'completed', 'proposed', 'draft'], true)) {
+        return (($d['status'] ?? '') === 'closed' ? ' <span class="tag tag--warn">manual Closed</span>' : '');
+    }
+    $o = ' <span class="tag">' . h($lw['days_until']) . ' days out</span>';
+    if ($lw['state'] === 'unknown') {
+        $o .= ' <span class="tag tag--err">Traveler count unknown — ' . ($lw['unknown_immediate'] ? 'immediate' : 'minimum-group') . ' review required</span> <span class="tag">public: manual contact only</span>';
+    } elseif (($lw['count_status'] ?? '') === 'unknown') {
+        $o .= ' <span class="tag tag--warn">count unknown — reconcile by ' . h($lw['review_date']) . '</span>';
+    }
+    if ($lw['state'] === 'min_not_reached') {
+        $o .= ' <span class="tag ' . ($lw['review_overdue'] ? 'tag--err' : 'tag--warn') . '">Minimum not reached — operational decision required' . ($lw['review_overdue'] ? ' · REVIEW OVERDUE (since ' . h($lw['review_date']) . ')' : '') . ($lw['legacy_error'] ? ' · under minimum inside 30 days' : '') . '</span>';
+    } elseif ($lw['state'] === 'approval_required') {
+        $o .= ' <span class="tag ' . ($lw['review_overdue'] ? 'tag--err' : 'tag--warn') . '">Minimum reached — operational approval required' . ($lw['review_overdue'] ? ' · REVIEW OVERDUE' : '') . '</span>';
+    } elseif ($lw['state'] === 'open') {
+        $o .= ' <span class="tag">min-group review due ' . h($lw['review_date']) . '</span>';
+    }
+    if ($lw['state'] === 'exception') $o .= ' <span class="tag tag--pub">approved exception</span>';
+    if (!empty($d['min_group_exception']['approved']) && $lw['state'] !== 'exception') $o .= ' <span class="tag tag--warn">exception recorded — needs ' . (($d['price_approved'] ?? null) !== true ? 'price re-approval' : 'operational approval') . '</span>';
+    if ($lw['booking_window_closed']) $o .= ' <span class="tag tag--warn">final cutoff reached (' . h($lw['cutoff_date']) . ')</span>';
+    else $o .= ' <span class="tag">cutoff ' . h($lw['cutoff_date']) . '</span>';
+    if (($d['status'] ?? '') === 'closed') $o .= ' <span class="tag tag--warn">manual Closed</span>';
+    return $o;
+}
 function status_tag(array $d, string $today, array $settings): string {
     $st = atb_compute_status($d, $today, $settings);
     $isPub = !empty($d['published']) && atb_is_public($d, $today);
@@ -651,7 +758,11 @@ function status_tag(array $d, string $today, array $settings): string {
     $warn = (isset($d['date_check']['ok']) && $d['date_check']['ok'] === false) ? ' <span class="tag tag--warn">date check</span>' : '';
     $cap = ($d['max_capacity'] ?? null) === null && in_array($d['status'] ?? '', ['scheduled', 'on_request'], true) ? ' <span class="tag tag--warn">no capacity</span>' : '';
     $price = in_array($d['status'] ?? '', ['proposed', 'draft'], true) && ($d['price_approved'] ?? null) !== true ? ' <span class="tag tag--warn">price not approved</span>' : '';
-    return h($st['label']) . '<br>' . $pub . $warn . $cap . $price . religious_tags($d, (array)($settings['religious_calendar'] ?? []));
+    $sold = $st['key'] === 'sold_out' ? ' <span class="tag tag--warn">sold out</span>' : '';
+    $priceTag = ($d['price_approved'] ?? null) === true ? ' <span class="tag tag--pub">price approved</span>' : ($price === '' ? ' <span class="tag">price not approved</span>' : $price);
+    $opTag = ($d['operational_approval'] ?? '') === 'approved' ? ' <span class="tag tag--pub">ops approved</span>' : ' <span class="tag">ops approval pending</span>';
+    if ($st['key'] === 'review') $pub = (!empty($d['published']) ? '<span class="tag tag--err">published · hidden pending decision</span>' : '<span class="tag">not public</span>');
+    return h($st['label']) . '<br>' . $pub . $warn . $cap . $sold . long_tags($d, $today, $settings) . $priceTag . $opTag . religious_tags($d, (array)($settings['religious_calendar'] ?? []));
 }
 
 if ($action === 'departures') {
@@ -678,7 +789,7 @@ if ($action === 'departures') {
         $t = $toursBySlug[$d['tour_slug']] ?? ['name' => $d['tour_slug']];
         $b .= '<tr><td><a href="' . h(url(['a' => 'edit', 'id' => $d['id']])) . '">' . h($d['id']) . '</a></td><td>' . h($t['name']) . '</td><td>' . h(atb_format_range($d['start_date'], $d['end_date'])) . '<br><span class="muted">' . h($d['start_date'] . ' → ' . $d['end_date']) . '</span></td>'
             . '<td>' . h($d['departure_type']) . ($d['arrival_option'] ? '<br><span class="muted">' . h($d['arrival_option']) . '</span>' : '') . '</td><td>' . h($d['min_group_size']) . ' / ' . h($d['max_capacity'] ?? 'not set') . '</td>'
-            . '<td>' . h($d['confirmed_count'] ?? 0) . ' / ' . h($d['pending_count'] ?? 0) . '</td><td>' . h($d['operational_approval'] ?? 'pending') . '</td><td>' . status_tag($d, $today, $settings) . '</td></tr>';
+            . '<td>' . (($d['traveler_count_status'] ?? 'verified') === 'unknown' ? '<span class="tag tag--warn">count unknown</span>' : h($d['confirmed_count'] ?? 0) . ' / ' . h($d['pending_count'] ?? 0)) . '</td><td>' . h($d['operational_approval'] ?? 'pending') . '</td><td>' . status_tag($d, $today, $settings) . '</td></tr>';
     }
     if (!$rows) $b .= '<tr><td colspan="8" class="muted">No departures in this view.</td></tr>';
     page('Departures', $b . '</tbody></table></div><p class="muted">' . count($rows) . ' shown.</p>', $user);
@@ -719,7 +830,7 @@ if ($action === 'edit') {
     if (!$d) fail_page(404, 'Not found', 'No departure with that id.', $user);
     $t = $toursBySlug[$d['tour_slug']] ?? ['name' => $d['tour_slug'], 'duration_days' => 0];
     $st = atb_compute_status($d, $today, $settings);
-    $b = '<h1>' . h($t['name']) . '</h1><p><strong>' . h(atb_format_range($d['start_date'], $d['end_date'])) . '</strong> · ' . h($d['id']) . ' · customer status: <strong>' . h($st['label']) . '</strong> · ' . (atb_is_public($d, $today) ? (atb_eid_unresolved($d, $cal) ? 'published, hidden from customers until the Eid review' : 'public') : 'not public') . '</p>';
+    $b = '<h1>' . h($t['name']) . '</h1><p><strong>' . h(atb_format_range($d['start_date'], $d['end_date'])) . '</strong> · ' . h($d['id']) . ' · customer status: <strong>' . h($st['label']) . '</strong> · ' . (atb_is_public($d, $today) ? (atb_eid_unresolved($d, $cal) ? 'published, hidden from customers until the Eid review' : ($st['key'] === 'review' ? 'published, hidden from customers pending the minimum-group decision' : 'public')) : 'not public') . '</p>';
     if (isset($d['date_check']['ok']) && $d['date_check']['ok'] === false) {
         $b .= '<p class="flash flash--err">Date check: ' . h($d['start_date'] . ' – ' . $d['end_date']) . ' is ' . h(atb_inclusive_days($d['start_date'], $d['end_date'])) . ' days inclusive; the tour is ' . h($t['duration_days']) . ' days. Expected end ' . h(atb_expected_end($d['start_date'], (int)$t['duration_days'])) . '. ' . h($d['date_check']['note'] ?? '') . '</p>';
     }
@@ -741,6 +852,42 @@ if ($action === 'edit') {
         }
         $b .= '</div>';
     }
+    $lw = atb_long_tour_window($d, $today, $settings);
+    if ($lw['applies'] && ($d['start_date'] ?? '') > $today && !in_array($d['status'] ?? '', ['cancelled', 'completed'], true)) {
+        $need = in_array($lw['state'], ['min_not_reached', 'approval_required', 'unknown'], true);
+        $b .= '<div class="card" style="border-color:' . ($need ? ($lw['review_overdue'] ? '#c0533a' : '#d7b46a') : '#e0dacd') . '"><strong>Long-tour minimum-group review</strong> · ' . h($lw['days_until']) . ' days until departure · review date <strong>' . h($lw['review_date']) . '</strong> (' . h($lw['review_days']) . ' days before) · final booking cutoff <strong>' . h($lw['cutoff_date']) . '</strong> (' . h($lw['cutoff_days']) . ' days before)'
+            . '<p>' . h(match ($lw['state']) {
+                'open' => 'Before the review date: public as Open — awaiting minimum while bookings come in.',
+                'confirmed' => 'Confirmed (minimum reached + operational approval). Public' . ($lw['booking_window_closed'] ? '; final cutoff reached — customers see “Contact us for last-minute availability”.' : ' and bookable subject to capacity.'),
+                'exception' => 'Operating by approved exception. Public' . ($lw['booking_window_closed'] ? '; final cutoff reached — last-minute contact only.' : '.'),
+                'min_not_reached' => 'Minimum not reached — operational decision required. Hidden from customers until you decide (A–D below). Nothing has been changed automatically.' . ($lw['legacy_error'] ? ' Under minimum inside 30 days — this should have been decided already.' : ''),
+                'approval_required' => 'Minimum reached but operational approval is missing — approve operationally (or decide A–D). Hidden from customers until then.',
+                'unknown' => 'Traveler count unknown — ' . ($lw['unknown_immediate'] ? 'IMMEDIATE' : 'minimum-group') . ' review required. Legacy departure with no migrated traveler records (unknown is not zero). Customers still see it, but only as “' . ($lw['booking_window_closed'] ? 'Contact us for last-minute availability' : 'Contact us for availability') . '” — no normal request-a-place flow until you reconcile below.',
+                default => '',
+            }) . '</p>';
+        if (!empty($d['min_group_exception']['approved'])) $b .= '<p class="muted">Exception: “' . h($d['min_group_exception']['note']) . '” — ' . h($d['min_group_exception']['by'] . ' ' . $d['min_group_exception']['at']) . (($d['price_approved'] ?? null) !== true ? ' · <strong>price must be re-approved before it is public</strong>' : '') . '</p>';
+        if ($canEdit && ($lw['count_status'] ?? '') === 'unknown') {
+            $b .= '<form method="post" action="' . h(url(['a' => 'op'])) . '" class="card" style="background:#fbf8f1"><strong>Reconcile traveler count</strong><p class="muted">Enter the actual numbers from your own records. This records counts only — it does not create customer records. Afterwards the normal minimum-group rules apply.</p>' . csrf_field() . '<input type="hidden" name="id" value="' . h($d['id']) . '"><input type="hidden" name="op" value="reconcile">'
+                . '<div class="grid"><div><label for="rq">Qualifying travelers (accepted + required payment received)</label><input id="rq" name="qualifying_count" inputmode="numeric" required></div><div><label for="rp">Pending / non-qualifying</label><input id="rp" name="pending_count" inputmode="numeric" required></div>'
+                . '<div><label for="ro">Operating?</label><select id="ro" name="operating" required><option value="">—</option><option value="yes">Yes</option><option value="no">No</option></select></div></div>'
+                . '<label><input type="checkbox" name="operational_approval" value="1" style="width:auto"> Operational approval (only if operating)</label>'
+                . '<label for="rn">Review note</label><textarea id="rn" name="note" required></textarea><button>Record reconciliation</button></form>';
+        } elseif (!empty($d['reconciliation'])) {
+            $r = $d['reconciliation'];
+            $b .= '<p class="muted">Reconciled ' . h($r['reconciled_at']) . ' by ' . h($r['reconciled_by']) . ': ' . h($r['qualifying_count']) . ' qualifying, ' . h($r['pending_count']) . ' pending/non-qualifying, operating ' . ($r['operating'] ? 'yes' : 'no') . ', operational approval ' . ($r['operational_approval'] ? 'yes' : 'no') . ' — “' . h($r['note']) . '”.</p>';
+        }
+        if ($canEdit && ($need || $lw['review_due'])) {
+            $hid = csrf_field() . '<input type="hidden" name="id" value="' . h($d['id']) . '">';
+            $b .= '<div class="grid">'
+                . '<form method="post" action="' . h(url(['a' => 'op'])) . '">' . $hid . '<input type="hidden" name="op" value="cancel_low_numbers"><label>A · Cancel for insufficient numbers</label><textarea name="note" placeholder="Reason + alternatives offered (another departure, alternative itinerary, private quote)" required></textarea><button class="alt">Cancel — 100% low-numbers refund due</button></form>'
+                . '<form method="post" action="' . h(url(['a' => 'op'])) . '">' . $hid . '<input type="hidden" name="op" value="approve_exception"><label>B · Operate by approved exception</label><textarea name="note" placeholder="Who approved and why" required></textarea><label><input type="checkbox" name="pricing_review_ack" value="1" style="width:auto" required> Pricing reviewed (shared rate not kept automatically)</label><label><input type="checkbox" name="operational_approval" value="1" style="width:auto" required> Operational approval</label><button class="alt">Approve exception</button></form>'
+                . '<form method="post" action="' . h(url(['a' => 'op'])) . '">' . $hid . '<input type="hidden" name="op" value="offer_private"><label>C · Offer a private option</label><textarea name="note" placeholder="What was offered (quoted separately)" required></textarea><button class="alt">Record private offer on bookings</button></form>'
+                . '<div><label>D · Move a traveler</label><p class="muted">Use “Propose move” on a booking below. It is recorded as pending until the traveler agrees; nothing moves automatically.</p></div>'
+                . '</div>';
+            if (!empty($d['min_group_exception'])) $b .= '<form class="inline" method="post" action="' . h(url(['a' => 'op'])) . '">' . $hid . '<input type="hidden" name="op" value="withdraw_exception"><button class="alt">Withdraw exception</button></form>';
+        }
+        $b .= '</div>';
+    }
     if (($d['departure_type'] ?? '') === 'private' && $rf['eid']) {
         $b .= '<div class="card" style="border-color:#c0533a"><strong>Eid special request — MANUAL REVIEW</strong><p>This private departure falls in ' . h($rf['eid'][0]['name']) . ' (' . h(atb_period_label($rf['eid'][0])) . '). Never promise it can be accommodated. A booking can only be confirmed after a review note is recorded (guide, driver, vehicle availability, hotels, domestic transport, site access, meals, local operating conditions, itinerary feasibility).</p></div>';
     }
@@ -751,7 +898,7 @@ if ($action === 'edit') {
         foreach ($ops as $op => $label) {
             $b .= '<form class="inline" method="post" action="' . h(url(['a' => 'op'])) . '">' . csrf_field() . '<input type="hidden" name="id" value="' . h($d['id']) . '"><input type="hidden" name="op" value="' . h($op) . '"><button class="' . (in_array($op, ['publish', 'approve'], true) ? '' : 'alt') . '">' . h($label) . '</button></form>';
         }
-        $b .= '<p class="muted">Approval: <strong>' . h($d['operational_approval'] ?? 'pending') . '</strong>. Counting toward minimum (accepted + payment received): <strong>' . h($d['confirmed_count']) . '</strong> of minimum ' . h($d['min_group_size']) . '. Accepted, payment not recorded (not counted): ' . h($d['accepted_unpaid_count'] ?? 0) . '. Requests pending: ' . h($d['pending_count']) . ' (inquiries never count). Remaining capacity: ' . h($d['remaining_capacity'] ?? 'not set') . '.</p></div>';
+        $b .= '<p class="muted">Approval: <strong>' . h($d['operational_approval'] ?? 'pending') . '</strong>. Counting toward minimum (accepted + payment received): <strong>' . (($d['traveler_count_status'] ?? 'verified') === 'unknown' ? 'UNKNOWN (legacy — not reconciled; ' . h($d['recorded_confirmed_count'] ?? 0) . ' entered in this system so far)' : h($d['confirmed_count'])) . '</strong> of minimum ' . h($d['min_group_size']) . '. Accepted, payment not recorded (not counted): ' . h($d['accepted_unpaid_count'] ?? 0) . '. Requests pending: ' . h($d['pending_count']) . ' (inquiries never count). Remaining capacity: ' . h($d['remaining_capacity'] ?? 'not set') . '.</p></div>';
     }
     $b .= '<h2>Details</h2>' . departure_form($inv, $d, false, $canEdit);
     $travelers = array_filter(atb_load_travelers(), static fn($x) => ($x['departure_id'] ?? '') === $d['id']);
@@ -764,7 +911,12 @@ if ($action === 'edit') {
                 . (eid_review_needed($d, $cal) ? '<div><input name="eid_review_note" placeholder="Eid manual review note (required to confirm)" value="' . h($tr['eid_review_note'] ?? '') . '"></div>' : '')
                 . '<div><input name="amount_paid" placeholder="Amount paid" value="' . h($tr['amount_paid'] ?? '') . '"></div><div><input name="balance_due" placeholder="Balance" value="' . h($tr['balance_due'] ?? '') . '"></div><div><input type="date" name="balance_due_date" value="' . h($tr['balance_due_date'] ?? '') . '"></div></div><button class="alt">Update</button></form>'
                 : h((BOOKING_STATUS[$tr['status']] ?? $tr['status']) . ' · ' . (PAYMENT_NOTE[payment_value((string)$tr['payment_status']) ?? 'not_recorded']))) . '</td>'
-            . '<td>' . (($tr['status'] ?? '') === 'confirmed' ? '<a href="' . h(url(['a' => 'confirmation', 'traveler' => $tr['id']])) . '">Booking confirmation</a>' : '') . '</td></tr>';
+            . '<td>' . (($tr['status'] ?? '') === 'confirmed' ? '<a href="' . h(url(['a' => 'confirmation', 'traveler' => $tr['id']])) . '">Booking confirmation</a>' : '')
+            . (!empty($tr['low_numbers_refund']['due']) ? '<br><span class="tag tag--err">100% low-numbers refund due · not executed</span>' : '')
+            . (!empty($tr['private_offer']) ? '<br><span class="tag">private option offered</span>' : '')
+            . (!empty($tr['proposed_move']) ? '<br><span class="tag tag--warn">move to ' . h($tr['proposed_move']['to_departure_id']) . ' pending traveler confirmation</span>' : '')
+            . ($canEdit && ($tr['status'] ?? '') !== 'cancelled' ? '<form method="post" action="' . h(url(['a' => 'traveler'])) . '">' . csrf_field() . '<input type="hidden" name="op" value="propose_move"><input type="hidden" name="departure_id" value="' . h($d['id']) . '"><input type="hidden" name="traveler_id" value="' . h($tr['id']) . '"><input name="to_departure_id" placeholder="DEP-… to propose"><button class="alt">Propose move</button></form>' : '')
+            . '</td></tr>';
     }
     if (!$travelers) $b .= '<tr><td colspan="6" class="muted">No travelers assigned.</td></tr>';
     $b .= '</tbody></table></div>';
@@ -860,6 +1012,9 @@ if ($action === 'settings') {
         . '<label><input type="checkbox" name="usd_confirmed" value="1" style="width:auto"' . $chk('usd_confirmed') . '> Dollar prices are confirmed as USD (shows “USD” instead of “$”)</label>'
         . '<label><input type="checkbox" name="show_public_capacity" value="1" style="width:auto"' . $chk('show_public_capacity') . '> Show maximum capacity / remaining places publicly (only where capacity is set)</label>'
         . '<label><input type="checkbox" name="show_public_confirmed_counts" value="1" style="width:auto"' . $chk('show_public_confirmed_counts') . '> Allow “x of N travelers confirmed” (each departure must also opt in)</label>'
+        . '<div class="grid"><div><label for="lrd">Long tours (5+ days): minimum-group decision, days before departure</label><input id="lrd" type="number" min="1" max="365" name="long_tour_min_group_review_days" value="' . h($settings['long_tour_min_group_review_days'] ?? 45) . '"></div>'
+        . '<div><label for="lcd">Long tours: final booking cutoff, days before departure</label><input id="lcd" type="number" min="0" max="60" name="long_tour_final_booking_cutoff_days" value="' . h($settings['long_tour_final_booking_cutoff_days'] ?? 7) . '"></div></div>'
+        . '<p class="muted">Inside the cutoff a Confirmed long departure stays visible; its button becomes “Contact us for last-minute availability” (manual review, never counts toward capacity). This is not the Closed status. Short tours are not affected.</p>'
         . '<p class="muted">Limited is set manually on each departure (no automatic threshold). Sold out is automatic only where a capacity is set. Booking cutoffs do <strong>not</strong> close departures (' . (!empty($settings['auto_cutoff_close']) ? 'automatic cutoff closing is ON' : 'automatic cutoff closing is off until a cutoff rule is approved') . ').</p>'
         . ($canEdit ? '<button>Save settings</button>' : '') . '</form><p class="muted">Seed imported ' . h($inv['seed']['imported_at'] ?? '') . ' (seed as of ' . h($inv['seed']['seed_as_of'] ?? '') . '). Contact shown on the site: ' . h(($settings['contact']['email'] ?? '') . ' · ' . ($settings['contact']['whatsapp_display'] ?? '')) . '.</p>';
     page('Settings', $b, $user);

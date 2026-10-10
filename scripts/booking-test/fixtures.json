@@ -7,7 +7,9 @@
       "long_max": 18,
       "short_tour_shared_min": 2
     },
-    "auto_cutoff_close": false
+    "auto_cutoff_close": false,
+    "long_tour_min_group_review_days": 45,
+    "long_tour_final_booking_cutoff_days": 7
   },
   "cases": [
     {
@@ -258,14 +260,14 @@
       "expect": "closed"
     },
     {
-      "name": "cutoff passed, auto cutoff OFF (default) → stays open",
-      "today": "2026-11-20",
+      "name": "legacy booking_cutoff date passed (56 days out, before 45-day review), auto cutoff OFF (default) → stays open",
+      "today": "2026-10-10",
       "dep": {
         "status": "scheduled",
         "start_date": "2026-12-05",
         "end_date": "2026-12-16",
         "departure_type": "shared",
-        "booking_cutoff": "2026-11-15",
+        "booking_cutoff": "2026-10-01",
         "min_group_size": 6
       },
       "expect": "open"
@@ -379,14 +381,14 @@
       "expect_public": false
     },
     {
-      "name": "cutoff passed, auto cutoff ON (only once approved) → closed",
-      "today": "2026-11-20",
+      "name": "legacy booking_cutoff date passed (56 days out, before 45-day review), auto cutoff ON (only once approved) → closed",
+      "today": "2026-10-10",
       "dep": {
         "status": "scheduled",
         "start_date": "2026-12-05",
         "end_date": "2026-12-16",
         "departure_type": "shared",
-        "booking_cutoff": "2026-11-15",
+        "booking_cutoff": "2026-10-01",
         "min_group_size": 6
       },
       "settings": {
@@ -1035,6 +1037,732 @@
         }
       ],
       "confirmed": 6
+    }
+  ],
+  "long_window": [
+    {
+      "name": "long 60d / 4 confirmed → Open",
+      "days": 60,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 4,
+        "traveler_count_status": "verified"
+      },
+      "status": "open",
+      "listed": true,
+      "cta": "Request a Place",
+      "bwc": false
+    },
+    {
+      "name": "long 46d / 5 → Open (review not yet due)",
+      "days": 46,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 5,
+        "traveler_count_status": "verified"
+      },
+      "status": "open",
+      "listed": true,
+      "cta": "Request a Place",
+      "bwc": false
+    },
+    {
+      "name": "long 45d / 5 → review required (not public)",
+      "days": 45,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 5,
+        "traveler_count_status": "verified"
+      },
+      "status": "review",
+      "listed": false,
+      "cta": "Ask About Dates",
+      "bwc": false
+    },
+    {
+      "name": "long 40d / 5, no exception → not public",
+      "days": 40,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 5,
+        "traveler_count_status": "verified"
+      },
+      "status": "review",
+      "listed": false,
+      "cta": "Ask About Dates",
+      "bwc": false
+    },
+    {
+      "name": "long 40d / 5, approved exception → public Confirmed",
+      "days": 40,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 5,
+        "min_group_exception": {
+          "approved": true,
+          "note": "James approved 5 (trade group)",
+          "pricing_review_ack": true,
+          "by": "james"
+        },
+        "operational_approval": "approved",
+        "price_approved": true,
+        "traveler_count_status": "verified"
+      },
+      "status": "confirmed",
+      "listed": true,
+      "cta": "Join This Departure",
+      "bwc": false
+    },
+    {
+      "name": "long 40d / 5, exception but price not re-approved → hidden",
+      "days": 40,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 5,
+        "min_group_exception": {
+          "approved": true,
+          "note": "James approved 5 (trade group)",
+          "pricing_review_ack": true,
+          "by": "james"
+        },
+        "operational_approval": "approved",
+        "price_approved": false,
+        "traveler_count_status": "verified"
+      },
+      "status": "review",
+      "listed": false,
+      "cta": "Ask About Dates",
+      "bwc": false
+    },
+    {
+      "name": "long 45d / 6 confirmed, no operational approval → review (approval required)",
+      "days": 45,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 6,
+        "traveler_count_status": "verified"
+      },
+      "status": "review",
+      "listed": false,
+      "cta": "Ask About Dates",
+      "bwc": false
+    },
+    {
+      "name": "long 29d / 8 + approval → Confirmed public",
+      "days": 29,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 8,
+        "operational_approval": "approved",
+        "traveler_count_status": "verified"
+      },
+      "status": "confirmed",
+      "listed": true,
+      "cta": "Join This Departure",
+      "bwc": false
+    },
+    {
+      "name": "long 20d / 8 + approval → Confirmed public",
+      "days": 20,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 8,
+        "operational_approval": "approved",
+        "traveler_count_status": "verified"
+      },
+      "status": "confirmed",
+      "listed": true,
+      "cta": "Join This Departure",
+      "bwc": false
+    },
+    {
+      "name": "long 8d Confirmed → normal booking",
+      "days": 8,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 8,
+        "operational_approval": "approved",
+        "traveler_count_status": "verified"
+      },
+      "status": "confirmed",
+      "listed": true,
+      "cta": "Join This Departure",
+      "bwc": false
+    },
+    {
+      "name": "long 7d Confirmed → visible + last-minute CTA",
+      "days": 7,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 8,
+        "operational_approval": "approved",
+        "traveler_count_status": "verified"
+      },
+      "status": "confirmed",
+      "listed": true,
+      "cta": "Contact us for last-minute availability",
+      "bwc": true
+    },
+    {
+      "name": "long 3d Confirmed → visible + last-minute CTA",
+      "days": 3,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 8,
+        "operational_approval": "approved",
+        "traveler_count_status": "verified"
+      },
+      "status": "confirmed",
+      "listed": true,
+      "cta": "Contact us for last-minute availability",
+      "bwc": true
+    },
+    {
+      "name": "long 40d capacity reached (no approval) → Sold out, no CTA",
+      "days": 40,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 18,
+        "traveler_count_status": "verified"
+      },
+      "status": "sold_out",
+      "listed": true,
+      "cta": "",
+      "bwc": false
+    },
+    {
+      "name": "long 3d capacity reached → Sold out, no CTA",
+      "days": 3,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 18,
+        "operational_approval": "approved",
+        "traveler_count_status": "verified"
+      },
+      "status": "sold_out",
+      "listed": true,
+      "cta": "",
+      "bwc": false
+    },
+    {
+      "name": "long 90d capacity reached → Sold out",
+      "days": 90,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 18,
+        "traveler_count_status": "verified"
+      },
+      "status": "sold_out",
+      "listed": true,
+      "cta": "",
+      "bwc": false
+    },
+    {
+      "name": "long past → unavailable (completed)",
+      "days": -12,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 8,
+        "operational_approval": "approved",
+        "traveler_count_status": "verified"
+      },
+      "status": "completed",
+      "listed": false,
+      "cta": "Ask About Dates",
+      "bwc": false
+    },
+    {
+      "name": "verified long under-min 20d (legacy-style late case) → review, not public Open",
+      "days": 20,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 0,
+        "traveler_count_status": "verified"
+      },
+      "status": "review",
+      "listed": false,
+      "cta": "Ask About Dates",
+      "bwc": false
+    },
+    {
+      "name": "long manual Limited under-min 40d → still review (hidden)",
+      "days": 40,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 2,
+        "limited_manual": true,
+        "traveler_count_status": "verified"
+      },
+      "status": "review",
+      "listed": false,
+      "cta": "Ask About Dates",
+      "bwc": false
+    },
+    {
+      "name": "long manual Limited Confirmed 5d → Limited + last-minute CTA",
+      "days": 5,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 10,
+        "operational_approval": "approved",
+        "limited_manual": true,
+        "traveler_count_status": "verified"
+      },
+      "status": "limited",
+      "listed": true,
+      "cta": "Contact us for last-minute availability",
+      "bwc": true
+    },
+    {
+      "name": "long manual Closed 20d → Closed (manual)",
+      "days": 20,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "confirmed_count": 8,
+        "operational_approval": "approved",
+        "status": "closed",
+        "traveler_count_status": "verified"
+      },
+      "status": "closed",
+      "listed": true,
+      "cta": "Ask About Dates",
+      "bwc": false
+    },
+    {
+      "name": "SHORT regression: 3d out, 1 confirmed → Open, normal CTA",
+      "days": 3,
+      "dep": {
+        "duration_days": 3,
+        "min_group_size": 2,
+        "max_capacity": null,
+        "departure_type": "shared",
+        "confirmed_count": 1,
+        "traveler_count_status": "verified"
+      },
+      "status": "open",
+      "listed": true,
+      "cta": "Request a Place",
+      "bwc": false
+    },
+    {
+      "name": "SHORT regression: 3d out, 2 + approval → Confirmed, normal CTA",
+      "days": 3,
+      "dep": {
+        "duration_days": 3,
+        "min_group_size": 2,
+        "max_capacity": null,
+        "departure_type": "shared",
+        "confirmed_count": 2,
+        "operational_approval": "approved",
+        "traveler_count_status": "verified"
+      },
+      "status": "confirmed",
+      "listed": true,
+      "cta": "Join This Departure",
+      "bwc": false
+    },
+    {
+      "name": "SHORT regression: 40d out, 0 confirmed → Open (no 45-day review)",
+      "days": 40,
+      "dep": {
+        "duration_days": 3,
+        "min_group_size": 2,
+        "max_capacity": null,
+        "departure_type": "shared",
+        "confirmed_count": 0,
+        "traveler_count_status": "verified"
+      },
+      "status": "open",
+      "listed": true,
+      "cta": "Request a Place",
+      "bwc": false
+    },
+    {
+      "name": "SHORT regression: 1d out, 0 confirmed → Open (no cutoff)",
+      "days": 1,
+      "dep": {
+        "duration_days": 3,
+        "min_group_size": 2,
+        "max_capacity": null,
+        "departure_type": "shared",
+        "confirmed_count": 0,
+        "traveler_count_status": "verified"
+      },
+      "status": "open",
+      "listed": true,
+      "cta": "Request a Place",
+      "bwc": false
+    },
+    {
+      "name": "PRIVATE long 20d → on request, never listed (unchanged)",
+      "days": 20,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 1,
+        "max_capacity": null,
+        "departure_type": "private",
+        "confirmed_count": 1,
+        "traveler_count_status": "verified"
+      },
+      "status": "on_request",
+      "listed": false,
+      "cta": "Ask About Dates",
+      "bwc": false
+    }
+  ],
+  "count_status": [
+    {
+      "name": "legacy no data → count unknown (not zero)",
+      "days": 20,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "source": "production_2026-10-10"
+      },
+      "status": "open",
+      "listed": true,
+      "cta": "Contact us for availability",
+      "bwc": false,
+      "count_status": "unknown",
+      "manual_contact": true,
+      "forbid": [
+        "awaiting",
+        "0 of",
+        "0 confirmed",
+        "unknown",
+        "migrat"
+      ]
+    },
+    {
+      "name": "legacy unknown 0d (starts today) → shown Closed, not bookable",
+      "days": 40,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "source": "production_2026-10-10",
+        "traveler_count_status": "unknown",
+        "confirmed_count": null,
+        "pending_count": null
+      },
+      "status": "open",
+      "listed": true,
+      "cta": "Contact us for availability",
+      "bwc": false,
+      "count_status": "unknown",
+      "manual_contact": true,
+      "forbid": [
+        "awaiting",
+        "0 of",
+        "unknown"
+      ]
+    },
+    {
+      "name": "legacy unknown 45d boundary → manual contact",
+      "days": 45,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "source": "production_2026-10-10",
+        "traveler_count_status": "unknown",
+        "confirmed_count": null
+      },
+      "status": "open",
+      "listed": true,
+      "cta": "Contact us for availability",
+      "bwc": false,
+      "count_status": "unknown",
+      "manual_contact": true
+    },
+    {
+      "name": "legacy unknown 46d → normal Open, neutral wording",
+      "days": 46,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "source": "production_2026-10-10",
+        "traveler_count_status": "unknown",
+        "confirmed_count": null
+      },
+      "status": "open",
+      "listed": true,
+      "cta": "Request a Place",
+      "bwc": false,
+      "count_status": "unknown",
+      "manual_contact": false,
+      "status_text": "Open — minimum 6 travelers to operate",
+      "forbid": [
+        "awaiting"
+      ]
+    },
+    {
+      "name": "legacy unknown 7d → last-minute contact",
+      "days": 7,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "source": "production_2026-10-10",
+        "traveler_count_status": "unknown",
+        "confirmed_count": null
+      },
+      "status": "open",
+      "listed": true,
+      "cta": "Contact us for last-minute availability",
+      "bwc": true,
+      "count_status": "unknown",
+      "manual_contact": true
+    },
+    {
+      "name": "legacy unknown 2d → last-minute contact",
+      "days": 2,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "source": "production_2026-10-10",
+        "traveler_count_status": "unknown",
+        "confirmed_count": null
+      },
+      "status": "open",
+      "listed": true,
+      "cta": "Contact us for last-minute availability",
+      "bwc": true,
+      "count_status": "unknown",
+      "manual_contact": true
+    },
+    {
+      "name": "legacy unknown 0d (starts today) → shown Closed, not bookable",
+      "days": 0,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "source": "production_2026-10-10",
+        "traveler_count_status": "unknown",
+        "confirmed_count": null
+      },
+      "status": "closed",
+      "listed": true,
+      "cta": "Ask About Dates",
+      "bwc": false,
+      "count_status": "unknown"
+    },
+    {
+      "name": "verified zero 30d → operational-decision workflow (hidden)",
+      "days": 30,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "source": "admin",
+        "traveler_count_status": "verified",
+        "confirmed_count": 0
+      },
+      "status": "review",
+      "listed": false,
+      "cta": "Ask About Dates",
+      "bwc": false,
+      "count_status": "verified"
+    },
+    {
+      "name": "reconciled 6+ with approval → Confirmed",
+      "days": 30,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "source": "production_2026-10-10",
+        "traveler_count_status": "verified",
+        "confirmed_count": 7,
+        "operational_approval": "approved",
+        "reconciliation": {
+          "qualifying_count": 7,
+          "pending_count": 1,
+          "operating": true,
+          "operational_approval": true,
+          "note": "from office ledger",
+          "reconciled_by": "james"
+        }
+      },
+      "status": "confirmed",
+      "listed": true,
+      "cta": "Join This Departure",
+      "bwc": false,
+      "count_status": "verified"
+    },
+    {
+      "name": "reconciled below min + approved exception → allowed",
+      "days": 30,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "source": "production_2026-10-10",
+        "traveler_count_status": "verified",
+        "confirmed_count": 4,
+        "operational_approval": "approved",
+        "price_approved": true,
+        "min_group_exception": {
+          "approved": true,
+          "note": "James: operate for 4",
+          "pricing_review_ack": true,
+          "by": "james"
+        },
+        "reconciliation": {
+          "qualifying_count": 4,
+          "pending_count": 0,
+          "operating": true,
+          "operational_approval": true,
+          "note": "ledger",
+          "reconciled_by": "james"
+        }
+      },
+      "status": "confirmed",
+      "listed": true,
+      "cta": "Join This Departure",
+      "bwc": false,
+      "count_status": "verified"
+    },
+    {
+      "name": "new system departure zero stays zero",
+      "days": 20,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "source": "admin",
+        "traveler_count_status": "verified",
+        "confirmed_count": 0,
+        "pending_count": 0
+      },
+      "status": "review",
+      "listed": false,
+      "cta": "Ask About Dates",
+      "bwc": false,
+      "count_status": "verified"
+    },
+    {
+      "name": "unknown legacy never shows '0 confirmed' even with public counts on",
+      "days": 60,
+      "dep": {
+        "duration_days": 9,
+        "min_group_size": 6,
+        "max_capacity": 18,
+        "departure_type": "shared",
+        "source": "production_2026-10-10",
+        "traveler_count_status": "unknown",
+        "confirmed_count": null,
+        "public_counts_approved": true
+      },
+      "settings": {
+        "show_public_confirmed_counts": true
+      },
+      "status": "open",
+      "listed": true,
+      "cta": "Request a Place",
+      "bwc": false,
+      "count_status": "unknown",
+      "no_confirmed_text": true,
+      "forbid": [
+        "awaiting",
+        "0 of",
+        "confirmed"
+      ]
+    },
+    {
+      "name": "SHORT legacy unknown 3d → unchanged (no manual-contact rule)",
+      "days": 3,
+      "dep": {
+        "duration_days": 3,
+        "min_group_size": 2,
+        "max_capacity": null,
+        "departure_type": "shared",
+        "source": "production_2026-10-10",
+        "traveler_count_status": "unknown",
+        "confirmed_count": null
+      },
+      "status": "open",
+      "listed": true,
+      "cta": "Request a Place",
+      "bwc": false,
+      "count_status": "unknown",
+      "manual_contact": false,
+      "status_text": "Open — awaiting minimum 2 travelers"
     }
   ]
 }

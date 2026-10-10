@@ -29,6 +29,8 @@ const next = departures.find((d) => d.selectable);
 const anyRamadan = departures.some((d) => (d.advisories || []).some((a: any) => a.type === 'ramadan'));
 // Eid notice is about standard scheduled departures, so it is shown for scheduled products (A/B), not private-first C routes.
 const eidBlocks = category === 'C' ? [] : upcomingEidBlocks();
+// Owner correction 19:01: prominent warning only when a displayed departure actually falls in an Eid block; otherwise small collapsible info.
+const eidHit = departures.some((d) => eidBlocks.some((b) => d.start_date <= b.end && d.end_date >= b.start));
 
 const heading = category === 'C' ? 'Group departures (when announced)' : 'Group departures';
 const privateLead = isWeekend
@@ -91,14 +93,16 @@ const common = {
         data-tour-date={d.date_label}
         data-arrival-option={d.arrival_option || ''}
         data-selectable={d.selectable ? '1' : ''}
-        disabled={!d.selectable}
+        data-last-minute={d.last_minute ? '1' : ''}
+        data-manual-contact={d.manual_contact ? '1' : ''}
+        disabled={!d.selectable && !d.last_minute && !d.manual_contact}
         {...common}
       >
         <span class="tdp-row__date">{d.date_label}</span>
         <span class="tdp-row__status">{d.status_text}</span>
         {d.confirmed_text && <span class="tdp-row__status">{d.confirmed_text}</span>}
         {(d.advisories || []).map((a: any) => <span class="tdp-row__advisory">{a.text}</span>)}
-        <span class="tdp-row__cta">{d.cta}</span>
+        {d.cta && <span class={(d.last_minute || d.manual_contact) ? "tdp-row__cta tdp-row__cta--lm" : "tdp-row__cta"}>{d.cta}</span>}
       </button>
     ))}
   </div>
@@ -108,12 +112,13 @@ const common = {
     {RAMADAN_ADVISORY_PARAGRAPHS.map((p) => <p>{p}</p>)}
   </details>
 
-  <div class="tdp-eid" data-eid-notice data-show={category === 'C' ? '' : '1'} hidden={eidBlocks.length === 0}>
+  <details class={eidHit ? 'tdp-eid tdp-eid--warn' : 'tdp-eid tdp-eid--info'} data-eid-notice data-show={category === 'C' ? '' : '1'} hidden={eidBlocks.length === 0} open={eidHit}>
+    <summary data-eid-summary>{eidHit ? 'Eid operating period affects a date below' : 'Eid operating periods'}</summary>
     <p>{EID_NOTICE}</p>
     <ul data-eid-list>
       {eidBlocks.map((b) => <li>{b.name}: {b.label}</li>)}
     </ul>
-  </div>
+  </details>
 
   <p class="tdp-empty" data-departure-empty hidden={departures.length > 0 || category === 'C'}>
     No group dates are published at the moment. Ask us about dates, or travel privately.
@@ -203,17 +208,19 @@ const common = {
         b.dataset.tourDate = d.date_label;
         b.dataset.arrivalOption = d.arrival_option || '';
         b.dataset.selectable = d.selectable ? '1' : '';
+        b.dataset.lastMinute = d.last_minute ? '1' : '';
+        b.dataset.manualContact = d.manual_contact ? '1' : '';
         b.dataset.tourTitle = root.dataset.tourName || '';
         b.dataset.tourSlug = root.dataset.tourSlug || '';
         b.dataset.tourCode = root.dataset.tourCode || '';
         b.dataset.tourDays = root.dataset.tourDays || '';
         b.dataset.weekend = root.dataset.weekend || '';
-        b.disabled = !d.selectable;
+        b.disabled = !d.selectable && !d.last_minute && !d.manual_contact;
         const lines = [['tdp-row__date', d.date_label], ['tdp-row__status', d.status_text]];
         if (d.confirmed_text) lines.push(['tdp-row__status', d.confirmed_text]);
         if (d.remaining_places != null) lines.push(['tdp-row__status', `${d.remaining_places} places remaining`]);
         (d.advisories || []).forEach((a) => lines.push(['tdp-row__advisory', a.text]));
-        lines.push(['tdp-row__cta', d.cta]);
+        if (d.cta) lines.push([(d.last_minute || d.manual_contact) ? 'tdp-row__cta tdp-row__cta--lm' : 'tdp-row__cta', d.cta]);
         lines.forEach(([cls, text]) => {
           const s = document.createElement('span');
           s.className = cls;
@@ -243,6 +250,12 @@ const common = {
           ul.textContent = '';
           data.eid_blocks.forEach((blk) => { const li = document.createElement('li'); li.textContent = `${blk.name}: ${blk.label}`; ul.appendChild(li); });
           eid.hidden = eid.dataset.show !== '1' || data.eid_blocks.length === 0;
+          const hit = mine.some((d) => data.eid_blocks.some((blk) => d.start_date <= blk.end && d.end_date >= blk.start));
+          eid.classList.toggle('tdp-eid--warn', hit);
+          eid.classList.toggle('tdp-eid--info', !hit);
+          eid.open = hit;
+          const sum = eid.querySelector('[data-eid-summary]');
+          if (sum) sum.textContent = hit ? 'Eid operating period affects a date below' : 'Eid operating periods';
         }
         root.dataset.source = 'live';
         refresh();
@@ -272,6 +285,7 @@ const common = {
   .tdp-row__date { grid-column: 1; font-size: .78rem; font-weight: 800; color: #1c1d1b; }
   .tdp-row__status { grid-column: 1; color: #62645d; font-size: .68rem; line-height: 1.4; }
   .tdp-row__cta { grid-column: 2; grid-row: 1 / span 3; align-self: center; color: #7b5b23; font-size: .66rem; font-weight: 900; letter-spacing: .02em; white-space: nowrap; text-decoration: underline; text-underline-offset: 3px; }
+  .tdp-row__cta--lm { white-space: normal; max-width: 9.5rem; text-align: right; }
   .tdp-row:disabled .tdp-row__cta { text-decoration: none; color: #6e7069; }
   .tdp-row__advisory { grid-column: 1; margin-top: .2rem; padding-left: .55rem; border-left: 2px solid #c9a24a; color: #5a4a26; font-size: .66rem; line-height: 1.45; }
   .tdp-advisory { margin: .6rem 0 0; padding: .55rem .7rem; border: 1px solid #e3d6b4; border-radius: 8px; background: #fbf7ee; font-size: .68rem; line-height: 1.55; color: #4b4d48; }
@@ -279,7 +293,11 @@ const common = {
   .tdp-advisory summary { cursor: pointer; font-weight: 800; color: #1c1d1b; }
   .tdp-advisory p { margin: .45rem 0 0; }
   .tdp-eid { margin: .6rem 0 0; padding: .55rem .7rem; border: 1px solid #d8d4c9; border-radius: 8px; background: #f6f4ef; font-size: .68rem; line-height: 1.55; color: #3f413c; }
-  .tdp-eid p { margin: 0; }
+  .tdp-eid p { margin: .3rem 0 0; }
+  .tdp-eid summary { cursor: pointer; font-weight: 600; }
+  .tdp-eid--info { padding: .3rem .6rem; border-color: #e3dfd6; background: transparent; color: #6a6b66; font-size: .64rem; }
+  .tdp-eid--info summary { font-weight: 500; }
+  .tdp-eid--warn { border-color: #c9a35a; background: #fbf4e4; }
   .tdp-eid ul { margin: .35rem 0 0; padding-left: 1rem; }
   .tdp-empty { margin: .55rem 0 0; color: #5f615a; font-size: .72rem; line-height: 1.5; }
   .tdp-note { margin: .7rem 0 0; color: #6b6d66; font-size: .64rem; line-height: 1.5; }

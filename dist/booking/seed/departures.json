@@ -13,8 +13,8 @@
       "departure_type": "shared",
       "min_group_size": 6,
       "max_capacity": 18,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "completed",
       "published": false,
       "price": {
@@ -37,7 +37,9 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-KBLS-20260813",
@@ -49,8 +51,8 @@
       "departure_type": "shared",
       "min_group_size": 6,
       "max_capacity": 18,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "completed",
       "published": false,
       "price": {
@@ -73,7 +75,9 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-SUMC-20260820",
@@ -85,8 +89,8 @@
       "departure_type": "shared",
       "min_group_size": 6,
       "max_capacity": 18,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "completed",
       "published": false,
       "price": {
@@ -110,7 +114,9 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-WKND-20260820",
@@ -122,8 +128,8 @@
       "departure_type": "shared",
       "min_group_size": 2,
       "max_capacity": null,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "completed",
       "published": false,
       "price": {
@@ -146,7 +152,9 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-TSRA-20260907",
@@ -158,8 +166,8 @@
       "departure_type": "shared",
       "min_group_size": 6,
       "max_capacity": 18,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "completed",
       "published": false,
       "price": {
@@ -182,7 +190,9 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-CAD-20260912",
@@ -194,8 +204,8 @@
       "departure_type": "shared",
       "min_group_size": 6,
       "max_capacity": 18,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "completed",
       "published": false,
       "price": {
@@ -219,7 +229,9 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-ADTF-20260921",
@@ -231,8 +243,8 @@
       "departure_type": "shared",
       "min_group_size": 6,
       "max_capacity": 18,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "completed",
       "published": false,
       "price": {
@@ -255,7 +267,9 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-PVEH-20260928",
@@ -267,8 +281,8 @@
       "departure_type": "shared",
       "min_group_size": 2,
       "max_capacity": null,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "completed",
       "published": false,
       "price": {
@@ -291,7 +305,9 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-KBLS-20261005",
@@ -303,8 +319,8 @@
       "departure_type": "shared",
       "min_group_size": 6,
       "max_capacity": 18,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "closed",
       "published": false,
       "price": {
@@ -327,7 +343,9 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-ADTF-20261012",
@@ -339,8 +357,8 @@
       "departure_type": "shared",
       "min_group_size": 6,
       "max_capacity": 18,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "scheduled",
       "published": true,
       "price": {
@@ -363,7 +381,9 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-KTDE-20261026",
@@ -375,8 +395,8 @@
       "departure_type": "shared",
       "min_group_size": 6,
       "max_capacity": 18,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "scheduled",
       "published": true,
       "price": {
@@ -399,7 +419,9 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-WKND-20261106",
@@ -435,7 +457,8 @@
       "arrival_option": "fri-sun",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-ADTF-20261107",
@@ -471,7 +494,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-KBLS-20261114",
@@ -507,7 +531,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-KTDE-20261121",
@@ -543,7 +568,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20261121",
@@ -579,7 +605,8 @@
       "arrival_option": "sat-mon",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20261204",
@@ -615,7 +642,8 @@
       "arrival_option": "fri-sun",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WNTC-20261205",
@@ -627,8 +655,8 @@
       "departure_type": "shared",
       "min_group_size": 6,
       "max_capacity": 18,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "scheduled",
       "published": true,
       "price": {
@@ -652,7 +680,9 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-BUZE-20261219",
@@ -688,7 +718,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20261219",
@@ -724,7 +755,8 @@
       "arrival_option": "sat-mon",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270101",
@@ -760,7 +792,8 @@
       "arrival_option": "fri-sun",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WNTC-20270109",
@@ -796,7 +829,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-BSKI-20270116",
@@ -832,7 +866,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270116",
@@ -868,7 +903,8 @@
       "arrival_option": "sat-mon",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270205",
@@ -904,7 +940,8 @@
       "arrival_option": "fri-sun",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-BSKI-20270209",
@@ -916,8 +953,8 @@
       "departure_type": "shared",
       "min_group_size": 6,
       "max_capacity": 18,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "scheduled",
       "published": true,
       "price": {
@@ -942,7 +979,9 @@
         "ADV-RAMADAN-2027"
       ],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-WNTC-20270216",
@@ -954,8 +993,8 @@
       "departure_type": "shared",
       "min_group_size": 6,
       "max_capacity": 18,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "scheduled",
       "published": true,
       "price": {
@@ -980,7 +1019,9 @@
         "ADV-RAMADAN-2027"
       ],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-WKND-20270220",
@@ -1018,7 +1059,8 @@
         "ADV-RAMADAN-2027"
       ],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-BUZE-20270223",
@@ -1030,8 +1072,8 @@
       "departure_type": "shared",
       "min_group_size": 6,
       "max_capacity": 18,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "scheduled",
       "published": true,
       "price": {
@@ -1056,7 +1098,9 @@
         "ADV-RAMADAN-2027"
       ],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-BSKI-20270227",
@@ -1094,7 +1138,8 @@
         "ADV-RAMADAN-2027"
       ],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270305",
@@ -1132,7 +1177,8 @@
         "ADV-RAMADAN-2027"
       ],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270306",
@@ -1144,8 +1190,8 @@
       "departure_type": "shared",
       "min_group_size": 2,
       "max_capacity": null,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "scheduled",
       "published": true,
       "price": {
@@ -1170,7 +1216,9 @@
         "ADV-RAMADAN-2027"
       ],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-BUZE-20270313",
@@ -1206,7 +1254,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-ADTS-20270320",
@@ -1242,7 +1291,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270320",
@@ -1278,7 +1328,8 @@
       "arrival_option": "sat-mon",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-KTDE-20270327",
@@ -1314,7 +1365,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270402",
@@ -1350,7 +1402,8 @@
       "arrival_option": "fri-sun",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-KBLS-20270410",
@@ -1386,7 +1439,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270417",
@@ -1422,7 +1476,8 @@
       "arrival_option": "sat-mon",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-ADTS-20270420",
@@ -1434,8 +1489,8 @@
       "departure_type": "shared",
       "min_group_size": 6,
       "max_capacity": 18,
-      "confirmed_count": 0,
-      "pending_count": 0,
+      "confirmed_count": null,
+      "pending_count": null,
       "status": "scheduled",
       "published": true,
       "price": {
@@ -1458,7 +1513,9 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "unknown",
+      "traveler_count_note": "Legacy departure listed before the booking system; no traveler records were migrated. Unknown is not zero — reconcile in /manage/."
     },
     {
       "id": "DEP-ADTS-20270501",
@@ -1494,7 +1551,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270507",
@@ -1530,7 +1588,8 @@
       "arrival_option": "fri-sun",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-CAD-20270522",
@@ -1566,7 +1625,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-PVEH-20270529",
@@ -1602,7 +1662,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270604",
@@ -1638,7 +1699,8 @@
       "arrival_option": "fri-sun",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-KBLS-20270612",
@@ -1674,7 +1736,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-SUMC-20270612",
@@ -1710,7 +1773,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270619",
@@ -1746,7 +1810,8 @@
       "arrival_option": "sat-mon",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270702",
@@ -1782,7 +1847,8 @@
       "arrival_option": "fri-sun",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-SUMC-20270710",
@@ -1818,7 +1884,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270717",
@@ -1854,7 +1921,8 @@
       "arrival_option": "sat-mon",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270806",
@@ -1890,7 +1958,8 @@
       "arrival_option": "fri-sun",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-SUMC-20270807",
@@ -1926,7 +1995,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270821",
@@ -1962,7 +2032,8 @@
       "arrival_option": "sat-mon",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-PVEH-20270828",
@@ -1998,7 +2069,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270903",
@@ -2034,7 +2106,8 @@
       "arrival_option": "fri-sun",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-CAD-20270904",
@@ -2070,7 +2143,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-KBLS-20270911",
@@ -2106,7 +2180,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-ADTF-20270918",
@@ -2142,7 +2217,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20270918",
@@ -2178,7 +2254,8 @@
       "arrival_option": "sat-mon",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20271001",
@@ -2214,7 +2291,8 @@
       "arrival_option": "fri-sun",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-ADTF-20271016",
@@ -2250,7 +2328,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20271016",
@@ -2286,7 +2365,8 @@
       "arrival_option": "sat-mon",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-KTDE-20271023",
@@ -2322,7 +2402,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20271105",
@@ -2358,7 +2439,8 @@
       "arrival_option": "fri-sun",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-ADTF-20271106",
@@ -2394,7 +2476,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-KBLS-20271113",
@@ -2430,7 +2513,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20271120",
@@ -2466,7 +2550,8 @@
       "arrival_option": "sat-mon",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20271203",
@@ -2502,7 +2587,8 @@
       "arrival_option": "fri-sun",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WNTC-20271204",
@@ -2538,7 +2624,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-BUZE-20271218",
@@ -2574,7 +2661,8 @@
       "arrival_option": null,
       "advisories": [],
       "capacity_source": "rule_5plus_days_6_18",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     },
     {
       "id": "DEP-WKND-20271218",
@@ -2610,7 +2698,8 @@
       "arrival_option": "sat-mon",
       "advisories": [],
       "capacity_source": "rule_4_or_fewer_days_min_2_no_standard_max",
-      "price_approved": false
+      "price_approved": false,
+      "traveler_count_status": "verified"
     }
   ]
 }

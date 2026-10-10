@@ -23,6 +23,8 @@
       <input type="hidden" name="departure_id" data-inquiry-departure-id />
       <input type="hidden" name="departure_start" data-inquiry-departure-start />
       <input type="hidden" name="departure_end" data-inquiry-departure-end />
+      <input type="hidden" name="last_minute" data-inquiry-last-minute />
+      <input type="hidden" name="manual_contact" data-inquiry-manual-contact />
       <input type="hidden" name="extras" data-inquiry-extras />
       <input class="tour-inquiry-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
@@ -231,8 +233,12 @@
       return el?.getAttribute('data-tour-code') || '';
     };
 
-    const openModal = ({ tour, slug, date, travelers, flow, entityType, entityCode, productClass, departureId, departureStart, departureEnd, type, arrivalOption, weekend, days } = {}) => {
+    const openModal = ({ tour, slug, date, travelers, flow, entityType, entityCode, productClass, departureId, departureStart, departureEnd, type, arrivalOption, weekend, days, lastMinute, manualContact } = {}) => {
       form.reset();
+      const mc = form.querySelector('[data-inquiry-manual-contact]');
+      if (mc) mc.value = manualContact ? '1' : '';
+      const lm = form.querySelector('[data-inquiry-last-minute]');
+      if (lm) lm.value = lastMinute ? '1' : '';
       // Owner decision 10 Oct 2026: 5+ day scheduled group tours need 6 to operate; shared departures of 4 days or less need 2.
       groupMin = Number(days) >= 5 ? 6 : Number(days) > 0 ? 2 : null;
       isWeekend = Boolean(weekend) || pageTourSlug() === 'weekend-in-kabul';
@@ -273,6 +279,14 @@
         ? 'Request a place on this departure. Our team confirms availability and arrangements with you — nothing is confirmed automatically.'
         : 'Tell us your dates and group details. The tour you selected is already filled in.';
       if (titleEl && departureId) titleEl.textContent = 'Request a place';
+      if (manualContact && departureId && !lastMinute) {
+        if (titleEl) titleEl.textContent = 'Check availability';
+        if (lead) lead.textContent = 'Tell us who is travelling and our team will check availability on this departure with you directly — nothing is confirmed or held until we reply.';
+      }
+      if (lastMinute && departureId) {
+        if (titleEl) titleEl.textContent = 'Last-minute availability';
+        if (lead) lead.textContent = 'This departure is inside its final booking window. Tell us who is travelling and we will check last-minute availability manually — nothing is confirmed or held until our team replies.';
+      }
       if (titleEl && type === 'private') titleEl.textContent = 'Request a private tour';
 
       modal.hidden = false;
@@ -316,6 +330,8 @@
       const arrivalOption = trigger.getAttribute('data-arrival-option') || '';
       const weekend = trigger.getAttribute('data-weekend') === '1';
       const days = Number(trigger.getAttribute('data-tour-days') || 0);
+      const lastMinute = trigger.getAttribute('data-last-minute') === '1';
+      const manualContact = trigger.getAttribute('data-manual-contact') === '1';
 
       if (rawHref) {
         try {
@@ -333,7 +349,7 @@
       }
 
       event.preventDefault();
-      openModal({ tour, slug, date, travelers, flow, productClass, entityCode, departureId, departureStart, departureEnd, type, arrivalOption, weekend, days });
+      openModal({ tour, slug, date, travelers, flow, productClass, entityCode, departureId, departureStart, departureEnd, type, arrivalOption, weekend, days, lastMinute, manualContact });
     });
 
     document.addEventListener('submit', (event) => {

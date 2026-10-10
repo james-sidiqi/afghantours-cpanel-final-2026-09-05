@@ -337,6 +337,9 @@ if ($departureId !== '' && !preg_match('/^[A-Za-z0-9-]{3,60}$/', $departureId)) 
 $departureCheck = $departureId !== '' ? 'not_checked' : 'none';
 $groupNote = '';
 $atbEidOpen = [];
+$manualContact = false;
+$lastMinute = in_array(strtolower(field('last_minute')), ['1', 'true', 'yes'], true);
+$lastMinuteForced = false;
 if ($departureId !== '' && $bookingAvailable) {
     try {
         [$atbInv, $atbSource] = atb_load_inventory();
@@ -354,7 +357,15 @@ if ($departureId !== '' && $bookingAvailable) {
             respond_html_error(409, $msg);
         } else {
             $atbStatus = atb_compute_status($atbDep, $atbToday, $atbSettings);
-            if (!$atbStatus['selectable'] && !$atbEidOpen) {
+            $atbWin = atb_long_tour_window($atbDep, $atbToday, $atbSettings);
+            $manualContact = $atbWin['applies'] && ($atbWin['state'] ?? '') === 'unknown' && in_array($atbStatus['key'], ['open', 'limited'], true);
+            $inCutoff = $atbWin['applies'] && $atbWin['booking_window_closed'] && in_array($atbStatus['key'], ['confirmed', 'limited', 'open'], true) && ($manualContact || $atbStatus['key'] !== 'open');
+            if ($inCutoff) {
+                // Final booking cutoff: never a normal selection — always a last-minute request for manual review.
+                if (!$lastMinute) $lastMinuteForced = true;
+                $lastMinute = true;
+            }
+            if (!$atbStatus['selectable'] && !$atbEidOpen && !$inCutoff && !$manualContact) {
                 $msg = 'That departure is ' . strtolower($atbStatus['label']) . ' and not open for requests. Please choose another date, or ask us about dates.';
                 if (wants_json() || $dryRunRequested) {
                     respond_json(409, ['ok' => false, 'message' => $msg]);
@@ -365,7 +376,7 @@ if ($departureId !== '' && $bookingAvailable) {
             $departureStart = (string)$atbDep['start_date'];
             $departureEnd = (string)$atbDep['end_date'];
             // Eid conflict awaiting review: still accept the inquiry, but route it to manual review (never a normal confirmation).
-            $departureCheck = $atbEidOpen ? 'eid_review_required' : 'verified:' . $atbStatus['key'];
+            $departureCheck = $atbEidOpen ? 'eid_review_required' : ($inCutoff ? 'last_minute_request' : ($manualContact ? 'manual_contact_request' : 'verified:' . $atbStatus['key']));
             if ($bookingType === '') {
                 $bookingType = ($atbDep['departure_type'] ?? 'shared') === 'private' ? 'private' : 'shared';
             }
@@ -455,6 +466,31 @@ if ($bookingAvailable) {
     }
 }
 
+// Last-minute request (inside the final booking cutoff): manual review, never auto-accepted, never counts toward capacity.
+if ($departureCheck === 'manual_contact_request') {
+    // Legacy departure with an unknown traveler count inside its review window: manual contact only.
+    $manualReview = $manualReview ?? [
+        'reason' => 'manual_contact',
+        'label' => 'Availability request — traveler count not yet reconciled',
+        'blocks' => [],
+        'detail' => 'Reconcile this departure\'s traveler count in /manage/ before replying; make no promises; confirm manually.',
+        'checklist' => [],
+        'auto_confirm' => false,
+    ];
+}
+if ($lastMinute && $departureCheck === 'last_minute_request') {
+    $manualReview = $manualReview ?? [
+        'reason' => 'last_minute',
+        'label' => 'Last-minute availability request',
+        'blocks' => [],
+        'detail' => 'Inside the final booking cutoff for this departure. Check hotel, flight, permit and operational availability before replying; make no promises; confirm manually.',
+        'checklist' => [],
+        'auto_confirm' => false,
+    ];
+} elseif ($lastMinute) {
+    $lastMinute = false; // flag only applies to a verified departure inside its cutoff
+}
+
 $classification = flow_label($flow);
 $displayName = $entityName !== '' ? $entityName : ($entitySlug !== '' ? $entitySlug : 'General inquiry');
 $displayName = sanitize_header_value($displayName, MAX_SUBJECT_ENTITY);
@@ -500,7 +536,7 @@ if ($groupNote !== '') {
 }
 if ($manualReview !== null) {
     $lines[] = '';
-    $lines[] = 'MANUAL REVIEW REQUIRED — ' . $manualReview['label'] . ': ' . implode('; ', $manualReview['blocks']) . '.';
+    $lines[] = 'MANUAL REVIEW REQUIRED — ' . $manualReview['label'] . ($manualReview['blocks'] ? ': ' . implode('; ', $manualReview['blocks']) : '') . '.';
     $lines[] = $manualReview['detail'];
     $lines[] = 'Do not confirm or promise this request until the review is complete.';
 }
@@ -538,6 +574,9 @@ $inquiryRecord = [
     'cultural_interests' => $culturalInterests, 'experience_level' => $experienceLevel, 'available_time' => $availableTime,
     'interest' => $interest, 'notes' => $notes, 'group_minimum' => $groupNote,
     'manual_review' => $manualReview,
+    'last_minute' => $lastMinute,
+    'manual_contact' => $manualContact,
+    'counts_toward_capacity' => false,
 ];
 
 if ($dryRunRequested) {
@@ -548,6 +587,9 @@ if ($dryRunRequested) {
         'message' => INQUIRY_CONFIRMATION,
         'departure_check' => $departureCheck,
         'manual_review' => $manualReview !== null,
+        'last_minute' => $lastMinute,
+        'last_minute_forced' => $lastMinuteForced,
+        'manual_contact' => $manualContact,
         'flow' => $flow,
         'classification' => $classification,
         'subject' => $subject,

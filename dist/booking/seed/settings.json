@@ -29,5 +29,8 @@
     "weekend_price": "From $450 per person on shared departures. Private departures available; price on request."
   },
   "auto_cutoff_close": false,
-  "_status_rules": "Limited is set manually per departure (no automatic threshold). Sold out is automatic only where a capacity exists. Booking cutoffs do not close departures unless auto_cutoff_close is true (off until the owner approves a cutoff rule)."
+  "_status_rules": "Limited is set manually per departure (no automatic threshold). Sold out is automatic only where a capacity exists. Booking cutoffs do not close departures unless auto_cutoff_close is true (off until the owner approves a cutoff rule).",
+  "long_tour_min_group_review_days": 45,
+  "long_tour_final_booking_cutoff_days": 7,
+  "_long_tour_rules": "Owner decision 10 Oct 2026 18:56 — long (5+ day) shared departures only: minimum-group decision when days_until_departure <= long_tour_min_group_review_days (45); final booking cutoff (booking_window_closed, NOT the Closed status) when days_until <= long_tour_final_booking_cutoff_days (7). Days computed on Asia/Kabul dates. Short tours unaffected."
 }

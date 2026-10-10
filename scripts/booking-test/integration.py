@@ -78,7 +78,14 @@ try:
     check(all(k not in d for d in data['departures'] for k in forbidden), 'public payload has no internal/PII fields')
     longs = [d for d in data['departures'] if d['duration_days'] >= 5]
     shorts = [d for d in data['departures'] if d['duration_days'] <= 4]
-    check(len(longs) == 7 and all(d['status'] == 'open' and d['status_label'] == 'Open' and d['status_text'] == 'Open — awaiting minimum 6 travelers' and d['min_group_size'] == 6 for d in longs), '5+ day seed departures: "Open — awaiting minimum 6 travelers"')
+    lm = {d['id']: d for d in longs}
+    far = [d for d in longs if d['id'] not in ('DEP-ADTF-20261012', 'DEP-KTDE-20261026')]
+    check(len(longs) == 7 and all(d['status'] == 'open' and d['status_text'] == 'Open — minimum 6 travelers to operate' and d['selectable'] and d['min_group_size'] == 6 for d in far), '5+ day legacy departures >45 days out: Open, normal request flow, neutral wording (count unknown ≠ "awaiting")')
+    a1, k1 = lm.get('DEP-ADTF-20261012'), lm.get('DEP-KTDE-20261026')
+    check(a1 and a1['manual_contact'] and a1['last_minute'] and a1['booking_window_closed'] and not a1['selectable'] and a1['cta'] == 'Contact us for last-minute availability' and a1['status_text'] == 'Availability on request', 'Discovery Fall 12–20 Oct (2 days, count unknown): visible, last-minute contact CTA')
+    check(k1 and k1['manual_contact'] and not k1['last_minute'] and not k1['selectable'] and k1['cta'] == 'Contact us for availability', 'Kandahar 26–31 Oct (16 days, count unknown): visible, "Contact us for availability"')
+    low = body.lower()
+    check(not any(w in low for w in ('count unknown', 'migrat', '0/0', '0 confirmed', '0 of 6', 'awaiting minimum 6')), 'no unknown/migration/0-count/"awaiting 6" wording in the public feed')
     check(len(shorts) == 0, 'the only short published departure (Weekend 6–8 Mar) is held back by the Eid rule')
     check(all(d['status'] in ('open', 'confirmed', 'limited', 'sold_out', 'closed') for d in data['departures']), 'public feed uses only the 5-status vocabulary')
     check('Available' not in body, 'no generic "Available" in public feed')
@@ -292,6 +299,52 @@ try:
     trs = json.load(open(private / 'booking' / 'travelers.json'))['travelers']
     sam = [t for t in trs if t['name'] == 'Solo Sam'][0]
     check(all(k in sam for k in ('booking_reference', 'terms_acceptance', 'policy_acceptance')) and sam['terms_acceptance'] is None, 'booking record carries Terms/Cancellation acceptance fields (data model only, not forced)')
+    # ---- long-tour 45-day review / 7-day cutoff / unknown-count reconciliation ----
+    lf = dict(base_form, entity_name='Afghanistan Discovery Tour Fall', entity_slug='afghanistan-discovery-tour-fall', entity_code='ADTF', departure_id='DEP-ADTF-20261012', travelers='2', booking_type='shared', dry_run='1')
+    d = json.loads(req(pub, '/tour-inquiry.php', lf, J)[1])
+    check(d['ok'] and d['departure_check'] == 'last_minute_request' and d['last_minute'] is True and d['last_minute_forced'] is True and d['manual_review'] is True, 'normal selection inside the final cutoff is routed as a last-minute request (manual review)')
+    kf = dict(lf, entity_name='Kandahar', entity_slug='kandahar-durrani-empire-tour', entity_code='KTDE', departure_id='DEP-KTDE-20261026')
+    d = json.loads(req(pub, '/tour-inquiry.php', kf, J)[1])
+    check(d['ok'] and d['departure_check'] == 'manual_contact_request' and d['manual_contact'] is True and d['last_minute'] is False and d['manual_review'] is True, 'unknown-count departure inside 45 days: inquiry routed as manual contact')
+    code, body, _ = req(adm, '/manage/?view=upcoming')
+    check('Traveler count unknown — immediate review required' in body and 'Traveler count unknown — minimum-group review required' in body, '/manage/ flags unknown counts (immediate inside 7 days, min-group inside 45)')
+    check('count unknown — reconcile by 2026-10-21' in body and 'final cutoff reached (2026-10-05)' in body and '2 days out' in body and 'min-group review due' in body, '/manage/ shows days-out, review-due, reconcile-by and final-cutoff indicators')
+    code, body, _ = req(adm, '/manage/?a=edit&id=DEP-KTDE-20261026')
+    check('Reconcile traveler count' in body and 'name="qualifying_count"' in body, 'edit page offers the reconciliation form')
+    code, body, _ = req(adm, '/manage/?a=op', {'csrf': csrf, 'id': 'DEP-KTDE-20261026', 'op': 'reconcile', 'qualifying_count': '2', 'pending_count': '1', 'operating': '', 'note': ''})
+    check('Reconciliation needs' in body, 'reconciliation requires counts, operating yes/no and a note')
+    ntrav0 = len(json.load(open(private / 'booking' / 'travelers.json'))['travelers'])
+    code, body, _ = req(adm, '/manage/?a=op', {'csrf': csrf, 'id': 'DEP-KTDE-20261026', 'op': 'reconcile', 'qualifying_count': '2', 'pending_count': '1', 'operating': 'no', 'note': 'Office ledger: 2 paid, 1 enquiry'})
+    check('Traveler count reconciled (2 qualifying, 1 pending' in body and 'No customer records were created' in body, 'reconciliation recorded')
+    inv1 = json.load(open(private / 'booking' / 'inventory.json'))
+    kd = [x for x in inv1['departures'] if x['id'] == 'DEP-KTDE-20261026'][0]
+    check(kd['traveler_count_status'] == 'verified' and kd['reconciliation']['reconciled_by'] == 'james' and kd['reconciliation']['reconciled_at'] and kd['reconciliation']['operating'] is False, 'reconciliation stores counts, operating, reconciled_by/at')
+    check(len(json.load(open(private / 'booking' / 'travelers.json'))['travelers']) == ntrav0, 'reconciliation fabricates no customer records')
+    ids4 = [x['id'] for x in json.loads(req(pub, '/booking/departures.php')[1])['departures']]
+    check('DEP-KTDE-20261026' not in ids4, 'reconciled below minimum after the review date, no decision → removed from public booking')
+    code, _, _ = req(pub, '/tour-inquiry.php', kf, J)
+    check(code == 409, 'held departure cannot be requested (409)')
+    code, body, _ = req(adm, '/manage/?view=upcoming')
+    check('Minimum not reached — operational decision required · REVIEW OVERDUE' in body, 'known below-minimum shows the overdue decision flag')
+    code, body, _ = req(adm, '/manage/?a=op', {'csrf': csrf, 'id': 'DEP-KTDE-20261026', 'op': 'approve_exception', 'note': 'try'})
+    check('needs the approval note/reason, the pricing-review acknowledgement and operational approval' in body, 'decision B requires note + pricing review + operational approval')
+    req(adm, '/manage/?a=traveler', {'csrf': csrf, 'op': 'add', 'departure_id': 'DEP-KTDE-20261026', 'name': 'Kara', 'party_size': '1', 'email': 'kara@example.com', 'status': 'confirmed', 'payment_status': 'payment_received'})
+    code, body, _ = req(adm, '/manage/?a=op', {'csrf': csrf, 'id': 'DEP-KTDE-20261026', 'op': 'offer_private', 'note': 'Private 6-day Kandahar quoted separately'})
+    check('Private option recorded' in body and 'private option offered' in body, 'decision C records a private offer on bookings (no conversion)')
+    kara = [t for t in json.load(open(private / 'booking' / 'travelers.json'))['travelers'] if t['name'] == 'Kara'][0]
+    code, body, _ = req(adm, '/manage/?a=traveler', {'csrf': csrf, 'op': 'propose_move', 'departure_id': 'DEP-KTDE-20261026', 'traveler_id': kara['id'], 'to_departure_id': new_id})
+    kara = [t for t in json.load(open(private / 'booking' / 'travelers.json'))['travelers'] if t['name'] == 'Kara'][0]
+    check(kara['departure_id'] == 'DEP-KTDE-20261026' and kara['proposed_move']['status'] == 'pending_traveler_confirmation', 'decision D records a proposed move; traveler not moved')
+    code, body, _ = req(adm, '/manage/?a=op', {'csrf': csrf, 'id': 'DEP-KTDE-20261026', 'op': 'cancel_low_numbers', 'note': 'Below minimum at review; offered Jan departure or private quote'})
+    kara = [t for t in json.load(open(private / 'booking' / 'travelers.json'))['travelers'] if t['name'] == 'Kara'][0]
+    check('Cancelled for insufficient numbers' in body and kara['low_numbers_refund']['due'] is True and kara['low_numbers_refund']['percent'] == 100 and kara['low_numbers_refund']['executed'] is False, 'decision A: cancelled, 100% low-numbers refund noted on bookings, not executed')
+    code, body, _ = req(adm, '/manage/?a=op', {'csrf': csrf, 'id': 'DEP-ADTF-20261012', 'op': 'reconcile', 'qualifying_count': '7', 'pending_count': '0', 'operating': 'yes', 'operational_approval': '1', 'note': 'Ledger: 7 paid'})
+    a2 = [x for x in json.loads(req(pub, '/booking/departures.php?tour=afghanistan-discovery-tour-fall')[1])['departures'] if x['id'] == 'DEP-ADTF-20261012']
+    check(a2 and a2[0]['status'] == 'confirmed' and a2[0]['cta'] == 'Contact us for last-minute availability' and a2[0]['booking_window_closed'] and not a2[0]['manual_contact'], 'reconciled 7 + approval inside 7 days → Confirmed, visible, last-minute CTA (not Closed)')
+    d = json.loads(req(pub, '/tour-inquiry.php', lf, J)[1])
+    check(d['departure_check'] == 'last_minute_request', 'confirmed departure inside cutoff: inquiry still last-minute only')
+    code, body, _ = req(adm, '/manage/?a=settings')
+    check('name="long_tour_min_group_review_days" value="45"' in body and 'name="long_tour_final_booking_cutoff_days" value="7"' in body, 'review/cutoff days are admin-editable settings')
     # inquiry manual review checklist
     code, body, _ = req(adm, '/manage/?a=inquiries'); check('manual review: eid' in body, 'inquiries list flags manual review')
     eid_inq = eidq[0]['id']

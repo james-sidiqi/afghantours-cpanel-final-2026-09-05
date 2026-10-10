@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { computeStatus, isPublic, groupMinimumNote, groupRuleFor, statusText, expectedEnd, inclusiveDays, priceLabel, publicDeparture, publicDeparturesFor, formatRange, religiousFlags, eidConflicts, eidUnresolved, eidManualReview, countsTowardMinimum, RAMADAN_COMPACT, EID_NOTICE, RAMADAN_ADVISORY_PARAGRAPHS } from '../../src/lib/booking/core.mjs';
+import { computeStatus, isPublic, groupMinimumNote, groupRuleFor, statusText, expectedEnd, inclusiveDays, priceLabel, publicDeparture, publicDeparturesFor, formatRange, religiousFlags, eidConflicts, eidUnresolved, eidManualReview, countsTowardMinimum, isListed, longTourWindow, addDays, countStatus, RAMADAN_COMPACT, EID_NOTICE, RAMADAN_ADVISORY_PARAGRAPHS } from '../../src/lib/booking/core.mjs';
 
 const fx = JSON.parse(readFileSync(new URL('./fixtures.json', import.meta.url), 'utf8'));
 
@@ -97,3 +97,49 @@ test('Group: accepted booking without payment does not move a short departure to
   assert.equal(computeStatus(dep, '2026-10-10', fx.settings).key, 'open');
   assert.equal(computeStatus({ ...dep, confirmed_count: 2 }, '2026-10-10', fx.settings).key, 'confirmed');
 });
+
+const mk = (lw) => {
+  const today = '2026-10-10';
+  const start = addDays(today, lw.days);
+  return { id: 'LW', tour_slug: 't', status: 'scheduled', published: true, start_date: start, end_date: addDays(start, (lw.dep.duration_days || 1) - 1), ...lw.dep, ...(lw.dep.status ? { status: lw.dep.status } : {}) };
+};
+for (const lw of fx.long_window) {
+  test(`long window: ${lw.name}`, () => {
+    const dep = mk(lw);
+    const st = computeStatus(dep, '2026-10-10', fx.settings);
+    assert.equal(st.key, lw.status, 'status');
+    assert.equal(isListed(dep, '2026-10-10', fx.settings), lw.listed, 'listed');
+    const pub = publicDeparture(dep, null, fx.settings, '2026-10-10');
+    assert.equal(pub.cta, lw.cta, 'cta');
+    assert.equal(pub.booking_window_closed, lw.bwc, 'booking_window_closed');
+    if (lw.bwc) { assert.equal(pub.selectable, false); assert.equal(pub.last_minute, true); assert.equal(pub.status, lw.status); }
+  });
+}
+test('long window boundaries: review at <=45 (46 normal), cutoff at <=7 (8 normal)', () => {
+  const base = { status: 'scheduled', departure_type: 'shared', duration_days: 9, min_group_size: 6 };
+  const w = (n) => longTourWindow({ ...base, start_date: addDays('2026-10-10', n) }, '2026-10-10', fx.settings);
+  assert.equal(w(46).review_due, false); assert.equal(w(45).review_due, true);
+  assert.equal(w(8).booking_window_closed, false); assert.equal(w(7).booking_window_closed, true);
+  assert.equal(w(56).review_date, '2026-10-21');
+});
+
+for (const c of fx.count_status) {
+  test(`count status: ${c.name}`, () => {
+    const dep = mk(c);
+    const S = { ...fx.settings, ...(c.settings || {}) };
+    assert.equal(countStatus(dep), c.count_status, 'count status');
+    assert.equal(computeStatus(dep, '2026-10-10', S).key, c.status, 'status');
+    assert.equal(isListed(dep, '2026-10-10', S), c.listed, 'listed');
+    const pub = publicDeparture(dep, null, S, '2026-10-10');
+    assert.equal(pub.cta, c.cta, 'cta');
+    assert.equal(pub.booking_window_closed, c.bwc, 'bwc');
+    if ('manual_contact' in c) assert.equal(pub.manual_contact, c.manual_contact, 'manual_contact');
+    if (c.manual_contact) assert.equal(pub.selectable, false);
+    if (c.status_text) assert.equal(pub.status_text, c.status_text);
+    if (c.no_confirmed_text) assert.equal(pub.confirmed_text, undefined);
+    const txt = JSON.stringify(pub).toLowerCase();
+    for (const w of c.forbid || []) assert.ok(!(pub.status_text.toLowerCase().includes(w) || (pub.confirmed_text || '').toLowerCase().includes(w) || pub.cta.toLowerCase().includes(w)), `forbidden customer wording "${w}"`);
+    assert.ok(!/count unknown|migrat|0\/0/.test(txt), 'no internal wording in public projection');
+    if (countStatus(dep) === 'unknown') assert.equal(longTourWindow(dep, '2026-10-10', S).min_reached ?? false, false, 'unknown never counts as zero/min');
+  });
+}

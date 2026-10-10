@@ -18,6 +18,11 @@
  *    Booking cutoffs close a departure only when settings.auto_cutoff_close === true (off until approved).
  *  - Ramadan = advisory only (never blocks or closes). Eid = five-day block (day before … +3) for
  *    standard scheduled departures; conflicts need an explicit admin review/override.
+ *  - Long shared departures (5+ days), owner decision 10 Oct 2026 18:56: from 45 days out (days_until <= 45) a departure
+ *    is public only if Confirmed (minimum + operational approval) or operating by an approved exception (note + pricing
+ *    review + operational approval + price re-approved); otherwise it is the internal 'review' state (hidden, admin flag).
+ *    From 7 days out (days_until <= 7) booking_window_closed: still visible as Confirmed, CTA = last-minute contact.
+ *    Sold out overrides everything. Short tours (≤4 days) and private departures are unaffected.
  *  - Ended departures are "Completed" and never selectable. Started ones are "Closed".
  *  - Proposed/draft departures are never public.
  */
@@ -33,6 +38,7 @@ export const STATUS = {
   cancelled: 'Cancelled',
   completed: 'Completed (past)',
   proposed: 'Proposed (not public)',
+  review: 'Minimum-group review (not public)',
 };
 export const PUBLIC_STATUSES = ['open', 'confirmed', 'limited', 'sold_out', 'closed'];
 
@@ -80,6 +86,71 @@ export function toInt(value, fallback = null) {
   return Number.isFinite(n) ? Math.trunc(n) : fallback;
 }
 
+export function daysBetween(fromIso, toIso) {
+  return Math.round((Date.parse(`${toIso}T00:00:00Z`) - Date.parse(`${fromIso}T00:00:00Z`)) / 86400000);
+}
+
+/**
+ * Traveler-count provenance (owner correction 10 Oct 2026 19:01): unknown ≠ zero.
+ * 'unknown' = legacy departure with no migrated traveler records; 'verified' = system-managed or reconciled (zero means zero).
+ */
+export function countStatus(dep) {
+  if (dep.traveler_count_status === 'unknown' || dep.traveler_count_status === 'verified') return dep.traveler_count_status;
+  return dep.confirmed_count === null || dep.confirmed_count === undefined ? 'unknown' : 'verified';
+}
+export const CONTACT_CTA = 'Contact us for availability';
+export const MANUAL_CONTACT_TEXT = 'Availability on request';
+
+/** Approved minimum-group exception (decision B): note + pricing review + operational approval + price re-approved. */
+export function exceptionApproved(dep) {
+  const x = dep.min_group_exception;
+  return !!(x && x.approved === true && String(x.note || '').trim() !== '' && x.pricing_review_ack === true && x.by)
+    && dep.operational_approval === 'approved' && dep.price_approved === true;
+}
+
+/**
+ * Long-tour (5+ day shared) review / cutoff window. Pure date arithmetic on Kabul dates.
+ * state: none | open (before review) | confirmed | exception | min_not_reached | approval_required
+ */
+export function longTourWindow(dep, today, settings = {}) {
+  const longDays = toInt(settings.group_rule?.long_tour_min_days, 5);
+  const duration = toInt(dep.duration_days, null) ?? (isIsoDate(dep.start_date) && isIsoDate(dep.end_date) ? inclusiveDays(dep.start_date, dep.end_date) : 0);
+  const reviewDays = toInt(settings.long_tour_min_group_review_days, 45);
+  const cutoffDays = toInt(settings.long_tour_final_booking_cutoff_days, 7);
+  const applies = dep.departure_type !== 'private' && duration >= longDays && isIsoDate(dep.start_date);
+  if (!applies) return { applies: false, state: 'none', booking_window_closed: false };
+  const daysUntil = daysBetween(today, dep.start_date);
+  const unknown = countStatus(dep) === 'unknown';
+  const min = toInt(dep.min_group_size, null);
+  const confirmed = Math.max(0, toInt(dep.confirmed_count, 0));
+  const minReached = !unknown && min !== null && min > 0 && confirmed >= min;
+  const approved = dep.operational_approval === 'approved';
+  const reviewDue = daysUntil <= reviewDays;
+  let state = 'open';
+  if (minReached && approved) state = 'confirmed';
+  else if (exceptionApproved(dep)) state = 'exception';
+  else if (reviewDue && unknown) state = 'unknown'; // stays visible, manual contact only, until reconciled
+  else if (reviewDue) state = minReached ? 'approval_required' : 'min_not_reached';
+  return {
+    applies: true,
+    days_until: daysUntil,
+    review_days: reviewDays,
+    cutoff_days: cutoffDays,
+    review_date: addDays(dep.start_date, -reviewDays),
+    cutoff_date: addDays(dep.start_date, -cutoffDays),
+    review_due: reviewDue,
+    review_overdue: daysUntil < reviewDays && (state === 'min_not_reached' || state === 'approval_required'),
+    legacy_error: daysUntil < 30 && state === 'min_not_reached',
+    count_status: unknown ? 'unknown' : 'verified',
+    unknown_review: state === 'unknown',
+    unknown_immediate: state === 'unknown' && daysUntil <= cutoffDays,
+    manual_contact: state === 'unknown',
+    min_reached: minReached,
+    state,
+    booking_window_closed: daysUntil <= cutoffDays,
+  };
+}
+
 /**
  * Compute the customer-facing status of a departure.
  * @returns {{key:string,label:string,selectable:boolean,remaining:number|null}}
@@ -101,9 +172,19 @@ export function computeStatus(dep, today, settings = {}) {
   if (settings.auto_cutoff_close === true && dep.booking_cutoff && isIsoDate(dep.booking_cutoff) && today > dep.booking_cutoff) return out('closed');
   if (dep.departure_type === 'private' || stored === 'on_request') return out('on_request');
   if (remaining === 0) return out('sold_out');
+  const lw = longTourWindow(dep, today, settings);
+  if (lw.applies && (lw.state === 'min_not_reached' || lw.state === 'approval_required')) return out('review'); // admin decision required, never public Open
   if (dep.limited_manual === true) return out('limited'); // manual only — never automatic
   if (min !== null && min > 0 && confirmed >= min && dep.operational_approval === 'approved') return out('confirmed');
+  if (lw.applies && lw.state === 'exception') return out('confirmed'); // operating by approved exception
   return out('open');
+}
+
+/** Listed on the site = public AND no unresolved Eid conflict AND not held for a long-tour minimum-group decision. */
+export function isListed(dep, today, settings = {}) {
+  if (!isPublic(dep, today)) return false;
+  if (eidUnresolved(dep, settings.religious_calendar || {}).length) return false;
+  return computeStatus(dep, today, settings).key !== 'review';
 }
 
 /** Public = published, not proposed/draft, and not ended. */
@@ -159,11 +240,13 @@ export function statusText(statusKey, dep, settings = {}) {
   return STATUS[statusKey] || 'Ask us';
 }
 
+export const LAST_MINUTE_CTA = 'Contact us for last-minute availability';
 export function ctaFor(statusKey) {
   switch (statusKey) {
     case 'open': return 'Request a Place';
     case 'confirmed':
     case 'limited': return 'Join This Departure';
+    case 'sold_out': return ''; // sold out: no booking CTA
     default: return 'Ask About Dates';
   }
 }
@@ -192,14 +275,37 @@ export function publicDeparture(dep, tour, settings, today) {
     price_label: priceLabel(dep.price || tour?.price, settings),
     arrival_option: dep.arrival_option || null,
     public_notes: String(dep.public_notes || ''),
+    booking_window_closed: false,
+    last_minute: false,
+    manual_contact: false,
     advisories: religiousFlags(dep, settings.religious_calendar || {}).ramadan.map((p) => ({ type: 'ramadan', text: RAMADAN_COMPACT, period: p.name, state: p.state, period_label: periodLabel(p) })),
   };
+  const lw = longTourWindow(dep, today, settings);
+  if (lw.applies && lw.state === 'unknown' && ['open', 'limited'].includes(st.key)) {
+    // Legacy count unknown inside the review window: visible, manual contact only — never a normal request-a-place flow.
+    out.manual_contact = true;
+    out.selectable = false;
+    out.status_text = MANUAL_CONTACT_TEXT;
+    out.booking_window_closed = lw.booking_window_closed;
+    out.last_minute = lw.booking_window_closed;
+    out.cta = lw.booking_window_closed ? LAST_MINUTE_CTA : CONTACT_CTA;
+  } else if (lw.applies && countStatus(dep) === 'unknown' && st.key === 'open' && toInt(dep.min_group_size, null)) {
+    // Never imply a known count ("awaiting …") from unknown legacy data.
+    out.status_text = `Open — minimum ${toInt(dep.min_group_size, null)} travelers to operate`;
+  }
+  if (lw.applies && lw.booking_window_closed && ['confirmed', 'limited'].includes(st.key) && !out.manual_contact) {
+    // Final booking cutoff: separate from Closed. Status stays; normal selection off; last-minute contact instead.
+    out.booking_window_closed = true;
+    out.selectable = false;
+    out.last_minute = true;
+    out.cta = LAST_MINUTE_CTA;
+  }
   const cap = toInt(dep.max_capacity, null);
   if (settings.show_public_capacity && cap !== null) {
     out.max_capacity = cap;
     if (['confirmed', 'limited', 'sold_out'].includes(st.key)) out.remaining_places = st.remaining;
   }
-  if (settings.show_public_confirmed_counts && dep.public_counts_approved === true && out.departure_type === 'shared' && out.min_group_size) {
+  if (settings.show_public_confirmed_counts && dep.public_counts_approved === true && countStatus(dep) === 'verified' && out.departure_type === 'shared' && out.min_group_size) {
     out.confirmed_text = `${Math.max(0, toInt(dep.confirmed_count, 0))} of ${out.min_group_size} travelers confirmed.`;
   }
   return out;
@@ -207,7 +313,7 @@ export function publicDeparture(dep, tour, settings, today) {
 
 export function publicDeparturesFor(slug, departures, tour, settings, today) {
   return departures
-    .filter((d) => d.tour_slug === slug && isPublic(d, today) && eidUnresolved(d, settings.religious_calendar || {}).length === 0)
+    .filter((d) => d.tour_slug === slug && isListed(d, today, settings))
     .sort((a, b) => a.start_date.localeCompare(b.start_date))
     .map((d) => publicDeparture(d, tour, settings, today));
 }

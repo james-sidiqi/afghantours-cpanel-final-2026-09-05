@@ -37,6 +37,7 @@ const ATB_STATUS_LABELS = [
     'cancelled' => 'Cancelled',
     'completed' => 'Completed (past)',
     'proposed' => 'Proposed (not public)',
+    'review' => 'Minimum-group review (not public)',
 ];
 
 /* ------------------------------------------------------------------ paths */
@@ -137,6 +138,79 @@ function atb_str(mixed $v, int $max = 500): string {
 
 /* ---------------------------------------------------------- status rules */
 
+const ATB_LAST_MINUTE_CTA = 'Contact us for last-minute availability';
+
+function atb_days_between(string $from, string $to): int {
+    $a = new DateTimeImmutable($from . 'T00:00:00', new DateTimeZone('UTC'));
+    $b = new DateTimeImmutable($to . 'T00:00:00', new DateTimeZone('UTC'));
+    return (int)round(($b->getTimestamp() - $a->getTimestamp()) / 86400);
+}
+
+/** Traveler-count provenance (owner correction 19:01): unknown ≠ zero. Mirrors countStatus(). */
+function atb_count_status(array $dep): string {
+    $s = $dep['traveler_count_status'] ?? null;
+    if ($s === 'unknown' || $s === 'verified') return $s;
+    return (!array_key_exists('confirmed_count', $dep) || $dep['confirmed_count'] === null) ? 'unknown' : 'verified';
+}
+const ATB_CONTACT_CTA = 'Contact us for availability';
+const ATB_MANUAL_CONTACT_TEXT = 'Availability on request';
+
+/** Listed on the site — mirrors isListed() in core.mjs. */
+function atb_is_listed(array $dep, string $today, array $settings = []): bool {
+    if (!atb_is_public($dep, $today)) return false;
+    if (atb_eid_unresolved($dep, (array)($settings['religious_calendar'] ?? []))) return false;
+    return atb_compute_status($dep, $today, $settings)['key'] !== 'review';
+}
+
+/** Approved minimum-group exception (decision B): note + pricing review + operational approval + price re-approved. */
+function atb_exception_approved(array $dep): bool {
+    $x = $dep['min_group_exception'] ?? null;
+    return is_array($x) && ($x['approved'] ?? false) === true && trim((string)($x['note'] ?? '')) !== '' && ($x['pricing_review_ack'] ?? false) === true && !empty($x['by'])
+        && ($dep['operational_approval'] ?? '') === 'approved' && ($dep['price_approved'] ?? null) === true;
+}
+
+/** Long-tour (5+ day shared) review / cutoff window — mirrors longTourWindow() in core.mjs. */
+function atb_long_tour_window(array $dep, string $today, array $settings = []): array {
+    $longDays = (int)atb_int($settings['group_rule']['long_tour_min_days'] ?? null, 5);
+    $start = (string)($dep['start_date'] ?? '');
+    $end = (string)($dep['end_date'] ?? '');
+    $duration = atb_int($dep['duration_days'] ?? null, null) ?? ((atb_is_iso_date($start) && atb_is_iso_date($end)) ? atb_inclusive_days($start, $end) : 0);
+    $reviewDays = (int)atb_int($settings['long_tour_min_group_review_days'] ?? null, 45);
+    $cutoffDays = (int)atb_int($settings['long_tour_final_booking_cutoff_days'] ?? null, 7);
+    $applies = ($dep['departure_type'] ?? 'shared') !== 'private' && $duration >= $longDays && atb_is_iso_date($start);
+    if (!$applies) return ['applies' => false, 'state' => 'none', 'booking_window_closed' => false];
+    $daysUntil = atb_days_between($today, $start);
+    $unknown = atb_count_status($dep) === 'unknown';
+    $min = atb_int($dep['min_group_size'] ?? null, null);
+    $confirmed = max(0, (int)atb_int($dep['confirmed_count'] ?? 0, 0));
+    $minReached = !$unknown && $min !== null && $min > 0 && $confirmed >= $min;
+    $approved = ($dep['operational_approval'] ?? '') === 'approved';
+    $reviewDue = $daysUntil <= $reviewDays;
+    $state = 'open';
+    if ($minReached && $approved) $state = 'confirmed';
+    elseif (atb_exception_approved($dep)) $state = 'exception';
+    elseif ($reviewDue && $unknown) $state = 'unknown'; // stays visible, manual contact only, until reconciled
+    elseif ($reviewDue) $state = $minReached ? 'approval_required' : 'min_not_reached';
+    return [
+        'applies' => true,
+        'days_until' => $daysUntil,
+        'review_days' => $reviewDays,
+        'cutoff_days' => $cutoffDays,
+        'review_date' => atb_add_days($start, -$reviewDays),
+        'cutoff_date' => atb_add_days($start, -$cutoffDays),
+        'review_due' => $reviewDue,
+        'review_overdue' => $daysUntil < $reviewDays && in_array($state, ['min_not_reached', 'approval_required'], true),
+        'legacy_error' => $daysUntil < 30 && $state === 'min_not_reached',
+        'count_status' => $unknown ? 'unknown' : 'verified',
+        'unknown_review' => $state === 'unknown',
+        'unknown_immediate' => $state === 'unknown' && $daysUntil <= $cutoffDays,
+        'manual_contact' => $state === 'unknown',
+        'min_reached' => $minReached,
+        'state' => $state,
+        'booking_window_closed' => $daysUntil <= $cutoffDays,
+    ];
+}
+
 /** @return array{key:string,label:string,selectable:bool,remaining:?int} */
 function atb_compute_status(array $dep, string $today, array $settings = []): array {
     $stored = strtolower((string)($dep['status'] ?? ''));
@@ -163,8 +237,11 @@ function atb_compute_status(array $dep, string $today, array $settings = []): ar
     if (($settings['auto_cutoff_close'] ?? false) === true && is_string($cutoff) && atb_is_iso_date($cutoff) && $today > $cutoff) return $out('closed');
     if (($dep['departure_type'] ?? 'shared') === 'private' || $stored === 'on_request') return $out('on_request');
     if ($remaining === 0) return $out('sold_out');
+    $lw = atb_long_tour_window($dep, $today, $settings);
+    if ($lw['applies'] && in_array($lw['state'], ['min_not_reached', 'approval_required'], true)) return $out('review'); // admin decision required
     if (($dep['limited_manual'] ?? false) === true) return $out('limited'); // manual only — never automatic
     if ($min !== null && $min > 0 && $confirmed >= $min && ($dep['operational_approval'] ?? '') === 'approved') return $out('confirmed');
+    if ($lw['applies'] && $lw['state'] === 'exception') return $out('confirmed'); // operating by approved exception
     return $out('open');
 }
 
@@ -219,6 +296,7 @@ function atb_cta(string $key): string {
     return match ($key) {
         'open' => 'Request a Place',
         'confirmed', 'limited' => 'Join This Departure',
+        'sold_out' => '', // sold out: no booking CTA
         default => 'Ask About Dates',
     };
 }
@@ -253,9 +331,29 @@ function atb_public_departure(array $dep, ?array $tour, array $settings, string 
         'price_label' => atb_price_label(is_array($dep['price'] ?? null) ? $dep['price'] : ($tour['price'] ?? null), $settings),
         'arrival_option' => $dep['arrival_option'] ?? null,
         'public_notes' => atb_str($dep['public_notes'] ?? '', 300),
+        'booking_window_closed' => false,
+        'last_minute' => false,
+        'manual_contact' => false,
         'advisories' => array_map(static fn($p) => ['type' => 'ramadan', 'text' => ATB_RAMADAN_COMPACT, 'period' => $p['name'], 'state' => $p['state'], 'period_label' => atb_period_label($p)],
             atb_religious_flags($dep, (array)($settings['religious_calendar'] ?? []))['ramadan']),
     ];
+    $lw = atb_long_tour_window($dep, $today, $settings);
+    if ($lw['applies'] && $lw['state'] === 'unknown' && in_array($st['key'], ['open', 'limited'], true)) {
+        $out['manual_contact'] = true;
+        $out['selectable'] = false;
+        $out['status_text'] = ATB_MANUAL_CONTACT_TEXT;
+        $out['booking_window_closed'] = $lw['booking_window_closed'];
+        $out['last_minute'] = $lw['booking_window_closed'];
+        $out['cta'] = $lw['booking_window_closed'] ? ATB_LAST_MINUTE_CTA : ATB_CONTACT_CTA;
+    } elseif ($lw['applies'] && atb_count_status($dep) === 'unknown' && $st['key'] === 'open' && atb_int($dep['min_group_size'] ?? null, null)) {
+        $out['status_text'] = 'Open — minimum ' . atb_int($dep['min_group_size'], null) . ' travelers to operate';
+    }
+    if ($lw['applies'] && $lw['booking_window_closed'] && in_array($st['key'], ['confirmed', 'limited'], true) && empty($out['manual_contact'])) {
+        $out['booking_window_closed'] = true;
+        $out['selectable'] = false;
+        $out['last_minute'] = true;
+        $out['cta'] = ATB_LAST_MINUTE_CTA;
+    }
     $cap = atb_int($dep['max_capacity'] ?? null, null);
     if (!empty($settings['show_public_capacity']) && $cap !== null) {
         $out['max_capacity'] = $cap;
@@ -263,7 +361,7 @@ function atb_public_departure(array $dep, ?array $tour, array $settings, string 
             $out['remaining_places'] = $st['remaining'];
         }
     }
-    if (!empty($settings['show_public_confirmed_counts']) && ($dep['public_counts_approved'] ?? false) === true && $out['departure_type'] === 'shared' && $out['min_group_size']) {
+    if (!empty($settings['show_public_confirmed_counts']) && ($dep['public_counts_approved'] ?? false) === true && atb_count_status($dep) === 'verified' && $out['departure_type'] === 'shared' && $out['min_group_size']) {
         $out['confirmed_text'] = max(0, (int)atb_int($dep['confirmed_count'] ?? 0, 0)) . ' of ' . $out['min_group_size'] . ' travelers confirmed.';
     }
     return $out;
@@ -521,6 +619,15 @@ function atb_migrate_inventory(array $inv): array {
         $inv['blackouts'] = array_values(array_filter((array)($inv['blackouts'] ?? []), static fn($b) => !array_intersect((array)($b['tags'] ?? []), ['eid', 'ramadan'])));
     }
     unset($inv['settings']['limited_places_threshold']);
+    foreach ($inv['departures'] ?? [] as &$md) {
+        if (isset($md['traveler_count_status'])) continue;
+        $legacy = str_starts_with((string)($md['source'] ?? ''), 'production_') && empty($md['reconciliation']);
+        $md['traveler_count_status'] = $legacy ? 'unknown' : 'verified';
+        if ($legacy) { $md['confirmed_count'] = null; $md['pending_count'] = null; }
+    }
+    unset($md);
+    $inv['settings']['long_tour_min_group_review_days'] = (int)($inv['settings']['long_tour_min_group_review_days'] ?? 45);
+    $inv['settings']['long_tour_final_booking_cutoff_days'] = (int)($inv['settings']['long_tour_final_booking_cutoff_days'] ?? 7);
     $inv['settings']['auto_cutoff_close'] = ($inv['settings']['auto_cutoff_close'] ?? false) === true;
     return $inv;
 }
@@ -588,11 +695,21 @@ function atb_effective_departures(array $inv): array {
     $counts = $useTravelers ? atb_counts(atb_load_travelers()) : [];
     $out = [];
     foreach ($inv['departures'] ?? [] as $d) {
+        $cs = atb_count_status($d);
+        $d['traveler_count_status'] = $cs;
         if ($useTravelers) {
             $c = $counts[$d['id']] ?? ['confirmed' => 0, 'pending' => 0, 'accepted_unpaid' => 0];
-            $d['confirmed_count'] = $c['confirmed'];
-            $d['pending_count'] = $c['pending'];
             $d['accepted_unpaid_count'] = $c['accepted_unpaid'] ?? 0;
+            if ($cs === 'unknown') {
+                // Unknown ≠ zero: records entered so far are shown to staff but are not the authoritative count.
+                $d['recorded_confirmed_count'] = $c['confirmed'];
+                $d['confirmed_count'] = null;
+                $d['pending_count'] = $c['pending'];
+            } else {
+                $rec = (array)($d['reconciliation'] ?? []);
+                $d['confirmed_count'] = (int)($rec['offline_qualifying'] ?? 0) + $c['confirmed'];
+                $d['pending_count'] = (int)($rec['offline_pending'] ?? 0) + $c['pending'];
+            }
         }
         $cap = atb_int($d['max_capacity'] ?? null, null);
         $d['remaining_capacity'] = $cap === null ? null : max($cap - (int)($d['confirmed_count'] ?? 0), 0);
@@ -626,8 +743,7 @@ function atb_public_payload(?string $tourSlug = null): array {
     $list = [];
     foreach ($deps as $d) {
         if ($tourSlug !== null && $tourSlug !== '' && ($d['tour_slug'] ?? '') !== $tourSlug) continue;
-        if (!atb_is_public($d, $today)) continue;
-        if (atb_eid_unresolved($d, $cal)) continue; // standard scheduled departure in an Eid block awaiting admin review
+        if (!atb_is_listed($d, $today, $settings)) continue; // public + no unresolved Eid conflict + not held for a long-tour decision
         $t = atb_tour($inv, (string)$d['tour_slug']);
         if ($t === null || ($t['active'] ?? true) === false || !in_array($t['category'] ?? '', ['A', 'B', 'C'], true)) continue;
         $list[] = atb_public_departure($d, $t, $settings, $today);
