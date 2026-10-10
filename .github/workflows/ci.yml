@@ -22,11 +22,30 @@ jobs:
       - name: npm ci
         run: npm ci
 
+      - name: Booking data validation (seed inventory)
+        run: node scripts/validate-booking-data.mjs
+
+      - name: Booking core unit tests (JS)
+        run: node --test scripts/booking-test/core.test.mjs
+
       - name: Build
         run: npm run build
 
       - name: PHP lint inquiry handler
         run: php -l public/tour-inquiry.php
+
+      - name: Booking system tests (PHP core + JS parity, lint, end-to-end on php -S)
+        run: |
+          node scripts/booking-test/parity.mjs
+          php scripts/booking-test/test-core.php
+          for f in public/booking/departures.php public/booking/lib/booking.php public/manage/index.php scripts/booking/hash-password.php; do php -l "$f"; done
+          python3 scripts/booking-test/integration.py
+
+      - name: Cancellation policy (built site — public route, sitemap, verbatim text, single source)
+        run: node --test scripts/booking-test/policy.test.mjs
+
+      - name: Internal links (built site)
+        run: node scripts/check-internal-links.mjs
 
       - name: Site integrity (strict)
         run: python3 scripts/site_integrity_audit.py . --strict

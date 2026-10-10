@@ -1,0 +1,327 @@
+---
+/**
+ * Departure calendar block for a tour detail page (sidebar).
+ * Build time: renders the seed snapshot (published, not ended) — the no-JS / SEO fallback.
+ * Runtime: replaces the rows with /booking/departures.php (the live private inventory).
+ * Choosing a date opens the inquiry modal with the departure prefilled. It never confirms a place.
+ */
+import { bookingSettings, getCatalogTour, publicSnapshot, upcomingEidBlocks } from '../../lib/booking/site';
+import { RAMADAN_ADVISORY_TITLE, RAMADAN_ADVISORY_PARAGRAPHS, EID_NOTICE } from '../../lib/booking/core.mjs';
+
+interface Props {
+  slug: string;
+  name: string;
+  code: string;
+  productClass: string;
+}
+const { slug, name, code, productClass } = Astro.props;
+const tour = getCatalogTour(slug) || {};
+const category = String(tour.category || 'C');
+const departures = publicSnapshot(slug);
+const isWeekend = Array.isArray(tour.arrival_options) && tour.arrival_options.length > 0;
+const wording = bookingSettings.wording || {};
+const min = tour.shared_min_group ?? null; // 6 for 5+ day scheduled tours; 2 for shared departures of 4 days or less
+const longRule = tour.group_rule === 'long_6_18';
+const groupLines = longRule
+  ? String(wording.group_size_long || 'Group size: 6–18 travelers / Minimum to operate: 6 travelers / Need a different group arrangement? Contact us.').split(' / ')
+  : [];
+const next = departures.find((d) => d.selectable);
+const anyRamadan = departures.some((d) => (d.advisories || []).some((a: any) => a.type === 'ramadan'));
+// Eid notice is about standard scheduled departures, so it is shown for scheduled products (A/B), not private-first C routes.
+const eidBlocks = category === 'C' ? [] : upcomingEidBlocks();
+// Owner correction 19:01: prominent warning only when a displayed departure actually falls in an Eid block; otherwise small collapsible info.
+const eidHit = departures.some((d) => eidBlocks.some((b) => d.start_date <= b.end && d.end_date >= b.start));
+
+const heading = category === 'C' ? 'Group departures (when announced)' : 'Group departures';
+const privateLead = isWeekend
+  ? 'Travel privately, even on your own — no group minimum. Private departures available; price on request.'
+  : category === 'C'
+    ? 'This route normally runs privately on your dates. Private departure available; price on request.'
+    : 'The same route on your own dates — you do not need a scheduled date to book. Private departure available; price on request.';
+const common = {
+  'data-tour-title': name,
+  'data-tour-slug': slug,
+  'data-tour-code': code,
+  'data-tour-days': String(tour.duration_days || ''),
+  'data-weekend': isWeekend ? '1' : '',
+};
+---
+
+<section
+  class="tdp"
+  aria-label={`${name} departures`}
+  data-booking-departures
+  data-tour-slug={slug}
+  data-tour-name={name}
+  data-tour-code={code}
+  data-product-class={productClass}
+  data-category={category}
+  data-min={min === null ? '' : String(min)}
+  data-weekend={isWeekend ? '1' : ''}
+  data-tour-days={String(tour.duration_days || '')}
+>
+  {isWeekend && (
+    <div class="tdp-weekend">
+      <p class="tdp-weekend__length">3 days / 2 nights</p>
+      <fieldset class="tdp-arrival">
+        <legend>Choose your arrival</legend>
+        <label><input type="radio" name="tdp-arrival" value="" checked /> <span>Any</span></label>
+        {tour.arrival_options.map((opt: any) => (
+          <label><input type="radio" name="tdp-arrival" value={opt.key} /> <span>{opt.label}</span></label>
+        ))}
+      </fieldset>
+    </div>
+  )}
+
+  <div class="tdp-head" data-departure-head hidden={category === 'C' && departures.length === 0}>
+    <h3>{heading}</h3>
+    <span data-next-departure>{next ? `Next: ${next.date_label}` : ''}</span>
+  </div>
+
+  <div class="tdp-rows" data-departure-list hidden={departures.length === 0}>
+    {departures.map((d) => (
+      <button
+        type="button"
+        class="tdp-row"
+        data-tour-inquiry
+        data-inquiry-flow="scheduled"
+        data-product-class={productClass}
+        data-booking-type={d.departure_type}
+        data-departure-id={d.id}
+        data-departure-start={d.start_date}
+        data-departure-end={d.end_date}
+        data-tour-date={d.date_label}
+        data-arrival-option={d.arrival_option || ''}
+        data-selectable={d.selectable ? '1' : ''}
+        data-last-minute={d.last_minute ? '1' : ''}
+        data-manual-contact={d.manual_contact ? '1' : ''}
+        disabled={!d.selectable && !d.last_minute && !d.manual_contact}
+        {...common}
+      >
+        <span class="tdp-row__date">{d.date_label}</span>
+        <span class="tdp-row__status">{d.status_text}</span>
+        {d.confirmed_text && <span class="tdp-row__status">{d.confirmed_text}</span>}
+        {(d.advisories || []).map((a: any) => <span class="tdp-row__advisory">{a.text}</span>)}
+        {d.cta && <span class={(d.last_minute || d.manual_contact) ? "tdp-row__cta tdp-row__cta--lm" : "tdp-row__cta"}>{d.cta}</span>}
+      </button>
+    ))}
+  </div>
+
+  <details class="tdp-advisory" data-ramadan-advisory hidden={!anyRamadan}>
+    <summary>{RAMADAN_ADVISORY_TITLE}</summary>
+    {RAMADAN_ADVISORY_PARAGRAPHS.map((p) => <p>{p}</p>)}
+  </details>
+
+  <details class={eidHit ? 'tdp-eid tdp-eid--warn' : 'tdp-eid tdp-eid--info'} data-eid-notice data-show={category === 'C' ? '' : '1'} hidden={eidBlocks.length === 0} open={eidHit}>
+    <summary data-eid-summary>{eidHit ? 'Eid operating period affects a date below' : 'Eid operating periods'}</summary>
+    <p>{EID_NOTICE}</p>
+    <ul data-eid-list>
+      {eidBlocks.map((b) => <li>{b.name}: {b.label}</li>)}
+    </ul>
+  </details>
+
+  <p class="tdp-empty" data-departure-empty hidden={departures.length > 0 || category === 'C'}>
+    No group dates are published at the moment. Ask us about dates, or travel privately.
+  </p>
+  <p class="tdp-empty" data-arrival-empty hidden>No published dates for this arrival yet — ask us and we will look at it.</p>
+
+  {longRule && (departures.length > 0 || category !== 'C') && (
+    <ul class="tdp-group" aria-label="Group size">
+      <li>{groupLines[0]}</li>
+      <li>{groupLines[1]}</li>
+      <li><a href="/contact/">{groupLines[2]}</a></li>
+    </ul>
+  )}
+  {(departures.length > 0 || category !== 'C') && (
+    <p class="tdp-note">
+      {longRule
+        ? `A scheduled departure is confirmed to operate once ${min} travelers are confirmed and our team approves it.`
+        : `Shared departures need a minimum of ${min ?? 2} confirmed travelers and our team's approval to operate. Private departures can run for 1 traveler. `}
+      {wording.selection_note}{' '}
+      Minimum group size, the minimum-group review and low-numbers refunds:{' '}
+      <a href="/cancellation-refund-rescheduling/#scheduled-departures-minimum-group-size">Cancellation, Refund &amp; Rescheduling Policy</a>.
+    </p>
+  )}
+
+  <div class="tdp-private">
+    <strong>{isWeekend ? 'Private Weekend in Kabul' : 'Private departure'}</strong>
+    <p>{privateLead}</p>
+    <button type="button" class="tdp-button tdp-button--dark" data-tour-inquiry data-inquiry-flow="private-fixed" data-product-class={productClass} data-booking-type="private" {...common}>Request Private Tour</button>
+  </div>
+
+  {isWeekend && (
+    <ul class="tdp-extras" aria-label="Additional options">
+      {(tour.extras || []).map((x: string) => <li>{x}</li>)}
+    </ul>
+  )}
+
+  <button type="button" class="tdp-button" data-tour-inquiry data-inquiry-flow={productClass === 'scheduled' ? 'scheduled' : 'private-fixed'} data-product-class={productClass} data-booking-type="" {...common}>Ask About Dates</button>
+</section>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector('[data-booking-departures]');
+    if (!root) return;
+    const list = root.querySelector('[data-departure-list]');
+    const empty = root.querySelector('[data-departure-empty]');
+    const arrivalEmpty = root.querySelector('[data-arrival-empty]');
+    const head = root.querySelector('[data-departure-head]');
+    const nextEl = root.querySelector('[data-next-departure]');
+    const category = root.dataset.category;
+    const today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kabul', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+
+    const refresh = () => {
+      const arrival = root.querySelector('input[name="tdp-arrival"]:checked')?.value || '';
+      const rows = [...list.querySelectorAll('.tdp-row')];
+      let shown = 0;
+      let next = null;
+      rows.forEach((row) => {
+        const started = (row.dataset.departureStart || '') <= today;
+        if (started) { row.remove(); return; }
+        const match = !arrival || row.dataset.arrivalOption === arrival;
+        row.hidden = !match;
+        if (match) {
+          shown += 1;
+          if (!next && row.dataset.selectable === '1') next = row;
+        }
+      });
+      const total = list.querySelectorAll('.tdp-row').length;
+      list.hidden = shown === 0;
+      if (empty) empty.hidden = total > 0 || category === 'C';
+      if (arrivalEmpty) arrivalEmpty.hidden = !(arrival && total > 0 && shown === 0);
+      if (head) head.hidden = category === 'C' && total === 0;
+      if (nextEl) nextEl.textContent = next ? `Next: ${next.dataset.tourDate}` : '';
+    };
+
+    const render = (departures) => {
+      list.textContent = '';
+      departures.forEach((d) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'tdp-row';
+        b.setAttribute('data-tour-inquiry', '');
+        b.dataset.inquiryFlow = 'scheduled';
+        b.dataset.productClass = root.dataset.productClass || '';
+        b.dataset.bookingType = d.departure_type;
+        b.dataset.departureId = d.id;
+        b.dataset.departureStart = d.start_date;
+        b.dataset.departureEnd = d.end_date;
+        b.dataset.tourDate = d.date_label;
+        b.dataset.arrivalOption = d.arrival_option || '';
+        b.dataset.selectable = d.selectable ? '1' : '';
+        b.dataset.lastMinute = d.last_minute ? '1' : '';
+        b.dataset.manualContact = d.manual_contact ? '1' : '';
+        b.dataset.tourTitle = root.dataset.tourName || '';
+        b.dataset.tourSlug = root.dataset.tourSlug || '';
+        b.dataset.tourCode = root.dataset.tourCode || '';
+        b.dataset.tourDays = root.dataset.tourDays || '';
+        b.dataset.weekend = root.dataset.weekend || '';
+        b.disabled = !d.selectable && !d.last_minute && !d.manual_contact;
+        const lines = [['tdp-row__date', d.date_label], ['tdp-row__status', d.status_text]];
+        if (d.confirmed_text) lines.push(['tdp-row__status', d.confirmed_text]);
+        if (d.remaining_places != null) lines.push(['tdp-row__status', `${d.remaining_places} places remaining`]);
+        (d.advisories || []).forEach((a) => lines.push(['tdp-row__advisory', a.text]));
+        if (d.cta) lines.push([(d.last_minute || d.manual_contact) ? 'tdp-row__cta tdp-row__cta--lm' : 'tdp-row__cta', d.cta]);
+        lines.forEach(([cls, text]) => {
+          const s = document.createElement('span');
+          s.className = cls;
+          s.textContent = text;
+          b.appendChild(s);
+        });
+        list.appendChild(b);
+      });
+    };
+
+    root.querySelectorAll('input[name="tdp-arrival"]').forEach((input) => input.addEventListener('change', refresh));
+    refresh();
+
+    const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    const timer = setTimeout(() => ctrl?.abort(), 5000);
+    fetch(`/booking/departures.php?tour=${encodeURIComponent(root.dataset.tourSlug || '')}`, { headers: { Accept: 'application/json' }, signal: ctrl?.signal })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!data || data.ok !== true || !Array.isArray(data.departures)) return;
+        const mine = data.departures.filter((d) => d.tour_slug === root.dataset.tourSlug);
+        render(mine);
+        const adv = root.querySelector('[data-ramadan-advisory]');
+        if (adv) adv.hidden = !mine.some((d) => (d.advisories || []).some((a) => a.type === 'ramadan'));
+        const eid = root.querySelector('[data-eid-notice]');
+        if (eid && Array.isArray(data.eid_blocks)) {
+          const ul = eid.querySelector('[data-eid-list]');
+          ul.textContent = '';
+          data.eid_blocks.forEach((blk) => { const li = document.createElement('li'); li.textContent = `${blk.name}: ${blk.label}`; ul.appendChild(li); });
+          eid.hidden = eid.dataset.show !== '1' || data.eid_blocks.length === 0;
+          const hit = mine.some((d) => data.eid_blocks.some((blk) => d.start_date <= blk.end && d.end_date >= blk.start));
+          eid.classList.toggle('tdp-eid--warn', hit);
+          eid.classList.toggle('tdp-eid--info', !hit);
+          eid.open = hit;
+          const sum = eid.querySelector('[data-eid-summary]');
+          if (sum) sum.textContent = hit ? 'Eid operating period affects a date below' : 'Eid operating periods';
+        }
+        root.dataset.source = 'live';
+        refresh();
+      })
+      .catch(() => {})
+      .finally(() => clearTimeout(timer));
+  })();
+</script>
+
+<style is:global>
+  .tdp-group { list-style: none; margin: .9rem 0 0; padding: 0; font-size: .9rem; line-height: 1.5; }
+  .tdp-group li { margin: 0; }
+  .tdp-group li:first-child { font-weight: 700; }
+  .tdp-group a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+  /* Global on purpose: rows are re-rendered from the live endpoint. All selectors are tdp-prefixed. */
+  .tdp { margin-top: 1rem; border-top: 1px solid #d8d4c9; padding-top: 1rem; }
+  .tdp-head { display: flex; justify-content: space-between; gap: .7rem; align-items: baseline; }
+  .tdp-head[hidden], .tdp-rows[hidden], .tdp-empty[hidden] { display: none; }
+  .tdp-head h3 { margin: 0; font-size: .9rem; }
+  .tdp-head span { color: #6e7069; font-size: .66rem; text-align: right; }
+  .tdp-rows { margin-top: .55rem; border: 1px solid #c8c5bc; border-radius: 10px; overflow: hidden; }
+  .tdp-row { display: grid; grid-template-columns: 1fr auto; column-gap: .6rem; row-gap: .15rem; width: 100%; align-items: center; padding: .8rem .75rem; border: 0; border-bottom: 1px solid #dedbd3; background: #fff; color: inherit; text-align: left; font: inherit; cursor: pointer; }
+  .tdp-row:last-child { border-bottom: 0; }
+  .tdp-row[hidden] { display: none; }
+  .tdp-row:hover:not(:disabled), .tdp-row:focus-visible { background: var(--tour-soft, #f6f2ea); outline: none; }
+  .tdp-row:disabled { cursor: default; opacity: .7; }
+  .tdp-row__date { grid-column: 1; font-size: .78rem; font-weight: 800; color: #1c1d1b; }
+  .tdp-row__status { grid-column: 1; color: #62645d; font-size: .68rem; line-height: 1.4; }
+  .tdp-row__cta { grid-column: 2; grid-row: 1 / span 3; align-self: center; color: #7b5b23; font-size: .66rem; font-weight: 900; letter-spacing: .02em; white-space: nowrap; text-decoration: underline; text-underline-offset: 3px; }
+  .tdp-row__cta--lm { white-space: normal; max-width: 9.5rem; text-align: right; }
+  .tdp-row:disabled .tdp-row__cta { text-decoration: none; color: #6e7069; }
+  .tdp-row__advisory { grid-column: 1; margin-top: .2rem; padding-left: .55rem; border-left: 2px solid #c9a24a; color: #5a4a26; font-size: .66rem; line-height: 1.45; }
+  .tdp-advisory { margin: .6rem 0 0; padding: .55rem .7rem; border: 1px solid #e3d6b4; border-radius: 8px; background: #fbf7ee; font-size: .68rem; line-height: 1.55; color: #4b4d48; }
+  .tdp-advisory[hidden], .tdp-eid[hidden] { display: none; }
+  .tdp-advisory summary { cursor: pointer; font-weight: 800; color: #1c1d1b; }
+  .tdp-advisory p { margin: .45rem 0 0; }
+  .tdp-eid { margin: .6rem 0 0; padding: .55rem .7rem; border: 1px solid #d8d4c9; border-radius: 8px; background: #f6f4ef; font-size: .68rem; line-height: 1.55; color: #3f413c; }
+  .tdp-eid p { margin: .3rem 0 0; }
+  .tdp-eid summary { cursor: pointer; font-weight: 600; }
+  .tdp-eid--info { padding: .3rem .6rem; border-color: #e3dfd6; background: transparent; color: #6a6b66; font-size: .64rem; }
+  .tdp-eid--info summary { font-weight: 500; }
+  .tdp-eid--warn { border-color: #c9a35a; background: #fbf4e4; }
+  .tdp-eid ul { margin: .35rem 0 0; padding-left: 1rem; }
+  .tdp-empty { margin: .55rem 0 0; color: #5f615a; font-size: .72rem; line-height: 1.5; }
+  .tdp-note { margin: .7rem 0 0; color: #6b6d66; font-size: .64rem; line-height: 1.5; }
+  .tdp-note a { color: inherit; text-decoration: underline; }
+  .tdp-private { margin-top: 1rem; padding-top: .9rem; border-top: 1px solid #ece8df; }
+  .tdp-private strong { display: block; font: 700 .98rem/1.25 Georgia, "Times New Roman", serif; }
+  .tdp-private p { margin: .35rem 0 .7rem; color: #62645d; font-size: .7rem; line-height: 1.5; }
+  .tdp-button { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 44px; margin-top: .6rem; border: 1px solid #1c1d1b; border-radius: 999px; padding: .7rem 1rem; background: transparent; color: #1c1d1b; font: inherit; font-size: .8rem; font-weight: 900; cursor: pointer; }
+  .tdp-button--dark { background: var(--tour-dark, #111917); border-color: var(--tour-dark, #111917); color: #fff; }
+  .tdp-button:hover { background: #d9a02d; border-color: #d9a02d; color: #111b16; }
+  .tdp-weekend { margin-bottom: 1rem; }
+  .tdp-weekend__length { margin: 0 0 .55rem; font-size: .8rem; font-weight: 900; }
+  .tdp-arrival { margin: 0; padding: 0; border: 0; display: flex; flex-wrap: wrap; gap: .45rem; }
+  .tdp-arrival legend { margin-bottom: .45rem; font-size: .72rem; font-weight: 800; color: #4b4d48; }
+  .tdp-arrival label { display: inline-flex; align-items: center; gap: .35rem; min-height: 40px; padding: .45rem .75rem; border: 1px solid #cbc8c0; border-radius: 999px; font-size: .72rem; font-weight: 800; cursor: pointer; }
+  .tdp-arrival input { accent-color: #1c1d1b; margin: 0; }
+  .tdp-arrival label:has(input:checked) { border-color: #1c1d1b; background: var(--tour-soft, #f6f2ea); }
+  .tdp-extras { margin: .8rem 0 0; padding: 0 0 0 1rem; color: #62645d; font-size: .7rem; line-height: 1.6; }
+  @media (max-width: 760px) {
+    .tdp-row { padding: .95rem .8rem; }
+    .tdp-row__date { font-size: .9rem; }
+    .tdp-row__status { font-size: .76rem; }
+    .tdp-row__cta { font-size: .74rem; }
+    .tdp-row__advisory, .tdp-advisory, .tdp-eid { font-size: .76rem; }
+  }
+</style>

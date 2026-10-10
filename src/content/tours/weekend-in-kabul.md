@@ -4,7 +4,7 @@ slug: "weekend-in-kabul"
 type: tour
 tour_code: TOUR-WEEKEND-IN-KABUL
 name: Weekend in Kabul
-duration_days: 2
+duration_days: 3
 best_season: Year-round
 regions: [Central]
 provinces: [Kabul]
@@ -12,7 +12,7 @@ hero_image_path: assets/images/tours/weekend-in-kabul.jpg
 ---
 
 ### Overview
-Short on time? Get a curated, authentic two-day snapshot of Kabul’s architecture, culture, food, and history.
+Short on time? Get a curated, authentic three-day snapshot (3 days / 2 nights) of Kabul’s architecture, culture, food, and history.
 
 ---
 
@@ -41,8 +41,9 @@ A compact weekend itinerary featuring Darulaman Palace, Bagh-e Babur, Shah-e-Du 
 ---
 
 ### Sample Itinerary (Preview)
-**Day 1** — Kabul
-**Day 2** — Museums & gardens; departure
+**Day 1** — Arrival, old Kabul markets, and garden sunset
+**Day 2** — Museum, Darulaman, shrines, and Kabul viewpoints
+**Day 3** — Paghman or Qargha morning and departure
 
 *Full itinerary provided during planning.*
 
@@ -51,15 +52,4 @@ A compact weekend itinerary featuring Darulaman Palace, Bagh-e Babur, Shah-e-Du 
 ### Practical Details
 - **Activity level:** Easy to Moderate  
 - **Best season:** Year-round  
-- **Group size:** Private (1–6 travelers typical)  
-
----
-
-### Included Attractions (codes)
-AT-C-KBL-001  
-AT-C-KBL-002  
-AT-C-KBL-003  
-AT-C-KBL-004  
-AT-C-KBL-005  
-AT-C-KBL-006  
-AT-C-KBL-007
+- **Group size:** Shared departures need a minimum of 2 confirmed travelers. Private weekends are available even for 1 traveler, quoted separately.

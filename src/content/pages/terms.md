@@ -20,9 +20,7 @@ By booking a tour, you agree to the terms outlined below.
 
 ### 💳 PAYMENTS
 
-- Payments are typically made via international transfer or agreed arrangements
-- Credit cards are not accepted within Afghanistan
-- Full payment is required prior to the commencement of services unless otherwise agreed in writing
+- Deposits, balances and payment timing are set out in your booking confirmation and in our [Cancellation, Refund & Rescheduling Policy](/cancellation-refund-rescheduling/#payments-currency-refunds).
 
 ---
 
@@ -52,7 +50,7 @@ AfghanTours reserves the right to:
 - Substitute accommodations or routes of comparable standard
 - Adjust schedules to respond to changing conditions
 
-Such changes do not constitute grounds for refund.
+Refunds, cancellations and rescheduling, including for itinerary changes, are governed by our [Cancellation, Refund & Rescheduling Policy](/cancellation-refund-rescheduling/).
 
 ---
 

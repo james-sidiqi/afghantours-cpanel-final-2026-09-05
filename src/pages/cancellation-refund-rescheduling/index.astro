@@ -1,0 +1,44 @@
+---
+/**
+ * /cancellation-refund-rescheduling/ — the authoritative Cancellation, Refund & Rescheduling Policy
+ * (James Tourist & Travel Agency, effective 28 Sep 2026), rendered verbatim from
+ * src/content/legal/cancellation-refund-rescheduling.md. Public, indexable, in the sitemap.
+ * Nothing on this page adds policy wording: the <h1> is the document title and the article is the document body.
+ */
+import { getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { LEGAL_IDENTITY } from '../../lib/legal';
+
+const entry = await getEntry('legal', 'cancellation-refund-rescheduling');
+if (!entry) throw new Error('legal/cancellation-refund-rescheduling.md missing');
+if (entry.data.policy_full_text_received !== true) {
+  throw new Error('Cancellation policy: full owner text not merged (policy_full_text_received is not true) — refusing to publish a partial policy.');
+}
+const { Content } = await entry.render();
+const d = entry.data;
+---
+
+<BaseLayout title={`${d.title} | AfghanTours`} description={d.description}>
+  <main class="legal-doc">
+    <article class="content-card" data-policy-document>
+      <h1>{d.title}</h1>
+      <Content />
+    </article>
+    <p class="legal-doc__identity" data-legal-identity>{LEGAL_IDENTITY}</p>
+    <p class="legal-doc__related"><a href="/terms/">Terms</a> · <a href="/privacy/">Privacy Policy</a> · <a href="/contact/">Contact</a></p>
+  </main>
+</BaseLayout>
+
+<style>
+  .legal-doc { max-width: 820px; margin: 0 auto; padding: 7rem 1.25rem 4rem; }
+  .legal-doc h1 { font: 700 clamp(2rem, 4vw, 2.8rem)/1.1 Georgia, 'Times New Roman', serif; margin: .2rem 0 1rem; }
+  .legal-doc article :global(h2) { font: 700 1.35rem/1.2 Georgia, serif; margin: 2.2rem 0 .6rem; scroll-margin-top: 6rem; }
+  .legal-doc article :global(p), .legal-doc article :global(li) { line-height: 1.7; }
+  .legal-doc article :global(p) { margin: 0 0 1rem; }
+  .legal-doc article :global(ul) { margin: 0 0 1rem; list-style: disc; }
+  .legal-doc article :global(li) { margin: 0 0 .35rem; }
+  .legal-doc a { color: #8a5a12; text-decoration: underline; text-underline-offset: 2px; }
+  .legal-doc article :global(ul) { padding-left: 1.2rem; }
+  .legal-doc__related { margin-top: 1.5rem; color: #6b6d66; }
+  .legal-doc__identity { margin-top: 1.5rem; font-size: .86rem; color: #4b5563; }
+</style>

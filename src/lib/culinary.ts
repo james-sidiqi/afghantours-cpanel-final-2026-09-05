@@ -18,14 +18,14 @@ export const RESTAURANT_TO_CULINARY: Record<string, string> = {
 const FOOD_HREF_FALLBACKS: Record<string, string> = {
   'chapli-kabob': '/food-culture/dishes/chapli-kabob/',
   'kunar-trout': '/food-culture/dishes/kunar-trout/',
-  'kandahar-rosht': '/food-culture/dishes/kandahari-rosh/',
-  'kandahari-rosh': '/food-culture/dishes/kandahari-rosh/',
+  'kandahar-rosht': '/food-culture/kandahar-rosht/',
+  'kandahari-rosh': '/food-culture/kandahar-rosht/',
   dogh: '/food-culture/drinks/dogh/',
   'qurut-markets-of-bamyan': '/food-culture/produce/qurut-markets-of-bamyan/',
   qurut: '/food-culture/produce/qurut-markets-of-bamyan/',
   quroot: '/food-culture/produce/qurut-markets-of-bamyan/',
-  'kabuli-pulao': '/food-culture/dishes/kabuli-pulao/',
-  'kabuli-palaw': '/food-culture/dishes/kabuli-pulao/',
+  'kabuli-pulao': '/food-culture/kabuli-pulao/',
+  'kabuli-palaw': '/food-culture/kabuli-pulao/',
 };
 
 export function getCulinaryExperiences(): CulinaryRow[] {

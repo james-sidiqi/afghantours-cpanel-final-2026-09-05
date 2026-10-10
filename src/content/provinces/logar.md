@@ -24,4 +24,4 @@ Logar lies just south of Kabul and features fertile valleys, historic villages, 
 
 ### Tours That Include Logar
 - Kabul & Surroundings
-- Photography Tour
+- [Photography & Documentary Support](/specialist-services/photography-documentary/) (specialist service, planned around your brief)

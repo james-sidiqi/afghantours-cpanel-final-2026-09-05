@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { normalizeImagePath, getTourHeroImage, getTourOverviewImage, getAttractionImage, getHotelImage, getRegionImage, getProvinceImage, getFoodImage, getHubImage, buildGallery, hasRealImage, listPublicImages, PLACEHOLDERS } from './images';
+import { bookingDepartureRows } from './booking/site';
 
 const ROOT = process.cwd();
 const DATA_DIR = path.join(ROOT, 'data');
@@ -224,7 +225,6 @@ const csv = {
   tours: () => readCsv('tours.csv'),
   tourItinerary: () => readCsv('tour_itinerary.csv'),
   tourAttractions: () => readCsv('tour_attractions_map.csv'),
-  tourDates: () => readCsv('tour_dates.csv'),
   tourInclusions: () => readCsv('tour_inclusions.csv'),
   attractions: () => readCsv('attractions_master.csv'),
   hotels: () => readCsv('hotel_properties.csv'),
@@ -603,7 +603,8 @@ export function getTours(): Row[] {
   const provincesBySlug = bySlug(provinces);
   const itinerary = csv.tourItinerary();
   const tourAttractions = csv.tourAttractions();
-  const dates = csv.tourDates();
+  // Departures: single authoritative seed = data/booking/departures.json (tour_dates.csv retired 2026-10-10).
+  const dates = bookingDepartureRows();
   const inclusions = csv.tourInclusions();
 
   return csv.tours().filter(active).map(normalizeTour).map((tour) => {

@@ -1,7 +1,24 @@
 ---
-interface Props { tours: any[] }
+import { bookingCatalog, getCatalogTour, publicSnapshot, tourPriceLabel } from '../lib/booking/site';
+interface Props { tours: any[]; showFilters?: boolean; id?: string }
 
-const { tours = [] } = Astro.props;
+const { tours = [], showFilters = true, id = 'tour-directory' } = Astro.props;
+
+// Booking type first (spec 10 Oct Part 1 §1, §12); travel style stays a secondary descriptor.
+const badgeFor = (tour: any) => {
+  const c = getCatalogTour(tour.slug);
+  const labels = bookingCatalog.booking_types || {};
+  const out = (c?.booking_types || []).map((k: string) => labels[k]).filter(Boolean).join(' · ');
+  return out || 'Private Tour';
+};
+const groupLineFor = (tour: any) => {
+  const c = getCatalogTour(tour.slug) || {};
+  if (c.category === 'C') return 'Private on your dates · no group minimum';
+  if (c.group_rule === 'long_6_18') return 'Group size 6–18 · minimum 6 to operate · private on request';
+  if (c.booking_type === 'private_tour') return `Private from 1 traveler · shared departures minimum ${c.shared_min_group ?? 2}`;
+  return `Shared departures minimum ${c.shared_min_group ?? 2} · private from 1 traveler`;
+};
+const nextDeparture = (tour: any) => publicSnapshot(tour.slug).find((d: any) => d.selectable);
 
 const imageFor = (tour:any) => {
   if (tour.hero_image_path) return tour.hero_image_path;
@@ -44,6 +61,7 @@ const durationLabel = (d:any) => {
 };
 
 const priceLabel = (tour:any) => {
+  if (getCatalogTour(tour.slug)) return tourPriceLabel(tour.slug);
   const raw = String(tour.price_from || tour.price || '').trim();
 
   if (!raw) return 'Price on request';
@@ -57,8 +75,9 @@ const priceLabel = (tour:any) => {
 };
 ---
 
-<section id="tour-directory" class="tour-directory">
+<section id={id} class={`tour-directory${showFilters ? '' : ' tour-directory--plain'}`} data-tour-directory>
   <div class="tour-wrap">
+    {showFilters && (<>
     <form class="filter-bar" data-filter-form>
       <label>Region<select data-filter="region"><option value="">All Regions</option>{regions.map((x)=><option value={x}>{x}</option>)}</select></label>
       <label>Province<select data-filter="province"><option value="">All Provinces</option>{provinces.map((x)=><option value={x}>{x}</option>)}</select></label>
@@ -79,23 +98,25 @@ const priceLabel = (tour:any) => {
         </select>
       </label>
     </div>
+    </>)}
 
     <div class="tour-grid" data-tour-grid>
       {tours.map((tour:any, index:number) => (
         <article class="tour-card" data-tour-card data-region={tour.region || ''} data-province={tour.province || ''} data-season={tour.season || ''} data-activity_level={tour.activity_level || ''} data-style={tour.style || ''} data-duration={tour.duration_days || ''} data-index={index}>
           <div class="tour-img">
             <img src={imageFor(tour)} alt={tour.title || tour.name} loading="lazy" onerror="this.style.display='none'" />
-            {index === 0 && <span class="ribbon">Most Popular</span>}
           </div>
           <div class="tour-body">
-            <p class="tour-class-badge">{String(tour.product_class || '').toLowerCase() === 'scheduled' ? 'Scheduled departure' : 'Private fixed itinerary'}</p>
+            <p class="tour-class-badge">{badgeFor(tour)}</p>
             <h3>{tour.title || tour.name}</h3>
             <div class="meta">
               <span>◷ {durationLabel(tour.duration_days)}</span>
               <span>▣ {tour.season || 'Season varies'}</span>
             </div>
             <p class="tour-price">{priceLabel(tour)}</p>
-            <p>{[tour.style, tour.activity_level, tour.group_size].filter(Boolean).slice(0,3).join(' • ') || 'Private journey'}</p>
+            <p class="tour-group">{groupLineFor(tour)}</p>
+            {(() => { const n = nextDeparture(tour); return n ? <p class="tour-next" data-next-start={n.start_date}>Next departure: {n.date_label} — {n.status_text}</p> : null; })()}
+            <p>{[tour.style, tour.activity_level].filter(Boolean).join(' • ') || 'Private journey'}</p>
             <a href={`/tours/${tour.slug}/`}>View Tour Details →</a>
           </div>
         </article>
@@ -105,12 +126,18 @@ const priceLabel = (tour:any) => {
 </section>
 
 <script>
-  const form = document.querySelector('[data-filter-form]');
-  const cards = [...document.querySelectorAll('[data-tour-card]')];
-  const count = document.querySelector('[data-result-count]');
-  const sort = document.querySelector('[data-sort]');
-  const grid = document.querySelector('[data-tour-grid]');
-  const filters = [...document.querySelectorAll('[data-filter]')];
+  // Hide "next departure" lines whose start date has passed (static snapshot vs. today in Kabul).
+  const kabulToday = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kabul', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  document.querySelectorAll('[data-next-start]').forEach((el) => { if ((el.getAttribute('data-next-start') || '') <= kabulToday) el.remove(); });
+
+  document.querySelectorAll('[data-tour-directory]').forEach((section) => {
+  const form = section.querySelector('[data-filter-form]');
+  if (!form) return;
+  const cards = [...section.querySelectorAll('[data-tour-card]')];
+  const count = section.querySelector('[data-result-count]');
+  const sort = section.querySelector('[data-sort]');
+  const grid = section.querySelector('[data-tour-grid]');
+  const filters = [...section.querySelectorAll('[data-filter]')];
 
   function durationBucket(days) {
     const n = Number(days || 0);
@@ -139,7 +166,7 @@ const priceLabel = (tour:any) => {
 
   filters.forEach(sel => sel.addEventListener('change', applyFilters));
 
-  document.querySelector('[data-clear-filters]')?.addEventListener('click', () => {
+  section.querySelector('[data-clear-filters]')?.addEventListener('click', () => {
     filters.forEach(s => s.value = '');
     applyFilters();
   });
@@ -152,6 +179,7 @@ const priceLabel = (tour:any) => {
       return Number(a.dataset.index) - Number(b.dataset.index);
     });
     sorted.forEach(card => grid?.appendChild(card));
+  });
   });
 </script>
 
@@ -185,6 +213,9 @@ const priceLabel = (tour:any) => {
   .meta{display:flex;flex-wrap:wrap;gap:.9rem;font-size:.78rem;color:#6b6258}
   .tour-body p{font-size:.84rem;color:#5a554e;margin:1rem 0 1.2rem}
   .tour-body .tour-price{margin:.85rem 0 .1rem;color:#9a5d04;font-size:1rem;font-weight:900}
+  .tour-body .tour-next{margin:.35rem 0 0;color:#4b4d48;font-size:.8rem;font-weight:700}
+  .tour-body .tour-group{margin:.35rem 0 0;color:#4b4d48;font-size:.8rem}
+  .tour-directory--plain{padding:1.25rem 0 3.5rem}
   .tour-body a{color:#a86920;text-decoration:none;text-transform:uppercase;font-size:.78rem;font-weight:900;letter-spacing:.04em}
 
   @media(max-width:1050px){

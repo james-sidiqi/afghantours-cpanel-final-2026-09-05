@@ -31,7 +31,16 @@ const imageForId = (id) => {
   );
 };
 
-const foodHref = (id) => `/food-culture/${id}/`;
+// Pages for these entries are built at their content `slug` (flat URL), not at the folder id.
+const FLAT_FOOD_SLUGS = {
+  'dishes/kandahari-rosh': 'kandahar-rosht',
+  'dishes/chiken-korma': 'korma-e-herati',
+  'dishes/chicken-kabuli': 'chicken-qabili',
+  'dishes/kabuli-pulao': 'kabuli-pulao',
+  'produce/kandahar-pomegranate': 'kandahar-pomegranate',
+  'dried-fruits/samangan-pistachios': 'samangan-pistachios',
+};
+const foodHref = (id) => `/food-culture/${FLAT_FOOD_SLUGS[id] || id}/`;
 
 const dishes = [
   {
@@ -359,7 +368,7 @@ const experienceGroups = [
       },
       {
         title: 'Kandahari Rosh Hospitality Stops',
-        href: '/food-culture/dishes/kandahari-rosh/',
+        href: '/food-culture/kandahar-rosht/',
         description: `Traditional culinary stops featuring slow-cooked, tender jointed lamb served with fresh hot tandoor naan, onions, and local seasonal sides.`,
       },
     ],

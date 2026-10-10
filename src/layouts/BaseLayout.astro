@@ -11,7 +11,8 @@ import ImageLightbox from '../components/ImageLightbox.astro';
 const {
   title = 'AfghanTours',
   description = 'Kabul-based journeys across Afghanistan, planned with local knowledge, experienced guides, trusted drivers, and realistic routes.',
-  image = '/assets/images/heroes/home/hero.webp'
+  image = '/assets/images/heroes/home/hero.webp',
+  robots = 'index,follow,max-image-preview:large'
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://afghantours.com').toString();
@@ -44,7 +45,7 @@ const organizationSchema = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta name="robots" content={robots} />
     <link rel="canonical" href={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

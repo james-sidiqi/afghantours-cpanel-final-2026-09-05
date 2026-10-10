@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getEntry } from 'astro:content';
+import { LEGAL_IDENTITY } from '../lib/legal';
 
 export function getStaticPaths() {
   return [
@@ -179,11 +181,24 @@ const policyItems = {
     ['Information sharing', 'Necessary details may be shared with operational partners only when needed for hotels, transport, guiding, documentation, or itinerary planning.'],
   ],
   terms: [
-    ['Inquiries are not bookings', 'Submitting an inquiry does not create a confirmed booking. A journey is confirmed only after itinerary, price, and payment terms are agreed.'],
+    ['Inquiries are not bookings', 'Submitting an inquiry does not create a confirmed booking. How and when a booking is confirmed, including deposits and payment, is set out in our Cancellation, Refund & Rescheduling Policy (link below).'],
     ['Changes and availability', 'Hotels, vehicles, flights, routes, permits, and prices may change based on timing, access, weather, and operational conditions.'],
     ['Traveler responsibility', 'Travelers must follow local guidance, respect Afghan culture and law, and avoid unauthorized photography or activity.'],
   ],
 };
+
+// The Cancellation, Refund & Rescheduling Policy (effective 28 Sep 2026) is one authoritative document at
+// /cancellation-refund-rescheduling/ (src/content/legal/…). /terms/ carries only a pointer + link — no duplicate text.
+const cancellationPolicy = await getEntry('legal', 'cancellation-refund-rescheduling');
+const cancellationPolicyLive = cancellationPolicy?.data.policy_full_text_received === true;
+
+// Terms & Conditions / Privacy Policy: the owner's final text drops into src/content/legal/{terms-and-conditions,privacy-policy}.md
+// word for word. Until full_text_received is true the interim summary below is shown (no invented legal text).
+const legalDocSlug = Astro.params.slug === 'terms' ? 'terms-and-conditions' : Astro.params.slug === 'privacy' ? 'privacy-policy' : null;
+const legalDoc = legalDocSlug ? await getEntry('legal', legalDocSlug) : null;
+const legalDocLive = legalDoc?.data.full_text_received === true;
+const LegalDocContent = legalDocLive ? (await legalDoc.render()).Content : null;
+const showIdentity = ['terms', 'privacy', 'contact'].includes(Astro.params.slug);
 
 const aboutItems = [
   ['Licensed Kabul Operator', 'AfghanTours.com is owned and operated by James Tourist & Travel Agency, a licensed Afghanistan travel operator based in Kabul.'],
@@ -324,6 +339,7 @@ const trustItems = [
           ))}
         </div>
       </section>
+      {showIdentity && <p class="legal-identity" data-legal-identity>{LEGAL_IDENTITY}</p>}
     </main>
   ) : (
     <main class="simple-page">
@@ -355,14 +371,35 @@ const trustItems = [
         </section>
       ) : page.type === 'policy' ? (
         <>
-          <section class="policy-grid">
-            {(policyItems[Astro.params.slug] || []).map(([heading, text]) => (
-              <article>
-                <h2>{heading}</h2>
-                <p>{text}</p>
+          {legalDocLive && LegalDocContent ? (
+            <section class="legal-doc-full">
+              <article class="content-card" data-legal-document={legalDocSlug}>
+                {legalDoc.data.effective_date && <p class="legal-doc-meta">Effective Date: {legalDoc.data.effective_date}</p>}
+                <LegalDocContent />
               </article>
-            ))}
-          </section>
+            </section>
+          ) : (
+            <section class="policy-grid" data-legal-interim={legalDocSlug || ''}>
+              {(policyItems[Astro.params.slug] || []).map(([heading, text]) => (
+                <article>
+                  <h2>{heading}</h2>
+                  <p>{text}</p>
+                </article>
+              ))}
+            </section>
+          )}
+
+          {Astro.params.slug === 'terms' && cancellationPolicyLive && (
+            <section class="policy-clause" id="cancellation-refund-rescheduling" data-policy-pointer>
+              {/* Old anchors kept so earlier links to /terms/#… still land here. */}
+              <span id="scheduled-departures-minimum-group-size"></span><span id="payments-currency-refunds"></span><span id="cancellation-policy-link"></span>
+              <article class="content-card">
+                <h2>Cancellation, Refund &amp; Rescheduling</h2>
+                <p>Cancellations, refunds, rescheduling, minimum group sizes for scheduled departures, and payment currency are covered by our Cancellation, Refund &amp; Rescheduling Policy.</p>
+                <p><a class="policy-pointer__link" href="/cancellation-refund-rescheduling/">Read the Cancellation, Refund &amp; Rescheduling Policy →</a></p>
+              </article>
+            </section>
+          )}
 
           {Astro.params.slug === 'safety' && (
             <section class="safety-closing">
@@ -392,6 +429,7 @@ const trustItems = [
           ))}
         </section>
       )}
+      {showIdentity && <p class="legal-identity" data-legal-identity>{LEGAL_IDENTITY}</p>}
     </main>
   )}
 </BaseLayout>
@@ -677,6 +715,8 @@ const trustItems = [
   details p,.content-card p,.policy-grid p{color:#4b5563;line-height:1.8}
   .policy-grid{width:min(1180px,100%);margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
   .policy-grid article{width:auto}
+  .policy-clause{width:min(1180px,100%);margin:1rem auto 0}
+  .policy-clause .content-card{width:auto}
   .policy-grid h2,.content-card h2{font-family:Georgia,"Times New Roman",serif;font-size:2rem;line-height:1;margin:.2rem 0 1rem}
   .safety-closing{width:min(980px,100%);margin:2rem auto 0;background:#0f1a18;color:#fff;border-radius:1.5rem;padding:clamp(2rem,4vw,3.4rem);box-shadow:0 18px 50px rgba(21,16,9,.12)}
   .safety-closing h2{font-family:Georgia,"Times New Roman",serif;font-size:clamp(2.4rem,4vw,4rem);line-height:.98;letter-spacing:-.04em;margin:.6rem 0 1rem;color:#fff}
@@ -752,4 +792,9 @@ const trustItems = [
     .form-grid{grid-template-columns:1fr}
     .map-box,.map-box iframe{min-height:340px}
   }
+  .policy-pointer__link { color: #8a5a12; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  [data-policy-pointer] p + p { margin-top: .9rem; }
+  .legal-identity { max-width: 1180px; margin: 2rem auto 0; padding: 0 1rem; text-align: center; font-size: .86rem; color: #4b5563; }
+  .legal-doc-full { max-width: 860px; margin: 0 auto; }
+  .legal-doc-meta { font-weight: 700; }
 </style>

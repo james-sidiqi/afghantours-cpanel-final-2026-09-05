@@ -1,5 +1,25 @@
 import { defineCollection, z, reference } from 'astro:content';
 
+// Legal documents rendered on their own public routes. policy_full_text_received must be true (owner's full
+// text merged verbatim); the page build fails otherwise so a partial policy can never be published.
+const legalCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    effective_date: z.string().nullable(),
+    version: z.string().nullable().default(null),
+    legal_entity: z.string(),
+    operating_as: z.string(),
+    license: z.string(),
+    address: z.string().optional(),
+    policy_full_text_received: z.boolean().default(false),
+    // Terms & Conditions / Privacy Policy: true only once the owner's final text is inserted word for word.
+    full_text_received: z.boolean().default(false),
+    source_file: z.string().optional(),
+    description: z.string().optional(),
+  }),
+});
+
 const provincesCollection = defineCollection({
   type: 'content',
   schema: z.object({
@@ -190,6 +210,7 @@ const activitiesCollection = defineCollection({
 });
 
 export const collections = {
+  legal: legalCollection,
   provinces: provincesCollection,
   regions: regionsCollection,
   hubs: hubsCollection,

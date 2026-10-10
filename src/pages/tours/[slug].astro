@@ -7,6 +7,8 @@ import { parseCSV } from "../../lib/csv";
 import transportRaw from "../../../data/ground_transport.csv?raw";
 import inclusionsRaw from "../../../data/tour_inclusions.csv?raw";
 import { buildTourInquiryHref, buildCustomInquiryHref } from "../../lib/inquiry";
+import TourDepartures from "../../components/booking/TourDepartures.astro";
+import { getCatalogTour, getCategory, tourPriceLabel, bookingSettings, bookingCatalog } from "../../lib/booking/site";
 import { buildAttractionTopMeta, buildAttractionTravelerNotes, formatVisitDuration } from '../../lib/attractionMeta';
 
 export function getStaticPaths() {
@@ -367,6 +369,9 @@ const itineraryFlow = sortedItinerary.map((day, index) => {
   if (showHub) {
     for (let cursor = index; cursor < sortedItinerary.length; cursor += 1) {
       if (itineraryHubKey(sortedItinerary[cursor]) !== hubKey) break;
+      // Nights, not days: the final itinerary day is the departure day and has no overnight
+      // (a 12-day tour has 11 nights). Spec Part 9 #1.
+      if (cursor === sortedItinerary.length - 1) break;
       hubCount += 1;
     }
   }
@@ -380,6 +385,13 @@ const itineraryFlow = sortedItinerary.map((day, index) => {
     hubLabel: humanize(hubKey || "On the road"),
     hubCount,
     showHub,
+    // Spec 10 Oct Part 1 §10: say where the traveler sleeps THAT night, separately from the stay total.
+    isLastDay: index === sortedItinerary.length - 1,
+    hubNightsRange: hubCount > 0
+      ? (hubCount === 1
+        ? `night of Day ${Number(day.day_number) || index + 1}`
+        : `nights of Days ${Number(day.day_number) || index + 1}–${(Number(day.day_number) || index + 1) + hubCount - 1}`)
+      : "",
   };
 });
 
@@ -498,19 +510,39 @@ const inclusions = [...globalInclusions, ...specificInclusions]
   .sort((a, b) => Number(a.sort_order || 999) - Number(b.sort_order || 999))
   .filter((row, index, rows) => rows.findIndex((other) => String(other.title).toLowerCase() === String(row.title).toLowerCase()) === index)
   .slice(0, 10);
+// Owner 10 Oct 2026: standard exclusions unless the tour supplies its own authoritative list (frontmatter `exclusions`).
+const tourExclusions = Array.isArray(tour?.exclusions) && tour.exclusions.length ? tour.exclusions : (bookingSettings.standard_exclusions?.items || []);
+const exclusionsLeadIn = bookingSettings.standard_exclusions?.lead_in || '';
 
 const dates = Array.isArray(tour.dates) ? tour.dates : [];
 const scheduledDates = dates.filter((row) => {
   const start = String(row?.date_start || "").trim().toLowerCase();
   return start && start !== "inquire";
 });
-const price = formatPrice(tour.price_from || tour.price_display);
-const duration = tour.duration_days && Number(tour.duration_days) > 0 ? `${tour.duration_days} days` : (tour.duration_display || "Flexible duration");
-const groupSize = tour.group_size_display || (
-  tour.min_group_size && tour.max_group_size
-    ? `${tour.min_group_size}–${tour.max_group_size} travelers`
-    : "Private / small group"
-);
+// Price comes from the booking catalog (data/booking/tours-catalog.json) so listing and detail share one basis.
+const catalogTour = getCatalogTour(tour.slug) || {};
+const bookingCategory = String(catalogTour.category || "C");
+const price = tourPriceLabel(tour.slug);
+const duration = catalogTour.duration_display
+  || (tour.duration_days && Number(tour.duration_days) > 0 ? `${tour.duration_days} days` : (tour.duration_display || "Flexible duration"));
+// Group policy (spec + owner decision 10 Oct 2026): 5+ day scheduled group tours 6–18 (min 6 to operate);
+// shared departures of 4 days or less: min 2, no standard maximum; private from 1, quoted separately.
+const groupSize = bookingCategory === "C"
+  ? "Private tour · group dates when announced"
+  : catalogTour.group_rule === "long_6_18"
+    ? "6–18 travelers · minimum 6 to operate"
+    : catalogTour.booking_type === "private_tour"
+      ? `Private from 1 traveler · shared departures min. ${catalogTour.shared_min_group ?? 2}`
+      : `Shared: min. ${catalogTour.shared_min_group ?? 2} travelers · Private from 1`;
+// Booking type (Scheduled Departure / Private Tour / Custom Journey / Specialist Service); travel style stays secondary.
+const bookingTypeLabels = bookingCatalog.booking_types || {};
+const bookingTypeLabel = (catalogTour.booking_types || [])
+  .map((k) => bookingTypeLabels[k])
+  .filter(Boolean)
+  .join(" or ") || "Private Tour";
+const privatePriceLine = catalogTour.slug === "weekend-in-kabul"
+  ? "Private departures available; price on request."
+  : (bookingSettings.wording?.private_pricing || "Private departure available; price on request.");
 
 const relatedTours = allTours
   .filter((item) => item.slug !== tour.slug)
@@ -529,13 +561,15 @@ const pageDescription =
   tour.description ||
   "A guided Afghanistan journey built around realistic logistics, cultural access, and Kabul-based ground coordination.";
 const productClassKey = String(tour.product_class || '').toLowerCase() === 'scheduled' ? 'scheduled' : 'private-fixed';
-const productClassLabel = productClassKey === 'scheduled' ? 'Scheduled departure' : 'Private fixed itinerary';
-const tourNoteTitle = productClassKey === 'scheduled'
-  ? 'Proposed seasonal departures.'
-  : 'Built around your dates.';
-const tourNoteBody = productClassKey === 'scheduled'
-  ? 'This itinerary has scheduled or proposed departure windows. Ask about joining a published date, or running the same route privately.'
-  : 'This is a published fixed itinerary run on private dates — adjustable around your interests, pace, and available travel window.';
+const productClassLabel = bookingTypeLabel;
+const tourNoteTitle = bookingCategory === 'A'
+  ? 'Group departures and private dates.'
+  : bookingCategory === 'B'
+    ? 'Selected group dates, or privately.'
+    : 'Built around your dates.';
+const tourNoteBody = bookingCategory === 'C'
+  ? 'This is a published fixed itinerary run on private dates — adjustable around your interests, pace, and available travel window.'
+  : `Join a published group departure — it goes ahead once at least ${catalogTour.shared_min_group || 3} travelers are confirmed — or run the same route privately on your own dates.`;
 
 const contactHref = buildTourInquiryHref(tour);
 ---
@@ -674,6 +708,13 @@ const contactHref = buildTourInquiryHref(tour);
               )}
             </div>
           )}
+          {tourExclusions.length > 0 && (
+            <div class="tour-not-included" id="not-included">
+              <h3>Not included</h3>
+              <p>{exclusionsLeadIn}</p>
+              <ul>{tourExclusions.map((item) => <li>{item}</li>)}</ul>
+            </div>
+          )}
         </section>
 
         <section id="itinerary" class="tour-section tour-section--bordered">
@@ -701,7 +742,9 @@ const contactHref = buildTourInquiryHref(tour);
                             <span>
                               {entry.hubCount}
                               {" "}
-                              {entry.hubCount === 1 ? "night" : "nights"}
+                              {entry.hubCount === 1 ? "night in total" : "nights in total"}
+                              {" · "}
+                              {entry.hubNightsRange}
                             </span>
                           )}
                         </header>
@@ -724,8 +767,13 @@ const contactHref = buildTourInquiryHref(tour);
                             <p>{day.description}</p>
                           )}
 
-                          {(day.location || day.food_culture) && (
+                          {(
                             <div class="tour-day-block__meta">
+
+                              <span>
+                                <strong>Tonight</strong>
+                                {entry.isLastDay ? "Departure day — no overnight" : entry.hubLabel}
+                              </span>
 
                               {day.location && (
                                 <span>
@@ -1079,7 +1127,7 @@ const contactHref = buildTourInquiryHref(tour);
           <div class="tour-summary-label">Tour summary</div>
           <h2 class="tour-plan-card__title">{tourName}</h2>
           <div class="tour-plan-card__price">{price}</div>
-          <p class="tour-plan-card__sub">Final pricing depends on group size, route, hotel level, domestic flights, and travel dates.</p>
+          <p class="tour-plan-card__sub">{privatePriceLine} Final pricing depends on route, hotel level, domestic flights, and travel dates.</p>
 
           <dl class="tour-plan-facts">
             <div><dt>Duration</dt><dd>{duration}</dd></div>
@@ -1088,48 +1136,12 @@ const contactHref = buildTourInquiryHref(tour);
             <div><dt>Season</dt><dd>{tour.season || "Route dependent"}</dd></div>
           </dl>
 
-          {scheduledDates.length > 0 ? (
-            <div class="tour-date-selector">
-              <div class="tour-date-selector__heading">
-                <h3>Select tour date</h3>
-                <span>Published departures</span>
-              </div>
-              <div class="tour-date-selector__rows">
-                {scheduledDates.slice(0, 5).map((date) => (
-                  <a class="tour-date-choice" href={`${contactHref}&date=${encodeURIComponent(dateLabel(date))}`}>
-                    <span class="tour-date-choice__radio" aria-hidden="true"></span>
-                    <span class="tour-date-choice__date">{dateLabel(date)}</span>
-                    <span class="tour-date-choice__status">{statusLabel(date.status)}</span>
-                  </a>
-                ))}
-              </div>
-              <p class="tour-date-selector__note">Daily plans may be adjusted for weather, road conditions, local requirements, access, or other operational considerations.</p>
-            </div>
-          ) : (
-            <form class="tour-date-planner" action="/contact/" method="get">
-              <input type="hidden" name="tour" value={tourName} />
-              <h3>Plan your departure</h3>
-              <p>This journey can be arranged around your preferred dates and group size.</p>
-              <label>
-                Preferred travel month
-                <input type="month" name="preferred_month" />
-              </label>
-              <label>
-                Group size
-                <select name="group_size">
-                  <option value="">Select group size</option>
-                  <option>1 traveler</option>
-                  <option>2 travelers</option>
-                  <option>3–4 travelers</option>
-                  <option>5–6 travelers</option>
-                  <option>7+ travelers</option>
-                </select>
-              </label>
-              <button class="tour-button tour-button--primary tour-button--wide" type="submit">Plan this tour</button>
-            </form>
-          )}
-
-          {scheduledDates.length > 0 && <a class="tour-button tour-button--primary tour-button--wide" href={contactHref}>Ask about this tour</a>}
+          <TourDepartures
+            slug={tour.slug}
+            name={tourName}
+            code={String(tour.tour_code || tour.code || "")}
+            productClass={productClassKey}
+          />
           <a class="tour-plan-link" href="/contact/">Request a custom itinerary</a>
         </div>
 
@@ -2312,5 +2324,10 @@ const contactHref = buildTourInquiryHref(tour);
       }
     }
 
+  .tour-not-included { margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid rgba(16,24,32,.1); }
+  .tour-not-included h3 { margin: 0 0 .4rem; }
+  .tour-not-included p { margin: 0 0 .6rem; color: var(--at-text, #4b5563); line-height: 1.6; }
+  .tour-not-included ul { margin: 0; padding-left: 1.1rem; columns: 2; column-gap: 2rem; color: var(--at-text, #4b5563); line-height: 1.6; }
+  @media (max-width: 640px) { .tour-not-included ul { columns: 1; } }
 </style>
 </BaseLayout>

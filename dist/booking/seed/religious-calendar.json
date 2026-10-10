@@ -1,0 +1,29 @@
+{
+  "_doc": "Religious calendar (owner-editable in /manage/ → Religious calendar; the private store copy is authoritative after first import). Ramadan = ADVISORY ONLY (never blocks, never closes, booking stays allowed). Eid = five-day operating block for STANDARD SCHEDULED departures: the day before Eid, Eid day, and the three days after (days_before/days_after). Any overlap of a departure's full inclusive range counts. state: estimated | confirmed — estimated dates are always shown as 'expected', never as final.",
+  "version": 1,
+  "eid_block": {
+    "days_before": 1,
+    "days_after": 3
+  },
+  "years": [
+    {
+      "year": 2027,
+      "ramadan": {
+        "start_date": "2027-02-08",
+        "end_date": "2027-03-08",
+        "state": "estimated",
+        "source": "Astronomical estimate (Umm al-Qura: 1 Ramadan 1448 ≈ Mon 8 Feb 2027; last day ≈ Mon 8 Mar 2027). Local moon sighting may shift ±1 day — confirm in /manage/ when announced."
+      },
+      "eid_al_fitr": {
+        "date": "2027-03-09",
+        "state": "estimated",
+        "source": "Astronomical estimate (Umm al-Qura: 1 Shawwal 1448 ≈ Tue 9 Mar 2027). Local sighting may shift ±1 day — confirm in /manage/."
+      },
+      "eid_al_adha": {
+        "date": "2027-05-16",
+        "state": "estimated",
+        "source": "Astronomical estimate (Umm al-Qura: 10 Dhu al-Hijjah 1448 ≈ Sun 16 May 2027). Local sighting may shift ±1 day — confirm in /manage/."
+      }
+    }
+  ]
+}
