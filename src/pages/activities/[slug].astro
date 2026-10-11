@@ -83,7 +83,7 @@ const journeyHref = buildActivityInquiryHref({
           <a class="secondary" href="/activities/">All activities</a>
         </p>
       </div>
-      <img class="hero-img" src={heroImage} alt={title} />
+      <img class="hero-img" src={heroImage} alt={data.hero_alt || title} />
     </div>
   </section>
 
@@ -92,7 +92,7 @@ const journeyHref = buildActivityInquiryHref({
       <article class="editorial-prose">
         {Content ? <Content /> : <p>{description}</p>}
       </article>
-      <aside class="sidebar">
+      {hubs.length > 0 && <aside class="sidebar">
         <h2>Arrange from hubs</h2>
         <p class="side-intro">These hubs are where we can arrange this activity when access allows — not automatic tour inclusions.</p>
         <ul>
@@ -104,7 +104,7 @@ const journeyHref = buildActivityInquiryHref({
           ))}
         </ul>
         <a class="sidebar-secondary" href="/hubs/">Browse travel hubs →</a>
-      </aside>
+      </aside>}
     </div>
   </section>
 
@@ -134,7 +134,7 @@ const journeyHref = buildActivityInquiryHref({
       <div class="act-detail-wrap">
         <h2>Gallery</h2>
         <div class="gal-grid">
-          {galleryImages.map((src) => <img src={src} alt="" loading="lazy" />)}
+          {galleryImages.map((src, i) => <img src={src} alt={(data.gallery_images || []).indexOf(src) >= 0 ? (data.gallery_alt || [])[(data.gallery_images || []).indexOf(src)] || '' : ''} loading="lazy" />)}
         </div>
       </div>
     </section>
