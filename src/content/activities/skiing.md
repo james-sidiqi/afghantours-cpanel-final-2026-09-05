@@ -1,27 +1,28 @@
 ---
 title: "Skiing"
 activity_code: "ACT-SKI"
-subtitle: "Highland skiing experiences arranged from Kabul and Bamyan hubs."
-card_description: "Skiing and snow-season highland travel arranged from Kabul and Bamyan when snow and access allow — separate from the Bamyan Skiing Tour product."
-best_season: "Winter–early spring when snow and access allow (subject to conditions)"
-duration: "Varies — day outings to longer highland stays; discuss during planning"
+subtitle: "Bamyan is our established ski destination, but skiing in Afghanistan is not limited to the Bamyan Ski Tour."
+card_description: "Join the Bamyan Ski Tour, add time on the snow to another itinerary, or plan a private ski-focused Custom Journey."
+best_season: "Winter–early spring, depending on snow and access"
+duration: "Time within a tour, a dedicated extension, or a private ski journey"
 hero_image: "/assets/images/experiences/activities/skiing/hero.webp"
 ---
 
-Skiing is arranged from the **Kabul** and **Bamyan** hubs for snow-season highland travel when conditions allow.
+Bamyan is our established ski destination, but skiing in Afghanistan is not limited to the [Bamyan Ski Tour](/tours/bamyan-skiing-tour/).
 
-## Activity vs Bamyan Skiing Tour
+Depending on snow, access and local conditions, skiing can be incorporated into customized itineraries in several parts of Afghanistan. Our team can help coordinate access and, where available, equipment and local arrangements.
 
-This Activities page describes skiing as a hub-arranged experience class for journey planning. The **Bamyan Skiing Tour** is a separate published itinerary product. When that tour (or another itinerary) explicitly features skiing, it appears below under “Tours featuring this activity.” Shared hubs alone do not create a tour link.
+Experienced skiers are also welcome to bring their own equipment. Let us know before arrival and we can adjust an itinerary to create opportunities for time on the snow when conditions permit.
 
-## Seasonal reality
+For travelers who want skiing to be a major part of the trip, we can design a private [Custom Journey](/custom-requests/) or arrange an optional extension providing additional dedicated time on the slopes.
 
-Snow, road access, and local arrangements determine what is workable. AfghanTours does not invent resort names, lift tickets, or guaranteed powder days on this page.
+Because mountain and snow conditions change, particular slopes, snow quality and powder conditions cannot be guaranteed. Our team confirms the best practical options closer to travel.
 
-## Specialist vs activity
+## Planning options
 
-Dedicated ski expedition support remains a Specialist Service when scoped that way. This Activities entry does not replace or relocate the specialist service.
-
-## Planning note
-
-Exact outing details — day vs multi-day, Bamyan highland focus, or Kabul-corridor snow access — are confirmed during proposal planning.
+* Join the dedicated Bamyan Ski Tour
+* Add skiing to another itinerary
+* Bring your own ski equipment
+* Arrange equipment locally where available
+* Add a dedicated ski extension
+* Build a private ski-focused Custom Journey

@@ -206,6 +206,8 @@ const activitiesCollection = defineCollection({
     hero_image: z.string().optional(),
     image: z.string().optional(),
     gallery_images: z.array(z.string()).default([]),
+    hero_alt: z.string().optional(),
+    gallery_alt: z.array(z.string()).default([]),
   }),
 });
 

@@ -1,23 +1,35 @@
 ---
 title: "Fishing"
 activity_code: "ACT-FSH"
-subtitle: "River and lakeside fishing outings arranged from selected hubs."
-card_description: "Fishing outings arranged from selected hubs where river or lakeside access is workable — not a guaranteed catch product."
-best_season: "Varies by corridor (subject to conditions)"
-duration: "Varies — typically half day to full day; discuss during planning"
+subtitle: "Fishing in Afghanistan can be as relaxed or as dedicated as you want it to be."
+card_description: "Add a few hours of fishing to a wider itinerary, or plan a private Custom Journey around it."
+best_season: "Varies by region and season"
+duration: "A few hours within a tour, up to a dedicated fishing journey"
 hero_image: "/assets/images/experiences/activities/fishing/hero.webp"
+hero_alt: "James fishing during an AfghanTours outing"
+gallery_images:
+  - "/assets/images/experiences/activities/fishing/gallery/panjshir-river-fishing.webp"
+gallery_alt:
+  - "People fishing in Panjshir Valley"
 ---
 
-Fishing experiences are hub-arranged day options where river or lakeside access is workable — not a product that promises a catch.
+Fishing in Afghanistan can be as relaxed or as dedicated as you want it to be.
 
-## Hub planning
+Travelers who would simply like to spend a few hours fishing during a wider AfghanTours itinerary are welcome to bring their own equipment. Coordinate with our team in advance and, where access and conditions allow, we can build time for fishing into the tour without turning the entire journey into a fishing expedition.
 
-Locked planning hubs for fishing include Kabul, Mazar-e-Sharif, Faizabad, Jalalabad, and Kandahar. Exact put-in points, local hosts, and season windows are confirmed case by case. Hub links mean we can **arrange from** those hubs — not that fishing is included on every tour that visits them.
+For anglers looking for a more serious fishing trip, contact our team about a [Custom Journey](/custom-requests/). We can design an itinerary around fishing, selecting regions, travel days and suitable access according to season and local conditions.
 
-## Honest framing
+Equipment and local arrangements may also be organized where available. Fishing conditions vary considerably by region and season, so specific locations are confirmed during planning rather than guaranteed in advance.
 
-This page does not invent riverside restaurants, boat operators, or prices. When a workable outing exists, it is planned as part of a wider hub-based day, often alongside scenery and local food culture.
+## Planning options
 
-## Note on Kunar trout
+* Add fishing time to an existing tour
+* Bring your own equipment
+* Ask us about locally available equipment and access
+* Build a private Custom Journey centered on fishing
 
-Eastern trout culture also appears in Culinary Experiences as a food stop planned from Jalalabad. Fishing as an activity and tasting grilled trout as culinary culture are related but kept as separate catalog entries.
+## Eastern Afghanistan & trout
+
+Eastern Afghanistan has a longstanding trout tradition. Travelers visiting from Jalalabad may also encounter locally prepared trout as part of the region’s food culture. Fishing outings and culinary experiences are arranged separately according to the traveler’s interests.
+
+**Planning a dedicated fishing trip?** [Ask our team to design a Custom Journey around it.](/custom-requests/)
