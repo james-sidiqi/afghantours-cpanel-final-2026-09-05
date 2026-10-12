@@ -13,10 +13,10 @@ Cycling is arranged from the **Kabul** hub as a soft-adventure option when traff
 
 This is not a mountain-bike expedition catalog. It is a near-hub cycling option confirmed case by case during planning.
 
-## Honest rules
+## How rides are planned
 
-No invented bike-rental shops, route apps, or package prices appear here. If a workable outing exists, it is scoped with local guidance.
+Bikes, routes, and pricing are arranged case by case with local guidance. If a good ride is possible from your hub, our team will plan it with you.
 
-## Expansion
+## More locations
 
-Additional hubs are not invented for this task. Future hub links require operator review.
+Cycling may be offered from more hubs as local routes are reviewed.

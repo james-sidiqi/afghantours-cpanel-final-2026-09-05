@@ -14,9 +14,9 @@ Shopping can be arranged from **all active travel hubs** — bazaars, craft stre
 
 Depending on the hub, shopping may include carpets and textiles, copper and metalwork, dried fruits and nuts, spices, and everyday bazaar goods. Cultural Experiences such as carpet culture and pottery remain separate pages; shopping is the activity frame for market time.
 
-## Honest rules
+## Shopping with a guide
 
-No invented shop names, price lists, or “best dealer” guarantees appear here. Guides help travelers browse respectfully and understand regional crafts without pressure.
+Your guide helps you browse respectfully, understand regional crafts, and shop at your own pace — without pressure.
 
 ## Hub rule
 

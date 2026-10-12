@@ -25,7 +25,7 @@ A strong palaw platter is an act of welcome: rice, meat, and the time taken to c
 
 ## Planning Notes
 
-Exact dining venues are confirmed by operators. No invented restaurant names, menus, or prices appear here.
+Dining venues are confirmed by our local team when you plan your visit.
 
 ## Cultural Pairing: Kabuli Pulao Tradition
 
