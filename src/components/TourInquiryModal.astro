@@ -405,7 +405,7 @@
         form.querySelectorAll('input:not([readonly]):not([type="hidden"]):not([type="checkbox"]), textarea').forEach((el) => { el.value = ''; });
         setTimeout(closeModal, 4000);
       } catch (error) {
-        if (status) status.textContent = error?.message || 'Unable to send inquiry. Please email info@afghantours.com.';
+        if (status) status.textContent = error?.message || 'Unable to send inquiry. Please email reservations@afghantours.com or WhatsApp +93 780 123 456.';
       } finally {
         if (submit) {
           submit.disabled = false;

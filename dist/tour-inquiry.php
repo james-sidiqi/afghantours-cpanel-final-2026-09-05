@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 const INQUIRY_TO = 'info@afghantours.com';
 const INQUIRY_FROM = 'AfghanTours Website <info@afghantours.com>';
+const RESERVATIONS_TO = 'reservations@afghantours.com';
 const MAX_NAME = 120;
 const MAX_EMAIL = 190;
 const MAX_WHATSAPP = 40;
@@ -604,39 +605,58 @@ if ($dryRunRequested) {
     ]);
 }
 
-$to = INQUIRY_TO;
-$headers = [
-    'From: ' . INQUIRY_FROM,
-    'Content-Type: text/plain; charset=UTF-8',
-];
-if ($email !== '') {
-    $headers[] = 'Reply-To: ' . $email;
-}
+$route = in_array($flow, ['general'], true) ? 'general' : 'reservations';
+$to = $route === 'general' ? INQUIRY_TO : RESERVATIONS_TO;
+$replyTo = ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL) && !preg_match('/[\r\n,;<>"]/', $email)) ? $email : '';
+$inquiryRecord['source'] = 'website-form';
+$inquiryRecord['route'] = $route;
 
-// Store a copy for the admin inquiry list (private folder). Never blocks the email path.
-$storedId = null;
-if ($bookingAvailable) {
+// 1) Durable record FIRST (private folder) with a collision-safe AT-YYYY-NNNNN reference.
+$stored = null;
+$mailLibOk = $bookingAvailable && is_file(__DIR__ . '/booking/lib/inquiry-mail.php');
+if ($mailLibOk) {
+    require_once __DIR__ . '/booking/lib/inquiry-mail.php';
     try {
-        $storedId = atb_store_inquiry($inquiryRecord);
+        $ipHash = hash('sha256', (string)($_SERVER['REMOTE_ADDR'] ?? '') . '|afghantours-rl');
+        $stored = aim_store_new($inquiryRecord, $ipHash);
     } catch (Throwable $e) {
         error_log('[afghantours inquiry] store failed: ' . $e->getMessage());
-        $storedId = null;
+        $stored = null;
     }
 }
-if ($storedId !== null) {
-    $body .= "\n\nAdmin reference: " . $storedId;
+if ($stored !== null && $stored['rate_limited']) {
+    $msg = 'Too many requests were sent from your connection in a short time. Please wait a few minutes, or contact us on WhatsApp +93 780 123 456.';
+    if (wants_json()) {
+        respond_json(429, ['ok' => false, 'message' => $msg]);
+    }
+    respond_html_error(429, $msg);
 }
 
-$sent = @mail($to, $subject, $body, implode("\r\n", $headers));
-
-if (!$sent && $storedId !== null) {
-    // Email failed but the request is safely stored for the team; do not ask the traveler to resend.
-    error_log('[afghantours inquiry] mail() failed; stored as ' . $storedId);
+$reference = null;
+if ($stored !== null && $stored['record'] !== null) {
+    $reference = (string)$stored['record']['id'];
+    if (!$stored['duplicate']) {
+        // 2) Internal notification (To primary, leadership per private config, Reply-To visitor), then 3) ack — both status-tracked.
+        // A failure leaves the record flagged for the cron retry queue and the /manage/ failure view; nothing is discarded.
+        aim_deliver($reference, $body . "\n\nAdmin reference: " . $reference, $subject);
+    }
     $sent = true;
+} else {
+    // Private store unavailable: legacy email-only path. Success only if the email was actually accepted.
+    $headers = [
+        'From: ' . INQUIRY_FROM,
+        'Content-Type: text/plain; charset=UTF-8',
+        'Auto-Submitted: auto-generated',
+        'X-Auto-Response-Suppress: All',
+    ];
+    if ($replyTo !== '') {
+        $headers[] = 'Reply-To: ' . $replyTo;
+    }
+    $sent = @mail($to, $subject, $body, implode("\r\n", $headers));
 }
 
 if (!$sent) {
-    $msg = 'Your inquiry could not be sent from the server. Please contact info@afghantours.com or WhatsApp the Kabul team.';
+    $msg = 'Your inquiry could not be sent from the server. Please contact ' . $to . ' or WhatsApp the Kabul team on +93 780 123 456.';
     if (wants_json()) {
         respond_json(500, ['ok' => false, 'message' => $msg]);
     }
@@ -647,6 +667,7 @@ if (wants_json()) {
     respond_json(200, [
         'ok' => true,
         'message' => INQUIRY_CONFIRMATION,
+        'reference' => $reference,
         'flow' => $flow,
         'classification' => $classification,
     ]);
@@ -685,6 +706,8 @@ $returnLabel = match ($flow) {
   <main>
     <h1>Thank you.</h1>
     <p><?= htmlspecialchars(INQUIRY_CONFIRMATION, ENT_QUOTES, 'UTF-8') ?></p>
+<?php if ($reference !== null): ?>    <p>Your inquiry reference: <strong><?= htmlspecialchars($reference, ENT_QUOTES, 'UTF-8') ?></strong></p>
+<?php endif; ?>
     <a href="<?= htmlspecialchars($returnHref, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($returnLabel, ENT_QUOTES, 'UTF-8') ?></a>
   </main>
 </body>

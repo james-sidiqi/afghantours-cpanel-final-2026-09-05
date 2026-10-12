@@ -27,6 +27,10 @@ const organizationSchema = {
   image: ogImage,
   email: 'info@afghantours.com',
   telephone: '+93780123456',
+  contactPoint: [
+    { '@type': 'ContactPoint', contactType: 'customer service', email: 'info@afghantours.com', telephone: '+93780123456' },
+    { '@type': 'ContactPoint', contactType: 'reservations', email: 'reservations@afghantours.com', telephone: '+93780123456' },
+  ],
   identifier: { '@type': 'PropertyValue', name: 'Afghanistan tour operator license', value: 'ATO-KBL-1617' },
   address: {
     '@type': 'PostalAddress',
@@ -75,5 +79,16 @@ const organizationSchema = {
     <TourInquiryModal />
     <Footer />
     <ImageLightbox />
+    <script is:inline>
+      // WhatsApp prefill: add the tour / experience name (page H1) to wa.me links that have no text yet.
+      (function () {
+        var h1 = document.querySelector('h1');
+        var name = (h1 && h1.textContent ? h1.textContent : document.title.split('|')[0]).replace(/\s+/g, ' ').trim().slice(0, 120);
+        var text = 'Hello AfghanTours, I would like information about: ' + name + ' (' + location.pathname + ')';
+        document.querySelectorAll('a[href^="https://wa.me/93780123456"]').forEach(function (a) {
+          try { var u = new URL(a.href); if (!u.searchParams.has('text')) { u.searchParams.set('text', text); a.href = u.toString(); } } catch (e) {}
+        });
+      })();
+    </script>
   </body>
 </html>

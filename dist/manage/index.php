@@ -9,6 +9,7 @@ declare(strict_types=1);
  * Writes go to the private store only (never to the docroot / dist).
  */
 require dirname(__DIR__) . '/booking/lib/booking.php';
+require dirname(__DIR__) . '/booking/lib/inquiry-mail.php';
 
 header('X-Robots-Tag: noindex, nofollow');
 header('Cache-Control: no-store');
@@ -98,7 +99,7 @@ function page(string $title, string $body, ?array $user): never {
     unset($_SESSION['flash']);
     $nav = '';
     if ($user) {
-        $nav = '<nav><a href="' . h(url()) . '">Departures</a><a href="' . h(url(['a' => 'new'])) . '">New departure</a><a href="' . h(url(['a' => 'inquiries'])) . '">Inquiries</a><a href="' . h(url(['a' => 'tours'])) . '">Tours &amp; pricing</a><a href="' . h(url(['a' => 'calendar'])) . '">Religious calendar</a><a href="' . h(url(['a' => 'blackouts'])) . '">Other blackout dates</a><a href="' . h(url(['a' => 'settings'])) . '">Settings</a>'
+        $nav = '<nav><a href="' . h(url()) . '">Departures</a><a href="' . h(url(['a' => 'new'])) . '">New departure</a><a href="' . h(url(['a' => 'inquiries'])) . '">Inquiries</a><a href="' . h(url(['a' => 'mailfail'])) . '">Mail failures</a><a href="' . h(url(['a' => 'tours'])) . '">Tours &amp; pricing</a><a href="' . h(url(['a' => 'calendar'])) . '">Religious calendar</a><a href="' . h(url(['a' => 'blackouts'])) . '">Other blackout dates</a><a href="' . h(url(['a' => 'settings'])) . '">Settings</a>'
             . '<form method="post" action="' . h(url(['a' => 'logout'])) . '" class="inline">' . csrf_field() . '<button class="link">Sign out ' . h($user['name']) . '</button></form></nav>';
     }
     $f = $flash ? '<p class="flash flash--' . h($flash[0]) . '">' . h($flash[1]) . '</p>' : '';
@@ -751,9 +752,37 @@ if ($action === 'calendar_save' && $method === 'POST') {
 if ($action === 'inquiry' && $method === 'POST') {
     $id = post('id');
     $op = post('op');
-    if ($op === 'status' && in_array(post('status'), ['new', 'contacted', 'approved', 'declined', 'closed'], true)) {
-        atb_update_inquiry($id, ['status' => post('status')], $user['name']);
+    if ($op === 'status' && isset(AIM_STATUSES[post('status')])) {
+        $st = post('status');
+        aim_update($id, static fn($cur) => ($cur['status'] ?? 'new') === $st ? [] : ['status' => $st, 'history' => aim_history_add($cur, ['by' => $user['name'], 'action' => 'status', 'from' => $cur['status'] ?? 'new', 'to' => $st])], $user['name']);
         redirect(['a' => 'inquiry', 'id' => $id], 'Inquiry status updated.');
+    }
+    if ($op === 'claim') {
+        aim_claim($id, $user['name']);
+        redirect(['a' => 'inquiry', 'id' => $id], 'You now own this inquiry.');
+    }
+    if ($op === 'transfer') {
+        $r = aim_transfer($id, post('to'), $user['name'], atb_str(post('note'), 300));
+        redirect(['a' => 'inquiry', 'id' => $id], $r ? 'Ownership transferred; the new owner and James were notified (if their emails are configured).' : 'Unknown owner.', $r ? 'ok' : 'err');
+    }
+    if ($op === 'response') {
+        aim_record_response($id, $user['name'], atb_str(post('channel'), 40), atb_str(post('note'), 300));
+        redirect(['a' => 'inquiry', 'id' => $id], 'Human response recorded. Escalation alerts stop for this inquiry.');
+    }
+    if ($op === 'followup') {
+        $f = post('next_follow_up');
+        if ($f !== '' && !preg_match('/^\d{4}-\d{2}-\d{2}$/', $f)) redirect(['a' => 'inquiry', 'id' => $id], 'Use YYYY-MM-DD.', 'err');
+        aim_update($id, static fn($cur) => ['next_follow_up' => $f], $user['name']);
+        redirect(['a' => 'inquiry', 'id' => $id], 'Next follow-up saved.');
+    }
+    if ($op === 'retry') {
+        aim_update($id, static function ($cur) {
+            $ch = [];
+            foreach (['notification', 'ack'] as $w) if (($cur[$w]['status'] ?? '') === 'gave_up') $ch[$w] = ['status' => 'failed', 'attempts' => 0] + (array)$cur[$w];
+            return $ch;
+        }, $user['name']);
+        $res = aim_deliver($id);
+        redirect(['a' => 'inquiry', 'id' => $id], 'Retry: notification ' . $res['notification'] . ', acknowledgement ' . $res['ack'] . '.', in_array('failed', $res, true) || in_array('gave_up', $res, true) ? 'err' : 'ok');
     }
     if ($op === 'review') {
         $notes = [];
@@ -773,7 +802,7 @@ if ($action === 'inquiry' && $method === 'POST') {
             'whatsapp' => (string)($inq['whatsapp'] ?? ''), 'country' => (string)($inq['country'] ?? ''), 'party_size' => max(1, (int)atb_int($inq['travelers'] ?? 1, 1)),
             'status' => 'pending', 'payment_status' => 'not_recorded', 'inquiry_id' => $id, 'notes' => '', 'created_at' => atb_now_iso(), 'created_by' => $user['name']];
         atb_save_travelers($travelers, $user['name'], 'traveler_assign', ['departure_id' => $depId, 'inquiry_id' => $id]);
-        atb_update_inquiry($id, ['assigned_departure' => $depId, 'status' => 'contacted'], $user['name']);
+        atb_update_inquiry($id, ['assigned_departure' => $depId, 'status' => 'assigned'], $user['name']);
         redirect(['a' => 'edit', 'id' => $depId], 'Traveler added to the departure as pending. Confirm them once they have committed.');
     }
     redirect(['a' => 'inquiries'], 'Unknown action.', 'err');
@@ -818,7 +847,7 @@ function booking_confirmation_text(array $tr, ?array $d, ?array $t, string $toda
         $lines[] = ATB_RAMADAN_TITLE . ' (' . atb_period_label($rams[0]) . ')';
         foreach (ATB_RAMADAN_PARAGRAPHS as $para) { $lines[] = ''; $lines[] = $para; }
     }
-    $lines = array_merge($lines, ['', 'With best wishes,', 'AfghanTours', 'James Tourist & Travel Agency / Operating as AfghanTours.com / Tour Operator License ATO-KBL-1617', 'info@afghantours.com · WhatsApp +93 780 123 456']);
+    $lines = array_merge($lines, ['', 'With best wishes,', 'AfghanTours', 'James Tourist & Travel Agency / Operating as AfghanTours.com / Tour Operator License ATO-KBL-1617', 'reservations@afghantours.com · WhatsApp +93 780 123 456']);
     return ['fields' => $fields, 'email' => implode("\n", $lines)];
 }
 
@@ -1138,11 +1167,11 @@ if ($action === 'settings') {
 
 if ($action === 'inquiries') {
     $rows = atb_load_inquiries();
-    $b = '<h1>Inquiries</h1><p class="muted">Every website request is stored here as well as emailed to info@afghantours.com. Newest first.</p><div class="wrap"><table><thead><tr><th>Received (UTC)</th><th>Name</th><th>Tour / departure</th><th>Travelers</th><th>Type</th><th>Status</th></tr></thead><tbody>';
+    $b = '<h1>Inquiries</h1><p class="muted">Every website request is stored here before it is emailed (reservations@ for tour/booking requests, info@ for general contact). Newest first.</p><div class="wrap"><table><thead><tr><th>Received (UTC)</th><th>Name</th><th>Tour / departure</th><th>Travelers</th><th>Type</th><th>Status</th><th>Owner</th><th>Email / ack</th></tr></thead><tbody>';
     foreach ($rows as $r) {
-        $b .= '<tr><td><a href="' . h(url(['a' => 'inquiry', 'id' => $r['id']])) . '">' . h($r['received_at']) . '</a></td><td>' . h($r['name'] ?? '') . '</td><td>' . h($r['entity_name'] ?? '') . '<br><span class="muted">' . h($r['departure_id'] ?? '') . '</span></td><td>' . h($r['travelers'] ?? '') . '</td><td>' . h($r['booking_type'] ?? '') . '</td><td>' . h($r['status'] ?? 'new') . (!empty($r['manual_review']) ? ' <span class="tag tag--err">manual review: ' . h($r['manual_review']['reason'] ?? '') . '</span>' : '') . '</td></tr>';
+        $b .= '<tr><td><a href="' . h(url(['a' => 'inquiry', 'id' => $r['id']])) . '">' . h($r['received_at']) . '</a></td><td>' . h($r['name'] ?? '') . '</td><td>' . h($r['entity_name'] ?? '') . '<br><span class="muted">' . h($r['departure_id'] ?? '') . '</span></td><td>' . h($r['travelers'] ?? '') . '</td><td>' . h($r['booking_type'] ?? '') . '</td><td>' . h($r['status'] ?? 'new') . (!empty($r['manual_review']) ? ' <span class="tag tag--err">manual review: ' . h($r['manual_review']['reason'] ?? '') . '</span>' : '') . '</td><td>' . h($r['assigned_to'] ?? '') . '</td><td>' . h(($r['notification']['status'] ?? '—') . ' / ' . ($r['ack']['status'] ?? '—')) . '</td></tr>';
     }
-    if (!$rows) $b .= '<tr><td colspan="6" class="muted">No inquiries stored yet.</td></tr>';
+    if (!$rows) $b .= '<tr><td colspan="8" class="muted">No inquiries stored yet.</td></tr>';
     page('Inquiries', $b . '</tbody></table></div>', $user);
 }
 
@@ -1168,7 +1197,19 @@ if ($action === 'inquiry') {
         $b .= '</div><label for="review_status">Review outcome</label>' . select('review_status', ['open' => 'Open — not yet reviewed', 'feasible' => 'Reviewed — feasible (quote/offer manually)', 'not_feasible' => 'Reviewed — not feasible'], (string)($r['manual_review_status'] ?? 'open')) . ($canEdit ? '<button>Save review</button>' : '') . '</form>';
     }
     if ($canEdit) {
-        $b .= '<form class="card" method="post" action="' . h(url(['a' => 'inquiry'])) . '">' . csrf_field() . '<input type="hidden" name="id" value="' . h($r['id']) . '"><input type="hidden" name="op" value="status"><label for="status">Status</label>' . select('status', ['new' => 'New', 'contacted' => 'Contacted', 'approved' => 'Booking approved', 'declined' => 'Declined', 'closed' => 'Closed'], (string)($r['status'] ?? 'new')) . '<button class="alt">Update status</button></form>';
+        $b .= '<form class="card" method="post" action="' . h(url(['a' => 'inquiry'])) . '">' . csrf_field() . '<input type="hidden" name="id" value="' . h($r['id']) . '"><input type="hidden" name="op" value="status"><label for="status">Status</label>' . select('status', AIM_STATUSES + (isset(AIM_STATUSES[$r['status'] ?? 'new']) ? [] : [(string)$r['status'] => (string)$r['status'] . ' (legacy)']), (string)($r['status'] ?? 'new')) . '<button class="alt">Update status</button></form>';
+        $hid = csrf_field() . '<input type="hidden" name="id" value="' . h($r['id']) . '">';
+        $act = h(url(['a' => 'inquiry']));
+        $owners = [];
+        foreach (aim_owner_names() as $o) $owners[$o] = $o;
+        $b .= '<div class="card"><strong>Owner: ' . h($r['assigned_to'] ?? '(none)') . '</strong> · Last human response: ' . h($r['last_human_response_at'] ?? 'none recorded') . ' · Next follow-up: ' . h($r['next_follow_up'] ?? '—')
+            . '<p class="muted">The automatic acknowledgement is not a human response. Record a response after you reply by email/WhatsApp/phone — this stops escalation alerts.</p>'
+            . (($r['assigned_to'] ?? '') !== $user['name'] ? '<form method="post" action="' . $act . '">' . $hid . '<input type="hidden" name="op" value="claim"><button>Claim (make me the owner)</button></form>' : '')
+            . '<form method="post" action="' . $act . '">' . $hid . '<input type="hidden" name="op" value="transfer"><label for="to">Transfer to</label>' . select('to', $owners, (string)($r['assigned_to'] ?? '')) . '<input name="note" placeholder="note (optional)"><button class="alt">Transfer</button></form>'
+            . '<form method="post" action="' . $act . '">' . $hid . '<input type="hidden" name="op" value="response"><label for="channel">Record human response</label>' . select('channel', ['email' => 'Email', 'whatsapp' => 'WhatsApp', 'phone' => 'Phone', 'other' => 'Other'], 'email') . '<input name="note" placeholder="what was said (optional)"><button>Record response</button></form>'
+            . '<form method="post" action="' . $act . '">' . $hid . '<input type="hidden" name="op" value="followup"><label for="next_follow_up">Next follow-up (YYYY-MM-DD)</label><input id="next_follow_up" name="next_follow_up" value="' . h($r['next_follow_up'] ?? '') . '"><button class="alt">Save</button></form>'
+            . (in_array($r['notification']['status'] ?? '', ['failed', 'gave_up', 'pending'], true) || in_array($r['ack']['status'] ?? '', ['failed', 'gave_up', 'pending'], true) ? '<form method="post" action="' . $act . '">' . $hid . '<input type="hidden" name="op" value="retry"><button>Retry email delivery now</button></form>' : '')
+            . '</div>';
         $opts = ['' => 'Choose a departure'];
         foreach ($deps as $d) {
             if ($d['end_date'] < $today || in_array($d['status'], ['completed', 'cancelled'], true)) continue;
@@ -1177,6 +1218,16 @@ if ($action === 'inquiry') {
         $b .= '<form class="card" method="post" action="' . h(url(['a' => 'inquiry'])) . '">' . csrf_field() . '<input type="hidden" name="id" value="' . h($r['id']) . '"><input type="hidden" name="op" value="assign"><label for="departure_id">Assign to departure (adds a pending traveler)</label>' . select('departure_id', $opts, (string)($r['departure_id'] ?? '')) . '<button>Assign</button></form>';
     }
     page('Inquiry', $b, $user);
+}
+
+if ($action === 'mailfail') {
+    $rows = aim_failures();
+    $b = '<h1>Mail delivery failures</h1><p class="muted">Inquiries whose team notification or customer acknowledgement has not been delivered. Records are never discarded; the cron job retries with backoff, and you can retry from the inquiry page. Contact the traveler directly if delivery keeps failing.</p><div class="wrap"><table><thead><tr><th>Reference</th><th>Received (UTC)</th><th>Name</th><th>Notification</th><th>Acknowledgement</th><th>Last error</th></tr></thead><tbody>';
+    foreach ($rows as $r) {
+        $b .= '<tr><td><a href="' . h(url(['a' => 'inquiry', 'id' => $r['id']])) . '">' . h($r['id']) . '</a></td><td>' . h($r['received_at']) . '</td><td>' . h($r['name'] ?? '') . '</td><td>' . h(($r['notification']['status'] ?? '') . ' ×' . ($r['notification']['attempts'] ?? 0)) . '</td><td>' . h(($r['ack']['status'] ?? '') . ' ×' . ($r['ack']['attempts'] ?? 0)) . '</td><td>' . h(trim(($r['notification']['last_error'] ?? '') . ' ' . ($r['ack']['last_error'] ?? ''))) . '</td></tr>';
+    }
+    if (!$rows) $b .= '<tr><td colspan="6" class="muted">No delivery failures.</td></tr>';
+    page('Mail failures', $b . '</tbody></table></div>', $user);
 }
 
 if ($action === 'confirmation') {
