@@ -532,6 +532,15 @@ const trustItems = [
     if (canonicalEntityCode) entityCode = canonicalEntityCode;
     productClass = normalizeProductClass(canonicalProductClass);
 
+    // Cultural / culinary experience links (?type=cultural-experience|culinary-experience&experience=Name) are reservation-type
+    // requests: send them as the activity flow (routed to reservations@) and keep the experience name.
+    const experienceName = params.get('experience') || '';
+    if ((typeRaw === 'cultural-experience' || typeRaw === 'culinary-experience') && (!flow || flow === 'general')) {
+      flow = 'activity';
+      if (!entityType) entityType = typeRaw;
+      if (!entityName) entityName = experienceName;
+    }
+
     // Explicit scheduled must never be demoted to private-fixed.
     if (productClass === 'scheduled') {
       flow = 'scheduled';
@@ -609,6 +618,9 @@ const trustItems = [
       interestLabel = entityName ? `Specialist service: ${niceTitle(entityName)}` : 'Specialist service inquiry';
     } else if (flow === 'return') {
       interestLabel = entityName ? `Return journey: ${niceTitle(entityName)}` : 'Return journey inquiry';
+    } else if (flow === 'activity' && (entityType === 'cultural-experience' || entityType === 'culinary-experience')) {
+      const kind = entityType === 'culinary-experience' ? 'Culinary experience' : 'Cultural experience';
+      interestLabel = entityName ? `${kind}: ${entityName}` : `${kind} inquiry`;
     } else if (flow === 'activity') {
       interestLabel = entityName ? `Activity: ${niceTitle(entityName)}` : 'Activity inquiry';
     } else if (flow === 'custom') {
