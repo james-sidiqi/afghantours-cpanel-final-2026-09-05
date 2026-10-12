@@ -1,4 +1,5 @@
 ---
+import { getCatalogTour, tourPriceLabel } from '../lib/booking/site';
 import fs from 'node:fs';
 import path from 'node:path';
 import { getTours } from '../lib/buildRelations';
@@ -129,6 +130,7 @@ const summaryOf = (tour: Tour) =>
   'A carefully designed Afghanistan journey built around real access, local knowledge, and operational support.';
 
 const priceLabelOf = (tour: Tour) => {
+  if (tour?.slug && getCatalogTour(tour.slug)) return tourPriceLabel(tour.slug); // same source as /tours/ and tour pages
   const raw = String(tour.price_from || '').trim();
 
   if (!raw) return 'Custom quote';

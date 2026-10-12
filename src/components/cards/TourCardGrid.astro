@@ -1,4 +1,5 @@
 ---
+import { getCatalogTour, tourPriceLabel } from '../../lib/booking/site';
 const { tours = [], title = "Related Tours", intro = "" } = Astro.props;
 
 const imageFor = (tour) =>
@@ -13,6 +14,7 @@ const durationLabel = (tour) =>
   tour.duration_days ? `${tour.duration_days} Days` : (tour.duration || 'Custom Duration');
 
 const priceLabel = (tour) => {
+  if (tour?.slug && getCatalogTour(tour.slug)) return tourPriceLabel(tour.slug); // same source as /tours/ and tour pages
   const raw = String(tour.price_from || tour.price || '').trim();
 
   if (!raw) return 'Custom quote';

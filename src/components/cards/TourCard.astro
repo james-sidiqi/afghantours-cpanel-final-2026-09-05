@@ -1,4 +1,5 @@
 ---
+import { getCatalogTour, tourPriceLabel } from '../../lib/booking/site';
 const { tour } = Astro.props;
 
 const title = tour.title || tour.name;
@@ -24,6 +25,7 @@ const priceOnRequest =
   String(price).trim().toLowerCase() === "inquire";
 
 const priceLabel = (() => {
+  if (tour?.slug && getCatalogTour(tour.slug)) return tourPriceLabel(tour.slug); // same source as /tours/ and tour pages
   const raw = String(price || '').trim();
 
   if (!raw) return 'Custom quote';
