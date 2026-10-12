@@ -40,15 +40,26 @@ function aim_cfg(): array {
         'escalation' => [
             'enabled' => false,           // stays OFF until business hours are confirmed and response tracking is tested
             'timezone' => 'Asia/Kabul',
-            'business_days' => [],        // ISO weekday numbers, e.g. [6,7,1,2,3,4] — NOT CONFIRMED
-            'business_hours' => ['start' => '', 'end' => ''], // 'HH:MM' — NOT CONFIRMED
+            'business_days' => [6, 7, 1, 2, 3, 4],                 // ISO weekdays: Sat–Thu (6=Sat … 4=Thu); 5 = Friday closed. Confirmed by James 12 Oct 2026
+            'business_hours' => ['start' => '08:00', 'end' => '20:00'], // Asia/Kabul
             'overdue_business_hours' => 2,
             'critical_hours' => 24,
             'secondary_owner' => 'ramin',
         ],
     ];
-    $c = function_exists('atb_config') ? (atb_config()['mail'] ?? []) : [];
-    return is_array($c) ? array_replace_recursive($d, $c) : $d;
+    $all = function_exists('atb_config') ? atb_config() : [];
+    $c = is_array($all['mail'] ?? null) ? $all['mail'] : [];
+    $out = array_replace_recursive($d, $c);
+    // Top-level 'escalation' => ['enabled'=>…, 'timezone'=>…, 'business_days'=>[…], 'business_hours'=>['start'=>…, 'end'=>…]] (preferred shape).
+    if (is_array($all['escalation'] ?? null)) {
+        $e = $all['escalation'];
+        foreach (['enabled', 'timezone', 'overdue_business_hours', 'critical_hours', 'secondary_owner'] as $k) if (array_key_exists($k, $e)) $out['escalation'][$k] = $e[$k];
+        if (array_key_exists('business_days', $e)) $out['escalation']['business_days'] = array_values((array)$e['business_days']); // replace, never merge lists
+        if (is_array($e['business_hours'] ?? null)) $out['escalation']['business_hours'] = array_replace($out['escalation']['business_hours'], $e['business_hours']);
+    }
+    $out['escalation']['enabled'] = ($out['escalation']['enabled'] ?? false) === true;
+    $out['escalation']['business_days'] = array_values(array_unique(array_filter(array_map('intval', (array)$out['escalation']['business_days']), static fn($n) => $n >= 1 && $n <= 7)));
+    return $out;
 }
 
 function aim_now(): DateTimeImmutable {
@@ -412,18 +423,20 @@ function aim_business_minutes(DateTimeImmutable $from, DateTimeImmutable $to, ar
     return $mins;
 }
 
-/** Pure decision: which escalation stage is due for this record now (null = none). */
-function aim_escalation_due(array $r, DateTimeImmutable $now, array $esc): ?string {
-    if (empty($esc['enabled'])) return null;
-    if (!empty($r['last_human_response_at'])) return null;          // a human replied → stop
-    if (in_array($r['status'] ?? 'new', ['confirmed', 'closed', 'quotation_sent', 'awaiting_customer'], true)) return null;
+/** Pure decision: escalation stages due now for this record, in order (empty = none).
+ *  overdue  = >= N BUSINESS hours since arrival (Friday/after-hours arrivals start at the next opening) → secondary owner.
+ *  critical = >= 24 ELAPSED clock hours (Fridays count) → all owners. A recorded human response stops both. */
+function aim_escalation_due(array $r, DateTimeImmutable $now, array $esc): array {
+    if (empty($esc['enabled'])) return [];
+    if (!empty($r['last_human_response_at'])) return [];
+    if (in_array($r['status'] ?? 'new', ['confirmed', 'closed', 'quotation_sent', 'awaiting_customer'], true)) return [];
     $recv = new DateTimeImmutable((string)$r['received_at']);
     $sent = (array)($r['escalation'] ?? []);
-    if (empty($sent['critical']) && ($now->getTimestamp() - $recv->getTimestamp()) >= (int)$esc['critical_hours'] * 3600) return 'critical';
+    $due = [];
     $bm = aim_business_minutes($recv, $now, $esc);
-    if ($bm === null) return null;                                     // hours not configured → never escalate
-    if (empty($sent['overdue']) && $bm >= (int)$esc['overdue_business_hours'] * 60) return 'overdue';
-    return null;
+    if ($bm !== null && empty($sent['overdue']) && $bm >= (int)$esc['overdue_business_hours'] * 60) $due[] = 'overdue';
+    if (empty($sent['critical']) && ($now->getTimestamp() - $recv->getTimestamp()) >= (int)$esc['critical_hours'] * 3600) $due[] = 'critical';
+    return $due;
 }
 
 function aim_run_escalations(): array {
@@ -432,14 +445,14 @@ function aim_run_escalations(): array {
     $now = aim_now(); $done = [];
     foreach (atb_load_inquiries() as $r) {
         if (!str_starts_with((string)($r['id'] ?? ''), 'AT-')) continue;
-        $stage = aim_escalation_due($r, $now, $esc);
-        if ($stage === null) continue;
-        $owners = $stage === 'critical' ? aim_owner_names() : [(string)$esc['secondary_owner']];
-        $subj = $stage === 'critical' ? '[' . $r['id'] . '] IMMEDIATE ATTENTION: no response after ' . (int)$esc['critical_hours'] . 'h' : '[' . $r['id'] . '] Overdue inquiry — no human response yet (you may claim it)';
-        aim_internal_alert($owners, $subj, "Inquiry {$r['id']} from " . ($r['name'] ?? '') . " received {$r['received_at']}, assigned to " . ($r['assigned_to'] ?? '') . ".\nNo human response has been recorded.", (string)$r['id']);
-        aim_update((string)$r['id'], static fn($cur) => ['escalation' => array_replace((array)($cur['escalation'] ?? []), [$stage => $now->format(DATE_ATOM)]),
-            'history' => aim_history_add($cur, ['by' => 'system', 'action' => 'escalated_' . $stage, 'to' => implode(',', $owners)])]);
-        $done[$r['id']] = $stage;
+        foreach (aim_escalation_due($r, $now, $esc) as $stage) {
+            $owners = $stage === 'critical' ? aim_owner_names() : [(string)$esc['secondary_owner']];
+            $subj = $stage === 'critical' ? '[' . $r['id'] . '] IMMEDIATE ATTENTION: no response after ' . (int)$esc['critical_hours'] . 'h' : '[' . $r['id'] . '] Overdue inquiry — no human response yet (you may claim it)';
+            aim_internal_alert($owners, $subj, "Inquiry {$r['id']} from " . ($r['name'] ?? '') . " received {$r['received_at']}, assigned to " . ($r['assigned_to'] ?? '') . ".\nNo human response has been recorded.", (string)$r['id']);
+            aim_update((string)$r['id'], static fn($cur) => ['overdue' => true] + ($stage === 'critical' ? ['critical' => true] : []) + ['escalation' => array_replace((array)($cur['escalation'] ?? []), [$stage => $now->format(DATE_ATOM)]),
+                'history' => aim_history_add($cur, ['by' => 'system', 'action' => 'escalated_' . $stage, 'to' => implode(',', $owners)])]);
+            $done[$r['id']][] = $stage;
+        }
     }
     return $done;
 }

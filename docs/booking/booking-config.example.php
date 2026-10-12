@@ -11,4 +11,6 @@ return [
     'session_max_hours' => 8,
     'login_max_attempts' => 5,
     'login_window_minutes' => 15,
+    // Escalation (Asia/Kabul). Sat–Thu 08:00–20:00; Friday (5) closed. Keep 'enabled' => false until tested on the live site.
+    'escalation' => ['enabled' => false, 'timezone' => 'Asia/Kabul', 'business_days' => [6,7,1,2,3,4], 'business_hours' => ['start' => '08:00', 'end' => '20:00']],
 ];

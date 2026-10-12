@@ -110,15 +110,13 @@ Edit `/home/jamesbon/afghantours-private/booking-config.php` with cPanel File Ma
     'leadership_copies' => 'direct',       // switch to 'forwarder' once section 2 is done
     'owners' => ['james' => 'james@afghantours.com', 'ramin' => 'ramin@afghantours.com', 'mohammad' => 'mohammad@afghantours.com'],
     'default_owner' => 'james',
-    'escalation' => [
-        'enabled' => false,                // leave false until James confirms hours AND tests 25–28 pass
-        'timezone' => 'Asia/Kabul',
-        'business_days' => [],             // e.g. [6,7,1,2,3,4] = Sat–Thu (ISO: 1=Mon … 7=Sun) — TO BE CONFIRMED
-        'business_hours' => ['start' => '', 'end' => ''], // e.g. '08:00', '17:00' — TO BE CONFIRMED
-    ],
 ],
+// top level of the returned array (next to 'mail'), exactly this shape:
+'escalation' => ['enabled' => false, 'timezone' => 'Asia/Kabul', 'business_days' => [6,7,1,2,3,4], 'business_hours' => ['start' => '08:00', 'end' => '20:00']],
 ```
 
+- Business hours (confirmed by James 12 Oct 2026): Saturday–Thursday 08:00–20:00 Asia/Kabul, Friday closed (ISO days: 6=Sat, 7=Sun, 1=Mon … 4=Thu; 5=Fri excluded).
+- Rules: customer acknowledgements and the James/Ramin/Mohammad notification go out immediately, 24/7 (Fridays and after hours included). The 2-hour overdue window counts business hours only — Friday/after-hours arrivals start counting at the next opening (e.g. Sat 08:00); after 2 business hours with no human response Ramin is alerted and the inquiry is flagged overdue. After 24 elapsed clock hours (Fridays count) all three are alerted. A recorded human response stops all alerts.
 - Usernames in `owners` must match the `/manage/` login names (`admin_users`). Ramin and Mohammad need `/manage/` accounts before they can claim an inquiry.
 - **If SMTP fails** (wrong password, or the port is blocked from PHP), the inquiry is still saved, marked failed, and shown in `/manage/` → Mail failures. Cron retries it. Nothing is lost.
 
@@ -174,5 +172,5 @@ The brief listed no numbered tests, so these 30 were written to cover it. Use re
 26. Claim as ramin: owner = ramin, history shows "claimed".
 27. Transfer to mohammad: Mohammad and James get the transfer notice.
 28. Record a human response: last human response is set.
-29. Only after James confirms the hours: enable escalation on a test inquiry. After 2 business hours with no response, Ramin is alerted. At 24h, all three are alerted. A recorded response stops both.
+29. Enable escalation on a test inquiry. After 2 business hours with no response, Ramin is alerted. At 24h, all three are alerted. A recorded response stops both.
 30. The cron log shows `escalation=off` while disabled, and no alerts are sent.

@@ -15,13 +15,15 @@ def check(c, msg):
 LEAD = ['james@afghantours.com', 'ramin@afghantours.com', 'mohammad@afghantours.com']
 OWNERS = {'james': LEAD[0], 'ramin': LEAD[1], 'mohammad': LEAD[2]}
 
-def env_for(mailcfg):
+def env_for(mailcfg, top=None):
     priv = pathlib.Path(tempfile.mkdtemp(prefix='aimtest-'))
     (priv / 'booking').mkdir()
     out = priv / 'out'; out.mkdir()
     cfg = {'transport': 'file', 'file_dir': str(out), 'leadership': LEAD, 'owners': OWNERS}
     cfg.update(mailcfg)
-    (priv / 'booking-config.php').write_text('<?php return ' + php_export({'mail': cfg}) + ';')
+    conf = {'mail': cfg}
+    conf.update(top or {})
+    (priv / 'booking-config.php').write_text('<?php return ' + php_export(conf) + ';')
     e = dict(os.environ, AFGHANTOURS_PRIVATE_DIR=str(priv))
     return priv, out, e
 
@@ -117,39 +119,84 @@ m = emls(out6)
 check(len(m) == 1 and all(not any(l.lower().startswith('bcc:') for l in x.split('\n\n')[0].splitlines()) and 'evil.test' not in x.split('\n\n')[0].split('X-Envelope-To:')[1].splitlines()[0] for x in m), 'CRLF injection in name/email/subject cannot add headers')
 check('Reply-To' not in m[0].split('\n\n')[0], 'invalid email → no Reply-To and no ack')
 
-# --- escalation
-ESC = {'enabled': True, 'timezone': 'Asia/Kabul', 'business_days': [6, 7, 1, 2, 3, 4], 'business_hours': {'start': '08:00', 'end': '17:00'}}
-privD, outD, envD = env_for({})
-php(envD, "aim_store_new(" + (REC % ('scheduled', 'e')) + "); echo 1;", now='2026-10-12T04:00:00Z')
-r = php(envD, "echo json_encode(aim_run_escalations());", now='2026-10-14T04:00:00Z')
-check(r == [], 'escalation disabled by default: no alerts even after 48h')
+# --- escalation (exact production shape, top-level key; Sat–Thu 08:00–20:00 Asia/Kabul, Friday closed)
+from datetime import datetime, timedelta, timezone as _tz
+KABUL = _tz(timedelta(hours=4, minutes=30))
+def k(txt):  # 'YYYY-MM-DD HH:MM' Kabul local → UTC ISO
+    return datetime.strptime(txt, '%Y-%m-%d %H:%M').replace(tzinfo=KABUL).astimezone(_tz.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
+ESC = {'enabled': True, 'timezone': 'Asia/Kabul', 'business_days': [6, 7, 1, 2, 3, 4], 'business_hours': {'start': '08:00', 'end': '20:00'}}
+def esc_case(arrive, top=None):
+    pv, ov, ev = env_for({}, top if top is not None else {'escalation': ESC})
+    php(ev, "aim_store_new(" + (REC % ('scheduled', 'esc ' + arrive)) + "); echo 1;", now=k(arrive))
+    return ov, ev
+def run(ev, at): return php(ev, "echo json_encode(aim_run_escalations());", now=k(at))
+R = 'AT-2026-00001'
 
-privE, outE, envE = env_for({'escalation': ESC})
-# Mon 12 Oct 2026 08:30 Kabul = 04:00Z
-php(envE, "aim_store_new(" + (REC % ('scheduled', 'e')) + "); echo 1;", now='2026-10-12T04:00:00Z')
-r = php(envE, "echo json_encode(aim_run_escalations());", now='2026-10-12T05:00:00Z')
-check(r == [], 'enabled: 1 business hour → nothing')
-r = php(envE, "echo json_encode(aim_run_escalations());", now='2026-10-12T06:31:00Z')
-m = emls(outE)
-check(r == {'AT-2026-00001': 'overdue'} and len(m) == 1 and 'To: ramin@afghantours.com' in m[0], 'enabled: 2 business hours → overdue alert to Ramin only')
-r = php(envE, "echo json_encode(aim_run_escalations());", now='2026-10-12T07:00:00Z')
-check(r == [], 'overdue alert sent once')
-r = php(envE, "echo json_encode(aim_run_escalations());", now='2026-10-13T04:00:00Z')
-m = emls(outE)
-check(r == {'AT-2026-00001': 'critical'} and 'james@afghantours.com' in m[-1] and 'ramin@afghantours.com' in m[-1] and 'mohammad@afghantours.com' in m[-1] and 'IMMEDIATE ATTENTION' in m[-1], '24h → all three, immediate attention')
-# out-of-hours: Friday is not a business day
-privF, outF, envF = env_for({'escalation': ESC})
-php(envF, "aim_store_new(" + (REC % ('scheduled', 'fri')) + "); echo 1;", now='2026-10-16T04:00:00Z')  # Friday
-r = php(envF, "echo json_encode(aim_run_escalations());", now='2026-10-16T10:00:00Z')
-check(r == [], 'non-business day does not count toward 2 business hours')
-# empty hours while enabled → never 'overdue'
-privG, outG, envG = env_for({'escalation': {'enabled': True}})
-php(envG, "aim_store_new(" + (REC % ('scheduled', 'g')) + "); echo 1;", now='2026-10-12T04:00:00Z')
-r = php(envG, "echo json_encode(aim_run_escalations());", now='2026-10-12T10:00:00Z')
-check(r == [], 'enabled with unconfirmed (empty) business hours → no overdue alert')
+check(php(env, "echo json_encode([date('l', strtotime('2027-01-01')), date('N', strtotime('2027-01-01'))]);") == ['Friday', '5'], '1 Jan 2027 is a Friday (ISO 5, excluded)')
+pv, ov, ev = env_for({}, {'escalation': ESC})
+check(php(ev, "echo json_encode(aim_cfg()['escalation']);")['business_days'] == [6, 7, 1, 2, 3, 4] and php(ev, "echo json_encode(aim_cfg()['escalation']['business_hours']);") == {'start': '08:00', 'end': '20:00'}, 'config shape read exactly (days replace defaults, hours 08:00–20:00)')
+
+# immediate ack + leadership notification on Friday night
+ov, ev = esc_case('2026-10-16 22:00')
+php(ev, "echo json_encode(aim_deliver('" + R + "', 'B', 'S'));", now=k('2026-10-16 22:00'))
+m = emls(ov)
+check(len(m) == 2 and 'Cc: james@afghantours.com, ramin@afghantours.com, mohammad@afghantours.com' in m[0] and 'To: ana@example.com' in m[1], 'Friday 22:00 arrival: leadership notified and customer ack sent immediately')
+
+# Thu 19:00 → Ramin Sat 09:00 (24h critical fires Fri 19:00, Fridays count)
+ov, ev = esc_case('2026-10-15 19:00')
+check(run(ev, '2026-10-15 20:59') == [], 'Thu 19:00: nothing after hours Thu')
+check(run(ev, '2026-10-16 18:59') == [], 'Thu 19:00: nothing during Friday (<24h)')
+check(run(ev, '2026-10-16 19:00') == {R: ['critical']}, 'Thu 19:00: 24 elapsed hours across Friday → all three (Fri 19:00)')
+check('james@afghantours.com' in emls(ov)[-1] and 'mohammad@afghantours.com' in emls(ov)[-1] and 'ramin@afghantours.com' in emls(ov)[-1], '24h alert addressed to all three')
+check(run(ev, '2026-10-17 08:59') == [], 'Thu 19:00: not overdue Sat 08:59 (1h59m business)')
+check(run(ev, '2026-10-17 09:00') == {R: ['overdue']}, 'Thu 19:00 arrival → Ramin overdue Sat 09:00')
+x = php(ev, "echo json_encode(aim_get('" + R + "'));")
+check('To: ramin@afghantours.com' in emls(ov)[-1] and x['overdue'] is True, 'overdue alert to Ramin; inquiry flagged overdue')
+check(run(ev, '2026-10-17 12:00') == [], 'each alert sent once')
+
+# closing time
+ov, ev = esc_case('2026-10-12 19:30')  # Mon
+check(run(ev, '2026-10-13 09:29') == [] and run(ev, '2026-10-13 09:30') == {R: ['overdue']}, 'Mon 19:30 (30 min before close) → overdue Tue 09:30')
+ov, ev = esc_case('2026-10-12 20:00')
+check(run(ev, '2026-10-13 09:59') == [] and run(ev, '2026-10-13 10:00') == {R: ['overdue']}, 'arrival exactly 20:00 counts from next opening → Tue 10:00')
+ov, ev = esc_case('2026-10-12 19:59')
+check(run(ev, '2026-10-13 09:58') == [] and run(ev, '2026-10-13 09:59') == {R: ['overdue']}, 'arrival 19:59 → 1 min + Tue 08:00–09:59')
+# Friday arrival
+ov, ev = esc_case('2026-10-16 10:00')
+check(run(ev, '2026-10-16 23:59') == [] and run(ev, '2026-10-17 09:59') == [], 'Friday 10:00 arrival: no business time counts on Friday')
+check(run(ev, '2026-10-17 10:00') == {R: ['overdue', 'critical']}, 'Friday 10:00 → Sat 10:00: overdue (2 business h) and 24h elapsed together')
+# Saturday reopening (early arrival)
+ov, ev = esc_case('2026-10-17 06:00')
+check(run(ev, '2026-10-17 09:59') == [] and run(ev, '2026-10-17 10:00') == {R: ['overdue']}, 'Sat 06:00 arrival starts at 08:00 → overdue 10:00')
+# month boundary
+ov, ev = esc_case('2026-10-29 19:30')
+check(run(ev, '2026-10-31 09:29') == {R: ['critical']}, 'month boundary: only 24h alert before Sat 09:30')
+check(run(ev, '2026-10-31 09:30') == {R: ['overdue']}, 'Thu 29 Oct 19:30 → overdue Sat 31 Oct 09:30')
+# year boundary
+ov, ev = esc_case('2026-12-31 19:00')
+check(run(ev, '2027-01-01 18:59') == [] and run(ev, '2027-01-01 19:00') == {R: ['critical']}, 'year boundary: 24h fires on Fri 1 Jan 2027 19:00')
+check(run(ev, '2027-01-02 08:59') == [] and run(ev, '2027-01-02 09:00') == {R: ['overdue']}, 'Thu 31 Dec 2026 19:00 → overdue Sat 2 Jan 2027 09:00')
+x = php(ev, "echo json_encode(aim_get('" + R + "'));")
+check(x['id'] == 'AT-2026-00001', 'reference keeps arrival year')
+# response stops alerts
+ov, ev = esc_case('2026-10-15 19:00')
+php(ev, "aim_record_response('" + R + "','james','email','replied'); echo 1;", now=k('2026-10-15 19:30'))
+n0 = len(emls(ov))
+check(run(ev, '2026-10-17 09:00') == [] and run(ev, '2026-10-20 09:00') == [] and len(emls(ov)) == n0, 'human response stops overdue and 24h alerts')
+# disabled sends nothing (exact production block with enabled=false)
+ov, ev = esc_case('2026-10-15 19:00', {'escalation': dict(ESC, enabled=False)})
+check(run(ev, '2026-10-20 12:00') == [] and len(emls(ov)) == 0, 'enabled=false: no alerts after 5 days')
+cron = subprocess.run(['php', str(LIB / 'inquiry-cron.php')], env=dict(ev, AIM_NOW=k('2026-10-20 12:00')), capture_output=True, text=True)
+check('escalation=off' in cron.stdout and not any('X-AfghanTours-Type: internal-alert' in x for x in emls(ov)), 'cron with disabled escalation sends no alerts (only queued delivery)')
+# default (no config) also disabled
+ov, ev = esc_case('2026-10-15 19:00', {})
+check(run(ev, '2026-10-20 12:00') == [], 'default config: escalation disabled')
+# non-boolean 'enabled' not treated as on
+ov, ev = esc_case('2026-10-15 19:00', {'escalation': dict(ESC, enabled='yes')})
+check(run(ev, '2026-10-20 12:00') == [], "enabled must be boolean true ('yes' ignored)")
 
 # --- ownership + human response stop alerts
-privH, outH, envH = env_for({'escalation': ESC})
+privH, outH, envH = env_for({}, {'escalation': ESC})
 php(envH, "aim_store_new(" + (REC % ('scheduled', 'h')) + "); echo 1;", now='2026-10-12T04:00:00Z')
 r = php(envH, "aim_claim('AT-2026-00001','ramin'); aim_transfer('AT-2026-00001','mohammad','ramin','handover'); $x = aim_get('AT-2026-00001'); echo json_encode([$x['assigned_to'], array_column($x['history'],'action')]);", now='2026-10-12T04:30:00Z')
 check(r[0] == 'mohammad' and r[1] == ['assigned', 'claimed', 'transferred'], 'single owner; claim + transfer history')
