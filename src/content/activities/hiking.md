@@ -16,9 +16,9 @@ From each active hub, day hikes and viewpoint walks can be scoped around current
 
 Hub listings mean we can **arrange hiking from** that hub. They are not automatic tour inclusions.
 
-## What we do not invent
+## How outings are planned
 
-AfghanTours does not publish invented trail names, timed summit guarantees, or fixed package prices on this page. Specific outing details are confirmed during planning.
+Routes, timing, and pricing depend on the season and local conditions, so our team confirms the exact outing with you during planning.
 
 ## Related travel
 
