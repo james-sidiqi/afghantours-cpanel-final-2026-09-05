@@ -275,6 +275,19 @@ try:
     check(len(emls(outW)) == 2, 'honeypot submission sends nothing')
     st, j = post({'flow': 'general', 'name': 'X', 'email': 'not-an-email', 'notes': 'n'})
     check(st == 400, 'server-side email validation')
+    # Cultural / culinary experience links → contact page script → reservations@ + reservations ack, name shown
+    for q, kind, name in [('type=cultural-experience&experience=Buzkashi', 'Cultural experience', 'Buzkashi'),
+                          ('type=culinary-experience&experience=Adam%20Khan%20Chapli%20Kabob', 'Culinary experience', 'Adam Khan Chapli Kabob')]:
+        pre = json.loads(subprocess.run(['node', str(ROOT / 'scripts/booking-test/contact-prefill.mjs'), q], capture_output=True, text=True).stdout)
+        check(pre['flow'] == 'activity' and pre['entity_name'] == name and pre['interest'] == f'{kind}: {name}', f'{kind}: contact page sets reservation flow + experience name')
+        n0 = len(emls(outW))
+        st, j = post(dict(pre, name='Exp Tester', email=f'exp{len(name)}@example.com', notes='experience test ' + name))
+        m = emls(outW)[n0:]
+        check(st == 200 and j['classification'] == f'{kind} inquiry' and len(m) == 2, f'{kind}: stored with reference, classified')
+        check('To: reservations@afghantours.com' in m[0] and name in m[0] and f'{kind}: {name}' in m[0], f'{kind}: routed to reservations@ with name in notification')
+        check('X-AfghanTours-Type: acknowledgement' in m[1] and 'From: AfghanTours Reservations <reservations@afghantours.com>' in m[1] and 'does not constitute a confirmed reservation' in m[1], f'{kind}: reservations acknowledgement sent')
+    pre = json.loads(subprocess.run(['node', str(ROOT / 'scripts/booking-test/contact-prefill.mjs'), ''], capture_output=True, text=True).stdout)
+    check(pre['flow'] == 'general' and pre['entity_type'] == 'general', 'plain /contact/ stays general (info@)')
 finally:
     srv.terminate()
 

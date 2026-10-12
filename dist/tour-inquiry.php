@@ -493,6 +493,9 @@ if ($lastMinute && $departureCheck === 'last_minute_request') {
 }
 
 $classification = flow_label($flow);
+if ($flow === 'activity' && in_array(strtolower($entityType), ['cultural-experience', 'culinary-experience'], true)) {
+    $classification = strtolower($entityType) === 'culinary-experience' ? 'Culinary experience inquiry' : 'Cultural experience inquiry';
+}
 $displayName = $entityName !== '' ? $entityName : ($entitySlug !== '' ? $entitySlug : 'General inquiry');
 $displayName = sanitize_header_value($displayName, MAX_SUBJECT_ENTITY);
 $subject = sanitize_header_value('AfghanTours ' . $classification . ': ' . $displayName, 200);
