@@ -309,6 +309,7 @@ const trustItems = [
           <p><strong>AfghanTours.com</strong><br /><span class="operator-note">Operated by James Tourist & Travel Agency</span></p>
           <p>2nd Floor, Majid Mall<br />Shahr-e-Naw, District 10<br />Kabul, Afghanistan</p>
           <p><strong>Email:</strong> <a href="mailto:info@afghantours.com">info@afghantours.com</a></p>
+          <p><strong>Tour reservations:</strong> <a href="mailto:reservations@afghantours.com">reservations@afghantours.com</a></p>
           <p><strong>WhatsApp:</strong> <a href="https://wa.me/93780123456">+93 780 123 456</a></p>
           <a class="map-link" href="https://share.google/HYS3u9MY3gzVPRy4b" target="_blank" rel="noreferrer">Open in Google Maps</a>
         </article>
@@ -684,7 +685,7 @@ const trustItems = [
         if (status) status.textContent = 'Thank you. Your inquiry has been sent to AfghanTours.';
         form.querySelectorAll('input:not([type="hidden"]):not(.tour-inquiry-hp), textarea').forEach((el) => { el.value = ''; });
       } catch (error) {
-        if (status) status.textContent = error?.message || 'Unable to send inquiry. Please email info@afghantours.com.';
+        if (status) status.textContent = error?.message || 'Unable to send inquiry. Please email reservations@afghantours.com or WhatsApp +93 780 123 456.';
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;

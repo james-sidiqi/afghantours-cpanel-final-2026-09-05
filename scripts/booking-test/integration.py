@@ -25,7 +25,7 @@ h_view = subprocess.check_output(['php', '-r', 'echo password_hash($argv[1], PAS
 port = free_port()
 BASE = f'http://127.0.0.1:{port}'
 env = dict(os.environ, AFGHANTOURS_PRIVATE_DIR=str(private), BOOKING_TODAY='2026-10-10')
-srv = subprocess.Popen(['php', '-d', f'sendmail_path=cat >> {mail_log}', '-S', f'127.0.0.1:{port}', '-t', str(DIST)], env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+srv = subprocess.Popen(['php', '-d', f'sendmail_path=cat >> {mail_log} #', '-S', f'127.0.0.1:{port}', '-t', str(DIST)], env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 for _ in range(50):
     try:
         urllib.request.urlopen(BASE + '/booking/departures.php', timeout=1); break
@@ -147,7 +147,7 @@ try:
     check(code == 200 and d['ok'], 'Weekend in Kabul solo PRIVATE inquiry accepted (real submit)')
     mail = mail_log.read_text() if mail_log.exists() else ''
     check('Shared / private: private' in mail and 'Arrival option: Friday–Sunday' in mail and 'Private request — quoted separately; no group minimum applies.' in mail, 'email body carries private/arrival/group-minimum lines')
-    check('Admin reference: INQ-' in mail and 'Name: Test Traveler' in mail and 'WhatsApp: +10000000000' in mail and 'Country: Testland' in mail, 'existing email fields intact + admin reference')
+    check('Admin reference: AT-' in mail and 'Name: Test Traveler' in mail and 'WhatsApp: +10000000000' in mail and 'Country: Testland' in mail, 'existing email fields intact + admin reference')
     inq = [json.loads(l) for l in (private / 'booking' / 'inquiries.jsonl').read_text().splitlines()]
     check(len(inq) >= 1 and inq[0]['booking_type'] == 'private' and inq[0]['extension_nights'] == '1' and inq[0]['accommodation'] == 'Upgrade where available', 'inquiry stored in private JSONL with Part 7 fields')
     code, body, _ = req(pub, '/tour-inquiry.php', dict(base_form, flow='private-fixed', name='Eid Requester', entity_name='Panjshir', entity_slug='panjshir-valley-emeralds-history', travelers='2', booking_type='private', preferred_dates='2027-03-10'), J)
@@ -423,7 +423,7 @@ try:
     port2 = free_port()
     mail2 = tmp / 'mail2.log'
     env2 = dict(env, AFGHANTOURS_PRIVATE_DIR='/nonexistent-atb-private/x')
-    srv2 = subprocess.Popen(['php', '-d', f'sendmail_path=cat >> {mail2}', '-S', f'127.0.0.1:{port2}', '-t', str(DIST)], env=env2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    srv2 = subprocess.Popen(['php', '-d', f'sendmail_path=cat >> {mail2} #', '-S', f'127.0.0.1:{port2}', '-t', str(DIST)], env=env2, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     try:
         time.sleep(0.6)
         r = urllib.request.urlopen(f'http://127.0.0.1:{port2}/booking/departures.php', timeout=5)
