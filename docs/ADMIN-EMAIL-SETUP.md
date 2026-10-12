@@ -20,7 +20,7 @@ Every step happens in cPanel (afghantours.com account `jamesbon`) and is done by
 1. **Check these exist:** info@, james@, ramin@. Log in to Webmail for each one once.
 2. **Create** `reservations@afghantours.com` with a strong password and a quota of at least 2 GB.
 3. **Create** `mohammad@afghantours.com` with a strong password and a quota of at least 2 GB.
-4. **Optional (recommended):** create `website@afghantours.com`, a send-only account the website logs in with over SMTP. This keeps the info@ password out of the website config.
+4. **Create** `website@afghantours.com` (approved by James 12 Oct 2026): the dedicated SMTP sending mailbox. It is the From address and envelope sender of every website email; recipients see the names "AfghanTours" / "AfghanTours Reservations" / "AfghanTours Website", and replies go to info@ / reservations@ (acknowledgements) or the visitor (team notifications) via Reply-To. No forwarders or autoresponder on website@.
 5. Give each person their password in person or over a secure channel. Never put a password in an email or in Git.
 
 ## 2. Forwarders (cPanel → Forwarders → Add Forwarder): info@ and reservations@ ONLY
@@ -97,26 +97,27 @@ reservations@afghantours.com
 Edit `/home/jamesbon/afghantours-private/booking-config.php` with cPanel File Manager → Edit. Set its permissions to 0600. Add a `'mail'` key next to the existing keys:
 
 ```php
-'mail' => [
-    'transport' => 'smtp',                 // or 'mail' to use PHP mail() (works without credentials; weaker deliverability)
-    'smtp' => [
-        'host' => 'mail.afghantours.com',  // cPanel → Email Accounts → Connect Devices shows the exact host/port
-        'port' => 465, 'secure' => 'ssl',  // or 587 + 'tls'
-        'user' => 'website@afghantours.com',
-        'pass' => 'SET-IN-CPANEL-ONLY',
+    // Email (website@ = dedicated authenticated sender, approved by James 12 Oct 2026). Password is typed here on the server only — never in Git.
+    'mail' => [
+        'transport' => 'smtp',
+        'smtp' => ['host' => 'mail.afghantours.com', 'port' => 465, 'secure' => 'ssl', 'user' => 'website@afghantours.com', 'pass' => 'SET-ON-SERVER-ONLY'],
+        'from_email' => 'website@afghantours.com',   // From + envelope of every message; visible names stay AfghanTours / AfghanTours Reservations; Reply-To info@ / reservations@ / visitor
+        'notify_from' => ['email' => 'website@afghantours.com', 'name' => 'AfghanTours Website'],
+        'leadership' => ['james@afghantours.com', 'ramin@afghantours.com', 'mohammad@afghantours.com'],
+        'leadership_copies' => 'direct',             // 'forwarder' once cPanel forwarders on info@/reservations@ are live
+        'owners' => ['james' => 'james@afghantours.com', 'ramin' => 'ramin@afghantours.com', 'mohammad' => 'mohammad@afghantours.com'],
+        'default_owner' => 'james',
     ],
-    'notify_from' => ['email' => 'website@afghantours.com', 'name' => 'AfghanTours Website'], // must equal the SMTP user (or info@ if you use info@'s login)
-    'leadership' => ['james@afghantours.com', 'ramin@afghantours.com', 'mohammad@afghantours.com'],
-    'leadership_copies' => 'direct',       // switch to 'forwarder' once section 2 is done
-    'owners' => ['james' => 'james@afghantours.com', 'ramin' => 'ramin@afghantours.com', 'mohammad' => 'mohammad@afghantours.com'],
-    'default_owner' => 'james',
-],
-// top level of the returned array (next to 'mail'), exactly this shape:
+// top level, exactly this shape (escalation stays DISABLED — James 12 Oct 2026):
 'escalation' => ['enabled' => false, 'timezone' => 'Asia/Kabul', 'business_days' => [6,7,1,2,3,4], 'business_hours' => ['start' => '08:00', 'end' => '20:00']],
 ```
 
 - Business hours (confirmed by James 12 Oct 2026): Saturday–Thursday 08:00–20:00 Asia/Kabul, Friday closed (ISO days: 6=Sat, 7=Sun, 1=Mon … 4=Thu; 5=Fri excluded).
 - Rules: customer acknowledgements and the James/Ramin/Mohammad notification go out immediately, 24/7 (Fridays and after hours included). The 2-hour overdue window counts business hours only — Friday/after-hours arrivals start counting at the next opening (e.g. Sat 08:00); after 2 business hours with no human response Ramin is alerted and the inquiry is flagged overdue. After 24 elapsed clock hours (Fridays count) all three are alerted. A recorded human response stops all alerts.
+- Alerts (only if escalation is ever enabled) are independent, each sent at most once, and never after a recorded human response:
+  - `[Overdue – 2 business hours] AT-…` → Ramin (inquiry flagged overdue).
+  - `[Safety alert – 24h unanswered] AT-…` → James, Ramin, Mohammad (24 elapsed clock hours, Fridays count).
+- All five addresses (info@, reservations@, james@, ramin@, mohammad@) are independent mailboxes; roles unchanged. website@ is send-only.
 - Usernames in `owners` must match the `/manage/` login names (`admin_users`). Ramin and Mohammad need `/manage/` accounts before they can claim an inquiry.
 - **If SMTP fails** (wrong password, or the port is blocked from PHP), the inquiry is still saved, marked failed, and shown in `/manage/` → Mail failures. Cron retries it. Nothing is lost.
 
@@ -126,7 +127,7 @@ Edit `/home/jamesbon/afghantours-private/booking-config.php` with cPanel File Ma
 ```
 The PHP path depends on the host's PHP selector. `/usr/local/bin/php` is the usual one; `ea-php82` is another option. The script refuses web requests, and the folder is web-denied. It retries failed deliveries with backoff of 5, 15 and 60 minutes, then 3 and 12 hours, up to 6 attempts. It then runs escalation, which does nothing while it is disabled.
 
-## 6. DNS recommendations (proposals only. Make NO changes without James's approval.)
+## 6. DNS — DECISION (James, 12 Oct 2026): SPF and DMARC stay UNCHANGED. The notes below are for a possible later review only.
 1. **DMARC:** move to monitoring with reports, e.g. `v=DMARC1; p=none; rua=mailto:dmarc@afghantours.com; fo=1`. After 2–4 clean weeks, change to `p=quarantine`.
 2. **SPF:** OK as it is. Do not add any third-party senders unless one is used later. Consider changing `~all` to `-all` once DMARC reports are clean.
 3. **DKIM:** already published. Check that the website's mail is signed (test 21). If it is not, use the SMTP transport.

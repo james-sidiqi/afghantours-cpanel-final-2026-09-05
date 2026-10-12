@@ -43,7 +43,10 @@ def php(env, code, now=None):
     try: return json.loads(r.stdout.strip().splitlines()[-1])
     except Exception: return r.stdout
 
-def emls(out): return [pathlib.Path(p).read_text() for p in sorted(glob.glob(str(out / '*.eml')))]
+def _dec(t):
+    import email.header, re
+    return re.sub(r'(?m)^Subject: (.*)$', lambda m: 'Subject: ' + str(email.header.make_header(email.header.decode_header(m.group(1)))), t, count=1)
+def emls(out): return [_dec(pathlib.Path(p).read_text()) for p in sorted(glob.glob(str(out / '*.eml')))]
 
 REC = "['flow'=>'%s','name'=>'Ana Test','email'=>'ana@example.com','whatsapp'=>'+1000','entity_name'=>'Bamyan Explorer','notes'=>'%s']"
 
@@ -81,6 +84,14 @@ check(r == [False, 'AT-2026-00003'], 'same content after window is a new inquiry
 priv2, out2, env2 = env_for({'leadership_copies': 'forwarder'})
 php(env2, "$s = aim_store_new(" + (REC % ('custom', 'x')) + "); aim_deliver($s['record']['id'], 'B', 'S'); echo '1';")
 check('Cc:' not in emls(out2)[0].split('\n\n')[0], 'forwarder mode sends no direct leadership Cc')
+
+# --- dedicated sender website@ (James 12 Oct): From/envelope website@, visible names kept, Reply-To info@/reservations@
+pW, oW, eW = env_for({'from_email': 'website@afghantours.com'})
+php(eW, "$s = aim_store_new(" + (REC % ('scheduled', 'w')) + "); aim_deliver($s['record']['id'], 'B', 'S'); $g = aim_store_new(" + (REC % ('general', 'w2')) + "); aim_deliver($g['record']['id'], 'B', 'S'); echo 1;")
+mw = [x.split('\n\n')[0] for x in emls(oW)]
+check(all('X-Envelope-From: website@afghantours.com' in h and '<website@afghantours.com>' in h.split('From: ', 2)[-1].splitlines()[0] for h in mw), 'website@: From + envelope on every message')
+check('AfghanTours Reservations' in mw[1].replace('_', ' ') and 'Reply-To: reservations@afghantours.com' in mw[1], 'reservations ack: name AfghanTours Reservations, Reply-To reservations@')
+check('Reply-To: info@afghantours.com' in mw[3] and 'Reply-To: ana@example.com' in mw[0], 'general ack Reply-To info@; notification Reply-To visitor')
 
 # --- concurrency: 20 parallel stores → 20 unique refs
 priv3, out3, env3 = env_for({'rate_limit': {'max': 1000, 'window_minutes': 10}})
@@ -151,7 +162,7 @@ check('james@afghantours.com' in emls(ov)[-1] and 'mohammad@afghantours.com' in 
 check(run(ev, '2026-10-17 08:59') == [], 'Thu 19:00: not overdue Sat 08:59 (1h59m business)')
 check(run(ev, '2026-10-17 09:00') == {R: ['overdue']}, 'Thu 19:00 arrival → Ramin overdue Sat 09:00')
 x = php(ev, "echo json_encode(aim_get('" + R + "'));")
-check('To: ramin@afghantours.com' in emls(ov)[-1] and x['overdue'] is True, 'overdue alert to Ramin; inquiry flagged overdue')
+check('To: ramin@afghantours.com' in emls(ov)[-1] and '[Overdue – 2 business hours] AT-2026-00001' in emls(ov)[-1] and x['overdue'] is True, 'overdue alert to Ramin; inquiry flagged overdue')
 check(run(ev, '2026-10-17 12:00') == [], 'each alert sent once')
 
 # closing time

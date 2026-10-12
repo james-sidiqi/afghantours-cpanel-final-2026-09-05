@@ -27,6 +27,7 @@ function aim_cfg(): array {
         'smtp' => ['host' => '', 'port' => 465, 'secure' => 'ssl', 'user' => '', 'pass' => '', 'timeout' => 15, 'helo' => 'afghantours.com'],
         'primary' => ['general' => 'info@afghantours.com', 'reservations' => 'reservations@afghantours.com'],
         'notify_from' => ['email' => 'info@afghantours.com', 'name' => 'AfghanTours Website'],
+        'from_email' => '',               // dedicated authenticated sender (website@). When set, it is the From address + envelope of EVERY message; display names stay 'AfghanTours' / 'AfghanTours Reservations' / 'AfghanTours Website', Reply-To carries info@/reservations@ (acks) or the visitor (notifications).
         'envelope_from' => '',            // bounce address; defaults to notify_from email (or SMTP user)
         'leadership' => [],               // e.g. ['james@…','ramin@…','mohammad@…'] — PRIVATE CONFIG ONLY
         'leadership_copies' => 'direct',  // 'direct' = website mail Cc's leadership; 'forwarder' = cPanel forwarders copy it (no Cc → no duplicates)
@@ -191,7 +192,7 @@ function aim_notification_message(array $rec, string $body, string $subject): ar
         'X-AfghanTours-Ref' => $rec['id'], 'X-AfghanTours-Type' => 'website-notification',
     ];
     $replyTo = aim_valid_email((string)($rec['email'] ?? '')) ? (string)$rec['email'] : '';
-    return ['to' => $to, 'cc' => array_values(array_unique($cc)), 'from' => $cfg['notify_from'], 'reply_to' => $replyTo,
+    return ['to' => $to, 'cc' => array_values(array_unique($cc)), 'from' => aim_from($cfg, (string)$cfg['notify_from']['name'], (string)$cfg['notify_from']['email']), 'reply_to' => $replyTo,
         'subject' => '[' . $rec['id'] . '] ' . $subject, 'body' => $body . "\n\nReference: " . $rec['id'], 'headers' => $headers];
 }
 
@@ -202,9 +203,15 @@ function aim_ack_message(array $rec): ?array {
     $kind = $rec['route'] ?? aim_route($rec);
     $fromEmail = (string)$cfg['primary'][$kind];
     $body = 'Your inquiry reference: ' . $rec['id'] . "\n\n" . AIM_ACK_BODY[$kind];
-    return ['to' => [$email], 'cc' => [], 'from' => ['email' => $fromEmail, 'name' => AIM_ACK_FROM_NAME[$kind]], 'reply_to' => $fromEmail,
+    return ['to' => [$email], 'cc' => [], 'from' => aim_from($cfg, AIM_ACK_FROM_NAME[$kind], $fromEmail), 'reply_to' => $fromEmail,
         'subject' => AIM_ACK_SUBJECT[$kind], 'body' => $body,
         'headers' => ['Auto-Submitted' => 'auto-replied', 'X-Auto-Response-Suppress' => 'All', 'X-AfghanTours-Ref' => $rec['id'], 'X-AfghanTours-Type' => 'acknowledgement']];
+}
+
+/** From header: the dedicated sender (website@) when configured, else the given address. Display name is always kept. */
+function aim_from(array $cfg, string $name, string $email): array {
+    $f = (string)($cfg['from_email'] ?? '');
+    return ['email' => aim_valid_email($f) ? $f : $email, 'name' => $name];
 }
 
 /* ------------------------------------------------------------- transport */
@@ -233,7 +240,7 @@ function aim_send(array $m): array {
     [$h, $body] = aim_build($m);
     $rcpt = array_merge($m['to'], $m['cc']);
     foreach ($rcpt as $r) if (!aim_valid_email((string)$r)) return [false, 'invalid recipient'];
-    $envelope = (string)($cfg['envelope_from'] ?: ($cfg['transport'] === 'smtp' && $cfg['smtp']['user'] ? $cfg['smtp']['user'] : $cfg['notify_from']['email']));
+    $envelope = (string)($cfg['envelope_from'] ?: ($cfg['from_email'] ?: ($cfg['transport'] === 'smtp' && $cfg['smtp']['user'] ? $cfg['smtp']['user'] : $cfg['notify_from']['email'])));
     try {
         if ($cfg['transport'] === 'file') {
             $dir = (string)$cfg['file_dir'];
@@ -398,7 +405,7 @@ function aim_internal_alert(array $owners, string $subject, string $body, string
     $to = [];
     foreach (array_unique($owners) as $o) { $e = (string)($cfg['owners'][$o] ?? ''); if (aim_valid_email($e)) $to[] = $e; }
     if (!$to) return false;
-    [$ok] = aim_send(['to' => $to, 'cc' => [], 'from' => $cfg['notify_from'], 'reply_to' => '', 'subject' => $subject, 'body' => $body,
+    [$ok] = aim_send(['to' => $to, 'cc' => [], 'from' => aim_from($cfg, (string)$cfg['notify_from']['name'], (string)$cfg['notify_from']['email']), 'reply_to' => '', 'subject' => $subject, 'body' => $body,
         'headers' => ['Auto-Submitted' => 'auto-generated', 'Precedence' => 'bulk', 'X-Auto-Response-Suppress' => 'All', 'X-AfghanTours-Ref' => $ref, 'X-AfghanTours-Type' => 'internal-alert']]);
     return $ok;
 }
@@ -447,7 +454,7 @@ function aim_run_escalations(): array {
         if (!str_starts_with((string)($r['id'] ?? ''), 'AT-')) continue;
         foreach (aim_escalation_due($r, $now, $esc) as $stage) {
             $owners = $stage === 'critical' ? aim_owner_names() : [(string)$esc['secondary_owner']];
-            $subj = $stage === 'critical' ? '[' . $r['id'] . '] IMMEDIATE ATTENTION: no response after ' . (int)$esc['critical_hours'] . 'h' : '[' . $r['id'] . '] Overdue inquiry — no human response yet (you may claim it)';
+            $subj = $stage === 'critical' ? '[Safety alert – ' . (int)$esc['critical_hours'] . 'h unanswered] ' . $r['id'] . ' — no human response recorded (all leadership)' : '[Overdue – ' . (int)$esc['overdue_business_hours'] . ' business hours] ' . $r['id'] . ' — no human response yet (Ramin may claim it)';
             aim_internal_alert($owners, $subj, "Inquiry {$r['id']} from " . ($r['name'] ?? '') . " received {$r['received_at']}, assigned to " . ($r['assigned_to'] ?? '') . ".\nNo human response has been recorded.", (string)$r['id']);
             aim_update((string)$r['id'], static fn($cur) => ['overdue' => true] + ($stage === 'critical' ? ['critical' => true] : []) + ['escalation' => array_replace((array)($cur['escalation'] ?? []), [$stage => $now->format(DATE_ATOM)]),
                 'history' => aim_history_add($cur, ['by' => 'system', 'action' => 'escalated_' . $stage, 'to' => implode(',', $owners)])]);
