@@ -29,7 +29,7 @@ const hero = service.hero_image_path || service.image_path || '/assets/images/pl
   <article class="sp">
     <header class="sp-hero" style={`--sp-hero:url('${hero}')`}>
       <div class="sp-wrap">
-        <p class="kicker">Specialist service · proposal-led</p>
+        <p class="kicker">Specialist service</p>
         <h1>{service.name}</h1>
         <p class="summary">{service.summary}</p>
         <a class="btn-primary" href={inquiryHref}>{service.cta_label || 'Request a Proposal'}</a>
@@ -38,10 +38,10 @@ const hero = service.hero_image_path || service.image_path || '/assets/images/pl
 
     <section class="sp-wrap sp-body">
       <div class="notice">
-        <p class="notice-label">Not a tour package</p>
+        <p class="notice-label">Planned around your brief</p>
         <p>
-          We do not advertise fixed duration, day-by-day itineraries, scheduled departures, or catalog
-          “from” prices for specialist work. Pricing is a <strong>custom quotation</strong> after scoping.
+          Every specialist assignment is different, so we plan the timing, route and support with you
+          and then send a <strong>personal quotation</strong>.
         </p>
       </div>
 
@@ -77,7 +77,7 @@ const hero = service.hero_image_path || service.image_path || '/assets/images/pl
           <div class="tile"><h3>Transport</h3><p>{service.transport_note}</p></div>
         )}
         {service.availability_note && (
-          <div class="tile"><h3>Operational considerations</h3><p>{service.availability_note}</p></div>
+          <div class="tile"><h3>Good to know</h3><p>{service.availability_note}</p></div>
         )}
       </div>
 
