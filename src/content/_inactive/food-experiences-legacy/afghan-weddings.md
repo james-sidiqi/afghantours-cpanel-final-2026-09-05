@@ -4,8 +4,8 @@ subtitle: "Music, Attan, hospitality, family ceremony, and the grand Afghan tabl
 card_description: "Understand Afghan wedding traditions, feast culture, Attan dancing, and the hospitality that defines major family celebrations."
 category: "Cultural Experiences"
 experience_type: "Living Traditions"
-hero_image: "/assets/images/page-assets/people/tourists/tourists-relaxing-tea.webp"
-image: "/assets/images/page-assets/people/tourists/tourists-relaxing-tea.webp"
+hero_image: "/assets/images/experiences/cultural/afghan-weddings/thumb.webp"
+image: "/assets/images/experiences/cultural/afghan-weddings/thumb.webp"
 provinces: ["Kabul", "Balkh", "Herat", "Kandahar"]
 paired_foods: ["Narenj Palaw", "Mantu", "Kabob-e-Tekka"]
 best_season: "Year round"
