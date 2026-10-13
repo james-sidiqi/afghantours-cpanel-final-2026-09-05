@@ -1,4 +1,5 @@
 ---
+import GuestFilms from '../../components/GuestFilms.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 import { getActivities, getHubsForActivity, accessTypeLabel, getToursForActivity } from '../../lib/experiences';
@@ -155,6 +156,7 @@ const journeyHref = buildActivityInquiryHref({
       </div>
     </section>
   )}
+  <GuestFilms page={`activity:${Astro.params.slug}`} />
 </BaseLayout>
 
 <style>

@@ -1,0 +1,70 @@
+---
+import { filmsFor, GUEST_FILM_CHANNEL } from '../data/guestFilms';
+interface Props { page: string; title?: string; intro?: string }
+const { page, title = 'Traveller films', intro = 'Filmed by a guest who travelled with us. Watch the journey through their eyes.' } = Astro.props;
+const films = filmsFor(page);
+---
+{films.length > 0 && (
+  <section class="guest-films" aria-labelledby={`guest-films-${page.replace(/[^a-z0-9]/gi, '-')}`}>
+    <div class="guest-films__inner">
+      <p class="guest-films__kicker">From our guests</p>
+      <h2 id={`guest-films-${page.replace(/[^a-z0-9]/gi, '-')}`}>{title}</h2>
+      <p class="guest-films__intro">{intro}</p>
+      <div class="guest-films__grid">
+        {films.map((f) => (
+          <figure class="guest-film">
+            <button type="button" class="guest-film__play" data-yt={f.id} aria-label={`Play film: ${f.caption}`}>
+              <img src={`/assets/images/guest-films/yt-${f.id}.webp`} alt={`Still from a guest film: ${f.caption}`} loading="lazy" decoding="async" width="960" height="540" />
+              <span class="guest-film__icon" aria-hidden="true"></span>
+            </button>
+            <figcaption>
+              <span class="guest-film__place">{f.place}</span>
+              <strong>{f.caption}</strong>
+              <a href={`https://www.youtube.com/watch?v=${f.id}`} target="_blank" rel="noopener" title={f.sourceTitle}>Watch on YouTube</a>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+      <p class="guest-films__credit">Films: <a href={GUEST_FILM_CHANNEL.url} target="_blank" rel="noopener">{GUEST_FILM_CHANNEL.name} (YouTube)</a>. Shared with the creator's permission.</p>
+    </div>
+  </section>
+)}
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.guest-film__play').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.yt;
+      if (!id) return;
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+      iframe.title = btn.getAttribute('aria-label')?.replace('Play film: ', '') || 'Guest film';
+      iframe.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+      iframe.allowFullscreen = true;
+      iframe.loading = 'lazy';
+      iframe.className = 'guest-film__frame';
+      btn.replaceWith(iframe);
+    }, { once: true });
+  });
+</script>
+
+<style>
+  .guest-films { background: #fbf6ed; color: #101820; padding: clamp(2.75rem, 4.5vw, 4.25rem) 0; }
+  .guest-films__inner { width: min(1180px, calc(100% - 2.5rem)); margin-inline: auto; }
+  .guest-films__kicker { margin: 0 0 .6rem; font-size: .72rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: #9a6517; }
+  .guest-films h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.1rem, 3.6vw, 3.25rem); line-height: 1; letter-spacing: -.04em; color: #101820; }
+  .guest-films__intro { max-width: 60ch; margin: .9rem 0 0; color: #374151; line-height: 1.6; }
+  .guest-films__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 1.25rem; margin-top: 1.75rem; }
+  .guest-film { margin: 0; background: #fff; border: 1px solid rgba(16,24,32,.08); border-radius: 18px; overflow: hidden; box-shadow: 0 10px 30px rgba(16,24,32,.06); }
+  .guest-film__play, .guest-film__frame { display: block; position: relative; width: 100%; aspect-ratio: 16 / 9; border: 0; padding: 0; background: #101820; cursor: pointer; }
+  .guest-film__play img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s ease; }
+  .guest-film__play:hover img, .guest-film__play:focus-visible img { transform: scale(1.03); }
+  .guest-film__play:focus-visible { outline: 3px solid #9a6517; outline-offset: -3px; }
+  .guest-film__icon { position: absolute; inset: 50% auto auto 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; background: rgba(16,24,32,.78); box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .guest-film__icon::after { content: ""; position: absolute; left: 26px; top: 20px; border-style: solid; border-width: 12px 0 12px 20px; border-color: transparent transparent transparent #fff; }
+  .guest-film figcaption { display: grid; gap: .3rem; padding: 1rem 1.1rem 1.15rem; }
+  .guest-film__place { font-size: .7rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: #9a6517; }
+  .guest-film figcaption strong { font-family: Georgia, "Times New Roman", serif; font-size: 1.2rem; line-height: 1.2; }
+  .guest-film figcaption a { font-size: .85rem; font-weight: 700; color: #101820; text-decoration: underline; text-underline-offset: 3px; }
+  .guest-films__credit { margin: 1.25rem 0 0; font-size: .85rem; color: #4b5563; }
+  .guest-films__credit a { color: #101820; font-weight: 700; }
+</style>
