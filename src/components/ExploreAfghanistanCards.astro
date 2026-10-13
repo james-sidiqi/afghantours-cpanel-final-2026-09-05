@@ -46,7 +46,7 @@ const cards = [
     <div class="explore-afghanistan__grid">
       {cards.map((card) => (
         <a class="explore-card" href={card.href} aria-label={`${card.eyebrow}: ${card.cta}`}>
-          <img src={card.image} alt="" loading="lazy" />
+          <img src={card.image} alt={card.title || card.eyebrow} loading="lazy" />
           <div class="explore-card__shade"></div>
           <div class="explore-card__content">
             <p>{card.eyebrow}</p>
