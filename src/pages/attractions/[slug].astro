@@ -1,8 +1,11 @@
 ---
+import PhotoCredits from '../../components/PhotoCredits.astro';
+import { altFor } from '../../data/photoCredits';
 import fs from 'node:fs';
 import path from 'node:path';
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { ATTRACTION_IMAGE_ALT } from '../../lib/attraction-image-alt';
 import TourCardGrid from '../../components/cards/TourCardGrid.astro';
 import AttractionPopupGrid from '../../components/cards/AttractionPopupGrid.astro';
 
@@ -387,7 +390,7 @@ const provinceHref =
     <img
       class="attraction-hero-image"
       src={heroImage}
-      alt={title}
+      alt={ATTRACTION_IMAGE_ALT[item.slug] ?? altFor(heroImage, title)}
       fetchpriority="high"
     />
 
@@ -500,6 +503,7 @@ const provinceHref =
     </div>
 
   </section>
+  <PhotoCredits images={[heroImage, ...galleryImages]} />
 
 
   <!-- =====================================================
@@ -657,7 +661,7 @@ const provinceHref =
 
               <img
                 src={src}
-                alt={`${title}${index > 0 ? ` — view ${index + 1}` : ''}`}
+                alt={altFor(src, `${title}${index > 0 ? ` — view ${index + 1}` : ''}`)}
                 loading={index === 0 ? 'eager' : 'lazy'}
               />
 

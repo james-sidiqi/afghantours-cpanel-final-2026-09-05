@@ -1,23 +1,19 @@
 ---
 title: "Shopping"
 activity_code: "ACT-SHP"
-subtitle: "Bazaars, craft streets, and market browsing from every active hub."
-card_description: "Guided bazaar and craft shopping planned from each operational hub — carpets, copper, dried fruit, and local specialties."
+subtitle: "Bazaars, craft streets and markets wherever you travel."
+card_description: "Guided bazaar and craft shopping — carpets, copper, dried fruit and local specialties, at your own pace."
 best_season: "Year round (subject to local conditions)"
 duration: "Varies — typically 1–3 hours; discuss during planning"
 hero_image: "/assets/images/experiences/activities/shopping/hero.webp"
 ---
 
-Shopping can be arranged from **all active travel hubs** — bazaars, craft streets, and market browsing planned with local guidance.
+Shopping is part of every Afghan journey — bazaars, craft streets and markets, explored with a local guide.
 
-## What travelers browse
+## What you'll find
 
-Depending on the hub, shopping may include carpets and textiles, copper and metalwork, dried fruits and nuts, spices, and everyday bazaar goods. Cultural Experiences such as carpet culture and pottery remain separate pages; shopping is the activity frame for market time.
+Depending on where you travel: carpets and textiles, copper and metalwork, dried fruits and nuts, spices, and the everyday bustle of the bazaar. To go deeper, see our Cultural Experiences such as carpet weaving and Istalif pottery.
 
 ## Shopping with a guide
 
 Your guide helps you browse respectfully, understand regional crafts, and shop at your own pace — without pressure.
-
-## Hub rule
-
-Hiking, shopping, and sightseeing use the semantic **all active hubs** rule so new operational hubs inherit these activity links without inventing one-off exceptions.

@@ -1,4 +1,6 @@
 ---
+import PhotoCredits from '../../components/PhotoCredits.astro';
+import { altFor } from '../../data/photoCredits';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -224,8 +226,33 @@ for (const folder of foldersToCheck) {
 }
 
 
+/*
+ * Show only visually distinct photos: the same picture often exists under
+ * several paths (hero, thumb, attraction folder). Compare a 16×16 grayscale
+ * average hash and drop near-identical images (crops/resizes of one photo).
+ */
+const imageHash = async (src) => {
+  try {
+    const file = path.join(process.cwd(), 'public', String(src).replace(/^\/+/, ''));
+    if (!fs.existsSync(file)) return null;
+    const { default: sharp } = await import('sharp');
+    const px = await sharp(file).greyscale().resize(16, 16, { fit: 'fill' }).raw().toBuffer();
+    const mean = px.reduce((a, b) => a + b, 0) / px.length;
+    return Array.from(px, (v) => v > mean);
+  } catch {
+    return null;
+  }
+};
+const distinctImages = [];
+const seenHashes = [];
+for (const src of imageCandidates) {
+  const h = await imageHash(src);
+  if (h && seenHashes.some((o) => o.reduce((d, bit, i) => d + (bit !== h[i] ? 1 : 0), 0) <= 12)) continue;
+  if (h) seenHashes.push(h);
+  distinctImages.push(src);
+}
 const galleryImages =
-  imageCandidates.slice(0, 9);
+  distinctImages.slice(0, 9);
 
 
 /* =========================================================
@@ -569,6 +596,7 @@ const uniqueGalleryImages = (items = []) =>
     </div>
 
   </section>
+  <PhotoCredits images={[heroImage, ...galleryImages]} />
 
 
   <!-- =====================================================
@@ -794,13 +822,13 @@ const uniqueGalleryImages = (items = []) =>
                     'culture-gallery-featured',
                 ]}
                 data-cultural-gallery-image={src}
-                data-cultural-gallery-alt={`${title} — view ${index + 1}`}
+                data-cultural-gallery-alt={altFor(src, `${title} — view ${index + 1}`)}
                 aria-label={`Open image ${index + 1} of ${title}`}
               >
 
                 <img
                   src={src}
-                  alt={`${title} — view ${index + 1}`}
+                  alt={altFor(src, `${title} — view ${index + 1}`)}
                   loading={
                     index < 2
                       ? 'eager'
@@ -1863,7 +1891,7 @@ const uniqueGalleryImages = (items = []) =>
       .8rem;
 
     font-size:
-      clamp(2.6rem, 5vw, 4.6rem);
+      clamp(2.1rem, 3.6vw, 3.25rem);
 
     line-height: .96;
   }
@@ -1951,7 +1979,7 @@ const uniqueGalleryImages = (items = []) =>
 
   .pairings-section {
     padding:
-      clamp(4rem, 7vw, 7rem)
+      clamp(2.75rem, 4.5vw, 4.25rem)
       0;
 
     background: #efe1cd;

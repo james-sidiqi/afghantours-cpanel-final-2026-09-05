@@ -1,4 +1,5 @@
 ---
+import GuestFilms from '../../components/GuestFilms.astro';
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getTours, getTourBySlug, getAttractions } from "../../lib/buildRelations";
 import { getCollection } from "astro:content";
@@ -2330,4 +2331,5 @@ const contactHref = buildTourInquiryHref(tour);
   .tour-not-included ul { margin: 0; padding-left: 1.1rem; columns: 2; column-gap: 2rem; color: var(--at-text, #4b5563); line-height: 1.6; }
   @media (max-width: 640px) { .tour-not-included ul { columns: 1; } }
 </style>
+  <GuestFilms page={`tour:${Astro.params.slug}`} />
 </BaseLayout>

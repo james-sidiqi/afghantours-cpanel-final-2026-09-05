@@ -38,7 +38,7 @@ const cards = [
   <div class="cj-legacy__wrap">
     {cards.map((card) => (
       <a class="cj-legacy__card" href={card.href}>
-        <img src={card.image} alt="" loading="lazy" />
+        <img src={card.image} alt={card.title} loading="lazy" />
         <div>
           <p>{card.label}</p>
           <h3>{card.title}</h3>
