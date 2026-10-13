@@ -437,9 +437,12 @@ const scoredExperiences =
       );
 
 
+      const sharesProvince = [...provinceSet].some((province) => candidateProvinces.has(province));
+
       return {
         candidate,
         score,
+        sharesProvince,
       };
 
     })
@@ -452,8 +455,11 @@ const scoredExperiences =
     );
 
 
+// No forced fill: only experiences with a real geographic link (shared province).
+// Fewer, or none, is fine.
 const relatedExperiences =
   scoredExperiences
+    .filter((entry) => entry.sharesProvince)
     .slice(0, 6)
     .map(
       (entry) =>
@@ -465,8 +471,11 @@ const pairedFoods =
   data.paired_foods || [];
 
 
+// Private homes, wedding halls and hosts are never presented as places to visit.
 const nearby =
-  data.nearby || [];
+  (data.nearby || []).filter(
+    (place) => !/wedding hall|family home|private home|local host/i.test(String(place))
+  );
 
 
 const experienceType =
@@ -923,11 +932,11 @@ const uniqueGalleryImages = (items = []) =>
               <div class="pairing-card">
 
                 <span class="pairing-number">
-                  02
+                  {pairedFoods.length > 0 ? '02' : '01'}
                 </span>
 
                 <h3>
-                  Nearby & complementary
+                  Complementary places
                 </h3>
 
                 <div class="pairing-pills">

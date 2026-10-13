@@ -288,10 +288,12 @@ const attractionByCode = new Map(
 const linkedAttractionSlugs = new Set(linkedAttractions.map((item) => item.slug).filter(Boolean));
 const optionalAttractions = allAttractions
   .filter((item) => !linkedAttractionSlugs.has(item.slug))
+  // Location fields only (not free-text summaries) so "possible additions" are genuinely on the route.
   .filter((item) => includesAny([
-    item.province, item.province_name, item.region, item.region_name, item.location,
-    item.location_name, item.destination_code, item.summary, item.description
+    item.province, item.province_name, item.location,
+    item.location_name, item.destination_code
   ].join(" "), locationTokens.concat(provinceTokens)))
+  .filter((item) => !/\/placeholders\//.test(imageFor(item)))
   .slice(0, 4);
 
 const foodBySlug = new Map(
@@ -1023,20 +1025,20 @@ const contactHref = buildTourInquiryHref(tour);
             </div>
           )}
 
-          {(optionalAttractions.length > 0 || routeFood.length > 0) && (
+          {optionalAttractions.length > 0 && (
             <div class="tour-subsection tour-customize">
               <h3>Customize your journey</h3>
               <p>Depending on your dates, interests, route, and local conditions, additional stops can sometimes be incorporated into the trip.</p>
               <div class="tour-excursion-scroller" aria-label="Possible additions to this tour">
-                {(optionalAttractions.length > 0 ? optionalAttractions : routeFood).slice(0, 4).map((item) => {
-                  const isAttraction = optionalAttractions.length > 0;
+                {optionalAttractions.map((item) => {
+                  const isAttraction = true;
                   const href = isAttraction && item.slug ? `/attractions/${item.slug}/` : foodHref(item);
                   return (
                     <article class="tour-excursion-card">
                       <img src={imageFor(item)} alt={item.name || item.title || "Optional experience"} loading="lazy" />
                       <div>
                         <strong>{item.name || item.title}</strong>
-                        <span>{isAttraction ? "Possible route addition" : "Food & culture"}</span>
+                        <span>{isAttraction ? "Optional addition · not included" : "Food & culture"}</span>
                         <a href={href}>See details</a>
                       </div>
                     </article>
