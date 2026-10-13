@@ -1,4 +1,6 @@
 ---
+import PhotoCredits from '../../components/PhotoCredits.astro';
+import { altFor } from '../../data/photoCredits';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
 import { getActivities, getHubsForActivity, accessTypeLabel, getToursForActivity } from '../../lib/experiences';
@@ -83,9 +85,10 @@ const journeyHref = buildActivityInquiryHref({
           <a class="secondary" href="/activities/">All activities</a>
         </p>
       </div>
-      <img class="hero-img" src={heroImage} alt={data.hero_alt || title} />
+      <img class="hero-img" src={heroImage} alt={data.hero_alt || altFor(heroImage, title)} />
     </div>
   </section>
+  <PhotoCredits images={[heroImage, ...galleryImages]} />
 
   <section class="act-detail-body">
     <div class="act-detail-wrap body-grid">

@@ -1,4 +1,6 @@
 ---
+import PhotoCredits from '../../components/PhotoCredits.astro';
+import { altFor } from '../../data/photoCredits';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -569,6 +571,7 @@ const uniqueGalleryImages = (items = []) =>
     </div>
 
   </section>
+  <PhotoCredits images={[heroImage, ...galleryImages]} />
 
 
   <!-- =====================================================
@@ -794,13 +797,13 @@ const uniqueGalleryImages = (items = []) =>
                     'culture-gallery-featured',
                 ]}
                 data-cultural-gallery-image={src}
-                data-cultural-gallery-alt={`${title} — view ${index + 1}`}
+                data-cultural-gallery-alt={altFor(src, `${title} — view ${index + 1}`)}
                 aria-label={`Open image ${index + 1} of ${title}`}
               >
 
                 <img
                   src={src}
-                  alt={`${title} — view ${index + 1}`}
+                  alt={altFor(src, `${title} — view ${index + 1}`)}
                   loading={
                     index < 2
                       ? 'eager'

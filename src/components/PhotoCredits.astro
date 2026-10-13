@@ -1,0 +1,21 @@
+---
+import { creditsFor } from '../data/photoCredits';
+interface Props { images: (string | null | undefined)[]; class?: string }
+const credits = creditsFor(Astro.props.images);
+---
+{credits.length > 0 && (
+  <p class:list={['photo-credits', Astro.props.class]}>
+    {credits.map((c, i) => (
+      <span>
+        {i > 0 && ' · '}
+        {c.note && <>{c.note}. </>}
+        Photo: {c.source ? <a href={c.source} target="_blank" rel="noopener">{c.author}</a> : c.author}
+        {c.license && !c.license.startsWith('©') && <>, {c.licenseUrl ? <a href={c.licenseUrl} target="_blank" rel="noopener license">{c.license}</a> : c.license}</>}
+      </span>
+    ))}
+  </p>
+)}
+<style>
+  .photo-credits { box-sizing: border-box; width: 100%; margin: 0; padding: .65rem max(1.25rem, calc((100% - 1180px) / 2)); background: #fbf6ed; font-size: .78rem; line-height: 1.5; color: #4b5563; }
+  .photo-credits a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+</style>
