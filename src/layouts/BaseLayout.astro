@@ -68,6 +68,16 @@ const organizationSchema = {
     <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
   </head>
   <body>
+    <script is:inline>
+      // Shared fallback: a failed image never shows a broken icon; its frame gets the brand no-image style.
+      document.addEventListener('error', function (e) {
+        var t = e.target;
+        if (t && t.tagName === 'IMG' && !t.classList.contains('img-failed')) {
+          t.classList.add('img-failed');
+          if (t.parentElement) t.parentElement.classList.add('img-missing');
+        }
+      }, true);
+    </script>
     <Header />
     <main>
       <slot />
@@ -91,5 +101,9 @@ const organizationSchema = {
         });
       })();
     </script>
+    <style is:global>
+      .img-missing { background: linear-gradient(135deg, #0f241b, #163a2a) !important; }
+      img.img-failed { visibility: hidden; }
+    </style>
   </body>
 </html>

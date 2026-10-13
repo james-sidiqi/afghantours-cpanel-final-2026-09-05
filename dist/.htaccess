@@ -26,6 +26,8 @@ RewriteEngine On
 RewriteRule ^faqs/?$ /faq/ [R=301,L]
 RewriteRule ^restaurants/spoghmai-restaurant-qargha/?$ /restaurants/spoghmai-restaurant/ [R=301,L]
 RewriteRule ^tours/photography-tour/?$ /specialist-services/photography-documentary/ [R=301,L]
+# Temporary (2026-10-14, t242): public Image Credits page withdrawn; records kept in src/data/photoCredits.ts and image-library/register.csv.
+RewriteRule ^photo-credits/?$ / [R=302,L]
 RewriteRule ^tours/scientific-expeditions/?$ /specialist-services/scientific-research/ [R=301,L]
 RewriteRule ^tours/media-support/?$ /specialist-services/media-journalist/ [R=301,L]
 RewriteRule ^tours/business-investment/?$ /specialist-services/business-investment/ [R=301,L]

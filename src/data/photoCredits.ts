@@ -4,6 +4,63 @@ export interface PhotoCredit { paths: string[]; author: string; license: string;
 export const PHOTO_CREDITS: PhotoCredit[] = [
   {
     "paths": [
+      "/assets/images/food/produce/mulberries/gallery-1.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "\u00a9 AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Fresh dark mulberries in a clear tub on an Afghan carpet, Kabul",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/experiences/activities/birding/hero.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Peacock displaying its fanned tail on a dirt yard in Kabul",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/attractions/qargha-lake/gallery-5.webp",
+      "/assets/images/experiences/activities/birding/gallery/01.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Dalmatian pelican resting on a rock at Qargha Lake, Kabul",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/experiences/activities/sightseeing/hero.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Shah-e Do Shamshira Mosque in Kabul with pigeons and visitors in the square",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/experiences/activities/shopping/hero.webp",
+      "/assets/images/experiences/activities/shopping/thumb.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Street vendor beside a cart piled with fresh cherries under a lamp at night, Kabul",
+    "note": ""
+  },
+  {
+    "paths": [
       "/assets/images/attractions/chicken-street/hero.webp",
       "/assets/images/attractions/chicken-street/thumb.webp"
     ],
@@ -40,6 +97,17 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
   },
   {
     "paths": [
+      "/assets/images/food/produce/central-valley-mulberries/hero.webp"
+    ],
+    "author": "Zeynel Cebeci",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Dried_mulberries,_Malatya_01.jpg",
+    "alt": "Dried white mulberries",
+    "note": ""
+  },
+  {
+    "paths": [
       "/assets/images/attractions/wakhan-corridor/hero.webp",
       "/assets/images/attractions/wakhan-corridor/thumb.webp"
     ],
@@ -61,17 +129,6 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "source": "https://commons.wikimedia.org/wiki/File:Kashtun_da_waygale_Nuristan_-_panoramio.jpg",
     "alt": "Terraced mountain village in Nuristan",
     "note": "Illustrative photo: Kashtun village, Waygal valley, Nuristan (not Barg-e Matal itself)"
-  },
-  {
-    "paths": [
-      "/assets/images/food/produce/central-valley-mulberries/hero.webp"
-    ],
-    "author": "Zeynel Cebeci",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "source": "https://commons.wikimedia.org/wiki/File:Dried_mulberries,_Malatya_01.jpg",
-    "alt": "Dried white mulberries",
-    "note": ""
   },
   {
     "paths": [
@@ -166,16 +223,13 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "note": ""
   },
   {
-    "paths": [
-      "/assets/images/food/dried-fruit/panjshir-walnuts/hero.webp",
-      "/assets/images/food/dried-fruit/panjshir-walnuts/thumb.webp"
-    ],
+    "paths": [],
     "author": "Ivar Leidus",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "source": "https://commons.wikimedia.org/wiki/File:Walnuts_-_whole_and_open_with_halved_kernel.jpg",
     "alt": "Whole and cracked walnuts",
-    "note": ""
+    "note": "Record kept: photo withdrawn from the walnuts card 2026-10-14 (rejected by James); file kept in qc/fix-2026-10-14/rejected and git history"
   },
   {
     "paths": [

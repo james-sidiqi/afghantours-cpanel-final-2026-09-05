@@ -1,4 +1,5 @@
 ---
+import { getFoodImage, isPlaceholder } from '../../lib/images';
 import GuestFilms from '../../components/GuestFilms.astro';
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getTours, getTourBySlug, getAttractions } from "../../lib/buildRelations";
@@ -256,6 +257,7 @@ const routeFood = dishes
       locationTokens.concat(provinceTokens)
     )
   )
+  .filter((dish) => !isPlaceholder(getFoodImage(dish)))
   .slice(0, 4);
 
 const routeHubs = locations
@@ -1013,7 +1015,7 @@ const contactHref = buildTourInquiryHref(tour);
               <div class="tour-card-grid tour-card-grid--two">
                 {routeFood.map((item) => (
                   <a class="tour-image-card" href={foodHref(item)}>
-                    <img src={imageFor(item)} alt={item.name || "Afghan food and culture"} loading="lazy" />
+                    <img src={getFoodImage(item)} alt={item.name || "Afghan food and culture"} loading="lazy" />
                     <div><span>{item.category || "Food & culture"}</span><strong>{item.name}</strong><p>{item.desc_short || item.description || "A cultural experience connected to this journey."}</p></div>
                   </a>
                 ))}

@@ -5,7 +5,7 @@ card_description: "Watch the honor, strength, and community atmosphere of Afghan
 category: "Cultural Experiences"
 experience_type: "Spectacle, Sport & Sky"
 hero_image: "/assets/images/experiences/cultural/pahlawani/hero.webp"
-image: "/assets/images/placeholders/default-attraction.webp"
+image: "/assets/images/experiences/cultural/pahlawani/hero.webp"
 provinces: ["Kabul", "Ghazni", "Balkh"]
 paired_foods: ["Bolani"]
 best_season: "Fridays / local schedules"
