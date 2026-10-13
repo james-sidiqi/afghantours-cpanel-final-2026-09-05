@@ -743,7 +743,7 @@ const contactHref = `/contact/?food=${encodeURIComponent(title)}`;
 
   <dialog id="food-gallery-dialog" class="food-dialog">
     <button type="button" class="food-dialog-close" aria-label="Close image">×</button>
-    <img id="food-gallery-dialog-image" src={heroImage} alt="" />
+    <img id="food-gallery-dialog-image" src={heroImage} alt={title} />
   </dialog>
 </BaseLayout>
 

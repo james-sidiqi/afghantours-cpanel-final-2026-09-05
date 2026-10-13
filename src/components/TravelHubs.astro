@@ -78,7 +78,7 @@ const getHubGalleryPaths = (slug: string): string[] => {
           >
             <img 
               src={getHubHeroPath(hub.slug)} 
-              alt="" 
+              alt={hub.name || hub.title || ""} 
               class="absolute inset-0 w-full h-full object-cover object-center z-0"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent z-10"></div>
@@ -107,7 +107,7 @@ const getHubGalleryPaths = (slug: string): string[] => {
         >
           <img 
             src={getHubHeroPath(hub.slug)} 
-            alt="" 
+            alt={hub.name || hub.title || ""} 
             class="absolute inset-0 h-full w-full object-cover object-center z-0 transition-transform duration-500 group-hover:scale-105"
           />
           <div class="absolute inset-0 bg-zinc-950/70 group-hover:bg-zinc-950/60 transition-colors z-10"></div>

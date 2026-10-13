@@ -1,4 +1,5 @@
 ---
+import GuestFilms from '../../components/GuestFilms.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import AttractionPopupGrid from '../../components/cards/AttractionPopupGrid.astro';
@@ -257,6 +258,7 @@ const image = hub.image || `/assets/images/hubs/${hubSlug}/hero.webp` || '/asset
       </div>
     </section>
   )}
+  <GuestFilms page={`hub:${Astro.params.slug}`} />
 </BaseLayout>
 
 <style>

@@ -9,7 +9,8 @@ const csv = getActivities();
 const mdItems = await getCollection('activities');
 const mdBySlug = new Map(mdItems.map((i) => [i.id.replace(/\.md$/, ''), i]));
 
-const items = csv.map((row) => {
+const ADDITIONAL = new Set(['birding']);
+const allItems = csv.map((row) => {
   const md = mdBySlug.get(row.slug);
   const hubs = getHubsForActivity(row.slug);
   return {
@@ -21,24 +22,26 @@ const items = csv.map((row) => {
     hubs,
   };
 });
+const items = allItems.filter((i) => !ADDITIONAL.has(i.slug));
+const extraItems = allItems.filter((i) => ADDITIONAL.has(i.slug));
 ---
 
 <BaseLayout
   title="Activities | AfghanTours"
-  description="Hub-based activities across Afghanistan — hiking, fishing, trekking, skiing, shopping, sightseeing, horse riding, and cycling planned from operational travel hubs."
+  description="Hiking, fishing, trekking, skiing, shopping, sightseeing, horse riding and cycling across Afghanistan, arranged by our local team — plus birding."
   image={items[0]?.image}
 >
   <section class="act-hero">
     <div class="act-wrap">
       <p class="section-kicker">Activities</p>
-      <h1>Activities planned from Afghanistan’s travel hubs</h1>
+      <h1>Activities across Afghanistan</h1>
       <p>
-        Eight activity classes — hiking, fishing, trekking, skiing, shopping, sightseeing, horse riding, and cycling —
-        linked to operational hubs. Availability depends on season, access, and local arrangements, and details are confirmed when you plan.
+        Eight ways to spend your days — hiking, fishing, trekking, skiing, shopping, sightseeing, horse riding and cycling —
+        arranged by our local team from the cities and valleys you visit. We match each one to the season and confirm the details with you as we plan.
       </p>
       <p class="act-note">
-        Specialist expedition support (for example ski expeditions or Noshaq) stays under
-        <a href="/specialist-services/">Specialist Services</a> — not moved into this catalog.
+        Planning a ski expedition or a Noshaq climb? Our
+        <a href="/specialist-services/">Specialist Services</a> team supports expeditions end to end.
       </p>
     </div>
   </section>
@@ -50,7 +53,7 @@ const items = csv.map((row) => {
           <a class="act-card" href={item.href}>
             <img src={item.image} alt={item.title} loading="lazy" />
             <div class="act-card-copy">
-              <small>{item.hubs.length} hub{item.hubs.length === 1 ? '' : 's'}</small>
+              <small>{item.hubs.length} location{item.hubs.length === 1 ? '' : 's'}</small>
               <h2>{item.title}</h2>
               <p>{item.card_description || item.subtitle}</p>
               <strong>Explore activity →</strong>
@@ -58,6 +61,24 @@ const items = csv.map((row) => {
           </a>
         ))}
       </div>
+      {extraItems.length > 0 && (
+        <div class="act-extra">
+          <p class="section-kicker">Also available</p>
+          <div class="act-grid">
+            {extraItems.map((item) => (
+              <a class="act-card" href={item.href}>
+                <img src={item.image} alt={item.title} loading="lazy" />
+                <div class="act-card-copy">
+                  <small>Also available</small>
+                  <h2>{item.title}</h2>
+                  <p>{item.card_description || item.subtitle}</p>
+                  <strong>Explore activity →</strong>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   </section>
 </BaseLayout>
@@ -70,6 +91,7 @@ const items = csv.map((row) => {
   .act-hero p { max-width: 48rem; line-height: 1.6; }
   .act-note { margin-top: 1rem; font-size: 0.95rem; }
   .act-note a { text-decoration: underline; }
+  .act-extra { margin-top: clamp(2.5rem, 5vw, 3.5rem); }
   .act-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
   .act-card { display: flex; flex-direction: column; background: #fff; border-radius: 16px; overflow: hidden; color: inherit; text-decoration: none; box-shadow: 0 10px 30px rgba(16,24,32,0.06); }
   .act-card img { aspect-ratio: 16/10; object-fit: cover; width: 100%; }
