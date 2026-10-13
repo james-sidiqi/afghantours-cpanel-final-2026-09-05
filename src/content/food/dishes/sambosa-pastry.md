@@ -3,6 +3,8 @@ title: "Sambosa"
 slug: "sambosa-pastry"
 food_slug: "sambosa-pastry"
 category: "Snack"
+hero_image: "/assets/images/food/dishes/samosa/hero.webp"
+image: "/assets/images/food/dishes/samosa/hero.webp"
 ---
 
 ### Sambosa

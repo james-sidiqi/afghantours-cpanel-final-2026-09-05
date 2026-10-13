@@ -98,9 +98,7 @@ function hubGallery(slug: string, hero: string, card: string): string[] {
     `${dir}/gallery-3.webp`,
     `${dir}/gallery-4.webp`,
     `${dir}/thumb.webp`,
-    card,
-    hero,
-  ].filter(Boolean);
+  ].filter((p) => listed.includes(p)).concat([card, hero].filter(Boolean));
   const out: string[] = [];
   const seen = new Set<string>();
   for (const p of [...preferred, ...listed]) {

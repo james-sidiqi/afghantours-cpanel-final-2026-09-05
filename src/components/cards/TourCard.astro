@@ -3,7 +3,7 @@ import { getCatalogTour, tourPriceLabel } from '../../lib/booking/site';
 const { tour } = Astro.props;
 
 const title = tour.title || tour.name;
-const image = tour.thumbnail_image || tour.hero_image || tour.hero_image_path || "/assets/images/placeholders/tour-placeholder.webp";
+const image = tour.thumbnail_image || tour.hero_image || tour.hero_image_path || "/assets/images/placeholders/default-tour.webp";
 const href = `/tours/${tour.slug}/`;
 
 const rawDuration = tour.duration || tour.duration_days || "";

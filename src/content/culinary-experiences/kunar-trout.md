@@ -13,8 +13,10 @@ related_food_slugs: ["kunar-trout"]
 provinces: ["Kunar"]
 best_season: "Spring–autumn"
 duration: "1–2 hours"
-hero_image: "/assets/images/experiences/culinary/kunar-trout/hero.webp"
+hero_image: "/assets/images/food/dishes/kunar-trout/hero.webp"
 nearby: ["Kunar River", "Asadabad", "Kunar Valley", "Jalalabad"]
+gallery_images:
+  - "/assets/images/food/dishes/kunar-trout/01.webp"
 ---
 
 Kunar's mountain rivers, forested valleys, and roadside cooking traditions make freshly grilled trout one of the province's most distinctive food experiences. From the Jalalabad hub, this is typically planned as a day-trip food stop rather than a fixed city restaurant.

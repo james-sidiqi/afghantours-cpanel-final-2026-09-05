@@ -106,7 +106,7 @@
     "slug": "balkh",
     "is_hub": false,
     "is_active": true,
-    "image_path": "/assets/images/provinces/balkh/hero.webp",
+    "image_path": "/assets/images/featured-tours/treasures-of-silk-road-afghanistan/hero.webp",
     "map_image_path": ""
   },
   {
@@ -183,7 +183,7 @@
     "slug": "helmand",
     "is_hub": false,
     "is_active": true,
-    "image_path": "/assets/images/provinces/helmand/hero.webp",
+    "image_path": "/assets/images/attractions/helmand-river-landscape/hero.webp",
     "map_image_path": ""
   },
   {

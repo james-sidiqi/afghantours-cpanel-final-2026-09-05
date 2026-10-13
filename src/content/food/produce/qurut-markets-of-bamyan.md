@@ -4,7 +4,7 @@ subtitle: "Roadside dairy markets between Bamyan and Band-e-Amir, famous for dri
 card_description: "Stop along the Bamyan–Band-e-Amir road for qurut, local dairy, highland humor, and a taste visitors never forget."
 category: "Cultural Experiences"
 experience_type: "Food & Culture Experience"
-hero_image: "/assets/images/food/produce/qurut-markets-of-bamyan/bamyan-qurut.webp"
+hero_image: "/assets/images/experiences/culinary/band-e-amir-quroot-dairy/hero.webp"
 provinces: ["Bamyan"]
 paired_foods: ["Qurut", "Fresh Yogurt", "Village Bread"]
 best_season: "Spring–autumn"
@@ -12,7 +12,7 @@ duration: "15–30 minutes"
 related_tours: ["central-afghanistan-discovery", "afghanistan-discovery-tour-spring", "custom-tours"]
 nearby: ["Band-e-Amir", "Bamyan City", "Koh-e-Baba"]
 gallery:
-  - "/assets/images/food/produce/qurut-markets-of-bamyan/bamyan-qurut.webp"
+  - "/assets/images/experiences/culinary/band-e-amir-quroot-dairy/hero.webp"
   - "/assets/images/food/produce/qurut-markets-of-bamyan/qurut-bamyan.webp"
 ---
 On the road from Bamyan City toward Band-e-Amir, small dairy markets offer one of Afghanistan's most powerful tastes: **qurut**, dried salty yogurt.

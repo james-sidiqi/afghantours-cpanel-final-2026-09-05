@@ -205,7 +205,7 @@
     "short_blurb": "The Mother of Cities and spiritual heart of the Blue Mosque.",
     "center_lat": 36.73,
     "center_lon": 66.95,
-    "cover_image_path": "/assets/images/provinces/balkh/hero.webp",
+    "cover_image_path": "/assets/images/featured-tours/treasures-of-silk-road-afghanistan/hero.webp",
     "is_featured": true
   },
   {
@@ -282,7 +282,7 @@
     "short_blurb": "A river-fed desert oasis home to the ancient Qala-e-Bost arch.",
     "center_lat": 31.43,
     "center_lon": 64.23,
-    "cover_image_path": "/assets/images/provinces/helmand/hero.webp",
+    "cover_image_path": "/assets/images/attractions/helmand-river-landscape/hero.webp",
     "is_featured": false
   },
   {

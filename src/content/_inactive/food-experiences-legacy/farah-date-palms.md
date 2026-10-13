@@ -4,8 +4,8 @@ subtitle: "Desert agriculture, date groves, oasis landscapes, and green tea in w
 card_description: "Show Farah’s desert identity through date palms, oasis farming, and fresh or dried dates with tea."
 category: "Cultural Experiences"
 experience_type: "Food & Culture Experience"
-hero_image: "/assets/images/food/produce/farah-watermellons/hero.webp"
-image: "/assets/images/food/produce/farah-watermellons/hero.webp"
+hero_image: "/assets/images/food/produce/farah-watermelon/gallery-1.webp"
+image: "/assets/images/food/produce/farah-watermelon/gallery-1.webp"
 provinces: ["Farah"]
 paired_foods: ["Dates", "Green Tea"]
 best_season: "Late summer–autumn"
