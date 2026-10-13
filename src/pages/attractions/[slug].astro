@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { ATTRACTION_IMAGE_ALT } from '../../lib/attraction-image-alt';
 import TourCardGrid from '../../components/cards/TourCardGrid.astro';
 import AttractionPopupGrid from '../../components/cards/AttractionPopupGrid.astro';
 
@@ -387,7 +388,7 @@ const provinceHref =
     <img
       class="attraction-hero-image"
       src={heroImage}
-      alt={title}
+      alt={ATTRACTION_IMAGE_ALT[item.slug] ?? title}
       fetchpriority="high"
     />
 
