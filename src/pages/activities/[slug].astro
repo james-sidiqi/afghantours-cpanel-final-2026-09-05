@@ -1,4 +1,6 @@
 ---
+import PhotoCredits from '../../components/PhotoCredits.astro';
+import { altFor } from '../../data/photoCredits';
 import GuestFilms from '../../components/GuestFilms.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection, render } from 'astro:content';
@@ -84,9 +86,10 @@ const journeyHref = buildActivityInquiryHref({
           <a class="secondary" href="/activities/">All activities</a>
         </p>
       </div>
-      <img class="hero-img" src={heroImage} alt={data.hero_alt || title} />{data.hero_credit && <p class="hero-credit" style="font-size:.72rem;opacity:.75;margin:.35rem 0 0">Photo: {data.hero_credit_url ? <a href={data.hero_credit_url} rel="noopener" target="_blank">{data.hero_credit}</a> : data.hero_credit}{data.hero_license && <>, {data.hero_license_url ? <a href={data.hero_license_url} rel="noopener license" target="_blank">{data.hero_license}</a> : data.hero_license}</>}{data.hero_modifications && <>. {data.hero_modifications}</>}</p>}
+      <img class="hero-img" src={heroImage} alt={data.hero_alt || altFor(heroImage, title)} />{data.hero_credit && <p class="hero-credit" style="font-size:.72rem;opacity:.75;margin:.35rem 0 0">Photo: {data.hero_credit_url ? <a href={data.hero_credit_url} rel="noopener" target="_blank">{data.hero_credit}</a> : data.hero_credit}{data.hero_license && <>, {data.hero_license_url ? <a href={data.hero_license_url} rel="noopener license" target="_blank">{data.hero_license}</a> : data.hero_license}</>}{data.hero_modifications && <>. {data.hero_modifications}</>}</p>}
     </div>
   </section>
+  <PhotoCredits images={[heroImage, ...galleryImages]} />
 
   <section class="act-detail-body">
     <div class="act-detail-wrap body-grid">
