@@ -15,6 +15,9 @@ best_season: "Year round"
 duration: "1–2 hours"
 hero_image: "/assets/images/food/dishes/kabuli-palaw/hero.webp"
 nearby: ["Ghazni City", "Minarets of Ghazni", "Citadel"]
+gallery_images:
+  - "/assets/images/food/dishes/kabuli-pulao/gallery-1.webp"
+  - "/assets/images/food/dishes/kabuli-pulao/gallery-2.webp"
 ---
 
 Palaw — Afghanistan’s celebrated rice hospitality — belongs in Ghazni as much as in any historic stop along the southern and central corridors. This culinary experience focuses on shared rice meals rather than a single named restaurant.
