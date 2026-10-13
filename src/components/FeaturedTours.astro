@@ -277,7 +277,7 @@ const clientTours = safeTours.map((tour: any) => ({
         <div class="featured-rail" aria-label="Featured tour selector">
           {safeTours.map((tour, index) => (
             <button type="button" class={`featured-thumb ${index === 0 ? 'is-active' : ''}`} data-featured-select={index}>
-              <img src={heroOf(tour)} alt="" loading="lazy" />
+              <img src={heroOf(tour)} alt={titleOf(tour)} loading="lazy" />
               <span>{productClassOf(tour)} · {tour.season || 'Year-round'}</span>
               <strong>{titleOf(tour)}</strong>
               <small class="featured-thumb-price">{priceLabelOf(tour)}</small>

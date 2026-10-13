@@ -11,7 +11,7 @@ const { eyebrow = 'Planning', title = '', intro = '', image = '', mapImage = '',
       </div>
       {(image || mapImage) && (
         <aside class="supporting-page__visual">
-          {image && <img src={image} alt="" loading="lazy" onerror="this.style.display='none'" />}
+          {image && <img src={image} alt={title} loading="lazy" onerror="this.style.display='none'" />}
           {mapImage && <img src={mapImage} alt={`${title} map`} loading="lazy" onerror="this.style.display='none'" />}
         </aside>
       )}

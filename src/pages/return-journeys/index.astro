@@ -6,17 +6,16 @@ const journeys = getReturnJourneys();
 ---
 <BaseLayout
   title="Return Journeys | AfghanTours"
-  description="Diaspora heritage returns and veterans, contractors, and diplomats return visits — inquiry-led, distinct from leisure tours and specialist services."
+  description="Heritage journeys for the Afghan diaspora, and return visits for veterans, contractors and diplomats — planned personally with our Kabul team."
   image="/assets/images/custom-tours/veteran-return/hero.webp"
 >
   <section class="rj-hero">
     <div class="rj-wrap">
       <p class="kicker">Return Journeys</p>
-      <h1>Coming back with context — not a brochure template.</h1>
+      <h1>Coming back, at your own pace.</h1>
       <p class="lead">
-        Return journeys are distinct from packaged leisure tours and from specialist research or media work.
-        We plan around personal history, privacy, family pace, and current access — without fixed Day&nbsp;1–N
-        itineraries, catalog durations, or published “from” prices.
+        Whether you are returning to a family home or to a place that shaped your service years, we plan
+        every journey around your history, your privacy and your family's pace — and send you a personal proposal.
       </p>
       <div class="row">
         <a class="btn-primary" href="/contact/?type=return">Request a Return Journey</a>
@@ -31,7 +30,7 @@ const journeys = getReturnJourneys();
       <div class="rj-grid">
         {journeys.map((j) => (
           <a class="rj-card" href={`/return-journeys/${j.slug}/`}>
-            <div class="rj-card__img"><img src={j.hero_image_path || j.image_path} alt="" loading="lazy" /></div>
+            <div class="rj-card__img"><img src={j.hero_image_path || j.image_path} alt={j.name} loading="lazy" /></div>
             <div class="rj-card__body">
               <p class="rj-card__label">Return journey · inquiry-led</p>
               <h2>{j.name}</h2>

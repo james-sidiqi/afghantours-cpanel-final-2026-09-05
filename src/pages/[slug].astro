@@ -326,7 +326,7 @@ const trustItems = [
         <div class="trust-grid">
           {trustItems.map(([heading, text]) => (
             <article class="trust-card">
-              {trustImages[heading] && <img class="trust-card__image" src={trustImages[heading]} alt="" loading="lazy" />}
+              {trustImages[heading] && <img class="trust-card__image" src={trustImages[heading]} alt={heading} loading="lazy" />}
               <div class="trust-card__body"><h3>{heading}</h3><p>{text}</p></div>
             </article>
           ))}
@@ -345,7 +345,7 @@ const trustItems = [
           </div>
           {faqSections.map((section) => (
             <section class="faq-section">
-              <figure class="faq-section__image"><img src={section.image} alt="" loading="lazy" /></figure>
+              <figure class="faq-section__image"><img src={section.image} alt={section.title} loading="lazy" /></figure>
               <div class="faq-section__content">
                 <h2>{section.title}</h2>
                 {section.items.map(([q, a]) => (

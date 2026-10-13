@@ -111,7 +111,7 @@
 .home-hero h1,
 .home-hero .hero-content h1,
 .info-hero h1,
-section[class*="hero"] h1,
+section[class*="hero"]:not(.act-hero):not(.act-detail-hero) h1,
 .editorial-title.text-white,
 .relative.text-white h1 {
   color: var(--at-white) !important;

@@ -37,7 +37,8 @@ h1, h2, h3, h4,
 .editorial-title {
   font-family: var(--font-display);
   font-weight: 700;
-  color: var(--at-ink);
+  /* Inherit so headings follow their section (light text on dark bands). */
+  color: inherit;
   line-height: var(--line-heading);
   letter-spacing: -0.04em;
 }
