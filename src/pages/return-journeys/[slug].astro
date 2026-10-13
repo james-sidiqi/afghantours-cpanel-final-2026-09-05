@@ -57,6 +57,9 @@ const diasporaExampleGallery = journey.slug === 'diaspora' ? [
     alt: 'James and his brother exploring snowy mountains together',
   },
 ] : [];
+// Guard: a data label must be text, never an asset path or URL.
+const rawCta = String(journey.cta_label || '').trim();
+const ctaLabel = rawCta && !/^\/|\/assets\/|\.(webp|jpe?g|png)$/i.test(rawCta) ? rawCta : 'Request a Return Journey';
 ---
 <BaseLayout
   title={`${journey.name} | Return Journeys | AfghanTours`}
@@ -69,7 +72,7 @@ const diasporaExampleGallery = journey.slug === 'diaspora' ? [
         <p class="kicker">Return journey · inquiry-led</p>
         <h1>{journey.name}</h1>
         <p class="summary">{journey.summary}</p>
-        <a class="btn-primary" href={inquiryHref}>{journey.cta_label || 'Request a Return Journey'}</a>
+        <a class="btn-primary" href={inquiryHref}>{ctaLabel}</a>
       </div>
     </header>
 
@@ -135,7 +138,7 @@ const diasporaExampleGallery = journey.slug === 'diaspora' ? [
       <div class="cta-band">
         <h2>Request a Return Journey</h2>
         <p>Share your goals, timing, and any privacy preferences. We reply from Kabul with what is workable.</p>
-        <a class="btn-primary" href={inquiryHref}>{journey.cta_label || 'Request a Return Journey'}</a>
+        <a class="btn-primary" href={inquiryHref}>{ctaLabel}</a>
         <p class="cta-note"><a href="/specialist-services/">Specialist Services</a> · <a href="/custom-requests/">Build My Journey</a> · <a href="/tours/">Tour Packages</a></p>
       </div>
     </section>
