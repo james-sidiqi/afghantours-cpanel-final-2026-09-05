@@ -1,5 +1,5 @@
 ---
-title: Bamyan Potatoes
+title: "Potatoes"
 food_slug: bamyan-potatoes
 section: food_content
 save_to: src/content/food/produce/bamyan-potatoes.md
@@ -8,7 +8,7 @@ image: "/assets/images/food/dishes/bamyan-potatoes/hero.webp"
 ---
 
 ### Overview
-High-altitude potatoes from Bamyan known throughout the country.
+Potatoes are a staple of Afghan home cooking, from stews to bolani fillings.
 
 ### Cultural Context
 

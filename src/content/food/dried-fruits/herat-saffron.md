@@ -1,5 +1,5 @@
 ---
-title: Herat Saffron
+title: "Saffron"
 food_slug: herat-saffron
 section: food_content
 save_to: src/content/food/produce/herat-saffron.md
@@ -8,7 +8,7 @@ image: "/assets/images/food/dried-fruit/herat-saffron/hero.webp"
 ---
 
 ### Overview
-World-renowned saffron cultivated in Herat Province.
+Afghan saffron, grown mostly in Herat Province, which produces over 90 percent of the country’s saffron.
 
 ### Cultural Context
 

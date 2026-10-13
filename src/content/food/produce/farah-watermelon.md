@@ -1,5 +1,5 @@
 ---
-title: Farah Watermelon
+title: "Watermelons"
 food_slug: farah-watermelon
 section: food_content
 save_to: src/content/food/produce/farah-watermelon.md

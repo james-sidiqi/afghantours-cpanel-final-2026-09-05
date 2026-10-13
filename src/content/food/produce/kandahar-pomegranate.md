@@ -1,5 +1,5 @@
 ---
-title: "Kandahar Pomegranate"
+title: "Pomegranates"
 slug: "kandahar-pomegranate"
 food_slug: "kandahar-pomegranate"
 category: "Produce"
@@ -7,7 +7,7 @@ hero_image: "/assets/images/food/produce/kandahar-pomegranate/hero.webp"
 image: "/assets/images/food/produce/kandahar-pomegranate/hero.webp"
 ---
 
-### Kandahar Pomegranate
+### Pomegranates
 
 Ruby red pomegranates famous across Afghanistan.
 

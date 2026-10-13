@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/inject-photo-credits.mjs",
     "preview": "astro preview",
     "postbuild": "node scripts/generate-sitemap.mjs && node scripts/booking-copy-seed.mjs",
     "audit:site": "python3 scripts/site_integrity_audit.py .",

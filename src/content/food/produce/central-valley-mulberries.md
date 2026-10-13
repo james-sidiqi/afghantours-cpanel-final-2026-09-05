@@ -1,6 +1,6 @@
 ---
-title: "Central Valley Mulberries"
-description: "Iconic sweet white and black mulberries enjoyed fresh during late spring or sun-dried for mountain travel snacks."
+title: "Mulberries"
+description: "Sweet white and black mulberries (toot), eaten fresh in late spring or sun-dried and paired with walnuts."
 ---
 
 ## Overview

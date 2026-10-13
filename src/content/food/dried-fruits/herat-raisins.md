@@ -1,5 +1,5 @@
 ---
-title: Herat Raisins
+title: "Raisins"
 food_slug: herat-raisins
 section: food_content
 save_to: src/content/food/produce/herat-raisins.md
@@ -8,7 +8,7 @@ image: "/assets/images/food/dried-fruit/herat-raisins/hero.webp"
 ---
 
 ### Overview
-Raisins from Herat produced from centuries-old vineyard traditions.
+Raisins, one of Afghanistan’s traditional dried-fruit staples, sold by variety in bazaars.
 
 ### Cultural Context
 
