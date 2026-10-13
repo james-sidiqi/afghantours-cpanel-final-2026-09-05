@@ -235,8 +235,7 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
   },
   {
     "paths": [
-      "/assets/images/experiences/activities/sightseeing/hero.webp",
-      "/assets/images/experiences/activities/sightseeing/thumb.webp"
+      "/assets/images/experiences/activities/sightseeing/hero.webp"
     ],
     "author": "AhmadElhan",
     "license": "CC BY-SA 4.0",

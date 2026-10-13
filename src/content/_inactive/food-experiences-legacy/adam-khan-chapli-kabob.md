@@ -4,8 +4,8 @@ subtitle: "Eastern Afghanistan’s famous chapli kabob culture, best paired with
 card_description: "Adam Khan in Jalalabad is the most famous chapli kabob restaurant in the country known for their larger than life meat patties and even larger chefs who prepare the patties in front of the customers."
 category: "Cultural Experiences"
 experience_type: "Food & Culture Experience"
-hero_image: "/assets/images/food/adam-khan-chapli/hero.webp"
-image: "/assets/images/food/adam-khan-chapli/hero.webp"
+hero_image: "/assets/images/experiences/culinary/adam-khan-chapli-kabob/hero.webp"
+image: "/assets/images/experiences/culinary/adam-khan-chapli-kabob/hero.webp"
 provinces: ["Nangarhar"]
 paired_foods: ["Fresh Sugar Cane Juice"]
 best_season: "Year round"

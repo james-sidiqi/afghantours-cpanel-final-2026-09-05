@@ -14,7 +14,6 @@ related_tours: ["weekend-in-kabul", "kabul-surroundings", "custom-tours"]
 nearby: ["Kabul Rooftops", "Tapa-e-Maranjan", "Mazar Rooftops"]
 gallery:
   - "/assets/images/experiences/cultural/gudiparan-bazi/hero.webp"
-  - "/assets/images/experiences/cultural/gudiparan-bazi/gallery/01.webp"
 ---
 
 On crisp windy afternoons, Afghan skies can fill with hundreds of kites. **Gudiparan Bazi** is not casual flying. It is strategy, patience, craft, and competition.

@@ -14,7 +14,6 @@ related_tours: ["weekend-in-kabul", "kabul-surroundings", "custom-tours"]
 nearby: ["Kabul Neighborhoods", "Ghazni Old City", "Mazar"]
 gallery:
   - "/assets/images/experiences/cultural/pahlawani/hero.webp"
-  - "/assets/images/experiences/cultural/pahlawani/gallery/01.webp"
 ---
 
 Every Friday in different parts of Afghanistan, open spaces can transform into informal wrestling arenas. Spectators gather around a dirt ring as powerful competitors grip, lean, sweep, and throw in the tradition of **Pahlawani**.

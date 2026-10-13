@@ -13,7 +13,7 @@ related_food_slugs: ["kabuli-pulao"]
 provinces: ["Ghazni"]
 best_season: "Year round"
 duration: "1–2 hours"
-hero_image: "/assets/images/experiences/culinary/ghazni-palaw/hero.webp"
+hero_image: "/assets/images/food/dishes/kabuli-palaw/hero.webp"
 nearby: ["Ghazni City", "Minarets of Ghazni", "Citadel"]
 ---
 

@@ -13,7 +13,7 @@ related_food_slugs: ["kunar-trout"]
 provinces: ["Kunar"]
 best_season: "Spring–autumn"
 duration: "1–2 hours"
-hero_image: "/assets/images/experiences/culinary/kunar-trout/hero.webp"
+hero_image: "/assets/images/food/dishes/kunar-trout/hero.webp"
 nearby: ["Kunar River", "Asadabad", "Kunar Valley", "Jalalabad"]
 ---
 

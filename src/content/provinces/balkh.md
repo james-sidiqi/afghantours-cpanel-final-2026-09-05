@@ -7,7 +7,7 @@ province_code: BAL
 region: North
 center_lat: 36.73
 center_lon: 66.95
-province_image_path: /assets/images/provinces/balkh/hero.webp
+province_image_path: /assets/images/featured-tours/treasures-of-silk-road-afghanistan/hero.webp
 related_tour_slugs: "buzkashi-expedition|summer-circuit|winter-circuit|treasures-of-silk-road-afghanistan|custom-expedition"
 ---
 

@@ -4,8 +4,8 @@ subtitle: "Cakes, cookies, crème rolls, and Kabul celebration sweets in the hea
 card_description: "Stop at Aziz Bakery for Afghan cakes, cookies, crème rolls, and the sweets that families carry to visits and celebrations."
 category: "Cultural Experiences"
 experience_type: "Food & Culture Experience"
-hero_image: "/assets/images/food/bakery-kabul/hero.webp"
-image: "/assets/images/food/bakery-kabul/hero.webp"
+hero_image: "/assets/images/food/dishes/naan/hero.webp"
+image: "/assets/images/food/dishes/naan/hero.webp"
 provinces: ["Kabul"]
 paired_foods: ["Crème Rolls", "Afghan Cookies", "Tea"]
 best_season: "Year round"

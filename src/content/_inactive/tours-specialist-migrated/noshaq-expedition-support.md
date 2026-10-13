@@ -28,12 +28,12 @@ provinces:
 transport_type: "Flight Kabul-Faizabad; 4WD to Ishkashim then horses/hiking"
 domestic_flights: true
 hero_image_path: "/assets/images/custom-tours/noshaq-expedition-support/hero.webp"
-overview_image_path: "/assets/images/custom-tours/noshaq-expedition-support/thumbnail.webp"
-thumbnail_image_path: "/assets/images/custom-tours/noshaq-expedition-support/thumbnail.webp"
+overview_image_path: "/assets/images/custom-tours/noshaq-expeditions/thumb.webp"
+thumbnail_image_path: "/assets/images/custom-tours/noshaq-expeditions/thumb.webp"
 gallery_images:
   - "/assets/images/custom-tours/noshaq-expedition-support/hero.webp"
-  - "/assets/images/custom-tours/noshaq-expedition-support/thumbnail.webp"
-  - "/assets/images/custom-tours/noshaq-expedition-support/thumbnail.webp"
+  - "/assets/images/custom-tours/noshaq-expeditions/thumb.webp"
+  - "/assets/images/custom-tours/noshaq-expeditions/thumb.webp"
 tour_highlights: []
 best_for: []
 accommodation_style: "3-star and 4-star hotels in central Kabul, Mazar-e-Sharif and Faizabad. While in the Wakhan camping tents."

@@ -14,7 +14,6 @@ related_tours: ["weekend-in-kabul", "kabul-surroundings", "custom-tours"]
 nearby: ["Old Kabul", "Kabul Rooftops", "Chicken Street"]
 gallery:
   - "/assets/images/experiences/cultural/kaftar-bazi/hero.webp"
-  - "/assets/images/experiences/cultural/kaftar-bazi/gallery/01.webp"
   - "/assets/images/experiences/cultural/kaftar-bazi/gallery/02.webp"
 ---
 

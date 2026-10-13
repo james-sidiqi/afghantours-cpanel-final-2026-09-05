@@ -5,7 +5,7 @@ import { getCustomJourneys } from '../../lib/buildRelations';
 
 const journey = getCustomJourneys()[0];
 const inquiryHref = buildCustomInquiryHref(journey ? { slug: journey.slug, name: journey.name, code: journey.journey_code } : undefined);
-const hero = journey?.hero_image_path || '/assets/images/custom-tours/custom-expedition/hero.webp';
+const hero = journey?.hero_image_path || '/assets/images/experiences/activities/horse-riding/hero.webp';
 ---
 <BaseLayout
   title="Build My Journey | Custom Requests | AfghanTours"

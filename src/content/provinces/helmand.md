@@ -7,7 +7,7 @@ province_code: HLM
 region: South
 center_lat: 31.43
 center_lon: 64.23
-province_image_path: /assets/images/provinces/helmand/hero.webp
+province_image_path: /assets/images/attractions/helmand-river-landscape/hero.webp
 related_tour_slugs: "custom-expedition"
 ---
 

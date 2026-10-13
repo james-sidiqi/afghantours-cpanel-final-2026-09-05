@@ -4,8 +4,8 @@ subtitle: "A beloved Kabul gathering place built around chilled dogh, families, 
 card_description: "Visit Chashma-e-Dogh for dogh, local snacks, family atmosphere, and a natural pairing with Istalif or western Kabul routes."
 category: "Cultural Experiences"
 experience_type: "Food & Culture Experience"
-hero_image: "/assets/images/food/chashma-e-dough/hero.webp"
-image: "/assets/images/food/chashma-e-dough/hero.webp"
+hero_image: "/assets/images/experiences/culinary/chashma-e-dogh/hero.webp"
+image: "/assets/images/experiences/culinary/chashma-e-dogh/hero.webp"
 provinces: ["Kabul"]
 paired_foods: ["Dogh"]
 best_season: "Spring–autumn"

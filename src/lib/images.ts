@@ -116,7 +116,6 @@ export function getRegionImage(region: any): string {
     region?.image_path,
     region?.hero_image,
     slug ? `/assets/images/regions/${slug}.webp` : null,
-    slug === 'afghanistan' ? '/assets/maps/afghanistan-map.webp' : null,
   ], PLACEHOLDERS.region);
 }
 
@@ -204,6 +203,8 @@ export function getAttractionImage(attraction: any): string {
     attraction?.slug ? `/assets/images/attractions/${attraction.slug}/hero.webp` : null,
     code ? `/assets/images/attractions/${code}/hero.webp` : null,
     code ? `/assets/images/attractions/${code}.webp` : null,
+    attraction?.card_image,
+    attraction?.hero_image,
   ], PLACEHOLDERS.attraction);
 }
 

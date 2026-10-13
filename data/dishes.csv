@@ -7,7 +7,7 @@ AF-NGH-CHK,Chapli Kabob,chapli-kabob,EAST,NGH,JBDC,Main,Lunch,0,1,12,Famous east
 AF-KBL-SHO,Shola,shola,CENTRAL,KBL,KBLC,Main,Dinner,0,1,12,Traditional rice and lentil dish slow cooked with spices.,/assets/images/placeholders/default-food.webp,TRUE
 AF-KBL-QGS,Qorma-e Gosht,qorma-e-gosht,CENTRAL,KBL,KBLC,Main,Dinner,0,1,12,Traditional Afghan meat stew served with rice.,/assets/images/placeholders/default-food.webp,TRUE
 AF-KBL-QSB,Qorma-e Sabzi,qorma-e-sabzi,CENTRAL,KBL,KBLC,Main,Dinner,0,1,12,Spinach and herb stew served with rice.,/assets/images/placeholders/default-food.webp,TRUE
-AF-KBL-KEB,Seekh Kabob,seekh-kabob,CENTRAL,KBL,KBLC,Main,Dinner,0,1,12,Charcoal grilled skewers of seasoned meat.,/assets/images/food/dishes/kabob/hero.webp,TRUE
+AF-KBL-KEB,Seekh Kabob,seekh-kabob,CENTRAL,KBL,KBLC,Main,Dinner,0,1,12,Charcoal grilled skewers of seasoned meat.,/assets/images/experiences/culinary/bamyan-kabob/hero.webp,TRUE
 AF-KBL-LAN,Landi,landi,CENTRAL,KBL,KBLC,Traditional,Dinner,0,11,2,Traditional dried meat prepared during winter.,/assets/images/placeholders/default-food.webp,TRUE
 AF-KBL-FIR,Firni,firni-pudding,CENTRAL,KBL,KBLC,Dessert,Dessert,0,1,12,Creamy milk pudding flavored with cardamom.,/assets/images/food/dishes/firni/hero.webp,TRUE
 AF-KDR-SPR,Sheer Pira,sheer-pira,SOUTH,KDR,KDRC,Dessert,Dessert,0,1,12,Milk fudge flavored with cardamom.,/assets/images/food/dishes/sheer-pira/hero.webp,TRUE
@@ -21,7 +21,7 @@ AF-HER-SAF,Herat Saffron,herat-saffron,WEST,HER,HERC,Produce,Ingredient,1,10,11,
 AF-BAL-MEL,Balkh Melon,balkh-melon,NORTH,BAL,MAZC,Produce,Snack,1,8,10,Sweet melon grown in Balkh province.,/assets/images/food/produce/balkh-melons/hero.webp,TRUE
 AF-KDZ-MEL,Kunduz Melon,kunduz-melon,NORTH,KDZ,MAZC,Produce,Snack,1,7,9,Northern summer melon with floral aroma.,/assets/images/food/produce/kunduz-melon/hero.webp,TRUE
 AF-PJR-WAL,Panjshir Walnuts,panjshir-walnuts,CENTRAL,PJR,KBLC,Produce,Snack,1,9,10,Fresh walnuts harvested in Panjshir valley.,/assets/images/food/dried-fruit/panjshir-walnuts/hero.webp,TRUE
-AF-FRH-WAT,Farah Watermelon,farah-watermelon,WEST,FRH,HERC,Produce,Snack,1,5,8,Large red watermelon grown in Farah.,/assets/images/food/produce/farah-watermellons/hero.webp,TRUE
+AF-FRH-WAT,Farah Watermelon,farah-watermelon,WEST,FRH,HERC,Produce,Snack,1,5,8,Large red watermelon grown in Farah.,/assets/images/food/produce/farah-watermelon/gallery-1.webp,TRUE
 AF-SAM-PIS,Samangan Pistachios,samangan-pistachios,NORTH,SAM,MAZC,Produce,Snack,1,8,10,Famous wild pistachios from Samangan.,/assets/images/food/dried-fruit/samangan-pistachios/hero.webp,TRUE
 AF-HER-RAI,Herat Raisins,herat-raisins,WEST,HER,HERC,Produce,Snack,1,8,10,Sun dried raisins from Herat vineyards.,/assets/images/food/dried-fruit/herat-raisins/hero.webp,TRUE
 AF-BAL-ALM,Balkh Almonds,balkh-almonds,NORTH,BAL,MAZC,Produce,Snack,1,8,10,Crunchy almonds grown in Balkh province.,/assets/images/food/dried-fruit/balkh-almonds/hero.webp,TRUE

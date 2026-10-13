@@ -106,6 +106,7 @@ const foodCollection = defineCollection({
     hero_image: z.string().optional(),
     image: z.string().optional(),
     card_image: z.string().optional(),
+    gallery_images: z.array(z.string()).default([]),
     paired_foods: z.array(z.string()).default([]),
     best_season: z.string().optional(),
     duration: z.string().optional(),
