@@ -5,6 +5,10 @@ subtitle: "Birding can be incorporated naturally into many AfghanTours itinerari
 card_description: "Add time for birdlife observation to most tours, or plan a private itinerary around particular habitats and target species."
 best_season: "Varies by region, habitat and season"
 duration: "Extra observation time within a tour, up to a private birding itinerary"
+hero_image: "/assets/images/experiences/activities/birding/hero.webp"
+hero_alt: "European roller perched on a stone cairn beside a wheat field in Chal District, Takhar Province, Afghanistan"
+hero_credit: "Photo: Glynn Morris, CC BY 4.0, via Wikimedia Commons"
+hero_credit_url: "https://commons.wikimedia.org/wiki/File:European_Roller_imported_from_iNaturalist_photo_150544_on_28_February_2024.jpg"
 ---
 
 Birding can be incorporated naturally into many AfghanTours itineraries.

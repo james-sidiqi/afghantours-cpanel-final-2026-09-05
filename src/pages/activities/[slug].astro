@@ -84,6 +84,7 @@ const journeyHref = buildActivityInquiryHref({
         </p>
       </div>
       <img class="hero-img" src={heroImage} alt={data.hero_alt || title} />
+      {data.hero_credit && <p class="hero-credit" style="font-size:.72rem;opacity:.75;margin:.35rem 0 0">{data.hero_credit_url ? <a href={data.hero_credit_url} rel="noopener" target="_blank">{data.hero_credit}</a> : data.hero_credit}</p>}
     </div>
   </section>
 
