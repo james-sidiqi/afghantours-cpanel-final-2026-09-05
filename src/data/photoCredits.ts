@@ -15,7 +15,7 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
   },
   {
     "paths": [
-      "/assets/images/experiences/activities/birding/hero.webp"
+      "/assets/images/experiences/activities/birding/peacock-kabul-jsp012.webp"
     ],
     "author": "AfghanTours",
     "license": "© AfghanTours",
@@ -38,7 +38,7 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
   },
   {
     "paths": [
-      "/assets/images/experiences/activities/sightseeing/hero.webp"
+      "/assets/images/experiences/activities/sightseeing/shah-e-do-shamshira-kabul-jsp015.webp"
     ],
     "author": "AfghanTours",
     "license": "© AfghanTours",
@@ -49,8 +49,7 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
   },
   {
     "paths": [
-      "/assets/images/experiences/activities/shopping/hero.webp",
-      "/assets/images/experiences/activities/shopping/thumb.webp"
+      "/assets/images/experiences/activities/shopping/night-cherry-cart-kabul-jsp016.webp"
     ],
     "author": "AfghanTours",
     "license": "© AfghanTours",

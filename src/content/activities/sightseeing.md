@@ -5,7 +5,7 @@ subtitle: "City and countryside sightseeing wherever you travel."
 card_description: "Historic, religious, scenic and market sights — the heart of most Afghan journeys."
 best_season: "Year round (subject to site access)"
 duration: "Varies — half day to full day; discuss during planning"
-hero_image: "/assets/images/experiences/activities/sightseeing/hero.webp"
+hero_image: "/assets/images/experiences/activities/sightseeing/shah-e-do-shamshira-kabul-jsp015.webp"
 ---
 
 Sightseeing is the heart of most Afghan journeys, wherever you travel.

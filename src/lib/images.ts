@@ -1,3 +1,4 @@
+import { isRejectedImage } from '../data/rejectedImages';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -23,7 +24,7 @@ function assetExists(publicPath?: string | null): boolean {
 function firstExisting(paths: Array<string | null | undefined>, fallback: string): string {
   const normalized = paths.map((p) => normalizeImagePath(p || '', '')).filter(Boolean);
   // Placeholder graphics in data are "no image": keep looking for a real file.
-  return normalized.find((p) => !isPlaceholder(p) && assetExists(p)) || fallback;
+  return normalized.find((p) => !isPlaceholder(p) && !isRejectedImage(p) && assetExists(p)) || fallback;
 }
 
 export function isPlaceholder(src?: string | null): boolean {
@@ -68,6 +69,7 @@ export function listPublicImages(publicFolder?: string | null, recursive = true)
       if (!allowed.has(path.extname(entry.name).toLowerCase())) continue;
 
       const relative = path.relative(publicRoot, full).split(path.sep).join('/');
+      if (isRejectedImage('/' + relative)) continue;
       results.push(`/${relative}`);
     }
   };
