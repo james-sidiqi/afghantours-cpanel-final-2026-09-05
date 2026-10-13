@@ -300,7 +300,10 @@ export function buildHubIndexCatalog(): HubCatalogItem[] {
     if (g.airport) {
       transport.push([
         String(g.airport).split('(')[0].trim() || 'Airport',
-        `/assets/images/transport/airports/${slug}/hero.webp`,
+        // Only reference an airport photo that exists (4 hubs have none yet: see PR #33 report).
+        fs.existsSync(path.join(process.cwd(), 'public', 'assets/images/transport/airports', slug, 'hero.webp'))
+          ? `/assets/images/transport/airports/${slug}/hero.webp`
+          : '',
         '/transportation/',
       ]);
     }
