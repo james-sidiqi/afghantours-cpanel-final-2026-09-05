@@ -1,23 +1,19 @@
 ---
 title: "Horse Riding"
 activity_code: "ACT-HRS"
-subtitle: "Equestrian outings linked to Kabul and Mazar corridors."
+subtitle: "Horse riding around Kabul and Mazar-e-Sharif."
 card_description: "Horse-riding experiences arranged from Kabul and Mazar-e-Sharif when local horses, handlers, and routes are available."
 best_season: "Varies (subject to horses, handlers, and routes)"
 duration: "Varies — typically 1–3 hours; discuss during planning"
 hero_image: "/assets/images/experiences/activities/horse-riding/hero.webp"
 ---
 
-Horse riding is arranged from **Kabul** and **Mazar-e-Sharif** when local horses, handlers, and routes are available.
+Horse riding is available around **Kabul** and **Mazar-e-Sharif**, with local horses and experienced handlers.
 
-## Cultural neighbor
+## A northern tradition
 
-Northern equestrian culture also appears in Cultural Experiences through Buzkashi. Horse riding as an activity is a softer, planned outing — not a buzkashi match product.
-
-## Honest framing
-
-Availability depends on local horses and hosts. This page does not invent stables, hourly rates, or guaranteed countryside rides.
+The north is horse country — it's home to Buzkashi, which you can watch as a Cultural Experience. Riding with us is a gentler outing through the countryside.
 
 ## Planning
 
-When workable, riding is arranged as part of hub-based days, not as a freestanding retail booking widget.
+We arrange rides with trusted local hosts as part of your day, depending on the season and the availability of horses.

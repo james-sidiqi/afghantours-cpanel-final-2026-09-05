@@ -22,7 +22,7 @@ const data = { ...row, ...(md?.data || {}) };
 const slug = row.slug;
 const title = data.title || row.name;
 const subtitle = data.subtitle || data.card_description || row.card_description || '';
-const description = data.card_description || row.card_description || `Explore ${title}, a hub-arranged activity in Afghanistan.`;
+const description = data.card_description || row.card_description || `Explore ${title} in Afghanistan with AfghanTours.`;
 const heroImage = getActivityImage({ slug, hero_image: data.hero_image, image: data.image });
 const galleryImages = getActivityGallery({ slug, gallery_images: data.gallery_images }).slice(0, 8);
 const hubRels = getHubsForActivity(slug);
@@ -93,8 +93,8 @@ const journeyHref = buildActivityInquiryHref({
         {Content ? <Content /> : <p>{description}</p>}
       </article>
       {hubs.length > 0 && <aside class="sidebar">
-        <h2>Arrange from hubs</h2>
-        <p class="side-intro">These hubs are where we can arrange this activity when access allows — not automatic tour inclusions.</p>
+        <h2>Where we offer it</h2>
+        <p class="side-intro">Our team can arrange this activity from these bases, depending on the season and access.</p>
         <ul>
           {hubs.map((h) => (
             <li>
@@ -103,7 +103,7 @@ const journeyHref = buildActivityInquiryHref({
             </li>
           ))}
         </ul>
-        <a class="sidebar-secondary" href="/hubs/">Browse travel hubs →</a>
+        <a class="sidebar-secondary" href="/hubs/">Explore our travel bases →</a>
       </aside>}
     </div>
   </section>
@@ -112,7 +112,7 @@ const journeyHref = buildActivityInquiryHref({
     <section class="act-related-tours">
       <div class="act-detail-wrap">
         <h2>Tours featuring this activity</h2>
-        <p class="related-intro">Only itineraries with an explicit activity relationship are listed here. Shared hubs alone do not create a link.</p>
+        <p class="related-intro">These tours include this activity in their itinerary.</p>
         <div class="tour-grid">
           {featuredTours.map((tour) => (
             <a class="tour-card" href={tour.href}>
@@ -134,7 +134,7 @@ const journeyHref = buildActivityInquiryHref({
       <div class="act-detail-wrap">
         <h2>Gallery</h2>
         <div class="gal-grid">
-          {galleryImages.map((src, i) => <img src={src} alt={(data.gallery_images || []).indexOf(src) >= 0 ? (data.gallery_alt || [])[(data.gallery_images || []).indexOf(src)] || '' : ''} loading="lazy" />)}
+          {galleryImages.map((src, i) => <img src={src} alt={((data.gallery_alt || [])[(data.gallery_images || []).indexOf(src)]) || `${title} — photo ${i + 1}`} loading="lazy" />)}
         </div>
       </div>
     </section>

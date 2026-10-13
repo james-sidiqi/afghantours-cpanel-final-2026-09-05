@@ -6,17 +6,17 @@ const services = getSpecialistServices();
 ---
 <BaseLayout
   title="Specialist Services | AfghanTours"
-  description="Proposal-led specialist support for photography, research, media, business, mountaineering, and related fieldwork — not fixed tour packages."
+  description="Tailored ground support in Afghanistan for photographers, researchers, journalists, business visitors and mountaineering teams."
   image="/assets/images/custom-tours/scientific-expeditions/hero.webp"
 >
   <section class="svc-hero">
     <div class="svc-wrap">
       <p class="kicker">Specialist Services</p>
-      <h1>Support built around your brief — not a brochure itinerary.</h1>
+      <h1>Expert ground support, built around your work.</h1>
       <p class="lead">
-        These are proposal-led services for photographers, researchers, journalists, business visitors,
-        mountaineers, and other specialist teams. We do not advertise fixed durations, Day&nbsp;1–N
-        itineraries, scheduled leisure departures, or catalog “from” prices for this work.
+        From our base in Kabul we support photographers, researchers, journalists, business visitors,
+        mountaineers and other specialist teams. Tell us what you need to achieve — our team plans the
+        logistics, local contacts and timing, and sends you a personal proposal.
       </p>
       <div class="svc-cta-row">
         <a class="btn-primary" href="/contact/?type=specialist">Request a Proposal</a>
@@ -32,10 +32,10 @@ const services = getSpecialistServices();
         {services.map((s) => (
           <a class="svc-card" href={`/specialist-services/${s.slug}/`}>
             <div class="svc-card__img">
-              <img src={s.hero_image_path || s.image_path} alt="" loading="lazy" />
+              <img src={s.hero_image_path || s.image_path} alt={s.name} loading="lazy" />
             </div>
             <div class="svc-card__body">
-              <p class="svc-card__label">Specialist · proposal-led</p>
+              <p class="svc-card__label">Specialist service</p>
               <h2>{s.name}</h2>
               <p>{s.summary}</p>
               <span class="svc-card__cta">{s.cta_label || 'Request a Proposal'} →</span>

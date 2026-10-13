@@ -88,13 +88,13 @@ export function publicVenueTypeLabel(item: CulinaryRow): string | null {
 export function routeContextLabel(ctx?: string): string {
   switch (ctx) {
     case 'in-hub':
-      return 'In hub';
+      return 'In the city';
     case 'near-hub':
-      return 'Near hub';
+      return 'Nearby';
     case 'day-trip':
-      return 'Day trip from hub';
+      return 'Day trip';
     case 'excursion':
-      return 'Hub excursion';
+      return 'Excursion';
     default:
       return 'Culinary experience';
   }

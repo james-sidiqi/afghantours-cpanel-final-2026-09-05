@@ -35,27 +35,26 @@ const items = csvItems.map((row) => {
 
 <BaseLayout
   title="Culinary Experiences | AfghanTours"
-  description="Hub-based culinary experiences across Afghanistan — restaurants, bakeries, markets, and roadside food culture planned from operational travel hubs."
+  description="Culinary experiences across Afghanistan — restaurants, bakeries, markets and roadside food culture, woven into your journey."
 >
   <section class="culin-index-hero">
     <div class="culin-index-hero-inner">
       <p>Food on the journey</p>
       <h1>Culinary Experiences</h1>
       <span>
-        Planned from travel hubs — not a standalone restaurant directory.
-        Taste chapli kabob, dogh, bakery sweets, highland quroot, and
-        regional hospitality as part of a practical route.
+        Taste chapli kabob, dogh, bakery sweets, highland quroot and
+        warm regional hospitality — woven naturally into your journey.
       </span>
-      <a class="culin-index-hero-link" href="/cultural-experiences/">Browse cultural experiences</a>
+      <a class="culin-index-hero-link" href="/cultural-experiences/">Looking for crafts, music and traditions? See Cultural Experiences →</a>
     </div>
   </section>
 
-  <main class="culin-index-main">
+  <div class="culin-index-main">
     <div class="culin-index-wrap">
       <div class="culin-index-heading">
         <div>
-          <p>Hub-based catalog</p>
-          <h2>Eleven culinary experiences across Afghanistan’s travel hubs.</h2>
+          <p>Food across Afghanistan</p>
+          <h2>Eleven culinary experiences across Afghanistan.</h2>
         </div>
         <span>{items.length} experiences</span>
       </div>
@@ -81,7 +80,7 @@ const items = csvItems.map((row) => {
         ))}
       </div>
     </div>
-  </main>
+  </div>
 </BaseLayout>
 
 <style>

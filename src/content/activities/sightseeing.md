@@ -1,23 +1,19 @@
 ---
 title: "Sightseeing"
 activity_code: "ACT-SGT"
-subtitle: "City and field sightseeing routed from every active hub."
-card_description: "Hub-based sightseeing across historic, religious, scenic, and market contexts — the backbone of most Afghan journeys."
+subtitle: "City and countryside sightseeing wherever you travel."
+card_description: "Historic, religious, scenic and market sights — the heart of most Afghan journeys."
 best_season: "Year round (subject to site access)"
 duration: "Varies — half day to full day; discuss during planning"
 hero_image: "/assets/images/experiences/activities/sightseeing/hero.webp"
 ---
 
-Sightseeing is the backbone of most Afghan journeys and can be arranged from **every active hub**.
+Sightseeing is the heart of most Afghan journeys, wherever you travel.
 
-## Contexts
+## What you'll see
 
-Sightseeing spans historic sites, religious places, scenic viewpoints, and market streets. Sub-themes (historical, religious, scenic, markets) may use shared imagery under the experiences/activities asset tree without changing public URLs. **Shopping is a separate top-level activity** (`/activities/shopping/`), not a sightseeing subtype — do not treat `sightseeing/shopping/` media as canonical.
-
-## How hubs use it
-
-Each hub page lists sightseeing because city and nearby field visits are core to how that hub functions as a travel base. Attractions remain their own pages; sightseeing is the activity class that groups the visit style.
+Historic monuments, shrines and mosques, scenic viewpoints and lively market streets. For shopping time, see our Shopping activity.
 
 ## Planning
 
-Access, opening patterns, and crowd conditions vary. Specific site sequences are confirmed during itinerary planning — this page does not invent timed entry tickets or fixed circuits.
+Opening hours and access change with the season, so our team confirms the order of visits with you as we plan your days.

@@ -148,18 +148,18 @@ export function getActivitiesForHub(hubSlug: string): RelationRow[] {
 export function accessTypeLabel(ctx?: string): string {
   switch (String(ctx || '')) {
     case 'in-hub':
-      return 'In hub';
+      return 'In the city';
     case 'near-hub':
-      return 'Near hub';
+      return 'Nearby';
     case 'day-trip':
     case 'day-trip / excursion':
       return 'Day trip / excursion';
     case 'excursion':
-      return 'Hub excursion';
+      return 'Excursion';
     case 'event-based':
       return 'Event-based';
     case 'from-hub':
-      return 'From hub';
+      return 'Day outing';
     case 'seasonal':
       return 'Seasonal';
     case 'expedition-base':

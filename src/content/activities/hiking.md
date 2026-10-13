@@ -1,25 +1,23 @@
 ---
 title: "Hiking"
 activity_code: "ACT-HIK"
-subtitle: "Day hikes and highland walks arranged from Afghanistan’s travel hubs."
-card_description: "Guided hiking arranged from operational hubs — valleys, viewpoints, and highland paths scoped around current access. Not a fixed trail catalog."
-best_season: "Varies by hub and route (subject to conditions)"
+subtitle: "Day hikes and highland walks across Afghanistan."
+card_description: "Guided walks through valleys, viewpoints and highland paths, chosen for the season and the conditions on the day."
+best_season: "Varies by region and route"
 duration: "Varies — half day to full day; discuss during planning"
 hero_image: "/assets/images/experiences/activities/hiking/hero.webp"
 ---
 
-Hiking in Afghanistan is arranged from operational travel hubs — not as a freestanding catalog of named trailheads with guaranteed schedules.
+Afghanistan is made for walking — green valleys, quiet viewpoints and highland paths where the only sound is the wind and a shepherd's call.
 
 ## How it works
 
-From each active hub, day hikes and viewpoint walks can be scoped around current road access, weather, and local guidance. Routes vary by region — highland valleys near Bamyan, foothill walks around Kabul, and corridor day options from other hubs when conditions allow.
-
-Hub listings mean we can **arrange hiking from** that hub. They are not automatic tour inclusions.
+Our guides choose day hikes and viewpoint walks to suit the season, the weather and your pace: highland valleys around Bamyan, foothill walks near Kabul, and wider countryside routes elsewhere when conditions are right.
 
 ## How outings are planned
 
-Routes, timing, and pricing depend on the season and local conditions, so our team confirms the exact outing with you during planning.
+Routes, timing and pricing depend on the season and local conditions, so our team confirms the exact outing with you as we plan your journey.
 
 ## Related travel
 
-Hiking often pairs with sightseeing days and, in the central highlands, with longer Bamyan stays. Multi-day highland walking arranged from Faizabad belongs under Trekking.
+Hiking pairs beautifully with sightseeing days and with longer stays in Bamyan. For multi-day walking in the high mountains, see Trekking.
