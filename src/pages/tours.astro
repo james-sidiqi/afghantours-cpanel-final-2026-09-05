@@ -103,8 +103,9 @@ const featuredTours = itineraryTours
   .tour-list-intro > div {
     width: min(1180px, calc(100% - 2rem));
     margin: 0 auto;
-    max-width: 900px;
   }
+  /* Readable measure without indenting the block off the 1180px container edge. */
+  .tour-list-intro > div > * { max-width: 900px; }
   .tour-list-intro p {
     margin: 0;
     color: var(--at-gold-text);
@@ -130,9 +131,9 @@ const featuredTours = itineraryTours
   .class-wrap {
     width: min(1180px, calc(100% - 2rem));
     margin: 0 auto;
-    max-width: 900px;
     padding-top: 1.5rem;
   }
+  .class-wrap > * { max-width: 900px; }
   .class-kicker {
     margin: 0;
     color: var(--at-gold-text);
