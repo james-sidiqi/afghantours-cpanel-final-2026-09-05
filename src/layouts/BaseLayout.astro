@@ -13,11 +13,21 @@ const {
   title = 'AfghanTours',
   description = 'Kabul-based journeys across Afghanistan, planned with local knowledge, experienced guides, trusted drivers, and realistic routes.',
   image = '/assets/images/heroes/home/hero.webp',
-  robots = 'index,follow,max-image-preview:large'
+  robots = 'index,follow,max-image-preview:large',
+  // Optional social-preview overrides (default to the page values, so pages that don't pass them are unchanged).
+  ogTitle,
+  ogDescription,
+  ogImage: ogImageProp,
+  ogImageWidth,
+  ogImageHeight,
+  ogImageAlt
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://afghantours.com').toString();
-const ogImage = new URL(image, Astro.site ?? 'https://afghantours.com').toString();
+const schemaImage = new URL(image, Astro.site ?? 'https://afghantours.com').toString();
+const ogImage = new URL(ogImageProp || image, Astro.site ?? 'https://afghantours.com').toString();
+const socialTitle = ogTitle || title;
+const socialDescription = ogDescription || description;
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'TravelAgency',
@@ -25,7 +35,7 @@ const organizationSchema = {
   alternateName: 'James Tourist & Travel Agency',
   url: 'https://afghantours.com/',
   logo: 'https://afghantours.com/assets/images/logo/header-logo.webp',
-  image: ogImage,
+  image: schemaImage,
   email: 'info@afghantours.com',
   telephone: '+93780123456',
   contactPoint: [
@@ -52,14 +62,17 @@ const organizationSchema = {
     <meta name="description" content={description} />
     <meta name="robots" content={robots} />
     <link rel="canonical" href={canonical} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={socialTitle} />
+    <meta property="og:description" content={socialDescription} />
     <meta property="og:image" content={ogImage} />
+    {ogImageWidth && <meta property="og:image:width" content={String(ogImageWidth)} />}
+    {ogImageHeight && <meta property="og:image:height" content={String(ogImageHeight)} />}
+    {ogImageAlt && <meta property="og:image:alt" content={ogImageAlt} />}
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content="AfghanTours.com" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" content={socialTitle} />
+    <meta name="twitter:description" content={socialDescription} />
     <meta name="twitter:image" content={ogImage} />
     <meta property="og:type" content="website" />
     <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
