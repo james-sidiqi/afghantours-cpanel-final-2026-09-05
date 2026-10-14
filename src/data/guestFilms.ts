@@ -14,11 +14,12 @@ export interface GuestFilm {
 }
 
 export const GUEST_FILMS: GuestFilm[] = [
-  { id: 'MI8hSJe7g-k', caption: 'Flying in and first days in Afghanistan', place: 'Kabul', sourceTitle: 'I Flew to Afghanistan in 2024', pages: ['about'] },
+  // James t268: removed from About (only Kabul visitor film kept there); other pages unchanged.
+  { id: 'MI8hSJe7g-k', caption: 'Flying in and first days in Afghanistan', place: 'Kabul', sourceTitle: 'I Flew to Afghanistan in 2024', pages: [] },
   { id: 'fh6s-ffN16E', caption: 'Seeing Kabul as a visitor', place: 'Kabul', sourceTitle: 'Kabul Tourism in 2024', pages: ['about', 'hub:kabul-city', 'tour:weekend-in-kabul', 'tour:kabul-surroundings'] },
-  { id: 'r90wj5eukwI', caption: 'Living like a local in Kabul', place: 'Kabul', sourceTitle: 'I Lived like a Local in Kabul', pages: ['about', 'hub:kabul-city', 'tour:weekend-in-kabul'] },
-  { id: '-kgzH7XtxN0', caption: 'The Buddha niches of Bamyan', place: 'Bamyan', sourceTitle: "Buddhas of Bamyan in Taliban's Afghanistan", pages: ['about', 'hub:bamyan-city', 'tour:winter-circuit', 'tour:bamyan-skiing-tour'] },
-  { id: 'F_NkPf9OCnA', caption: 'Skiing the slopes of Bamyan', place: 'Bamyan', sourceTitle: "Skiing in Taliban's Afghanistan (Crazy Experience)", pages: ['about', 'hub:bamyan-city', 'activity:skiing', 'tour:bamyan-skiing-tour', 'tour:ski-expeditions', 'tour:winter-circuit'] },
+  { id: 'r90wj5eukwI', caption: 'Living like a local in Kabul', place: 'Kabul', sourceTitle: 'I Lived like a Local in Kabul', pages: ['hub:kabul-city', 'tour:weekend-in-kabul'] },
+  { id: '-kgzH7XtxN0', caption: 'The Buddha niches of Bamyan', place: 'Bamyan', sourceTitle: "Buddhas of Bamyan in Taliban's Afghanistan", pages: ['hub:bamyan-city', 'tour:winter-circuit', 'tour:bamyan-skiing-tour'] },
+  { id: 'F_NkPf9OCnA', caption: 'Skiing the slopes of Bamyan', place: 'Bamyan', sourceTitle: "Skiing in Taliban's Afghanistan (Crazy Experience)", pages: ['hub:bamyan-city', 'activity:skiing', 'tour:bamyan-skiing-tour', 'tour:ski-expeditions', 'tour:winter-circuit'] },
 ];
 
 export const filmsFor = (key: string) => GUEST_FILMS.filter((f) => f.pages.includes(key));
