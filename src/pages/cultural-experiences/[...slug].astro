@@ -1325,6 +1325,9 @@ const uniqueGalleryImages = (items = []) =>
 
 
 <style>
+  /* In-article photos: full column width, capped height so portrait images do not dominate. */
+  .culture-prose :global(img) { display: block; width: 100%; max-height: 560px; object-fit: cover; object-position: 50% 35%; border-radius: 14px; margin: 1.5rem 0; }
+  @media (max-width: 640px) { .culture-prose :global(img) { max-height: 420px; } }
 
   .culture-hero {
     position: relative;
