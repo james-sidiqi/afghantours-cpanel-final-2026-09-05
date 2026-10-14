@@ -12,6 +12,8 @@ export const RESTAURANT_TO_CULINARY: Record<string, string> = {
   'aziz-bakery': '/cultural-experiences/culinary/aziz-bakery/',
   'bakery-kabul': '/cultural-experiences/culinary/aziz-bakery/',
   'chashma-e-dough': '/cultural-experiences/culinary/chashma-e-dogh/',
+  'spoghmai-restaurant': '/cultural-experiences/culinary/spoghmai-restaurant-qargha/',
+  'spoghmai-restaurant-qargha': '/cultural-experiences/culinary/spoghmai-restaurant-qargha/',
 };
 
 

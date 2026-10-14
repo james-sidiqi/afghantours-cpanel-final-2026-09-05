@@ -24,7 +24,8 @@ RewriteEngine On
 
 # Specialist services
 RewriteRule ^faqs/?$ /faq/ [R=301,L]
-RewriteRule ^restaurants/spoghmai-restaurant-qargha/?$ /restaurants/spoghmai-restaurant/ [R=301,L]
+# James t267: Spoghmai is now a culinary experience page
+RewriteRule ^restaurants/spoghmai-restaurant(-qargha)?/?$ /cultural-experiences/culinary/spoghmai-restaurant-qargha/ [R=301,L]
 RewriteRule ^tours/photography-tour/?$ /specialist-services/photography-documentary/ [R=301,L]
 # Temporary (2026-10-14, t242): public Image Credits page withdrawn; records kept in src/data/photoCredits.ts and image-library/register.csv.
 RewriteRule ^photo-credits/?$ / [R=302,L]
