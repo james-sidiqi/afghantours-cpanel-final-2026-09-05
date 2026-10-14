@@ -12,4 +12,6 @@ export const IMAGE_ALTS: Record<string, string> = {
   '/assets/images/experiences/culinary/spoghmai-restaurant-qargha/gallery/02-lake-panorama.webp': 'Panoramic view of a turquoise lake with arid mountains beyond, seen from a stone path and railing',
   '/assets/images/experiences/culinary/spoghmai-restaurant-qargha/gallery/03-peninsula-red-roofs.webp': 'Tree-covered peninsula with red-roofed buildings extending into a blue lake, hills beyond',
   '/assets/images/experiences/culinary/spoghmai-restaurant-qargha/gallery/04-walkway-pelican.webp': 'Concrete lakeside walkway beside turquoise water with a white pelican swimming near shore',
+  '/assets/images/attractions/wakhan-corridor/gallery-2-marco-polo-sheep.webp': 'A young Marco Polo sheep with curved ridged horns standing on a lawn, a coloured cord around its neck',
+  '/assets/images/experiences/activities/sightseeing/street-life/zarang-crates-kabul-street.webp': 'An overloaded three-wheeler zarang piled high with green and red plastic crates on a Kabul street',
 };
