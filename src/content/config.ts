@@ -152,6 +152,8 @@ const culturalExperiencesCollection = defineCollection({
     hero_image: z.string().optional(),
     image: z.string().optional(),
     gallery_images: z.array(z.string()).default([]),
+    // Images James removed from this page's gallery only (files may still be used elsewhere).
+    gallery_exclude: z.array(z.string()).default([]),
 
     provinces: z.array(z.string()).default([]),
     paired_foods: z.array(z.string()).default([]),

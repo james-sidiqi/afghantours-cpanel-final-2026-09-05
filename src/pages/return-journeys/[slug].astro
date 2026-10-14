@@ -15,18 +15,11 @@ if (!journey) return Astro.redirect('/return-journeys/');
 
 const inquiryHref = buildReturnInquiryHref(journey);
 const hero = journey.hero_image_path || journey.image_path || '/assets/images/placeholders/default-hero.webp';
+// James t265: kaf-overlook-portrait and kaf-tower-interior removed from this gallery (files kept). thumb = 4:3 recentred crop; originals unmodified.
 const diasporaExampleGallery = journey.slug === 'diaspora' ? [
   {
     src: '/assets/images/return-journeys/diaspora/james-family/father-son-airport/kaf-father-son-overlook.webp',
     alt: 'Two travelers at a Kandahar airport overlook with the airfield beyond',
-  },
-  {
-    src: '/assets/images/return-journeys/diaspora/james-family/father-son-airport/kaf-overlook-portrait.webp',
-    alt: 'Looking out over Kandahar Airfield from the tower',
-  },
-  {
-    src: '/assets/images/return-journeys/diaspora/james-family/father-son-airport/kaf-tower-interior.webp',
-    alt: 'Inside the Kandahar Airfield tower during a return visit',
   },
   {
     src: '/assets/images/return-journeys/diaspora/james-family/father-son-airport/kaf-terminal-model.webp',
@@ -34,6 +27,7 @@ const diasporaExampleGallery = journey.slug === 'diaspora' ? [
   },
   {
     src: '/assets/images/return-journeys/diaspora/james-family/father-son-airport/kaf-with-guide.webp',
+    thumb: '/assets/images/return-journeys/diaspora/james-family/thumbs/kaf-with-guide-4x3.webp',
     alt: 'Family connection during a Kandahar Airfield visit',
   },
   {
@@ -46,14 +40,17 @@ const diasporaExampleGallery = journey.slug === 'diaspora' ? [
   },
   {
     src: '/assets/images/return-journeys/diaspora/james-family/father-son-airport/military-pic.webp',
+    thumb: '/assets/images/return-journeys/diaspora/james-family/thumbs/military-pic-4x3.webp',
     alt: 'Earlier military service photograph connected to the return visit',
   },
   {
     src: '/assets/images/return-journeys/diaspora/james-family/brothers/brothers.webp',
+    thumb: '/assets/images/return-journeys/diaspora/james-family/thumbs/brothers-4x3.webp',
     alt: 'James and his brother exploring a historic site together',
   },
   {
     src: '/assets/images/return-journeys/diaspora/james-family/brothers/brothers-mountains.webp',
+    thumb: '/assets/images/return-journeys/diaspora/james-family/thumbs/brothers-mountains-4x3.webp',
     alt: 'James and his brother exploring snowy mountains together',
   },
 ] : [];
@@ -124,7 +121,7 @@ const ctaLabel = rawCta && !/^\/|\/assets\/|\.(webp|jpe?g|png)$/i.test(rawCta) ?
           </p>
           <div class="gallery-grid">
             {diasporaExampleGallery.map((image) => (
-              <img src={image.src} alt={image.alt} loading="lazy" />
+              <img src={image.thumb || image.src} alt={image.alt} loading="lazy" />
             ))}
           </div>
         </section>
@@ -166,7 +163,8 @@ const ctaLabel = rawCta && !/^\/|\/assets\/|\.(webp|jpe?g|png)$/i.test(rawCta) ?
   .example-kicker { margin: 0 0 .35rem; color: #b88a2a !important; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; font-weight: 900; }
   .rj-example h2 { margin-top: 0; }
   .rj-example p { max-width: 68ch; }
-  .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: .75rem; margin-top: 1.25rem; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; margin-top: 1.25rem; }
+  @media (max-width: 700px) { .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .gallery-grid img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: .65rem; }
   .tile { border: 1px solid #e5dccf; border-radius: .85rem; padding: 1rem 1.1rem; background: #fff; }
   .tile h3 { margin: 0 0 .45rem; font-size: 1rem; }

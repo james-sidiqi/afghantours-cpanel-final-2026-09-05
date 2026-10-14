@@ -1,5 +1,6 @@
 ---
 import PhotoCredits from '../../components/PhotoCredits.astro';
+import { isRejectedImage } from '../../data/rejectedImages';
 import { altFor } from '../../data/photoCredits';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -246,11 +247,13 @@ const imageHash = async (src) => {
     return null;
   }
 };
+const galleryExclude = new Set((data.gallery_exclude || []).map(String));
 const distinctImages = [];
 const seenHashes = [];
 for (const src of imageCandidates) {
   // Responsive crops (/crops/) are hero/card variants, never gallery items; skip files that do not exist.
   if (/\/crops\//.test(String(src))) continue;
+  if (galleryExclude.has(String(src)) || isRejectedImage(String(src))) continue;
   if (!fs.existsSync(path.join(process.cwd(), 'public', String(src).replace(/^\/+/, '')))) continue;
   const h = await imageHash(src);
   if (h && seenHashes.some((o) => o.reduce((d, bit, i) => d + (bit !== h[i] ? 1 : 0), 0) <= 12)) continue;
@@ -837,6 +840,15 @@ const uniqueGalleryImages = (items = []) =>
                   index === 0 &&
                     galleryImages.length >= 3 &&
                     'culture-gallery-featured',
+                  // Fill the last row so a shorter gallery leaves no empty cell.
+                  index === galleryImages.length - 1 &&
+                    galleryImages.length > 3 &&
+                    (galleryImages.length - 3) % 3 === 2 &&
+                    'culture-gallery-span2',
+                  index === galleryImages.length - 1 &&
+                    galleryImages.length > 3 &&
+                    (galleryImages.length - 3) % 3 === 1 &&
+                    'culture-gallery-span3',
                 ]}
                 data-cultural-gallery-image={src}
                 data-cultural-gallery-alt={altFor(src, `${title} — view ${index + 1}`)}
@@ -1989,6 +2001,9 @@ const uniqueGalleryImages = (items = []) =>
     grid-row: span 2;
   }
 
+  .culture-gallery-span2 { grid-column: span 2; }
+  .culture-gallery-span3 { grid-column: span 3; }
+
 
   .culture-gallery-item img {
     display: block;
@@ -2464,7 +2479,9 @@ const uniqueGalleryImages = (items = []) =>
     }
 
 
-    .culture-gallery-featured {
+    .culture-gallery-featured,
+    .culture-gallery-span2,
+    .culture-gallery-span3 {
       grid-column: auto;
       grid-row: auto;
     }

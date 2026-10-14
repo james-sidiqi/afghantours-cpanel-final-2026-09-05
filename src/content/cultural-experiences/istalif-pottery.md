@@ -12,6 +12,9 @@ best_season: "March–November"
 duration: "Half day"
 related_tours: ["weekend-in-kabul", "kabul-surroundings", "custom-tours"]
 nearby: ["Paghman", "Qargha Lake", "Chashma-e-Dogh"]
+gallery_exclude:
+  - "/assets/images/experiences/cultural/istalif-pottery/gallery/04.webp"
+  - "/assets/images/attractions/istalif-village/thumb.webp"
 ---
 
 Perched high on a hillside north of Kabul, the village of Istalif overlooks orchards, streams, and the mountain approaches to the capital. For generations, the area has been associated with traditional Afghan ceramics, especially the turquoise and green glazed pottery that many Kabul families recognize immediately.

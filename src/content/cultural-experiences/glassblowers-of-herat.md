@@ -12,6 +12,14 @@ best_season: "Year round"
 duration: "1–2 hours"
 related_tours: ["timurid-grandeur-herat-tour", "timurid-grandeur-herat-tour-add-minaret-e-jam", "afghanistan-discovery-tour-fall", "custom-tours"]
 nearby: ["Herat Old City", "Herat Citadel", "Friday Mosque"]
+gallery_exclude:
+  - "/assets/images/hubs/herat-city/hero.webp"
+  - "/assets/images/hubs/herat-city/gallery-3.webp"
+  - "/assets/images/hubs/herat-city/gallery-4.webp"
+  - "/assets/images/hubs/herat-city/01.webp"
+  - "/assets/images/experiences/cultural/glassblowers-of-herat/hero.webp"
+  - "/assets/images/experiences/cultural/glassblowers-of-herat/thumb.webp"
+  - "/assets/images/hubs/herat-city/thumb.webp"
 ---
 
 Herat is one of Afghanistan's great craft cities. Its traditional glassblowers connect the city to Silk Road artistry, old bazaars, and the refined material culture of western Afghanistan.
