@@ -57,6 +57,9 @@ const diasporaExampleGallery = journey.slug === 'diaspora' ? [
     alt: 'James and his brother exploring snowy mountains together',
   },
 ] : [];
+// Guard: a data label must be text, never an asset path or URL.
+const rawCta = String(journey.cta_label || '').trim();
+const ctaLabel = rawCta && !/^\/|\/assets\/|\.(webp|jpe?g|png)$/i.test(rawCta) ? rawCta : 'Plan Your Return';
 ---
 <BaseLayout
   title={`${journey.name} | Return Journeys | AfghanTours`}
@@ -69,7 +72,8 @@ const diasporaExampleGallery = journey.slug === 'diaspora' ? [
         <p class="kicker">Return journey · inquiry-led</p>
         <h1>{journey.name}</h1>
         <p class="summary">{journey.summary}</p>
-        <a class="btn-primary" href={inquiryHref}>{journey.cta_label || 'Request a Return Journey'}</a>
+        {journey.cta_intro && <p class="rj-cta-intro">{journey.cta_intro}</p>}
+        <a class="btn-primary" href={inquiryHref}>{ctaLabel}</a>
       </div>
     </header>
 
@@ -135,7 +139,8 @@ const diasporaExampleGallery = journey.slug === 'diaspora' ? [
       <div class="cta-band">
         <h2>Request a Return Journey</h2>
         <p>Share your goals, timing, and any privacy preferences. We reply from Kabul with what is workable.</p>
-        <a class="btn-primary" href={inquiryHref}>{journey.cta_label || 'Request a Return Journey'}</a>
+        {journey.cta_intro && <p class="rj-cta-intro">{journey.cta_intro}</p>}
+        <a class="btn-primary" href={inquiryHref}>{ctaLabel}</a>
         <p class="cta-note"><a href="/specialist-services/">Specialist Services</a> · <a href="/custom-requests/">Build My Journey</a> · <a href="/tours/">Tour Packages</a></p>
       </div>
     </section>
@@ -143,6 +148,7 @@ const diasporaExampleGallery = journey.slug === 'diaspora' ? [
 </BaseLayout>
 
 <style>
+  .rj-cta-intro { margin: 1rem 0 .6rem; font-weight: 600; }
   .rj-wrap { width: min(860px, calc(100% - 2rem)); margin: 0 auto; }
   .rj-hero { background: linear-gradient(120deg, rgba(16,24,32,.9), rgba(16,24,32,.55)), var(--rj-hero) center/cover; color: #fff; padding: clamp(3.5rem, 7vw, 5.5rem) 0; }
   .kicker { margin: 0; color: #d6a548; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; font-weight: 900; }

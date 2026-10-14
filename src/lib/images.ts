@@ -1,3 +1,4 @@
+import { isRejectedImage } from '../data/rejectedImages';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -22,7 +23,12 @@ function assetExists(publicPath?: string | null): boolean {
 
 function firstExisting(paths: Array<string | null | undefined>, fallback: string): string {
   const normalized = paths.map((p) => normalizeImagePath(p || '', '')).filter(Boolean);
-  return normalized.find(assetExists) || fallback;
+  // Placeholder graphics in data are "no image": keep looking for a real file.
+  return normalized.find((p) => !isPlaceholder(p) && !isRejectedImage(p) && assetExists(p)) || fallback;
+}
+
+export function isPlaceholder(src?: string | null): boolean {
+  return !src || /\/placeholders\//.test(String(src));
 }
 
 export function normalizeImagePath(pathValue?: string | null, fallback = PLACEHOLDERS.card): string {
@@ -63,6 +69,7 @@ export function listPublicImages(publicFolder?: string | null, recursive = true)
       if (!allowed.has(path.extname(entry.name).toLowerCase())) continue;
 
       const relative = path.relative(publicRoot, full).split(path.sep).join('/');
+      if (isRejectedImage('/' + relative)) continue;
       results.push(`/${relative}`);
     }
   };
@@ -152,7 +159,7 @@ export function getFoodImage(item: any): string {
 
 export function hasRealImage(publicPath?: string | null): boolean {
   const normalized = normalizeImagePath(publicPath || '', '');
-  return Boolean(normalized && normalized !== PLACEHOLDERS.food && normalized !== PLACEHOLDERS.card && assetExists(normalized));
+  return Boolean(normalized && !isPlaceholder(normalized) && assetExists(normalized));
 }
 
 export function getHubImage(hub: any): string {
@@ -173,7 +180,10 @@ export function getHubImage(hub: any): string {
   return firstExisting([
     hub?.image_path,
     hub?.hero_image,
+    hub?.image,
     slug ? `/assets/images/hubs/${slug}/hero.webp` : null,
+    base ? `/assets/images/hubs/${base}/hero.webp` : null,
+    base ? `/assets/images/hubs/${base}/01.webp` : null,
     slug ? `/assets/images/hubs/${slug}-1.webp` : null,
     short ? `/assets/images/hubs/${short}-1.webp` : null,
   ], PLACEHOLDERS.hub);

@@ -9,7 +9,7 @@ import { getHubs, getHubBySlug, getAttractions, getHotels, getTours, getFoodItem
 import { getCulinaryForHub, routeContextLabel } from '../../lib/culinary';
 import { getCulturalForHub, getActivitiesForHub, accessTypeLabel } from '../../lib/experiences';
 import { getCollection } from 'astro:content';
-import { getCulturalExperienceImage, getActivityImage } from '../../lib/images';
+import { getCulturalExperienceImage, getActivityImage, getHubImage, isPlaceholder } from '../../lib/images';
 
 export function getStaticPaths() {
   return getHubs().filter((hub) => hub?.slug).map((hub) => ({ params: { slug: hub.slug } }));
@@ -106,7 +106,7 @@ const activities = getActivitiesForHub(hubSlug).map((item) => ({
 }));
 
 
-const image = hub.image || `/assets/images/hubs/${hubSlug}/hero.webp` || '/assets/images/placeholders/default-hub.webp';
+const image = getHubImage(hub);
 ---
 
 <BaseLayout
@@ -250,7 +250,9 @@ const image = hub.image || `/assets/images/hubs/${hubSlug}/hero.webp` || '/asset
         <div class="simple-grid">
           {food.slice(0, 8).map((item) => (
             <a class="simple-card" href={getFoodHref(item)}>
-              <img src={item.image} alt={item.title || item.name} loading="lazy" />
+              {isPlaceholder(item.image)
+                ? <span class="simple-card__noimg" aria-hidden="true">{item.title || item.name}</span>
+                : <img src={item.image} alt={item.title || item.name} loading="lazy" />}
               <h3>{item.title || item.name}</h3>
             </a>
           ))}
@@ -262,6 +264,9 @@ const image = hub.image || `/assets/images/hubs/${hubSlug}/hero.webp` || '/asset
 </BaseLayout>
 
 <style>
+  .simple-card__noimg { display:flex; align-items:center; justify-content:center; aspect-ratio:4/3; padding:1rem;
+    background:linear-gradient(135deg,#0f241b,#163a2a); border-bottom:3px solid #d6a23a; color:#f3e7c8;
+    font-family:Georgia,'Times New Roman',serif; font-size:1.1rem; text-align:center; }
   .hub-overview,
   .simple-section {
     background: #fbf6ed;

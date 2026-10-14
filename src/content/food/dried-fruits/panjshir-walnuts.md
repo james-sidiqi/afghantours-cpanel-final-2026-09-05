@@ -1,14 +1,14 @@
 ---
-title: Panjshir Walnuts
+title: "Walnuts"
 food_slug: panjshir-walnuts
 section: food_content
 save_to: src/content/food/produce/panjshir-walnuts.md
-hero_image: "/assets/images/food/dried-fruit/panjshir-walnuts/hero.webp"
-image: "/assets/images/food/dried-fruit/panjshir-walnuts/hero.webp"
+hero_image: "/assets/images/food/dried-fruit/panjshir-walnuts/fresh-walnuts-original.webp"
+image: "/assets/images/food/dried-fruit/panjshir-walnuts/fresh-walnuts-original.webp"
 ---
 
 ### Overview
-Mountain walnuts harvested from Panjshir Valley.
+Walnuts eaten fresh in season and sold dried in bazaars, often paired with dried mulberries.
 
 ### Cultural Context
 

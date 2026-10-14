@@ -35,7 +35,7 @@ const routeSupport = [
     label: 'Remote & Mountain Routes',
     text: 'Reach Bamyan, Wakhan, mountain passes, and remote provincial routes with higher-clearance vehicles chosen for terrain and seasonal conditions.',
     meta: 'Typical vehicle: High-clearance 4x4',
-    image: '/assets/images/transport/roads/off-road/01.webp',
+    image: '/assets/images/transport/roads/jalalabad-parun/02.webp',
     href: '/contact/?type=transportation&topic=Mountain%20and%20Remote%20Access',
     cta: 'Plan Remote Access',
   },
@@ -155,7 +155,7 @@ const planningFactors = [
       {routeSupport.map((item) => (
         <article class="support-card">
           <div class="support-card__image">
-            <img src={item.image} alt={item.title} loading="lazy" onerror="this.src='/assets/images/placeholders/default-transport.webp'" />
+            <img src={item.image} alt={item.title} loading="lazy" />
             <span>{item.label}</span>
           </div>
           <div class="support-card__body">
@@ -313,6 +313,7 @@ const planningFactors = [
   .route-cta { background: #efe4d2; padding: clamp(4rem, 8vw, 7rem) 1rem; }
   .route-cta__inner { width: min(1180px, 100%); margin: 0 auto; display: grid; grid-template-columns: .9fr 1.1fr; gap: 1.4rem; align-items: stretch; }
   .route-cta__copy, .route-steps { border-radius: 30px; border: 1px solid rgba(16,24,32,.1); box-shadow: 0 18px 46px rgba(16,24,32,.08); }
+  .route-cta__inner > * { min-width: 0; overflow-wrap: anywhere; }
   .route-cta__copy { background: #fffaf2; padding: clamp(1.6rem, 4vw, 3rem); }
   .route-cta__copy > p:not(.eyebrow) { margin: 1rem 0 0; }
   .contact-microcopy { display: grid; gap: .45rem; margin-top: 1.3rem; color: #50483d; font-size: .82rem; }

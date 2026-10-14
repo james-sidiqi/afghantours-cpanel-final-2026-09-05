@@ -1,5 +1,5 @@
 ---
-title: Balkh Melon
+title: "Melons"
 food_slug: balkh-melon
 section: food_content
 save_to: src/content/food/produce/balkh-melon.md

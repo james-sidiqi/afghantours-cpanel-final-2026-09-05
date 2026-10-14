@@ -20,6 +20,9 @@ const regions = Array.isArray(service.regions_supported_list)
 // Spec Part 9 #9: services with no fixed route must not list every region as if it were a route.
 const allRegions = ['west', 'central', 'north', 'east', 'south'].every((r) => regions.map((x) => x.toLowerCase()).includes(r));
 const hero = service.hero_image_path || service.image_path || '/assets/images/placeholders/default-hero.webp';
+// Guard: a data label must be text, never an asset path or URL.
+const rawCta = String(service.cta_label || '').trim();
+const ctaLabel = rawCta && !/^\/|\/assets\/|\.(webp|jpe?g|png)$/i.test(rawCta) ? rawCta : 'Request a Proposal';
 ---
 <BaseLayout
   title={`${service.name} | Specialist Services | AfghanTours`}
@@ -32,7 +35,7 @@ const hero = service.hero_image_path || service.image_path || '/assets/images/pl
         <p class="kicker">Specialist service</p>
         <h1>{service.name}</h1>
         <p class="summary">{service.summary}</p>
-        <a class="btn-primary" href={inquiryHref}>{service.cta_label || 'Request a Proposal'}</a>
+        <a class="btn-primary" href={inquiryHref}>{ctaLabel}</a>
       </div>
     </header>
 
@@ -84,7 +87,7 @@ const hero = service.hero_image_path || service.image_path || '/assets/images/pl
       <div class="cta-band">
         <h2>Request a Proposal</h2>
         <p>Share your brief, preferred window, and team size. We reply from Kabul with workable options — then a written quotation. An inquiry is not a booking.</p>
-        <a class="btn-primary" href={inquiryHref}>{service.cta_label || 'Request a Proposal'}</a>
+        <a class="btn-primary" href={inquiryHref}>{ctaLabel}</a>
         <p class="cta-note">Prefer a scheduled itinerary? <a href="/tours/">Browse Tour Packages</a> · <a href="/return-journeys/">Return Journeys</a> · <a href="/custom-requests/">Build My Journey</a></p>
       </div>
     </section>

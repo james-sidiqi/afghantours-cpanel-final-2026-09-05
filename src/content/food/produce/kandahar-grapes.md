@@ -1,5 +1,5 @@
 ---
-title: Kandahar Grapes
+title: "Afghan Grapes"
 food_slug: kandahar-grapes
 section: food_content
 save_to: src/content/food/produce/kandahar-grapes.md
@@ -7,7 +7,7 @@ save_to: src/content/food/produce/kandahar-grapes.md
 
 ### Overview
 
-Renowned table grapes from Kandahar vineyards.
+Table grapes, the most widely grown fruit in Afghanistan; major producing areas include Kandahar, Kabul and Parwan.
 
 ### Cultural Context
 

@@ -1,5 +1,5 @@
 ---
-title: "Pistachios Samangan"
+title: "Pistachios"
 slug: "samangan-pistachios"
 food_slug: "samangan-pistachios"
 category: "Produce"
@@ -7,9 +7,9 @@ hero_image: "/assets/images/food/dried-fruit/samangan-pistachios/hero.webp"
 image: "/assets/images/food/dried-fruit/samangan-pistachios/hero.webp"
 ---
 
-### Pistachios Samangan
+### Pistachios
 
-Famous wild pistachios from Samangan.
+Pistachios, including nuts from the wild pistachio forests of Badghis and Samangan.
 
 ### Food & Culture Context
 

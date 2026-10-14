@@ -1,4 +1,5 @@
 ---
+import { isRejectedImage } from '../../data/rejectedImages';
 import PhotoCredits from '../../components/PhotoCredits.astro';
 import { altFor } from '../../data/photoCredits';
 import fs from 'node:fs';
@@ -160,7 +161,8 @@ const resolvedFoodImageFolder =
 
 const dedicatedHero =
   resolvedFoodImageFolder &&
-  publicAssetExists(`${resolvedFoodImageFolder}hero.webp`)
+  publicAssetExists(`${resolvedFoodImageFolder}hero.webp`) &&
+  !isRejectedImage(`${resolvedFoodImageFolder}hero.webp`)
     ? `${resolvedFoodImageFolder}hero.webp`
     : '';
 
@@ -339,7 +341,7 @@ const galleryCandidates: string[] = [];
 const addGalleryImage = (value: any) => {
   if (!value) return;
   const src = String(value).trim();
-  if (src && !galleryCandidates.includes(src)) galleryCandidates.push(src);
+  if (src && !/\/crops\//.test(src) && !isRejectedImage(src) && !galleryCandidates.includes(src)) galleryCandidates.push(src);
 };
 
 if (Array.isArray(data.gallery_images)) data.gallery_images.forEach(addGalleryImage);

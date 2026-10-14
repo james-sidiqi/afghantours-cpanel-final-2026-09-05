@@ -992,25 +992,6 @@ const hubs = (Array.isArray(props.hubs) && props.hubs.length && props.hubs[0]?.a
   }
 
 
-  .hub-stats span {
-    padding:
-      .48rem
-      .68rem;
-
-    border:
-      1px solid #ded6ca;
-
-    border-radius: 999px;
-
-    background: #f8f5ef;
-
-    color: #474f4d;
-
-    font-size: .61rem;
-    font-weight: 850;
-  }
-
-
   .hub-actions {
     display: flex;
     flex-wrap: wrap;
@@ -1213,136 +1194,9 @@ const hubs = (Array.isArray(props.hubs) && props.hubs.length && props.hubs[0]?.a
   }
 
 
-  .access-card {
-    overflow: hidden;
-
-    display: grid;
-
-    grid-template-columns:
-      82px
-      minmax(0,1fr);
-
-    align-items: center;
-
-    border:
-      1px solid #e4ddd2;
-
-    border-radius: .65rem;
-
-    background: #faf8f4;
-    color: #151e21;
-
-    text-decoration: none;
-  }
-
-
-  .access-card-image {
-    overflow: hidden;
-
-    width: 82px;
-    height: 66px;
-  }
-
-
-  .access-card img {
-    display: block;
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-    transition:
-      transform .2s ease;
-  }
-
-
-  .access-card:hover img {
-    transform: scale(1.04);
-  }
-
-
-  .access-card > span {
-    padding:
-      .45rem
-      .55rem;
-
-    font-family:
-      Georgia,
-      "Times New Roman",
-      serif;
-
-    font-size: .76rem;
-    font-weight: 700;
-
-    line-height: 1.05;
-  }
-
-
   .activity-items {
     display: grid;
     gap: .5rem;
-  }
-
-
-  .activity-card {
-    display: grid;
-
-    grid-template-columns:
-      28px
-      minmax(0,1fr)
-      auto;
-
-    gap: .5rem;
-
-    align-items: center;
-
-    min-height: 52px;
-
-    padding:
-      .45rem
-      .55rem;
-
-    border:
-      1px solid #e4ddd2;
-
-    border-radius: .65rem;
-
-    background: #faf8f4;
-    color: #151e21;
-
-    text-decoration: none;
-  }
-
-
-  .activity-card > span {
-    color: #a86418;
-
-    font-size: .58rem;
-    font-weight: 950;
-  }
-
-
-  .activity-card strong {
-    font-family:
-      Georgia,
-      "Times New Roman",
-      serif;
-
-    font-size: .76rem;
-    line-height: 1.05;
-  }
-
-
-  .activity-card b {
-    color: #9c6118;
-  }
-
-
-  .access-empty {
-    color: #797166;
-
-    font-size: .72rem;
   }
 
 
@@ -1391,38 +1245,6 @@ const hubs = (Array.isArray(props.hubs) && props.hubs.length && props.hubs[0]?.a
     justify-content: flex-end;
 
     gap: .45rem;
-  }
-
-
-  .transport-chip {
-    display: inline-flex;
-    align-items: center;
-
-    gap: .5rem;
-
-    padding:
-      .55rem
-      .7rem;
-
-    border:
-      1px solid rgba(255,255,255,.15);
-
-    border-radius: 999px;
-
-    background:
-      rgba(255,255,255,.07);
-
-    color: #fff;
-
-    font-size: .62rem;
-    font-weight: 800;
-
-    text-decoration: none;
-  }
-
-
-  .transport-chip span {
-    color: #d6a23e;
   }
 
 
@@ -1524,4 +1346,165 @@ const hubs = (Array.isArray(props.hubs) && props.hubs.length && props.hubs[0]?.a
 
   }
 
+</style>
+
+<style is:global>
+  /* Hub access cards are built at runtime (innerHTML), so they never carry Astro scope
+     attributes: these rules must be global. Root cause of the unstyled, oversized stacked images. */
+.hub-stats span {
+    padding:
+      .48rem
+      .68rem;
+
+    border:
+      1px solid #ded6ca;
+
+    border-radius: 999px;
+
+    background: #f8f5ef;
+
+    color: #474f4d;
+
+    font-size: .61rem;
+    font-weight: 850;
+  }
+.access-card {
+    overflow: hidden;
+
+    display: grid;
+
+    grid-template-columns:
+      82px
+      minmax(0,1fr);
+
+    align-items: center;
+
+    border:
+      1px solid #e4ddd2;
+
+    border-radius: .65rem;
+
+    background: #faf8f4;
+    color: #151e21;
+
+    text-decoration: none;
+  }
+.access-card-image {
+    overflow: hidden;
+
+    width: 82px;
+    height: 66px;
+  }
+.access-card img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition:
+      transform .2s ease;
+  }
+.access-card:hover img {
+    transform: scale(1.04);
+  }
+.access-card > span {
+    padding:
+      .45rem
+      .55rem;
+
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
+    font-size: .76rem;
+    font-weight: 700;
+
+    line-height: 1.05;
+  }
+.activity-card {
+    display: grid;
+
+    grid-template-columns:
+      28px
+      minmax(0,1fr)
+      auto;
+
+    gap: .5rem;
+
+    align-items: center;
+
+    min-height: 52px;
+
+    padding:
+      .45rem
+      .55rem;
+
+    border:
+      1px solid #e4ddd2;
+
+    border-radius: .65rem;
+
+    background: #faf8f4;
+    color: #151e21;
+
+    text-decoration: none;
+  }
+.activity-card > span {
+    color: #a86418;
+
+    font-size: .58rem;
+    font-weight: 950;
+  }
+.activity-card strong {
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+
+    font-size: .76rem;
+    line-height: 1.05;
+  }
+.activity-card b {
+    color: #9c6118;
+  }
+.access-empty {
+    color: #797166;
+
+    font-size: .72rem;
+  }
+.transport-chip {
+    display: inline-flex;
+    align-items: center;
+
+    gap: .5rem;
+
+    padding:
+      .55rem
+      .7rem;
+
+    border:
+      1px solid rgba(255,255,255,.15);
+
+    border-radius: 999px;
+
+    background:
+      rgba(255,255,255,.07);
+
+    color: #fff;
+
+    font-size: .62rem;
+    font-weight: 800;
+
+    text-decoration: none;
+  }
+.transport-chip span {
+    color: #d6a23e;
+  }
+  /* Consistent compact card: fixed 4:3 thumbnail, title vertically centred, no stretching. */
+  .access-card { grid-template-columns: 96px minmax(0,1fr) !important; min-height: 72px; }
+  .access-card-image { width: 96px !important; height: auto !important; aspect-ratio: 4 / 3; align-self: stretch; }
+  .access-card > span { display: flex; align-items: center; min-height: 72px; font-size: .82rem !important; line-height: 1.2 !important; overflow-wrap: anywhere; }
 </style>

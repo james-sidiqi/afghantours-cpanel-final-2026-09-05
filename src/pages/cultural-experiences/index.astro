@@ -22,9 +22,9 @@ const items =
 
 const imageFor =
   (item) =>
-    item.data.hero_image ||
-    item.data.image ||
-    '/assets/images/placeholders/default-attraction.webp';
+    [item.data.hero_image, item.data.image].find(
+      (src) => src && !/\/placeholders\//.test(String(src))
+    ) || null;
 
 
 const slugFor =
@@ -145,13 +145,17 @@ const types =
             href={`/cultural-experiences/${slugFor(item)}/`}
           >
 
-            <div class="culture-index-image">
+            <div class:list={['culture-index-image', !imageFor(item) && 'culture-index-image--none']}>
 
+              {imageFor(item) ? (
               <img
                 src={imageFor(item)}
                 alt={item.data.title}
                 loading="lazy"
               />
+              ) : (
+              <span class="culture-index-monogram" aria-hidden="true">{item.data.title.split(':')[0]}</span>
+              )}
 
             </div>
 
@@ -351,9 +355,10 @@ const types =
       serif;
 
     font-size:
-      clamp(4rem, 9vw, 8rem);
+      clamp(2.6rem, 9vw, 8rem);
 
     line-height: .88;
+    overflow-wrap: break-word;
 
     letter-spacing: -.065em;
   }
@@ -731,4 +736,7 @@ const types =
 
   }
 
+  .culture-index-image--none { display:flex; align-items:center; justify-content:center; padding:1.25rem;
+    background:linear-gradient(135deg,#0f241b,#163a2a); border-bottom:3px solid #d6a23a; }
+  .culture-index-monogram { color:#f3e7c8; font-family:Georgia,'Times New Roman',serif; font-size:1.2rem; text-align:center; }
 </style>

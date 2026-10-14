@@ -2,6 +2,67 @@
 // Source of truth for <PhotoCredits> and the /photo-credits/ page.
 export interface PhotoCredit { paths: string[]; author: string; license: string; licenseUrl: string; source: string; alt: string; note: string }
 export const PHOTO_CREDITS: PhotoCredit[] = [
+  {"paths": ["/assets/images/experiences/cultural/afghan-weddings/crops/city-star-wedding-hall-night-hero.webp", "/assets/images/experiences/cultural/afghan-weddings/crops/city-star-wedding-hall-night-card.webp", "/assets/images/experiences/cultural/afghan-weddings/city-star-wedding-hall-night.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Illuminated wedding hall at night with a City Star sign and a lit archway entrance", "note": "Supplied and approved by James 2026-10-14 (t245)"},
+  {"paths": ["/assets/images/experiences/cultural/afghan-weddings/wedding-hall-interior.webp", "/assets/images/experiences/cultural/afghan-weddings/crops/wedding-hall-interior-hero.webp", "/assets/images/experiences/cultural/afghan-weddings/crops/wedding-hall-interior-card.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Interior of a large wedding hall with a gold domed ceiling and chandeliers above seated guests", "note": "Supplied and approved by James 2026-10-14 (t245)"},
+  {"paths": ["/assets/images/experiences/cultural/afghan-weddings/wedding-guests-table.webp", "/assets/images/experiences/cultural/afghan-weddings/crops/wedding-guests-table-hero.webp", "/assets/images/experiences/cultural/afghan-weddings/crops/wedding-guests-table-card.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Guests at a wedding table set with rice, side dishes and canned drinks", "note": "Supplied and approved by James 2026-10-14 (t245)"},
+  {"paths": ["/assets/images/food/produce/mulberries/mulberry-basket.webp", "/assets/images/food/produce/mulberries/crops/mulberry-basket-hero.webp", "/assets/images/food/produce/mulberries/crops/mulberry-basket-card.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Basket of fresh white, pink and black mulberries", "note": "Supplied and approved by James 2026-10-14 (t245)"},
+  {"paths": ["/assets/images/food/produce/mulberries/black-mulberries-jsp013.webp", "/assets/images/food/produce/mulberries/crops/black-mulberries-jsp013-hero.webp", "/assets/images/food/produce/mulberries/crops/black-mulberries-jsp013-card.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Fresh black mulberries in a clear tub on a patterned carpet", "note": "Supplied and approved by James 2026-10-14 (t245)"},
+  {
+    "paths": [
+      "/assets/images/food/produce/mulberries/gallery-1.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "\u00a9 AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Fresh dark mulberries in a clear tub on an Afghan carpet, Kabul",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/experiences/activities/birding/peacock-kabul-jsp012.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Peacock displaying its fanned tail on a dirt yard in Kabul",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/attractions/qargha-lake/gallery-5.webp",
+      "/assets/images/experiences/activities/birding/gallery/01.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Dalmatian pelican resting on a rock at Qargha Lake, Kabul",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/experiences/activities/sightseeing/shah-e-do-shamshira-kabul-jsp015.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Shah-e Do Shamshira Mosque in Kabul with pigeons and visitors in the square",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/experiences/activities/shopping/night-cherry-cart-kabul-jsp016.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Street vendor beside a cart piled with fresh cherries under a lamp at night, Kabul",
+    "note": ""
+  },
   {
     "paths": [
       "/assets/images/attractions/chicken-street/hero.webp",
@@ -40,6 +101,17 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
   },
   {
     "paths": [
+      "/assets/images/food/produce/central-valley-mulberries/hero.webp"
+    ],
+    "author": "Zeynel Cebeci",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "source": "https://commons.wikimedia.org/wiki/File:Dried_mulberries,_Malatya_01.jpg",
+    "alt": "Dried white mulberries",
+    "note": ""
+  },
+  {
+    "paths": [
       "/assets/images/attractions/wakhan-corridor/hero.webp",
       "/assets/images/attractions/wakhan-corridor/thumb.webp"
     ],
@@ -61,17 +133,6 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "source": "https://commons.wikimedia.org/wiki/File:Kashtun_da_waygale_Nuristan_-_panoramio.jpg",
     "alt": "Terraced mountain village in Nuristan",
     "note": "Illustrative photo: Kashtun village, Waygal valley, Nuristan (not Barg-e Matal itself)"
-  },
-  {
-    "paths": [
-      "/assets/images/food/produce/central-valley-mulberries/hero.webp"
-    ],
-    "author": "Zeynel Cebeci",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "source": "https://commons.wikimedia.org/wiki/File:Dried_mulberries,_Malatya_01.jpg",
-    "alt": "Dried white mulberries",
-    "note": ""
   },
   {
     "paths": [
@@ -166,16 +227,13 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "note": ""
   },
   {
-    "paths": [
-      "/assets/images/food/dried-fruit/panjshir-walnuts/hero.webp",
-      "/assets/images/food/dried-fruit/panjshir-walnuts/thumb.webp"
-    ],
+    "paths": [],
     "author": "Ivar Leidus",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "source": "https://commons.wikimedia.org/wiki/File:Walnuts_-_whole_and_open_with_halved_kernel.jpg",
     "alt": "Whole and cracked walnuts",
-    "note": ""
+    "note": "Record kept: photo withdrawn from the walnuts card 2026-10-14 (rejected by James); file kept in qc/fix-2026-10-14/rejected and git history"
   },
   {
     "paths": [

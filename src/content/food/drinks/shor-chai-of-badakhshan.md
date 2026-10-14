@@ -1,5 +1,5 @@
 ---
-title: "Shor Chai of Badakhshan: Tea of the High Mountains"
+title: "Shor Chai"
 subtitle: "Salty mountain tea, butter, milk, bread, and hospitality in Faizabad and Badakhshan."
 card_description: "Taste shor chai in Badakhshan, a savory mountain tea tied to cold climates, village hospitality, and travel toward Wakhan."
 category: "Cultural Experiences"

@@ -100,7 +100,7 @@ export function getActivities(): RelationRow[] {
     .filter((r) => isActive(r.is_active))
     .map((row) => ({
       ...row,
-      image: getActivityImage({ slug: row.slug }),
+      image: getActivityImage(row),
       href: `/activities/${row.slug}/`,
     }))
     .sort((a, b) => Number(a.sort_order || 0) - Number(b.sort_order || 0));

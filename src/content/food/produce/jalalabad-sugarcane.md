@@ -1,6 +1,6 @@
 ---
-title: "Jalalabad Sugarcane"
-description: "Subtropical sugarcane fields supplying fresh-pressed sugarcane juice and local jaggery across eastern roadside stalls."
+title: "Sugarcane"
+description: "Sugarcane pressed into fresh juice (Neyshekar) and boiled into gur (jaggery). Nangarhar is the main growing province."
 ---
 
 ## Overview

@@ -72,10 +72,10 @@ const description =
   `Explore ${title}, one of Afghanistan's living cultural traditions.`;
 
 
+// Placeholder graphics are never content: treat them as "no image".
+const isRealImage = (src) => !!src && !/\/placeholders\//.test(String(src));
 const heroImage =
-  data.hero_image ||
-  data.image ||
-  '/assets/images/placeholders/default-attraction.webp';
+  [data.hero_image, data.image].find(isRealImage) || null;
 
 
 const provinces =
@@ -107,6 +107,7 @@ const addImage = (value) => {
 
   if (
     normalized &&
+    isRealImage(normalized) &&
     !imageCandidates.includes(normalized)
   ) {
     imageCandidates.push(normalized);
@@ -156,7 +157,9 @@ if (
 }
 
 
-for (const folder of foldersToCheck) {
+// A curated gallery_images list is used as-is: no folder discovery (keeps unrelated files in the folder out).
+const curatedGallery = Array.isArray(data.gallery_images) && data.gallery_images.length > 0;
+for (const folder of (curatedGallery ? [] : foldersToCheck)) {
 
   const diskFolder = path.join(
     process.cwd(),
@@ -246,6 +249,9 @@ const imageHash = async (src) => {
 const distinctImages = [];
 const seenHashes = [];
 for (const src of imageCandidates) {
+  // Responsive crops (/crops/) are hero/card variants, never gallery items; skip files that do not exist.
+  if (/\/crops\//.test(String(src))) continue;
+  if (!fs.existsSync(path.join(process.cwd(), 'public', String(src).replace(/^\/+/, '')))) continue;
   const h = await imageHash(src);
   if (h && seenHashes.some((o) => o.reduce((d, bit, i) => d + (bit !== h[i] ? 1 : 0), 0) <= 12)) continue;
   if (h) seenHashes.push(h);
@@ -436,9 +442,12 @@ const scoredExperiences =
       );
 
 
+      const sharesProvince = [...provinceSet].some((province) => candidateProvinces.has(province));
+
       return {
         candidate,
         score,
+        sharesProvince,
       };
 
     })
@@ -451,8 +460,11 @@ const scoredExperiences =
     );
 
 
+// No forced fill: only experiences with a real geographic link (shared province).
+// Fewer, or none, is fine.
 const relatedExperiences =
   scoredExperiences
+    .filter((entry) => entry.sharesProvince)
     .slice(0, 6)
     .map(
       (entry) =>
@@ -464,8 +476,11 @@ const pairedFoods =
   data.paired_foods || [];
 
 
+// Private homes, wedding halls and hosts are never presented as places to visit.
 const nearby =
-  data.nearby || [];
+  (data.nearby || []).filter(
+    (place) => !/wedding hall|family home|private home|local host/i.test(String(place))
+  );
 
 
 const experienceType =
@@ -514,21 +529,23 @@ const uniqueGalleryImages = (items = []) =>
 <BaseLayout
   title={`${title} | AfghanTours`}
   description={description}
-  image={heroImage}
+  image={heroImage || undefined}
 >
 
   <!-- =====================================================
        HERO
        ===================================================== -->
 
-  <section class="culture-hero">
+  <section class:list={['culture-hero', !heroImage && 'culture-hero--no-image']}>
 
+    {heroImage && (
     <img
       class="culture-hero-image"
       src={heroImage}
       alt={title}
       fetchpriority="high"
     />
+    )}
 
     <div
       class="culture-hero-overlay"
@@ -596,7 +613,7 @@ const uniqueGalleryImages = (items = []) =>
     </div>
 
   </section>
-  <PhotoCredits images={[heroImage, ...galleryImages]} />
+  <PhotoCredits images={[heroImage, ...galleryImages].filter(Boolean)} />
 
 
   <!-- =====================================================
@@ -920,11 +937,11 @@ const uniqueGalleryImages = (items = []) =>
               <div class="pairing-card">
 
                 <span class="pairing-number">
-                  02
+                  {pairedFoods.length > 0 ? '02' : '01'}
                 </span>
 
                 <h3>
-                  Nearby & complementary
+                  Complementary places
                 </h3>
 
                 <div class="pairing-pills">
@@ -1014,9 +1031,7 @@ const uniqueGalleryImages = (items = []) =>
 
 
                   const image =
-                    experience.data.hero_image ||
-                    experience.data.image ||
-                    '/assets/images/placeholders/default-attraction.webp';
+                    [experience.data.hero_image, experience.data.image].find(isRealImage) || null;
 
 
                   return (
@@ -1026,13 +1041,17 @@ const uniqueGalleryImages = (items = []) =>
                       href={`/cultural-experiences/${experienceSlug}/`}
                     >
 
-                      <div class="experience-card-image">
+                      <div class:list={['experience-card-image', !image && 'experience-card-image--none']}>
 
+                        {image ? (
                         <img
                           src={image}
                           alt={experience.data.title}
                           loading="lazy"
                         />
+                        ) : (
+                        <span class="experience-card-monogram" aria-hidden="true">{experience.data.title.split(':')[0]}</span>
+                        )}
 
                       </div>
 
@@ -1306,6 +1325,9 @@ const uniqueGalleryImages = (items = []) =>
 
 
 <style>
+  /* In-article photos: full column width, capped height so portrait images do not dominate. */
+  .culture-prose :global(img) { display: block; width: 100%; max-height: 560px; object-fit: cover; object-position: 50% 35%; border-radius: 14px; margin: 1.5rem 0; }
+  @media (max-width: 640px) { .culture-prose :global(img) { max-height: 420px; } }
 
   .culture-hero {
     position: relative;
@@ -1320,6 +1342,18 @@ const uniqueGalleryImages = (items = []) =>
   }
 
 
+  .culture-hero--no-image {
+    background: linear-gradient(135deg, #0f241b 0%, #163a2a 55%, #0a1a13 100%);
+  }
+  .experience-card-image--none {
+    display: flex; align-items: center; justify-content: center; padding: 1.25rem;
+    background: linear-gradient(135deg, #0f241b, #163a2a);
+    border-bottom: 3px solid #d6a23a;
+  }
+  .experience-card-monogram {
+    color: #f3e7c8; font-family: Georgia, 'Times New Roman', serif; font-size: 1.15rem;
+    line-height: 1.3; text-align: center;
+  }
   .culture-hero-image {
     position: absolute;
     inset: 0;
