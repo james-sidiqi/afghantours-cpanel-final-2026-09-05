@@ -1,5 +1,5 @@
 ---
-title: "Fresh Apples"
+title: "Fresh Afghan Apples"
 alternative_name: Seb-e-Wardak
 description: "Crisp seasonal apples. Maidan Wardak is the leading apple-producing province, alongside Ghazni, Kabul and Paktia."
 primary_ingredients:
@@ -11,7 +11,7 @@ hero_image: "/assets/images/food/produce/wardak-apples/hero.webp"
 image: "/assets/images/food/produce/wardak-apples/hero.webp"
 ---
 
-### Fresh Apples
+### Fresh Afghan Apples
 
 Wardak apples are one of the province's best-known seasonal products. Orchards in the high valleys produce fruit that appears in local markets during the late-summer and autumn harvest period.
 

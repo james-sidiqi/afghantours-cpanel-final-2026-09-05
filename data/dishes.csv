@@ -25,7 +25,7 @@ AF-FRH-WAT,Watermelons,farah-watermelon,WEST,FRH,HERC,Produce,Snack,1,5,8,Large 
 AF-SAM-PIS,Pistachios,samangan-pistachios,NORTH,SAM,MAZC,Produce,Snack,1,8,10,"Pistachios, including from the wild forests of Badghis and Samangan.",/assets/images/food/dried-fruit/samangan-pistachios/hero.webp,TRUE
 AF-HER-RAI,Raisins,herat-raisins,WEST,HER,HERC,Produce,Snack,1,8,10,Sun-dried raisins sold by variety in bazaars.,/assets/images/food/dried-fruit/herat-raisins/hero.webp,TRUE
 AF-BAL-ALM,Almonds,balkh-almonds,NORTH,BAL,MAZC,Produce,Snack,1,8,10,Almonds sold raw or roasted in bazaars.,/assets/images/food/dried-fruit/balkh-almonds/hero.webp,TRUE
-AF-WRD-APP,Fresh Apples,wardak-apples,CENTRAL,WRD,KBLC,Produce,Snack,1,8,10,Crisp seasonal apples; Maidan Wardak is the leading producing province.,/assets/images/food/produce/wardak-apples/hero.webp,TRUE
+AF-WRD-APP,Fresh Afghan Apples,wardak-apples,CENTRAL,WRD,KBLC,Produce,Snack,1,8,10,Crisp seasonal apples; Maidan Wardak is the leading producing province.,/assets/images/food/produce/wardak-apples/hero.webp,TRUE
 AF-DYK-ALM,Almonds,daykundi-almonds,CENTRAL,DYK,BMYC,Produce,Snack,1,8,10,Almonds sold raw or roasted in bazaars.,/assets/images/placeholders/default-food.webp,TRUE
 AF-BDK-MUL,Mulberries,badakhshan-mulberries,NORTH,BDK,FAIC,Produce,Snack,1,7,9,"Sweet mulberries, fresh or dried.",/assets/images/placeholders/default-food.webp,TRUE
 AF-KDR-GRP,Afghan Grapes,kandahar-grapes,SOUTH,KDR,KDRC,Produce,Snack,1,8,10,"Table grapes; Kandahar, Kabul and Parwan are major producing areas.",/assets/images/placeholders/default-food.webp,TRUE

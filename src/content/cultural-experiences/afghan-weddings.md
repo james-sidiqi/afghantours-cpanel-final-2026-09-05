@@ -4,8 +4,9 @@ subtitle: "Family ceremony, hospitality, dress, and the grand Afghan table."
 card_description: "Learn about Afghan wedding traditions, feast culture, family ceremony, and the hospitality surrounding major celebrations."
 category: "Cultural Experiences"
 experience_type: "Living Traditions"
-hero_image: "/assets/images/experiences/cultural/afghan-weddings/thumb.webp"
-image: "/assets/images/experiences/cultural/afghan-weddings/thumb.webp"
+hero_image: "/assets/images/experiences/cultural/afghan-weddings/crops/city-star-wedding-hall-night-hero.webp"
+image: "/assets/images/experiences/cultural/afghan-weddings/crops/city-star-wedding-hall-night-card.webp"
+gallery_images: ["/assets/images/experiences/cultural/afghan-weddings/wedding-hall-interior.webp", "/assets/images/experiences/cultural/afghan-weddings/wedding-guests-table.webp", "/assets/images/experiences/cultural/afghan-weddings/city-star-wedding-hall-night.webp"]
 provinces: ["Kabul", "Balkh", "Herat", "Kandahar"]
 paired_foods: ["Narenj Palaw", "Mantu", "Kabob-e-Tekka"]
 best_season: "By advance request"
@@ -26,11 +27,15 @@ An Afghan wedding is first of all an act of hospitality. Families welcome relati
 - **Ceremony and celebration.** Depending on the family, the occasion can include music, dance and customs passed down through generations.
 - **Respectful participation.** Guests follow their hosts' lead, dress modestly, ask before taking photographs and respect separate spaces where families observe them.
 
+![Interior of a large wedding hall with a gold domed ceiling and chandeliers above seated guests](/assets/images/experiences/cultural/afghan-weddings/wedding-hall-interior.webp)
+
 ## Arranging a wedding experience
 
 Interested in experiencing a traditional Afghan wedding? With sufficient advance notice, our local team can explore opportunities to arrange an authentic wedding experience through participating families and hosts. Arrangements depend on the occasion, availability and the hosts' invitation.
 
 Every wedding is a private family occasion, so nothing can be guaranteed, and guests attend only at the hosts' invitation. Our team's local relationships are what make such an invitation possible, so let us know early in your planning if this interests you.
+
+![Guests at a wedding table set with rice, side dishes and canned drinks](/assets/images/experiences/cultural/afghan-weddings/wedding-guests-table.webp)
 
 ## Cultural pairing: narenj palaw and mantu
 

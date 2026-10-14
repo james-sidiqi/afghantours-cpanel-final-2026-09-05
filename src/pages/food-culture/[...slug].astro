@@ -341,7 +341,7 @@ const galleryCandidates: string[] = [];
 const addGalleryImage = (value: any) => {
   if (!value) return;
   const src = String(value).trim();
-  if (src && !isRejectedImage(src) && !galleryCandidates.includes(src)) galleryCandidates.push(src);
+  if (src && !/\/crops\//.test(src) && !isRejectedImage(src) && !galleryCandidates.includes(src)) galleryCandidates.push(src);
 };
 
 if (Array.isArray(data.gallery_images)) data.gallery_images.forEach(addGalleryImage);
