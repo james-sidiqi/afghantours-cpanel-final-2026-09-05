@@ -82,3 +82,24 @@ Review (not renamed): **Kunduz Melon**. Renaming it gives a second "Melons" card
 - image-library/register.csv on every branch of both repos: no wedding rows.
 - GitHub code search (user:james-sidiqi, "wedding" webp/jpg, "aroosi"): 0 results.
 - Server (one read-only cPanel Fileman listing of afghantours-private): 6 backup/deploy zips (pre-8867920, pre-d76caa8, deploy-main-8867920, deploy-main-d76caa8, pre-deploy-17fc333, pre-deploy-fc06d0b). The zip contents can't be listed through the API without downloading or extracting, so they weren't inspected. They are snapshots of the deployed git trees above.
+
+## 6. t245 approved photos (James, 2026-10-14). Register: docs/image-register-t245.csv
+
+| File (original) | New asset | Used on | Credit |
+|---|---|---|---|
+| cdacf989 (matches copiloted hero, dHash 4/256) | afghan-weddings/city-star-wedding-hall-night.webp + crops/-hero, -card | Weddings hero, cultural index card, gallery | Photo: AfghanTours |
+| 9bc40421 (matches copiloted gallery-03, 1/256) | afghan-weddings/wedding-hall-interior.webp | Weddings content (before "Arranging"), gallery | Photo: AfghanTours |
+| 980f3005 (same scene as copiloted gallery-02, other crop) | afghan-weddings/wedding-guests-table.webp | Weddings content (before "Cultural pairing"), gallery | Photo: AfghanTours |
+| 7b76fd7c basket | mulberries/mulberry-basket.webp + crops | Mulberries card + detail hero + gallery | Photo: AfghanTours |
+| 7d42f716 jsp-013 (same photo as existing mulberries/gallery-1.webp) | mulberries/black-mulberries-jsp013.webp | Mulberries gallery | Photo: AfghanTours |
+| acda88a2 feast table (= copiloted gallery-01) | **EXCLUDED**: appears AI-generated; pending James | none | none |
+
+EXIF was stripped from all outputs and the originals are kept in /workspace/qc/fix-2026-10-14/originals-t245/. The Malatya dried-mulberry photo is no longer referenced (REJECTED_IMAGES); the file and its credit record are kept. The old weddings thumb.webp (a tour group in a tea house, not a wedding) is kept but no longer shown on the weddings page, which now uses a curated gallery.
+
+## 7. Credit re-verification against Wikimedia Commons (API extmetadata, 2026-10-14)
+
+All 24 Commons-sourced records match the file page's author and licence. Differences: DVIDS "Canal upgrades…" has a blank Artist field (public domain, credit kept) and Sahrad.jpg is "CC0" on Commons ("CC0 1.0" on site). There is no "Attribution" override text that we omit, except Casimiri ("Casimiri at the English-language Wikipedia"; the site says "Casimiri at English Wikipedia", which is equivalent). I found no evidence of unauthorized use. Licences are uploader-asserted on Commons.
+
+## 8. Guest Films
+
+The five films (TheCosmopolitanCanadian) play through the official youtube-nocookie.com/embed iframe after a click; no video is self-hosted. YouTube oEmbed returns 200 for all five, so embedding is enabled. **The stills are self-hosted:** /assets/images/guest-films/yt-<id>.webp match the creator's YouTube thumbnails (hash distance 0–1/144). An authorized embed doesn't need separate permission, but self-hosting the thumbnails is outside the embed. Recommend the creator's written OK, or serving the thumbnails from i.ytimg.com. Section unchanged.
