@@ -4,8 +4,15 @@ subtitle: "A hand-knotted archive of identity, migration, protection, and hospit
 card_description: "Discover Afghan carpet symbolism, regional weaving identities, natural dyes, and the tea culture that surrounds carpets in homes and bazaars."
 category: "Cultural Experiences"
 experience_type: "Crafts & Heritage"
-hero_image: "/assets/images/placeholders/default-attraction.webp"
-image: "/assets/images/placeholders/default-attraction.webp"
+hero_image: "/assets/images/experiences/cultural/afghan-carpets/hero.webp"
+image: "/assets/images/experiences/cultural/afghan-carpets/thumb.webp"
+gallery_images:
+  - "/assets/images/experiences/cultural/afghan-carpets/gallery/01-carpet-shop-unfurling.webp"
+  - "/assets/images/experiences/cultural/afghan-carpets/gallery/02-kneeling-striped-carpet.webp"
+  - "/assets/images/experiences/cultural/afghan-carpets/gallery/03-loom-weavers.webp"
+gallery_exclude:
+  - "/assets/images/experiences/cultural/afghan-carpets/hero.webp"
+  - "/assets/images/experiences/cultural/afghan-carpets/thumb.webp"
 provinces: ["Balkh", "Jowzjan", "Faryab", "Herat", "Kabul"]
 paired_foods: ["Green Tea", "Dried Fruit", "Almonds"]
 best_season: "Year round"
