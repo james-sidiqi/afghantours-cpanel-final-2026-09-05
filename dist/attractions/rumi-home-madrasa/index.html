@@ -70,6 +70,9 @@ const instanceId = "attraction-popup-attractions-rumi-home-madrasa";
     const item = attractions[index];
     if (!item || !modal) return;
 
+    // t279: the empty initial src fires an error that hides the image for good; clear it before loading the real one.
+    img.classList.remove('img-failed');
+    if (img.parentElement) img.parentElement.classList.remove('img-missing');
     img.src = item.image || '';
     img.alt = item.title || '';
     locationLabel.textContent = [item.province, item.region].filter(Boolean).join(' • ') || 'Afghanistan';
