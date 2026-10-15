@@ -133,7 +133,7 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
     "source": "https://commons.wikimedia.org/wiki/File:Kashtun_da_waygale_Nuristan_-_panoramio.jpg",
     "alt": "Rocky mountainside with scattered trees in Nuristan",
-    "note": "Illustrative photo: Kashtun village, Waygal valley, Nuristan (not Barg-e Matal itself)"
+    "note": "Illustrative photo: Kashtun village, Waygal valley, Nuristan"
   },
   {
     "paths": [
