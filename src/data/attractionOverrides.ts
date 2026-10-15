@@ -13,12 +13,9 @@ export type AttractionOverride = {
 };
 
 export const ATTRACTION_OVERRIDES: Record<string, AttractionOverride> = {
-  // t271: page copy in src/content/attractions/nuristan-national-park.md is INTERIM (drawn only from the old
-  // Barg-e Matal page). Replace with James's exact card/intro/What Makes It Special/Planning/activities text before merge.
   'nuristan-national-park': {
     seoTitle: 'Nuristan National Park | Nature & Mountain Landscapes | AfghanTours',
-    // Interim description: replace with James's exact SEO description before merge.
-    seoDescription: 'Forested valleys, alpine meadows and high mountain landscapes in Nuristan, eastern Afghanistan. Visits are arranged on inquiry only.',
+    seoDescription: "Explore Nuristan National Park's forested mountains, river valleys, and natural landscapes. Plan a locally coordinated visit with AfghanTours.",
     ctaLabel: 'Ask About Visiting Nuristan',
     heroLayout: 'panorama',
     heroSrcset: '/assets/images/attractions/nuristan-national-park/sizes/hero-800w.webp 800w, /assets/images/attractions/nuristan-national-park/hero.webp 2172w',

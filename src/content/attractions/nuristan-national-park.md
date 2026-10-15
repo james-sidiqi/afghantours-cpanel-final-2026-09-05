@@ -6,16 +6,19 @@ save_to: src/content/attractions/nuristan-national-park.md
 ---
 
 ### Introduction
-Tucked into the eastern mountains of the Hindu Kush, Nuristan is among the country’s most isolated regions: forested valleys, sweeping meadows and high mountain landscapes far from the usual tourist trail.
+In Afghanistan's eastern Hindu Kush, Nuristan is a landscape of steep mountain slopes, deep river valleys, and forests of pine, cedar, and other native trees. The region's rugged geography supports a rich variety of plant and animal life and has long shaped the communities living throughout its valleys.
+
+Announced as a national park in 2020, Nuristan represents an important conservation landscape. Its natural beauty is accompanied by challenging terrain, limited infrastructure, and travel conditions that require careful local planning.
 
 ### What Makes It Special
-This isn't a monument—it's a living landscape. The valleys reveal how Nuristan's people have moved with the seasons for centuries. You'll see scattered pastoral hamlets, terraced slopes, cedar forests and the rhythm of transhumance that still defines life here.
+The appeal of Nuristan lies in its combination of forested mountains, rushing rivers, remote settlements, and changing landscapes. Visitors may experience scenic drives, photography, and carefully arranged nature-focused excursions where local conditions and permissions allow.
 
-### Planning
-Access is rugged—expect uneven tracks, long driving and weather that can shift fast. Road travel is the only practical option, and winter often closes routes. Visits are arranged on inquiry only; our team confirms local conditions and routing with you before anything is booked.
+### Planning Your Visit
+Travel in Nuristan requires advance coordination. Roads can be difficult, particularly during winter, heavy rain, or periods of flooding. Routes, activities, local permissions, and available accommodation must be confirmed before an itinerary is offered.
 
-### Activities
-- Landscape and nature walks in forested valleys and meadows
-- Mountain photography
-- Visiting pastoral hamlets with local guidance, where appropriate
-- Combining Nuristan with a wider eastern itinerary
+### Suggested Activities
+- Nature photography
+- Scenic sightseeing
+- Mountain and forest exploration
+- Hiking where locally permitted
+- River-valley excursions where conditions allow
