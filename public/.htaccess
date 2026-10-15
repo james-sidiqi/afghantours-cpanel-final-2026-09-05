@@ -31,6 +31,8 @@ RewriteRule ^tours/photography-tour/?$ /specialist-services/photography-document
 RewriteRule ^photo-credits/?$ / [R=302,L]
 # James t264: Eid & Celebrations experience unpublished (content archived in src/content/_inactive/cultural-experiences/)
 RewriteRule ^cultural-experiences/eid-and-celebrations/?$ /cultural-experiences/ [R=301,L]
+# t271: Barg-e Matal & Lakes attraction replaced by Nuristan National Park
+RewriteRule ^attractions/barg-e-matal-lakes/?$ /attractions/nuristan-national-park/ [R=301,L]
 RewriteRule ^tours/scientific-expeditions/?$ /specialist-services/scientific-research/ [R=301,L]
 RewriteRule ^tours/media-support/?$ /specialist-services/media-journalist/ [R=301,L]
 RewriteRule ^tours/business-investment/?$ /specialist-services/business-investment/ [R=301,L]

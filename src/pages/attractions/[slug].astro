@@ -6,6 +6,7 @@ import path from 'node:path';
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ATTRACTION_IMAGE_ALT } from '../../lib/attraction-image-alt';
+import { ATTRACTION_OVERRIDES } from '../../data/attractionOverrides';
 import TourCardGrid from '../../components/cards/TourCardGrid.astro';
 import AttractionPopupGrid from '../../components/cards/AttractionPopupGrid.astro';
 
@@ -44,7 +45,9 @@ const province =
   item.province_code ||
   '';
 
+const ov = ATTRACTION_OVERRIDES[item.slug] || {};
 const region = item.region || '';
+const regionDisplay = ov.regionLabel || region;
 
 const provinceSlug =
   item.province_slug ||
@@ -353,6 +356,20 @@ const facts = [
 ];
 
 
+if (ov.categoryLabel) {
+  facts.unshift({
+    label: 'Category',
+    value: [ov.categoryLabel, ov.secondaryCategory].filter(Boolean).join(' · '),
+  });
+}
+if (ov.regionLabel) {
+  facts.splice(2, 0, { label: 'Region', value: ov.regionLabel });
+}
+if (ov.inquiryOnly) {
+  const i = facts.findIndex((f) => f.label === 'Typical hours');
+  if (i >= 0) facts[i] = { label: 'Visits', value: 'Inquiry only' };
+}
+
 /* ---------------------------------------------------------
    TAGS
    --------------------------------------------------------- */
@@ -376,8 +393,8 @@ const provinceHref =
 ---
 
 <BaseLayout
-  title={`${title} | AfghanTours`}
-  description={shortDescription}
+  title={ov.seoTitle || `${title} | AfghanTours`}
+  description={ov.seoDescription || shortDescription}
   image={heroImage}
 >
 
@@ -385,12 +402,14 @@ const provinceHref =
        ATTRACTION HERO
        ===================================================== -->
 
-  <section class="attraction-hero">
+  <section class:list={['attraction-hero', ov.heroLayout === 'panorama' && 'attraction-hero--panorama']}>
 
     <img
       class="attraction-hero-image"
       src={heroImage}
-      alt={ATTRACTION_IMAGE_ALT[item.slug] ?? altFor(heroImage, title)}
+      srcset={ov.heroSrcset}
+      sizes={ov.heroSrcset ? '100vw' : undefined}
+      alt={ov.heroAlt ?? ATTRACTION_IMAGE_ALT[item.slug] ?? altFor(heroImage, title)}
       fetchpriority="high"
     />
 
@@ -427,7 +446,7 @@ const provinceHref =
       <div class="attraction-hero-copy">
 
         <p class="hero-kicker">
-          {[province, region]
+          {[province, regionDisplay]
             .filter(Boolean)
             .join(' · ') || 'Afghanistan'}
         </p>
@@ -461,7 +480,7 @@ const provinceHref =
             class="hero-secondary"
             href={contactHref}
           >
-            Ask about visiting
+            {ov.ctaLabel || 'Ask about visiting'}
           </a>
 
         </div>
@@ -595,7 +614,7 @@ const provinceHref =
             class="planning-primary"
             href={contactHref}
           >
-            Plan a visit
+            {ov.ctaLabel || 'Plan a visit'}
           </a>
 
 
@@ -774,7 +793,7 @@ const provinceHref =
 
 
       <a href={contactHref}>
-        Start planning
+        {ov.ctaLabel || 'Start planning'}
       </a>
 
     </div>
@@ -798,6 +817,13 @@ const provinceHref =
     color: #fff;
   }
 
+
+
+  /* t271: panoramic banner — full-width image at its natural ratio, title below. */
+  .attraction-hero.attraction-hero--panorama { min-height: 0; display: flex; flex-direction: column; }
+  .attraction-hero--panorama .attraction-hero-image { position: static; display: block; width: 100%; height: auto; aspect-ratio: 2172 / 544; object-fit: cover; }
+  .attraction-hero--panorama .attraction-hero-overlay { display: none; }
+  .attraction-hero--panorama .attraction-hero-inner { min-height: 0; padding-top: 2.2rem; padding-bottom: 3rem; }
 
   .attraction-hero-image {
     position: absolute;
@@ -1692,6 +1718,9 @@ const provinceHref =
       padding-bottom: 4.5rem;
     }
 
+
+    .attraction-hero.attraction-hero--panorama,
+    .attraction-hero--panorama .attraction-hero-inner { min-height: 0; padding-bottom: 2.5rem; }
 
     .attraction-hero-overlay {
       background:
