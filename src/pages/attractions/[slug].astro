@@ -356,6 +356,14 @@ const facts = [
 ];
 
 
+if (ov.hideDuration) {
+  const d = facts.findIndex((f) => f.label === 'Recommended visit');
+  if (d >= 0) facts.splice(d, 1);
+}
+if (ov.bestTime) {
+  const b = facts.findIndex((f) => f.label === 'Best time');
+  if (b >= 0) facts[b] = { label: 'Best time', value: ov.bestTime };
+}
 if (ov.categoryLabel) {
   facts.unshift({
     label: 'Category',
@@ -586,7 +594,7 @@ const provinceHref =
 
             <div>
               <span>Season</span>
-              <strong>{seasonalWindow}</strong>
+              <strong>{ov.seasonLabel || seasonalWindow}</strong>
             </div>
 
             {item.photography_rating && (

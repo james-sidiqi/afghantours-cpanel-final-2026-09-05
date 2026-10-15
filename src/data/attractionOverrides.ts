@@ -10,6 +10,9 @@ export type AttractionOverride = {
   categoryLabel?: string;
   secondaryCategory?: string;
   inquiryOnly?: boolean;
+  bestTime?: string;
+  seasonLabel?: string;
+  hideDuration?: boolean;
 };
 
 export const ATTRACTION_OVERRIDES: Record<string, AttractionOverride> = {
@@ -23,5 +26,9 @@ export const ATTRACTION_OVERRIDES: Record<string, AttractionOverride> = {
     categoryLabel: 'Nature & Wildlife',
     secondaryCategory: 'Mountain Landscapes',
     inquiryOnly: true,
+    // James t273: seasonal wording; no fixed visit length.
+    bestTime: 'Late spring to autumn (May–Oct)',
+    seasonLabel: 'Late spring to autumn (May–Oct)',
+    hideDuration: true,
   },
 };

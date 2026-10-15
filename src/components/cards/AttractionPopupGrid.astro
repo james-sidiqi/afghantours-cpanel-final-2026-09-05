@@ -1,4 +1,5 @@
 ---
+import { ATTRACTION_OVERRIDES } from '../../data/attractionOverrides';
 import {
   buildAttractionTopMeta,
   buildAttractionTravelerNotes,
@@ -38,7 +39,7 @@ const normalized = attractions
     const category = a.category || 'Attraction';
     const access = a.access_difficulty || a.access || '';
     const season = [a.season_start, a.season_end].filter(Boolean).join('–') || '';
-    const durationHours = a.visit_duration_hours ?? a.visit_duration;
+    const durationHours = ATTRACTION_OVERRIDES[a.slug]?.hideDuration ? '' : (a.visit_duration_hours ?? a.visit_duration);
     const duration = durationHours
       ? formatVisitDuration(durationHours)
       : '';
