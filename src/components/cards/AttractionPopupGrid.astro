@@ -53,13 +53,15 @@ const normalized = attractions
       region: titleCaseMeta(region),
       category: titleCaseMeta(category),
       desc,
-      long,
+      long: ATTRACTION_OVERRIDES[slug]?.popupAbout || long,
       image,
       href: a.href || `/attractions/${slug}/`,
       duration,
       access,
       season,
-      topMeta: buildAttractionTopMeta({ category, region, access }),
+      topMeta: ov.accessLabel
+        ? [titleCaseMeta(category), titleCaseMeta(region), `Access: ${ov.accessLabel}`].filter(Boolean)
+        : buildAttractionTopMeta({ category, region, access }),
       travelerNotes: buildAttractionTravelerNotes({
         slug,
         province,

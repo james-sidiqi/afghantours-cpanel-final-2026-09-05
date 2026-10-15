@@ -13,7 +13,8 @@ export type AttractionOverride = {
   bestTime?: string;
   seasonLabel?: string;
   hideDuration?: boolean;
-  accessLabel?: string;
+  accessLabel?: string; // shown as 'Access: …' (not a fitness level)
+  popupAbout?: string; // plain-text About copy for the card popup
   durationLabel?: string; // replaces visit length on page facts and cards
   facts?: { label: string; value: string }[]; // full facts-panel replacement
 };
@@ -46,6 +47,7 @@ export const ATTRACTION_OVERRIDES: Record<string, AttractionOverride> = {
     secondaryCategory: 'Scenic Landscapes, Architecture, Nature',
     durationLabel: '4–8 hours',
     accessLabel: 'By arrangement',
+    popupAbout: "Nuristan is home to some of Afghanistan's most distinctive mountain settlements. Villages cling to steep hillsides above rushing rivers, with traditional multi-story wooden and stone houses built into the terrain. Narrow pathways, terraced fields, forested slopes, and mountain streams create a remarkable landscape where architecture and nature are closely connected. Traveling through Nuristan's valleys offers an opportunity to appreciate the region's scenery, traditional craftsmanship, and the ways local communities have adapted to life in the Hindu Kush.",
     bestTime: 'May–October',
     seasonLabel: 'May–October',
     facts: [
