@@ -6,7 +6,7 @@ import PageHero from '../../components/PageHero.astro';
 import AttractionPopupGrid from '../../components/cards/AttractionPopupGrid.astro';
 import HotelPopupGrid from '../../components/cards/HotelPopupGrid.astro';
 import TourCardGrid from '../../components/cards/TourCardGrid.astro';
-import { getHubs, getHubBySlug, getAttractions, getHotels, getTours, getFoodItems, getFoodHref } from '../../lib/buildRelations';
+import { getProvinces, getHubs, getHubBySlug, getAttractions, getHotels, getTours, getFoodItems, getFoodHref } from '../../lib/buildRelations';
 import { getCulinaryForHub, routeContextLabel } from '../../lib/culinary';
 import { getCulturalForHub, getActivitiesForHub, accessTypeLabel } from '../../lib/experiences';
 import { getCollection } from 'astro:content';
@@ -23,7 +23,10 @@ const hubName = hubDisplayName(hub.slug, '') || hub.title || hub.name || hub.loc
 const hubSlug = hub.slug;
 const hubCode = hub.location_code || hub.code || hub.destination_code || hub.destination || '';
 const provinceCode = hub.parent_code || hub.province_code || '';
-const provinceName = hub.province || hub.province_name || hubName;
+// t279: province is looked up from the hub's parent province code (never the hub display name).
+const parentProvince = getProvinces().find((p) => String(p.province_code || p.code || '').toLowerCase() === String(provinceCode).toLowerCase());
+const hubMatchName = hub.title || hub.name || hub.location_name || hubName;
+const provinceName = hub.province || hub.province_name || parentProvince?.province_name || parentProvince?.name || parentProvince?.title || hubMatchName;
 
 const attractions = getAttractions().filter((a) => {
   const fields = [

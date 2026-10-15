@@ -437,7 +437,12 @@ if (heroImage.startsWith('/')) {
   }
 }
 
-const galleryImages = galleryCandidates.slice(0, 9);
+// t279: pages whose gallery must not repeat the hero, and pages with no genuinely related published journeys.
+const GALLERY_EXCLUDES_HERO = new Set(['dried-fruits/paktia-pine-nuts']);
+const NO_RELATED_JOURNEYS = new Set(['dried-fruits/paktia-pine-nuts']);
+const galleryImages = galleryCandidates
+  .filter((src) => !(GALLERY_EXCLUDES_HERO.has(foodPath) && src === heroImage))
+  .slice(0, 9);
 
 const currentProvinceSet = new Set(provinces.map(normalizeKey));
 const pairedKeys = pairedFoods.map(normalizeKey);
@@ -708,6 +713,7 @@ const contactHref = `/contact/?food=${encodeURIComponent(title)}`;
     </section>
   )}
 
+  {!NO_RELATED_JOURNEYS.has(foodPath) && (<>
   {relatedTours.length > 0 ? (
     <TourCardGrid
       tours={relatedTours}
@@ -730,6 +736,7 @@ const contactHref = `/contact/?food=${encodeURIComponent(title)}`;
       </div>
     </section>
   )}
+  </>)}
 
   <section class="food-final-cta">
     <div class="food-final-inner">
