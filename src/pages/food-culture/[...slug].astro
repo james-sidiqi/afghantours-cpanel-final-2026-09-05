@@ -166,6 +166,9 @@ const dedicatedHero =
     ? `${resolvedFoodImageFolder}hero.webp`
     : '';
 
+// t277: tall subject photos shown as a right-hand panel on desktop so the whole subject stays in frame.
+const PORTRAIT_HEROES = new Set(['/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/hero.webp']);
+
 const heroImage =
   dedicatedHero ||
   data.hero_image ||
@@ -520,7 +523,7 @@ const contactHref = `/contact/?food=${encodeURIComponent(title)}`;
   image={heroImage}
 >
   <section class="food-detail-hero">
-    <img class="food-detail-hero-image" src={heroImage} alt={altFor(heroImage, title)} fetchpriority="high" />
+    <img class:list={["food-detail-hero-image", PORTRAIT_HEROES.has(heroImage) && "food-detail-hero-image--portrait"]} src={heroImage} alt={altFor(heroImage, title)} fetchpriority="high" />
     <div class="food-detail-hero-overlay" aria-hidden="true"></div>
 
     <div class="food-detail-hero-inner">
@@ -787,6 +790,10 @@ const contactHref = `/contact/?food=${encodeURIComponent(title)}`;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  @media (min-width: 900px) {
+    .food-detail-hero-image--portrait { left: auto; width: 48%; object-position: 50% 40%; }
   }
 
   .food-detail-hero-overlay {

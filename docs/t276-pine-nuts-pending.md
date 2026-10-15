@@ -1,3 +1,13 @@
+# RESOLVED (t277, 2026-10-15)
+
+James sent the photos (t277). Hero/card: harvest/hero.webp (ba566c17); gallery: harvest/gallery-1..3.webp (a6d6fd4e, 6f2b6da7, 74426e23).
+Removed from this page only (files kept on disk): gardez-zurmat-highlands/hero.webp, gardez-zurmat-highlands/gallery-1.webp, paktia-pine-nuts/hero.webp (pine forest).
+paktia-pine-nuts/gallery/01.webp stays unpublished. Credit TBD in docs/image-register-t271.csv.
+
+---
+
+(original note)
+
 # t276 Pine Nuts photo (EAEBF80F): awaiting asset
 
 Status: James's photo EAEBF80F (worker processing pine cones and nuts) was NOT in the attachments

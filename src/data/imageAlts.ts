@@ -16,6 +16,11 @@ export const IMAGE_ALTS: Record<string, string> = {
   '/assets/images/attractions/nuristan-national-park/hero.webp': 'Panorama of forested mountain ridges in Nuristan with cloud covering the high peaks',
   '/assets/images/attractions/nuristan-national-park/card.webp': 'Forested valley in Nuristan with terraced fields and rocky slopes under cloud',
   '/assets/images/attractions/nuristan-national-park/gallery-1-forested-meadow-boulder.webp': 'Mountain meadow with a large boulder below a forested slope in Nuristan',
+  // t277: James's pine-nut harvest photos (credit TBD)
+  '/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/hero.webp': 'Worker processing pine cones and pine nuts in Afghanistan.',
+  '/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/gallery-1.webp': 'Two men crouching beside a large pile of pine nuts in front of white sacks',
+  '/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/gallery-2.webp': 'Pine nuts being tossed from a woven basket over a pile on a cloth',
+  '/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/gallery-3.webp': 'Men pouring pine nuts from a woven basket into a white sack',
   // t276: TEMPORARY NRVV hero/card (a2a23243, moved from the Nuristan NP gallery). Swap: replace hero.webp in this folder and update this alt.
   '/assets/images/attractions/nuristan-river-valleys-villages/hero.webp': 'Village on a rocky hillside above a river and green fields in Nuristan',
   '/assets/images/attractions/nuristan-river-valleys-villages/gallery-bashgal-village-river.webp': 'Multi-storey wooden village houses beside a fast-flowing river in a Nuristan valley',
