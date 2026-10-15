@@ -18,7 +18,7 @@ Historic heart of the south and birthplace of modern Afghanistan.
 Kandahar holds deep historical and cultural significance as the cradle of modern Afghanistan. The province features historic shrines, ancient cities, and a strong Pashtun cultural identity rooted in centuries of regional history.
 
 ### Travel Notes
-- **Region:** South  
+- **Region:** Southern Afghanistan
 - **Best season:** Autumn to Spring (avoid peak summer heat)  
 - Travel conditions vary by route and season; we plan conservatively with realistic pacing.  
 - Provincial permissions and registrations are processed or coordinated in advance where required for booked travel; exact requirements depend on the itinerary and relevant authorities.

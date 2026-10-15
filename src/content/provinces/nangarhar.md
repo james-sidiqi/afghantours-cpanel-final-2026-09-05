@@ -18,7 +18,7 @@ Eastern gateway with fertile plains and historic cities.
 Nangarhar is a key eastern province centered on Jalalabad, known for its warm climate, agricultural production, and historical significance. The region has long served as a cultural and commercial link to South Asia.
 
 ### Travel Notes
-- **Region:** East  
+- **Region:** Eastern Afghanistan
 - **Best season:** Spring & Autumn (Summer warm; winters colder in higher valleys)  
 - Travel conditions vary by route and season; we plan conservatively with realistic pacing.  
 - Provincial permissions and registrations are processed or coordinated in advance where required for booked travel; exact requirements depend on the itinerary and relevant authorities.

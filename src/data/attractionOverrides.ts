@@ -13,6 +13,9 @@ export type AttractionOverride = {
   bestTime?: string;
   seasonLabel?: string;
   hideDuration?: boolean;
+  accessLabel?: string;
+  durationLabel?: string; // replaces visit length on page facts and cards
+  facts?: { label: string; value: string }[]; // full facts-panel replacement
 };
 
 export const ATTRACTION_OVERRIDES: Record<string, AttractionOverride> = {
@@ -30,5 +33,29 @@ export const ATTRACTION_OVERRIDES: Record<string, AttractionOverride> = {
     bestTime: 'Late spring to autumn (May–Oct)',
     seasonLabel: 'Late spring to autumn (May–Oct)',
     hideDuration: true,
+  },
+  // t276: replaces Bashgal Valley (301 from /attractions/bashgal-valley/).
+  // Image is TEMPORARY (a2a23243); James's photo pending. To swap: replace
+  // public/assets/images/attractions/nuristan-river-valleys-villages/hero.webp (+ its alt in imageAlts.ts).
+  'nuristan-river-valleys-villages': {
+    seoTitle: 'Nuristan River Valleys & Villages | AfghanTours',
+    seoDescription: "Discover Nuristan's traditional wooden villages, mountain rivers, forested valleys, and distinctive architecture with AfghanTours.",
+    ctaLabel: 'Explore Nuristan with AfghanTours',
+    regionLabel: 'Eastern Afghanistan / Hindu Kush',
+    categoryLabel: 'Culture & Heritage',
+    secondaryCategory: 'Scenic Landscapes, Architecture, Nature',
+    durationLabel: '4–8 hours',
+    accessLabel: 'By arrangement',
+    bestTime: 'May–October',
+    seasonLabel: 'May–October',
+    facts: [
+      { label: 'Province', value: 'Nuristan' },
+      { label: 'Region', value: 'Eastern Afghanistan / Hindu Kush' },
+      { label: 'Category', value: 'Culture & Heritage · Scenic Landscapes, Architecture, Nature' },
+      { label: 'Visit length', value: '4–8 hours (excludes travel to and from Nuristan)' },
+      { label: 'Best time', value: 'May–October' },
+      { label: 'Transport', value: 'Road' },
+      { label: 'Access', value: 'By arrangement' },
+    ],
   },
 };

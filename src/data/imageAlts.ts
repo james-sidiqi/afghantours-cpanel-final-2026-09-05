@@ -16,7 +16,10 @@ export const IMAGE_ALTS: Record<string, string> = {
   '/assets/images/attractions/nuristan-national-park/hero.webp': 'Panorama of forested mountain ridges in Nuristan with cloud covering the high peaks',
   '/assets/images/attractions/nuristan-national-park/card.webp': 'Forested valley in Nuristan with terraced fields and rocky slopes under cloud',
   '/assets/images/attractions/nuristan-national-park/gallery-1-forested-meadow-boulder.webp': 'Mountain meadow with a large boulder below a forested slope in Nuristan',
-  '/assets/images/attractions/nuristan-national-park/gallery-2-hillside-village-river.webp': 'Village on a rocky hillside above a river and green fields in Nuristan',
+  // t276: TEMPORARY NRVV hero/card (a2a23243, moved from the Nuristan NP gallery). Swap: replace hero.webp in this folder and update this alt.
+  '/assets/images/attractions/nuristan-river-valleys-villages/hero.webp': 'Village on a rocky hillside above a river and green fields in Nuristan',
+  '/assets/images/attractions/nuristan-river-valleys-villages/gallery-bashgal-village-river.webp': 'Multi-storey wooden village houses beside a fast-flowing river in a Nuristan valley',
+  '/assets/images/attractions/nuristan-river-valleys-villages/gallery-bashgal-village-riverside.webp': 'Wooden village houses along a rocky riverbank below a mountain slope in Nuristan',
   '/assets/images/attractions/nuristan-national-park/gallery-3-sunset-village-river.webp': 'Low sun over mountains, a village and a river channel in Nuristan',
   '/assets/images/attractions/nuristan-national-park/gallery-4-dirt-road-forested-slope.webp': 'Dirt road below a forested mountain slope in Nuristan',
   '/assets/images/attractions/nuristan-national-park/gallery-hillside-village.webp': 'Stacked hillside village houses on a mountain slope',

@@ -1,4 +1,5 @@
 ---
+import { regionDisplayName } from '../../lib/regionNames';
 import { ATTRACTION_OVERRIDES } from '../../data/attractionOverrides';
 import {
   buildAttractionTopMeta,
@@ -35,14 +36,15 @@ const normalized = attractions
     const long = strip(a.desc_long || a.description || a.content || a.desc_short || a.excerpt || '');
     const image = a.image || a.image_path || a.hero_image || a.thumbnail_path || `/assets/images/attractions/${slug}/hero.webp`;
     const province = a.province || a.province_name || a.province_code || '';
-    const region = a.region || '';
+    const region = regionDisplayName(a.region || '');
     const category = a.category || 'Attraction';
-    const access = a.access_difficulty || a.access || '';
+    const access = ATTRACTION_OVERRIDES[a.slug]?.accessLabel || a.access_difficulty || a.access || '';
     const season = [a.season_start, a.season_end].filter(Boolean).join('–') || '';
-    const durationHours = ATTRACTION_OVERRIDES[a.slug]?.hideDuration ? '' : (a.visit_duration_hours ?? a.visit_duration);
-    const duration = durationHours
+    const ov = ATTRACTION_OVERRIDES[a.slug] || {};
+    const durationHours = ov.hideDuration || ov.durationLabel ? '' : (a.visit_duration_hours ?? a.visit_duration);
+    const duration = ov.durationLabel || (durationHours
       ? formatVisitDuration(durationHours)
-      : '';
+      : '');
 
     return {
       slug,

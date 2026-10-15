@@ -17,7 +17,7 @@ Mountainous terrain and traditional rural communities.
 Uruzgan is a central-southern province marked by rugged mountains and dispersed rural settlements. Its landscapes reflect long-standing pastoral and agricultural traditions.
 
 ### Travel Notes
-- **Region:** South  
+- **Region:** Southern Afghanistan
 - **Best season:** Autumn to Spring (avoid peak summer heat)  
 - Travel conditions vary by route and season; we plan conservatively with realistic pacing.  
 - Provincial tourist permits are required for each province where tourist activities are undertaken. We process these in advance for clients traveling on our tours.

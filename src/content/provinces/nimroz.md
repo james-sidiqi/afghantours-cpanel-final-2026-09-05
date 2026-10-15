@@ -18,7 +18,7 @@ Desert landscapes and ancient trade routes to Iran.
 Nimroz is Afghanistan’s southwestern frontier, characterized by desert scenery and historic cross-border trade routes. Its sparse population and open terrain offer a stark and distinctive travel environment.
 
 ### Travel Notes
-- **Region:** South  
+- **Region:** Southern Afghanistan
 - **Best season:** Autumn to Spring (avoid peak summer heat)  
 - Travel conditions vary by route and season; we plan conservatively with realistic pacing.  
 - Provincial permissions and registrations are processed or coordinated in advance where required for booked travel; exact requirements depend on the itinerary and relevant authorities.

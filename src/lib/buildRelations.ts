@@ -1,3 +1,4 @@
+import { hubDisplayName } from './hubNames';
 import fs from 'node:fs';
 import path from 'node:path';
 import { normalizeImagePath, getTourHeroImage, getTourOverviewImage, getAttractionImage, getHotelImage, getRegionImage, getProvinceImage, getFoodImage, getHubImage, buildGallery, hasRealImage, listPublicImages, PLACEHOLDERS } from './images';
@@ -560,6 +561,7 @@ export function getHubs(): Row[] {
 
   return [...combined.values()]
     .map((hub) => mergeContent(hub, markdownMap))
+    .map((hub) => ({ ...hub, display_name: hubDisplayName(hub.slug, hub.display_name || hub.title || hub.name) }))
     .sort((a, b) =>
       String(a.title || a.name || a.slug)
         .localeCompare(

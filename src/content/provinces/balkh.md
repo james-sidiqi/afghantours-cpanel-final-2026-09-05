@@ -18,7 +18,7 @@ Ancient cities, Islamic heritage, and the spiritual heart of the north.
 Balkh is one of the oldest continuously inhabited regions in the world, often called the “Mother of Cities.” Home to the historic city of Balkh and the Blue Mosque of Mazar-e-Sharif, the province is central to Afghanistan’s spiritual, cultural, and historical identity.
 
 ### Travel Notes
-- **Region:** North  
+- **Region:** Northern Afghanistan
 - **Best season:** Spring & Autumn (Summer can be hot in lowlands)  
 - Travel conditions vary by route and season; we plan conservatively with realistic pacing.  
 - Provincial permissions and registrations are processed or coordinated in advance where required for booked travel; exact requirements depend on the itinerary and relevant authorities.

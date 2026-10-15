@@ -17,7 +17,7 @@ Remote highlands and traditional rural life.
 Paktika is a sparsely populated province characterized by rugged highlands and pastoral communities. Its isolation has preserved traditional lifestyles and landscapes.
 
 ### Travel Notes
-- **Region:** East  
+- **Region:** Eastern Afghanistan
 - **Best season:** Spring & Autumn (Summer warm; winters colder in higher valleys)  
 - Travel conditions vary by route and season; we plan conservatively with realistic pacing.  
 - Provincial tourist permits are required for each province where tourist activities are undertaken. We process these in advance for clients traveling on our tours.

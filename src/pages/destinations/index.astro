@@ -1,4 +1,5 @@
 ---
+import { hubDisplayName } from '../../lib/hubNames';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getProvinces, getHubs } from '../../lib/buildRelations';
 
@@ -19,25 +20,25 @@ const regions = [
     text: 'Kabul, Bamyan, Panjshir, Parwan, Wardak, Ghazni, and the highland routes at the heart of many cultural journeys.',
   },
   {
-    title: 'North Afghanistan',
+    title: 'Northern Afghanistan',
     slug: 'north',
     image: '/assets/images/regions/north.webp',
     text: 'Balkh, Mazar-e-Sharif, Samangan, Baghlan, Kunduz, Takhar, Faryab, Jowzjan, and Sar-e-Pol.',
   },
   {
-    title: 'West Afghanistan',
+    title: 'Western Afghanistan',
     slug: 'west',
     image: '/assets/images/regions/west.webp',
     text: 'Herat, Ghor, Badghis, and Farah: Timurid architecture, Silk Road history, and rugged western routes.',
   },
   {
-    title: 'East Afghanistan',
+    title: 'Eastern Afghanistan',
     slug: 'east',
     image: '/assets/images/regions/east.webp',
     text: 'Nangarhar, Laghman, Kunar, Nuristan, Khost, Paktia, Paktika, and eastern mountain corridors.',
   },
   {
-    title: 'South Afghanistan',
+    title: 'Southern Afghanistan',
     slug: 'south',
     image: '/assets/images/regions/south.webp',
     text: 'Kandahar, Helmand, Uruzgan, Zabul, and Nimroz: Durrani history, desert routes, and southern cultural sites.',
@@ -71,7 +72,7 @@ const hubImageOverrides = {
 
 const imageForProvince = (p) => p.image || p.cover_image_path || `/assets/images/provinces/${p.slug}/hero.webp`;
 const imageForHub = (h) => hubImageOverrides[h.slug] || h.image || h.image_path || `/assets/images/hubs/${h.slug}/hero.webp`;
-const displayHubName = (h) => hubNameOverrides[h.slug] || h.display_name || h.title || h.name || 'Travel Hub';
+const displayHubName = (h) => hubDisplayName(h.slug, '') || hubNameOverrides[h.slug] || h.display_name || h.title || h.name || 'Travel Hub';
 
 const provinceCards = provinces.map((province) => {
   const name = titleOf(province);

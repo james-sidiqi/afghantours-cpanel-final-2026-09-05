@@ -18,7 +18,7 @@ Buddhist cave complexes and northern landscapes.
 Samangan is home to significant Buddhist archaeological sites, including ancient cave complexes. Its rolling northern terrain reflects Afghanistan’s pre-Islamic heritage and Silk Road history.
 
 ### Travel Notes
-- **Region:** North  
+- **Region:** Northern Afghanistan
 - **Best season:** Spring & Autumn (Summer can be hot in lowlands)  
 - Travel conditions vary by route and season; we plan conservatively with realistic pacing.  
 - Provincial permissions and registrations are processed or coordinated in advance where required for booked travel; exact requirements depend on the itinerary and relevant authorities.

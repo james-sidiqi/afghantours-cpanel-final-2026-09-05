@@ -1,3 +1,4 @@
+import { hubDisplayName } from './hubNames';
 import fs from 'node:fs';
 import path from 'node:path';
 import {
@@ -153,7 +154,7 @@ export function buildHubIndexCatalog(): HubCatalogItem[] {
   return ACTIVE_HUB_SLUGS.map((slug) => {
     const hub = hubsBySlug.get(slug) || { slug, title: slug, name: slug };
     const g = glance.get(slug) || {};
-    const name = String(hub.title || hub.name || g.display_name || slug);
+    const name = String(hubDisplayName(slug, '') || hub.title || hub.name || g.display_name || slug);
     const provinceRaw = String(
       hub.province || hub.province_name || ''
     ).trim();

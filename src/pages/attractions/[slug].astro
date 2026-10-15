@@ -1,4 +1,5 @@
 ---
+import { regionDisplayName } from '../../lib/regionNames';
 import PhotoCredits from '../../components/PhotoCredits.astro';
 import { altFor } from '../../data/photoCredits';
 import fs from 'node:fs';
@@ -47,7 +48,7 @@ const province =
 
 const ov = ATTRACTION_OVERRIDES[item.slug] || {};
 const region = item.region || '';
-const regionDisplay = ov.regionLabel || region;
+const regionDisplay = ov.regionLabel || regionDisplayName(region);
 
 const provinceSlug =
   item.province_slug ||
@@ -377,6 +378,7 @@ if (ov.inquiryOnly) {
   const i = facts.findIndex((f) => f.label === 'Typical hours');
   if (i >= 0) facts[i] = { label: 'Visits', value: 'Inquiry only' };
 }
+if (ov.facts) facts.splice(0, facts.length, ...ov.facts);
 
 /* ---------------------------------------------------------
    TAGS

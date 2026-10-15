@@ -88,7 +88,7 @@ const getHubGalleryPaths = (slug: string): string[] => {
                 {hub.subtitle || "Regional Base"}
               </span>
               <h3 class="text-3xl font-black tracking-tight text-white sm:text-5xl">
-                {hub.title}
+                {hub.display_name || hub.title}
               </h3>
               <p class="text-zinc-300 text-sm leading-relaxed font-normal">
                 {hub.description || "Operational launchpad managing logistics coordination, safety networks, and direct route access across regional districts."}
@@ -114,7 +114,7 @@ const getHubGalleryPaths = (slug: string): string[] => {
           
           <div class="relative z-20 w-full">
             <h4 class="text-sm font-black text-white line-clamp-1 tracking-tight">
-              {hub.title}
+              {hub.display_name || hub.title}
             </h4>
           </div>
         </button>
