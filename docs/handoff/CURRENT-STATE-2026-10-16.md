@@ -43,3 +43,20 @@ This file is the authoritative current-state record. It supersedes any conflicti
 5. Prepare the final deployment artifact and reconcile it with release-deploy.zip (sha256 `fe3fd8a5…14fe62a`). Don't assume they match.
 6. Reconcile .htaccess by hand: keep every live-only rule and apply only the 4 redirect changes (manifests/htaccess-diff.txt).
 7. Deploy only after James explicitly authorizes it, then run the smoke tests, the inquiry/mailbox test and the WhatsApp check.
+
+## Merge rehearsal: 16 Oct 2026, ~21:45 Kabul (UTC+4:30). Local only, nothing pushed or merged.
+Re-verified with `gh` first: main `4e4d9f0e`; #36 `bf8e6f85`, #37 `e1aecaeb` (open, ready, MERGEABLE, CI pass); #38 `3b469078` (draft, base remove-eid-and-gallery-images, MERGEABLE, CI pass); #39 `b98407d1` (draft, MERGEABLE, CI pass). #17 untouched. `AGENT-RULES.md` exists at repo root.
+
+In a fresh clone on main:
+1. `git merge origin/image-swaps-safety-pricing-silkroad` (#36): clean.
+2. `git merge origin/remove-eid-and-gallery-images` (#37): **54 conflicts, all under dist/; 0 source conflicts.** Resolved with `npm ci && npm run build`, then `git add -f dist` (dist/ is in .gitignore but tracked, so `-f` is required).
+3. `git merge origin/t271-attractions-nuristan` (#38): **31 conflicts, all under dist/; 0 source conflicts.** Resolved the same way.
+4. Second `npm run build`: `dist/` has **no drift**. Rehearsal result commit (local only): `b4a287dc`. Pushing it as a branch was blocked pending approval, so it was not pushed; the next agent can reproduce it in a few minutes with the steps above.
+
+Every CI step ran locally on the rehearsal result and passed: booking data validation (0 errors, 13 legacy warnings), core.test, PHP lint (tour-inquiry, booking, manage, hash-password), parity, PHP core tests 733/0, integration 157/0, cancellation-policy test, internal links (24,175 checked, 0 broken), site integrity --strict, slug audit (no duplicates), image audit (missing 0), sales funnel audit, inquiry entrypoint audit, tour image identity, and the dist drift check.
+
+**Comparison with release-deploy.zip (sha256 `fe3fd8a5…14fe62a`):** all 344 files in the zip are byte-identical to the rehearsal dist. Rehearsal dist vs main: 271 modified, 65 added, 9 renamed, 4 deleted. The only changed file *not* in the zip is `dist/.htaccess`, which is excluded on purpose (it is reconciled by hand: 4 redirects only). So the zip is still valid for the final main, *if* main ends up identical to the rehearsal.
+
+Note: when #37 and #38 are actually merged on GitHub, each PR branch has to be updated from main and its dist rebuilt the same way. See GITHUB-CPANEL-PUBLISHING-WORKFLOW.md for the deployment model and for which paths are protected.
+
+**Publishing model:** see [GITHUB-CPANEL-PUBLISHING-WORKFLOW.md](GITHUB-CPANEL-PUBLISHING-WORKFLOW.md).
