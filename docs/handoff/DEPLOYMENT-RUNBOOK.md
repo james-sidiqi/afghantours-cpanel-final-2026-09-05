@@ -18,7 +18,7 @@ This is the only deployment procedure. It replaces docs/DEPLOYMENT-CPANEL.md and
 1. cPanel → Backup → download a full Home Directory backup (or a host snapshot). Record the filename, size and time (Kabul).
 2. Verify it: the archive opens (`tar -tzf backup.tar.gz | head`), it contains afghantours.com/ and afghantours-private/, and its size is plausible.
 3. Download /home/jamesbon/afghantours.com/.htaccess on its own and save it as htaccess-live-YYYYMMDD.txt.
-4. Rollback point = this backup + the saved .htaccess + the git SHA 4e4d9f0e (live baseline).
+4. Rollback point = this backup + the saved .htaccess. Record the backup's filename, size and time. The backup itself is the rollback point. Live is NOT proven identical to git 4e4d9f0e, so you can't roll back by redeploying that SHA.
 
 ## 2. Merge the PRs (GitHub; needs James's approval)
 1. Re-check: `gh pr view 36 37 38 --json state,headRefOid,mergeStateStatus,statusCheckRollup`.
@@ -76,3 +76,13 @@ All are `[R=301,L]`. If the live file is identical to htaccess-main-4e4d9f0e.txt
 2. Restore htaccess-live-YYYYMMDD.txt.
 3. Restore the trashed files from the cPanel Trash.
 4. If the source must roll back too: `git revert -m 1 <merge #38>`, then #37, then #36, through a PR (needs James).
+
+
+## State verified 16 Oct 2026
+The authoritative current state is in [CURRENT-STATE-2026-10-16.md](CURRENT-STATE-2026-10-16.md), which covers the SHAs, PR states and CI, GitHub main vs the cPanel checkout vs live, PR #39 being staging only, the blockers and the next actions. Where this file conflicts with it, CURRENT-STATE wins. Summary: #36 and #37 are open, ready, mergeable and green. #38 is an open draft, mergeable and green, stacked on #37. #39 is an open draft, staging only and green. GitHub main is `4e4d9f0e`. The cPanel Git checkout is main at `8ee09517` (older, never deploy from it). Live production is newer than that checkout and not proven equal to GitHub main.
+
+Rules added on 16 Oct:
+- **Never deploy from the cPanel Git checkout** (/home/jamesbon/repositories/afghantours-cpanel-final-2026-09-05/, main at 8ee09517). It is older than both live and GitHub main. cPanel Git deploy stays disabled.
+- **PR #39** (`.cpanel.yml`) targets only /home/jamesbon/afghantours-deploy-staging/ and copies all of dist/. Use it for staging tests only. Never repoint it at /home/jamesbon/afghantours.com/. The production package in §3–4 excludes .htaccess, PHP, booking/ and manage/.
+- **Order:** backup and rollback point (§1), merge #36, then #37, then #38 (§2), rebuild the final main and confirm there's no dist drift, run the full QA, build the final artifact and reconcile it with release-deploy.zip without assuming it matches (§3–4), reconcile .htaccess by hand with only the 4 redirects (§5), then deploy.
+- **STOP** unless all of these are in place: a fresh backup, the live .htaccess preserved and reconciled, a recorded rollback point, mailbox and inquiry test access, and James's explicit authorization to deploy.

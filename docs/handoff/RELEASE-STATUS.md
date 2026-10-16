@@ -1,7 +1,7 @@
 # Release status (verified 2026-10-15, 18:25–18:40 Kabul time, UTC+4:30)
 
 Repository: https://github.com/james-sidiqi/afghantours-cpanel-final-2026-09-05 (public). Default branch: `main`.
-**Live production baseline:** main @ `4e4d9f0edbfe458cd7de9da7dcb3a63944698f37` (PR #33 merge). Nothing from #36, #37 or #38 is deployed.
+**GitHub main:** `4e4d9f0edbfe458cd7de9da7dcb3a63944698f37` (PR #33 merge). Nothing from #36, #37 or #38 is deployed. *Correction (16 Oct): this was earlier called the "live baseline", but live production is newer than the cPanel checkout and not proven identical to main. See the 16 Oct section below.*
 
 ## 1. Pull requests (re-checked with `gh pr view`)
 | PR | Head branch → base | Head SHA | State | Draft | Checks | Review | Mergeable |
@@ -60,3 +60,18 @@ Re-verified 2026-10-15 ~18:27 Kabul time on release-combined-local f06b5500. **T
 
 Reported earlier but **not** re-verified here: all 33 .htaccess redirect rules gave one hop to a 200 under a local Apache test, and the visual QC screenshots (bundled in the handoff zip under qc-screenshots/). CI qa on GitHub was green for #36, #37 and #38 at 21a1ee06.
 **Not tested:** production anything, including the live inquiry → mailbox delivery.
+
+
+## State verified 16 Oct 2026
+The authoritative current state is in [CURRENT-STATE-2026-10-16.md](CURRENT-STATE-2026-10-16.md), which covers the SHAs, PR states and CI, GitHub main vs the cPanel checkout vs live, PR #39 being staging only, the blockers and the next actions. Where this file conflicts with it, CURRENT-STATE wins. Summary: #36 and #37 are open, ready, mergeable and green. #38 is an open draft, mergeable and green, stacked on #37. #39 is an open draft, staging only and green. GitHub main is `4e4d9f0e`. The cPanel Git checkout is main at `8ee09517` (older, never deploy from it). Live production is newer than that checkout and not proven equal to GitHub main.
+
+| PR | Head SHA (16 Oct) | State | Draft | Mergeable | CI |
+|---|---|---|---|---|---|
+| #36 | `bf8e6f8504d3a05d0dad7a2d2fe9e104a3957aba` | open | no | yes | green |
+| #37 | `e1aecaebfda5412c1673762cf0da8ea9e8e46d5a` | open | no | yes | green |
+| #38 | `50b9fa76234c8102ff7151d81f7a608d774117f6`, plus the 16 Oct docs commit (base: remove-eid-and-gallery-images) | open | yes | yes | green |
+| #39 | `b98407d124ed5410b4a7498f54b435de62e4d467` (chore/cpanel-staging-deploy; staging only) | open | yes | yes | green |
+
+- #38's head moved from `21a1ee06` to `50b9fa76` only because of the docs-only handoff commit. The last site change is still `21a1ee06`.
+- Still not verified: the combined main after #36, #37 and #38 are merged. After merging, rebuild, confirm there's no dist drift, run the full QA, then reconcile the new artifact with release-deploy.zip.
+- cPanel Git checkout: main at `8ee095176056edcbf1a140b1868525be275452d9` (10 Oct). It is not the deploy source.

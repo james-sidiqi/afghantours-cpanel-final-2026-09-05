@@ -3,7 +3,7 @@
 The owner is James Sidiqi (GitHub: james-sidiqi). This file covers the architecture, the rules and where things are. For SHAs and numbers see RELEASE-STATUS.md; for open work, OPEN-ISSUES.md; for deployment, DEPLOYMENT-RUNBOOK.md.
 
 ## 1. Repository
-- https://github.com/james-sidiqi/afghantours-cpanel-final-2026-09-05 (public). The default branch is `main`, which is the live baseline (4e4d9f0e).
+- https://github.com/james-sidiqi/afghantours-cpanel-final-2026-09-05 (public). The default branch is `main`, at 4e4d9f0e. Live production is NOT proven identical to it, and the cPanel Git checkout is an older commit (see CURRENT-STATE-2026-10-16.md).
 - Repo rules to read too: AGENT-RULES.md, CONTENT-GUIDELINES.md, CONTRIBUTING.md, docs/DEVELOPMENT.md.
 
 ## 2. Stack and commands (from package.json and .github/workflows/ci.yml)
@@ -69,3 +69,7 @@ There are 18 workflow steps (GitHub adds its own setup/teardown steps, which is 
 
 ## 11. Box-only material (not accessible to Copilot)
 The old agent box held /workspace/release (release-combined-local), /workspace/deploy-release, /workspace/qc/final and /workspace/img-originals. Everything needed from it is preserved in this folder or in release `handoff-2026-10-15`, **except** the image originals (ask James).
+
+
+## State verified 16 Oct 2026
+The authoritative current state is in [CURRENT-STATE-2026-10-16.md](CURRENT-STATE-2026-10-16.md), which covers the SHAs, PR states and CI, GitHub main vs the cPanel checkout vs live, PR #39 being staging only, the blockers and the next actions. Where this file conflicts with it, CURRENT-STATE wins. Summary: #36 and #37 are open, ready, mergeable and green. #38 is an open draft, mergeable and green, stacked on #37. #39 is an open draft, staging only and green. GitHub main is `4e4d9f0e`. The cPanel Git checkout is main at `8ee09517` (older, never deploy from it). Live production is newer than that checkout and not proven equal to GitHub main.
