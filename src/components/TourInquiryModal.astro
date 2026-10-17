@@ -1,7 +1,7 @@
 <div class="tour-inquiry-modal" data-tour-inquiry-modal hidden>
   <button class="tour-inquiry-modal__backdrop" type="button" data-tour-inquiry-close aria-label="Close inquiry form"></button>
 
-  <section class="tour-inquiry-modal__panel" role="dialog" aria-modal="true" aria-labelledby="tour-inquiry-title">
+  <section class="tour-inquiry-modal__panel" role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="tour-inquiry-title">
     <button class="tour-inquiry-modal__close" type="button" data-tour-inquiry-close aria-label="Close inquiry form">×</button>
 
     <div class="tour-inquiry-modal__heading">
@@ -178,6 +178,9 @@
     const CONFIRMATION = 'Your request has been received. Our team will confirm availability, arrangements, and next steps.';
     let isWeekend = false;
     let groupMin = null;
+    let pending = false;
+    let returnFocus = null;
+    const panel = modal.querySelector('[role="dialog"]');
 
     const updateHint = () => {
       if (!groupHint) return;
@@ -234,6 +237,8 @@
     };
 
     const openModal = ({ tour, slug, date, travelers, flow, entityType, entityCode, productClass, departureId, departureStart, departureEnd, type, arrivalOption, weekend, days, lastMinute, manualContact } = {}) => {
+      if (pending) return;
+      returnFocus = document.activeElement;
       form.reset();
       const mc = form.querySelector('[data-inquiry-manual-contact]');
       if (mc) mc.value = manualContact ? '1' : '';
@@ -241,7 +246,7 @@
       if (lm) lm.value = lastMinute ? '1' : '';
       // Owner decision 10 Oct 2026: 5+ day scheduled group tours need 6 to operate; shared departures of 4 days or less need 2.
       groupMin = Number(days) >= 5 ? 6 : Number(days) > 0 ? 2 : null;
-      isWeekend = Boolean(weekend) || pageTourSlug() === 'weekend-in-kabul';
+      isWeekend = Boolean(weekend) || (slug || pageTourSlug()) === 'weekend-in-kabul';
       if (depId) depId.value = departureId || '';
       if (depStart) depStart.value = departureStart || '';
       if (depEnd) depEnd.value = departureEnd || '';
@@ -295,9 +300,34 @@
     };
 
     const closeModal = () => {
+      if (pending) return;
       modal.hidden = true;
       document.documentElement.classList.remove('tour-inquiry-open');
+      if (returnFocus?.isConnected) returnFocus.focus();
     };
+
+    document.addEventListener('keydown', (event) => {
+      if (modal.hidden) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeModal();
+      }
+      if (event.key !== 'Tab') return;
+      const focusable = [...panel.querySelectorAll('a[href], button, input, select, textarea, [tabindex]')]
+        .filter((el) => !el.disabled && el.tabIndex >= 0 && el.getClientRects().length);
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!first) {
+        event.preventDefault();
+        panel.focus();
+      } else if (event.shiftKey && (document.activeElement === first || !panel.contains(document.activeElement))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (document.activeElement === last || !panel.contains(document.activeElement))) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
 
     document.addEventListener('click', (event) => {
       const close = event.target.closest('[data-tour-inquiry-close]');
@@ -369,6 +399,7 @@
 
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
+      if (pending) return;
       if (status) status.textContent = '';
 
       const data = new FormData(form);
@@ -392,21 +423,23 @@
         submit.textContent = 'Sending…';
       }
 
+      pending = true;
       try {
         const response = await fetch(form.action, {
           method: 'POST',
           body: data,
           headers: { 'Accept': 'application/json' },
+          signal: AbortSignal.timeout(30000),
         });
-        const result = await response.json().catch(() => ({}));
-        if (!response.ok || result.ok === false) throw new Error(result.message || 'Unable to send inquiry.');
+        const result = await response.json().catch(() => null);
+        if (!response.ok || result?.ok !== true) throw new Error(result?.message || 'We could not confirm receipt. Please keep your details and contact reservations@afghantours.com or WhatsApp +93 780 123 456.');
 
-        if (status) status.textContent = result.message || CONFIRMATION;
+        if (status) status.textContent = [result.message || CONFIRMATION, result.reference ? `Reference: ${result.reference}` : ''].filter(Boolean).join(' ');
         form.querySelectorAll('input:not([readonly]):not([type="hidden"]):not([type="checkbox"]), textarea').forEach((el) => { el.value = ''; });
-        setTimeout(closeModal, 4000);
       } catch (error) {
         if (status) status.textContent = error?.message || 'Unable to send inquiry. Please email reservations@afghantours.com or WhatsApp +93 780 123 456.';
       } finally {
+        pending = false;
         if (submit) {
           submit.disabled = false;
           submit.textContent = 'Send request';

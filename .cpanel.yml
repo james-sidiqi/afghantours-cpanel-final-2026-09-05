@@ -1,6 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/jamesbon/afghantours-deploy-staging/
-    - /bin/mkdir -p $DEPLOYPATH
-    - /bin/cp -R dist/. $DEPLOYPATH
+    - /bin/echo "Legacy Git deployment disabled. Use the verified static release ZIP and docs/RELEASE-RUNBOOK.md."
+    - /bin/false

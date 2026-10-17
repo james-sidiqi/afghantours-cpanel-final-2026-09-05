@@ -39,6 +39,12 @@ export function catalogByCategory(key: string): Row[] {
   return bookingCatalog.tours.filter((t: Row) => t.category === key && t.active !== false);
 }
 
+/** Keep public booking labels aligned with the same catalog that supplies prices. */
+export function tourBookingLabel(slug: string): string {
+  const tour = getCatalogTour(slug);
+  return (tour?.booking_types || []).map((key: string) => bookingCatalog.booking_types?.[key]).filter(Boolean).join(' · ') || 'Private Tour';
+}
+
 export function tourPriceLabel(slug: string): string {
   const t = getCatalogTour(slug);
   return t ? priceLabel(t.price, bookingSettings) : 'Price on request';

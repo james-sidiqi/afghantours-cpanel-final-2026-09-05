@@ -1,5 +1,5 @@
 ---
-import { getCatalogTour, tourPriceLabel } from '../lib/booking/site';
+import { getCatalogTour, tourPriceLabel, tourBookingLabel } from '../lib/booking/site';
 import fs from 'node:fs';
 import path from 'node:path';
 import { getTours } from '../lib/buildRelations';
@@ -144,10 +144,7 @@ const priceLabelOf = (tour: Tour) => {
 };
 
 
-const productClassOf = (tour: Tour & { product_class?: string }) =>
-  String((tour as any).product_class || '').toLowerCase() === 'scheduled'
-    ? 'Scheduled departure'
-    : 'Private fixed itinerary';
+const productClassOf = (tour: Tour) => tourBookingLabel(tour.slug);
 
 const productClassKeyOf = (tour: Tour & { product_class?: string }) =>
   String((tour as any).product_class || '').toLowerCase() === 'scheduled'
@@ -230,6 +227,7 @@ const clientTours = safeTours.map((tour: any) => ({
     ? tour.provinces.map((p: any) => ({ name: p?.name, title: p?.title, slug: p?.slug }))
     : [],
   inquiryHref: tour.inquiryHref,
+  bookingLabel: tourBookingLabel(tour.slug),
   product_class: tour.product_class || productClassKeyOf(tour),
 }));
 ---
@@ -360,10 +358,7 @@ const clientTours = safeTours.map((tour: any) => ({
     tour.description ||
     'A carefully designed Afghanistan journey built around real access, local knowledge, and operational support.';
 
-  const productClassLabelClient = (tour) =>
-    String(tour.product_class || '').toLowerCase() === 'scheduled'
-      ? 'Scheduled departure'
-      : 'Private fixed itinerary';
+  const productClassLabelClient = (tour) => tour.bookingLabel || 'Private Tour';
 
   const metaOfClient = (tour) => [
     productClassLabelClient(tour),
