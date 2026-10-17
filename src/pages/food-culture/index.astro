@@ -26,7 +26,7 @@ for (const item of allFoodItems) {
 // Faizabad landscape) render as intentional image-free cards.
 const NO_CARD_IMAGE = new Set(['drinks/shor-chai-of-badakhshan']);
 // Per-card focal point so the subject stays in frame in the fixed card crop.
-const CARD_FOCUS = { 'drinks/sheer-chai': '72% 88%' };
+const CARD_FOCUS = { 'drinks/sheer-chai': '72% 88%', 'dried-fruits/paktia-pine-nuts': '50% 12%' };
 const publicFile = (src) => !!src && !/\/placeholders\//.test(src) &&
   fs.existsSync(path.join(process.cwd(), 'public', String(src).replace(/^\/+/, '')));
 const imageForId = (id) => {

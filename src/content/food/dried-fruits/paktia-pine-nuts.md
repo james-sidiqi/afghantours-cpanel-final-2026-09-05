@@ -4,8 +4,10 @@ subtitle: "Southeastern Afghanistan’s pine forests, village markets, and prize
 card_description: "Explore Paktia’s pine nut identity through markets, forest products, and green tea hospitality."
 category: "Cultural Experiences"
 experience_type: "Food & Culture Experience"
-hero_image: "/assets/images/attractions/gardez-zurmat-highlands/hero.webp"
-image: "/assets/images/food/dried-fruits/paktia-pine-nuts/hero.webp"
+hero_image: "/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/hero.webp"
+image: "/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/hero.webp"
+card_image: "/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/hero.webp"
+gallery_images: ["/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/gallery-1.webp", "/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/gallery-2.webp", "/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/gallery-3.webp"]
 provinces: ["Paktia"]
 paired_foods: ["Pine Nuts", "Green Tea"]
 best_season: "Autumn harvest / market season"

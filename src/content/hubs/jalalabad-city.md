@@ -1,5 +1,5 @@
 ---
-title: Jalalabad City
+title: Jalalabad
 hub_slug: jalalabad-city
 section: hub_content
 save_to: src/content/hubs/jalalabad-city.md

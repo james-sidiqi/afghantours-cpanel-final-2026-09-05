@@ -125,15 +125,15 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
   },
   {
     "paths": [
-      "/assets/images/attractions/barg-e-matal-lakes/hero.webp",
+      "/assets/images/attractions/nuristan-national-park/gallery-mountainside-trees.webp",
       "/assets/images/attractions/barg-e-matal-lakes/thumb.webp"
     ],
     "author": "Abdul Qahar Nuristan",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
     "source": "https://commons.wikimedia.org/wiki/File:Kashtun_da_waygale_Nuristan_-_panoramio.jpg",
-    "alt": "Terraced mountain village in Nuristan",
-    "note": "Illustrative photo: Kashtun village, Waygal valley, Nuristan (not Barg-e Matal itself)"
+    "alt": "Rocky mountainside with scattered trees in Nuristan",
+    "note": "Illustrative photo: Kashtun village, Waygal valley, Nuristan"
   },
   {
     "paths": [

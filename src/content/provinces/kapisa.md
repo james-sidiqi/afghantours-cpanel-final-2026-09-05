@@ -20,7 +20,7 @@ Kapisa lies northeast of Kabul and is known for fertile valleys and archaeologic
 - Nijrab Valley
 
 ### Travel Notes
-- **Region:** North  
+- **Region:** Northern Afghanistan
 - **Best season:** Spring & Autumn (Summer can be hot in lowlands)  
 - Travel conditions vary by route and season; we plan conservatively with realistic pacing.  
 - Provincial tourist permits are required for each province where tourist activities are undertaken. We process these in advance for clients traveling on our tours.

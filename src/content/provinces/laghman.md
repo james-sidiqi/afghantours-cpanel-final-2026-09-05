@@ -18,7 +18,7 @@ Lush valleys and river landscapes east of Kabul.
 Laghman is known for its green valleys, orchards, and river systems that contrast with surrounding mountainous terrain. The province has historically served as a transit and agricultural region in eastern Afghanistan.
 
 ### Travel Notes
-- **Region:** East  
+- **Region:** Eastern Afghanistan
 - **Best season:** Spring & Autumn (Summer warm; winters colder in higher valleys)  
 - Travel conditions vary by route and season; we plan conservatively with realistic pacing.  
 - Provincial permissions and registrations are processed or coordinated in advance where required for booked travel; exact requirements depend on the itinerary and relevant authorities.

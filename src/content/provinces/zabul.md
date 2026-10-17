@@ -18,7 +18,7 @@ Historic southern routes and rugged terrain.
 Zabul sits along historic routes between Kandahar and Ghazni and is characterized by arid landscapes and mountain ridges. The province reflects southern Afghanistan’s deep historical continuity.
 
 ### Travel Notes
-- **Region:** South  
+- **Region:** Southern Afghanistan
 - **Best season:** Autumn to Spring (avoid peak summer heat)  
 - Travel conditions vary by route and season; we plan conservatively with realistic pacing.  
 - Provincial permissions and registrations are processed or coordinated in advance where required for booked travel; exact requirements depend on the itinerary and relevant authorities.

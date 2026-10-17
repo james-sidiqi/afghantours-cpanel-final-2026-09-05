@@ -1,28 +1,28 @@
 ---
-title: Kandahar City
-hub_slug: kandahar-city
+title: Bamyan City
+hub_slug: bamyan-city
 section: hub_content
-save_to: src/content/hubs/kandahar-city.md
+save_to: src/content/hubs/bamyan-city.md
 ---
 
 ### Overview
-Kandahar is the cultural heart of the south and one of the oldest continuously inhabited cities in the world. Founded by Alexander the Great, it served as the first capital of the modern Afghan state. The city is defined by its sun-drenched plains, vast fruit orchards—famous for pomegranates and grapes—and its deep connection to Pashtun history and traditions.
+Bamyan sits in a high, open valley in the Central Highlands, at about 2,550 m (8,366 ft). The giant Buddhas are gone — destroyed in 2001 — and their empty niches are still the first thing you see. Hazara farming villages work the floor of the valley, and the snowy Koh-e-Baba range rises behind it.
 
 ### Why Travelers Stay Here
-
-Kandahar is the gateway to the southern provinces. Travelers stay here to explore the magnificent tiled shrines and the historic "Cloak of the Prophet" shrine. It offers a distinct culinary scene, specifically its unique southern-style lamb dishes, and serves as a vital logistics link for those traveling toward the western regions via the Ring Road.
+Bamyan is the base for the Buddha Niches, the ruined citadel of Shahr-e-Gholghola, and the Red City fortress of Shahr-e-Zohak. Band-e-Amir is a separate day when the road and weather allow it: mineral-blue lakes under the Hindu Kush. The town is slower than Kabul, with eco-lodges and local hospitality hotels such as the Gholghola Hotel and the Royal Hotel.
 
 ### Major Nearby Attractions
 
-* Shrine of the Cloak
-* Chilzina (Forty Steps of Babur)
-* Ahmad Shah Durrani Mausoleum
-* Arghandab River Valley
+* Buddha Niches of Bamyan
+* Shahr-e-Gholghola
+* Shahr-e-Zohak
+* Band-e-Amir National Park
+* Koh-e-Baba Mountain Range
+* Dragon Valley
+* Chehel Burj Bamyan Ruins
 
 ### Travel Role
-
-Kandahar functions as a southern regional gateway and a primary resupply point for travelers moving between Kabul and Herat. It is an essential stop for domestic flight connections in the south and serves as a base for exploring the agricultural and historical sites of the Helmand and Arghandab valleys.
+Bamyan is the Central Highlands' centre for trekking, skiing, archaeology and eco-tourism. It is reached overland from Kabul by 4WD, usually 8–10 hours, via the Ghorband or Hajigak routes; the road is chosen for conditions and schedule rather than fixed in advance. Bamyan Airport (BIN) serves the valley. Journeys using Bamyan include Central Afghanistan Discovery, the Afghanistan Discovery Tours (spring and fall), the Bamyan Skiing Tour, and the Summer and Winter Circuits.
 
 ### Visitor Notes
-
-The climate is significantly hotter and more arid than Kabul; travel is best during the cooler months from October to March. Road conditions around the city are generally good, but travelers should be mindful of conservative local customs. Photography near religious shrines requires specific local permission.
+The climate is cold alpine and semi-arid. May–June and September–October suit most touring; the Bamyan Skiing Tour runs January–March in the Koh-e-Baba mountains. Plan for altitude and for days that start early so you are not crossing mountain roads in the dark. Provincial tourist permits are processed in advance for booked tours.

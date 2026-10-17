@@ -21,7 +21,7 @@ Kunar is one of Afghanistan’s most scenic provinces, marked by steep valleys, 
 - Asadabad Valley Views
 
 ### Travel Notes
-- **Region:** East  
+- **Region:** Eastern Afghanistan
 - **Best season:** Spring & Autumn (Summer warm; winters colder in higher valleys)  
 - Travel conditions vary by route and season; we plan conservatively with realistic pacing.  
 - Provincial tourist permits are required for each province where tourist activities are undertaken. We process these in advance for clients traveling on our tours.
