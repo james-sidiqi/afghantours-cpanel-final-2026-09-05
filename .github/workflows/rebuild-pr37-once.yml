@@ -1,0 +1,78 @@
+name: Rebuild PR37 after main merge
+
+on:
+  push:
+    branches:
+      - remove-eid-and-gallery-images
+
+permissions:
+  contents: write
+
+jobs:
+  merge-main-and-rebuild:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: remove-eid-and-gallery-images
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Merge main and rebuild generated dist
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+
+          set +e
+          git merge --no-commit --no-ff origin/main
+          merge_rc=$?
+          set -e
+
+          mapfile -t conflicts < <(git diff --name-only --diff-filter=U)
+          if ((${#conflicts[@]})); then
+            printf 'Unresolved files after merge:\n%s\n' "${conflicts[*]}"
+            bad=0
+            for f in "${conflicts[@]}"; do
+              if [[ "$f" != dist/* ]]; then
+                echo "STOP: non-dist conflict: $f"
+                bad=1
+              fi
+            done
+            if ((bad)); then
+              exit 2
+            fi
+
+            for f in "${conflicts[@]}"; do
+              if git cat-file -e "origin/main:$f" 2>/dev/null; then
+                git checkout origin/main -- "$f"
+              else
+                git rm -f -- "$f" || true
+              fi
+            done
+          elif ((merge_rc != 0)); then
+            echo "Merge failed without reported unmerged paths."
+            exit "$merge_rc"
+          fi
+
+          npm ci
+          npm run build
+          git add -f dist/
+
+          if git diff --name-only --diff-filter=U | grep -q .; then
+            echo "STOP: unresolved conflicts remain:"
+            git diff --name-only --diff-filter=U
+            exit 3
+          fi
+
+          git rm .github/workflows/rebuild-pr37-once.yml
+
+          git commit -m "Merge main into #37 and rebuild dist"
+          git push origin HEAD:remove-eid-and-gallery-images
