@@ -1,0 +1,11 @@
+# Paths (relative to dist/) that are NEVER included in a release package.
+# Server-managed or sensitive; changed on the server only by a reviewed, manual step.
+.htaccess
+**/.htaccess
+*.php
+**/*.php
+booking/**
+manage/**
+photo-credits/**
+.well-known/**
+**/README.md
