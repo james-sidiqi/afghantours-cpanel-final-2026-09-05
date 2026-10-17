@@ -6,11 +6,13 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build && node scripts/inject-photo-credits.mjs",
+    "build": "astro build && node scripts/clean-static-build.mjs && node scripts/inject-photo-credits.mjs",
     "preview": "astro preview",
     "postbuild": "node scripts/generate-sitemap.mjs && node scripts/booking-copy-seed.mjs",
     "audit:site": "python3 scripts/site_integrity_audit.py .",
-    "test:booking": "bash scripts/test-booking.sh"
+    "test:booking": "bash scripts/test-booking.sh",
+    "test:browser": "playwright test",
+    "test:release": "python3 -m unittest discover -s scripts/release -p 'test_*.py'"
   },
   "dependencies": {
     "@astrojs/tailwind": "^5.1.2",
@@ -18,5 +20,8 @@
     "csv-parse": "^6.2.1",
     "leaflet": "^1.9.4",
     "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1"
   }
 }

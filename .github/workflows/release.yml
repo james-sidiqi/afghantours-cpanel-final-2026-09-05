@@ -1,0 +1,104 @@
+name: Verified cPanel release
+on:
+  workflow_dispatch:
+    inputs:
+      previous_release:
+        description: 'Optional verified previous release tag for a changes-only ZIP; leave empty for first deploy'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: verified-cpanel-release
+  cancel-in-progress: false
+
+jobs:
+  package:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    outputs:
+      release_id: ${{ steps.identity.outputs.release_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require current main with green push CI for this exact commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha)" = "$GITHUB_SHA"
+          conclusion=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/ci.yml/runs?branch=main&event=push&head_sha=$GITHUB_SHA&per_page=1" --jq '.workflow_runs[0].conclusion')
+          test "$conclusion" = success
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - run: sudo apt-get update && sudo apt-get install -y php-cli
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Rebuild and repeat all QA
+        run: |
+          set -euo pipefail
+          bash scripts/release/qa.sh 2>&1 | tee /tmp/release-qa.log
+      - name: Release identity
+        id: identity
+        run: |
+          echo "release_id=at-$(date -u +%Y%m%d)-${GITHUB_SHA:0:8}" >> "$GITHUB_OUTPUT"
+          echo "built_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
+      - name: Build and verify static-only ZIPs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PREVIOUS: ${{ inputs.previous_release }}
+          RELEASE_ID: ${{ steps.identity.outputs.release_id }}
+          BUILT_AT: ${{ steps.identity.outputs.built_at }}
+        run: |
+          set -euo pipefail
+          base_args=()
+          if [ -n "$PREVIOUS" ]; then
+            [[ "$PREVIOUS" =~ ^at-[0-9]{8}-[0-9a-f]{8,40}$ ]]
+            mkdir previous-release
+            gh release download "$PREVIOUS" --repo "$GITHUB_REPOSITORY" --pattern manifest.json --pattern '*-full.zip' --dir previous-release
+            python3 scripts/release/package.py verify previous-release/*-full.zip previous-release/manifest.json
+            python3 -c 'import json,os; assert json.load(open("previous-release/manifest.json"))["release_id"] == os.environ["PREVIOUS"]'
+            base_args=(--base previous-release/manifest.json)
+          fi
+          python3 scripts/release/package.py build --out release-out --commit "$GITHUB_SHA" --release-id "$RELEASE_ID" --built-at "$BUILT_AT" "${base_args[@]}"
+          python3 scripts/release/package.py verify release-out/*-full.zip release-out/manifest.json
+          if [ -f release-out/changes-manifest.json ]; then
+            python3 scripts/release/package.py verify release-out/*-changes.zip release-out/changes-manifest.json
+          fi
+          cp /tmp/release-qa.log release-out/QA.txt
+          cp docs/RELEASE-RUNBOOK.md release-out/RELEASE-RUNBOOK.md
+          cd release-out
+          sha256sum QA.txt RELEASE-RUNBOOK.md >> SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: verified-cpanel-release
+          path: release-out/
+          if-no-files-found: error
+          retention-days: 30
+
+  publish:
+    needs: package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: verified-cpanel-release
+          path: release-out
+      - name: Publish GitHub release, not a hosting deployment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_ID: ${{ needs.package.outputs.release_id }}
+        run: |
+          set -euo pipefail
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha)" = "$GITHUB_SHA"
+          cd release-out
+          sha256sum -c SHA256SUMS
+          gh release create "$RELEASE_ID" ./* --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "$RELEASE_ID" --notes "Verified static-only cPanel package for $GITHUB_SHA. NOT deployed. Stage this exact ZIP, verify every file, obtain James's approval, then follow RELEASE-RUNBOOK.md. PHP, booking/manage, private data and .htaccess are excluded."

@@ -1,5 +1,7 @@
 # GitHub → cPanel publishing workflow (plain English, 16 Oct 2026)
 
+> Superseded by [the current release runbook](../RELEASE-RUNBOOK.md) and [owner workflow](../CONTENT-CHANGE-WORKFLOW.md). The cPanel Git button is unavailable. Do not follow the old Git deployment steps below.
+
 **Status: this is the target design. Production publishing is not set up yet.** PR #39 (draft) only deploys to staging.
 
 ## 1. Where edits happen

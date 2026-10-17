@@ -41,3 +41,10 @@ audit-out/
 
 # Booking/payments private store (never commit)
 afghantours-private/
+
+# Verified release output and local test artifacts
+release-out/
+previous-release/
+test-results/
+playwright-report/
+__pycache__/

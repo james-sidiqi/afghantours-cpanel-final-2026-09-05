@@ -1,5 +1,7 @@
 # AfghanTours cPanel — Completion Status
 
+> Historical completion snapshot. Current evidence and remaining gates: [repair report](REPAIR-REPORT-2026-10-18.md) and [release runbook](RELEASE-RUNBOOK.md). Passing repository checks does not establish that a release is staged, live or delivering email.
+
 Last updated: 2026-09-25 ~22:50 Asia/Kabul — H8 mobile Contact Us CTA clip fixed (PR #12)
 
 ## Current phase
