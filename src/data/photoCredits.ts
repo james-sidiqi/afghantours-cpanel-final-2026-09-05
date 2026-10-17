@@ -1,3 +1,4 @@
+import { IMAGE_ALTS } from './imageAlts';
 // Photo credits for images that need (or carry) a visible credit.
 // Source of truth for <PhotoCredits> and the /photo-credits/ page.
 export interface PhotoCredit { paths: string[]; author: string; license: string; licenseUrl: string; source: string; alt: string; note: string }
@@ -367,7 +368,7 @@ const byPath = new Map<string, PhotoCredit>();
 PHOTO_CREDITS.forEach((c) => c.paths.forEach((p) => byPath.set(p, c)));
 const norm = (src?: string | null) => (src || '').split('?')[0].replace(/^https?:\/\/[^/]+/, '');
 export const creditFor = (src?: string | null) => byPath.get(norm(src));
-export const altFor = (src: string | null | undefined, fallback: string) => creditFor(src)?.alt || fallback;
+export const altFor = (src: string | null | undefined, fallback: string) => creditFor(src)?.alt || IMAGE_ALTS[norm(src)] || fallback;
 export const creditsFor = (srcs: (string | null | undefined)[]) => {
   const out: PhotoCredit[] = [];
   srcs.forEach((s) => { const c = creditFor(s); if (c && !out.includes(c)) out.push(c); });

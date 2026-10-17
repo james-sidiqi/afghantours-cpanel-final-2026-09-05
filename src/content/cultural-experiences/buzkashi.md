@@ -4,13 +4,24 @@ subtitle: "Northern Afghanistan’s legendary equestrian sport."
 card_description: "Stand at the edge of a winter field as chapandazan compete in Afghanistan’s most powerful traditional sport."
 category: "Cultural Experiences"
 experience_type: "traditional-sports"
-hero_image: "/assets/images/featured-tours/buzkashi-expedition/hero.webp"
-image: "/assets/images/featured-tours/buzkashi-expedition/hero.webp"
+hero_image: "/assets/images/experiences/cultural/buzkashi/gallery/01.webp"
+image: "/assets/images/experiences/cultural/buzkashi/gallery/01.webp"
 provinces: ["Balkh", "Jowzjan", "Faryab", "Samangan", "Kunduz"]
 best_season: "Winter and early spring"
 duration: "Half day to full day"
 related_tours: ["buzkashi-expedition", "afghanistan-discovery-tour-fall", "winter-circuit", "custom-tours"]
 nearby: ["Mazar-e-Sharif", "Balkh", "Blue Mosque"]
+gallery_images:
+  - "/assets/images/experiences/cultural/buzkashi/gallery/01.webp"
+  - "/assets/images/experiences/cultural/buzkashi/gallery/02.webp"
+  - "/assets/images/experiences/cultural/buzkashi/gallery/05.webp"
+  - "/assets/images/featured-tours/buzkashi-expedition/overview.webp"
+  - "/assets/images/featured-tours/buzkashi-expedition/01.webp"
+  - "/assets/images/featured-tours/buzkashi-expedition/02.webp"
+  - "/assets/images/featured-tours/buzkashi-expedition/03.webp"
+gallery_exclude:
+  - "/assets/images/featured-tours/buzkashi-expedition/hero.webp"
+  - "/assets/images/experiences/cultural/buzkashi/gallery/04.webp"
 ---
 
 If you want to feel the raw energy of northern Afghanistan, stand on the edge of a winter field and listen for the thunder of hooves. Buzkashi is not a staged performance. It is a living sport of power, skill, patronage, and regional pride.
