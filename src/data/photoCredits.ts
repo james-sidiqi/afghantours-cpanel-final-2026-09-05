@@ -1,3 +1,4 @@
+import { IMAGE_ALTS } from './imageAlts';
 // Photo credits for images that need (or carry) a visible credit.
 // Source of truth for <PhotoCredits> and the /photo-credits/ page.
 export interface PhotoCredit { paths: string[]; author: string; license: string; licenseUrl: string; source: string; alt: string; note: string }
@@ -124,15 +125,15 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
   },
   {
     "paths": [
-      "/assets/images/attractions/barg-e-matal-lakes/hero.webp",
+      "/assets/images/attractions/nuristan-national-park/gallery-mountainside-trees.webp",
       "/assets/images/attractions/barg-e-matal-lakes/thumb.webp"
     ],
     "author": "Abdul Qahar Nuristan",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
     "source": "https://commons.wikimedia.org/wiki/File:Kashtun_da_waygale_Nuristan_-_panoramio.jpg",
-    "alt": "Terraced mountain village in Nuristan",
-    "note": "Illustrative photo: Kashtun village, Waygal valley, Nuristan (not Barg-e Matal itself)"
+    "alt": "Rocky mountainside with scattered trees in Nuristan",
+    "note": "Illustrative photo: Kashtun village, Waygal valley, Nuristan"
   },
   {
     "paths": [
@@ -367,7 +368,7 @@ const byPath = new Map<string, PhotoCredit>();
 PHOTO_CREDITS.forEach((c) => c.paths.forEach((p) => byPath.set(p, c)));
 const norm = (src?: string | null) => (src || '').split('?')[0].replace(/^https?:\/\/[^/]+/, '');
 export const creditFor = (src?: string | null) => byPath.get(norm(src));
-export const altFor = (src: string | null | undefined, fallback: string) => creditFor(src)?.alt || fallback;
+export const altFor = (src: string | null | undefined, fallback: string) => creditFor(src)?.alt || IMAGE_ALTS[norm(src)] || fallback;
 export const creditsFor = (srcs: (string | null | undefined)[]) => {
   const out: PhotoCredit[] = [];
   srcs.forEach((s) => { const c = creditFor(s); if (c && !out.includes(c)) out.push(c); });

@@ -1,4 +1,6 @@
 ---
+import { regionDisplayName } from '../../lib/regionNames';
+import { ATTRACTION_OVERRIDES } from '../../data/attractionOverrides';
 import {
   buildAttractionTopMeta,
   buildAttractionTravelerNotes,
@@ -34,14 +36,15 @@ const normalized = attractions
     const long = strip(a.desc_long || a.description || a.content || a.desc_short || a.excerpt || '');
     const image = a.image || a.image_path || a.hero_image || a.thumbnail_path || `/assets/images/attractions/${slug}/hero.webp`;
     const province = a.province || a.province_name || a.province_code || '';
-    const region = a.region || '';
+    const region = regionDisplayName(a.region || '');
     const category = a.category || 'Attraction';
-    const access = a.access_difficulty || a.access || '';
+    const access = ATTRACTION_OVERRIDES[a.slug]?.accessLabel || a.access_difficulty || a.access || '';
     const season = [a.season_start, a.season_end].filter(Boolean).join('–') || '';
-    const durationHours = a.visit_duration_hours ?? a.visit_duration;
-    const duration = durationHours
+    const ov = ATTRACTION_OVERRIDES[a.slug] || {};
+    const durationHours = ov.hideDuration || ov.durationLabel ? '' : (a.visit_duration_hours ?? a.visit_duration);
+    const duration = ov.durationLabel || (durationHours
       ? formatVisitDuration(durationHours)
-      : '';
+      : '');
 
     return {
       slug,
@@ -50,13 +53,15 @@ const normalized = attractions
       region: titleCaseMeta(region),
       category: titleCaseMeta(category),
       desc,
-      long,
+      long: ATTRACTION_OVERRIDES[slug]?.popupAbout || long,
       image,
       href: a.href || `/attractions/${slug}/`,
       duration,
       access,
       season,
-      topMeta: buildAttractionTopMeta({ category, region, access }),
+      topMeta: ov.accessLabel
+        ? [titleCaseMeta(category), titleCaseMeta(region), `Access: ${ov.accessLabel}`].filter(Boolean)
+        : buildAttractionTopMeta({ category, region, access }),
       travelerNotes: buildAttractionTravelerNotes({
         slug,
         province,
@@ -162,6 +167,9 @@ const normalized = attractions
     const item = attractions[index];
     if (!item || !modal) return;
 
+    // t279: the empty initial src fires an error that hides the image for good; clear it before loading the real one.
+    img.classList.remove('img-failed');
+    if (img.parentElement) img.parentElement.classList.remove('img-missing');
     img.src = item.image || '';
     img.alt = item.title || '';
     locationLabel.textContent = [item.province, item.region].filter(Boolean).join(' • ') || 'Afghanistan';

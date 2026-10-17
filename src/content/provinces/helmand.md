@@ -22,7 +22,7 @@ Helmand is shaped by the Helmand River, which sustains agriculture amid otherwis
 - Qala-e-Bost Arch
 
 ### Travel Notes
-- **Region:** South  
+- **Region:** Southern Afghanistan
 - **Best season:** Autumn to Spring (avoid peak summer heat)  
 - Travel conditions vary by route and season; we plan conservatively with realistic pacing.  
 - Provincial permissions and registrations are processed or coordinated in advance where required for booked travel; exact requirements depend on the itinerary and relevant authorities.

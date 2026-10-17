@@ -27,7 +27,7 @@ const title = data.title || row.name;
 const subtitle = data.subtitle || data.card_description || row.card_description || '';
 const description = data.card_description || row.card_description || `Explore ${title} in Afghanistan with AfghanTours.`;
 const heroImage = getActivityImage({ slug, hero_image: data.hero_image, image: data.image });
-const galleryImages = getActivityGallery({ slug, gallery_images: data.gallery_images }).slice(0, 8);
+const galleryImages = getActivityGallery({ slug, gallery_images: data.gallery_images }).slice(0, 9);
 const hubRels = getHubsForActivity(slug);
 const hubs = hubRels.map((rel) => {
   const hub = getHubBySlug(rel.hub_slug);
@@ -138,7 +138,7 @@ const journeyHref = buildActivityInquiryHref({
       <div class="act-detail-wrap">
         <h2>Gallery</h2>
         <div class="gal-grid">
-          {galleryImages.map((src, i) => <img src={src} alt={((data.gallery_alt || [])[(data.gallery_images || []).indexOf(src)]) || `${title} — photo ${i + 1}`} loading="lazy" />)}
+          {galleryImages.map((src, i) => <img src={src} alt={((data.gallery_alt || [])[(data.gallery_images || []).indexOf(src)]) || altFor(src, `${title} — photo ${i + 1}`)} loading="lazy" />)}
         </div>
       </div>
     </section>

@@ -62,7 +62,8 @@ export function listPublicImages(publicFolder?: string | null, recursive = true)
       const full = path.join(dir, entry.name);
 
       if (entry.isDirectory()) {
-        if (recursive) walk(full);
+        // 'sizes/' holds responsive variants (e.g. -800w) — never gallery items.
+        if (recursive && entry.name !== 'sizes') walk(full);
         continue;
       }
 
@@ -210,6 +211,8 @@ export function getAttractionImage(attraction: any): string {
     attraction?.image_path,
     attraction?.image,
     attraction?.thumbnail_path,
+    // Optional dedicated card image (t271); falls through to hero when absent.
+    attraction?.slug ? `/assets/images/attractions/${attraction.slug}/card.webp` : null,
     attraction?.slug ? `/assets/images/attractions/${attraction.slug}/hero.webp` : null,
     code ? `/assets/images/attractions/${code}/hero.webp` : null,
     code ? `/assets/images/attractions/${code}.webp` : null,

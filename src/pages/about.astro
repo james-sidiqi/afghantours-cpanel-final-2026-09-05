@@ -36,12 +36,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       </div>
 
-      <figure class="about-intro__figure">
+      <figure class="about-intro__figure about-intro__figure--stack">
         <img
-          src="/assets/images/page-assets/activities/sightseeing/shopping/majid-mall.webp"
-          alt="Majid Mall in Kabul, where AfghanTours plans and operates from"
-          width="1000"
-          height="760"
+          src="/assets/images/page-assets/about/team-member-office-desk.webp"
+          alt="A team member working at an office desk"
+          width="636"
+          height="701"
+          loading="lazy"
+        />
+        <img
+          src="/assets/images/page-assets/about/team-members-park-selfie.webp"
+          alt="Two team members taking a selfie in a park"
+          width="920"
+          height="650"
           loading="lazy"
         />
       </figure>
@@ -142,6 +149,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               <dd>Kabul, Afghanistan</dd>
             </div>
           </dl>
+
+          <figure class="about-license-v6__team">
+            <img
+              src="/assets/images/page-assets/about/team-office-table.webp"
+              alt="Three team members talking at an office table with drinks"
+              width="1054"
+              height="519"
+              loading="lazy"
+            />
+          </figure>
         </div>
 
         <figure class="about-license-v6__license">
@@ -227,7 +244,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <img src="/assets/images/page-assets/people/guides/edrees-and-tourist-bamyan-snow.webp" alt="Field team with traveler in Bamyan snow" width="900" height="700" loading="lazy" />
         </figure>
         <figure>
-          <img src="/assets/images/page-assets/people/guides/edrees-white-4runner.webp" alt="Field transport and team support" width="900" height="700" loading="lazy" />
+          <img src="/assets/images/page-assets/about/street-scene-team.webp" alt="A team member and a driver with local people on a city street" width="703" height="760" loading="lazy" />
         </figure>
       </div>
     </div>
@@ -492,6 +509,37 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       box-shadow: 0 18px 55px rgba(16,24,32,.08);
     }
 
+    .about-intro__figure--stack {
+      display: grid;
+      gap: 1rem;
+      align-content: start;
+      overflow: visible;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .about-intro__figure.about-intro__figure--stack img {
+      height: 300px;
+      min-height: 0;
+      max-height: none;
+      border-radius: 1.4rem;
+      box-shadow: 0 18px 55px rgba(16,24,32,.08);
+    }
+
+    .about-license-v6__team {
+      margin: 1.4rem 0 0;
+    }
+
+    .about-license-v6__team img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1054 / 519;
+      object-fit: cover;
+      border-radius: .9rem;
+    }
+
     .about-intro__figure img {
       display: block;
       width: 100%;
@@ -702,6 +750,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         max-height: 360px;
       }
 
+      .about-intro__figure.about-intro__figure--stack img {
+        height: 260px;
+        min-height: 0;
+      }
+
       .about-gallery {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -901,7 +954,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     })();
   </script>
 
-  <GuestFilms page="about" title="Traveller films" intro="Films made by a guest who travelled with us: Kabul, Bamyan and the snow-covered slopes beyond." />
+  <GuestFilms page="about" title="Traveller films" intro="A film made by a guest who travelled with us: Kabul seen through a visitor’s eyes." />
 </BaseLayout>
 
 <style>

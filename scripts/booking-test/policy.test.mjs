@@ -182,7 +182,9 @@ test('release fixes: /faqs/ → /faq/, no hub codes, no Weekend attraction codes
 test('duplicate restaurant/hotel titles made unique', () => {
   const t = (p) => (read(p).match(/<title>([^<]*)<\/title>/) || [])[1];
   assert.notEqual(t('hotels/royal_bamyan/index.html'), t('hotels/royal_kandahar/index.html'));
-  assert.ok(read('restaurants/spoghmai-restaurant-qargha/index.html').includes('/restaurants/spoghmai-restaurant/'), 'byte-identical duplicate redirects to the canonical page');
+  // t267: Spoghmai's canonical page moved to the culinary experience; both restaurant URLs redirect there.
+  assert.ok(read('restaurants/spoghmai-restaurant-qargha/index.html').includes('/cultural-experiences/culinary/spoghmai-restaurant-qargha/'), 'duplicate redirects to the canonical page');
+  assert.ok(read('restaurants/spoghmai-restaurant/index.html').includes('/cultural-experiences/culinary/spoghmai-restaurant-qargha/'), 'old restaurant page redirects to the culinary page');
   assert.ok(!read('sitemap.xml').includes('/restaurants/spoghmai-restaurant-qargha/'));
 });
 test('sitemap is deterministic (no lastmod)', () => assert.ok(!read('sitemap.xml').includes('<lastmod>')));

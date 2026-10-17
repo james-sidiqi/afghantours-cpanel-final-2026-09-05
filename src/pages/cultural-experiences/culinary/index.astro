@@ -38,6 +38,7 @@ const items = csvItems.map((row) => {
   description="Culinary experiences across Afghanistan — restaurants, bakeries, markets and roadside food culture, woven into your journey."
 >
   <section class="culin-index-hero">
+    <img class="index-hero-media" src="/assets/images/heroes/culinary-experiences/hero.webp" srcset="/assets/images/heroes/culinary-experiences/sizes/hero-800w.webp 800w, /assets/images/heroes/culinary-experiences/hero.webp 1721w" sizes="100vw" alt="A table spread with Afghan dishes, including rice, kebabs, salads, dips and flatbread" fetchpriority="high" />
     <div class="culin-index-hero-inner">
       <p>Food on the journey</p>
       <h1>Culinary Experiences</h1>
@@ -84,6 +85,11 @@ const items = csvItems.map((row) => {
 </BaseLayout>
 
 <style>
+  /* t271 hero image */
+  .culin-index-hero { position: relative; overflow: hidden; isolation: isolate; }
+  .culin-index-hero .index-hero-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: -2; }
+  .culin-index-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(8,14,19,.88) 0%, rgba(8,14,19,.62) 55%, rgba(8,14,19,.35) 100%); }
+
   .culin-index-hero {
     padding: clamp(8rem, 15vw, 13rem) 0 clamp(5rem, 9vw, 8rem);
     background: linear-gradient(120deg, #0b141b, #1a2418);

@@ -13,6 +13,7 @@ import {
   getCulinaryForTour,
 } from '../../../lib/culinary';
 import { getCulinaryImage, getCulinaryGallery } from '../../../lib/images';
+import { altFor } from '../../../data/photoCredits';
 
 export async function getStaticPaths() {
   const csv = getCulinaryExperiences();
@@ -48,7 +49,8 @@ const description =
 
 const heroImage = getCulinaryImage({ slug, hero_image: data.hero_image, image: data.image });
 const galleryImages = getCulinaryGallery({ slug, gallery_images: data.gallery_images }).filter(
-  (src) => src !== heroImage
+  // Card/thumb crops are never gallery items.
+  (src) => src !== heroImage && !/\/thumb(nail)?\.webp$/.test(src)
 ).slice(0, 8);
 
 const venueLabel = publicVenueLabel(data);
@@ -81,7 +83,7 @@ const contactHref = `/contact/?type=culinary-experience&experience=${encodeURICo
 
 <BaseLayout title={`${title} | Culinary Experience | AfghanTours`} description={description} image={heroImage}>
   <section class="culin-hero">
-    <img class="culin-hero-image" src={heroImage} alt={title} fetchpriority="high" />
+    <img class="culin-hero-image" src={heroImage} alt={altFor(heroImage, title)} fetchpriority="high" />
     <div class="culin-hero-overlay" aria-hidden="true"></div>
     <div class="culin-hero-inner">
       <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -183,10 +185,10 @@ const contactHref = `/contact/?type=culinary-experience&experience=${encodeURICo
           <p class="section-kicker">Visual Story</p>
           <h2>See the experience</h2>
         </div>
-        <div class="culin-gallery">
+        <div class:list={['culin-gallery', (galleryImages.length === 4 || galleryImages.length === 2) && 'culin-gallery--even']}>
           {galleryImages.map((src, index) => (
             <div class="culin-gallery-item">
-              <img src={src} alt={`${title} — view ${index + 1}`} loading={index < 2 ? 'eager' : 'lazy'} />
+              <img src={src} alt={altFor(src, `${title} — view ${index + 1}`)} loading={index < 2 ? 'eager' : 'lazy'} />
             </div>
           ))}
         </div>
@@ -510,6 +512,11 @@ const contactHref = `/contact/?type=culinary-experience&experience=${encodeURICo
     grid-auto-rows: 240px;
     gap: .8rem;
   }
+  .culin-gallery--even {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    grid-auto-rows: 320px;
+  }
+
   .culin-gallery-item {
     overflow: hidden;
     border-radius: 1rem;

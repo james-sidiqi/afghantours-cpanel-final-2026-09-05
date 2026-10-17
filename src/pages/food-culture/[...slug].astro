@@ -166,6 +166,9 @@ const dedicatedHero =
     ? `${resolvedFoodImageFolder}hero.webp`
     : '';
 
+// t277: tall subject photos shown as a right-hand panel on desktop so the whole subject stays in frame.
+const PORTRAIT_HEROES = new Set(['/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/hero.webp']);
+
 const heroImage =
   dedicatedHero ||
   data.hero_image ||
@@ -434,7 +437,12 @@ if (heroImage.startsWith('/')) {
   }
 }
 
-const galleryImages = galleryCandidates.slice(0, 9);
+// t279: pages whose gallery must not repeat the hero, and pages with no genuinely related published journeys.
+const GALLERY_EXCLUDES_HERO = new Set(['dried-fruits/paktia-pine-nuts']);
+const NO_RELATED_JOURNEYS = new Set(['dried-fruits/paktia-pine-nuts']);
+const galleryImages = galleryCandidates
+  .filter((src) => !(GALLERY_EXCLUDES_HERO.has(foodPath) && src === heroImage))
+  .slice(0, 9);
 
 const currentProvinceSet = new Set(provinces.map(normalizeKey));
 const pairedKeys = pairedFoods.map(normalizeKey);
@@ -520,7 +528,7 @@ const contactHref = `/contact/?food=${encodeURIComponent(title)}`;
   image={heroImage}
 >
   <section class="food-detail-hero">
-    <img class="food-detail-hero-image" src={heroImage} alt={altFor(heroImage, title)} fetchpriority="high" />
+    <img class:list={["food-detail-hero-image", PORTRAIT_HEROES.has(heroImage) && "food-detail-hero-image--portrait"]} src={heroImage} alt={altFor(heroImage, title)} fetchpriority="high" />
     <div class="food-detail-hero-overlay" aria-hidden="true"></div>
 
     <div class="food-detail-hero-inner">
@@ -705,6 +713,7 @@ const contactHref = `/contact/?food=${encodeURIComponent(title)}`;
     </section>
   )}
 
+  {!NO_RELATED_JOURNEYS.has(foodPath) && (<>
   {relatedTours.length > 0 ? (
     <TourCardGrid
       tours={relatedTours}
@@ -727,6 +736,7 @@ const contactHref = `/contact/?food=${encodeURIComponent(title)}`;
       </div>
     </section>
   )}
+  </>)}
 
   <section class="food-final-cta">
     <div class="food-final-inner">
@@ -787,6 +797,10 @@ const contactHref = `/contact/?food=${encodeURIComponent(title)}`;
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  @media (min-width: 900px) {
+    .food-detail-hero-image--portrait { left: auto; width: 48%; object-position: 50% 40%; }
   }
 
   .food-detail-hero-overlay {

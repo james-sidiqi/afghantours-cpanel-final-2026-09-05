@@ -21,7 +21,7 @@ Takhar is known for fertile lands, rivers, and a strong agricultural economy. It
 - Ai-Khanoum
 
 ### Travel Notes
-- **Region:** North  
+- **Region:** Northern Afghanistan
 - **Best season:** Spring & Autumn (Summer can be hot in lowlands)  
 - Travel conditions vary by route and season; we plan conservatively with realistic pacing.  
 - Provincial permissions and registrations are processed or coordinated in advance where required for booked travel; exact requirements depend on the itinerary and relevant authorities.

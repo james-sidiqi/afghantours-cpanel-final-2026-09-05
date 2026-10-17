@@ -21,7 +21,7 @@ Farah features wide desert plains, historic caravan routes, and a strategic loca
 - Farah Citadel
 
 ### Travel Notes
-- **Region:** West  
+- **Region:** Western Afghanistan
 - **Best season:** Spring & Autumn  
 - Travel conditions vary by route and season; we plan conservatively with realistic pacing.  
 - Provincial permissions and registrations are processed or coordinated in advance where required for booked travel; exact requirements depend on the itinerary and relevant authorities.

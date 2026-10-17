@@ -4,8 +4,8 @@ subtitle: "Northern Afghanistan’s legendary equestrian sport paired with heart
 card_description: "Stand at the edge of a winter field as chapandazan compete, then experience the communal food culture of northern Afghanistan."
 category: "Cultural Experiences"
 experience_type: "Spectacle, Sport & Sky"
-hero_image: "/assets/images/featured-tours/buzkashi-expedition/hero.webp"
-image: "/assets/images/featured-tours/buzkashi-expedition/hero.webp"
+hero_image: "/assets/images/experiences/cultural/buzkashi/gallery/01.webp"
+image: "/assets/images/experiences/cultural/buzkashi/gallery/01.webp"
 provinces: ["Balkh", "Jowzjan", "Faryab", "Samangan", "Kunduz"]
 paired_foods: ["Uzbek Palaw"]
 best_season: "Winter and early spring"
