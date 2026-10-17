@@ -215,10 +215,15 @@ const safetyImages = {
 const trustImages = {
   'American-Led, Kabul-Based Operations': '/assets/images/page-assets/people/guides/guide-james-explaining.webp',
   'Experienced Local Staff': '/assets/images/page-assets/people/guides/guides-on-tour.webp',
-  'Safety-Aware Planning': '/assets/images/page-assets/people/guides/edrees-tourist-breakfast-nuristan.webp',
+  'Safety-Aware Planning': '/assets/images/page-assets/trust/safety-aware-planning-snow-pass.webp',
   'Visas, Passes & Permits': '/assets/images/heroes/contact/hero.webp',
-  'Transparent Pricing': '/assets/images/page-assets/people/tourists/faye-kabul.webp',
+  'Transparent Pricing': '/assets/images/page-assets/trust/transparent-pricing-money-changer.webp',
   'Funds Stay Local': '/assets/images/page-assets/people/guides/guide-james-explaining.webp',
+};
+
+const trustImageAlts = {
+  'Safety-Aware Planning': 'Two travelers beside vans on a snow-cleared mountain pass in Afghanistan',
+  'Transparent Pricing': 'Money changer’s glass case of Afghan and foreign banknotes at a Kabul market stall',
 };
 
 const trustItems = [
@@ -326,7 +331,7 @@ const trustItems = [
         <div class="trust-grid">
           {trustItems.map(([heading, text]) => (
             <article class="trust-card">
-              {trustImages[heading] && <img class="trust-card__image" src={trustImages[heading]} alt={heading} loading="lazy" />}
+              {trustImages[heading] && <img class="trust-card__image" src={trustImages[heading]} alt={trustImageAlts[heading] || heading} loading="lazy" />}
               <div class="trust-card__body"><h3>{heading}</h3><p>{text}</p></div>
             </article>
           ))}
