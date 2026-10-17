@@ -1,0 +1,99 @@
+# DRAFT — not pushed. Builds a versioned, deployable release from a commit on main
+# that already passed CI, and publishes it as a GitHub pre-release. Never touches production.
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Commit on main to release (default: current main)'
+        required: false
+      deploy_staging:
+        description: 'Also upload to staging over FTPS (option B; needs staging secrets)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write   # create the release
+  actions: read     # check CI result for the commit
+
+concurrency: { group: release, cancel-in-progress: false }
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      id: ${{ steps.pkg.outputs.id }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: '${{ inputs.ref || github.sha }}', fetch-depth: 0 }
+
+      - name: Commit must be on main and have green CI
+        env: { GH_TOKEN: '${{ github.token }}' }
+        run: |
+          SHA=$(git rev-parse HEAD)
+          git merge-base --is-ancestor "$SHA" origin/main || { echo "not on main"; exit 1; }
+          ok=$(gh api "repos/${{ github.repository }}/actions/workflows/ci.yml/runs?head_sha=$SHA&status=success" --jq '.total_count')
+          [ "$ok" -ge 1 ] || { echo "CI has not passed for $SHA"; exit 1; }
+
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: npm }
+      - run: npm ci
+      - run: npm run build
+
+      - name: Rebuild must equal tracked dist (no drift)
+        run: git add -f dist && git diff --cached --quiet -- dist
+
+      - name: Validate (fast subset; full suite already passed in CI)
+        run: |
+          node scripts/check-internal-links.mjs | tee qa-links.txt
+          node scripts/audit-images.mjs > qa-images.json
+          python3 -c "import json;d=json.load(open('qa-images.json'));assert d.get('missing_count',1)==0"
+
+      - name: Package
+        id: pkg
+        run: |
+          bash scripts/release/build-release.sh release-out | tee qa-package.txt
+          echo "id=$(cat release-out/RELEASE_ID)" >> "$GITHUB_OUTPUT"
+          mv qa-*.txt qa-*.json release-out/
+          (cd release-out && tar czf "$(cat RELEASE_ID).qa.tar.gz" qa-*)
+
+      - name: Publish GitHub pre-release
+        env: { GH_TOKEN: '${{ github.token }}' }
+        run: |
+          ID=$(cat release-out/RELEASE_ID); SHA=$(git rev-parse HEAD)
+          cd release-out
+          gh release create "$ID" --target "$SHA" --prerelease --title "$ID" \
+            --notes "Commit: $SHA
+          Zip sha256: $(cut -d' ' -f1 $ID.zip.sha256)
+          Files: $(wc -l < $ID.manifest.sha256)
+          Excludes: .htaccess, *.php, booking/, manage/, photo-credits/, .well-known/
+          Status: built + validated. NOT deployed. Promotion recorded in docs/deployments/LEDGER.md." \
+            "$ID.zip" "$ID.zip.sha256" "$ID.manifest.sha256" "$ID.version.json" "$ID.qa.tar.gz"
+
+      - uses: actions/upload-artifact@v4
+        with: { name: release-stage, path: release-out/stage, retention-days: 3 }
+
+  # Option B only. Requires a GitHub Environment "staging" with secrets
+  # STAGING_FTP_HOST / STAGING_FTP_USER / STAGING_FTP_PASS for an FTP account
+  # jailed to the staging docroot. Production has NO automated job.
+  staging:
+    if: ${{ inputs.deploy_staging }}
+    needs: build
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - uses: actions/download-artifact@v4
+        with: { name: release-stage, path: stage }
+      - run: sudo apt-get update && sudo apt-get install -y lftp
+      - name: Upload (overwrite only, never delete)
+        env:
+          H: ${{ secrets.STAGING_FTP_HOST }}
+          U: ${{ secrets.STAGING_FTP_USER }}
+          P: ${{ secrets.STAGING_FTP_PASS }}
+        run: |
+          lftp -e "set ftp:ssl-force true; set ftp:ssl-protect-data true; set ssl:verify-certificate true; \
+            mirror --reverse --only-newer --no-perms --parallel=4 --exclude-glob .htaccess --exclude-glob '*.php' stage/ /; bye" \
+            -u "$U,$P" "$H"
+      - name: Verify staging version.json
+        run: echo "check https://staging.afghantours.com/version.json == ${{ needs.build.outputs.id }} (basic-auth protected)"
