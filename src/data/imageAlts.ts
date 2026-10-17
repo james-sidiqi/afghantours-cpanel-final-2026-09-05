@@ -1,14 +1,6 @@
 // Alt text for images whose photo credit is still pending (no visible credit line yet).
 // Credits are tracked in docs/image-register-*.csv; move an entry to photoCredits.ts once confirmed.
 export const IMAGE_ALTS: Record<string, string> = {
-  '/assets/images/attractions/ancient-city-of-balkh/hero.webp': 'Tiled iwan, fluted dome and spiral-ribbed corner towers of the Khwaja Abu Nasr Parsa shrine (Green Mosque) in Balkh',
-  '/assets/images/attractions/ancient-city-of-balkh/thumb.webp': 'Tiled iwan and fluted dome of the Khwaja Abu Nasr Parsa shrine (Green Mosque) in Balkh',
-  '/assets/images/attractions/wakhan-corridor/gallery-1.webp': 'Small pool on a high grassland plain below snow-capped mountains in the Wakhan Corridor',
-  '/assets/images/attractions/wakhan-corridor/gallery-2.webp': 'Domed mud-brick tombs on a frosted high plain below snow-covered peaks in the Wakhan Corridor',
-  '/assets/images/attractions/wardak-highlands/hero.webp': 'Panorama of a snow-covered mountain range above a snowy valley lined with bare trees',
-  '/assets/images/attractions/wardak-highlands/thumb.webp': 'Snow-covered mountain above a belt of bare trees and a snowy field',
-  '/assets/images/attractions/wardak-highlands/gallery-1.webp': 'Snow-covered rolling hills with a few trees and mud-brick houses',
-  '/assets/images/attractions/wardak-highlands/gallery-2.webp': 'Snow-capped mountain range above a green valley, seen from a dry hillside',
   '/assets/images/experiences/cultural/afghan-carpets/hero.webp': 'Two men unfurling a red and orange hand-knotted carpet in a shop stacked with rolled carpets',
   '/assets/images/experiences/cultural/afghan-carpets/thumb.webp': 'Two men unfurling a red and orange hand-knotted carpet in a shop stacked with rolled carpets',
   '/assets/images/experiences/cultural/afghan-carpets/gallery/01-carpet-shop-unfurling.webp': 'Two men unfurling a red and orange hand-knotted carpet in a shop stacked with rolled carpets',

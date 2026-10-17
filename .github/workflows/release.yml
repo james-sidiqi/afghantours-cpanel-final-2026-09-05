@@ -72,8 +72,11 @@ jobs:
           fi
           cp /tmp/release-qa.log release-out/QA.txt
           cp docs/RELEASE-RUNBOOK.md release-out/RELEASE-RUNBOOK.md
+          cp scripts/release/staging/robots-staging.txt release-out/robots-staging.txt
+          cp scripts/release/staging/STAGING-HTACCESS-FRAGMENT.txt release-out/STAGING-HTACCESS-FRAGMENT.txt
+          cp scripts/release/staging/STAGING-SETUP.md release-out/STAGING-SETUP.md
           cd release-out
-          sha256sum QA.txt RELEASE-RUNBOOK.md >> SHA256SUMS
+          sha256sum QA.txt RELEASE-RUNBOOK.md robots-staging.txt STAGING-HTACCESS-FRAGMENT.txt STAGING-SETUP.md >> SHA256SUMS
       - uses: actions/upload-artifact@v4
         with:
           name: verified-cpanel-release

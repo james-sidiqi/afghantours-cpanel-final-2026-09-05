@@ -1,6 +1,6 @@
 # Repository repair report — 18 October 2026 (Kabul)
 
-Baseline: main `9c5eda2de2556b222ab2eea3cdbed7a987b4f58e`. Repair branch includes PR #41 (`a40ddcf879d51b8eabd8c89cc6a0524124efd537`) to preserve its live-image sync; its pending owner decisions remain pending. Coordination: issue #42. No hosting mutation or production deployment is asserted by this report.
+Baseline: main `9c5eda2de2556b222ab2eea3cdbed7a987b4f58e`. The repair branch initially included PR #41 for review. After checking James's 17 October instruction, that temporary-image import is now reverted in the repair branch: image/source paths return to main, #41 stays held and #40 stays draft pending final approved images in a separate image PR. Existing history retains the old import and its reversal; it does not approve those temporary images. Coordination: issue #42. No hosting mutation or production deployment is asserted by this report.
 
 ## Confirmed problems repaired
 
@@ -12,10 +12,11 @@ Baseline: main `9c5eda2de2556b222ab2eea3cdbed7a987b4f58e`. Repair branch include
 6. CI now includes the existing inquiry-mail suite, release-packager unit tests and mocked browser regressions at mobile/tablet/desktop sizes, with the same QA script used by release builds.
 7. Astro prerender module leftovers are removed from the static build by an exact-name guarded cleanup; the release allowlist independently excludes server modules and protected/private paths.
 8. Added the staging-first runbook, a separate copyable Grokbot prompt, a short owner content-change workflow, read-only live-marker comparison and an initially empty deployment ledger. Rollback documents removal of only recorded new static files; re-extracting an old ZIP alone is not claimed to be exact.
+9. Added release-supplied staging robots/header sidecars. A reserved robots filename plus persistent staging-only rewrite survives the unchanged production ZIP. The header fragment is merged with existing authentication, not supplied as a replacement `.htaccess`; real hosting response checks are still required.
 
 ## Evidence and verification boundaries
 
-Fresh Node 20 build: 318 HTML files, 300 sitemap URLs. Internal-link audit: 24,177 links, zero broken targets. Image audit: zero missing references. Strict integrity audit: zero errors/warnings (13 informational itinerary-normalization notes). Slug audit: 328 entries, no duplicates. Inquiry entrypoints: 10/10. Tour image identity: 13/13. Booking core and policy tests: 164 passing. Release-packager tests: eight passing.
+Fresh Node 20 build: 318 HTML files, 300 sitemap URLs. Internal-link audit after removing the temporary image import: 24,175 links, zero broken targets. Image audit: zero missing references. Strict integrity audit: zero errors/warnings (13 informational itinerary-normalization notes). Slug audit: 328 entries, no duplicates. Inquiry entrypoints: 10/10. Tour image identity: 13/13. Booking core and policy tests: 164 passing. Release-packager tests: eight passing. The earlier `c4439019` CI passed the complete PHP/mail/browser/drift gate; the corrected head must pass again before merge.
 
 Browser coverage tests both forms against false-success responses and explicit-success references, dialog keyboard behavior, Weekend fields, consistent labels, JavaScript exceptions and horizontal overflow at 390/820/1440px. Submissions are intercepted locally; no traveler email is sent. The exact PR's CI is the authoritative final result, not an earlier local run.
 
@@ -24,7 +25,7 @@ PHP CLI is unavailable in the editing environment. PHP lint/core/parity/integrat
 ## Remaining hosting/owner gates (not solved by static code)
 
 - Grokbot must verify the actual cPanel roots/capabilities, backups, live drift, DNS/SSL and isolated staging protection. The hosting capability report came from Grokbot, not direct Codex access.
-- Resolve PR #41's Balkh image provenance/no-AI and credit questions plus the Wardak selection. Preserve owner changes; do not invent image credits or silently replace live imagery.
+- Keep the temporary Balkh/Wakhan/Wardak live copies backed up until final approved images are on main. Hold #41, keep #40 draft and resolve final image/credit choices separately. Staging may preview approved GitHub content; production waits for final imagery. Do not invent image credits.
 - Compare server-managed PHP/config, confirm the explicit JSON success contract and prove actual mail receipt/reply/acknowledgement and cron behavior with approved test recipients. Static staging intentionally cannot send inquiries or run booking/admin.
 - Review current live departure status/counts and stale snapshots with the owner. Repository validation does not imply that proposed or unknown inventory is approved; never re-seed over live data.
 - Verify current redirects in server-owned `.htaccess` without replacing the entire file. Keep staging auth/noindex controls off production.

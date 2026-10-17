@@ -8,7 +8,7 @@ Codex owns the repository repair branch and QA. Grokbot/James own cPanel operati
 
 Before any extract, confirm the actual document root, backup location and target host. Stop for an unknown path, missing backup, unexpected live-only changes, incomplete checksums, SSL/auth failure, or a red check. Do not substitute GitHub's automatic “Source code” ZIP for the `at-…-full.zip` asset.
 
-PR #41's live-image sync is included in the repair branch so an older source snapshot will not silently restore old images. Its image-provenance/credit and Wardak-choice questions still need James's decision. PR #40 is superseded by #41; do not merge it separately. Payment PR #17 is outside this release. Prices, operating minimums, departures and live booking inventory are not reset by these changes.
+James's 17 October instruction: live Balkh/Wakhan/Wardak replacements are temporary and GitHub is source of truth. PR #44 now removes its initial import of #41 and restores those image/source paths to main. Hold #41; keep #40 draft until final approved Balkh images arrive, then rebase/fold the needed source change into a separate final-image PR. Staging may show the approved GitHub content; the first production release waits for final approved images on main, then deliberately overwrites the temporary live copies. Back up those copies; no special reconciliation is needed for these known temporary files. Other unexpected live changes still require review. Payment PR #17 remains outside this release. Prices, operating minimums, departures and live booking inventory are not reset by these changes.
 
 ## 1. Establish the real baseline
 
@@ -29,6 +29,7 @@ Release assets:
 - `manifest.json`, `files.sha256`, `SHA256SUMS`: archive and per-file verification.
 - `version.json`: release ID, full source SHA and build time (UTC).
 - `QA.txt`, `excluded-paths.json`, this runbook.
+- Staging sidecars (outside the production ZIP): `robots-staging.txt`, `STAGING-HTACCESS-FRAGMENT.txt`, `STAGING-SETUP.md`. They are included in `SHA256SUMS` and may be installed in staging while preparing hosting. Never upload these sidecars to production.
 - When a verified previous release was selected: `at-…-changes.zip`, `changes-manifest.json`, `changes.json`.
 
 The packager uses an explicit static allowlist, not “everything in dist except PHP”. It excludes `.htaccess`, all dotpaths, PHP/executables, booking/manage/payments, booking seed/data, `photo-credits/`, private files, backups, and Astro server build intermediates. Review `excluded-paths.json`. No ZIP deletes files.
@@ -46,7 +47,7 @@ Checksums detect changed bytes; they are not proof of authorship if both archive
 
 1. Create/verify the isolated staging subdomain and its own folder. Verify actual DNS resolution and valid HTTPS certificate/AutoSSL completion; a DNS entry alone does not prove SSL is ready.
 2. Enable cPanel Directory Privacy with a staging-only credential. Keep staging secrets out of GitHub/chat. Verify unauthenticated requests for HTML, assets and `version.json` get a challenge, and authenticated requests work.
-3. Add staging-only `X-Robots-Tag: noindex, nofollow` and a deny-all robots policy. Because the **same ZIP** contains production's robots.txt, serve a separate staging-only robots file via a staging-only rewrite, or an equivalent host-level rule that survives extraction. Verify the served `/robots.txt` after every extract. Robots is not access control.
+3. Add staging-only `X-Robots-Tag: noindex, nofollow` and a deny-all robots policy using the release's `STAGING-SETUP.md` sidecar. Upload the reserved `robots-staging.txt` into staging and merge `STAGING-HTACCESS-FRAGMENT.txt` into its existing `.htaccess`, preserving Directory Privacy and existing deny rules. Place its robots rewrite before any catch-all rule. The fragment applies only to the exact staging host; it is not a complete `.htaccess`. The same ZIP can overwrite production's robots.txt on staging without changing the separately served policy. Verify the served `/robots.txt` and response headers after every extract, including authenticated directory/index requests. An editor UI error may be diagnosed and the reviewed merged file uploaded through authorized access; a permissions/protection denial is a stop condition. Robots is not access control.
 4. Deny PHP execution/access and booking/manage/payment endpoints on staging. Do not copy production data/config/PHP or point a staging form at a production endpoint. Staging is static visual QA, not proof of mail or booking operations.
 5. Upload the verified ZIP to a private upload/release folder outside webroots. Extract its **contents** into the verified staging document root. Avoid an extra nested `dist/` or release folder. Never extract the entire GitHub source repository there.
 6. Verify `/version.json`, all expected static file hashes, robots/header/auth and key pages. Without shell access, download the release-managed files using configured FTPS/cPanel tooling or a File Manager archive and verify locally:
