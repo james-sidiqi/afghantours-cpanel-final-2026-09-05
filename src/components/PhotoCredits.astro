@@ -1,7 +1,8 @@
 ---
 import { creditsFor } from '../data/photoCredits';
+import { SHOW_PHOTO_CREDITS } from '../config/photo-credits.mjs';
 interface Props { images: (string | null | undefined)[]; class?: string }
-const credits = creditsFor(Astro.props.images);
+const credits = SHOW_PHOTO_CREDITS ? creditsFor(Astro.props.images) : [];
 ---
 {credits.length > 0 && (
   <p class:list={['photo-credits', Astro.props.class]}>
