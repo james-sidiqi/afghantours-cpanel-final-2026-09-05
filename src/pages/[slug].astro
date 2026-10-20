@@ -669,8 +669,10 @@ const trustItems = [
       message.value = extras.join('\n');
     }
 
+    let submitting = false;
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
+      if (submitting) return;
       if (status) status.textContent = '';
 
       const data = new FormData(form);
@@ -686,6 +688,8 @@ const trustItems = [
         entityNameInput.value = interestInput.value;
       }
 
+      if (entityNameInput) data.set('entity_name', entityNameInput.value);
+      submitting = true;
       if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending…';
@@ -696,14 +700,16 @@ const trustItems = [
           method: 'POST',
           body: data,
           headers: { 'Accept': 'application/json' },
+          signal: AbortSignal.timeout(30000),
         });
-        const result = await response.json().catch(() => ({}));
-        if (!response.ok || result.ok === false) throw new Error(result.message || 'Unable to send inquiry.');
-        if (status) status.textContent = 'Thank you. Your inquiry has been sent to AfghanTours.';
+        const result = await response.json().catch(() => null);
+        if (!response.ok || result?.ok !== true) throw new Error(result?.message || 'We could not confirm receipt. Please keep your details and contact reservations@afghantours.com or WhatsApp +93 780 123 456.');
+        if (status) status.textContent = [result.message || 'Your inquiry has been received. Our team will confirm availability and next steps.', result.reference ? `Reference: ${result.reference}` : ''].filter(Boolean).join(' ');
         form.querySelectorAll('input:not([type="hidden"]):not(.tour-inquiry-hp), textarea').forEach((el) => { el.value = ''; });
       } catch (error) {
         if (status) status.textContent = error?.message || 'Unable to send inquiry. Please email reservations@afghantours.com or WhatsApp +93 780 123 456.';
       } finally {
+        submitting = false;
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.textContent = 'Send Inquiry';

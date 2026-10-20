@@ -1,0 +1,14 @@
+# BEGIN AfghanTours staging robots/header controls
+# MERGE into the verified staging docroot .htaccess, preserving Directory Privacy
+# and all existing PHP/booking/manage deny rules. This is NOT a complete .htaccess.
+# Apache 2.4.10+ compatible syntax. Verify the actual server before deployment.
+# Exact-host conditions also prevent these controls applying to production.
+<IfModule mod_headers.c>
+Header always set X-Robots-Tag "noindex, nofollow" "expr=%{HTTP_HOST} =~ m#^staging[.]afghantours[.]com(?::[0-9]+)?$#i"
+</IfModule>
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^staging[.]afghantours[.]com(?::[0-9]+)?$ [NC]
+RewriteRule ^robots[.]txt$ robots-staging.txt [L]
+</IfModule>
+# END AfghanTours staging robots/header controls

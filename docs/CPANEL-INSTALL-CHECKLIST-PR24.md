@@ -1,5 +1,7 @@
 # cPanel install checklist — PR #24 (inquiry email routing)
 
+> Backend reference only. Read [the current release runbook](RELEASE-RUNBOOK.md) first. PHP/private data are excluded from static releases; compare actual live versions and use a separately approved backup/diff before backend changes. Never upload all of dist or overwrite inventory.
+
 Package: `/workspace/afghantours-pr24-deploy.zip` (306 docroot files + MANIFEST.txt with SHA-256 of each).
 Do these steps only after James has authorized the deployment. Full details are in `docs/ADMIN-EMAIL-SETUP.md`.
 

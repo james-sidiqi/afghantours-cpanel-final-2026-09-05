@@ -12,7 +12,9 @@ npm run build          # writes dist/ + sitemap
 npm run preview        # optional local preview of dist
 ```
 
-Node 20+ recommended. PHP is required only for `public/tour-inquiry.php` (copied into `dist/` on build).
+Use Node 20 (`.nvmrc`). PHP CLI is required for the full booking/inquiry test suite. Server-managed PHP and booking data are excluded from static release ZIPs.
+
+Current publishing process: [release runbook](docs/RELEASE-RUNBOOK.md), [Grokbot hosting prompt](docs/GROKBOT-HANDOFF.md), and [simple future content workflow](docs/CONTENT-CHANGE-WORKFLOW.md). The broken cPanel Git-button process is retired. Stage a verified release on cPanel, review it, then approve promotion of the exact same ZIP.
 
 ## Product IA (canonical)
 

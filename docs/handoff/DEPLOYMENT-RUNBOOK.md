@@ -1,5 +1,7 @@
 # Deployment and rollback runbook: release #36 → #37 → #38
 
+> Historical release instructions. PRs #36–#39 are now merged. Use [the current release runbook](../RELEASE-RUNBOOK.md) for protected staging and verified ZIP promotion; do not deploy an old bundle using this checklist.
+
 This is the only deployment procedure. It replaces docs/DEPLOYMENT-CPANEL.md and the box-only DEPLOY-RUNBOOK.md.
 **Agents do not deploy.** James performs or explicitly authorizes each step.
 

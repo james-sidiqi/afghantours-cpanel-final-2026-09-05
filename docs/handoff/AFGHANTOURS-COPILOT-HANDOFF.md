@@ -1,5 +1,7 @@
 # AfghanTours.com: project handoff to GitHub Copilot (2026-10-15)
 
+> Historical handoff. Current deployment/agent ownership is in [GROKBOT-HANDOFF.md](../GROKBOT-HANDOFF.md) and [RELEASE-RUNBOOK.md](../RELEASE-RUNBOOK.md). Do not revive cPanel Git publishing or overwrite server-managed files from an old ZIP.
+
 The owner is James Sidiqi (GitHub: james-sidiqi). This file covers the architecture, the rules and where things are. For SHAs and numbers see RELEASE-STATUS.md; for open work, OPEN-ISSUES.md; for deployment, DEPLOYMENT-RUNBOOK.md.
 
 ## 1. Repository

@@ -1,5 +1,7 @@
 # cPanel deployment (James only)
 
+> Historical instructions. For current staging-first ZIP publishing, use [RELEASE-RUNBOOK.md](RELEASE-RUNBOOK.md). Do not use cPanel Git or upload all of dist. Backend changes require a separate reviewed plan.
+
 **Agents must not deploy** to afghantours.com / cPanel as part of the release drive.
 
 ## Preconditions

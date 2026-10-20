@@ -1,16 +1,11 @@
 ---
-import { bookingCatalog, getCatalogTour, publicSnapshot, tourPriceLabel } from '../lib/booking/site';
+import { getCatalogTour, publicSnapshot, tourPriceLabel, tourBookingLabel } from '../lib/booking/site';
 interface Props { tours: any[]; showFilters?: boolean; id?: string }
 
 const { tours = [], showFilters = true, id = 'tour-directory' } = Astro.props;
 
 // Booking type first (spec 10 Oct Part 1 §1, §12); travel style stays a secondary descriptor.
-const badgeFor = (tour: any) => {
-  const c = getCatalogTour(tour.slug);
-  const labels = bookingCatalog.booking_types || {};
-  const out = (c?.booking_types || []).map((k: string) => labels[k]).filter(Boolean).join(' · ');
-  return out || 'Private Tour';
-};
+const badgeFor = (tour: any) => tourBookingLabel(tour.slug);
 const groupLineFor = (tour: any) => {
   const c = getCatalogTour(tour.slug) || {};
   if (c.category === 'C') return 'Private on your dates · no group minimum';

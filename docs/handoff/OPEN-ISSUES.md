@@ -1,5 +1,7 @@
 # Open issues and blockers (2026-10-15)
 
+> Historical snapshot, not current deployment authority. Read [the repair report](../REPAIR-REPORT-2026-10-18.md), issue #42 and [current runbook](../RELEASE-RUNBOOK.md) for the latest checks and remaining hosting/owner gates.
+
 ## Blockers to deployment (all need James)
 1. **No fresh production backup.** cPanel was unreachable from the agent box (first a bot-check page, then a timeout on port 2083). Do not bypass bot protection or retry in loops.
 2. **Live .htaccess not read**, so the 4 redirect changes can't be merged yet (manifests/htaccess-diff.txt).
