@@ -4,6 +4,11 @@
 // Attribution-only: never changes, hides or removes an image.
 import fs from 'node:fs';
 import path from 'node:path';
+import { SHOW_PHOTO_CREDITS } from '../src/config/photo-credits.mjs';
+if (!SHOW_PHOTO_CREDITS) {
+  console.log('photo credits: hidden site-wide (SHOW_PHOTO_CREDITS=false in src/config/photo-credits.mjs)');
+  process.exit(0);
+}
 const src = fs.readFileSync('src/data/photoCredits.ts', 'utf8');
 const start = src.indexOf('= [', src.indexOf('PHOTO_CREDITS')) + 2;
 const end = src.indexOf('\n];', start);
