@@ -169,11 +169,12 @@ const dedicatedHero =
 // t277: tall subject photos shown as a right-hand panel on desktop so the whole subject stays in frame.
 const PORTRAIT_HEROES = new Set(['/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/hero.webp']);
 
+// The watermelon source photo was rejected by the owner as non-Afghan.
+// Bypass dedicated folders and frontmatter image paths to avoid reintroducing it.
 const heroImage =
-  dedicatedHero ||
-  data.hero_image ||
-  data.image ||
-  '/assets/images/heroes/food-and-culture/hero.webp';
+  baseSlug === 'farah-watermelon'
+    ? '/assets/images/heroes/food-and-culture/hero.webp'
+    : dedicatedHero || data.hero_image || data.image || '/assets/images/heroes/food-and-culture/hero.webp';
 
 const categoryLabels: Record<string, string> = {
   dishes: 'Afghan Dish',
