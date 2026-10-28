@@ -15,7 +15,7 @@ if (!journey) return Astro.redirect('/return-journeys/');
 
 const inquiryHref = buildReturnInquiryHref(journey);
 const hero = journey.hero_image_path || journey.image_path || '/assets/images/placeholders/default-hero.webp';
-// James t265: kaf-overlook-portrait and kaf-tower-interior removed from this gallery (files kept). thumb = 4:3 recentred crop; originals unmodified.
+// James t265: redundant KAF overlook portrait removed; kaf-tower.webp remains in the gallery. Thumbnails retain their 4:3 crops.
 const diasporaExampleGallery = journey.slug === 'diaspora' ? [
   {
     src: '/assets/images/return-journeys/diaspora/james-family/father-son-airport/kaf-father-son-overlook.webp',
