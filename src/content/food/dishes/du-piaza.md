@@ -1,6 +1,6 @@
 ---
-title: "Du-Piaza"
-food_slug: "du-piaza"
+title: "Dopiaza"
+food_slug: "dopiaza"
 subtitle: "Meat and onions"
 card_description: "Tender meat cooked with generous onions and aromatic spices, traditionally enjoyed with Afghan bread or rice."
 category: "Afghan Dish"
