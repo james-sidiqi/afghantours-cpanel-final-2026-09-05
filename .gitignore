@@ -4,7 +4,6 @@ dist/
 .DS_Store
 __MACOSX/
 *.zip
-public/assets/images/
 current-src/
 deploy/
 older_src/
