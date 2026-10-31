@@ -6,6 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildInquiryHref } from '../../lib/inquiry';
 import TourCardGrid from '../../components/cards/TourCardGrid.astro';
 
 import { getCollection } from 'astro:content';
@@ -169,11 +170,11 @@ const dedicatedHero =
 // t277: tall subject photos shown as a right-hand panel on desktop so the whole subject stays in frame.
 const PORTRAIT_HEROES = new Set(['/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/hero.webp']);
 
+// The watermelon source photo was rejected by the owner as non-Afghan.
+// Bypass dedicated folders and frontmatter image paths to avoid reintroducing it.
 const heroImage =
-  dedicatedHero ||
-  data.hero_image ||
-  data.image ||
-  '/assets/images/heroes/food-and-culture/hero.webp';
+  [dedicatedHero, data.hero_image, data.image, '/assets/images/heroes/food-and-culture/hero.webp']
+    .find((src) => src && !isRejectedImage(src));
 
 const categoryLabels: Record<string, string> = {
   dishes: 'Afghan Dish',
@@ -512,14 +513,16 @@ const foodHref = (candidate: any) =>
 const foodImage = (candidate: any) => {
   const candidateData = candidate.data as any;
 
-  return (
-    candidateData.hero_image ||
-    candidateData.image ||
-    '/assets/images/heroes/food-and-culture/hero.webp'
-  );
+  return [candidateData.hero_image, candidateData.image, '/assets/images/heroes/food-and-culture/hero.webp']
+    .find((src) => src && !isRejectedImage(src));
 };
 
-const contactHref = `/contact/?food=${encodeURIComponent(title)}`;
+const contactHref = buildInquiryHref({
+  flow: 'activity',
+  entity_type: 'food',
+  entity_slug: foodPath,
+  entity_name: title,
+});
 ---
 
 <BaseLayout

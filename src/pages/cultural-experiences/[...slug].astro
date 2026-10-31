@@ -6,6 +6,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { buildInquiryHref } from '../../lib/inquiry';
 import TourCardGrid from '../../components/cards/TourCardGrid.astro';
 
 import {
@@ -505,8 +506,12 @@ const season =
   'Year round / timing dependent';
 
 
-const contactHref =
-  `/contact/?type=cultural-experience&experience=${encodeURIComponent(title)}`;
+const contactHref = buildInquiryHref({
+  flow: 'activity',
+  entity_type: 'cultural-experience',
+  entity_slug: slug,
+  entity_name: title,
+});
 
 const culturalHubRels = getHubsForCultural(slug);
 const culturalHubs = culturalHubRels.map((rel) => {

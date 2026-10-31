@@ -1,5 +1,5 @@
 ---
-title: "Qabuli Palaw"
+title: "Qabeli Palaw"
 slug: "kabuli-pulao"
 food_slug: "kabuli-pulao"
 category: "Main"
@@ -11,7 +11,7 @@ gallery_images:
   - "/assets/images/food/dishes/kabuli-pulao/gallery-2.webp"
 ---
 
-### Qabuli Palaw
+### Qabeli Palaw
 
 Afghanistan's national rice dish with lamb carrots and raisins.
 

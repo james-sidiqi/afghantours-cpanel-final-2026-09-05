@@ -557,7 +557,7 @@
     "slug": "farah-city",
     "is_hub": false,
     "is_active": true,
-    "image_path": "/assets/images/provinces/farah/hero.webp",
+    "image_path": "/assets/images/attractions/farah-citadel/hero.webp",
     "map_image_path": ""
   },
   {
@@ -568,7 +568,7 @@
     "slug": "khost-city",
     "is_hub": false,
     "is_active": true,
-    "image_path": "/assets/images/provinces/khost/hero.webp",
+    "image_path": "/assets/images/attractions/khost-city-scenery/hero.webp",
     "map_image_path": ""
   },
   {

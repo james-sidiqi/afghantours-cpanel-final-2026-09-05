@@ -13,5 +13,13 @@ export const REJECTED_IMAGES: Record<string, string> = {
   '/assets/images/attractions/istalif-village/thumb.webp': 'James t264: rejected small duplicate of the potter-in-shop photo (Istalif gallery); large hero.webp kept; not used elsewhere',
   '/assets/images/featured-tours/buzkashi-expedition/hero.webp': 'James t267: AI-looking Buzkashi horsemen-with-crowd shot — remove from entire site; file kept on disk',
 };
-export const isRejectedImage = (src?: string | null): boolean =>
-  !!src && Object.prototype.hasOwnProperty.call(REJECTED_IMAGES, String(src).split('?')[0]);
+// Owner rejected the watermelon photograph as non-Afghan. Preserve all files,
+// but block every crop/gallery alias so folder discovery cannot bring it back.
+const REJECTED_IMAGE_FOLDERS = [
+  '/assets/images/food/produce/farah-watermelon/',
+];
+export const isRejectedImage = (src?: string | null): boolean => {
+  const clean = String(src || '').split('?')[0];
+  return Object.prototype.hasOwnProperty.call(REJECTED_IMAGES, clean)
+    || REJECTED_IMAGE_FOLDERS.some((folder) => clean.startsWith(folder));
+};

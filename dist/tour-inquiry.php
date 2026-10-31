@@ -7,7 +7,8 @@ declare(strict_types=1);
  * Backward-compatible with legacy tour modal fields (tour / tour_name / tour_slug / travelers / group_size).
  *
  * Dry-run: POST dry_run=1 returns JSON without calling mail(), but ONLY when allowed
- * (CLI, localhost, or AFGHANTOURS_DRY_RUN_KEY match). Production hosts reject open dry_run.
+ * (CLI, loopback PHP development server, or AFGHANTOURS_DRY_RUN_KEY match).
+ * Production PHP runtimes require an explicitly configured key.
  */
 
 const INQUIRY_TO = 'info@afghantours.com';
@@ -81,26 +82,21 @@ function wants_json(): bool {
 }
 
 function is_local_host(): bool {
+    // Host is supplied by the caller; it is not proof of a local request.
+    $peer = (string)($_SERVER['REMOTE_ADDR'] ?? '');
+    if (!in_array($peer, ['127.0.0.1', '::1', '::ffff:127.0.0.1'], true)) {
+        return false;
+    }
     $host = strtolower((string)($_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? ''));
     $host = preg_replace('/:\d+$/', '', $host) ?? $host;
-    if ($host === '' || $host === 'localhost' || $host === '127.0.0.1' || $host === '::1') {
-        return true;
-    }
-    if (str_ends_with($host, '.local') || str_ends_with($host, '.test')) {
-        return true;
-    }
-    // Private LAN typical for local PHP built-in / cPanel staging boxes during QA.
-    if (preg_match('/^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[0-1])\.)/', $host)) {
-        return true;
-    }
-    return false;
+    return in_array($host, ['localhost', '127.0.0.1', '[::1]', '::1'], true);
 }
 
 function dry_run_key_ok(): bool {
     $expected = getenv('AFGHANTOURS_DRY_RUN_KEY');
     if ($expected === false || $expected === '') {
-        // Default local QA key — production must set a strong env key or rely on host checks.
-        $expected = 'local-qa-only';
+        // No public/default bypass when production has no explicitly configured key.
+        return false;
     }
     $provided = first_nonempty('dry_run_key', 'qa_key');
     $header = (string)($_SERVER['HTTP_X_AFGHANTOURS_DRY_RUN_KEY'] ?? '');
@@ -120,7 +116,7 @@ function is_dry_run_allowed(): bool {
     if (PHP_SAPI === 'cli') {
         return true;
     }
-    if (is_local_host()) {
+    if (PHP_SAPI === 'cli-server' && is_local_host()) {
         return true;
     }
     return dry_run_key_ok();
@@ -253,9 +249,9 @@ if ($email === '' && $whatsapp === '' && $contactCombined !== '') {
 }
 
 // Canonical entity fields first, then legacy aliases (first_nonempty order).
-$entityName = clamp_field(first_nonempty('entity_name', 'tour_name', 'tour', 'service_name', 'journey_name', 'activity_name', 'interest'), MAX_SUBJECT_ENTITY);
-$entitySlug = clamp_field(first_nonempty('entity_slug', 'tour_slug', 'service', 'service_slug', 'journey', 'journey_slug', 'activity', 'activity_slug'), 120);
-$entityCode = clamp_field(first_nonempty('entity_code', 'tour_code', 'service_code', 'journey_code', 'activity_code'), 40);
+$entityName = clamp_field(first_nonempty('entity_name', 'tour_name', 'tourName', 'tour', 'service_name', 'journey_name', 'activity_name', 'activityName', 'interest'), MAX_SUBJECT_ENTITY);
+$entitySlug = clamp_field(first_nonempty('entity_slug', 'tour_slug', 'service', 'service_slug', 'serviceSlug', 'return', 'returnSlug', 'journey', 'journey_slug', 'activity', 'activity_slug'), 120);
+$entityCode = clamp_field(first_nonempty('entity_code', 'tour_code', 'tourCode', 'service_code', 'serviceCode', 'journey_code', 'activity_code'), 40);
 $entityType = clamp_field(first_nonempty('entity_type', 'product_type'), 40);
 $productClass = clamp_field(first_nonempty('product_class', 'tour_class'), 40);
 $typeHint = clamp_field(first_nonempty('type', 'inquiry_type'), 40);

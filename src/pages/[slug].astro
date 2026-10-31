@@ -278,7 +278,7 @@ const trustItems = [
           <input type="hidden" name="product_class" id="productClassInput" value="" />
           <input type="hidden" name="source_url" id="sourceUrlInput" value="" />
           <input type="hidden" name="preferred_hub" id="preferredHubInput" value="" />
-          <input class="tour-inquiry-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+          <input class="tour-inquiry-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" hidden />
 
           <div class="form-grid">
             <label>Name <input name="name" autocomplete="name" required /></label>
@@ -502,15 +502,16 @@ const trustItems = [
 
     // Legacy aliases (only fill gaps; never override canonical).
     const typeRaw = (params.get('type') || params.get('inquiry_type') || '').toLowerCase();
-    const serviceSlug = params.get('service') || params.get('service_slug') || '';
-    const journeySlug = params.get('journey') || params.get('journey_slug') || '';
+    const serviceSlug = params.get('service') || params.get('service_slug') || params.get('serviceSlug') || '';
+    const journeySlug = params.get('return') || params.get('returnSlug') || params.get('journey') || params.get('journey_slug') || '';
     const activitySlug = params.get('activity') || params.get('activity_slug') || '';
     const tourSlug = params.get('tour') || params.get('tour_slug') || '';
-    const activityName = params.get('activity_name') || '';
+    const activityName = params.get('activity_name') || params.get('activityName') || '';
+    const legacyEntityName = params.get('tourName') || params.get('tour_name') || '';
     const interest = params.get('interest') || '';
     const hub = params.get('hub') || '';
     const dates = params.get('dates') || params.get('travel_dates') || params.get('preferred_dates') || params.get('date') || '';
-    const legacyTourCode = params.get('tour_code') || params.get('code') || '';
+    const legacyTourCode = params.get('tour_code') || params.get('tourCode') || params.get('service_code') || params.get('serviceCode') || params.get('code') || '';
 
     const normalizeProductClass = (raw) => {
       const pc = String(raw || '').toLowerCase();
@@ -535,6 +536,8 @@ const trustItems = [
     if (canonicalEntitySlug) entitySlug = canonicalEntitySlug;
     if (canonicalEntityName) entityName = canonicalEntityName;
     if (canonicalEntityCode) entityCode = canonicalEntityCode;
+    if (!entityName) entityName = legacyEntityName;
+    if (!entityCode) entityCode = legacyTourCode;
     productClass = normalizeProductClass(canonicalProductClass);
 
     // Cultural / culinary experience links (?type=cultural-experience|culinary-experience&experience=Name) are reservation-type
@@ -560,22 +563,22 @@ const trustItems = [
       flow = typeMap[typeRaw];
     }
 
-    if ((!flow || flow === 'general' || entityType === 'specialist') && (serviceSlug || entityType === 'specialist' || flow === 'specialist' || typeRaw === 'specialist')) {
+    if ((!flow || flow === 'general' || flow === 'specialist' || entityType === 'specialist') && (serviceSlug || entityType === 'specialist' || flow === 'specialist' || typeRaw === 'specialist')) {
       if (!flow || flow === 'general') flow = 'specialist';
       if (!entityType) entityType = 'specialist';
       if (!entitySlug) entitySlug = serviceSlug || interest || entitySlug;
       if (!entityName) entityName = interest || niceTitle(serviceSlug) || entityName;
-    } else if ((!flow || flow === 'general' || entityType === 'return') && (typeRaw === 'return' || entityType === 'return' || flow === 'return' || (journeySlug && (typeRaw === 'return' || canonicalFlowRaw === 'return' || entityType === 'return')))) {
+    } else if ((!flow || flow === 'general' || flow === 'return' || entityType === 'return') && (typeRaw === 'return' || entityType === 'return' || flow === 'return' || (journeySlug && (typeRaw === 'return' || canonicalFlowRaw === 'return' || entityType === 'return')))) {
       if (!flow || flow === 'general') flow = 'return';
       if (!entityType) entityType = 'return';
       if (!entitySlug) entitySlug = journeySlug || interest || entitySlug;
       if (!entityName) entityName = interest || niceTitle(journeySlug) || entityName;
-    } else if ((!flow || flow === 'general' || entityType === 'activity') && (flow === 'activity' || typeRaw === 'activity' || activitySlug || activityName || entityType === 'activity')) {
+    } else if ((!flow || flow === 'general' || flow === 'activity' || entityType === 'activity') && (flow === 'activity' || typeRaw === 'activity' || activitySlug || activityName || entityType === 'activity')) {
       if (!flow || flow === 'general') flow = 'activity';
       if (!entityType) entityType = 'activity';
       if (!entitySlug) entitySlug = activitySlug || interest || entitySlug;
       if (!entityName) entityName = activityName || niceTitle(activitySlug) || niceTitle(interest) || entityName;
-    } else if ((!flow || flow === 'general' || entityType === 'custom') && (flow === 'custom' || typeRaw === 'custom-tour' || typeRaw === 'custom' || interest === 'build-my-journey' || entityType === 'custom')) {
+    } else if ((!flow || flow === 'general' || flow === 'custom' || entityType === 'custom') && (flow === 'custom' || typeRaw === 'custom-tour' || typeRaw === 'custom' || interest === 'build-my-journey' || entityType === 'custom')) {
       if (!flow || flow === 'general') flow = 'custom';
       if (!entityType) entityType = 'custom';
       if (!entitySlug) entitySlug = 'custom-expedition';

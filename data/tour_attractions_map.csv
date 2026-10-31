@@ -119,7 +119,6 @@ BUZE,buzkashi-expedition,6,BAL-003
 BUZE,buzkashi-expedition,6,BAL-004
 BUZE,buzkashi-expedition,6,BAL-005
 BUZE,buzkashi-expedition,7,SAM-001
-BUZE,buzkashi-expedition,7,SAM-002
 BUZE,buzkashi-expedition,8,KBL-017
 BUZE,buzkashi-expedition,9,KBL-007
 BUZE,buzkashi-expedition,9,KBL-005
@@ -137,7 +136,6 @@ SUMC,summer-circuit,4,BAL-002
 SUMC,summer-circuit,4,BAL-003
 SUMC,summer-circuit,4,BAL-004
 SUMC,summer-circuit,5,SAM-001
-SUMC,summer-circuit,5,SAM-002
 SUMC,summer-circuit,5,KDZ-001
 SUMC,summer-circuit,6,BMY-005
 SUMC,summer-circuit,7,BMY-001
@@ -158,7 +156,6 @@ WNTC,winter-circuit,4,BAL-002
 WNTC,winter-circuit,4,BAL-003
 WNTC,winter-circuit,4,BAL-004
 WNTC,winter-circuit,5,SAM-001
-WNTC,winter-circuit,5,SAM-002
 WNTC,winter-circuit,5,KDZ-001
 WNTC,winter-circuit,6,PRW-001
 WNTC,winter-circuit,7,WRD-001
@@ -222,7 +219,6 @@ TSRA,treasures-of-silk-road-afghanistan,8,BAL-004
 TSRA,treasures-of-silk-road-afghanistan,8,BAL-005
 TSRA,treasures-of-silk-road-afghanistan,8,BAL-006
 TSRA,treasures-of-silk-road-afghanistan,9,SAM-001
-TSRA,treasures-of-silk-road-afghanistan,9,SAM-002
 TTWC,trek-the-wakhan-corridor,1,KBL-003
 TTWC,trek-the-wakhan-corridor,1,KBL-007
 TTWC,trek-the-wakhan-corridor,2,BAL-001
@@ -242,7 +238,6 @@ TTWC,trek-the-wakhan-corridor,11,TKH-001
 TTWC,trek-the-wakhan-corridor,12,KDZ-001
 TTWC,trek-the-wakhan-corridor,13,BAL-001
 TTWC,trek-the-wakhan-corridor,14,SAM-001
-TTWC,trek-the-wakhan-corridor,14,SAM-002
 TTWC,trek-the-wakhan-corridor,15,PRW-001
 TTWC,trek-the-wakhan-corridor,16,KBL-007
 TTWC,trek-the-wakhan-corridor,16,KBL-015
@@ -255,5 +250,4 @@ TTWC,trek-the-wakhan-corridor,18,KBL-001
 TTWC,trek-the-wakhan-corridor,18,KBL-003
 TTWC,trek-the-wakhan-corridor,19,KBL-012
 TTWC,trek-the-wakhan-corridor,19,KBL-014
-TTWC,trek-the-wakhan-corridor,19,KBL-019
 TTWC,trek-the-wakhan-corridor,20,KBL-006

@@ -48,7 +48,7 @@ BUZE,buzkashi-expedition,3,Travel to Mazar-e-Sharif,Kabul to Mazar-e-Sharif,maza
 BUZE,buzkashi-expedition,4,Blue Mosque and Mazar orientation,Mazar-e-Sharif,mazar-e-sharif,"Explore the Shrine of Hazrat Ali and surrounding city life, with time to coordinate buzkashi match details locally.",BAL-001,uzbek-palaw,Balkh,1,4
 BUZE,buzkashi-expedition,5,Buzkashi match day,Balkh / northern plains,mazar-e-sharif,"Attend a buzkashi match when scheduled locally. Match location, timing, and access vary, so this day remains flexible.",BAL-006,uzbek-palaw,Balkh,1,5
 BUZE,buzkashi-expedition,6,Ancient Balkh and literary heritage,Balkh,mazar-e-sharif,"Visit Ancient Balkh, Rabia Balkhi’s tomb, Haji Piyada Mosque, and sites connected to the spiritual and literary history of the region.",BAL-002|BAL-003|BAL-004|BAL-005,green-tea,Balkh,1,6
-BUZE,buzkashi-expedition,7,Samangan Buddhist heritage,Mazar-e-Sharif / Samangan,mazar-e-sharif,Day trip toward Samangan to visit Takht-e Rostam and Buddhist cave sites if road timing permits.,SAM-001|SAM-002,naan,Balkh;Samangan,1,7
+BUZE,buzkashi-expedition,7,Samangan Buddhist heritage,Mazar-e-Sharif / Samangan,mazar-e-sharif,Day trip toward Samangan to visit Takht-e Rostam if road timing permits.,SAM-001,naan,Balkh;Samangan,1,7
 BUZE,buzkashi-expedition,8,Return to Kabul,Mazar-e-Sharif to Kabul,kabul-city,Return to Kabul by flight or road depending on schedule and winter conditions.,KBL-017,green-tea,Balkh;Kabul,1,8
 BUZE,buzkashi-expedition,9,Kabul market and farewell meal,Kabul,kabul-city,"Final full day in Kabul for carpets, copper, crafts, shrines, and a farewell meal.",KBL-007|KBL-005|KBL-012,kabob,Kabul,1,9
 BUZE,buzkashi-expedition,10,Departure,Kabul,kabul-city,Airport transfer and departure support.,,green-tea,Kabul,1,10
@@ -56,7 +56,7 @@ SUMC,summer-circuit,1,Arrival and Kabul orientation,Kabul,kabul-city,Arrival in 
 SUMC,summer-circuit,2,Kabul heritage day,Kabul,kabul-city,"National Museum, Darulaman Palace, Babur’s Gardens, and selected shrines or viewpoints.",KBL-002|KBL-001|KBL-003|KBL-005,qabuli-palaw,Kabul,1,2
 SUMC,summer-circuit,3,Travel north through Salang or by flight,Kabul to North,mazar-e-sharif,"Move toward the northern plains using the most practical route available, with road and weather conditions determining the final routing.",PRW-001|SAM-001,green-tea,Parwan;Samangan;Balkh,1,3
 SUMC,summer-circuit,4,Mazar and Ancient Balkh,Balkh,mazar-e-sharif,"Explore the Blue Mosque and Ancient Balkh, with literary and religious sites added as timing allows.",BAL-001|BAL-002|BAL-003|BAL-004,uzbek-palaw,Balkh,1,4
-SUMC,summer-circuit,5,Samangan or Kunduz agricultural belt,Samangan / Kunduz,mazar-e-sharif,"A route-dependent day into Samangan Buddhist sites or Kunduz farmlands, selected around access and road timing.",SAM-001|SAM-002|KDZ-001,naan,Samangan;Kunduz,1,5
+SUMC,summer-circuit,5,Samangan or Kunduz agricultural belt,Samangan / Kunduz,mazar-e-sharif,"A route-dependent day into Samangan Buddhist sites or Kunduz farmlands, selected around access and road timing.",SAM-001|KDZ-001,naan,Samangan;Kunduz,1,5
 SUMC,summer-circuit,6,Travel to Bamyan,Mazar-e-Sharif to Bamyan,bamyan-city,Move toward Bamyan through the most practical route available for summer conditions.,BMY-005,green-tea,Balkh;Samangan;Bamyan,1,6
 SUMC,summer-circuit,7,Bamyan and Band-e-Amir,Bamyan,bamyan-city,"Buddha Niches, Shahr-e-Gholghola, Shahr-e-Zohak, and Band-e-Amir if timing allows.",BMY-001|BMY-002|BMY-003|BMY-004,ash,Bamyan,1,7
 SUMC,summer-circuit,8,Return to Kabul,Bamyan to Kabul,kabul-city,Return to Kabul by 4WD and prepare for departure.,WRD-001,green-tea,Bamyan;Wardak;Kabul,1,8
@@ -64,7 +64,7 @@ WNTC,winter-circuit,1,Arrival and Kabul orientation,Kabul,kabul-city,Arrival in 
 WNTC,winter-circuit,2,Kabul heritage day,Kabul,kabul-city,"National Museum, Darulaman Palace, Babur’s Gardens, and selected shrines or viewpoints.",KBL-002|KBL-001|KBL-003|KBL-005,qabuli-palaw,Kabul,1,2
 WNTC,winter-circuit,3,Travel north through Salang or by flight,Kabul to North,mazar-e-sharif,"Move toward the northern plains using the most practical route available, with road and weather conditions determining the final routing.",PRW-001|SAM-001,green-tea,Parwan;Samangan;Balkh,1,3
 WNTC,winter-circuit,4,Mazar and Ancient Balkh,Balkh,mazar-e-sharif,"Explore the Blue Mosque and Ancient Balkh, with literary and religious sites added as timing allows.",BAL-001|BAL-002|BAL-003|BAL-004,uzbek-palaw,Balkh,1,4
-WNTC,winter-circuit,5,Samangan or Kunduz agricultural belt,Samangan / Kunduz,mazar-e-sharif,"A route-dependent day into Samangan Buddhist sites or Kunduz farmlands, selected around access and road timing.",SAM-001|SAM-002|KDZ-001,naan,Samangan;Kunduz,1,5
+WNTC,winter-circuit,5,Samangan or Kunduz agricultural belt,Samangan / Kunduz,mazar-e-sharif,"A route-dependent day into Samangan Buddhist sites or Kunduz farmlands, selected around access and road timing.",SAM-001|KDZ-001,naan,Samangan;Kunduz,1,5
 WNTC,winter-circuit,6,Return toward Kabul and winter buffer,North to Kabul,kabul-city,Conservative winter routing back toward Kabul with weather buffer built into the schedule.,PRW-001,green-tea,Balkh;Parwan;Kabul,1,6
 WNTC,winter-circuit,7,Drive to Bamyan if winter access permits,Kabul to Bamyan,bamyan-city,4WD drive to Bamyan when road conditions allow; otherwise this day remains a central highlands substitute.,WRD-001|BMY-005,ash,Kabul;Wardak;Bamyan,1,7
 WNTC,winter-circuit,8,Bamyan winter valley sites,Bamyan,bamyan-city,Bamyan valley cultural sites and snow landscape photography.,BMY-001|BMY-002|BMY-003,mantu,Bamyan,1,8
@@ -93,7 +93,7 @@ TSRA,treasures-of-silk-road-afghanistan,5,Return to Kabul and fly to Herat,Kabul
 TSRA,treasures-of-silk-road-afghanistan,6,Herat Timurid sites,Herat,herat-city,"Friday Mosque, Herat Citadel, Musalla minarets, and old city bazaars.",HER-003|HER-002|HER-004|HER-001,saffron-tea,Herat,1,6
 TSRA,treasures-of-silk-road-afghanistan,7,Fly to Mazar-e-Sharif via Kabul if required,Mazar-e-Sharif,mazar-e-sharif,"Domestic flight connection to the north, often via Kabul depending on schedule.",BAL-001,uzbek-palaw,Balkh,1,7
 TSRA,treasures-of-silk-road-afghanistan,8,Ancient Balkh circuit,Balkh,mazar-e-sharif,"Ancient Balkh, Rabia Balkhi, Haji Piyada, Rumi family heritage, and Qala-i-Jangi if timing permits.",BAL-002|BAL-003|BAL-004|BAL-005|BAL-006,green-tea,Balkh,1,8
-TSRA,treasures-of-silk-road-afghanistan,9,Samangan Buddhist heritage,Samangan,mazar-e-sharif,"Day trip to Takht-e Rostam and Buddhist cave monasteries, depending on road conditions.",SAM-001|SAM-002,naan,Samangan,1,9
+TSRA,treasures-of-silk-road-afghanistan,9,Samangan Buddhist heritage,Samangan,mazar-e-sharif,"Day trip to Takht-e Rostam, depending on road conditions.",SAM-001,naan,Samangan,1,9
 TSRA,treasures-of-silk-road-afghanistan,10,Return to Kabul and departure,Kabul,kabul-city,Return to Kabul by flight or road and position for departure.,,green-tea,Kabul,1,10
 TTWC,trek-the-wakhan-corridor,1,Arrival and expedition briefing,Kabul,kabul-city,"Arrival support, gear review, and briefing for long-distance mountain travel.",KBL-003|KBL-007,kabob,Kabul,1,1
 TTWC,trek-the-wakhan-corridor,2,Fly or drive north to Mazar,Mazar-e-Sharif,mazar-e-sharif,Move north to Mazar-e-Sharif and stage for the northeast approach.,BAL-001,green-tea,Balkh,1,2
@@ -108,11 +108,11 @@ TTWC,trek-the-wakhan-corridor,10,Return toward Faizabad,Badakhshan,faizabad-city
 TTWC,trek-the-wakhan-corridor,11,Buffer day for mountain roads,Badakhshan / Takhar,faizabad-city,"Operational buffer for weather, road closures, or delayed local movement.",TKH-001,green-tea,Badakhshan;Takhar,1,11
 TTWC,trek-the-wakhan-corridor,12,Return to northern plains,Kunduz / Balkh,mazar-e-sharif,Move west toward the northern plains and Mazar-e-Sharif.,KDZ-001,uzbek-palaw,Kunduz;Balkh,1,12
 TTWC,trek-the-wakhan-corridor,13,Mazar rest and Blue Mosque,Mazar-e-Sharif,mazar-e-sharif,Recovery day in Mazar-e-Sharif with Blue Mosque and city time.,BAL-001,uzbek-palaw,Balkh,1,13
-TTWC,trek-the-wakhan-corridor,14,Samangan route option,Samangan,mazar-e-sharif,Optional Samangan Buddhist heritage day or rest/buffer depending on prior road movement.,SAM-001|SAM-002,naan,Samangan,1,14
+TTWC,trek-the-wakhan-corridor,14,Samangan route option,Samangan,mazar-e-sharif,Optional Samangan Buddhist heritage day or rest/buffer depending on prior road movement.,SAM-001,naan,Samangan,1,14
 TTWC,trek-the-wakhan-corridor,15,Return to Kabul,Kabul,kabul-city,"Return by flight or road, depending on operations.",PRW-001,green-tea,Balkh;Kabul,1,15
 TTWC,trek-the-wakhan-corridor,16,Kabul recovery and market day,Kabul,kabul-city,"Rest, laundry, markets, and low-pressure Kabul sightseeing.",KBL-007|KBL-015|KBL-005,kabob,Kabul,1,16
 TTWC,trek-the-wakhan-corridor,17,Panjshir extension,Panjshir,kabul-city,Day trip to Panjshir if conditions and group energy allow.,PJR-001|PJR-002|PRW-002,green-tea,Panjshir;Parwan,1,17
 TTWC,trek-the-wakhan-corridor,18,Kabul museum and palace,Kabul,kabul-city,"National Museum, Darulaman Palace, and final heritage sites.",KBL-002|KBL-001|KBL-003,qabuli-palaw,Kabul,1,18
-TTWC,trek-the-wakhan-corridor,19,Contingency / custom interest day,Kabul,kabul-city,"Built-in contingency day for delayed flights, road changes, or a guest interest such as food, markets, or interviews.",KBL-012|KBL-014|KBL-019,green-tea,Kabul,1,19
+TTWC,trek-the-wakhan-corridor,19,Contingency / custom interest day,Kabul,kabul-city,"Built-in contingency day for delayed flights, road changes, or a guest interest such as food, markets, or interviews.",KBL-012|KBL-014,green-tea,Kabul,1,19
 TTWC,trek-the-wakhan-corridor,20,Final preparation,Kabul,kabul-city,"Packing, documentation, final meals, and departure preparation.",KBL-006,kabob,Kabul,1,20
 TTWC,trek-the-wakhan-corridor,21,Departure,Kabul,kabul-city,Airport transfer and departure support.,,green-tea,Kabul,1,21

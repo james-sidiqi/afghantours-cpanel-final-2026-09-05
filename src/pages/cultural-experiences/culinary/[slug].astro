@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { buildInquiryHref } from '../../../lib/inquiry';
 import TourCardGrid from '../../../components/cards/TourCardGrid.astro';
 import { getCollection, render } from 'astro:content';
 import { getTours, getHubBySlug } from '../../../lib/buildRelations';
@@ -32,6 +33,10 @@ const Content = md ? (await render(md)).Content : null;
 const data = {
   ...row,
   ...(md?.data || {}),
+  // Operator-confirmed worksheet values take precedence over older prose metadata.
+  venue_name: row.venue_name,
+  venue_status: row.venue_status,
+  venue_address: row.venue_address || '',
   related_food_slugs: (md?.data?.related_food_slugs?.length
     ? md.data.related_food_slugs
     : row.related_food_slugs) || [],
@@ -78,7 +83,13 @@ const siblingCulinary = getCulinaryExperiences()
   .filter((c) => c.hub_slug === data.hub_slug)
   .slice(0, 3);
 
-const contactHref = `/contact/?type=culinary-experience&experience=${encodeURIComponent(title)}`;
+const contactHref = buildInquiryHref({
+  flow: 'activity',
+  entity_type: 'culinary-experience',
+  entity_code: row.experience_code,
+  entity_slug: slug,
+  entity_name: title,
+});
 ---
 
 <BaseLayout title={`${title} | Culinary Experience | AfghanTours`} description={description} image={heroImage}>
@@ -122,6 +133,7 @@ const contactHref = `/contact/?type=culinary-experience&experience=${encodeURICo
       <div class="culin-fact">
         <span>{venueLabel ? 'Venue' : 'Setting'}</span>
         <strong>{venueLabel || venueTypeLabel || 'Local food culture'}</strong>
+        {data.venue_address && <address>{data.venue_address}</address>}
       </div>
     </div>
   </section>

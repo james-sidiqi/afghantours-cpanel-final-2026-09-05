@@ -281,6 +281,10 @@ function normalizeFood(row: Row): Row {
 }
 
 const FOOD_ROUTE_OVERRIDES: Record<string, string> = {
+  'kabul-kabob': '/food-culture/#dishes',
+  'herat-kabob': '/food-culture/#dishes',
+  'kandahar-rosht': '/food-culture/#dishes',
+  'kandahari-rosh': '/food-culture/#dishes',
   'green-tea': '/food-culture/drinks/green-tea/',
   'kabuli-palaw': '/food-culture/kabuli-pulao/',
   'kabuli-pulao': '/food-culture/kabuli-pulao/',
