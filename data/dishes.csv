@@ -21,7 +21,7 @@ AF-HER-SAF,Saffron,herat-saffron,WEST,HER,HERC,Produce,Ingredient,1,10,11,"Afgha
 AF-BAL-MEL,Melons,balkh-melon,NORTH,BAL,MAZC,Produce,Snack,1,8,10,Sweet summer melons popular across Afghanistan.,/assets/images/food/produce/balkh-melons/hero.webp,TRUE
 AF-KDZ-MEL,Kunduz Melon,kunduz-melon,NORTH,KDZ,MAZC,Produce,Snack,1,7,9,Northern summer melon with floral aroma.,/assets/images/food/produce/kunduz-melon/hero.webp,TRUE
 AF-PJR-WAL,Walnuts,panjshir-walnuts,CENTRAL,PJR,KBLC,Produce,Snack,1,9,10,"Walnuts, fresh in season and dried in bazaars.",/assets/images/food/dried-fruit/panjshir-walnuts/fresh-walnuts-original.webp,TRUE
-AF-FRH-WAT,Watermelons,farah-watermelon,WEST,FRH,HERC,Produce,Snack,1,5,8,Large summer watermelons.,/assets/images/food/produce/farah-watermelon/gallery-1.webp,TRUE
+AF-FRH-WAT,Watermelons,farah-watermelon,WEST,FRH,HERC,Produce,Snack,1,5,8,Large summer watermelons.,,TRUE
 AF-SAM-PIS,Pistachios,samangan-pistachios,NORTH,SAM,MAZC,Produce,Snack,1,8,10,"Pistachios, including from the wild forests of Badghis and Samangan.",/assets/images/food/dried-fruit/samangan-pistachios/hero.webp,TRUE
 AF-HER-RAI,Raisins,herat-raisins,WEST,HER,HERC,Produce,Snack,1,8,10,Sun-dried raisins sold by variety in bazaars.,/assets/images/food/dried-fruit/herat-raisins/hero.webp,TRUE
 AF-BAL-ALM,Almonds,balkh-almonds,NORTH,BAL,MAZC,Produce,Snack,1,8,10,Almonds sold raw or roasted in bazaars.,/assets/images/food/dried-fruit/balkh-almonds/hero.webp,TRUE

@@ -19,6 +19,15 @@ header('Referrer-Policy: same-origin');
 header("Content-Security-Policy: default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'");
 
 $cfg = atb_config();
+// Fail before session_start can emit setup/path warnings or commit HTTP 200.
+if (empty($cfg['admin_users'])) {
+    error_log('[afghantours manage] admin config missing or has no users');
+    fail_page(503, 'Temporarily unavailable', 'This page is temporarily unavailable. Please try again later.', null);
+}
+if (!atb_store_available()) {
+    error_log('[afghantours manage] private booking store missing or not writable');
+    fail_page(503, 'Temporarily unavailable', 'This page is temporarily unavailable. Please try again later.', null);
+}
 $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
 ini_set('session.use_strict_mode', '1');
 ini_set('session.use_only_cookies', '1');
@@ -129,16 +138,6 @@ function fail_page(int $code, string $title, string $message, ?array $user): nev
 $action = isset($_GET['a']) && is_string($_GET['a']) ? $_GET['a'] : 'departures';
 $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
-if (empty($cfg['admin_users'])) {
-    // Setup details stay in the server log and docs/booking/ADMIN.md; visitors only get a generic message.
-    error_log('[afghantours manage] admin config missing or has no users');
-    fail_page(503, 'Temporarily unavailable', 'This page is temporarily unavailable. Please try again later.', null);
-}
-if (!atb_store_available()) {
-    error_log('[afghantours manage] private booking store missing or not writable');
-    fail_page(503, 'Temporarily unavailable', 'This page is temporarily unavailable. Please try again later.', null);
-}
-
 if ($method === 'POST') {
     $token = (string)($_POST['csrf'] ?? '');
     if ($token === '' || !hash_equals((string)($_SESSION['csrf'] ?? ''), $token)) {
@@ -237,7 +236,9 @@ if (in_array($action, ['create', 'update'], true) && $method === 'POST') {
     $idx = $isNew ? null : dep_index($inv, post('id'));
     if (!$isNew && $idx === null) redirect([], 'Departure not found.', 'err');
     $base = $isNew ? [] : $inv['departures'][$idx];
-    if ($t === null) redirect(['a' => 'new'], 'Choose a tour.', 'err');
+    if ($t === null || !in_array($t['category'] ?? '', ['A', 'B', 'C'], true) || ($t['active'] ?? true) === false) {
+        redirect(['a' => 'new'], 'Choose a tour in categories A, B or C.', 'err');
+    }
     $start = post('start_date');
     $end = post('end_date');
     if ($end === '' && atb_is_iso_date($start)) $end = atb_expected_end($start, (int)$t['duration_days']);

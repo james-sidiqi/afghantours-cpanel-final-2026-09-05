@@ -1,9 +1,15 @@
 import culinaryRaw from '../../data/culinary_experiences.csv?raw';
 import tourCulinaryRaw from '../../data/tour_culinary_map.csv?raw';
+import venueDetailsRaw from '../../data/venue_details.csv?raw';
 import { parseCSV, isActive, splitList } from './csv';
 import { getCulinaryImage } from './images';
 
 export type CulinaryRow = Record<string, any>;
+
+const confirmedVenues = new Map(parseCSV(venueDetailsRaw)
+  .filter(r => r.verification_status === 'operator-confirmed'
+    && r.venue_name && r.address && r.verified_on && r.confirmation_notes)
+  .map(r => [r.experience_slug, r]));
 
 /** Restaurant collection slugs whose primary public URL is culinary. */
 export const RESTAURANT_TO_CULINARY: Record<string, string> = {
@@ -20,8 +26,8 @@ export const RESTAURANT_TO_CULINARY: Record<string, string> = {
 const FOOD_HREF_FALLBACKS: Record<string, string> = {
   'chapli-kabob': '/food-culture/dishes/chapli-kabob/',
   'kunar-trout': '/food-culture/dishes/kunar-trout/',
-  'kandahar-rosht': '/food-culture/kandahar-rosht/',
-  'kandahari-rosh': '/food-culture/kandahar-rosht/',
+  'kandahar-rosht': '/food-culture/#dishes',
+  'kandahari-rosh': '/food-culture/#dishes',
   dogh: '/food-culture/drinks/dogh/',
   'qurut-markets-of-bamyan': '/food-culture/produce/qurut-markets-of-bamyan/',
   qurut: '/food-culture/produce/qurut-markets-of-bamyan/',
@@ -34,10 +40,12 @@ export function getCulinaryExperiences(): CulinaryRow[] {
   return parseCSV(culinaryRaw)
     .filter((r) => isActive(r.is_active))
     .map((row) => {
+      const venue = confirmedVenues.get(row.slug);
       const related = splitList(row.related_food_slugs || '');
       const provinces = splitList(row.provinces || '');
       return {
         ...row,
+        ...(venue ? { venue_name: venue.venue_name, venue_address: venue.address, venue_status: 'operator-provided' } : {}),
         related_food_slugs: related,
         provinces,
         image: getCulinaryImage({ ...row, slug: row.slug }),
@@ -134,14 +142,10 @@ export function getCulinaryForTour(tourSlugOrCode: string): CulinaryRow[] {
 export const FOOD_TO_CULINARY: Record<string, string[]> = {
   'chapli-kabob': ['adam-khan-chapli-kabob'],
   'kunar-trout': ['kunar-trout'],
-  'kandahar-rosht': ['kandahari-rosh'],
-  'kandahari-rosh': ['kandahari-rosh'],
   dogh: ['chashma-e-dogh'],
   doogh: ['chashma-e-dogh'],
   'qurut-markets-of-bamyan': ['band-e-amir-quroot-dairy'],
   qurut: ['band-e-amir-quroot-dairy'],
-  'kabuli-pulao': ['ghazni-palaw'],
-  'kabuli-palaw': ['ghazni-palaw'],
 };
 
 export function culinaryLinksForFoodSlug(foodSlug: string): Array<{ slug: string; href: string; title: string }> {

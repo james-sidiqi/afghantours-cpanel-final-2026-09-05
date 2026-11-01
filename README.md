@@ -4,6 +4,8 @@ Static marketing site for [afghantours.com](https://afghantours.com), built with
 
 **This repository is the cPanel shipping tree.** Do not overwrite the separate Copiloted repo. Do not deploy from agent automation unless James explicitly requests production upload.
 
+Current non-image work and the next office session: **[1 November handoff](docs/OFFICE-HANDOFF-2026-11-01.md)**. Fill verified venue addresses in `data/venue_details.csv`; run `npm run owner:venues`. Final MacBook attraction imagery stays separate.
+
 ## Quick start
 
 ```bash

@@ -92,3 +92,18 @@ RewriteRule ^hubs/kandahar/?$ /hubs/kandahar-city/ [R=301,L]
 RewriteEngine On
 RewriteRule ^regions/wakhan-northeast/?$ /destinations/badakhshan/ [R=301,L]
 </IfModule>
+
+# BEGIN OWNER-RETIRED-ROUTES
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^food-culture/dishes/kabul-kabob/?$ /food-culture/#dishes [R=301,L,NE]
+RewriteRule ^food-culture/dishes/herat-kabob/?$ /food-culture/#dishes [R=301,L,NE]
+RewriteRule ^food-culture/kandahar-rosht/?$ /food-culture/#dishes [R=301,L,NE]
+RewriteRule ^food-culture/dishes/kandahari-rosh/?$ /food-culture/#dishes [R=301,L,NE]
+RewriteRule ^cultural-experiences/culinary/kandahari-rosh/?$ /food-culture/#dishes [R=301,L,NE]
+RewriteRule ^cultural-experiences/culinary/bamyan-kabob/?$ /food-culture/#dishes [R=301,L,NE]
+RewriteRule ^cultural-experiences/culinary/ghazni-palaw/?$ /food-culture/kabuli-pulao/ [R=301,L,NE]
+RewriteRule ^attractions/buddhist-cave-monasteries/?$ /attractions/ [R=301,L,NE]
+RewriteRule ^attractions/tomb-of-nader-khan/?$ /attractions/ [R=301,L,NE]
+</IfModule>
+# END OWNER-RETIRED-ROUTES

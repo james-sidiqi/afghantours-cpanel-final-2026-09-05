@@ -24,7 +24,7 @@ for (const item of allFoodItems) {
 
 // Cards whose stored image does not show the item itself (Shor Chai pointed at a
 // Faizabad landscape) render as intentional image-free cards.
-const NO_CARD_IMAGE = new Set(['drinks/shor-chai-of-badakhshan']);
+const NO_CARD_IMAGE = new Set(['drinks/shor-chai-of-badakhshan', 'produce/farah-watermelon', 'dishes/kabul-kabob', 'dishes/kandahari-rosh']);
 // Per-card focal point so the subject stays in frame in the fixed card crop.
 const CARD_FOCUS = { 'drinks/sheer-chai': '72% 88%', 'dried-fruits/paktia-pine-nuts': '50% 12%' };
 const publicFile = (src) => !!src && !/\/placeholders\//.test(src) &&
@@ -79,6 +79,26 @@ const dishes = [
     description: `Thin stuffed flatbread commonly filled with potato or pumpkin.`,
   },
   {
+    id: 'dishes/kabul-kabob',
+    title: 'Afghan Kabob',
+    location: 'Across Afghanistan',
+    description: `Grilled skewers of meat served with Afghan naan, onions and seasonal accompaniments. Styles vary among cooks and regions.`,
+    overviewOnly: true,
+  },
+  {
+    id: 'dishes/kandahari-rosh',
+    title: 'Rosh (Rosht)',
+    location: 'Across Afghanistan',
+    description: `Slow-cooked meat traditionally shared with naan and simple sides; preparation varies by household and locality.`,
+    overviewOnly: true,
+  },
+  {
+    id: 'dishes/kabuli-pulao',
+    title: 'Qabeli Palaw',
+    location: 'Across Afghanistan',
+    description: `Afghanistan's celebrated rice dish with meat, carrots, raisins and aromatic seasonings.`,
+  },
+  {
     id: 'dishes/chapli-kabob',
     title: 'Chapli Kabob',
     location: 'Countrywide',
@@ -89,24 +109,6 @@ const dishes = [
     title: 'Grilled Trout by the Kunar River',
     location: 'Kunar',
     description: `Kunar's mountain rivers, forested valleys, and roadside cooking traditions make freshly grilled trout one of the province's most distinctive food experiences.`,
-  },
-  {
-    id: 'dishes/herat-kabob',
-    title: 'Herat Kabob',
-    location: 'Herat',
-    description: `Regional kabob style associated with Herat’s culinary traditions.`,
-  },
-  {
-    id: 'dishes/kabul-kabob',
-    title: 'Kabul Kabob',
-    location: 'Kabul',
-    description: `Classic grilled kabob commonly served in Kabul restaurants.`,
-  },
-  {
-    id: 'dishes/kandahari-rosh',
-    title: 'Kandahari Rosh',
-    location: 'Kandahar',
-    description: `Slow-cooked lamb traditionally served with fresh naan.`,
   },
   {
     id: 'dishes/chiken-korma',
@@ -131,6 +133,48 @@ const dishes = [
     title: 'Chicken Kabuli',
     location: 'Countrywide',
     description: `Chicken variation of Kabuli Pulao.`,
+  },
+  {
+    id: 'dishes/qurmay-qachaloo',
+    title: 'Qurmay Qachaloo (Potato Curry)',
+    location: 'Vegetarian · Vegan by advance request',
+    description: `Potatoes simmered with tomato, onion and Afghan spices.`,
+  },
+  {
+    id: 'dishes/banjan-sia',
+    title: 'Banjan Sia (Eggplant)',
+    location: 'Vegetarian · Vegan by advance request',
+    description: `Eggplant cooked with tomato, garlic and spices; yogurt may be added when served.`,
+  },
+  {
+    id: 'dishes/kadoo',
+    title: 'Kadoo (Pumpkin)',
+    location: 'Vegetarian · Vegan by advance request',
+    description: `Tender seasoned pumpkin, sometimes served with a yogurt topping.`,
+  },
+  {
+    id: 'dishes/sabzi-palak',
+    title: 'Sabzi Palak (Spinach)',
+    location: 'Vegetarian · Vegan by advance request',
+    description: `Spinach and herbs prepared with onion and Afghan spices.`,
+  },
+  {
+    id: 'dishes/shor-nakhut',
+    title: 'Shor Nakhut (Spicy Chickpeas)',
+    location: 'Vegetarian · Vegan by advance request',
+    description: `Chickpeas served with a tangy, spicy dressing, often as a market snack.`,
+  },
+  {
+    id: 'dishes/dopiaza',
+    title: 'Dopiaza',
+    location: 'Meat dish',
+    description: `Succulent meat cooked with plenty of onions and aromatic spices.`,
+  },
+  {
+    id: 'dishes/ouzi',
+    title: 'Ouzi (Rice-Stuffed Sheep)',
+    location: 'Meat dish',
+    description: `A celebratory whole sheep or lamb stuffed with seasoned rice and slow-cooked.`,
   },
   {
     id: 'dishes/qawardagh',
@@ -373,8 +417,8 @@ const experienceGroups = [
         description: `A seasonal orchard and market experience built around Kandahar's famous pomegranates and fresh juice stands during autumn months.`,
       },
       {
-        title: 'Kandahari Rosh Hospitality Stops',
-        href: '/food-culture/kandahar-rosht/',
+        title: 'Rosh Hospitality Stops',
+        href: '#dishes',
         description: `Traditional culinary stops featuring slow-cooked, tender jointed lamb served with fresh hot tandoor naan, onions, and local seasonal sides.`,
       },
     ],
@@ -532,6 +576,7 @@ const categories = [
       <div class="section-head compact">
         <p class="kicker">Dishes</p>
         <h2 id="dishes-title">The Afghan Table Staples</h2>
+        <p>The dishes marked vegetarian are generally meat-free, but recipes vary. Vegan travelers should inform AfghanTours in advance. We will confirm with the establishment whether vegetable oil is used instead of ghee or other animal fats, and check for dairy, meat stock and other animal-derived ingredients. Vegan preparation cannot be guaranteed without confirmation.</p>
       </div>
 
       <div class="premium-grid">
@@ -545,7 +590,7 @@ const categories = [
             <p>{item.location}</p>
             <h3>{item.title}</h3>
             <span>{item.description}</span>
-            <a href={foodHref(item.id)}>View food note</a>
+            {!item.overviewOnly && <a href={foodHref(item.id)}>View food note</a>}
           </article>
         ))}
       </div>

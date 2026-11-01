@@ -25,6 +25,7 @@ h_view = subprocess.check_output(['php', '-r', 'echo password_hash($argv[1], PAS
 port = free_port()
 BASE = f'http://127.0.0.1:{port}'
 env = dict(os.environ, AFGHANTOURS_PRIVATE_DIR=str(private), BOOKING_TODAY='2026-10-10')
+env.pop('AFGHANTOURS_DRY_RUN_KEY', None)  # Isolated missing-key regression fixture.
 srv = subprocess.Popen(['php', '-d', f'sendmail_path=cat >> {mail_log} #', '-S', f'127.0.0.1:{port}', '-t', str(DIST)], env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 for _ in range(50):
     try:
@@ -99,6 +100,17 @@ try:
     # ---------------- inquiries ----------------
     base_form = {'name': 'Test Traveler', 'email': 'traveler@example.com', 'whatsapp': '+10000000000', 'country': 'Testland', 'flow': 'scheduled', 'entity_type': 'tour', 'product_class': 'scheduled', 'source_url': '/tours/x/'}
     J = {'Accept': 'application/json'}
+    for host in ('afghantours.com', 'qa.test', '192.168.1.10'):
+        code, body, _ = req(pub, '/tour-inquiry.php', dict(base_form, dry_run='1', dry_run_key='local-qa-only'), dict(J, Host=host))
+        check(code == 403 and not json.loads(body).get('ok'), f'dry run rejects unconfigured fallback and spoofable Host {host}')
+    for flow, legacy in [
+        ('specialist', {'serviceSlug': 'photography-documentary', 'serviceCode': 'PHOT', 'tourName': 'Photography Support'}),
+        ('return', {'returnSlug': 'diaspora', 'tourCode': 'DIAS', 'tourName': 'Diaspora Return'}),
+    ]:
+        form = dict(name='Legacy QA', email='qa@example.com', flow=flow, dry_run='1', **legacy)
+        code, body, _ = req(pub, '/tour-inquiry.php', form, J)
+        legacy_result = json.loads(body)
+        check(code == 200 and legacy_result.get('flow') == flow and legacy['tourName'] in legacy_result.get('body', ''), f'{flow}: legacy camelCase context reaches PHP without scheduled misclassification')
     f = dict(base_form, entity_name='Winter Circuit', entity_slug='winter-circuit', entity_code='WNTC', departure_id='DEP-WNTC-20261205', travelers='1', booking_type='shared', dry_run='1')
     code, body, _ = req(pub, '/tour-inquiry.php', f, J)
     d = json.loads(body)
@@ -273,6 +285,7 @@ try:
     # category D cannot get departures
     code, body, _ = req(adm, '/manage/?a=create', {'csrf': csrf, 'tour_slug': 'noshaq-expedition-support', 'start_date': '2027-07-01', 'departure_type': 'shared', 'min_group_size': '3', 'status': 'draft'})
     check('Choose a tour' in body or 'categories A, B or C' in body, 'no departures for category D services')
+    check('Undefined array key' not in body and '<b>Warning</b>' not in body, 'category D rejected before accessing tour-only duration fields')
     # blackout + settings + inquiries pages
     code, body, _ = req(adm, '/manage/?a=calendar'); check('Eid al-Fitr 2027 operating block' in body and '2027-03-08 → 2027-03-12' in body and 'estimated' in body and 'Ramadan 2027 (advisory)' in body, 'religious calendar page: Ramadan advisory + Eid blocks, estimated state')
     # ---- Eid conflict flag + review in /manage/ ----
@@ -433,11 +446,13 @@ try:
         d3 = json.loads(r.read())
         check(d3['ok'] and mail2.exists() and 'Admin reference' not in mail2.read_text(), 'no private folder: inquiry still emailed (email-only)')
         try:
-            urllib.request.urlopen(f'http://127.0.0.1:{port2}/manage/', timeout=5); code3 = 200; body3 = ''
+            response = urllib.request.urlopen(f'http://127.0.0.1:{port2}/manage/', timeout=5)
+            code3 = response.status; body3 = response.read().decode('utf-8', 'replace')
         except urllib.error.HTTPError as e:
             code3 = e.code; body3 = e.read().decode('utf-8', 'replace')
         check(code3 == 503, 'no private folder/config: admin unavailable (503), nothing editable')
         check('ADMIN.md' not in body3 and 'not configured' not in body3.lower() and 'private' not in body3.lower(), 'unconfigured admin shows only a generic message (no setup diagnostics or doc paths)')
+        check('session_start' not in body3 and '<b>Warning</b>' not in body3, 'unconfigured admin fails before session filesystem warnings')
     finally:
         srv2.terminate()
 finally:

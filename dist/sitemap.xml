@@ -26,7 +26,6 @@
   <url><loc>https://afghantours.com/attractions/bala-hissar-kabul/</loc></url>
   <url><loc>https://afghantours.com/attractions/band-e-amir-national-park/</loc></url>
   <url><loc>https://afghantours.com/attractions/buddha-niches-of-bamyan/</loc></url>
-  <url><loc>https://afghantours.com/attractions/buddhist-cave-monasteries/</loc></url>
   <url><loc>https://afghantours.com/attractions/chehel-burj-bamyan-ruins/</loc></url>
   <url><loc>https://afghantours.com/attractions/chicken-street/</loc></url>
   <url><loc>https://afghantours.com/attractions/chilzina-forty-steps/</loc></url>
@@ -95,7 +94,6 @@
   <url><loc>https://afghantours.com/attractions/taq-e-zafar-paghman/</loc></url>
   <url><loc>https://afghantours.com/attractions/tarin-kot-surroundings/</loc></url>
   <url><loc>https://afghantours.com/attractions/tomb-of-ahmad-shah-durrani/</loc></url>
-  <url><loc>https://afghantours.com/attractions/tomb-of-nader-khan/</loc></url>
   <url><loc>https://afghantours.com/attractions/tomb-of-rabia-balkhi/</loc></url>
   <url><loc>https://afghantours.com/attractions/tomb-of-sultan-mahmud-ghaznavi/</loc></url>
   <url><loc>https://afghantours.com/attractions/tv-tower-hill-asmai/</loc></url>
@@ -112,12 +110,9 @@
   <url><loc>https://afghantours.com/cultural-experiences/culinary/adam-khan-chapli-kabob/</loc></url>
   <url><loc>https://afghantours.com/cultural-experiences/culinary/arg-restaurant-herat/</loc></url>
   <url><loc>https://afghantours.com/cultural-experiences/culinary/aziz-bakery/</loc></url>
-  <url><loc>https://afghantours.com/cultural-experiences/culinary/bamyan-kabob/</loc></url>
   <url><loc>https://afghantours.com/cultural-experiences/culinary/band-e-amir-quroot-dairy/</loc></url>
   <url><loc>https://afghantours.com/cultural-experiences/culinary/chashma-e-dogh/</loc></url>
-  <url><loc>https://afghantours.com/cultural-experiences/culinary/ghazni-palaw/</loc></url>
   <url><loc>https://afghantours.com/cultural-experiences/culinary/kabul-chainaki/</loc></url>
-  <url><loc>https://afghantours.com/cultural-experiences/culinary/kandahari-rosh/</loc></url>
   <url><loc>https://afghantours.com/cultural-experiences/culinary/kunar-trout/</loc></url>
   <url><loc>https://afghantours.com/cultural-experiences/culinary/mansoor-kabob/</loc></url>
   <url><loc>https://afghantours.com/cultural-experiences/culinary/spoghmai-restaurant-qargha/</loc></url>
@@ -178,20 +173,25 @@
   <url><loc>https://afghantours.com/food-culture/desserts/sweet-streets-of-mazar/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dishes/ash/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dishes/aushak/</loc></url>
+  <url><loc>https://afghantours.com/food-culture/dishes/banjan-sia/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dishes/bodana/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dishes/bolani/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dishes/chapli-kabob/</loc></url>
-  <url><loc>https://afghantours.com/food-culture/dishes/herat-kabob/</loc></url>
-  <url><loc>https://afghantours.com/food-culture/dishes/kabul-kabob/</loc></url>
+  <url><loc>https://afghantours.com/food-culture/dishes/dopiaza/</loc></url>
+  <url><loc>https://afghantours.com/food-culture/dishes/kadoo/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dishes/kunar-trout/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dishes/mantu/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dishes/naan/</loc></url>
+  <url><loc>https://afghantours.com/food-culture/dishes/ouzi/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dishes/qawardagh/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dishes/qorma-e-gosht/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dishes/qorma-e-sabzi/</loc></url>
+  <url><loc>https://afghantours.com/food-culture/dishes/qurmay-qachaloo/</loc></url>
+  <url><loc>https://afghantours.com/food-culture/dishes/sabzi-palak/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dishes/samosa/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dishes/shola-e-ghorbandi/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dishes/shola/</loc></url>
+  <url><loc>https://afghantours.com/food-culture/dishes/shor-nakhut/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dried-fruits/badghis-pistachios/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dried-fruits/balkh-almonds/</loc></url>
   <url><loc>https://afghantours.com/food-culture/dried-fruits/dried-fruits/</loc></url>
@@ -210,7 +210,6 @@
   <url><loc>https://afghantours.com/food-culture/herat-ice-cream/</loc></url>
   <url><loc>https://afghantours.com/food-culture/kabuli-pulao/</loc></url>
   <url><loc>https://afghantours.com/food-culture/kandahar-pomegranate/</loc></url>
-  <url><loc>https://afghantours.com/food-culture/kandahar-rosht/</loc></url>
   <url><loc>https://afghantours.com/food-culture/kandahar-sweets/</loc></url>
   <url><loc>https://afghantours.com/food-culture/korma-e-herati/</loc></url>
   <url><loc>https://afghantours.com/food-culture/kulcha-cookie/</loc></url>
