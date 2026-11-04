@@ -18,7 +18,6 @@ Travelers stay here to escape the winter cold of Kabul and to explore the unique
 
 * Mausoleum of King Amanullah Khan
 * Siraj-ul-Emarat Park
-* Hadda Archaeological Site
 * Darunta Dam and Reservoir
 
 ### Travel Role

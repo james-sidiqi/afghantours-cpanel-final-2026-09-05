@@ -4,8 +4,8 @@ subtitle: "Living craft traditions, hand-blown glass, and saffron tea in one of 
 card_description: "Visit Herat glass workshops and pair the craft experience with saffron tea served in handmade glassware."
 category: "Cultural Experiences"
 experience_type: "Crafts & Heritage"
-hero_image: "/assets/images/hubs/herat-city/hero.webp"
-image: "/assets/images/hubs/herat-city/hero.webp"
+hero_image: "/assets/images/experiences/cultural/glassblowers-of-herat/gallery/02.webp"
+image: "/assets/images/experiences/cultural/glassblowers-of-herat/gallery/02.webp"
 provinces: ["Herat"]
 paired_foods: ["Herati Saffron Tea"]
 best_season: "Year round"

@@ -4,6 +4,7 @@ import PhotoCredits from '../../components/PhotoCredits.astro';
 import { altFor } from '../../data/photoCredits';
 import fs from 'node:fs';
 import path from 'node:path';
+import sharp from 'sharp';
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ATTRACTION_IMAGE_ALT } from '../../lib/attraction-image-alt';
@@ -157,7 +158,35 @@ const galleryImages = [
       .filter(Boolean)
       .map((src) => String(src).trim())
   )
-].slice(0, 8);
+];
+
+/* Drop visual duplicates (same photo saved as hero/thumb/gallery). */
+async function dHash(src) {
+  try {
+    const file = path.join(process.cwd(), 'public', String(src).split('?')[0].replace(/^\/+/, ''));
+    if (!fs.existsSync(file)) return null;
+    const { data } = await sharp(file)
+      .resize(256, 256, { fit: 'cover' })
+      .resize(9, 8, { fit: 'fill' })
+      .grayscale()
+      .raw()
+      .toBuffer({ resolveWithObject: true });
+    const bits = [];
+    for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) bits.push(data[r * 9 + c] > data[r * 9 + c + 1]);
+    return bits;
+  } catch { return null; }
+}
+const seenHashes = [];
+const dedupedGallery = [];
+for (const src of galleryImages) {
+  if ((ov.galleryExclude || []).includes(src)) continue;
+  const h = await dHash(src);
+  if (h && seenHashes.some((o) => o.reduce((n, b, i) => n + (b !== h[i] ? 1 : 0), 0) <= 10)) continue;
+  if (h) seenHashes.push(h);
+  dedupedGallery.push(src);
+}
+galleryImages.length = 0;
+galleryImages.push(...dedupedGallery.slice(0, 8));
 
 
 /* ---------------------------------------------------------

@@ -5,6 +5,7 @@ card_description: "Taste shor chai in Badakhshan, a savory mountain tea tied to 
 category: "Cultural Experiences"
 experience_type: "Food & Culture Experience"
 hero_image: "/assets/images/hubs/faizabad/hero.webp"
+gallery_images: ["/assets/images/food/drinks/shor-chai-of-badakhshan/gallery-1.webp"]
 image: "/assets/images/hubs/faizabad/hero.webp"
 provinces: ["Badakhshan"]
 paired_foods: ["Shor Chai", "Naan", "Dried Mulberries"]

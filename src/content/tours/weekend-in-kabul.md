@@ -8,7 +8,7 @@ duration_days: 3
 best_season: Year-round
 regions: [Central]
 provinces: [Kabul]
-hero_image_path: assets/images/tours/weekend-in-kabul.jpg
+hero_image_path: /assets/images/featured-tours/weekend-in-kabul/hero.webp
 ---
 
 ### Overview

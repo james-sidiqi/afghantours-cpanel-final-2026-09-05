@@ -13,7 +13,7 @@ related_food_slugs: []
 provinces: ["Kabul"]
 best_season: "Year round"
 duration: "1–2 hours"
-hero_image: "/assets/images/experiences/culinary/kabul-chainaki/hero.webp"
+hero_image: "/assets/images/experiences/culinary/kabul-chainaki/gallery/02.webp"
 nearby: ["Kabul City", "Chicken Street", "Murad Khane"]
 ---
 

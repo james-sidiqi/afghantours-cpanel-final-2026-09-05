@@ -14,7 +14,7 @@ provinces: ["Nangarhar"]
 best_season: "Year round"
 duration: "1–2 hours"
 hero_image: "/assets/images/experiences/culinary/adam-khan-chapli-kabob/hero.webp"
-nearby: ["Jalalabad City", "Hadda Archaeological Site", "Darunta Area"]
+nearby: ["Jalalabad City", "Darunta Area"]
 ---
 
 Few food stops in eastern Afghanistan have the reputation of Adam Khan Chapli Kabob. Located in Jalalabad, it represents the bold, generous food culture of Nangarhar.

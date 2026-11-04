@@ -17,9 +17,13 @@ export type AttractionOverride = {
   popupAbout?: string; // plain-text About copy for the card popup
   durationLabel?: string; // replaces visit length on page facts and cards
   facts?: { label: string; value: string }[]; // full facts-panel replacement
+  galleryExclude?: string[]; // image paths to drop from the page gallery (duplicate crops)
 };
 
 export const ATTRACTION_OVERRIDES: Record<string, AttractionOverride> = {
+  'herat-old-city-bazaars': {
+    galleryExclude: ['/assets/images/attractions/herat-old-city-bazaars/thumb.webp'],
+  },
   'nuristan-national-park': {
     seoTitle: 'Nuristan National Park | Nature & Mountain Landscapes | AfghanTours',
     seoDescription: "Explore Nuristan National Park's forested mountains, river valleys, and natural landscapes. Plan a locally coordinated visit with AfghanTours.",
