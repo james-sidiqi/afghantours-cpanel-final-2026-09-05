@@ -197,7 +197,6 @@ const photos = [
 
       <img
         data-atg-image
-        src=""
         alt=""
       />
 
@@ -608,6 +607,7 @@ const photos = [
     const photo =
       galleryPhotos[currentIndex];
 
+    image.classList.remove('img-failed');
     image.src = photo.src;
     image.alt = photo.alt;
 
