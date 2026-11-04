@@ -639,6 +639,10 @@ export function getTours(): Row[] {
       }
     }
 
+    if (Array.isArray(tourMd?.gallery_images)) {
+      editorialOverrides.gallery = [...new Set([...(tour.gallery || []), ...tourMd.gallery_images])];
+    }
+
     return mergeContent({
       ...tour,
       ...editorialOverrides,
