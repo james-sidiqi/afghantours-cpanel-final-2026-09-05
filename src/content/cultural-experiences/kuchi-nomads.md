@@ -4,8 +4,8 @@ subtitle: "Seasonal migration, black goat-hair tents, livestock, jewelry, and tr
 card_description: "Explore the movement, material culture, hospitality, and food traditions of Kuchi nomadic communities when local timing allows."
 category: "Cultural Experiences"
 experience_type: "Living Traditions"
-hero_image: "/assets/images/page-assets/people/cultural-interactions/kabul-village-kids.webp"
-image: "/assets/images/page-assets/people/cultural-interactions/kabul-village-kids.webp"
+hero_image: "/assets/images/experiences/cultural/kuchi-nomads/hero.webp"
+image: "/assets/images/experiences/cultural/kuchi-nomads/hero.webp"
 provinces: ["Bamyan", "Ghor", "Wardak", "Ghazni"]
 paired_foods: ["Kurut", "Kuchi Bread"]
 best_season: "Spring and autumn migrations"
