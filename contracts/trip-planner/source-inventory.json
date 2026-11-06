@@ -1,0 +1,160 @@
+{
+  "schema_version": 1,
+  "package_version": "0.5.1-staging-path",
+  "archive_dirname": "PRIVATE_ARCHIVE_DO_NOT_WEB_UPLOAD",
+  "note": "Hashes and row counts only. Rate cells, supplier names, and workbook bytes are not stored in the repository.",
+  "counts": {
+    "historical_afn_cost_band_rows": 125,
+    "user_supplied_afn_supplier_rows": 125,
+    "master_rate_rows": 73,
+    "historical_hotel_range_rows": 14,
+    "attraction_fee_reference_rows": 65,
+    "vehicle_capacity_rule_rows": 6,
+    "published_tour_comparison_rows": 15,
+    "room_cost_sell_comparison_rows": 43,
+    "rate_review_issue_rows": 11,
+    "source_workbook_files": 8,
+    "archive_files": 21,
+    "user_supplied_rows_with_no_band": 28,
+    "phase1_rows_with_no_band": 33
+  },
+  "files": [
+    {
+      "path": "PRIVATE_AUTH_CONFIG_EXAMPLE.php",
+      "sha256": "28c536f2632a4ae09c1a3ce6258136f2a728b3b5cef47c1bcd8717199ade0ba6",
+      "bytes": 322,
+      "role": "auth_config_example"
+    },
+    {
+      "path": "cost_registers/attraction_fee_references_65.csv",
+      "sha256": "dc80e879f21fe14075ea2f3d5f8f53d707483fe1d34849f93bbc6ffce541d380",
+      "bytes": 10584,
+      "role": "attraction_fee_references",
+      "rows": 65
+    },
+    {
+      "path": "cost_registers/historical_hotel_ranges_14.csv",
+      "sha256": "191cadae102601865a29358d8b643aadffce4cf7eae5f81f97d6e3b0ed992732",
+      "bytes": 2390,
+      "role": "historical_hotel_ranges",
+      "rows": 14
+    },
+    {
+      "path": "cost_registers/operator_costs_and_policy.json",
+      "sha256": "181739391adb5ba86703c70784b0d92f6a74f0ba93e96c2e37b96cbd4406c1ff",
+      "bytes": 2850,
+      "role": "operator_policy"
+    },
+    {
+      "path": "cost_registers/original_master_rate_register_73.csv",
+      "sha256": "f7d84abbe53e621168a0524fa0fa4d21f88f7ff46b166db072ad450505f9f7a7",
+      "bytes": 16942,
+      "role": "master_rate_register",
+      "rows": 73
+    },
+    {
+      "path": "cost_registers/phase1_afn_cost_register_125.csv",
+      "sha256": "0a9738266f48c2b247b0259c293ec154fc6a54b8c502794710211c1315b1020e",
+      "bytes": 33885,
+      "role": "historical_afn_cost_bands",
+      "rows": 125
+    },
+    {
+      "path": "cost_registers/rate_review_issues.csv",
+      "sha256": "a78b73d5548c1cb0309193bff6f6e19a58a9097eddb140d07c6a00793dd922eb",
+      "bytes": 1827,
+      "role": "rate_review_issues",
+      "rows": 11
+    },
+    {
+      "path": "cost_registers/repo_published_tour_price_comparison_15.csv",
+      "sha256": "eb405438e80424f209d39343e40020e644859ade93a4efa76f856adad45b7dd8",
+      "bytes": 2549,
+      "role": "published_tour_price_comparison",
+      "rows": 15
+    },
+    {
+      "path": "cost_registers/repo_room_cost_sell_comparison_43.csv",
+      "sha256": "c156bf49121adadb1c696627e509e578c5d560fd9c4c855838a6bbd247191c71",
+      "bytes": 8948,
+      "role": "room_cost_sell_comparison",
+      "rows": 43
+    },
+    {
+      "path": "cost_registers/repo_source_manifest.csv",
+      "sha256": "67f12cc0177825213ce11e710f7e42f5102efc145a4539dc7667f9f2d5337db8",
+      "bytes": 1930,
+      "role": "repo_source_manifest",
+      "rows": 7
+    },
+    {
+      "path": "cost_registers/user_supplied_afn_supplier_register_125.csv",
+      "sha256": "5a723aac84b3ac4f86e9c474d0d1e16a59374ed397c629c005e58b032ec91420",
+      "bytes": 34268,
+      "role": "user_supplied_afn_supplier_register",
+      "rows": 125
+    },
+    {
+      "path": "cost_registers/vehicle_capacity_rules_6.csv",
+      "sha256": "de00357c1e236ad7bd8903dfc08136bd2690c150dd514d0e1d0fd1a38106584d",
+      "bytes": 1259,
+      "role": "vehicle_capacity_rules",
+      "rows": 6
+    },
+    {
+      "path": "reference_data/source_manifest_v03.json",
+      "sha256": "78e6b6521d0baeefccebc61078736c5874eb5089ca3457bbf9b8f13b76714823",
+      "bytes": 504,
+      "role": "reference_manifest"
+    },
+    {
+      "path": "source_workbooks/AfghanTours_Final_Rate_Collection_Numbers_Style.numbers",
+      "sha256": "ca24ae962018a123919c4fe7c293ff2c01e2435b6bf606dc10049fb43cd4c995",
+      "bytes": 870707,
+      "role": "source_workbook"
+    },
+    {
+      "path": "source_workbooks/AfghanTours_Final_Rate_Collection_Numbers_Style.xlsx",
+      "sha256": "9fb150fe0a228317f1835876b559f96640a7db4078080c0327f09d45f124a150",
+      "bytes": 70444,
+      "role": "source_workbook"
+    },
+    {
+      "path": "source_workbooks/AfghanTours_Partner_Quick_Rate_Verification_AFN.xlsx",
+      "sha256": "4a0e8b70abf73f89a7049bdfbdb26a77f49aa41d01b11f29607ac6af9e956cba",
+      "bytes": 13005,
+      "role": "source_workbook"
+    },
+    {
+      "path": "source_workbooks/AfghanTours_Supplier_Rate_Collection(1).pdf",
+      "sha256": "9318a6065463911533aebfad9225da4bcb1de293cd369bbe06a1b778bade5743",
+      "bytes": 601953,
+      "role": "source_workbook"
+    },
+    {
+      "path": "source_workbooks/AfghanTours_Supplier_Rate_Collection.numbers",
+      "sha256": "ab89aa0534fb490e86ff898bd509d9c00839f4133f5bee9831f3ec56b0f540f6",
+      "bytes": 720678,
+      "role": "source_workbook"
+    },
+    {
+      "path": "source_workbooks/AfghanTours_Supplier_Rates_AFN_Local_USD_Client_Oct2026.xlsx",
+      "sha256": "67b9cd21983d268a15bf4f29e61b92b2dfc9b4ea38b3749e9aba08075f139239",
+      "bytes": 25499,
+      "role": "source_workbook"
+    },
+    {
+      "path": "source_workbooks/AfghanTours_Updated_Supplier_Rates_Oct2026.xlsx",
+      "sha256": "69f56d9b883760f3690406a36cc08fcdf6d139189c0e149e92502366a5a59264",
+      "bytes": 21172,
+      "role": "source_workbook"
+    },
+    {
+      "path": "source_workbooks/AfghanTours_Updated_Team_Rate_Collection_AFN_Oct2026.xlsx",
+      "sha256": "d433436cb5450a0e6278aedc4bbe508a8c8d06ea667c57d93b84df735ec166bf",
+      "bytes": 47483,
+      "role": "source_workbook"
+    }
+  ],
+  "counts_note": "A row with no band has every band field empty. Empty is unknown, not zero. Counts are not rates."
+}

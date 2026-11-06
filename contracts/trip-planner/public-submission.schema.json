@@ -1,0 +1,109 @@
+{
+  "schema_version": 1,
+  "title": "Public trip request",
+  "description": "Visitor selection sent to the isolated trip-request adapter. Supplier costs, margins, and staff rates are not fields in this contract.",
+  "additionalProperties": false,
+  "required": ["schema_version", "contact", "party", "dates", "pace", "travel_style", "accommodation_tier"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "contact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "email", "preferred_contact"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string", "maxLength": 40 },
+        "preferred_contact": { "enum": ["email", "phone", "whatsapp"] },
+        "language": { "type": "string", "maxLength": 40 }
+      }
+    },
+    "party": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adults", "children", "rooms"],
+      "properties": {
+        "adults": { "type": "integer", "minimum": 1, "maximum": 30 },
+        "children": { "type": "integer", "minimum": 0, "maximum": 20 },
+        "rooms": { "type": "integer", "minimum": 1, "maximum": 20 }
+      }
+    },
+    "dates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "duration_days"],
+      "properties": {
+        "mode": { "enum": ["fixed", "flexible"] },
+        "start": { "type": "string", "format": "date" },
+        "end": { "type": "string", "format": "date" },
+        "flexible_note": { "type": "string", "maxLength": 200 },
+        "duration_days": { "type": "integer", "minimum": 1, "maximum": 40 }
+      }
+    },
+    "interests": { "type": "array", "maxItems": 12, "items": { "type": "string", "maxLength": 40 } },
+    "province_codes": { "type": "array", "maxItems": 34, "items": { "type": "string" } },
+    "pace": { "enum": ["relaxed", "moderate", "full"] },
+    "travel_style": { "enum": ["ground", "mixed", "undecided"] },
+    "accommodation_tier": { "enum": ["simple", "comfortable", "undecided"] },
+    "activity_codes": { "type": "array", "maxItems": 20, "items": { "type": "string" } },
+    "hotel_ids": { "type": "array", "maxItems": 21, "items": { "type": "string" } },
+    "attraction_codes": { "type": "array", "maxItems": 40, "items": { "type": "string" } },
+    "tour_code": { "type": "string" },
+    "budget_note": { "type": "string", "maxLength": 200 },
+    "notes": { "type": "string", "maxLength": 2000 },
+    "days": {
+      "type": "array",
+      "maxItems": 40,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["day_number"],
+        "properties": {
+          "day_number": { "type": "integer", "minimum": 1, "maximum": 40 },
+          "overnight_hub": { "type": "string", "maxLength": 80 },
+          "travel_mode": { "enum": ["ground", "flight", "undecided", "none"] },
+          "notes": { "type": "string", "maxLength": 500 },
+          "province_codes": { "type": "array", "items": { "type": "string" } },
+          "attraction_codes": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "company_website": { "type": "string", "description": "Honeypot. Must be empty." }
+  },
+  "example": {
+    "schema_version": 1,
+    "contact": {
+      "name": "Sample Guest",
+      "email": "sample.guest@example.com",
+      "phone": "+93700111222",
+      "preferred_contact": "email"
+    },
+    "party": { "adults": 2, "children": 0, "rooms": 1 },
+    "dates": {
+      "mode": "fixed",
+      "start": "2027-04-10",
+      "end": "2027-04-16",
+      "duration_days": 7
+    },
+    "interests": ["Heritage", "Landscapes"],
+    "province_codes": ["KBL", "BMY"],
+    "pace": "moderate",
+    "travel_style": "ground",
+    "accommodation_tier": "comfortable",
+    "activity_codes": ["ACT-SGT"],
+    "hotel_ids": ["htk"],
+    "attraction_codes": ["KBL-001"],
+    "tour_code": "WKND",
+    "budget_note": "Please tell us what is realistic.",
+    "notes": "We want a slow first day in Kabul.",
+    "days": [
+      {
+        "day_number": 1,
+        "overnight_hub": "Kabul",
+        "travel_mode": "none",
+        "notes": "Arrival day"
+      }
+    ],
+    "company_website": ""
+  }
+}

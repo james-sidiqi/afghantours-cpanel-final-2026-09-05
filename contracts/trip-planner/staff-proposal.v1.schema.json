@@ -1,0 +1,512 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://afghantours.com/contracts/staff-proposal.v1.schema.json",
+  "title": "PRIVATE staff proposal/quote version (never public)",
+  "description": "Reference architecture only for M2. Data and internal price values live outside all webroots. Staff revisions preserve immutable original customer selection.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "proposal_id",
+    "revision",
+    "status",
+    "original_request_id",
+    "original_snapshot_sha256",
+    "days",
+    "cost_lines",
+    "approval"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "proposal_id": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "status": {
+      "enum": [
+        "new",
+        "in_review",
+        "draft_sent",
+        "revision_requested",
+        "quoted",
+        "accepted",
+        "declined",
+        "expired"
+      ]
+    },
+    "original_request_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64
+    },
+    "original_snapshot_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "operator_id": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "days": {
+      "type": "array",
+      "maxItems": 45,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "day_number",
+          "title",
+          "overnight_hub"
+        ],
+        "properties": {
+          "day_number": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 45
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 160
+          },
+          "overnight_hub": {
+            "type": "string",
+            "maxLength": 100
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 2500
+          },
+          "province_codes": {
+            "type": "array",
+            "maxItems": 34,
+            "items": {
+              "type": "string",
+              "maxLength": 3
+            }
+          },
+          "attraction_codes": {
+            "type": "array",
+            "maxItems": 40,
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "activity_codes": {
+            "type": "array",
+            "maxItems": 40,
+            "items": {
+              "type": "string",
+              "maxLength": 32
+            }
+          },
+          "selected_stays": {
+            "type": "array",
+            "maxItems": 6,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "hotel_id",
+                "room_id",
+                "rooms",
+                "nights"
+              ],
+              "properties": {
+                "hotel_id": {
+                  "type": "string",
+                  "maxLength": 40
+                },
+                "room_id": {
+                  "type": "string",
+                  "maxLength": 40
+                },
+                "rooms": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 40
+                },
+                "nights": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 45
+                }
+              }
+            }
+          },
+          "travel_legs": {
+            "type": "array",
+            "maxItems": 15,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "mode",
+                "origin",
+                "destination"
+              ],
+              "properties": {
+                "mode": {
+                  "enum": [
+                    "ground",
+                    "flight",
+                    "foot",
+                    "none"
+                  ]
+                },
+                "origin": {
+                  "type": "string",
+                  "maxLength": 120
+                },
+                "destination": {
+                  "type": "string",
+                  "maxLength": 120
+                },
+                "staff_tickets": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 20
+                },
+                "guest_tickets": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 50
+                },
+                "notes": {
+                  "type": "string",
+                  "maxLength": 500
+                }
+              }
+            }
+          },
+          "images": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "entity_type",
+                "entity_id",
+                "asset_path",
+                "approved_for_proposal"
+              ],
+              "properties": {
+                "entity_type": {
+                  "enum": [
+                    "tour",
+                    "province",
+                    "hotel",
+                    "room",
+                    "attraction",
+                    "activity"
+                  ]
+                },
+                "entity_id": {
+                  "type": "string",
+                  "maxLength": 64
+                },
+                "asset_path": {
+                  "type": "string",
+                  "pattern": "^/assets/images/[a-zA-Z0-9/_\\.-]+\\.(?:webp|jpg|jpeg|png)$",
+                  "maxLength": 500
+                },
+                "alt": {
+                  "type": "string",
+                  "maxLength": 200
+                },
+                "license_note": {
+                  "type": "string",
+                  "maxLength": 240
+                },
+                "approved_for_proposal": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "cost_lines": {
+      "type": "array",
+      "maxItems": 1500,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "description",
+          "quantity",
+          "unit",
+          "source"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "hotel",
+              "room",
+              "vehicle",
+              "fuel",
+              "guide",
+              "driver",
+              "staff_lodging",
+              "flight",
+              "meal",
+              "permit",
+              "admission",
+              "activity",
+              "transfer",
+              "contingency",
+              "payment_fee",
+              "tax",
+              "other"
+            ]
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 220
+          },
+          "day_number": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 45
+          },
+          "quantity": {
+            "type": "number",
+            "minimum": 0
+          },
+          "unit": {
+            "type": "string",
+            "maxLength": 80
+          },
+          "source": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "source_type",
+              "currency",
+              "unit",
+              "verification_status"
+            ],
+            "properties": {
+              "source_type": {
+                "enum": [
+                  "operator_assumption",
+                  "historical_supplier_afn",
+                  "historical_hotel_afn",
+                  "website_hotel_cost_usd",
+                  "website_hotel_sell_usd",
+                  "website_tour_price_from_usd",
+                  "approved_supplier_quote"
+                ]
+              },
+              "source_ref": {
+                "type": "string",
+                "maxLength": 128
+              },
+              "currency": {
+                "enum": [
+                  "AFN",
+                  "USD",
+                  "OTHER"
+                ]
+              },
+              "unit": {
+                "type": "string",
+                "maxLength": 80
+              },
+              "low": {
+                "oneOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "mid": {
+                "oneOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "high": {
+                "oneOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "verification_status": {
+                "enum": [
+                  "historical_unverified",
+                  "operator_assumption",
+                  "website_reference_unverified",
+                  "approved_current",
+                  "missing",
+                  "superseded"
+                ]
+              },
+              "last_checked": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "valid_until": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "date"
+              },
+              "notes": {
+                "type": "string",
+                "maxLength": 500
+              }
+            }
+          },
+          "internal_cost_usd": {
+            "oneOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "unresolved": {
+            "type": "boolean"
+          },
+          "staff_notes": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        }
+      }
+    },
+    "fx_afn_per_usd": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "target_gross_margin": {
+      "type": "number",
+      "minimum": 0,
+      "exclusiveMaximum": 1
+    },
+    "cost_total_usd": {
+      "oneOf": [
+        {
+          "type": "number",
+          "minimum": 0
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "proposed_sell_usd": {
+      "oneOf": [
+        {
+          "type": "number",
+          "minimum": 0
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "unresolved_items": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "string",
+        "maxLength": 300
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approved",
+        "approved_by"
+      ],
+      "properties": {
+        "approved": {
+          "type": "boolean"
+        },
+        "approved_by": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 64
+        },
+        "approved_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "client_visible_price_usd": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_until": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "client_pdf_hash": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 64
+        }
+      }
+    }
+  }
+}

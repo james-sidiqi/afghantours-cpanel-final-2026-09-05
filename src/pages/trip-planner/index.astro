@@ -1,0 +1,269 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import { parse } from 'csv-parse/sync';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const dataDir = path.join(process.cwd(), 'data');
+function load(name: string): Record<string, string>[] {
+  return parse(fs.readFileSync(path.join(dataDir, name), 'utf8'), {
+    columns: true,
+    skip_empty_lines: true,
+    bom: true,
+  });
+}
+const byName = (a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name);
+const provinces = load('provinces.csv').map((row) => ({ code: row.province_code, name: row.province_name })).sort(byName);
+const activities = load('activities.csv').filter((row) => row.is_active === '1').map((row) => ({ code: row.activity_code, name: row.name })).sort(byName);
+const hotels = load('hotel_properties.csv').filter((row) => row.is_active === '1').map((row) => ({ code: row.hotel_id, name: row.display_name || row.hotel_name })).sort(byName);
+const attractions = load('attractions_master.csv').filter((row) => row.is_active === '1').map((row) => ({ code: row.attraction_code, name: row.name })).sort(byName);
+const tours = load('tours.csv').filter((row) => row.is_active === '1').map((row) => ({ code: row.tour_code, name: row.name })).sort(byName);
+const interests = ['Heritage', 'Landscapes', 'Food', 'Community visits', 'Photography', 'Walking', 'Markets', 'Museums'];
+const days = [1, 2, 3, 4, 5];
+---
+
+<BaseLayout
+  title="Build a trip request | AfghanTours"
+  description="Staging prototype. Send a trip request for the Kabul team to review. Availability and prices are still to be confirmed."
+  robots="noindex"
+>
+  <article class="trip-request">
+    <p class="trip-request__kicker">Staging prototype</p>
+    <h1 class="editorial-title">Build a trip request</h1>
+    <p class="at-lead">
+      Tell the Kabul team the shape of the journey you want. Sending this form does not reserve transport, a room, or a guide.
+      Availability and prices are still to be confirmed.
+    </p>
+    <p class="trip-request__notice">Price to be confirmed. This page does not calculate a fare.</p>
+
+    <form class="at-card trip-request__form" method="post" action="/trip-request/index.php">
+      <input type="hidden" name="schema_version" value="1" />
+      <p class="hp" hidden>
+        <label>Company website <input type="text" name="company_website" tabindex="-1" autocomplete="off" value="" /></label>
+      </p>
+
+      <fieldset>
+        <legend>Contact</legend>
+        <div class="trip-request__grid">
+          <label>Name <input name="contact_name" autocomplete="name" required maxlength="120" /></label>
+          <label>Email <input type="email" name="contact_email" autocomplete="email" required maxlength="120" /></label>
+          <label>Phone <input name="contact_phone" autocomplete="tel" maxlength="40" /></label>
+          <label>Preferred contact
+            <select name="preferred_contact" required>
+              <option value="email">Email</option>
+              <option value="phone">Phone</option>
+              <option value="whatsapp">WhatsApp</option>
+            </select>
+          </label>
+          <label>Language <input name="language" maxlength="40" /></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Party</legend>
+        <div class="trip-request__grid">
+          <label>Adults <input name="adults" type="number" min="1" max="30" value="2" required inputmode="numeric" /></label>
+          <label>Children <input name="children" type="number" min="0" max="20" value="0" required inputmode="numeric" /></label>
+          <label>Rooms <input name="rooms" type="number" min="1" max="20" value="1" required inputmode="numeric" /></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Dates</legend>
+        <div class="trip-request__grid">
+          <label>Date type
+            <select name="date_mode" required>
+              <option value="fixed">Fixed dates</option>
+              <option value="flexible">Flexible window</option>
+            </select>
+          </label>
+          <label>Start <input type="date" name="date_start" /></label>
+          <label>End <input type="date" name="date_end" /></label>
+          <label>Duration in days <input name="duration_days" type="number" min="1" max="40" value="7" required inputmode="numeric" /></label>
+        </div>
+        <label>If the dates can move, say how <textarea name="flexible_note" maxlength="200"></textarea></label>
+        <p class="trip-request__hint">For fixed dates, add a start date. A flight is not added unless you choose one below.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Interests</legend>
+        <div class="trip-request__checks">
+          {interests.map((interest) => (
+            <label><input type="checkbox" name="interests[]" value={interest} /> {interest}</label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Pace, travel, and lodging</legend>
+        <div class="trip-request__grid">
+          <label>Pace
+            <select name="pace" required>
+              <option value="relaxed">Relaxed</option>
+              <option value="moderate" selected>Moderate</option>
+              <option value="full">Full days</option>
+            </select>
+          </label>
+          <label>Travel style
+            <select name="travel_style" required>
+              <option value="ground">Ground</option>
+              <option value="mixed">Ground and flight, where you ask for it</option>
+              <option value="undecided">Undecided</option>
+            </select>
+          </label>
+          <label>Lodging
+            <select name="accommodation_tier" required>
+              <option value="simple">Simple</option>
+              <option value="comfortable">Comfortable</option>
+              <option value="undecided">Undecided</option>
+            </select>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Provinces</legend>
+        <div class="trip-request__checks">
+          {provinces.map((province) => (
+            <label><input type="checkbox" name="province_codes[]" value={province.code} /> {province.name}</label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Published trip to start from</legend>
+        <div class="trip-request__checks">
+          <label><input type="radio" name="tour_code" value="" checked /> No published trip</label>
+          {tours.map((tour) => (
+            <label><input type="radio" name="tour_code" value={tour.code} /> {tour.name}</label>
+          ))}
+        </div>
+        <p class="trip-request__hint">A published trip is only a starting shape. It is not a reservation, and this form does not show a fare.</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Activities</legend>
+        <div class="trip-request__checks">
+          {activities.map((activity) => (
+            <label><input type="checkbox" name="activity_codes[]" value={activity.code} /> {activity.name}</label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset class="trip-request__scroll">
+        <legend>Hotels to ask about</legend>
+        <p class="trip-request__hint">Subject to availability. Choosing a hotel does not hold a room.</p>
+        <div class="trip-request__checks">
+          {hotels.map((hotel) => (
+            <label><input type="checkbox" name="hotel_ids[]" value={hotel.code} /> {hotel.name}</label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset class="trip-request__scroll">
+        <legend>Places</legend>
+        <div class="trip-request__checks">
+          {attractions.map((attraction) => (
+            <label><input type="checkbox" name="attraction_codes[]" value={attraction.code} /> {attraction.name}</label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Day outline</legend>
+        {days.map((day) => (
+          <details class="trip-request__day" open={day === 1}>
+            <summary>Day {day}</summary>
+            <input type="hidden" name={`days[${day}][day_number]`} value={String(day)} />
+            <label>Overnight stop <input name={`days[${day}][overnight_hub]`} maxlength="80" /></label>
+            <label>Travel that day
+              <select name={`days[${day}][travel_mode]`}>
+                <option value="">Not specified</option>
+                <option value="ground">Ground</option>
+                <option value="flight">Flight, only if you are requesting one</option>
+                <option value="undecided">Undecided</option>
+                <option value="none">No travel</option>
+              </select>
+            </label>
+            <label>Notes <textarea name={`days[${day}][notes]`} maxlength="500"></textarea></label>
+          </details>
+        ))}
+      </fieldset>
+
+      <label>Budget note <textarea name="budget_note" maxlength="200" placeholder="Optional. A price is not calculated here."></textarea></label>
+      <label>Anything else <textarea name="notes" maxlength="2000"></textarea></label>
+      <button class="at-button at-button--primary" type="submit">Send trip request</button>
+      <p class="trip-request__hint">You will receive a reference if the request is received. Availability and prices are still to be confirmed.</p>
+    </form>
+
+    <p class="trip-request__end">
+      The existing <a href="/custom-requests/">custom request</a> page is unchanged.
+      You can also <a href="/contact/">contact the Kabul office</a>,
+      look through <a href="/tours/">published trips</a>,
+      or write on <a href="https://wa.me/93780123456">WhatsApp</a>.
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .trip-request {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: var(--space-7) var(--space-5) var(--space-9);
+    color: var(--at-text);
+  }
+  .trip-request__kicker {
+    margin: 0 0 var(--space-3);
+    color: var(--at-gold-text);
+    font-size: var(--text-kicker);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .trip-request h1 { color: var(--at-ink); margin: 0 0 var(--space-4); }
+  .trip-request__notice,
+  .trip-request__hint { color: var(--at-text); }
+  .trip-request__notice {
+    background: var(--at-sand);
+    border-radius: var(--radius-small);
+    padding: var(--space-4);
+  }
+  .trip-request__form { padding: var(--space-5); margin-top: var(--space-5); }
+  .trip-request fieldset {
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-small);
+    margin: 0 0 var(--space-5);
+    padding: var(--space-4);
+  }
+  .trip-request legend { color: var(--at-ink); font-weight: 700; padding: 0 var(--space-2); }
+  .trip-request__grid { display: grid; gap: var(--space-4); }
+  .trip-request__checks { display: grid; gap: var(--space-2); }
+  .trip-request__scroll { max-height: 18rem; overflow: auto; }
+  .trip-request label { display: grid; gap: var(--space-2); color: var(--at-ink); }
+  .trip-request__checks label { display: flex; gap: var(--space-3); align-items: flex-start; }
+  .trip-request input,
+  .trip-request select,
+  .trip-request textarea {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-small);
+    background: var(--at-white);
+    color: var(--at-ink);
+    font: inherit;
+    padding: 0.8rem 0.9rem;
+  }
+  .trip-request__checks input { width: 1.15rem; height: 1.15rem; margin-top: 0.15rem; }
+  .trip-request textarea { min-height: 6rem; resize: vertical; }
+  .trip-request input:focus,
+  .trip-request select:focus,
+  .trip-request textarea:focus { outline: 2px solid var(--at-gold); outline-offset: 1px; }
+  .trip-request button { border: 0; cursor: pointer; }
+  .trip-request__day { margin-top: var(--space-3); }
+  .trip-request__end { margin-top: var(--space-6); }
+  .hp { position: absolute; left: -9999px; }
+  @media (min-width: 720px) {
+    .trip-request__grid { grid-template-columns: 1fr 1fr; }
+    .trip-request__checks { grid-template-columns: 1fr 1fr; }
+  }
+</style>

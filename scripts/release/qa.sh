@@ -10,7 +10,10 @@ php -l public/tour-inquiry.php
 php scripts/booking-test/test-inquiry-guards.php
 node scripts/booking-test/parity.mjs
 php scripts/booking-test/test-core.php
-for f in public/booking/departures.php public/booking/lib/*.php public/manage/index.php scripts/booking/hash-password.php; do php -l "$f"; done
+for f in public/booking/departures.php public/booking/lib/*.php public/manage/index.php scripts/booking/hash-password.php \
+  public/private-calculator/index.php public/trip-request/index.php public/trip-planner-lib/*.php scripts/trip-planner/hash-password.php
+do php -l "$f"; done
+python3 scripts/trip-planner/test_m1.py
 python3 scripts/booking-test/integration.py
 python3 scripts/booking-test/test-inquiry-mail.py
 node --test scripts/booking-test/policy.test.mjs
