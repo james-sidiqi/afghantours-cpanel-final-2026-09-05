@@ -3,7 +3,7 @@ title: "Kandahari Rosh"
 slug: "kandahar-rosht"
 food_slug: "kandahar-rosht"
 category: "Main"
-image: "/assets/images/food/dishes/kandahari-rosh/hero.png"
+image: "/assets/images/food/dishes/kandahari-rosh/hero.webp"
 ---
 
 ### Kandahari Rosh
