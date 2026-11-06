@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0.0",
+  "source": "public_builder",
+  "travel": {
+    "start_date": null,
+    "end_date": null,
+    "dates_flexible": true,
+    "duration_days": 7
+  },
+  "party": {
+    "adults": 2,
+    "children": 0,
+    "rooms": 1,
+    "room_preferences": [
+      "twin"
+    ]
+  },
+  "preferences": {
+    "pace": "balanced",
+    "transport": "4wd",
+    "hotel_tier": "standard",
+    "interest_codes": [
+      "ACT-SGT"
+    ],
+    "province_codes": [
+      "KBL",
+      "BMY"
+    ],
+    "language": "English",
+    "additional_notes": "Example only. Nothing reserved."
+  },
+  "tour_code": "CAD",
+  "days": [
+    {
+      "day_number": 1,
+      "province_code": "KBL",
+      "overnight_hub": "kabul-city",
+      "attraction_codes": [
+        "KBL-003"
+      ],
+      "activity_codes": [
+        "ACT-SGT"
+      ],
+      "requested_transfer": "ground"
+    },
+    {
+      "day_number": 2,
+      "province_code": "BMY",
+      "overnight_hub": "bamyan-city",
+      "attraction_codes": [
+        "BMY-001"
+      ],
+      "requested_transfer": "ground"
+    }
+  ],
+  "contact": {
+    "name": "Example traveler",
+    "email": "example@example.invalid",
+    "preferred_contact": "email"
+  },
+  "consent_to_contact": true,
+  "website_metadata": {
+    "entry_route": "/custom-requests/",
+    "locale": "en"
+  }
+}
