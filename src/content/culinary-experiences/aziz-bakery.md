@@ -13,7 +13,7 @@ related_food_slugs: []
 provinces: ["Kabul"]
 best_season: "Year round"
 duration: "30–60 minutes"
-hero_image: "/assets/images/experiences/culinary/aziz-bakery/hero.webp"
+hero_image: "/assets/images/experiences/culinary/aziz-bakery/gallery/02.webp"
 nearby: ["Chicken Street", "Shah-e-Du Shamshira", "Murad Khane"]
 ---
 

@@ -1,4 +1,5 @@
 ---
+gallery_images: ["/assets/images/featured-tours/afghanistan-discovery-tour-fall/01.webp"]
 title: "Afghanistan Discovery Tour Fall"
 slug: "afghanistan-discovery-tour-fall"
 tour_slug: "afghanistan-discovery-tour-fall"

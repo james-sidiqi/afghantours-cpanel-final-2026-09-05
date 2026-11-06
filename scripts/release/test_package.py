@@ -33,7 +33,10 @@ class ReleaseTests(unittest.TestCase):
         for name in ['.htaccess', 'tour-inquiry.php', 'booking/departures.php', 'manage/index.php',
                      'data/booking/inventory.json', '.well-known/token', 'photo-credits/index.html',
                      'assets/backup.zip', 'assets/bad.php.jpg', 'assets/.secret.json', 'private/x.html',
-                     'pages/index.mjs', '_astro/server.mjs', 'unknown/index.html']:
+                     'pages/index.mjs', '_astro/server.mjs', 'unknown/index.html',
+                     'private-calculator/index.php', 'private-calculator/.htaccess',
+                     'trip-request/index.php', 'trip-planner/index.html',
+                     'trip-planner-lib/bootstrap.php']:
             self.put(name, 'DO NOT SHIP')
         self.put('data/maps/hubs.json', '{}')
         m = self.build()

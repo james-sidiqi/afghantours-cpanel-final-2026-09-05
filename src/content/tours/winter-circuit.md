@@ -1,4 +1,5 @@
 ---
+gallery_images: ["/assets/images/featured-tours/winter-circuit/01.webp"]
 title: "Winter Circuit"
 slug: "winter-circuit"
 tour_slug: "winter-circuit"

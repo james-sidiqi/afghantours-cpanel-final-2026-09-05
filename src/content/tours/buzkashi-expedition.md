@@ -1,4 +1,5 @@
 ---
+gallery_images: ["/assets/images/experiences/cultural/buzkashi/gallery/09.webp", "/assets/images/experiences/cultural/buzkashi/gallery/07.webp", "/assets/images/experiences/cultural/buzkashi/gallery/08.webp"]
 title: Buzkashi Expedition
 tour_slug: buzkashi-expedition
 section: tour_content
