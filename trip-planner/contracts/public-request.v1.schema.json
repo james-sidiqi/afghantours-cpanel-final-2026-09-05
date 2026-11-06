@@ -1,0 +1,303 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://afghantours.com/contracts/public-trip-request.v1.schema.json",
+  "title": "Public Build My Journey request (untrusted input)",
+  "description": "Versioned customer selections. Server validates, assigns request ID and stores immutable original. No supplier or internal pricing fields permitted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "source",
+    "travel",
+    "party",
+    "preferences",
+    "contact",
+    "consent_to_contact"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "source": {
+      "const": "public_builder"
+    },
+    "travel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "duration_days",
+        "dates_flexible"
+      ],
+      "properties": {
+        "start_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "end_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "dates_flexible": {
+          "type": "boolean"
+        },
+        "duration_days": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 45
+        },
+        "departure_city": {
+          "type": "string",
+          "maxLength": 100
+        }
+      }
+    },
+    "party": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "adults",
+        "children",
+        "rooms"
+      ],
+      "properties": {
+        "adults": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        },
+        "children": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "rooms": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        },
+        "room_preferences": {
+          "type": "array",
+          "maxItems": 10,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "single",
+              "double",
+              "twin",
+              "triple",
+              "quad",
+              "family"
+            ]
+          }
+        }
+      }
+    },
+    "preferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pace",
+        "transport",
+        "hotel_tier"
+      ],
+      "properties": {
+        "pace": {
+          "enum": [
+            "relaxed",
+            "balanced",
+            "active",
+            "unspecified"
+          ]
+        },
+        "transport": {
+          "enum": [
+            "ground",
+            "4wd",
+            "van",
+            "mixed",
+            "domestic_flights_if_feasible",
+            "unspecified"
+          ]
+        },
+        "hotel_tier": {
+          "enum": [
+            "budget",
+            "standard",
+            "premium",
+            "luxury",
+            "unspecified"
+          ]
+        },
+        "interest_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 25,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9-]{1,31}$"
+          }
+        },
+        "province_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "maxItems": 34,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          }
+        },
+        "language": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "mobility_notes": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "budget_usd_per_person": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100000
+        },
+        "additional_notes": {
+          "type": "string",
+          "maxLength": 2000
+        }
+      }
+    },
+    "tour_code": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[A-Z0-9-]{2,32}$"
+    },
+    "days": {
+      "type": "array",
+      "maxItems": 45,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "day_number"
+        ],
+        "properties": {
+          "day_number": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 45
+          },
+          "province_code": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[A-Z]{3}$"
+          },
+          "overnight_hub": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 100
+          },
+          "attraction_codes": {
+            "type": "array",
+            "uniqueItems": true,
+            "maxItems": 25,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Z0-9-]{3,32}$"
+            }
+          },
+          "activity_codes": {
+            "type": "array",
+            "uniqueItems": true,
+            "maxItems": 20,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Z0-9-]{3,32}$"
+            }
+          },
+          "preferred_hotel_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 30
+          },
+          "requested_transfer": {
+            "enum": [
+              "unspecified",
+              "ground",
+              "flight",
+              "none"
+            ]
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 500
+          }
+        }
+      }
+    },
+    "contact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "email"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 190
+        },
+        "whatsapp": {
+          "type": "string",
+          "maxLength": 40
+        },
+        "preferred_contact": {
+          "enum": [
+            "email",
+            "whatsapp",
+            "either"
+          ]
+        }
+      }
+    },
+    "consent_to_contact": {
+      "const": true
+    },
+    "website_metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "entry_route": {
+          "type": "string",
+          "maxLength": 180
+        },
+        "locale": {
+          "type": "string",
+          "maxLength": 12
+        }
+      }
+    }
+  }
+}
