@@ -23,6 +23,8 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - name: Complete site, booking, mail, browser and release QA
         run: bash scripts/release/qa.sh
+      - name: M1 trip planner contracts, route baseline and private-rate leak guard
+        run: python3 scripts/trip-planner/check-m1.py
       - name: Browser failure traces
         if: failure()
         uses: actions/upload-artifact@v4
