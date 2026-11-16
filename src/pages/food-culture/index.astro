@@ -337,6 +337,30 @@ const driedFruit = [
   },
 ];
 
+// Images are explicitly matched to verified, existing local assets. A few regional
+// photos are contextual rather than photographs of the specific activity.
+const experienceImages = {
+  "Istalif Pottery Village": "/assets/images/attractions/istalif-village/hero.webp",
+  "Kite Flying & Gudiparan Bazi": "/assets/images/experiences/cultural/gudiparan-bazi/hero.webp",
+  "Chashma-e-Dogh": "/assets/images/experiences/culinary/chashma-e-dogh/hero.webp",
+  "Bakery Kabul": "/assets/images/experiences/culinary/aziz-bakery/hero.webp",
+  "Balkh Carpet Weaving & Loom Workshops": "/assets/images/experiences/cultural/afghan-carpets/hero.webp",
+  "Kabobs, Sweets & Northern Hospitality": "/assets/images/hubs/mazar-e-sharif/hero.webp",
+  "Nuristan Wood Carpentry & Carving": "/assets/images/provinces/nuristan/hero.webp",
+  "Adam Khan Chapli Kabob & Sugarcane Stops": "/assets/images/experiences/culinary/adam-khan-chapli-kabob/hero.webp",
+  "Saffron Tea Houses of Herat": "/assets/images/food/drinks/saffron-tea/hero.webp",
+  "Glassblowers of Herat": "/assets/images/experiences/cultural/glassblowers-of-herat/hero.webp",
+  "Pomegranate Orchards & Harvest Walks": "/assets/images/food/produce/kandahar-pomegranate/hero.webp",
+  "Rosh Hospitality Stops": "/assets/images/experiences/culinary/kandahari-rosh/hero.webp",
+  "Shor Chai Mountain Tea Houses": "/assets/images/food/drinks/shor-chai-of-badakhshan/hero.webp",
+  "Qurut Markets of Bamyan": "/assets/images/experiences/culinary/band-e-amir-quroot-dairy/hero.webp",
+};
+const regionalContextPhotos = {
+  'Kabobs, Sweets & Northern Hospitality': 'Mazar-e-Sharif regional context',
+  'Nuristan Wood Carpentry & Carving': 'Nuristan regional context',
+  'Shor Chai Mountain Tea Houses': 'Badakhshan regional context',
+};
+
 const experienceGroups = [
   {
     hub: 'Kabul & Kohdaman Valley',
@@ -684,10 +708,22 @@ const categories = [
 
           <div class="experience-list">
             {group.items.map((item) => (
-              <a href={item.href} class="experience-row">
-                <span>{group.hub}</span>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
+              <a href={item.href} class="experience-card">
+                <div class="experience-card__media">
+                  <img
+                    src={experienceImages[item.title]}
+                    alt={regionalContextPhotos[item.title] || item.title}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  {regionalContextPhotos[item.title] && <span class="experience-card__context">Regional photo</span>}
+                </div>
+                <div class="experience-card__body">
+                  <span class="experience-card__kicker">{group.hub}</span>
+                  <h4>{item.title}</h4>
+                  <p>{item.description}</p>
+                  <span class="experience-card__action">Explore experience <span aria-hidden="true">→</span></span>
+                </div>
               </a>
             ))}
           </div>
@@ -989,24 +1025,95 @@ const categories = [
 
   .experience-list {
     display: grid;
-    gap: .85rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.1rem;
   }
 
-  .experience-row {
-    display: grid;
-    grid-template-columns: 160px .55fr 1fr;
-    gap: 1rem;
-    align-items: center;
+  .experience-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
     border: 1px solid rgba(16,24,32,.12);
-    border-radius: 1rem;
+    border-radius: 1.15rem;
     background: #fffaf1;
-    padding: 1rem 1.25rem;
     color: #101820;
+    text-decoration: none;
+    box-shadow: 0 10px 26px rgba(16,24,32,.07);
+    transition: transform .2s ease, box-shadow .2s ease;
   }
 
-  .experience-row h3,
-  .experience-row p {
+  .experience-card:hover, .experience-card:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px rgba(16,24,32,.14);
+    outline-offset: 3px;
+  }
+
+  .experience-card__media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    background: #0e291d;
+  }
+
+  .experience-card__media img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .experience-card__context {
+    position: absolute;
+    left: .75rem;
+    bottom: .75rem;
+    padding: .3rem .55rem;
+    border-radius: .35rem;
+    background: rgba(16,24,32,.8);
+    color: white;
+    font-size: .69rem;
+    font-weight: 700;
+  }
+
+  .experience-card__body {
+    padding: 1.1rem 1.2rem 1.3rem;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: .7rem;
+  }
+
+  .experience-card__kicker {
+    color: #a66e24;
+    font-size: .68rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .experience-card__body h4 {
     margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.4rem, 2vw, 1.85rem);
+    line-height: 1.1;
+  }
+
+  .experience-card__body p {
+    margin: 0;
+    line-height: 1.6;
+    color: #435061;
+    font-size: .92rem;
+  }
+
+  .experience-card__action {
+    display: inline-flex;
+    gap: .35rem;
+    align-items: center;
+    margin-top: auto;
+    padding-top: .5rem;
+    color: #9a6512;
+    font-weight: 900;
+    font-size: .83rem;
   }
 
   @media(max-width: 1050px) {
@@ -1016,9 +1123,12 @@ const categories = [
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .editorial-band,
-    .experience-row {
+    .editorial-band {
       grid-template-columns: 1fr;
+    }
+
+    .experience-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
@@ -1029,7 +1139,8 @@ const categories = [
 
     .category-grid,
     .premium-grid,
-    .premium-grid.small {
+    .premium-grid.small,
+    .experience-list {
       grid-template-columns: 1fr;
     }
 
