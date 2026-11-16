@@ -3,8 +3,8 @@ title: "Pistachios"
 slug: "samangan-pistachios"
 food_slug: "samangan-pistachios"
 category: "Produce"
-hero_image: "/assets/images/food/dried-fruit/samangan-pistachios/hero.webp"
-image: "/assets/images/food/dried-fruit/samangan-pistachios/hero.webp"
+hero_image: "/assets/images/food/dried-fruits/samangan-pistachios/hero.webp"
+image: "/assets/images/food/dried-fruits/samangan-pistachios/hero.webp"
 ---
 
 ### Pistachios

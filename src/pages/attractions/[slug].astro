@@ -1,9 +1,8 @@
 ---
+import { getAttractionImage, buildGallery, cleanGallery, listGalleryImages } from '../../lib/images';
 import { regionDisplayName } from '../../lib/regionNames';
 import PhotoCredits from '../../components/PhotoCredits.astro';
 import { altFor } from '../../data/photoCredits';
-import fs from 'node:fs';
-import path from 'node:path';
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ATTRACTION_IMAGE_ALT } from '../../lib/attraction-image-alt';
@@ -66,13 +65,7 @@ const attractionCode =
   ).trim();
 
 
-const heroImage =
-  item.hero_image ||
-  item.image ||
-  item.image_path ||
-  item.card_image ||
-  item.thumbnail_path ||
-  '/assets/images/placeholders/default-attraction.webp';
+const heroImage = getAttractionImage(item);
 
 
 const shortDescription =
@@ -92,73 +85,14 @@ const longDescription =
    BUILD GALLERY FROM THE EXISTING ATTRACTION IMAGE FOLDER
    --------------------------------------------------------- */
 
-const galleryCandidates = [];
-
-const configuredFolder =
-  item.gallery_folder ||
-  `/assets/images/attractions/${item.slug}/`;
-
-const publicFolder = path.join(
-  process.cwd(),
-  'public',
-  configuredFolder.replace(/^\/+/, '')
-);
-
-try {
-  if (fs.existsSync(publicFolder)) {
-    const files = fs
-      .readdirSync(publicFolder)
-      .filter((file) =>
-        /\.(webp|jpg|jpeg|png|avif)$/i.test(file)
-      )
-      .sort((a, b) => {
-        const score = (name) => {
-          const lower = name.toLowerCase();
-
-          if (lower.startsWith('hero.')) return 0;
-          if (lower.includes('overview')) return 1;
-          if (lower.includes('gallery')) return 2;
-
-          return 3;
-        };
-
-        return score(a) - score(b) ||
-          a.localeCompare(b);
-      });
-
-    files.forEach((file) => {
-      galleryCandidates.push(
-        `${configuredFolder.replace(/\/?$/, '/')}${file}`
-      );
-    });
-  }
-} catch (error) {
-  console.warn(
-    `Could not build gallery for ${item.slug}:`,
-    error
-  );
-}
-
-
-[
+const configuredFolder = item.gallery_folder || `/assets/images/attractions/${item.slug}/`;
+const suppliedGallery = buildGallery(item);
+const galleryImages = cleanGallery([
   heroImage,
-  item.card_image,
-  item.image,
-  item.image_path,
-  item.thumbnail_path,
-].filter(Boolean).forEach((src) => {
-  galleryCandidates.unshift(src);
-});
-
-
-const galleryImages = [
-  ...new Set(
-    galleryCandidates
-      .filter(Boolean)
-      .map((src) => String(src).trim())
-  )
-].slice(0, 8);
-
+  item.overview_image,
+  item.overview_image_path,
+  ...(suppliedGallery.length ? suppliedGallery : listGalleryImages(configuredFolder)),
+]).slice(0, 8);
 
 /* ---------------------------------------------------------
    TOUR RELATIONSHIPS
@@ -690,6 +624,7 @@ const provinceHref =
 
               <img
                 src={src}
+                data-lightbox
                 alt={altFor(src, `${title}${index > 0 ? ` — view ${index + 1}` : ''}`)}
                 loading={index === 0 ? 'eager' : 'lazy'}
               />

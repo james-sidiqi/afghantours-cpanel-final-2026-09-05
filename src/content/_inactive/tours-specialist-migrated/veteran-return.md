@@ -61,13 +61,13 @@ provinces:
   - "Zabul"
 transport_type: "Domestic flights and 4WD vehicles"
 domestic_flights: false
-hero_image_path: "/assets/images/custom-tours/veteran-return/hero.webp"
-overview_image_path: "/assets/images/custom-tours/veteran-return/thumbnail.webp"
-thumbnail_image_path: "/assets/images/custom-tours/veteran-return/thumbnail.webp"
+hero_image_path: "/assets/images/tours/custom/veteran-return/hero.webp"
+overview_image_path: "/assets/images/tours/custom/veteran-return/thumbnail.webp"
+thumbnail_image_path: "/assets/images/tours/custom/veteran-return/thumbnail.webp"
 gallery_images:
-  - "/assets/images/custom-tours/veteran-return/hero.webp"
-  - "/assets/images/custom-tours/veteran-return/thumbnail.webp"
-  - "/assets/images/custom-tours/veteran-return/thumbnail.webp"
+  - "/assets/images/tours/custom/veteran-return/hero.webp"
+  - "/assets/images/tours/custom/veteran-return/thumbnail.webp"
+  - "/assets/images/tours/custom/veteran-return/thumbnail.webp"
 tour_highlights: []
 best_for: []
 accommodation_style: "Best available local hotels, clean and well-located."

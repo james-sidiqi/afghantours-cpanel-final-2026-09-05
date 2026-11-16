@@ -11,7 +11,7 @@ import {
 } from './buildRelations';
 import { ACTIVE_HUB_SLUGS, getActivitiesForHub, getCulturalForHub } from './experiences';
 import { getCulinaryForHub } from './culinary';
-import { listPublicImages } from './images';
+import { listPublicImages, listGalleryImages, cleanGallery } from './images';
 
 type Row = Record<string, any>;
 export type HubCatalogItem = {
@@ -91,15 +91,14 @@ function firstSentence(text: string, fallback: string): string {
 
 function hubGallery(slug: string, hero: string, card: string): string[] {
   const dir = `/assets/images/hubs/${slug}`;
-  const listed = listPublicImages(dir).filter((p) => /\.(webp|jpe?g|png)$/i.test(p));
+  const listed = listGalleryImages(dir).filter((p) => /\.(webp|jpe?g|png)$/i.test(p));
   const preferred = [
     `${dir}/01.webp`,
     `${dir}/gallery-1.webp`,
     `${dir}/gallery-2.webp`,
     `${dir}/gallery-3.webp`,
     `${dir}/gallery-4.webp`,
-    `${dir}/thumb.webp`,
-  ].filter((p) => listed.includes(p)).concat([card, hero].filter(Boolean));
+  ].filter((p) => listed.includes(p)).concat(cleanGallery([hero]));
   const out: string[] = [];
   const seen = new Set<string>();
   for (const p of [...preferred, ...listed]) {
@@ -108,7 +107,7 @@ function hubGallery(slug: string, hero: string, card: string): string[] {
     out.push(p);
     if (out.length >= 8) break;
   }
-  return out.length ? out : [hero];
+  return cleanGallery(out.length ? out : [hero]);
 }
 
 function matchesHub(row: Row, hub: Row): boolean {
@@ -207,7 +206,7 @@ export function buildHubIndexCatalog(): HubCatalogItem[] {
       .slice(0, 6)
       .map((a): [string, string, string] => [
         String(a.title || a.name || a.slug),
-        String(a.image || a.hero_image_path || `/assets/images/attractions/${a.slug}/hero.webp`),
+        String(a.hero_image || a.hero_image_path || a.image || `/assets/images/attractions/${a.slug}/hero.webp`),
         `/attractions/${a.slug}/`,
       ]);
 
@@ -216,7 +215,7 @@ export function buildHubIndexCatalog(): HubCatalogItem[] {
       .slice(0, 4)
       .map((h): [string, string, string] => [
         String(h.title || h.name || h.slug),
-        String(h.image || h.hero_image_path || `/assets/images/placeholders/default-hotel.webp`),
+        String(h.hero_image || h.hero_image_path || h.image || `/assets/images/placeholders/default-hotel.webp`),
         h.slug ? `/hotels/${h.slug}/` : '/hotels/',
       ]);
 

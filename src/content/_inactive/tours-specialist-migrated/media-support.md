@@ -61,13 +61,13 @@ provinces:
   - "Zabul"
 transport_type: "Domestic flights and 4WD vehicles"
 domestic_flights: false
-hero_image_path: "/assets/images/custom-tours/media-support/hero.webp"
-overview_image_path: "/assets/images/custom-tours/media-support/thumbnail.webp"
-thumbnail_image_path: "/assets/images/custom-tours/media-support/thumbnail.webp"
+hero_image_path: "/assets/images/tours/custom/media-support/hero.webp"
+overview_image_path: "/assets/images/tours/custom/media-support/thumbnail.webp"
+thumbnail_image_path: "/assets/images/tours/custom/media-support/thumbnail.webp"
 gallery_images:
-  - "/assets/images/custom-tours/media-support/hero.webp"
-  - "/assets/images/custom-tours/media-support/thumbnail.webp"
-  - "/assets/images/custom-tours/media-support/thumbnail.webp"
+  - "/assets/images/tours/custom/media-support/hero.webp"
+  - "/assets/images/tours/custom/media-support/thumbnail.webp"
+  - "/assets/images/tours/custom/media-support/thumbnail.webp"
 tour_highlights: []
 best_for: []
 accommodation_style: "Best available local hotels, clean and well-located."
