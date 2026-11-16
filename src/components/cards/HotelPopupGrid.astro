@@ -1,4 +1,6 @@
 ---
+import { hasRealImage } from '../../lib/images';
+
 const { hotels = [], title = "Hotels", intro = "" } = Astro.props;
 
 function splitPipe(value) {
@@ -13,7 +15,7 @@ function uniqueImages(items) {
   return items.filter((src) => {
     if (!src) return false;
     const key = String(src).trim();
-    if (!key || seen.has(key)) return false;
+    if (!key || seen.has(key) || !hasRealImage(key)) return false;
     seen.add(key);
     return true;
   });
@@ -64,6 +66,7 @@ const normalizedHotels = hotels.map((hotel) => {
   const propertyGallery = hotelImages(hotel);
   const rooms = roomImages(hotel);
   const allImages = uniqueImages([...propertyGallery, ...rooms]);
+  if (!allImages.length) allImages.push("/assets/images/placeholders/default-hotel.webp");
 
   return {
     slug: hotel.slug || hotel.hotel_slug,
@@ -75,7 +78,7 @@ const normalizedHotels = hotels.map((hotel) => {
     starRating: hotel.star_rating || hotel.stars || "",
     priceRange: hotel.price_range || "",
     description: hotel.description || hotel.content || "",
-    image: propertyGallery[0] || rooms[0] || hotel.image || "/assets/images/placeholders/default-hotel.webp",
+    image: allImages[0],
     propertyGallery,
     rooms,
     allImages,
