@@ -4,8 +4,8 @@ subtitle: "Salty mountain tea, butter, milk, bread, and hospitality in Faizabad 
 card_description: "Taste shor chai in Badakhshan, a savory mountain tea tied to cold climates, village hospitality, and travel toward Wakhan."
 category: "Cultural Experiences"
 experience_type: "Food & Culture Experience"
-hero_image: "/assets/images/hubs/faizabad/hero.webp"
-image: "/assets/images/hubs/faizabad/hero.webp"
+hero_image: "/assets/images/food/drinks/shor-chai-of-badakhshan/hero.webp"
+image: "/assets/images/food/drinks/shor-chai-of-badakhshan/hero.webp"
 provinces: ["Badakhshan"]
 paired_foods: ["Shor Chai", "Naan", "Dried Mulberries"]
 best_season: "Year round"

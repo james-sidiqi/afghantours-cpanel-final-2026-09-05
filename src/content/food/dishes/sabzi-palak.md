@@ -4,6 +4,8 @@ food_slug: "sabzi-palak"
 subtitle: "Spinach"
 card_description: "Spinach and herbs sautéed or slowly cooked with onions and Afghan spices."
 category: "Afghan Dish"
+hero_image: "/assets/images/food/dishes/sabzi-palak/hero.webp"
+image: "/assets/images/food/dishes/sabzi-palak/hero.webp"
 ---
 
 ### Overview

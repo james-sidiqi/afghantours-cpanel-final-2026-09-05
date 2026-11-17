@@ -85,7 +85,7 @@ for (const slug of culturalSlugs) {
   const mdHeroFallbacks = {
     'afghan-carpets': ['/assets/images/experiences/activities/shopping/gallery/page-01.webp', '/assets/images/page-assets/activities/sightseeing/shopping/01.webp'],
     'afghan-weddings': ['/assets/images/page-assets/people/tourists/tourists-relaxing-tea.webp'],
-    'buzkashi': ['/assets/images/featured-tours/buzkashi-expedition/hero.webp'],
+    'buzkashi': ['/assets/images/tours/featured/buzkashi-expedition/hero.webp'],
     'eid-and-celebrations': ['/assets/images/food/dishes/gosh-e-fil/hero.webp'],
     'glassblowers-of-herat': ['/assets/images/hubs/herat-city/hero.webp', '/assets/images/experiences/cultural/glassblowers-of-herat/hero.webp'],
     'gudiparan-bazi': ['/assets/images/experiences/cultural/gudiparan-bazi/hero.webp', ...listImages('/assets/images/experiences/cultural/gudiparan-bazi')],
@@ -118,21 +118,21 @@ ensureDir(path.join(PUBLIC, 'assets/images/experiences/activities'));
 const activitySources = {
   hiking: [
     '/assets/images/page-assets/website-ready/rocky-valley-hiking.webp',
-    '/assets/images/featured-tours/trek-the-wakhan-corridor/01.webp',
+    '/assets/images/tours/featured/trek-the-wakhan-corridor/01.webp',
   ],
   fishing: [
     '/assets/images/page-assets/activities/other/01.webp',
     // copiloted fishing if present via absolute path outside public — skip
   ],
   trekking: [
-    '/assets/images/featured-tours/trek-the-wakhan-corridor/hero.webp',
-    '/assets/images/featured-tours/trek-the-wakhan-corridor/01.webp',
-    '/assets/images/featured-tours/trek-the-wakhan-corridor/02.webp',
+    '/assets/images/tours/featured/trek-the-wakhan-corridor/hero.webp',
+    '/assets/images/tours/featured/trek-the-wakhan-corridor/01.webp',
+    '/assets/images/tours/featured/trek-the-wakhan-corridor/02.webp',
   ],
   skiing: [
     '/assets/images/page-assets/activities/skiing/01.webp',
     '/assets/images/page-assets/activities/skiing/02.webp',
-    '/assets/images/featured-tours/bamyan-skiing-tour/hero.webp',
+    '/assets/images/tours/featured/bamyan-skiing-tour/hero.webp',
     '/assets/images/page-assets/about/travelers/bamyan-ski-summit.webp',
   ],
   shopping: [

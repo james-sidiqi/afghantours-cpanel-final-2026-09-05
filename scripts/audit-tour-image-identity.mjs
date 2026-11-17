@@ -21,7 +21,7 @@ const byHash = new Map();
 for (const t of active) {
   const hero = String(t.hero_image_path || t.hero_image || '').trim();
   const full = path.join(root, 'public', hero.replace(/^\//, ''));
-  const ownPrefix = `/assets/images/featured-tours/${t.slug}/`;
+  const ownPrefix = `/assets/images/tours/featured/${t.slug}/`;
   if (!hero) failures.push({ slug: t.slug, error: 'empty hero path' });
   else if (!fs.existsSync(full)) failures.push({ slug: t.slug, error: `missing file ${hero}` });
   else if (!hero.startsWith(ownPrefix)) failures.push({ slug: t.slug, error: `hero not under ${ownPrefix}: ${hero}` });

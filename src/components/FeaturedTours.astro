@@ -1,4 +1,5 @@
 ---
+import { getTourHeroImage, listGalleryImages, cleanGallery } from '../lib/images';
 import { getCatalogTour, tourPriceLabel, tourBookingLabel } from '../lib/booking/site';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -110,19 +111,12 @@ const customSlugs = new Set([
 ]);
 
 const folderFor = (tour: Tour) =>
-  customSlugs.has(tour.slug) ? 'custom-tours' : 'featured-tours';
+  customSlugs.has(tour.slug) ? 'tours/custom' : 'tours/featured';
 
 const titleOf = (tour: Tour) =>
   tour.title || tour.name || 'Afghanistan Tour';
 
-const heroOf = (tour: Tour) =>
-  tour.hero_image ||
-  tour.hero_image_path ||
-  tour.image ||
-  tour.overview_image ||
-  tour.overview_image_path ||
-  tour.thumbnail_image_path ||
-  `/assets/images/${folderFor(tour)}/${tour.slug}/hero.webp`;
+const heroOf = (tour: Tour) => getTourHeroImage(tour);
 
 const summaryOf = (tour: Tour) =>
   tour.summary ||
@@ -169,17 +163,12 @@ const routeOf = (tour: Tour) => {
   return (hubs.length ? hubs : provinces).slice(0, 6);
 };
 
-const galleryOf = (tour: Tour) => {
-  const supplied = Array.isArray(tour.gallery) ? tour.gallery : [];
-
-  return [
-    ...supplied,
-    heroOf(tour),
-  ]
-    .filter(Boolean)
-    .filter((item, index, arr) => arr.indexOf(item) === index)
-    .slice(0, 4);
-};
+const galleryOf = (tour: Tour) => cleanGallery([
+  heroOf(tour),
+  ...(Array.isArray(tour.gallery) ? tour.gallery : []),
+  ...listGalleryImages(`/assets/images/tours/featured/${tour.slug}`),
+  ...listGalleryImages(`/assets/images/tours/custom/${tour.slug}`),
+]).slice(0, 4);
 
 const allTours = getTours().filter((tour: Tour) => tour?.slug);
 const featuredIds = getFeaturedIds();
@@ -213,13 +202,13 @@ const clientTours = safeTours.map((tour: any) => ({
   activity_level: tour.activity_level,
   summary: tour.summary,
   description: tour.description,
-  hero_image: tour.hero_image,
+  hero_image: heroOf(tour),
   hero_image_path: tour.hero_image_path,
   image: tour.image,
   overview_image: tour.overview_image,
   overview_image_path: tour.overview_image_path,
   thumbnail_image_path: tour.thumbnail_image_path,
-  gallery: Array.isArray(tour.gallery) ? tour.gallery : [],
+  gallery: galleryOf(tour),
   hubs: Array.isArray(tour.hubs)
     ? tour.hubs.map((h: any) => ({ name: h?.name, title: h?.title, slug: h?.slug }))
     : [],
@@ -339,19 +328,12 @@ const clientTours = safeTours.map((tour: any) => ({
   ]);
 
   const folderForClient = (tour) =>
-    customSlugs.has(tour.slug) ? 'custom-tours' : 'featured-tours';
+    customSlugs.has(tour.slug) ? 'tours/custom' : 'tours/featured';
 
   const titleOfClient = (tour) =>
     tour.title || tour.name || 'Afghanistan Tour';
 
-  const heroOfClient = (tour) =>
-    tour.hero_image ||
-    tour.hero_image_path ||
-    tour.image ||
-    tour.overview_image ||
-    tour.overview_image_path ||
-    tour.thumbnail_image_path ||
-    `/assets/images/${folderForClient(tour)}/${tour.slug}/hero.webp`;
+  const heroOfClient = (tour) => tour.hero_image || tour.hero_image_path || '/assets/images/placeholders/default-tour.webp';
 
   const summaryOfClient = (tour) =>
     tour.summary ||
@@ -379,14 +361,7 @@ const clientTours = safeTours.map((tour: any) => ({
     return (hubs.length ? hubs : provinces).slice(0, 6);
   };
 
-  const galleryOfClient = (tour) => {
-    const supplied = Array.isArray(tour.gallery) ? tour.gallery : [];
-
-    return [
-      ...supplied,
-      heroOfClient(tour),
-    ].filter(Boolean).filter((item, index, arr) => arr.indexOf(item) === index).slice(0, 4);
-  };
+  const galleryOfClient = (tour) => (Array.isArray(tour.gallery) ? tour.gallery : []).slice(0, 4);
 
   function setActive(index) {
     if (!panels.length || !thumbs.length) return;

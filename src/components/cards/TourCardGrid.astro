@@ -1,14 +1,9 @@
 ---
+import { getTourHeroImage } from '../../lib/images';
 import { getCatalogTour, tourPriceLabel } from '../../lib/booking/site';
 const { tours = [], title = "Related Tours", intro = "" } = Astro.props;
 
-const imageFor = (tour) =>
-  tour.hero_image ||
-  tour.hero_image_path ||
-  tour.image ||
-  tour.overview_image ||
-  tour.overview_image_path ||
-  `/assets/images/featured-tours/${tour.slug}/hero.webp`;
+const imageFor = (tour) => getTourHeroImage(tour);
 
 const durationLabel = (tour) =>
   tour.duration_days ? `${tour.duration_days} Days` : (tour.duration || 'Custom Duration');

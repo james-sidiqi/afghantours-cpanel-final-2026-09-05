@@ -3,8 +3,8 @@ title: "Almonds"
 food_slug: balkh-almonds
 section: food_content
 save_to: src/content/food/produce/balkh-almonds.md
-hero_image: "/assets/images/food/dried-fruit/balkh-almonds/hero.webp"
-image: "/assets/images/food/dried-fruit/balkh-almonds/hero.webp"
+hero_image: "/assets/images/food/dried-fruits/balkh-almonds/hero.webp"
+image: "/assets/images/food/dried-fruits/balkh-almonds/hero.webp"
 ---
 
 ### Overview

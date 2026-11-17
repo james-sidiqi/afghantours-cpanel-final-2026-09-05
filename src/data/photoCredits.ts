@@ -217,8 +217,8 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
   },
   {
     "paths": [
-      "/assets/images/food/dried-fruit/herat-raisins/hero.webp",
-      "/assets/images/food/dried-fruit/herat-raisins/thumb.webp"
+      "/assets/images/food/dried-fruits/herat-raisins/hero.webp",
+      "/assets/images/food/dried-fruits/herat-raisins/thumb.webp"
     ],
     "author": "Bim24",
     "license": "CC BY 4.0",
@@ -317,9 +317,9 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
   },
   {
     "paths": [
-      "/assets/images/custom-tours/veteran-return/hero.webp",
-      "/assets/images/custom-tours/veteran-return/thumb.webp",
-      "/assets/images/custom-tours/veteran-return/thumbnail.webp"
+      "/assets/images/tours/custom/veteran-return/hero.webp",
+      "/assets/images/tours/custom/veteran-return/thumb.webp",
+      "/assets/images/tours/custom/veteran-return/thumbnail.webp"
     ],
     "author": "Jim Kelly",
     "license": "CC BY 2.0",

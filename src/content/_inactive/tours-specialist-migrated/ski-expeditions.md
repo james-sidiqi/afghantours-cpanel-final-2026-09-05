@@ -33,13 +33,13 @@ provinces:
   - "Wardak"
 transport_type: "Domestic flights and 4WD vehicles"
 domestic_flights: false
-hero_image_path: "/assets/images/custom-tours/ski-expeditions/hero.webp"
-overview_image_path: "/assets/images/custom-tours/ski-expeditions/thumbnail.webp"
-thumbnail_image_path: "/assets/images/custom-tours/ski-expeditions/thumbnail.webp"
+hero_image_path: "/assets/images/tours/custom/ski-expeditions/hero.webp"
+overview_image_path: "/assets/images/tours/custom/ski-expeditions/thumbnail.webp"
+thumbnail_image_path: "/assets/images/tours/custom/ski-expeditions/thumbnail.webp"
 gallery_images:
-  - "/assets/images/custom-tours/ski-expeditions/hero.webp"
-  - "/assets/images/custom-tours/ski-expeditions/thumbnail.webp"
-  - "/assets/images/custom-tours/ski-expeditions/thumbnail.webp"
+  - "/assets/images/tours/custom/ski-expeditions/hero.webp"
+  - "/assets/images/tours/custom/ski-expeditions/thumbnail.webp"
+  - "/assets/images/tours/custom/ski-expeditions/thumbnail.webp"
 tour_highlights: []
 best_for: []
 accommodation_style: "Best available local hotels, clean and well-located."

@@ -1,4 +1,5 @@
 ---
+import { listGalleryImages, isGalleryImage } from '../../lib/images';
 import { isRejectedImage } from '../../data/rejectedImages';
 import PhotoCredits from '../../components/PhotoCredits.astro';
 import { altFor } from '../../data/photoCredits';
@@ -140,24 +141,7 @@ const resolvedFoodImageFolder =
   dedicatedFolderCandidates.find((folder) =>
     publicAssetExists(`${folder}hero.webp`)
   ) ||
-  dedicatedFolderCandidates.find((folder) => {
-    const diskFolder = path.join(
-      process.cwd(),
-      'public',
-      folder.replace(/^\/+/, '')
-    );
-
-    try {
-      return (
-        fs.existsSync(diskFolder) &&
-        fs.readdirSync(diskFolder).some((file) =>
-          /\.(webp|jpg|jpeg|png|avif)$/i.test(file)
-        )
-      );
-    } catch {
-      return false;
-    }
-  }) ||
+  dedicatedFolderCandidates.find((folder) => listGalleryImages(folder, false).length > 0) ||
   '';
 
 const dedicatedHero =
@@ -345,7 +329,7 @@ const galleryCandidates: string[] = [];
 const addGalleryImage = (value: any) => {
   if (!value) return;
   const src = String(value).trim();
-  if (src && !/\/crops\//.test(src) && !isRejectedImage(src) && !galleryCandidates.includes(src)) galleryCandidates.push(src);
+  if (isGalleryImage(src) && !isRejectedImage(src) && !galleryCandidates.includes(src)) galleryCandidates.push(src);
 };
 
 if (Array.isArray(data.gallery_images)) data.gallery_images.forEach(addGalleryImage);
@@ -355,61 +339,7 @@ addGalleryImage(heroImage);
 if (data.image && data.image !== heroImage) addGalleryImage(data.image);
 
 const scanFoodImageFolder = (publicFolder: string) => {
-  if (!publicFolder || !publicFolder.startsWith('/')) return;
-
-  const diskFolder = path.join(
-    process.cwd(),
-    'public',
-    publicFolder.replace(/^\/+/, '')
-  );
-
-  try {
-    if (!fs.existsSync(diskFolder)) return;
-
-    let files = fs.readdirSync(diskFolder)
-      .filter((file) =>
-        /\.(webp|jpg|jpeg|png|avif)$/i.test(file)
-      )
-      .filter((file) =>
-        !/^(thumb|thumbnail)\./i.test(file)
-      );
-
-    /*
-     * If curated gallery-N files exist, prefer those over duplicate
-     * numeric aliases such as 01.webp.
-     */
-    const hasNamedGallery = files.some((file) =>
-      /^gallery-\d+/i.test(file)
-    );
-
-    if (hasNamedGallery) {
-      files = files.filter(
-        (file) =>
-          /^hero\./i.test(file) ||
-          /^gallery-\d+/i.test(file)
-      );
-    }
-
-    files
-      .sort((a, b) => {
-        const rank = (file: string) => {
-          if (/^hero\./i.test(file)) return 0;
-          if (/^gallery-/i.test(file)) return 1;
-          if (/^\d+/i.test(file)) return 2;
-          return 3;
-        };
-
-        return rank(a) - rank(b) || a.localeCompare(b);
-      })
-      .forEach((file) =>
-        addGalleryImage(`${publicFolder}${file}`)
-      );
-  } catch (error) {
-    console.warn(
-      `Could not inspect food image folder ${publicFolder}`,
-      error
-    );
-  }
+  listGalleryImages(publicFolder).forEach(addGalleryImage);
 };
 
 /*

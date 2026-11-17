@@ -1,4 +1,5 @@
 ---
+import { listGalleryImages, isGalleryImage } from '../../lib/images';
 import PhotoCredits from '../../components/PhotoCredits.astro';
 import { isRejectedImage } from '../../data/rejectedImages';
 import { altFor } from '../../data/photoCredits';
@@ -109,7 +110,7 @@ const addImage = (value) => {
 
   if (
     normalized &&
-    isRealImage(normalized) &&
+    isGalleryImage(normalized) &&
     !imageCandidates.includes(normalized)
   ) {
     imageCandidates.push(normalized);
@@ -162,72 +163,7 @@ if (
 // A curated gallery_images list is used as-is: no folder discovery (keeps unrelated files in the folder out).
 const curatedGallery = Array.isArray(data.gallery_images) && data.gallery_images.length > 0;
 for (const folder of (curatedGallery ? [] : foldersToCheck)) {
-
-  const diskFolder = path.join(
-    process.cwd(),
-    'public',
-    folder.replace(/^\/+/, '')
-  );
-
-
-  try {
-
-    if (!fs.existsSync(diskFolder)) {
-      continue;
-    }
-
-
-    const images = fs
-      .readdirSync(diskFolder)
-      .filter((name) =>
-        /\.(webp|jpg|jpeg|png|avif)$/i.test(name)
-      )
-      .sort((a, b) => {
-
-        const rank = (name) => {
-          const lower =
-            name.toLowerCase();
-
-          if (
-            lower.startsWith('hero.')
-          ) return 0;
-
-          if (
-            lower.includes('overview')
-          ) return 1;
-
-          if (
-            lower.includes('gallery')
-          ) return 2;
-
-          return 3;
-        };
-
-
-        return (
-          rank(a) -
-          rank(b) ||
-          a.localeCompare(b)
-        );
-
-      });
-
-
-    images.forEach((name) =>
-      addImage(
-        `${folder.replace(/\/?$/, '/')}${name}`
-      )
-    );
-
-  } catch (error) {
-
-    console.warn(
-      `Gallery discovery failed for ${slug}`,
-      error
-    );
-
-  }
-
+  listGalleryImages(folder).forEach(addImage);
 }
 
 

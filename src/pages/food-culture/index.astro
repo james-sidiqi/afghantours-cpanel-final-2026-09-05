@@ -22,11 +22,14 @@ for (const item of allFoodItems) {
   }
 }
 
-// Cards whose stored image does not show the item itself (Shor Chai pointed at a
-// Faizabad landscape) render as intentional image-free cards.
-const NO_CARD_IMAGE = new Set(['drinks/shor-chai-of-badakhshan', 'produce/farah-watermelon', 'dishes/kabul-kabob', 'dishes/kandahari-rosh']);
+// Food cards can be forced image-free here when a stored photo does not show the item. Currently none.
+const NO_CARD_IMAGE = new Set();
 // Per-card focal point so the subject stays in frame in the fixed card crop.
-const CARD_FOCUS = { 'drinks/sheer-chai': '72% 88%', 'dried-fruits/paktia-pine-nuts': '50% 12%' };
+const CARD_FOCUS = { 'drinks/sheer-chai': '50% 40%', 'dried-fruits/paktia-pine-nuts': '50% 12%' };
+// Prefer a named file when the folder's hero.webp must stay unused (kept on disk).
+const CARD_IMAGE_OVERRIDE = {
+  'dishes/kandahari-rosh': '/assets/images/food/dishes/kandahari-rosh/rosh-james.webp',
+};
 const publicFile = (src) => !!src && !/\/placeholders\//.test(src) &&
   fs.existsSync(path.join(process.cwd(), 'public', String(src).replace(/^\/+/, '')));
 const imageForId = (id) => {
@@ -34,6 +37,7 @@ const imageForId = (id) => {
   const item = itemMap.get(normalizeFoodKey(id));
   const folder = String(id);
   return [
+    CARD_IMAGE_OVERRIDE[id],
     item?.data?.card_image,
     item?.data?.image,
     item?.data?.hero_image,
@@ -83,7 +87,6 @@ const dishes = [
     title: 'Afghan Kabob',
     location: 'Across Afghanistan',
     description: `Grilled skewers of meat served with Afghan naan, onions and seasonal accompaniments. Styles vary among cooks and regions.`,
-    overviewOnly: true,
   },
   {
     id: 'dishes/kandahari-rosh',
@@ -169,12 +172,6 @@ const dishes = [
     title: 'Dopiaza',
     location: 'Meat dish',
     description: `Succulent meat cooked with plenty of onions and aromatic spices.`,
-  },
-  {
-    id: 'dishes/ouzi',
-    title: 'Ouzi (Rice-Stuffed Sheep)',
-    location: 'Meat dish',
-    description: `A celebratory whole sheep or lamb stuffed with seasoned rice and slow-cooked.`,
   },
   {
     id: 'dishes/qawardagh',

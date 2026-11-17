@@ -18,8 +18,7 @@ Nuristan is one of Afghanistan’s most culturally distinct provinces, set amid 
 
 ### Key Attractions
 - Parun Valley
-- Bashgal Valley
-- Barg-e Matal & Lakes
+- Nuristan National Park
 - Landai Sin & Mandol Lakes
 
 ### Travel Notes
