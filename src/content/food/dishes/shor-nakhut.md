@@ -4,6 +4,8 @@ food_slug: "shor-nakhut"
 subtitle: "Spicy chickpeas"
 card_description: "Chickpeas tossed in a tangy, spicy dressing, served as a snack or market food."
 category: "Afghan Dish"
+hero_image: "/assets/images/food/dishes/shor-nakhut/hero.webp"
+image: "/assets/images/food/dishes/shor-nakhut/hero.webp"
 ---
 
 ### Overview
