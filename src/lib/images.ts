@@ -98,6 +98,7 @@ export function getHotelImage(hotel: any): string {
 }
 export function getRegionImage(region: any): string {
   const slug = region?.slug || region?.region_slug;
+  region = { ...region, ...((ownerSelections as Record<string, any>)[`regions/${slug}`] || {}) };
   return entityHero(region, [slug ? `/assets/images/regions/${slug}/hero.webp` : null,
     slug ? `/assets/images/regions/${slug}.webp` : null], PLACEHOLDERS.region);
 }
@@ -153,6 +154,7 @@ export function getCulinaryImage(item: any): string {
 }
 export function getCulturalExperienceImage(item: any): string {
   const slug = item?.slug || item?.id?.replace(/\.md$/, '');
+  item = { ...item, ...((ownerSelections as Record<string, any>)[`cultural/${slug}`] || {}) };
   return entityHero(item, [slug ? `${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}/hero.webp` : null], PLACEHOLDERS.attraction);
 }
 export function getActivityImage(item: any): string {
@@ -178,6 +180,7 @@ export function getCulturalExperienceGallery(item: any): string[] {
 }
 export function getActivityGallery(item: any): string[] {
   const slug = item?.slug || item?.activity_slug;
+  item = { ...item, ...((ownerSelections as Record<string, any>)[`activities/${slug}`] || {}) };
   return experienceGallery(item, slug ? [`${EXPERIENCE_ASSET_ROOTS.activities}/${slug}`,
     `/assets/images/page-assets/activities/${slug}`] : [], getActivityImage(item));
 }

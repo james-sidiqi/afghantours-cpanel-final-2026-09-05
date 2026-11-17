@@ -31,7 +31,7 @@ const CARD_FOCUS = { 'drinks/sheer-chai': '72% 88%', 'dried-fruits/paktia-pine-n
 // Rosh now has an owner-provided matching photo. Other intentional image-free cards stay blocked.
 const APPROVED_CARD_IMAGES = {
   'dishes/kabul-kabob': "/assets/images/food/dishes/afghan-kabob/roadside-kabob.webp",
-  'dishes/kandahari-rosh': '/assets/images/food/dishes/kandahari-rosh/gallery/rosh-platter.webp',
+  'dishes/kandahari-rosh': '/assets/images/food/dishes/kandahari-rosh/owner-rosh.webp',
 };
 const imageForId = (id) => {
   const approved = APPROVED_CARD_IMAGES[id];
@@ -50,7 +50,6 @@ const imageForId = (id) => {
 const FLAT_FOOD_SLUGS = {
   'dishes/kandahari-rosh': 'kandahar-rosht',
   'dishes/chiken-korma': 'korma-e-herati',
-  'dishes/chicken-kabuli': 'chicken-qabili',
   'dishes/kabuli-pulao': 'kabuli-pulao',
   'produce/kandahar-pomegranate': 'kandahar-pomegranate',
   'dried-fruits/samangan-pistachios': 'samangan-pistachios',
@@ -137,12 +136,6 @@ const dishes = [
     title: 'Naan',
     location: 'Countrywide',
     description: `Traditional Afghan bread baked fresh daily.`,
-  },
-  {
-    id: 'dishes/chicken-kabuli',
-    title: 'Chicken Kabuli',
-    location: 'Countrywide',
-    description: `Chicken variation of Kabuli Pulao.`,
   },
   {
     id: 'dishes/qurmay-qachaloo',

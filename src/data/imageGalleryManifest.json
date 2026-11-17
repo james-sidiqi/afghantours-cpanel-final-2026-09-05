@@ -5,7 +5,7 @@
   ],
   "/assets/images/attractions/ai-khanoum": [],
   "/assets/images/attractions/alingar-valley": [
-    "/assets/images/attractions/alingar-valley/gallery-1.webp"
+    "/assets/images/attractions/alingar-valley/owner-alingar-valley.webp"
   ],
   "/assets/images/attractions/ayno-mina-kandahar": [
     "/assets/images/attractions/ayno-mina-kandahar/gallery-1.webp"
@@ -20,7 +20,8 @@
     "/assets/images/attractions/baburs-gardens/gallery-3.webp"
   ],
   "/assets/images/attractions/badakhshan-mountains-and-lakes": [
-    "/assets/images/attractions/badakhshan-mountains-and-lakes/gallery-1.webp"
+    "/assets/images/attractions/badakhshan-mountains-and-lakes/gallery-1.webp",
+    "/assets/images/attractions/badakhshan-mountains-and-lakes/owner-badakhshan-lake.webp"
   ],
   "/assets/images/attractions/badghis-hills-nomadic-pastures": [
     "/assets/images/attractions/badghis-hills-nomadic-pastures/nomadic-pastures.webp"
@@ -37,11 +38,13 @@
     "/assets/images/attractions/buddha-niches-of-bamyan/gallery-2.webp"
   ],
   "/assets/images/attractions/chicken-street": [
+    "/assets/images/attractions/chicken-street/hero.webp",
     "/assets/images/attractions/chicken-street/gallery-1.webp"
   ],
   "/assets/images/attractions/chilzina-forty-steps": [
     "/assets/images/attractions/chilzina-forty-steps/gallery-1.webp",
-    "/assets/images/attractions/chilzina-forty-steps/gallery-2.webp"
+    "/assets/images/attractions/chilzina-forty-steps/gallery-2.webp",
+    "/assets/images/attractions/chilzina-forty-steps/owner-chilzina.webp"
   ],
   "/assets/images/attractions/darulaman-palace": [
     "/assets/images/attractions/darulaman-palace/gallery-1.webp",
@@ -258,7 +261,8 @@
     "/assets/images/attractions/tarin-kot-surroundings/gallery-1.webp"
   ],
   "/assets/images/attractions/tomb-of-ahmad-shah-durrani": [
-    "/assets/images/attractions/tomb-of-ahmad-shah-durrani/gallery-1.webp"
+    "/assets/images/attractions/tomb-of-ahmad-shah-durrani/gallery-1.webp",
+    "/assets/images/attractions/tomb-of-ahmad-shah-durrani/owner-mausoleum-of-ahmad-shah-durrani-gallery.webp"
   ],
   "/assets/images/attractions/tomb-of-nader-khan": [
     "/assets/images/attractions/tomb-of-nader-khan/gallery-1.webp"
@@ -275,7 +279,6 @@
     "/assets/images/attractions/tv-tower-hill-asmai/gallery-2.webp"
   ],
   "/assets/images/attractions/wakhan-corridor": [
-    "/assets/images/attractions/wakhan-corridor/gallery-1.webp",
     "/assets/images/attractions/wakhan-corridor/gallery-2.webp",
     "/assets/images/attractions/wakhan-corridor/gallery-3.webp"
   ],
@@ -283,14 +286,15 @@
     "/assets/images/attractions/wardak-highlands/gallery-1.webp"
   ],
   "/assets/images/attractions/wazir-akbar-khan-hill": [
-    "/assets/images/attractions/wazir-akbar-khan-hill/gallery-1.webp"
+    "/assets/images/attractions/wazir-akbar-khan-hill/gallery-1.webp",
+    "/assets/images/attractions/wazir-akbar-khan-hill/owner-wak-hill.webp"
   ],
-  "/assets/images/experiences/activities/birding/gallery": [
-    "/assets/images/attractions/qargha-lake/gallery-5.webp",
-    "/assets/images/experiences/activities/birding/gallery/02.webp"
-  ],
+  "/assets/images/experiences/activities/birding/gallery": [],
   "/assets/images/experiences/activities/birding": [
-    "/assets/images/experiences/activities/birding/peacock-kabul-jsp012.webp"
+    "/assets/images/attractions/qargha-lake/gallery-5.webp",
+    "/assets/images/experiences/activities/birding/gallery/02.webp",
+    "/assets/images/experiences/activities/birding/peacock-kabul-jsp012.webp",
+    "/assets/images/experiences/activities/birding/owner-01.webp"
   ],
   "/assets/images/experiences/activities/fishing/gallery": [
     "/assets/images/experiences/activities/fishing/gallery/02.webp",
@@ -308,28 +312,22 @@
   "/assets/images/experiences/activities/shopping": [
     "/assets/images/experiences/activities/shopping/night-cherry-cart-kabul-jsp016.webp"
   ],
-  "/assets/images/experiences/activities/sightseeing/gallery": [
+  "/assets/images/experiences/activities/sightseeing/gallery": [],
+  "/assets/images/experiences/activities/sightseeing/historical": [],
+  "/assets/images/experiences/activities/sightseeing/religious": [],
+  "/assets/images/experiences/activities/sightseeing/scenic": [],
+  "/assets/images/experiences/activities/sightseeing": [
     "/assets/images/experiences/activities/sightseeing/gallery/01.webp",
-    "/assets/images/experiences/activities/sightseeing/gallery/02.webp"
-  ],
-  "/assets/images/experiences/activities/sightseeing/historical": [
-    "/assets/images/experiences/activities/sightseeing/historical/03.webp"
-  ],
-  "/assets/images/experiences/activities/sightseeing/religious": [
+    "/assets/images/experiences/activities/sightseeing/gallery/02.webp",
+    "/assets/images/experiences/activities/sightseeing/historical/03.webp",
     "/assets/images/experiences/activities/sightseeing/religious/02.webp",
-    "/assets/images/experiences/activities/sightseeing/religious/03.webp"
-  ],
-  "/assets/images/experiences/activities/sightseeing/scenic": [
+    "/assets/images/experiences/activities/sightseeing/religious/03.webp",
     "/assets/images/experiences/activities/sightseeing/scenic/band-e-amir-lakes.webp",
     "/assets/images/experiences/activities/sightseeing/scenic/mountains-above-green-valley-kunduz-takhar.webp",
-    "/assets/images/experiences/activities/sightseeing/scenic/northern-plains-sheep.webp"
+    "/assets/images/experiences/activities/sightseeing/scenic/northern-plains-sheep.webp",
+    "/assets/images/experiences/activities/sightseeing/owner-kabul-street-wide.webp"
   ],
-  "/assets/images/experiences/activities/sightseeing": [
-    "/assets/images/experiences/activities/sightseeing/shah-e-do-shamshira-kabul-jsp015.webp"
-  ],
-  "/assets/images/experiences/activities/sightseeing/street-life": [
-    "/assets/images/experiences/activities/sightseeing/street-life/zarang-crates-kabul-street.webp"
-  ],
+  "/assets/images/experiences/activities/sightseeing/street-life": [],
   "/assets/images/experiences/activities/skiing/gallery": [
     "/assets/images/tours/featured/bamyan-skiing-tour/hero.webp",
     "/assets/images/experiences/activities/skiing/gallery/03.webp"
@@ -340,15 +338,7 @@
   "/assets/images/experiences/culinary/arg-restaurant-herat/gallery": [
     "/assets/images/experiences/culinary/arg-restaurant-herat/gallery/01.webp"
   ],
-  "/assets/images/experiences/culinary/aziz-bakery/gallery": [
-    "/assets/images/experiences/culinary/aziz-bakery/gallery/01.webp",
-    "/assets/images/experiences/culinary/aziz-bakery/gallery/02.webp",
-    "/assets/images/experiences/culinary/aziz-bakery/gallery/03.webp",
-    "/assets/images/experiences/culinary/aziz-bakery/gallery/04.webp",
-    "/assets/images/experiences/culinary/aziz-bakery/gallery/05.webp",
-    "/assets/images/experiences/culinary/aziz-bakery/gallery/06.webp",
-    "/assets/images/experiences/culinary/aziz-bakery/gallery/07.webp"
-  ],
+  "/assets/images/experiences/culinary/aziz-bakery/gallery": [],
   "/assets/images/experiences/culinary/bamyan-kabob/gallery": [
     "/assets/images/experiences/culinary/bamyan-kabob/gallery/01.webp",
     "/assets/images/experiences/culinary/bamyan-kabob/gallery/02.webp"
@@ -398,10 +388,7 @@
     "/assets/images/experiences/cultural/buzkashi/gallery/09.webp",
     "/assets/images/experiences/cultural/buzkashi/gallery/10.webp"
   ],
-  "/assets/images/experiences/cultural/glassblowers-of-herat/gallery": [
-    "/assets/images/experiences/cultural/glassblowers-of-herat/gallery/01.webp",
-    "/assets/images/experiences/cultural/glassblowers-of-herat/hero.webp"
-  ],
+  "/assets/images/experiences/cultural/glassblowers-of-herat/gallery": [],
   "/assets/images/experiences/cultural/gudiparan-bazi/gallery": [
     "/assets/images/experiences/cultural/gudiparan-bazi/gallery/02.webp"
   ],
@@ -416,9 +403,7 @@
     "/assets/images/experiences/cultural/kaftar-bazi/gallery/02.webp",
     "/assets/images/experiences/cultural/kaftar-bazi/gallery/03.webp"
   ],
-  "/assets/images/experiences/cultural/kuchi-nomads/gallery": [
-    "/assets/images/experiences/cultural/kuchi-nomads/gallery/01.webp"
-  ],
+  "/assets/images/experiences/cultural/kuchi-nomads/gallery": [],
   "/assets/images/experiences/cultural/pahlawani/gallery": [
     "/assets/images/experiences/cultural/pahlawani/gallery/02.webp"
   ],
@@ -426,8 +411,9 @@
     "/assets/images/food/dishes/ash/gallery-1.webp"
   ],
   "/assets/images/food/dishes/bolani": [
+    "/assets/images/food/dishes/bolani/hero.webp",
     "/assets/images/food/dishes/bolani/gallery-1.webp",
-    "/assets/images/food/dishes/bolani/gallery-2.webp"
+    "/assets/images/food/dishes/bolani/owner-bolani-stand.webp"
   ],
   "/assets/images/food/dishes/chapli-kabob": [
     "/assets/images/food/dishes/chapli-kabob/gallery-1.webp"
@@ -999,5 +985,37 @@
   ],
   "/assets/images/food/dried-fruits/badghis-pistachios": [
     "/assets/images/food/dried-fruits/badghis-pistachios/pista-forest-gallery.webp"
+  ],
+  "/assets/images/food/produce/kandahar-grapes": [
+    "/assets/images/food/produce/kandahar-grapes/hero.webp"
+  ],
+  "/assets/images/experiences/cultural/glassblowers-of-herat": [
+    "/assets/images/experiences/cultural/glassblowers-of-herat/owner-glassware.webp"
+  ],
+  "/assets/images/attractions/band-e-amir-national-park": [
+    "/assets/images/attractions/band-e-amir-national-park/owner-band-e-amir-spring.webp",
+    "/assets/images/attractions/band-e-amir-national-park/owner-band-e-amir-light-snow.webp",
+    "/assets/images/attractions/band-e-amir-national-park/owner-band-e-amir.webp"
+  ],
+  "/assets/images/attractions/farah-citadel": [
+    "/assets/images/attractions/farah-citadel/owner-farah-citadel-1.webp",
+    "/assets/images/attractions/farah-citadel/owner-farah-citadel-2.webp",
+    "/assets/images/attractions/farah-citadel/owner-farah-citadel.webp"
+  ],
+  "/assets/images/experiences/culinary/aziz-bakery": [
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/01.webp",
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/03.webp",
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/04.webp",
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/05.webp",
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/06.webp",
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/07.webp",
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/02.webp"
+  ],
+  "/assets/images/experiences/cultural/kuchi-nomads": [
+    "/assets/images/experiences/cultural/kuchi-nomads/owner-kuchi-nomads-gallery.webp",
+    "/assets/images/experiences/cultural/kuchi-nomads/owner-kuchi-nomads.webp"
+  ],
+  "/assets/images/food/drinks/sheer-chai": [
+    "/assets/images/food/drinks/sheer-chai/hero.webp"
   ]
 }

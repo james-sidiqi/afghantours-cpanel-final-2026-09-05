@@ -9,5 +9,11 @@
   "/attractions/tomb-of-nader-khan/": "/attractions/",
   "/attractions/ai-khanoum/": "/attractions/",
   "/food-culture/dishes/ouzi/": "/food-culture/#dishes",
-  "/food-culture/produce/logar-orchard-gardens/": "/food-culture/#produce"
+  "/food-culture/produce/logar-orchard-gardens/": "/food-culture/#produce",
+  "/food-culture/chicken-qabili/": "/food-culture/#dishes",
+  "/food-culture/chicken-kabuli/": "/food-culture/#dishes",
+  "/food-culture/dishes/chicken-kabuli/": "/food-culture/#dishes",
+  "/food-culture/dishes/chicken-qabili/": "/food-culture/#dishes",
+  "/food-culture/ouzi/": "/food-culture/#dishes",
+  "/cultural-experiences/paktika-livestock-markets/": "/cultural-experiences/"
 }

@@ -13,11 +13,12 @@ related_food_slugs: []
 provinces: ["Kabul"]
 best_season: "Year round"
 duration: "30–60 minutes"
-hero_image: "/assets/images/experiences/culinary/aziz-bakery/gallery/02.webp"
 nearby: ["Chicken Street", "Shah-e-Du Shamshira", "Murad Khane"]
-image: "/assets/images/experiences/culinary/aziz-bakery/gallery/02.webp"
-gallery_images: ["/assets/images/experiences/culinary/aziz-bakery/gallery/01.webp", "/assets/images/experiences/culinary/aziz-bakery/gallery/03.webp", "/assets/images/experiences/culinary/aziz-bakery/gallery/04.webp", "/assets/images/experiences/culinary/aziz-bakery/gallery/05.webp", "/assets/images/experiences/culinary/aziz-bakery/gallery/06.webp", "/assets/images/experiences/culinary/aziz-bakery/gallery/07.webp"]
+hero_image: "/assets/images/experiences/culinary/aziz-bakery/owner-haji-aziz-hero.webp"
+image: "/assets/images/experiences/culinary/aziz-bakery/owner-haji-aziz-hero.webp"
+gallery_images: ["/assets/images/experiences/culinary/aziz-bakery/gallery/01.webp", "/assets/images/experiences/culinary/aziz-bakery/gallery/03.webp", "/assets/images/experiences/culinary/aziz-bakery/gallery/04.webp", "/assets/images/experiences/culinary/aziz-bakery/gallery/05.webp", "/assets/images/experiences/culinary/aziz-bakery/gallery/06.webp", "/assets/images/experiences/culinary/aziz-bakery/gallery/07.webp", "/assets/images/experiences/culinary/aziz-bakery/gallery/02.webp"]
 gallery_mode: "explicit"
+gallery_exclude_hero: true
 ---
 
 Chicken Street is known for carpets, antiques, jewelry, gifts, and handicrafts. Haji Aziz Bakery adds another layer to the experience: Kabul sweets.

@@ -4,14 +4,17 @@ subtitle: "Seasonal migration, black goat-hair tents, livestock, jewelry, and tr
 card_description: "Explore the movement, material culture, hospitality, and food traditions of Kuchi nomadic communities when local timing allows."
 category: "Cultural Experiences"
 experience_type: "Living Traditions"
-hero_image: "/assets/images/page-assets/people/cultural-interactions/kabul-village-kids.webp"
-image: "/assets/images/page-assets/people/cultural-interactions/kabul-village-kids.webp"
 provinces: ["Bamyan", "Ghor", "Wardak", "Ghazni"]
 paired_foods: ["Kurut", "Kuchi Bread"]
 best_season: "Spring and autumn migrations"
 duration: "Variable"
 related_tours: ["central-afghanistan-discovery", "custom-tours"]
 nearby: ["Bamyan Highlands", "Ghor Pastures", "Wardak Highlands"]
+hero_image: "/assets/images/experiences/cultural/kuchi-nomads/owner-kuchi-hero.webp"
+image: "/assets/images/experiences/cultural/kuchi-nomads/owner-kuchi-hero.webp"
+gallery_images: ["/assets/images/experiences/cultural/kuchi-nomads/owner-kuchi-nomads-gallery.webp", "/assets/images/experiences/cultural/kuchi-nomads/owner-kuchi-nomads.webp"]
+gallery_mode: "explicit"
+gallery_exclude_hero: true
 ---
 
 Across Afghanistan's open steppes and mountain routes, Kuchi nomads represent a way of life shaped by movement, livestock, weather, and endurance. Their seasonal migrations have connected lowlands and highlands for generations.

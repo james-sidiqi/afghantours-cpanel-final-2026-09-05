@@ -84,16 +84,19 @@
     "gallery_mode": "explicit"
   },
   "culinary/aziz-bakery": {
-    "hero_image": "/assets/images/experiences/culinary/aziz-bakery/gallery/02.webp",
+    "hero_image": "/assets/images/experiences/culinary/aziz-bakery/owner-haji-aziz-hero.webp",
+    "card_image": "/assets/images/experiences/culinary/aziz-bakery/owner-haji-aziz-hero.webp",
     "gallery_images": [
       "/assets/images/experiences/culinary/aziz-bakery/gallery/01.webp",
       "/assets/images/experiences/culinary/aziz-bakery/gallery/03.webp",
       "/assets/images/experiences/culinary/aziz-bakery/gallery/04.webp",
       "/assets/images/experiences/culinary/aziz-bakery/gallery/05.webp",
       "/assets/images/experiences/culinary/aziz-bakery/gallery/06.webp",
-      "/assets/images/experiences/culinary/aziz-bakery/gallery/07.webp"
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/07.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/02.webp"
     ],
-    "gallery_mode": "explicit"
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
   },
   "culinary/kabul-chainaki": {
     "hero_image": "/assets/images/experiences/culinary/kabul-chainaki/gallery/01.webp",
@@ -121,5 +124,186 @@
       "/assets/images/food/dried-fruits/badghis-pistachios/pista-forest-gallery.webp"
     ],
     "gallery_mode": "explicit"
+  },
+  "food/kandahar-grapes": {
+    "hero_image": "/assets/images/food/produce/kandahar-grapes/owner-afghan-grapes.webp",
+    "card_image": "/assets/images/food/produce/kandahar-grapes/owner-afghan-grapes.webp",
+    "gallery_images": [
+      "/assets/images/food/produce/kandahar-grapes/hero.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "cultural/glassblowers-of-herat": {
+    "hero_image": "/assets/images/experiences/cultural/glassblowers-of-herat/owner-glassblower-at-furnace.webp",
+    "card_image": "/assets/images/experiences/cultural/glassblowers-of-herat/owner-glassblower-at-furnace.webp",
+    "gallery_images": [
+      "/assets/images/experiences/cultural/glassblowers-of-herat/owner-glassware.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/wakhan-corridor": {
+    "hero_image": "/assets/images/attractions/wakhan-corridor/hero.webp",
+    "card_image": "/assets/images/attractions/wakhan-corridor/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/wakhan-corridor/gallery-2.webp",
+      "/assets/images/attractions/wakhan-corridor/gallery-3.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/alingar-valley": {
+    "hero_image": "/assets/images/attractions/alingar-valley/gallery-1.webp",
+    "card_image": "/assets/images/attractions/alingar-valley/gallery-1.webp",
+    "gallery_images": [
+      "/assets/images/attractions/alingar-valley/owner-alingar-valley.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/badakhshan-mountains-and-lakes": {
+    "hero_image": "/assets/images/attractions/badakhshan-mountains-and-lakes/hero.webp",
+    "card_image": "/assets/images/attractions/badakhshan-mountains-and-lakes/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/badakhshan-mountains-and-lakes/gallery-1.webp",
+      "/assets/images/attractions/badakhshan-mountains-and-lakes/owner-badakhshan-lake.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/band-e-amir-national-park": {
+    "hero_image": "/assets/images/attractions/band-e-amir-national-park/hero.webp",
+    "card_image": "/assets/images/attractions/band-e-amir-national-park/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/band-e-amir-national-park/owner-band-e-amir-spring.webp",
+      "/assets/images/attractions/band-e-amir-national-park/owner-band-e-amir-light-snow.webp",
+      "/assets/images/attractions/band-e-amir-national-park/owner-band-e-amir.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/wazir-akbar-khan-hill": {
+    "hero_image": "/assets/images/attractions/wazir-akbar-khan-hill/hero.webp",
+    "card_image": "/assets/images/attractions/wazir-akbar-khan-hill/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/wazir-akbar-khan-hill/gallery-1.webp",
+      "/assets/images/attractions/wazir-akbar-khan-hill/owner-wak-hill.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/chilzina-forty-steps": {
+    "hero_image": "/assets/images/attractions/chilzina-forty-steps/hero.webp",
+    "card_image": "/assets/images/attractions/chilzina-forty-steps/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/chilzina-forty-steps/gallery-1.webp",
+      "/assets/images/attractions/chilzina-forty-steps/gallery-2.webp",
+      "/assets/images/attractions/chilzina-forty-steps/owner-chilzina.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/farah-citadel": {
+    "hero_image": "/assets/images/attractions/farah-citadel/hero.webp",
+    "card_image": "/assets/images/attractions/farah-citadel/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/farah-citadel/owner-farah-citadel-1.webp",
+      "/assets/images/attractions/farah-citadel/owner-farah-citadel-2.webp",
+      "/assets/images/attractions/farah-citadel/owner-farah-citadel.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/tomb-of-ahmad-shah-durrani": {
+    "hero_image": "/assets/images/attractions/tomb-of-ahmad-shah-durrani/hero.webp",
+    "card_image": "/assets/images/attractions/tomb-of-ahmad-shah-durrani/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/tomb-of-ahmad-shah-durrani/gallery-1.webp",
+      "/assets/images/attractions/tomb-of-ahmad-shah-durrani/owner-mausoleum-of-ahmad-shah-durrani-gallery.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/chicken-street": {
+    "hero_image": "/assets/images/attractions/chicken-street/card.webp",
+    "card_image": "/assets/images/attractions/chicken-street/card.webp",
+    "gallery_images": [
+      "/assets/images/attractions/chicken-street/hero.webp",
+      "/assets/images/attractions/chicken-street/gallery-1.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "activities/sightseeing": {
+    "hero_image": "/assets/images/experiences/activities/sightseeing/shah-e-do-shamshira-kabul-jsp015.webp",
+    "card_image": "/assets/images/experiences/activities/sightseeing/shah-e-do-shamshira-kabul-jsp015.webp",
+    "gallery_images": [
+      "/assets/images/experiences/activities/sightseeing/gallery/01.webp",
+      "/assets/images/experiences/activities/sightseeing/gallery/02.webp",
+      "/assets/images/experiences/activities/sightseeing/historical/03.webp",
+      "/assets/images/experiences/activities/sightseeing/religious/02.webp",
+      "/assets/images/experiences/activities/sightseeing/religious/03.webp",
+      "/assets/images/experiences/activities/sightseeing/scenic/band-e-amir-lakes.webp",
+      "/assets/images/experiences/activities/sightseeing/scenic/mountains-above-green-valley-kunduz-takhar.webp",
+      "/assets/images/experiences/activities/sightseeing/scenic/northern-plains-sheep.webp",
+      "/assets/images/experiences/activities/sightseeing/owner-kabul-street-wide.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "activities/birding": {
+    "hero_image": "/assets/images/experiences/activities/birding/owner-birding-hero.webp",
+    "card_image": "/assets/images/experiences/activities/birding/owner-birding-hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/qargha-lake/gallery-5.webp",
+      "/assets/images/experiences/activities/birding/gallery/02.webp",
+      "/assets/images/experiences/activities/birding/peacock-kabul-jsp012.webp",
+      "/assets/images/experiences/activities/birding/owner-01.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "cultural/kuchi-nomads": {
+    "hero_image": "/assets/images/experiences/cultural/kuchi-nomads/owner-kuchi-hero.webp",
+    "card_image": "/assets/images/experiences/cultural/kuchi-nomads/owner-kuchi-hero.webp",
+    "gallery_images": [
+      "/assets/images/experiences/cultural/kuchi-nomads/owner-kuchi-nomads-gallery.webp",
+      "/assets/images/experiences/cultural/kuchi-nomads/owner-kuchi-nomads.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "food/bolani": {
+    "hero_image": "/assets/images/food/dishes/bolani/owner-bolani.webp",
+    "card_image": "/assets/images/food/dishes/bolani/owner-bolani.webp",
+    "gallery_images": [
+      "/assets/images/food/dishes/bolani/hero.webp",
+      "/assets/images/food/dishes/bolani/gallery-1.webp",
+      "/assets/images/food/dishes/bolani/owner-bolani-stand.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "food/sheer-chai": {
+    "hero_image": "/assets/images/food/drinks/sheer-chai/owner-sheer-chai.webp",
+    "card_image": "/assets/images/food/drinks/sheer-chai/owner-sheer-chai.webp",
+    "gallery_images": [
+      "/assets/images/food/drinks/sheer-chai/hero.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "regions/west": {
+    "hero_image": "/assets/images/regions/west/owner-western-afghanistan.webp"
+  },
+  "activities/fishing": {
+    "hero_image": "/assets/images/experiences/activities/fishing/owner-fishing.webp",
+    "card_image": "/assets/images/experiences/activities/fishing/owner-fishing.webp",
+    "gallery_images": [
+      "/assets/images/experiences/activities/fishing/gallery/panjshir-river-fishing.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
   }
 }

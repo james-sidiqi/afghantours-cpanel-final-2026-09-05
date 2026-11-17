@@ -4,22 +4,18 @@ subtitle: "Living craft traditions, hand-blown glass, and saffron tea in one of 
 card_description: "Visit Herat glass workshops and pair the craft experience with saffron tea served in handmade glassware."
 category: "Cultural Experiences"
 experience_type: "Crafts & Heritage"
-hero_image: "/assets/images/hubs/herat-city/hero.webp"
-image: "/assets/images/hubs/herat-city/hero.webp"
 provinces: ["Herat"]
 paired_foods: ["Herati Saffron Tea"]
 best_season: "Year round"
 duration: "1–2 hours"
 related_tours: ["timurid-grandeur-herat-tour", "timurid-grandeur-herat-tour-add-minaret-e-jam", "afghanistan-discovery-tour-fall", "custom-tours"]
 nearby: ["Herat Old City", "Herat Citadel", "Friday Mosque"]
-gallery_exclude:
-  - "/assets/images/hubs/herat-city/hero.webp"
-  - "/assets/images/hubs/herat-city/gallery-3.webp"
-  - "/assets/images/hubs/herat-city/gallery-4.webp"
-  - "/assets/images/hubs/herat-city/01.webp"
-  - "/assets/images/experiences/cultural/glassblowers-of-herat/hero.webp"
-  - "/assets/images/experiences/cultural/glassblowers-of-herat/hero.webp"
-  - "/assets/images/hubs/herat-city/thumb.webp"
+hero_image: "/assets/images/experiences/cultural/glassblowers-of-herat/owner-glassblower-at-furnace.webp"
+image: "/assets/images/experiences/cultural/glassblowers-of-herat/owner-glassblower-at-furnace.webp"
+gallery_images: ["/assets/images/experiences/cultural/glassblowers-of-herat/owner-glassware.webp"]
+gallery_mode: "explicit"
+gallery_exclude_hero: true
+gallery_exclude: []
 ---
 
 Herat is one of Afghanistan's great craft cities. Its traditional glassblowers connect the city to Silk Road artistry, old bazaars, and the refined material culture of western Afghanistan.
