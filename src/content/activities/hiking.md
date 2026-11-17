@@ -5,7 +5,7 @@ subtitle: "Day hikes and highland walks across Afghanistan."
 card_description: "Guided walks through valleys, viewpoints and highland paths, chosen for the season and the conditions on the day."
 best_season: "Varies by region and route"
 duration: "Varies — half day to full day; discuss during planning"
-hero_image: "/assets/images/experiences/activities/hiking/hero.webp"
+hero_image: "/assets/images/experiences/activities/hiking/owner-hiking.webp"
 ---
 
 Afghanistan is made for walking — green valleys, quiet viewpoints and highland paths where the only sound is the wind and a shepherd's call.

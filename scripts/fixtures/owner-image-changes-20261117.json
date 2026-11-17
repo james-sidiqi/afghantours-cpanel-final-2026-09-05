@@ -1,0 +1,113 @@
+{
+  "/attractions/minaret-of-jam/": {
+    "hero": "/assets/images/attractions/minaret-of-jam/gallery-2.webp",
+    "gallery": [
+      "/assets/images/attractions/minaret-of-jam/gallery-1.webp"
+    ],
+    "h1": "Minaret of Jam"
+  },
+  "/attractions/kunduz-city-farmlands/": {
+    "hero": "/assets/images/attractions/kunduz-city-farmlands/gallery-4.webp",
+    "gallery": [
+      "/assets/images/attractions/kunduz-city-farmlands/hero.webp",
+      "/assets/images/attractions/kunduz-city-farmlands/gallery-1.webp",
+      "/assets/images/attractions/kunduz-city-farmlands/gallery-3.webp",
+      "/assets/images/attractions/kunduz-city-farmlands/gallery-5.webp",
+      "/assets/images/attractions/kunduz-city-farmlands/gallery-6.webp"
+    ],
+    "h1": "Kunduz City & Farmlands"
+  },
+  "/attractions/badghis-hills-nomadic-pastures/": {
+    "hero": "/assets/images/attractions/badghis-hills-nomadic-pastures/gallery-1.webp",
+    "gallery": [
+      "/assets/images/attractions/badghis-hills-nomadic-pastures/nomadic-pastures.webp"
+    ],
+    "h1": "Badghis Hills & Nomadic Pastures"
+  },
+  "/attractions/koh-e-baba-range/": {
+    "hero": "/assets/images/attractions/koh-e-baba-range/hero.webp",
+    "gallery": [],
+    "h1": "Koh-e-Baba Mountain Range"
+  },
+  "/attractions/balkh-bala-hisar-ancient-walls/": {
+    "hero": "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-walls.webp",
+    "gallery": [
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-tower.webp",
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-ancient-city-ayaran-tower.webp",
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-ancient-city-walls.webp",
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-ancient-walls.webp",
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-citadel-3.webp",
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-citadel-4.webp",
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ruins-ancient-city-balkh-wall.webp"
+    ],
+    "h1": "Balkh Bala Hisar and Ancient Walls"
+  },
+  "/attractions/haji-piyada-nine-domes/": {
+    "hero": "/assets/images/attractions/haji-piyada-nine-domes/hero.webp",
+    "gallery": [
+      "/assets/images/attractions/haji-piyada-nine-domes/gallery-1.webp",
+      "/assets/images/attractions/haji-piyada-nine-domes/balkh-noh-gumbad-mosque-1.webp",
+      "/assets/images/attractions/haji-piyada-nine-domes/balkh-noh-gumbad-mosque-2.webp"
+    ],
+    "h1": "Haji Piyada (Nine Domes) Mosque"
+  },
+  "/attractions/tomb-of-rabia-balkhi/": {
+    "hero": "/assets/images/attractions/tomb-of-rabia-balkhi/hero.webp",
+    "gallery": [
+      "/assets/images/attractions/tomb-of-rabia-balkhi/gallery-1.webp",
+      "/assets/images/attractions/tomb-of-rabia-balkhi/balkh-rabia-balkhi-tomb.webp"
+    ],
+    "h1": "Tomb of Rabia Balkhi"
+  },
+  "/attractions/rumi-home-madrasa/": {
+    "hero": "/assets/images/attractions/rumi-home-madrasa/hero.webp",
+    "gallery": [
+      "/assets/images/attractions/rumi-home-madrasa/gallery-1.webp",
+      "/assets/images/attractions/rumi-home-madrasa/balkh-rumi-house.webp"
+    ],
+    "h1": "Rumi's Father's House (Madrasa)"
+  },
+  "/cultural-experiences/culinary/aziz-bakery/": {
+    "hero": "/assets/images/experiences/culinary/aziz-bakery/gallery/02.webp",
+    "gallery": [
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/01.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/03.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/04.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/05.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/06.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/07.webp"
+    ],
+    "h1": "Haji Aziz Bakery"
+  },
+  "/cultural-experiences/culinary/kabul-chainaki/": {
+    "hero": "/assets/images/experiences/culinary/kabul-chainaki/gallery/01.webp",
+    "gallery": [
+      "/assets/images/experiences/culinary/kabul-chainaki/gallery/02.webp"
+    ],
+    "h1": "Traditional Chainaki in Kabul"
+  },
+  "/activities/hiking/": {
+    "hero": "/assets/images/experiences/activities/hiking/owner-hiking.webp",
+    "gallery": [],
+    "h1": "Hiking"
+  },
+  "/activities/trekking/": {
+    "hero": "/assets/images/experiences/activities/trekking/owner-trekking.webp",
+    "gallery": [],
+    "h1": "Trekking"
+  },
+  "/food-culture/dishes/kabul-kabob/": {
+    "hero": "/assets/images/food/dishes/afghan-kabob/roadside-kabob.webp",
+    "gallery": [
+      "/assets/images/food/dishes/kabul-kabob/hero.webp"
+    ],
+    "h1": "Afghan Kabob"
+  },
+  "/food-culture/dried-fruits/badghis-pistachios/": {
+    "hero": "/assets/images/food/dried-fruits/badghis-pistachios/pista-tree-badghis.webp",
+    "gallery": [
+      "/assets/images/food/dried-fruits/badghis-pistachios/pista-forest-gallery.webp"
+    ],
+    "h1": "The Pistachio Forests of Badghis"
+  }
+}

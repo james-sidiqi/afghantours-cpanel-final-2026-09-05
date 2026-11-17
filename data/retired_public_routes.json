@@ -1,5 +1,4 @@
 {
-  "/food-culture/dishes/kabul-kabob/": "/food-culture/#dishes",
   "/food-culture/dishes/herat-kabob/": "/food-culture/#dishes",
   "/food-culture/kandahar-rosht/": "/food-culture/#dishes",
   "/food-culture/dishes/kandahari-rosh/": "/food-culture/#dishes",
@@ -7,5 +6,8 @@
   "/cultural-experiences/culinary/bamyan-kabob/": "/food-culture/#dishes",
   "/cultural-experiences/culinary/ghazni-palaw/": "/food-culture/kabuli-pulao/",
   "/attractions/buddhist-cave-monasteries/": "/attractions/",
-  "/attractions/tomb-of-nader-khan/": "/attractions/"
+  "/attractions/tomb-of-nader-khan/": "/attractions/",
+  "/attractions/ai-khanoum/": "/attractions/",
+  "/food-culture/dishes/ouzi/": "/food-culture/#dishes",
+  "/food-culture/produce/logar-orchard-gardens/": "/food-culture/#produce"
 }

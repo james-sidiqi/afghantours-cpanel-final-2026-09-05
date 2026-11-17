@@ -1,0 +1,125 @@
+{
+  "attractions/badghis-hills-nomadic-pastures": {
+    "hero_image": "/assets/images/attractions/badghis-hills-nomadic-pastures/gallery-1.webp",
+    "card_image": "/assets/images/attractions/badghis-hills-nomadic-pastures/gallery-1.webp",
+    "gallery_images": [
+      "/assets/images/attractions/badghis-hills-nomadic-pastures/nomadic-pastures.webp"
+    ],
+    "gallery_exclude_hero": true,
+    "gallery_mode": "explicit"
+  },
+  "attractions/tomb-of-rabia-balkhi": {
+    "hero_image": "/assets/images/attractions/tomb-of-rabia-balkhi/hero.webp",
+    "card_image": "/assets/images/attractions/tomb-of-rabia-balkhi/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/tomb-of-rabia-balkhi/gallery-1.webp",
+      "/assets/images/attractions/tomb-of-rabia-balkhi/balkh-rabia-balkhi-tomb.webp"
+    ],
+    "gallery_exclude_hero": true,
+    "gallery_mode": "explicit"
+  },
+  "attractions/haji-piyada-nine-domes": {
+    "hero_image": "/assets/images/attractions/haji-piyada-nine-domes/hero.webp",
+    "card_image": "/assets/images/attractions/haji-piyada-nine-domes/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/haji-piyada-nine-domes/gallery-1.webp",
+      "/assets/images/attractions/haji-piyada-nine-domes/balkh-noh-gumbad-mosque-1.webp",
+      "/assets/images/attractions/haji-piyada-nine-domes/balkh-noh-gumbad-mosque-2.webp"
+    ],
+    "gallery_exclude_hero": true,
+    "gallery_mode": "explicit"
+  },
+  "attractions/rumi-home-madrasa": {
+    "hero_image": "/assets/images/attractions/rumi-home-madrasa/hero.webp",
+    "card_image": "/assets/images/attractions/rumi-home-madrasa/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/rumi-home-madrasa/gallery-1.webp",
+      "/assets/images/attractions/rumi-home-madrasa/balkh-rumi-house.webp"
+    ],
+    "gallery_exclude_hero": true,
+    "gallery_mode": "explicit"
+  },
+  "attractions/koh-e-baba-range": {
+    "hero_image": "/assets/images/attractions/koh-e-baba-range/hero.webp",
+    "card_image": "/assets/images/attractions/koh-e-baba-range/hero.webp",
+    "gallery_images": [],
+    "gallery_exclude_hero": true,
+    "gallery_mode": "explicit"
+  },
+  "attractions/minaret-of-jam": {
+    "hero_image": "/assets/images/attractions/minaret-of-jam/gallery-2.webp",
+    "card_image": "/assets/images/attractions/minaret-of-jam/gallery-2.webp",
+    "gallery_images": [
+      "/assets/images/attractions/minaret-of-jam/gallery-1.webp"
+    ],
+    "gallery_exclude_hero": true,
+    "gallery_mode": "explicit"
+  },
+  "attractions/kunduz-city-farmlands": {
+    "hero_image": "/assets/images/attractions/kunduz-city-farmlands/gallery-4.webp",
+    "card_image": "/assets/images/attractions/kunduz-city-farmlands/gallery-4.webp",
+    "gallery_images": [
+      "/assets/images/attractions/kunduz-city-farmlands/hero.webp",
+      "/assets/images/attractions/kunduz-city-farmlands/gallery-1.webp",
+      "/assets/images/attractions/kunduz-city-farmlands/gallery-3.webp",
+      "/assets/images/attractions/kunduz-city-farmlands/gallery-5.webp",
+      "/assets/images/attractions/kunduz-city-farmlands/gallery-6.webp"
+    ],
+    "gallery_exclude_hero": true,
+    "gallery_mode": "explicit"
+  },
+  "attractions/balkh-bala-hisar-ancient-walls": {
+    "hero_image": "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-walls.webp",
+    "card_image": "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-walls.webp",
+    "gallery_images": [
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-tower.webp",
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-ancient-city-ayaran-tower.webp",
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-ancient-city-walls.webp",
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-ancient-walls.webp",
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-citadel-3.webp",
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-citadel-4.webp",
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ruins-ancient-city-balkh-wall.webp"
+    ],
+    "gallery_exclude_hero": true,
+    "gallery_mode": "explicit"
+  },
+  "culinary/aziz-bakery": {
+    "hero_image": "/assets/images/experiences/culinary/aziz-bakery/gallery/02.webp",
+    "gallery_images": [
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/01.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/03.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/04.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/05.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/06.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/07.webp"
+    ],
+    "gallery_mode": "explicit"
+  },
+  "culinary/kabul-chainaki": {
+    "hero_image": "/assets/images/experiences/culinary/kabul-chainaki/gallery/01.webp",
+    "gallery_images": [
+      "/assets/images/experiences/culinary/kabul-chainaki/gallery/02.webp"
+    ],
+    "gallery_mode": "explicit"
+  },
+  "activities/hiking": {
+    "hero_image": "/assets/images/experiences/activities/hiking/owner-hiking.webp"
+  },
+  "activities/trekking": {
+    "hero_image": "/assets/images/experiences/activities/trekking/owner-trekking.webp"
+  },
+  "food/kabul-kabob": {
+    "hero_image": "/assets/images/food/dishes/afghan-kabob/roadside-kabob.webp",
+    "gallery_images": [
+      "/assets/images/food/dishes/kabul-kabob/hero.webp"
+    ],
+    "gallery_mode": "explicit"
+  },
+  "food/badghis-pistachios": {
+    "hero_image": "/assets/images/food/dried-fruits/badghis-pistachios/pista-tree-badghis.webp",
+    "gallery_images": [
+      "/assets/images/food/dried-fruits/badghis-pistachios/pista-forest-gallery.webp"
+    ],
+    "gallery_mode": "explicit"
+  }
+}

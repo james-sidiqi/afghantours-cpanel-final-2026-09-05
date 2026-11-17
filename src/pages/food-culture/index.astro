@@ -30,6 +30,7 @@ const NO_CARD_IMAGE = new Set(['drinks/shor-chai-of-badakhshan', 'produce/farah-
 const CARD_FOCUS = { 'drinks/sheer-chai': '72% 88%', 'dried-fruits/paktia-pine-nuts': '50% 12%' };
 // Rosh now has an owner-provided matching photo. Other intentional image-free cards stay blocked.
 const APPROVED_CARD_IMAGES = {
+  'dishes/kabul-kabob': "/assets/images/food/dishes/afghan-kabob/roadside-kabob.webp",
   'dishes/kandahari-rosh': '/assets/images/food/dishes/kandahari-rosh/gallery/rosh-platter.webp',
 };
 const imageForId = (id) => {
@@ -92,7 +93,7 @@ const dishes = [
     title: 'Afghan Kabob',
     location: 'Across Afghanistan',
     description: `Grilled skewers of meat served with Afghan naan, onions and seasonal accompaniments. Styles vary among cooks and regions.`,
-    overviewOnly: true,
+    overviewOnly: false,
   },
   {
     id: 'dishes/kandahari-rosh',
@@ -179,12 +180,7 @@ const dishes = [
     location: 'Meat dish',
     description: `Succulent meat cooked with plenty of onions and aromatic spices.`,
   },
-  {
-    id: 'dishes/ouzi',
-    title: 'Ouzi (Rice-Stuffed Sheep)',
-    location: 'Meat dish',
-    description: `A celebratory whole sheep or lamb stuffed with seasoned rice and slow-cooked.`,
-  },
+
   {
     id: 'dishes/qawardagh',
     title: 'Qawardagh (Qurdagh)',
@@ -281,12 +277,7 @@ const produce = [
     location: 'Regional',
     description: `Popular northern melon grown in fertile plains.`,
   },
-  {
-    id: 'produce/logar-orchard-gardens',
-    title: 'The Gardens of Logar: Kabul’s Orchard Province',
-    location: 'Logar',
-    description: `Logar's orchard country is known for gardens and fruit-growing areas that help supply nearby Kabul markets, giving travelers a broader view of the province.`,
-  },
+
   {
     id: 'produce/wardak-apples',
     title: 'Fresh Afghan Apples',

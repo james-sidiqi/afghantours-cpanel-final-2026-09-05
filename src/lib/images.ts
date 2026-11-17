@@ -1,3 +1,4 @@
+import ownerSelections from '../data/ownerImageSelections.json';
 import { isRejectedImage } from '../data/rejectedImages';
 import aliases from '../data/imagePathAliases.json';
 import galleries from '../data/imageGalleryManifest.json';
@@ -107,6 +108,7 @@ export function getProvinceImage(province: any): string {
 }
 export function getFoodImage(item: any): string {
   const slug = item?.slug || item?.food_slug || item?.dish_slug;
+  item = { ...item, ...((ownerSelections as Record<string, any>)[`food/${slug}`] || {}) };
   return entityHero(item, [...['dishes', 'drinks', 'produce', 'dried-fruits'].map((kind) => slug
     ? `/assets/images/food/${kind}/${slug}/hero.webp` : null),
     ...['dishes', 'drinks', 'produce', ''].map((kind) => slug ? `/assets/images/food/${kind ? kind + '/' : ''}${slug}.webp` : null)], PLACEHOLDERS.food);
@@ -120,13 +122,18 @@ export function getHubImage(hub: any): string {
     slug ? `/assets/images/hubs/${slug}-1.webp` : null, short ? `/assets/images/hubs/${short}-1.webp` : null], PLACEHOLDERS.hub);
 }
 export function getAttractionImage(item: any): string {
+  item = { ...item, ...((ownerSelections as Record<string, any>)[`attractions/${item?.slug}`] || {}) };
   const code = String(item?.attraction_code || item?.code || '').toLowerCase();
   return entityHero(item, [item?.slug ? `/assets/images/attractions/${item.slug}/hero.webp` : null,
     code ? `/assets/images/attractions/${code}/hero.webp` : null, code ? `/assets/images/attractions/${code}.webp` : null,
     item?.slug ? `/assets/images/attractions/${item.slug}/card.webp` : null], PLACEHOLDERS.attraction);
 }
 export function buildGallery(entity: any, fallbackType: keyof typeof PLACEHOLDERS = 'card'): string[] {
-  return cleanGallery([...(Array.isArray(entity?.gallery_images) ? entity.gallery_images : []),
+  let supplied = entity?.gallery_images;
+  if (typeof supplied === 'string') {
+    try { supplied = JSON.parse(supplied); } catch { supplied = supplied.split('|').filter(Boolean); }
+  }
+  return cleanGallery([...(Array.isArray(supplied) ? supplied : []),
     entity?.gallery_image_1, entity?.gallery_image_2, entity?.gallery_image_3,
     entity?.gallery1, entity?.gallery2, entity?.gallery3,
     entity?.image_path_property_1, entity?.image_path_property_2, entity?.image_path_property_3]);
@@ -138,6 +145,7 @@ export const EXPERIENCE_ASSET_ROOTS = {
 } as const;
 export function getCulinaryImage(item: any): string {
   const slug = item?.slug || item?.culinary_slug || item?.experience_slug;
+  item = { ...item, ...((ownerSelections as Record<string, any>)[`culinary/${slug}`] || {}) };
   return entityHero(item, [slug ? `${EXPERIENCE_ASSET_ROOTS.culinary}/${slug}/hero.webp` : null,
     slug === 'band-e-amir-quroot-dairy' ? `${EXPERIENCE_ASSET_ROOTS.culinary}/band-e-amir-dairy-market-quroot/hero.webp` : null,
     slug ? `${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}/hero.webp` : null,
@@ -149,16 +157,18 @@ export function getCulturalExperienceImage(item: any): string {
 }
 export function getActivityImage(item: any): string {
   const slug = item?.slug || item?.activity_slug;
+  item = { ...item, ...((ownerSelections as Record<string, any>)[`activities/${slug}`] || {}) };
   return entityHero(item, [slug ? `${EXPERIENCE_ASSET_ROOTS.activities}/${slug}/hero.webp` : null], PLACEHOLDERS.card);
 }
 function experienceGallery(item: any, roots: string[], hero: string): string[] {
   // Curated lists take precedence; discovery is from explicit manifest entries only.
   const supplied = buildGallery(item);
-  return cleanGallery(supplied.length ? supplied : roots.flatMap((folder) => listGalleryImages(folder)))
+  return cleanGallery(item?.gallery_mode === 'explicit' || supplied.length ? supplied : roots.flatMap((folder) => listGalleryImages(folder)))
     .filter((src) => src !== hero);
 }
 export function getCulinaryGallery(item: any): string[] {
   const slug = item?.slug || item?.culinary_slug;
+  item = { ...item, ...((ownerSelections as Record<string, any>)[`culinary/${slug}`] || {}) };
   return experienceGallery(item, slug ? [`${EXPERIENCE_ASSET_ROOTS.culinary}/${slug}`,
     `${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}`] : [], getCulinaryImage(item));
 }

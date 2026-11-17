@@ -3,9 +3,7 @@
     "/assets/images/attractions/ahmad-shah-massoud-mausoleum/gallery-1.webp",
     "/assets/images/attractions/ahmad-shah-massoud-mausoleum/gallery-2.webp"
   ],
-  "/assets/images/attractions/ai-khanoum": [
-    "/assets/images/attractions/ai-khanoum/gallery-1.webp"
-  ],
+  "/assets/images/attractions/ai-khanoum": [],
   "/assets/images/attractions/alingar-valley": [
     "/assets/images/attractions/alingar-valley/gallery-1.webp"
   ],
@@ -25,7 +23,7 @@
     "/assets/images/attractions/badakhshan-mountains-and-lakes/gallery-1.webp"
   ],
   "/assets/images/attractions/badghis-hills-nomadic-pastures": [
-    "/assets/images/attractions/badghis-hills-nomadic-pastures/gallery-1.webp"
+    "/assets/images/attractions/badghis-hills-nomadic-pastures/nomadic-pastures.webp"
   ],
   "/assets/images/attractions/bala-hisar-of-ghazni": [
     "/assets/images/attractions/bala-hisar-of-ghazni/gallery-1.webp",
@@ -73,7 +71,9 @@
     "/assets/images/attractions/ghazni-minarets/gallery-2.webp"
   ],
   "/assets/images/attractions/haji-piyada-nine-domes": [
-    "/assets/images/attractions/haji-piyada-nine-domes/gallery-1.webp"
+    "/assets/images/attractions/haji-piyada-nine-domes/gallery-1.webp",
+    "/assets/images/attractions/haji-piyada-nine-domes/balkh-noh-gumbad-mosque-1.webp",
+    "/assets/images/attractions/haji-piyada-nine-domes/balkh-noh-gumbad-mosque-2.webp"
   ],
   "/assets/images/attractions/helmand-river-landscape": [
     "/assets/images/attractions/helmand-river-landscape/gallery-1.webp",
@@ -113,16 +113,13 @@
   "/assets/images/attractions/khurd-kabul-pass-1842": [
     "/assets/images/attractions/khurd-kabul-pass-1842/gallery-1.webp"
   ],
-  "/assets/images/attractions/koh-e-baba-range": [
-    "/assets/images/attractions/koh-e-baba-range/gallery-1.webp"
-  ],
+  "/assets/images/attractions/koh-e-baba-range": [],
   "/assets/images/attractions/kunar-river-valley": [
     "/assets/images/attractions/kunar-river-valley/gallery-1.webp",
     "/assets/images/attractions/kunar-river-valley/gallery-2.webp"
   ],
   "/assets/images/attractions/kunduz-city-farmlands": [
     "/assets/images/attractions/kunduz-city-farmlands/gallery-1.webp",
-    "/assets/images/attractions/kunduz-city-farmlands/gallery-2.webp",
     "/assets/images/attractions/kunduz-city-farmlands/gallery-3.webp",
     "/assets/images/attractions/kunduz-city-farmlands/gallery-4.webp",
     "/assets/images/attractions/kunduz-city-farmlands/gallery-5.webp",
@@ -207,7 +204,8 @@
     "/assets/images/attractions/qargha-lake/gallery-5.webp"
   ],
   "/assets/images/attractions/rumi-home-madrasa": [
-    "/assets/images/attractions/rumi-home-madrasa/gallery-1.webp"
+    "/assets/images/attractions/rumi-home-madrasa/gallery-1.webp",
+    "/assets/images/attractions/rumi-home-madrasa/balkh-rumi-house.webp"
   ],
   "/assets/images/attractions/rural-ghor-highlands": [
     "/assets/images/attractions/rural-ghor-highlands/gallery-1.webp"
@@ -266,7 +264,8 @@
     "/assets/images/attractions/tomb-of-nader-khan/gallery-1.webp"
   ],
   "/assets/images/attractions/tomb-of-rabia-balkhi": [
-    "/assets/images/attractions/tomb-of-rabia-balkhi/gallery-1.webp"
+    "/assets/images/attractions/tomb-of-rabia-balkhi/gallery-1.webp",
+    "/assets/images/attractions/tomb-of-rabia-balkhi/balkh-rabia-balkhi-tomb.webp"
   ],
   "/assets/images/attractions/tomb-of-sultan-mahmud-ghaznavi": [
     "/assets/images/attractions/tomb-of-sultan-mahmud-ghaznavi/gallery-1.webp"
@@ -985,5 +984,20 @@
   ],
   "/assets/images/food/dishes/kandahari-rosh/gallery": [
     "/assets/images/food/dishes/kandahari-rosh/gallery/rosh-platter.webp"
+  ],
+  "/assets/images/food/dishes/afghan-kabob": [
+    "/assets/images/food/dishes/kabul-kabob/hero.webp"
+  ],
+  "/assets/images/attractions/balkh-bala-hisar-ancient-walls": [
+    "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-tower.webp",
+    "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-ancient-city-ayaran-tower.webp",
+    "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-ancient-city-walls.webp",
+    "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-ancient-walls.webp",
+    "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-citadel-3.webp",
+    "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-citadel-4.webp",
+    "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ruins-ancient-city-balkh-wall.webp"
+  ],
+  "/assets/images/food/dried-fruits/badghis-pistachios": [
+    "/assets/images/food/dried-fruits/badghis-pistachios/pista-forest-gallery.webp"
   ]
 }

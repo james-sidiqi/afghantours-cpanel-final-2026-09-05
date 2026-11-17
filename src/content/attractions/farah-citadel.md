@@ -1,9 +1,11 @@
 ---
-title: Farah Citadel
+title: "Farah Citadel (Shahr-e Kohna / Qala-e Fereydun)"
 attraction_slug: farah-citadel
 section: attraction_content
 save_to: src/content/attractions/farah-citadel.md
 ---
+
+Also known as **Shahr-e Kohna** or **Qala-e Fereydun**.
 
 ### Short Introduction
 An ancient river-side desert fortress. Steeped in legend and associated with the era of

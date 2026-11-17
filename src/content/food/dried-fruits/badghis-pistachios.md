@@ -4,14 +4,17 @@ subtitle: "Wild pistachio hills, seasonal harvest, village markets, and green te
 card_description: "Present Badghis through its famous pistachio forests, harvest traditions, and green tea with nuts."
 category: "Cultural Experiences"
 experience_type: "Food & Culture Experience"
-hero_image: "/assets/images/attractions/badghis-hills-nomadic-pastures/hero.webp"
-image: "/assets/images/food/dried-fruits/badghis-pistachios/hero.webp"
+hero_image: "/assets/images/food/dried-fruits/badghis-pistachios/pista-tree-badghis.webp"
+image: "/assets/images/food/dried-fruits/badghis-pistachios/pista-tree-badghis.webp"
 provinces: ["Badghis"]
 paired_foods: ["Pistachios", "Green Tea"]
 best_season: "Harvest season / market availability"
 duration: "30–90 minutes"
 related_tours: ["custom-tours"]
 nearby: ["Badghis Hills", "Village Markets", "Western Afghanistan Routes"]
+gallery_images: ["/assets/images/food/dried-fruits/badghis-pistachios/pista-forest-gallery.webp"]
+gallery_mode: "explicit"
+gallery_exclude_hero: true
 ---
 
 Badghis has one of Afghanistan's strongest agricultural identities: pistachios.

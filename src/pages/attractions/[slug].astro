@@ -87,11 +87,12 @@ const longDescription =
 
 const configuredFolder = item.gallery_folder || `/assets/images/attractions/${item.slug}/`;
 const suppliedGallery = buildGallery(item);
+const explicitGallery = String(item.gallery_images || '').trim().startsWith('[') || Array.isArray(item.gallery_images);
 const galleryImages = cleanGallery([
-  heroImage,
+  ...(String(item.gallery_exclude_hero) === '1' ? [] : [heroImage]),
   item.overview_image,
   item.overview_image_path,
-  ...(suppliedGallery.length ? suppliedGallery : listGalleryImages(configuredFolder)),
+  ...(explicitGallery || suppliedGallery.length ? suppliedGallery : listGalleryImages(configuredFolder)),
 ]).slice(0, 8);
 
 /* ---------------------------------------------------------
@@ -584,7 +585,7 @@ const provinceHref =
        GALLERY
        ===================================================== -->
 
-  {galleryImages.length > 1 && (
+  {galleryImages.length > 0 && (
 
     <section class="gallery-section">
 
