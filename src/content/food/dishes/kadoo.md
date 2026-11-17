@@ -4,6 +4,8 @@ food_slug: "kadoo"
 subtitle: "Pumpkin"
 card_description: "Tender pumpkin cooked with savory seasonings; some preparations include a sweet-tangy sauce or yogurt topping."
 category: "Afghan Dish"
+hero_image: "/assets/images/food/dishes/kadoo/hero.webp"
+image: "/assets/images/food/dishes/kadoo/hero.webp"
 ---
 
 ### Overview

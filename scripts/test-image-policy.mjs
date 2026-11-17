@@ -33,6 +33,17 @@ try {
   for (const [folder] of Object.entries(galleries)) {
     for (const src of images.listGalleryImages(folder)) assert.ok(images.isGalleryImage(src), src);
   }
+  const aliases = JSON.parse(fs.readFileSync('src/data/imagePathAliases.json', 'utf8'));
+  for (const [old, target] of Object.entries(aliases)) {
+    assert.ok(fs.existsSync(path.join('public', target)), old + ' -> ' + target);
+    assert.equal(images.normalizeImagePath(old), target);
+  }
+  for (const slug of ['shola', 'banjan-sia', 'shor-nakhut', 'sabzi-palak', 'kadoo', 'qurmay-qachaloo']) {
+    assert.ok(!images.getFoodImage({ slug }).includes('/placeholders/'), slug);
+  }
+  assert.ok(!images.hasRealImage('/assets/images/food/produce/farah-watermelon/hero.webp'), 'owner-rejected watermelon must stay blocked');
+  const credits = await server.ssrLoadModule('/src/data/photoCredits.ts');
+  assert.ok(!/mosque/i.test(credits.altFor('/assets/images/experiences/cultural/glassblowers-of-herat/hero.webp', 'Glassblower at the furnace')));
   const rejected = await server.ssrLoadModule('/src/data/rejectedImages.ts');
   const bad = Object.keys(rejected).length; // Import also verifies the registry resolves without a cycle.
   console.log(JSON.stringify({ status: 'passed', hero_priority: true, canonical_tour_fallback: true, thumbnail_card_filter: true, explicit_inventory_isolation: true, gallery_folders_checked: Object.keys(galleries).length }));

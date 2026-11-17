@@ -1,4 +1,5 @@
 ---
+import { normalizeImagePath, hasRealImage } from '../../lib/images';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import fs from 'node:fs';
@@ -27,19 +28,21 @@ for (const item of allFoodItems) {
 const NO_CARD_IMAGE = new Set(['drinks/shor-chai-of-badakhshan', 'produce/farah-watermelon', 'dishes/kabul-kabob', 'dishes/kandahari-rosh']);
 // Per-card focal point so the subject stays in frame in the fixed card crop.
 const CARD_FOCUS = { 'drinks/sheer-chai': '72% 88%', 'dried-fruits/paktia-pine-nuts': '50% 12%' };
-const publicFile = (src) => !!src && !/\/placeholders\//.test(src) &&
-  fs.existsSync(path.join(process.cwd(), 'public', String(src).replace(/^\/+/, '')));
+// Rosh now has an owner-provided matching photo. Other intentional image-free cards stay blocked.
+const APPROVED_CARD_IMAGES = {
+  'dishes/kandahari-rosh': '/assets/images/food/dishes/kandahari-rosh/gallery/rosh-platter.webp',
+};
 const imageForId = (id) => {
+  const approved = APPROVED_CARD_IMAGES[id];
+  if (approved && hasRealImage(approved)) return normalizeImagePath(approved, '');
   if (NO_CARD_IMAGE.has(id)) return null;
   const item = itemMap.get(normalizeFoodKey(id));
-  const folder = String(id);
   return [
-    item?.data?.card_image,
-    item?.data?.image,
     item?.data?.hero_image,
-    `/assets/images/food/${folder}/hero.webp`,
-    `/assets/images/food/${folder.replace(/^dried-fruits\//, 'dried-fruit/')}/hero.webp`,
-  ].find(publicFile) || null;
+    item?.data?.image,
+    `/assets/images/food/${id}/hero.webp`,
+    item?.data?.card_image,
+  ].filter(Boolean).map((src) => normalizeImagePath(src, '')).find(hasRealImage) || null;
 };
 
 // Pages for these entries are built at their content `slug` (flat URL), not at the folder id.
@@ -54,6 +57,12 @@ const FLAT_FOOD_SLUGS = {
 const foodHref = (id) => `/food-culture/${FLAT_FOOD_SLUGS[id] || id}/`;
 
 const dishes = [
+  {
+    id: 'dishes/shola',
+    title: 'Shola',
+    location: 'Rice dish',
+    description: 'Traditional rice and lentil dish slow cooked with spices.',
+  },
   {
     id: 'dishes/ash',
     title: 'Aush',

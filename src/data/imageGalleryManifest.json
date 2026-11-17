@@ -287,7 +287,7 @@
     "/assets/images/attractions/wazir-akbar-khan-hill/gallery-1.webp"
   ],
   "/assets/images/experiences/activities/birding/gallery": [
-    "/assets/images/experiences/activities/birding/gallery/01.webp",
+    "/assets/images/attractions/qargha-lake/gallery-5.webp",
     "/assets/images/experiences/activities/birding/gallery/02.webp"
   ],
   "/assets/images/experiences/activities/birding": [
@@ -332,7 +332,7 @@
     "/assets/images/experiences/activities/sightseeing/street-life/zarang-crates-kabul-street.webp"
   ],
   "/assets/images/experiences/activities/skiing/gallery": [
-    "/assets/images/experiences/activities/skiing/gallery/02.webp",
+    "/assets/images/tours/featured/bamyan-skiing-tour/hero.webp",
     "/assets/images/experiences/activities/skiing/gallery/03.webp"
   ],
   "/assets/images/experiences/activities/trekking/gallery": [
@@ -372,13 +372,13 @@
     "/assets/images/experiences/culinary/mansoor-kabob/gallery/06.webp"
   ],
   "/assets/images/experiences/culinary/spoghmai-restaurant-qargha/gallery": [
-    "/assets/images/experiences/culinary/spoghmai-restaurant-qargha/gallery/01-pines-seating.webp",
+    "/assets/images/experiences/culinary/spoghmai-restaurant-qargha/hero.webp",
     "/assets/images/experiences/culinary/spoghmai-restaurant-qargha/gallery/02-lake-panorama.webp",
     "/assets/images/experiences/culinary/spoghmai-restaurant-qargha/gallery/03-peninsula-red-roofs.webp",
     "/assets/images/experiences/culinary/spoghmai-restaurant-qargha/gallery/04-walkway-pelican.webp"
   ],
   "/assets/images/experiences/cultural/afghan-carpets/gallery": [
-    "/assets/images/experiences/cultural/afghan-carpets/gallery/01-carpet-shop-unfurling.webp",
+    "/assets/images/experiences/cultural/afghan-carpets/hero.webp",
     "/assets/images/experiences/cultural/afghan-carpets/gallery/02-kneeling-striped-carpet.webp",
     "/assets/images/experiences/cultural/afghan-carpets/gallery/03-loom-weavers.webp",
     "/assets/images/experiences/cultural/afghan-carpets/gallery/04-carpet-shop-two-men.webp"
@@ -401,7 +401,7 @@
   ],
   "/assets/images/experiences/cultural/glassblowers-of-herat/gallery": [
     "/assets/images/experiences/cultural/glassblowers-of-herat/gallery/01.webp",
-    "/assets/images/experiences/cultural/glassblowers-of-herat/gallery/02.webp"
+    "/assets/images/experiences/cultural/glassblowers-of-herat/hero.webp"
   ],
   "/assets/images/experiences/cultural/gudiparan-bazi/gallery": [
     "/assets/images/experiences/cultural/gudiparan-bazi/gallery/02.webp"
@@ -438,8 +438,7 @@
     "/assets/images/food/dishes/kabuli-pulao/gallery-2.webp"
   ],
   "/assets/images/food/dishes/kunar-trout": [
-    "/assets/images/food/dishes/kunar-trout/01.webp",
-    "/assets/images/food/dishes/kunar-trout/gallery-1.webp"
+    "/assets/images/food/dishes/kunar-trout/01.webp"
   ],
   "/assets/images/food/dishes/mantu": [
     "/assets/images/food/dishes/mantu/gallery-1.webp"
@@ -520,7 +519,7 @@
     "/assets/images/heroes/tour-guide-and-tourists.webp"
   ],
   "/assets/images/hotels/bamyan/gholghola": [
-    "/assets/images/hotels/bamyan/gholghola/01.webp",
+    "/assets/images/hotels/bamyan/gholghola/hero.webp",
     "/assets/images/hotels/bamyan/gholghola/hotel-exterior-1.webp"
   ],
   "/assets/images/hotels/bamyan/gholghola/rooms": [
@@ -528,62 +527,45 @@
     "/assets/images/hotels/bamyan/gholghola/rooms/02.webp",
     "/assets/images/hotels/bamyan/gholghola/rooms/03.webp",
     "/assets/images/hotels/bamyan/gholghola/rooms/04.webp",
-    "/assets/images/hotels/bamyan/gholghola/rooms/05.webp",
-    "/assets/images/hotels/bamyan/gholghola/rooms/bathroom.webp",
-    "/assets/images/hotels/bamyan/gholghola/rooms/deluxe-bedroom.webp",
-    "/assets/images/hotels/bamyan/gholghola/rooms/single-bedroom.webp",
-    "/assets/images/hotels/bamyan/gholghola/rooms/suite-bedroom.webp",
-    "/assets/images/hotels/bamyan/gholghola/rooms/three-single-bedroom.webp"
+    "/assets/images/hotels/bamyan/gholghola/rooms/05.webp"
   ],
   "/assets/images/hotels/bamyan/royal": [
-    "/assets/images/hotels/bamyan/royal/hotel-exterior-1.webp"
+    "/assets/images/hotels/bamyan/royal/hero.webp"
   ],
   "/assets/images/hotels/bamyan/royal/rooms": [
     "/assets/images/hotels/bamyan/royal/rooms/two-twin-bedroom.webp"
   ],
   "/assets/images/hotels/faizabad/bam-dunya": [
     "/assets/images/hotels/faizabad/bam-dunya/01.webp",
-    "/assets/images/hotels/faizabad/bam-dunya/hotel-exterior-1.webp",
-    "/assets/images/hotels/faizabad/bam-dunya/hotel-exterior-2.webp"
+    "/assets/images/hotels/faizabad/bam-dunya/hero.webp"
   ],
   "/assets/images/hotels/faizabad/bam-dunya/rooms": [
     "/assets/images/hotels/faizabad/bam-dunya/rooms/01.webp",
-    "/assets/images/hotels/faizabad/bam-dunya/rooms/02.webp",
-    "/assets/images/hotels/faizabad/bam-dunya/rooms/two-twin-bedroom.webp",
-    "/assets/images/hotels/faizabad/bam-dunya/rooms/two-twin-bedroom1.webp"
+    "/assets/images/hotels/faizabad/bam-dunya/rooms/02.webp"
   ],
   "/assets/images/hotels/faizabad/qasri-kokcha": [
-    "/assets/images/hotels/faizabad/qasri-kokcha/hotel-exterior-1.webp"
+    "/assets/images/hotels/faizabad/qasri-kokcha/hero.webp"
   ],
   "/assets/images/hotels/faizabad/qasri-kokcha/rooms": [
     "/assets/images/hotels/faizabad/qasri-kokcha/rooms/01.webp",
     "/assets/images/hotels/faizabad/qasri-kokcha/rooms/02.webp",
-    "/assets/images/hotels/faizabad/qasri-kokcha/rooms/03.webp",
-    "/assets/images/hotels/faizabad/qasri-kokcha/rooms/four-twin-bedroom.webp",
-    "/assets/images/hotels/faizabad/qasri-kokcha/rooms/single-bedroom.webp",
-    "/assets/images/hotels/faizabad/qasri-kokcha/rooms/two-twin-bedroom.webp"
+    "/assets/images/hotels/faizabad/qasri-kokcha/rooms/03.webp"
   ],
   "/assets/images/hotels/ghazni/taj-continental": [
-    "/assets/images/hotels/ghazni/taj-continental/hotel-exterior-1.webp"
+    "/assets/images/hotels/ghazni/taj-continental/hero.webp"
   ],
   "/assets/images/hotels/ghazni/taj-continental/rooms": [
-    "/assets/images/hotels/ghazni/taj-continental/rooms/01.webp",
-    "/assets/images/hotels/ghazni/taj-continental/rooms/two-twin-bedroom.webp"
+    "/assets/images/hotels/ghazni/taj-continental/rooms/01.webp"
   ],
   "/assets/images/hotels/herat/arg": [
-    "/assets/images/hotels/herat/arg/hotel-exterior-1.webp"
+    "/assets/images/hotels/herat/arg/hero.webp"
   ],
   "/assets/images/hotels/herat/arg/rooms": [
     "/assets/images/hotels/herat/arg/rooms/01.webp",
     "/assets/images/hotels/herat/arg/rooms/02.webp",
     "/assets/images/hotels/herat/arg/rooms/03.webp",
     "/assets/images/hotels/herat/arg/rooms/04.webp",
-    "/assets/images/hotels/herat/arg/rooms/05.webp",
-    "/assets/images/hotels/herat/arg/rooms/double-bedroom.webp",
-    "/assets/images/hotels/herat/arg/rooms/single-bedroom.webp",
-    "/assets/images/hotels/herat/arg/rooms/single-bedroom1.webp",
-    "/assets/images/hotels/herat/arg/rooms/suite-bedroom.webp",
-    "/assets/images/hotels/herat/arg/rooms/vip-bedroom.webp"
+    "/assets/images/hotels/herat/arg/rooms/05.webp"
   ],
   "/assets/images/hotels/herat/sadaf": [
     "/assets/images/hotels/herat/sadaf/hotel-exterior-1.webp"
@@ -592,26 +574,19 @@
     "/assets/images/hotels/herat/sadaf/rooms/01.webp",
     "/assets/images/hotels/herat/sadaf/rooms/02.webp",
     "/assets/images/hotels/herat/sadaf/rooms/03.webp",
-    "/assets/images/hotels/herat/sadaf/rooms/04.webp",
-    "/assets/images/hotels/herat/sadaf/rooms/double-bedroom.webp",
-    "/assets/images/hotels/herat/sadaf/rooms/double-bedroom1.webp",
-    "/assets/images/hotels/herat/sadaf/rooms/single-bedroom.webp",
-    "/assets/images/hotels/herat/sadaf/rooms/suite-bedroom.webp"
+    "/assets/images/hotels/herat/sadaf/rooms/04.webp"
   ],
   "/assets/images/hotels/jalalabad/spinghar": [
-    "/assets/images/hotels/jalalabad/spinghar/01.webp",
-    "/assets/images/hotels/jalalabad/spinghar/hotel-exterior-1.webp",
-    "/assets/images/hotels/jalalabad/spinghar/hotel-exterior-2.webp"
+    "/assets/images/hotels/jalalabad/spinghar/hero.webp",
+    "/assets/images/hotels/jalalabad/spinghar/hotel-exterior-1.webp"
   ],
   "/assets/images/hotels/jalalabad/spinghar/rooms": [
     "/assets/images/hotels/jalalabad/spinghar/rooms/01.webp",
-    "/assets/images/hotels/jalalabad/spinghar/rooms/02.webp",
-    "/assets/images/hotels/jalalabad/spinghar/rooms/hotel-livingroom.webp",
-    "/assets/images/hotels/jalalabad/spinghar/rooms/standard-bedroom.webp"
+    "/assets/images/hotels/jalalabad/spinghar/rooms/02.webp"
   ],
   "/assets/images/hotels/kabul/intercontinental": [
     "/assets/images/hotels/kabul/intercontinental/01.webp",
-    "/assets/images/hotels/kabul/intercontinental/hotel-exterior-1.webp"
+    "/assets/images/hotels/kabul/intercontinental/hero.webp"
   ],
   "/assets/images/hotels/kabul/intercontinental/rooms": [
     "/assets/images/hotels/kabul/intercontinental/rooms/01.webp",
@@ -619,22 +594,13 @@
     "/assets/images/hotels/kabul/intercontinental/rooms/03.webp",
     "/assets/images/hotels/kabul/intercontinental/rooms/04.webp",
     "/assets/images/hotels/kabul/intercontinental/rooms/05.webp",
-    "/assets/images/hotels/kabul/intercontinental/rooms/06.webp",
-    "/assets/images/hotels/kabul/intercontinental/rooms/double-twin-room.webp",
-    "/assets/images/hotels/kabul/intercontinental/rooms/double-twin-room1.webp",
-    "/assets/images/hotels/kabul/intercontinental/rooms/hotel-room.webp",
-    "/assets/images/hotels/kabul/intercontinental/rooms/single-deluxe-room.webp",
-    "/assets/images/hotels/kabul/intercontinental/rooms/single-deluxe-room1.webp",
-    "/assets/images/hotels/kabul/intercontinental/rooms/suite-room.webp"
+    "/assets/images/hotels/kabul/intercontinental/rooms/06.webp"
   ],
   "/assets/images/hotels/kabul/kabul-grand": [
     "/assets/images/hotels/kabul/kabul-grand/01.webp",
     "/assets/images/hotels/kabul/kabul-grand/02.webp",
     "/assets/images/hotels/kabul/kabul-grand/03.webp",
     "/assets/images/hotels/kabul/kabul-grand/hotel-exterior-1.webp",
-    "/assets/images/hotels/kabul/kabul-grand/hotel-exterior-2.webp",
-    "/assets/images/hotels/kabul/kabul-grand/hotel-interior-1.webp",
-    "/assets/images/hotels/kabul/kabul-grand/hotel-pool-1.webp",
     "/assets/images/hotels/kabul/kabul-grand/kabul-grand-restaurant.webp"
   ],
   "/assets/images/hotels/kabul/kabul-grand/rooms": [
@@ -655,9 +621,7 @@
     "/assets/images/hotels/kabul/kabul-star/rooms/06.webp",
     "/assets/images/hotels/kabul/kabul-star/rooms/07.webp",
     "/assets/images/hotels/kabul/kabul-star/rooms/08.webp",
-    "/assets/images/hotels/kabul/kabul-star/rooms/delux-bedroom.webp",
-    "/assets/images/hotels/kabul/kabul-star/rooms/suite-room.webp",
-    "/assets/images/hotels/kabul/kabul-star/rooms/two-twin-bedroom.webp"
+    "/assets/images/hotels/kabul/kabul-star/rooms/suite-room.webp"
   ],
   "/assets/images/hotels/kabul/khyber": [
     "/assets/images/hotels/kabul/khyber/hotel-exterior-1.webp"
@@ -665,24 +629,18 @@
   "/assets/images/hotels/kabul/khyber/rooms": [
     "/assets/images/hotels/kabul/khyber/rooms/01.webp",
     "/assets/images/hotels/kabul/khyber/rooms/02.webp",
-    "/assets/images/hotels/kabul/khyber/rooms/03.webp",
-    "/assets/images/hotels/kabul/khyber/rooms/single-bedroom.webp",
-    "/assets/images/hotels/kabul/khyber/rooms/single-bedroom1.webp",
-    "/assets/images/hotels/kabul/khyber/rooms/twin-bedroom.webp"
+    "/assets/images/hotels/kabul/khyber/rooms/03.webp"
   ],
   "/assets/images/hotels/kabul/park-star": [
-    "/assets/images/hotels/kabul/park-star/hotel-exterior-1.webp"
+    "/assets/images/hotels/kabul/park-star/hero.webp"
   ],
   "/assets/images/hotels/kabul/park-star/rooms": [
     "/assets/images/hotels/kabul/park-star/rooms/01.webp",
-    "/assets/images/hotels/kabul/park-star/rooms/02.webp",
-    "/assets/images/hotels/kabul/park-star/rooms/double-bedroom.webp",
-    "/assets/images/hotels/kabul/park-star/rooms/two-twin-bedroom.webp"
+    "/assets/images/hotels/kabul/park-star/rooms/02.webp"
   ],
   "/assets/images/hotels/kabul/taj": [
     "/assets/images/hotels/kabul/taj/01.webp",
-    "/assets/images/hotels/kabul/taj/hotel-exterior-1.webp",
-    "/assets/images/hotels/kabul/taj/hotel-pool-1.webp"
+    "/assets/images/hotels/kabul/taj/hero.webp"
   ],
   "/assets/images/hotels/kabul/taj/rooms": [
     "/assets/images/hotels/kabul/taj/rooms/01.webp",
@@ -690,16 +648,10 @@
     "/assets/images/hotels/kabul/taj/rooms/03.webp",
     "/assets/images/hotels/kabul/taj/rooms/04.webp",
     "/assets/images/hotels/kabul/taj/rooms/05.webp",
-    "/assets/images/hotels/kabul/taj/rooms/06.webp",
-    "/assets/images/hotels/kabul/taj/rooms/four-single-bedroom.webp",
-    "/assets/images/hotels/kabul/taj/rooms/four-single-bedroom1.webp",
-    "/assets/images/hotels/kabul/taj/rooms/suite-bedroom.webp",
-    "/assets/images/hotels/kabul/taj/rooms/suite-bedroom1.webp",
-    "/assets/images/hotels/kabul/taj/rooms/suite-livingroom.webp",
-    "/assets/images/hotels/kabul/taj/rooms/two-twin-bedroom.webp"
+    "/assets/images/hotels/kabul/taj/rooms/06.webp"
   ],
   "/assets/images/hotels/kandahar/continental": [
-    "/assets/images/hotels/kandahar/continental/hotel-exterior-1.webp"
+    "/assets/images/hotels/kandahar/continental/hero.webp"
   ],
   "/assets/images/hotels/kandahar/continental/rooms": [
     "/assets/images/hotels/kandahar/continental/rooms/double-bedroom.webp",
@@ -707,15 +659,14 @@
     "/assets/images/hotels/kandahar/continental/rooms/three-twin-bedroom.webp"
   ],
   "/assets/images/hotels/kandahar/dubai-inn": [
-    "/assets/images/hotels/kandahar/dubai-inn/hotel-exterior-1.webp"
+    "/assets/images/hotels/kandahar/dubai-inn/hero.webp"
   ],
   "/assets/images/hotels/kandahar/dubai-inn/rooms": [
     "/assets/images/hotels/kandahar/dubai-inn/rooms/two-single-bedroom.webp"
   ],
   "/assets/images/hotels/kandahar/nfc": [
     "/assets/images/hotels/kandahar/nfc/01.webp",
-    "/assets/images/hotels/kandahar/nfc/hotel-exterior-1.webp",
-    "/assets/images/hotels/kandahar/nfc/hotel-pool-1.webp"
+    "/assets/images/hotels/kandahar/nfc/hero.webp"
   ],
   "/assets/images/hotels/kandahar/nfc/rooms": [
     "/assets/images/hotels/kandahar/nfc/rooms/four-twin-bedroom.webp",
@@ -733,33 +684,33 @@
     "/assets/images/hotels/kandahar/royal/rooms/suite-bedroom.webp"
   ],
   "/assets/images/hotels/mazar/barat": [
-    "/assets/images/hotels/mazar/barat/hotel-exterior-1.webp"
+    "/assets/images/hotels/mazar/barat/hero.webp"
   ],
   "/assets/images/hotels/mazar/barat/rooms": [
     "/assets/images/hotels/mazar/barat/rooms/standard-bedroom.webp"
   ],
   "/assets/images/hotels/mazar/ghazanfar": [
-    "/assets/images/hotels/mazar/ghazanfar/hotel-exterior-1.webp"
+    "/assets/images/hotels/mazar/ghazanfar/hero.webp"
   ],
   "/assets/images/hotels/mazar/ghazanfar/rooms": [
     "/assets/images/hotels/mazar/ghazanfar/rooms/two-double-bedroom.webp"
   ],
   "/assets/images/hotels/mazar/kefayat": [
-    "/assets/images/hotels/mazar/kefayat/hotel-exterior-1.webp"
+    "/assets/images/hotels/mazar/kefayat/hero.webp"
   ],
   "/assets/images/hotels/mazar/kefayat/rooms": [
     "/assets/images/hotels/mazar/kefayat/rooms/double-bedroom.webp",
     "/assets/images/hotels/mazar/kefayat/rooms/two-single-bedroom.webp"
   ],
   "/assets/images/hubs/bamyan-city": [
-    "/assets/images/hubs/bamyan-city/01.webp",
+    "/assets/images/hubs/bamyan-city/hero.webp",
     "/assets/images/hubs/bamyan-city/gallery-1.webp",
     "/assets/images/hubs/bamyan-city/gallery-3.webp",
     "/assets/images/hubs/bamyan-city/gallery-4.webp",
     "/assets/images/hubs/bamyan-city/gallery-5.webp"
   ],
   "/assets/images/hubs/faizabad": [
-    "/assets/images/hubs/faizabad/01.webp",
+    "/assets/images/hubs/faizabad/hero.webp",
     "/assets/images/hubs/faizabad/gallery-1.webp"
   ],
   "/assets/images/hubs/ghazni-city": [
@@ -778,7 +729,7 @@
     "/assets/images/hubs/herat-city/gallery/05.webp"
   ],
   "/assets/images/hubs/jalalabad": [
-    "/assets/images/hubs/jalalabad/01.webp",
+    "/assets/images/hubs/jalalabad/hero.webp",
     "/assets/images/hubs/jalalabad/gallery-1.webp"
   ],
   "/assets/images/hubs/kabul-city": [
@@ -790,16 +741,16 @@
     "/assets/images/hubs/kabul-city/gallery-5.webp"
   ],
   "/assets/images/hubs/kandahar-city": [
-    "/assets/images/hubs/kandahar-city/01.webp",
+    "/assets/images/hubs/kandahar-city/hero.webp",
     "/assets/images/hubs/kandahar-city/gallery-1.webp",
     "/assets/images/hubs/kandahar-city/gallery-3.webp",
     "/assets/images/hubs/kandahar-city/gallery-5.webp"
   ],
   "/assets/images/hubs/mazar-e-sharif": [
-    "/assets/images/hubs/mazar-e-sharif/01.webp",
+    "/assets/images/hubs/mazar-e-sharif/hero.webp",
     "/assets/images/hubs/mazar-e-sharif/balkh-white-pigeons.webp",
     "/assets/images/hubs/mazar-e-sharif/gallery-1.webp",
-    "/assets/images/hubs/mazar-e-sharif/gallery-2.webp",
+    "/assets/images/heroes/cultural-experiences/hero.webp",
     "/assets/images/hubs/mazar-e-sharif/gallery-3.webp"
   ],
   "/assets/images/hubs/parun": [
@@ -830,7 +781,7 @@
     "/assets/images/page-assets/activities/other/01.webp"
   ],
   "/assets/images/page-assets/activities/sightseeing/shopping": [
-    "/assets/images/page-assets/activities/sightseeing/shopping/majid-mall.webp"
+    "/assets/images/experiences/activities/shopping/gallery/majid-mall.webp"
   ],
   "/assets/images/page-assets/activities/skiing": [
     "/assets/images/page-assets/activities/skiing/02.webp",
@@ -840,7 +791,7 @@
     "/assets/images/page-assets/activities/skiing/06.webp"
   ],
   "/assets/images/page-assets/faqs": [
-    "/assets/images/page-assets/faqs/hotels-upgrades.webp",
+    "/assets/images/hotels/kabul/kabul-grand/hero.webp",
     "/assets/images/page-assets/faqs/practical-travel.webp",
     "/assets/images/page-assets/faqs/specialist-travel.webp",
     "/assets/images/page-assets/faqs/transportation.jpeg",
@@ -926,7 +877,7 @@
     "/assets/images/social/afghantours-link-preview.jpg"
   ],
   "/assets/images/tours/custom/scientific-expeditions": [
-    "/assets/images/tours/custom/scientific-expeditions/overview.webp"
+    "/assets/images/provinces/nuristan/hero.webp"
   ],
   "/assets/images/tours/featured/afghanistan-discovery-tour-fall": [
     "/assets/images/tours/featured/afghanistan-discovery-tour-fall/01.webp",
@@ -996,7 +947,7 @@
   ],
   "/assets/images/tours/featured/winter-circuit": [
     "/assets/images/tours/featured/winter-circuit/01.webp",
-    "/assets/images/tours/featured/winter-circuit/02.webp",
+    "/assets/images/transport/premium/suv/01.webp",
     "/assets/images/tours/featured/winter-circuit/03.webp",
     "/assets/images/tours/featured/winter-circuit/overview.webp"
   ],
@@ -1028,5 +979,11 @@
   ],
   "/assets/images/transport/standard/van": [
     "/assets/images/transport/standard/van/01.webp"
+  ],
+  "/assets/images/food/produce/balkh-melons/gallery": [
+    "/assets/images/food/produce/balkh-melons/gallery/melon-halves.webp"
+  ],
+  "/assets/images/food/dishes/kandahari-rosh/gallery": [
+    "/assets/images/food/dishes/kandahari-rosh/gallery/rosh-platter.webp"
   ]
 }

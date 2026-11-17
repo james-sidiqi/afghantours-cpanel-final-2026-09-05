@@ -6,7 +6,7 @@ save_to: src/content/hotels/dubai_kandahar.md
 destination_code: KDRC
 tier: standard
 star_rating: 3
-cover_image: /assets/images/hotels/kandahar/dubai-inn/hotel-exterior-1.webp
+cover_image: /assets/images/hotels/kandahar/dubai-inn/hero.webp
 gallery_images:
 ---
 

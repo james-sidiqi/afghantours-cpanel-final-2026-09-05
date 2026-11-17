@@ -3,6 +3,8 @@ title: Shola
 food_slug: shola
 section: food_content
 save_to: src/content/food/dishes/shola.md
+hero_image: "/assets/images/food/dishes/shola/hero.webp"
+image: "/assets/images/food/dishes/shola/hero.webp"
 ---
 
 ### Overview

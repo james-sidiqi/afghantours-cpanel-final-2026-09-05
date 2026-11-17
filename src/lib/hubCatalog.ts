@@ -11,7 +11,7 @@ import {
 } from './buildRelations';
 import { ACTIVE_HUB_SLUGS, getActivitiesForHub, getCulturalForHub } from './experiences';
 import { getCulinaryForHub } from './culinary';
-import { listPublicImages, listGalleryImages, cleanGallery } from './images';
+import { listPublicImages, listGalleryImages, cleanGallery, normalizeImagePath } from './images';
 
 type Row = Record<string, any>;
 export type HubCatalogItem = {
@@ -174,7 +174,7 @@ export function buildHubIndexCatalog(): HubCatalogItem[] {
       `/assets/images/hubs/${short}/hero.webp`,
       `/assets/images/hubs/${short}/01.webp`,
       String(hub.image || ''),
-    ].filter(Boolean);
+    ].filter(Boolean).map((src) => normalizeImagePath(src, ''));
     const image =
       imageCandidates.find((p) => existingHubImages.has(p) || (p.includes('/placeholders/') === false && p === hub.image && !String(hub.image || '').includes('placeholder')))
       || imageCandidates.find((p) => existingHubImages.has(p))
@@ -186,7 +186,7 @@ export function buildHubIndexCatalog(): HubCatalogItem[] {
       `/assets/images/hubs/${short}/01.webp`,
       `/assets/images/hubs/${short}/thumb.webp`,
       image,
-    ];
+    ].map((src) => normalizeImagePath(src, ''));
     const cardImage = cardCandidates.find((p) => existingHubImages.has(p)) || image;
 
     const summary = firstSentence(

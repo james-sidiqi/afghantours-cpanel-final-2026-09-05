@@ -69,8 +69,9 @@ export function listGalleryImages(folder?: string | null, recursive = true): str
 export function listPublicImages(folder?: string | null, recursive = true): string[] {
   const root = normalizeImagePath(folder, '').replace(/\/$/, '');
   if (!root) return [];
-  return (assets as string[]).filter((src) => src.startsWith(`${root}/`)
-    && (recursive || !src.slice(root.length + 1).includes('/')) && hasRealImage(src));
+  return [...new Set((assets as string[]).filter((src) => src.startsWith(`${root}/`)
+    && (recursive || !src.slice(root.length + 1).includes('/')))
+    .map((src) => normalizeImagePath(src, '')).filter(hasRealImage))];
 }
 
 function entityHero(item: any, candidates: any[], fallback: string): string {

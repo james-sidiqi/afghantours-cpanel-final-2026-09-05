@@ -3,7 +3,8 @@ import path from 'node:path';
 import http from 'node:http';
 import { chromium } from '@playwright/test';
 const root = path.resolve('dist');
-const reports = path.resolve('../reports');
+const reports = path.resolve(process.env.AFGHAN_IMAGE_REPORTS || '../reports');
+fs.mkdirSync(reports, { recursive: true });
 const types = { '.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.webp':'image/webp', '.jpg':'image/jpeg', '.jpeg':'image/jpeg', '.png':'image/png', '.svg':'image/svg+xml', '.json':'application/json', '.woff2':'font/woff2' };
 const server = http.createServer((req,res) => {
   let file = path.join(root, decodeURIComponent(new URL(req.url, 'http://localhost').pathname));
@@ -16,6 +17,7 @@ await new Promise(resolve => server.listen(0,'127.0.0.1',resolve));
 const base = `http://127.0.0.1:${server.address().port}`;
 const browser = await chromium.launch({ executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless:true });
 const cases = [ '/', '/tours/', '/tours/weekend-in-kabul/', '/attractions/ahmad-shah-massoud-mausoleum/', '/food-culture/dried-fruits/badghis-pistachios/', '/cultural-experiences/buzkashi/', '/activities/horse-riding/', '/hotels/taj_kabul/', '/destinations/', '/hubs/kabul-city/' ];
+cases.push('/food-culture/', '/food-culture/dishes/shola/', '/food-culture/dishes/banjan-sia/', '/food-culture/dishes/shor-nakhut/', '/food-culture/dishes/sabzi-palak/', '/food-culture/dishes/kadoo/', '/food-culture/dishes/qurmay-qachaloo/', '/food-culture/produce/balkh-melon/', '/cultural-experiences/glassblowers-of-herat/');
 const results=[];
 try {
   for (const width of [1440,390]) {
@@ -31,6 +33,19 @@ try {
       const broken=await page.locator('img').evaluateAll(imgs=>imgs.filter(img=>img.getAttribute('src')&&img.complete&&img.naturalWidth===0).map(img=>img.getAttribute('src')));
       const galleryThumbs=await page.locator('.gallery-grid img, .gallery-wrap img, [data-cultural-gallery-image]').evaluateAll(imgs=>imgs.map(img=>img.getAttribute('src')||img.getAttribute('data-cultural-gallery-image')).filter(src=>/(?:^|\/)(?:thumb|thumbnail|card)(?:[._-]|$)/i.test(src||'')));
       const row={route,width,broken,errors,galleryThumbs,popup_checked:false,lightbox_checked:false};
+      if (route === '/food-culture/') {
+        const cards = await page.locator('article.food-card').evaluateAll(cards => cards.map(card => ({ title:card.querySelector('h3')?.textContent?.trim(), src:card.querySelector('img')?.getAttribute('src') })));
+        for (const title of ['Shola', 'Banjan Sia (Eggplant)', 'Sabzi Palak (Spinach)', 'Shor Nakhut (Spicy Chickpeas)', 'Kadoo (Pumpkin)', 'Qurmay Qachaloo (Potato Curry)', 'Rosh (Rosht)']) {
+          if (!cards.find(card => card.title === title)?.src) throw new Error('Food image missing from card: ' + title);
+        }
+        if (cards.find(card => card.title === 'Watermelons')?.src) throw new Error('Rejected watermelon photograph resurfaced');
+        row.food_cards_checked = 7;
+        if(width === 390) {
+          const card = page.locator('article.food-card').filter({has:page.locator('h3', {hasText:'Shor Nakhut'})}).first();
+          await card.screenshot({path:path.join(reports,'iphone-shor-nakhut-card.png')});
+        }
+      }
+
       if(route==='/') {
         const preview=page.locator('[data-featured-open], [data-featured-preview]').first();
         if(await preview.count()) {

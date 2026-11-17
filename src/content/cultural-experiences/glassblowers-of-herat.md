@@ -18,7 +18,7 @@ gallery_exclude:
   - "/assets/images/hubs/herat-city/gallery-4.webp"
   - "/assets/images/hubs/herat-city/01.webp"
   - "/assets/images/experiences/cultural/glassblowers-of-herat/hero.webp"
-  - "/assets/images/experiences/cultural/glassblowers-of-herat/thumb.webp"
+  - "/assets/images/experiences/cultural/glassblowers-of-herat/hero.webp"
   - "/assets/images/hubs/herat-city/thumb.webp"
 ---
 

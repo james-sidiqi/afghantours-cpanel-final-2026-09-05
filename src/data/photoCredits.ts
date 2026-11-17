@@ -1,3 +1,4 @@
+import IMAGE_PATH_ALIASES from './imagePathAliases.json';
 import { IMAGE_ALTS } from './imageAlts';
 // Photo credits for images that need (or carry) a visible credit.
 // Source of truth for <PhotoCredits> and the /photo-credits/ page.
@@ -366,9 +367,20 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
 ];
 const byPath = new Map<string, PhotoCredit>();
 PHOTO_CREDITS.forEach((c) => c.paths.forEach((p) => byPath.set(p, c)));
+// Shared file aliases preserve existing attribution records.
+for (const [original, canonical] of Object.entries(IMAGE_PATH_ALIASES)) {
+  if (!byPath.has(canonical) && byPath.has(original)) byPath.set(canonical, byPath.get(original)!);
+}
+// This hero was a wrong-subject mosque photo; use the furnace photo's metadata.
+const GLASS_PHOTO = '/assets/images/experiences/cultural/glassblowers-of-herat/gallery/02.webp';
+const GLASS_HERO = '/assets/images/experiences/cultural/glassblowers-of-herat/hero.webp';
+if (byPath.has(GLASS_PHOTO)) byPath.set(GLASS_HERO, byPath.get(GLASS_PHOTO)!);
+else byPath.delete(GLASS_HERO);
 const norm = (src?: string | null) => (src || '').split('?')[0].replace(/^https?:\/\/[^/]+/, '');
 export const creditFor = (src?: string | null) => byPath.get(norm(src));
-export const altFor = (src: string | null | undefined, fallback: string) => creditFor(src)?.alt || IMAGE_ALTS[norm(src)] || fallback;
+export const altFor = (src: string | null | undefined, fallback: string) => norm(src) === GLASS_HERO
+  ? creditFor(GLASS_PHOTO)?.alt || IMAGE_ALTS[GLASS_PHOTO] || 'Glassblower working beside a furnace in Herat'
+  : creditFor(src)?.alt || IMAGE_ALTS[norm(src)] || fallback;
 export const creditsFor = (srcs: (string | null | undefined)[]) => {
   const out: PhotoCredit[] = [];
   srcs.forEach((s) => { const c = creditFor(s); if (c && !out.includes(c)) out.push(c); });

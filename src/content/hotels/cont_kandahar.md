@@ -6,7 +6,7 @@ save_to: src/content/hotels/cont_kandahar.md
 destination_code: KDRC
 tier: standard
 star_rating: 2
-cover_image: /assets/images/hotels/kandahar/continental/hotel-exterior-1.webp
+cover_image: /assets/images/hotels/kandahar/continental/hero.webp
 gallery_images:
 ---
 

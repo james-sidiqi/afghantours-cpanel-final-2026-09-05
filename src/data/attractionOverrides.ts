@@ -25,7 +25,7 @@ export const ATTRACTION_OVERRIDES: Record<string, AttractionOverride> = {
     seoDescription: "Explore Nuristan National Park's forested mountains, river valleys, and natural landscapes. Plan a locally coordinated visit with AfghanTours.",
     ctaLabel: 'Ask About Visiting Nuristan',
     heroLayout: 'panorama',
-    heroSrcset: '/assets/images/attractions/nuristan-national-park/sizes/hero-800w.webp 800w, /assets/images/attractions/nuristan-national-park/hero.webp 2172w',
+    heroSrcset: '/assets/images/attractions/nuristan-national-park/hero.webp 800w, /assets/images/attractions/nuristan-national-park/hero.webp 2172w',
     regionLabel: 'Eastern Afghanistan / Hindu Kush',
     categoryLabel: 'Nature & Wildlife',
     secondaryCategory: 'Mountain Landscapes',
