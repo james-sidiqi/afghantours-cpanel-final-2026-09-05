@@ -4,6 +4,8 @@ food_slug: "dopiaza"
 subtitle: "Meat and onions"
 card_description: "Tender meat cooked with generous onions and aromatic spices, traditionally enjoyed with Afghan bread or rice."
 category: "Afghan Dish"
+hero_image: "/assets/images/food/dishes/dopiaza/hero.webp"
+image: "/assets/images/food/dishes/dopiaza/hero.webp"
 ---
 
 ### Overview
