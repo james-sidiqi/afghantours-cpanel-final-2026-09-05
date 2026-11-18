@@ -4,11 +4,11 @@ food_slug: sheer-chai
 section: food_content
 save_to: src/content/food/drinks/sheer-chai.md
 hero_image: "/assets/images/food/drinks/sheer-chai/owner-sheer-chai.webp"
-image: "/assets/images/food/drinks/sheer-chai/owner-sheer-chai.webp"
 card_image: "/assets/images/food/drinks/sheer-chai/owner-sheer-chai.webp"
-gallery_images: ["/assets/images/food/drinks/sheer-chai/hero.webp"]
+gallery_images: ["/assets/images/food/drinks/sheer-chai/hero.webp", "/assets/images/food/drinks/sheer-chai/github-hero.webp"]
 gallery_mode: "explicit"
 gallery_exclude_hero: true
+image: "/assets/images/food/drinks/sheer-chai/owner-sheer-chai.webp"
 ---
 
 ### Overview

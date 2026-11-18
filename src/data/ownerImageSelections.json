@@ -113,10 +113,15 @@
   },
   "food/kabul-kabob": {
     "hero_image": "/assets/images/food/dishes/afghan-kabob/roadside-kabob.webp",
+    "card_image": "/assets/images/food/dishes/afghan-kabob/roadside-kabob.webp",
     "gallery_images": [
-      "/assets/images/food/dishes/kabul-kabob/hero.webp"
+      "/assets/images/food/dishes/kabul-kabob/hero.webp",
+      "/assets/images/food/dishes/herat-kabob/hero.webp",
+      "/assets/images/experiences/culinary/bamyan-kabob/gallery/01.webp",
+      "/assets/images/experiences/culinary/mansoor-kabob/gallery/04.webp"
     ],
-    "gallery_mode": "explicit"
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
   },
   "food/badghis-pistachios": {
     "hero_image": "/assets/images/food/dried-fruits/badghis-pistachios/pista-tree-badghis.webp",
@@ -290,7 +295,8 @@
     "hero_image": "/assets/images/food/drinks/sheer-chai/owner-sheer-chai.webp",
     "card_image": "/assets/images/food/drinks/sheer-chai/owner-sheer-chai.webp",
     "gallery_images": [
-      "/assets/images/food/drinks/sheer-chai/hero.webp"
+      "/assets/images/food/drinks/sheer-chai/hero.webp",
+      "/assets/images/food/drinks/sheer-chai/github-hero.webp"
     ],
     "gallery_mode": "explicit",
     "gallery_exclude_hero": true
@@ -314,6 +320,112 @@
       "/assets/images/attractions/ahmad-shah-massoud-mausoleum/gallery-1.webp",
       "/assets/images/attractions/ahmad-shah-massoud-mausoleum/gallery-2.webp",
       "/assets/images/attractions/ahmad-shah-massoud-mausoleum/panjshir-tanks.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "food/banjan-sia": {
+    "hero_image": "/assets/images/food/dishes/banjan-sia/hero.webp",
+    "card_image": "/assets/images/food/dishes/banjan-sia/hero.webp",
+    "gallery_images": [],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "food/dopiaza": {
+    "hero_image": "/assets/images/food/dishes/dopiaza/hero.webp",
+    "card_image": "/assets/images/food/dishes/dopiaza/hero.webp",
+    "gallery_images": [],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "food/kadoo": {
+    "hero_image": "/assets/images/food/dishes/kadoo/hero.webp",
+    "card_image": "/assets/images/food/dishes/kadoo/hero.webp",
+    "gallery_images": [],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "food/qorma-e-sabzi": {
+    "hero_image": "/assets/images/food/dishes/qorma-e-sabzi/hero.webp",
+    "card_image": "/assets/images/food/dishes/qorma-e-sabzi/hero.webp",
+    "gallery_images": [],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "food/qurmay-qachaloo": {
+    "hero_image": "/assets/images/food/dishes/qurmay-qachaloo/github-hero.webp",
+    "card_image": "/assets/images/food/dishes/qurmay-qachaloo/github-hero.webp",
+    "gallery_images": [
+      "/assets/images/food/dishes/qurmay-qachaloo/hero.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "food/sabzi-palak": {
+    "hero_image": "/assets/images/food/dishes/sabzi-palak/hero.webp",
+    "card_image": "/assets/images/food/dishes/sabzi-palak/hero.webp",
+    "gallery_images": [
+      "/assets/images/food/dishes/sabzi-palak/gallery-1.webp",
+      "/assets/images/food/dishes/sabzi-palak/github-hero.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "food/shor-nakhut": {
+    "hero_image": "/assets/images/food/dishes/shor-nakhut/hero.webp",
+    "card_image": "/assets/images/food/dishes/shor-nakhut/hero.webp",
+    "gallery_images": [],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "food/shor-chai-of-badakhshan": {
+    "hero_image": "/assets/images/food/drinks/shor-chai-of-badakhshan/hero.webp",
+    "card_image": "/assets/images/food/drinks/shor-chai-of-badakhshan/hero.webp",
+    "gallery_images": [],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "food/farah-watermelon": {
+    "hero_image": "/assets/images/food/produce/watermelons/hero.webp",
+    "card_image": "/assets/images/food/produce/watermelons/hero.webp",
+    "gallery_images": [],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "food/chiken-korma": {
+    "hero_image": "/assets/images/food/dishes/chiken-korma/hero.webp",
+    "card_image": "/assets/images/food/dishes/chiken-korma/hero.webp",
+    "gallery_images": [
+      "/assets/images/food/dishes/chiken-korma/gallery-1.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "food/mantu": {
+    "hero_image": "/assets/images/food/dishes/mantu/hero.webp",
+    "card_image": "/assets/images/food/dishes/mantu/hero.webp",
+    "gallery_images": [
+      "/assets/images/food/dishes/mantu/gallery-1.webp",
+      "/assets/images/food/dishes/mantu/gallery-2.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "food/shola": {
+    "hero_image": "/assets/images/food/dishes/shola/hero.webp",
+    "card_image": "/assets/images/food/dishes/shola/hero.webp",
+    "gallery_images": [
+      "/assets/images/food/dishes/shor-nakhut/gallery-1.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "food/kunduz-melon": {
+    "hero_image": "/assets/images/food/produce/balkh-melons/gallery-1.webp",
+    "card_image": "/assets/images/food/produce/balkh-melons/gallery-1.webp",
+    "gallery_images": [
+      "/assets/images/food/produce/kunduz-melon/hero.webp",
+      "/assets/images/food/produce/kunduz-melon/gallery-1.webp"
     ],
     "gallery_mode": "explicit",
     "gallery_exclude_hero": true

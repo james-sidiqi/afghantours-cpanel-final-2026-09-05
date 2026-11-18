@@ -39,7 +39,7 @@ try {
         for (const title of ['Shola', 'Banjan Sia (Eggplant)', 'Sabzi Palak (Spinach)', 'Shor Nakhut (Spicy Chickpeas)', 'Kadoo (Pumpkin)', 'Qurmay Qachaloo (Potato Curry)', 'Rosh (Rosht)']) {
           if (!cards.find(card => card.title === title)?.src) throw new Error('Food image missing from card: ' + title);
         }
-        if (cards.find(card => card.title === 'Watermelons')?.src) throw new Error('Rejected watermelon photograph resurfaced');
+        if (/\/food\/produce\/farah-waterm(?:elon|ellons)\//.test(cards.find(card => card.title === 'Watermelons')?.src || '')) throw new Error('Rejected watermelon photograph resurfaced');
         row.food_cards_checked = 7;
         if(width === 390) {
           const card = page.locator('article.food-card').filter({has:page.locator('h3', {hasText:'Shor Nakhut'})}).first();

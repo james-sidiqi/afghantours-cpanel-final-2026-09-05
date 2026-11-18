@@ -3,8 +3,12 @@ title: Kunduz Melon
 food_slug: kunduz-melon
 section: food_content
 save_to: src/content/food/produce/kunduz-melon.md
-hero_image: "/assets/images/food/produce/kunduz-melon/hero.webp"
-image: "/assets/images/food/produce/kunduz-melon/hero.webp"
+hero_image: "/assets/images/food/produce/balkh-melons/gallery-1.webp"
+card_image: "/assets/images/food/produce/balkh-melons/gallery-1.webp"
+gallery_images: ["/assets/images/food/produce/kunduz-melon/hero.webp", "/assets/images/food/produce/kunduz-melon/gallery-1.webp"]
+gallery_mode: "explicit"
+gallery_exclude_hero: true
+image: "/assets/images/food/produce/balkh-melons/gallery-1.webp"
 ---
 
 ### Overview

@@ -131,7 +131,8 @@
     "/food-culture/drinks/sheer-chai/": {
       "hero": "/assets/images/food/drinks/sheer-chai/owner-sheer-chai.webp",
       "gallery": [
-        "/assets/images/food/drinks/sheer-chai/hero.webp"
+        "/assets/images/food/drinks/sheer-chai/hero.webp",
+        "/assets/images/food/drinks/sheer-chai/github-hero.webp"
       ]
     },
     "/activities/fishing/": {

@@ -428,7 +428,8 @@
     "/assets/images/food/dishes/kunar-trout/01.webp"
   ],
   "/assets/images/food/dishes/mantu": [
-    "/assets/images/food/dishes/mantu/gallery-1.webp"
+    "/assets/images/food/dishes/mantu/gallery-1.webp",
+    "/assets/images/food/dishes/mantu/gallery-2.webp"
   ],
   "/assets/images/food/dishes/naan": [
     "/assets/images/food/dishes/naan/gallery-1.webp",
@@ -462,15 +463,11 @@
   "/assets/images/food/dried-fruits/samangan-pistachios": [
     "/assets/images/food/dried-fruits/samangan-pistachios/gallery-1.webp"
   ],
-  "/assets/images/food/drinks/shor-chai-of-badakhshan": [
-    "/assets/images/food/drinks/shor-chai-of-badakhshan/gallery-1.webp"
-  ],
+  "/assets/images/food/drinks/shor-chai-of-badakhshan": [],
   "/assets/images/food/produce/bamyan-potatoes": [
     "/assets/images/food/produce/bamyan-potatoes/gallery-1.webp"
   ],
-  "/assets/images/food/produce/farah-watermelon": [
-    "/assets/images/food/produce/farah-watermelon/gallery-1.webp"
-  ],
+  "/assets/images/food/produce/farah-watermelon": [],
   "/assets/images/food/produce": [
     "/assets/images/food/produce/gallery-1.webp"
   ],
@@ -478,6 +475,7 @@
     "/assets/images/food/produce/kandahar-pomegranate/gallery-1.webp"
   ],
   "/assets/images/food/produce/kunduz-melon": [
+    "/assets/images/food/produce/kunduz-melon/hero.webp",
     "/assets/images/food/produce/kunduz-melon/gallery-1.webp"
   ],
   "/assets/images/food/produce/mulberries": [
@@ -1018,6 +1016,31 @@
     "/assets/images/experiences/cultural/kuchi-nomads/owner-kuchi-nomads.webp"
   ],
   "/assets/images/food/drinks/sheer-chai": [
-    "/assets/images/food/drinks/sheer-chai/hero.webp"
+    "/assets/images/food/drinks/sheer-chai/hero.webp",
+    "/assets/images/food/drinks/sheer-chai/github-hero.webp"
+  ],
+  "/assets/images/food/dishes/banjan-sia": [],
+  "/assets/images/food/dishes/dopiaza": [],
+  "/assets/images/food/dishes/kadoo": [],
+  "/assets/images/food/dishes/qorma-e-sabzi": [],
+  "/assets/images/food/dishes/qurmay-qachaloo": [
+    "/assets/images/food/dishes/qurmay-qachaloo/hero.webp"
+  ],
+  "/assets/images/food/dishes/sabzi-palak": [
+    "/assets/images/food/dishes/sabzi-palak/gallery-1.webp",
+    "/assets/images/food/dishes/sabzi-palak/github-hero.webp"
+  ],
+  "/assets/images/food/dishes/shor-nakhut": [],
+  "/assets/images/food/dishes/kabul-kabob": [
+    "/assets/images/food/dishes/kabul-kabob/hero.webp",
+    "/assets/images/food/dishes/herat-kabob/hero.webp",
+    "/assets/images/experiences/culinary/bamyan-kabob/gallery/01.webp",
+    "/assets/images/experiences/culinary/mansoor-kabob/gallery/04.webp"
+  ],
+  "/assets/images/food/dishes/chiken-korma": [
+    "/assets/images/food/dishes/chiken-korma/gallery-1.webp"
+  ],
+  "/assets/images/food/dishes/shola": [
+    "/assets/images/food/dishes/shor-nakhut/gallery-1.webp"
   ]
 }

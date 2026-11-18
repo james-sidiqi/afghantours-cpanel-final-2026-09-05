@@ -5,6 +5,10 @@ subtitle: "Spicy chickpeas"
 card_description: "Chickpeas tossed in a tangy, spicy dressing, served as a snack or market food."
 category: "Afghan Dish"
 hero_image: "/assets/images/food/dishes/shor-nakhut/hero.webp"
+card_image: "/assets/images/food/dishes/shor-nakhut/hero.webp"
+gallery_images: []
+gallery_mode: "explicit"
+gallery_exclude_hero: true
 image: "/assets/images/food/dishes/shor-nakhut/hero.webp"
 ---
 

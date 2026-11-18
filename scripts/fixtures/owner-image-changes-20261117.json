@@ -100,7 +100,10 @@
   "/food-culture/dishes/kabul-kabob/": {
     "hero": "/assets/images/food/dishes/afghan-kabob/roadside-kabob.webp",
     "gallery": [
-      "/assets/images/food/dishes/kabul-kabob/hero.webp"
+      "/assets/images/food/dishes/kabul-kabob/hero.webp",
+      "/assets/images/food/dishes/herat-kabob/hero.webp",
+      "/assets/images/experiences/culinary/bamyan-kabob/gallery/01.webp",
+      "/assets/images/experiences/culinary/mansoor-kabob/gallery/04.webp"
     ],
     "h1": "Afghan Kabob"
   },

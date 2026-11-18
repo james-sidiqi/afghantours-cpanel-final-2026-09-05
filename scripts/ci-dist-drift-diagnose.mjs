@@ -1,22 +1,28 @@
 #!/usr/bin/env node
-import { execSync } from 'node:child_process';
-import fs from 'node:fs';
+import { execFileSync } from 'node:child_process';
 
-function sh(cmd) {
-  return execSync(cmd, { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+function git(args, optional = false) {
+  try {
+    return execFileSync('git', args, { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (error) {
+    if (optional && error.status === 128) return null;
+    throw error;
+  }
 }
 
-const files = sh('git diff --cached --name-only -- dist/')
-  .split('\n')
-  .map((s) => s.trim())
-  .filter(Boolean);
+const files = git(['diff', '--cached', '--name-only', '-z', '--', 'dist/']).split('\0').filter(Boolean);
 
 for (const f of files.slice(0, 10)) {
-  const head = sh(`git show HEAD:${f}`);
-  const staged = sh(`git show :0:${f}`);
+  const head = git(['show', `HEAD:${f}`], true);
+  const staged = git(['show', `:0:${f}`], true);
+  if (head === null || staged === null) {
+    console.log(`${f} status=${head === null ? 'added' : 'deleted'}`);
+    continue;
+  }
+  console.log(`${f} status=modified`);
   console.log(`\n===== ${f} head_len=${head.length} staged_len=${staged.length} =====`);
   if (head === staged) {
-    print('identical');
+    console.log('identical');
     continue;
   }
   const n = Math.min(head.length, staged.length);

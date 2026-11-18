@@ -183,17 +183,6 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
   },
   {
     "paths": [
-      "/assets/images/food/dried-fruits/badghis-pistachios/hero.webp"
-    ],
-    "author": "Ayri8888",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "source": "https://commons.wikimedia.org/wiki/File:A_Wild_Pistachio_Tree-Feshgeldarre_Mountains.jpg",
-    "alt": "Wild pistachio tree on a dry hillside",
-    "note": ""
-  },
-  {
-    "paths": [
       "/assets/images/food/produce/balkh-melons/hero.webp",
       "/assets/images/food/produce/balkh-melons/thumb.webp"
     ],

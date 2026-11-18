@@ -5,6 +5,10 @@ subtitle: "Eggplant"
 card_description: "Eggplant cooked with tomatoes, garlic and spices, often served with bread or rice."
 category: "Afghan Dish"
 hero_image: "/assets/images/food/dishes/banjan-sia/hero.webp"
+card_image: "/assets/images/food/dishes/banjan-sia/hero.webp"
+gallery_images: []
+gallery_mode: "explicit"
+gallery_exclude_hero: true
 image: "/assets/images/food/dishes/banjan-sia/hero.webp"
 ---
 
