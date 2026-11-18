@@ -5,6 +5,8 @@ import crypto from 'node:crypto';
 import { parse } from 'csv-parse/sync';
 
 const root = process.cwd();
+const aliasesFile = path.join(root, 'src/data/imagePathAliases.json');
+const aliases = fs.existsSync(aliasesFile) ? JSON.parse(fs.readFileSync(aliasesFile, 'utf8')) : {};
 const tours = parse(fs.readFileSync(path.join(root, 'data/tours.csv'), 'utf8'), {
   columns: true, skip_empty_lines: true, relax_column_count: true,
 });
@@ -24,7 +26,7 @@ for (const t of active) {
   const ownPrefix = `/assets/images/tours/featured/${t.slug}/`;
   if (!hero) failures.push({ slug: t.slug, error: 'empty hero path' });
   else if (!fs.existsSync(full)) failures.push({ slug: t.slug, error: `missing file ${hero}` });
-  else if (!hero.startsWith(ownPrefix)) failures.push({ slug: t.slug, error: `hero not under ${ownPrefix}: ${hero}` });
+  else if (!hero.startsWith(ownPrefix) && aliases[`${ownPrefix}hero.webp`] !== hero) failures.push({ slug: t.slug, error: `hero not under ${ownPrefix} or its explicit canonical alias: ${hero}` });
   else {
     const digest = sha(full);
     if (!byHash.has(digest)) byHash.set(digest, []);
