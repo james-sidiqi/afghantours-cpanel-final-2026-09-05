@@ -441,5 +441,13 @@
     ],
     "gallery_mode": "explicit",
     "gallery_exclude_hero": true
+  },
+  "food/rosh": {
+    "hero_image": "/assets/images/food/dishes/kandahari-rosh/owner-rosh.webp",
+    "gallery_images": [
+      "/assets/images/food/dishes/kandahari-rosh/rosh-james.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
   }
 }
