@@ -4,7 +4,10 @@ alternative_name: "Toot-e-Khoshk"
 category: "Dried Fruits & Nuts"
 subtitle: "Sun-dried Afghan mulberries, traditionally shared with walnuts and tea."
 card_description: "Toot-e-khoshk: Afghan mulberries preserved by sun-drying for year-round snacks and hospitality."
-image_mode: "none"
+hero_image: "/assets/images/food/dried-fruits/dried-mulberries/white-dried-mulberries.webp"
+image: "/assets/images/food/dried-fruits/dried-mulberries/white-dried-mulberries.webp"
+card_image: "/assets/images/food/dried-fruits/dried-mulberries/white-dried-mulberries.webp"
+gallery_images: ["/assets/images/food/dried-fruits/dried-mulberries/dark-dried-mulberries.webp"]
 gallery_mode: "explicit"
 gallery_exclude_hero: true
 paired_foods: ["Walnuts", "Green Tea", "Mulberries"]

@@ -1,6 +1,8 @@
 // Alt text for images whose photo credit is still pending (no visible credit line yet).
 // Credits are tracked in docs/image-register-*.csv; move an entry to photoCredits.ts once confirmed.
 export const IMAGE_ALTS: Record<string, string> = {
+  '/assets/images/food/dried-fruits/dried-mulberries/white-dried-mulberries.webp': 'White dried mulberries (toot-e-khoshk)',
+  '/assets/images/food/dried-fruits/dried-mulberries/dark-dried-mulberries.webp': 'Dark dried mulberries',
   '/assets/images/experiences/cultural/afghan-carpets/hero.webp': 'Two men unfurling a red and orange hand-knotted carpet in a shop stacked with rolled carpets',
   '/assets/images/experiences/cultural/afghan-carpets/thumb.webp': 'Two men unfurling a red and orange hand-knotted carpet in a shop stacked with rolled carpets',
   '/assets/images/experiences/cultural/afghan-carpets/gallery/01-carpet-shop-unfurling.webp': 'Two men unfurling a red and orange hand-knotted carpet in a shop stacked with rolled carpets',

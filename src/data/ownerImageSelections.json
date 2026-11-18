@@ -432,5 +432,14 @@
     ],
     "gallery_mode": "explicit",
     "gallery_exclude_hero": true
+  },
+  "food/dried-mulberries": {
+    "hero_image": "/assets/images/food/dried-fruits/dried-mulberries/white-dried-mulberries.webp",
+    "card_image": "/assets/images/food/dried-fruits/dried-mulberries/white-dried-mulberries.webp",
+    "gallery_images": [
+      "/assets/images/food/dried-fruits/dried-mulberries/dark-dried-mulberries.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
   }
 }

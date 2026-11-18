@@ -16,7 +16,7 @@ test('regional harvests include one melon, one pistachio and the Afghan nut entr
   await expect(card(page, 'Almonds')).toContainText('Afghan-grown almonds');
   await expect(card(page, 'Pine Nuts')).toContainText('Afghanistan’s mountain forests');
   await expect(card(page, 'Dried Mulberries')).toContainText('Toot-e-khoshk');
-  await expect(card(page, 'Dried Mulberries').locator('img')).toHaveCount(0);
+  await expect(card(page, 'Dried Mulberries').locator('img')).toHaveAttribute('src', '/assets/images/food/dried-fruits/dried-mulberries/white-dried-mulberries.webp');
   await expect(page.getByText('Export Heritage', { exact: true })).toHaveCount(0);
   await expect(page.getByText('Kunduz Melon', { exact: true })).toHaveCount(0);
   await expect(page.getByText('The Pistachio Forests of Badghis', { exact: true })).toHaveCount(0);
@@ -63,13 +63,17 @@ test('merged notes preserve their photos and old URLs lead to the consolidated p
   await expect(page.locator('#food-gallery-dialog')).not.toBeVisible();
 });
 
-test('pine nuts describe Afghanistan and dried mulberries do not use a substitute photo', async ({ page }) => {
+test('pine nuts describe Afghanistan and dried mulberries use the two owner photos', async ({ page }) => {
   await page.goto('/food-culture/dried-fruits/paktia-pine-nuts/');
   await expect(page.getByRole('heading', { name: 'Pine Nuts', exact: true })).toBeVisible();
   await expect(page.locator('#food-story')).toContainText('Paktia, Paktika, Khost, Kunar, and Nuristan');
   await page.goto('/food-culture/dried-fruits/dried-mulberries/');
   await expect(page.getByRole('heading', { name: 'Dried Mulberries', exact: true })).toBeVisible();
-  await expect(page.locator('.food-detail-hero-image')).toHaveCount(0);
+  await expect(page.locator('.food-detail-hero-image')).toHaveAttribute('src', '/assets/images/food/dried-fruits/dried-mulberries/white-dried-mulberries.webp');
+  await expect(gallery(page)).toHaveAttribute('src', '/assets/images/food/dried-fruits/dried-mulberries/dark-dried-mulberries.webp');
+  for (const img of await page.locator('.food-detail-hero-image, .food-gallery-grid img').all()) {
+    expect(await img.evaluate(async el => { el.loading = 'eager'; await el.decode(); return el.naturalWidth; })).toBeGreaterThan(0);
+  }
   await expect(page.locator('img[src*="central-valley-mulberries/hero.webp"]')).toHaveCount(0);
   await expect(page.locator('img:not([data-lightbox-image]):not([src]), img[src=""]')).toHaveCount(0);
 });

@@ -101,7 +101,6 @@ const foodCollection = defineCollection({
     category: z.string().optional(),
     experience_type: z.string().optional(),
     primary_ingredients: z.array(z.string()).default([]),
-    image_mode: z.enum(['photo', 'none']).optional(),
     known_for: z.array(z.string()).default([]),
     provinces: z.array(z.string()).default([]),
     hero_image: z.string().optional(),

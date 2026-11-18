@@ -40,7 +40,6 @@ const imageForId = (id) => {
   if (approved && hasRealImage(approved)) return normalizeImagePath(approved, '');
   if (NO_CARD_IMAGE.has(id)) return null;
   const item = itemMap.get(normalizeFoodKey(id));
-  if (item?.data?.image_mode === 'none') return null;
   return [
     item?.data?.hero_image,
     item?.data?.image,
