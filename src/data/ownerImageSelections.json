@@ -247,7 +247,8 @@
       "/assets/images/experiences/activities/sightseeing/scenic/band-e-amir-lakes.webp",
       "/assets/images/experiences/activities/sightseeing/scenic/mountains-above-green-valley-kunduz-takhar.webp",
       "/assets/images/experiences/activities/sightseeing/scenic/northern-plains-sheep.webp",
-      "/assets/images/experiences/activities/sightseeing/owner-kabul-street-wide.webp"
+      "/assets/images/experiences/activities/sightseeing/owner-kabul-street-wide.webp",
+      "/assets/images/experiences/activities/sightseeing/street-life/street-kid-brothers.webp"
     ],
     "gallery_mode": "explicit",
     "gallery_exclude_hero": true
@@ -302,6 +303,17 @@
     "card_image": "/assets/images/experiences/activities/fishing/owner-fishing.webp",
     "gallery_images": [
       "/assets/images/experiences/activities/fishing/gallery/panjshir-river-fishing.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/ahmad-shah-massoud-mausoleum": {
+    "hero_image": "/assets/images/attractions/ahmad-shah-massoud-mausoleum/hero.webp",
+    "card_image": "/assets/images/attractions/ahmad-shah-massoud-mausoleum/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/ahmad-shah-massoud-mausoleum/gallery-1.webp",
+      "/assets/images/attractions/ahmad-shah-massoud-mausoleum/gallery-2.webp",
+      "/assets/images/attractions/ahmad-shah-massoud-mausoleum/panjshir-tanks.webp"
     ],
     "gallery_mode": "explicit",
     "gallery_exclude_hero": true
