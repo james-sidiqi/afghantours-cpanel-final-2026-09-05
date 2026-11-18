@@ -17,7 +17,7 @@ await new Promise(resolve => server.listen(0,'127.0.0.1',resolve));
 const base = `http://127.0.0.1:${server.address().port}`;
 const chrome = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const browser = await chromium.launch({ ...(fs.existsSync(chrome) ? { executablePath:chrome } : {}), headless:true });
-const cases = ["/", "/attractions/", "/food-culture/", "/cultural-experiences/", "/cultural-experiences/culinary/", "/activities/", "/attractions/minaret-of-jam/", "/attractions/kunduz-city-farmlands/", "/attractions/koh-e-baba-range/", "/attractions/badghis-hills-nomadic-pastures/", "/attractions/balkh-bala-hisar-ancient-walls/", "/attractions/haji-piyada-nine-domes/", "/attractions/tomb-of-rabia-balkhi/", "/attractions/rumi-home-madrasa/", "/attractions/ancient-city-of-balkh/", "/attractions/farah-citadel/", "/cultural-experiences/culinary/aziz-bakery/", "/cultural-experiences/culinary/kabul-chainaki/", "/food-culture/dishes/kabul-kabob/", "/food-culture/dried-fruits/badghis-pistachios/", "/activities/hiking/", "/activities/trekking/", "/cultural-experiences/ancient-city-of-balkh/", "/attractions/ai-khanoum/", "/food-culture/dishes/ouzi/", "/food-culture/produce/logar-orchard-gardens/"];
+const cases = ["/", "/attractions/", "/food-culture/", "/cultural-experiences/", "/cultural-experiences/culinary/", "/activities/", "/attractions/minaret-of-jam/", "/attractions/kunduz-city-farmlands/", "/attractions/koh-e-baba-range/", "/attractions/badghis-hills-nomadic-pastures/", "/attractions/balkh-bala-hisar-ancient-walls/", "/attractions/haji-piyada-nine-domes/", "/attractions/tomb-of-rabia-balkhi/", "/attractions/rumi-home-madrasa/", "/attractions/ancient-city-of-balkh/", "/attractions/farah-citadel/", "/cultural-experiences/culinary/aziz-bakery/", "/cultural-experiences/culinary/kabul-chainaki/", "/food-culture/dishes/kabul-kabob/", "/food-culture/samangan-pistachios/", "/activities/hiking/", "/activities/trekking/", "/cultural-experiences/ancient-city-of-balkh/", "/attractions/ai-khanoum/", "/food-culture/dishes/ouzi/", "/food-culture/produce/logar-orchard-gardens/"];
 const ownerChecks = JSON.parse(fs.readFileSync('scripts/fixtures/owner-image-changes-20261117.json', 'utf8'));
 const results=[];
 try {
@@ -91,7 +91,7 @@ try {
         }
         if(width===390) await page.locator('article').filter({has:page.getByRole('heading',{name:'Places within this experience'})}).first().screenshot({path:path.join(reports,'iphone-balkh-related-places.png')});
       }
-      if(width===390 && ['/cultural-experiences/culinary/aziz-bakery/','/food-culture/dried-fruits/badghis-pistachios/','/attractions/balkh-bala-hisar-ancient-walls/'].includes(route)) {
+      if(width===390 && ['/cultural-experiences/culinary/aziz-bakery/','/food-culture/samangan-pistachios/','/attractions/balkh-bala-hisar-ancient-walls/'].includes(route)) {
         await page.screenshot({path:path.join(reports,'iphone-'+route.split('/').filter(Boolean).pop()+'.png'),fullPage:false});
       }
       results.push(row);console.log('BROWSER',JSON.stringify(row));await page.close();

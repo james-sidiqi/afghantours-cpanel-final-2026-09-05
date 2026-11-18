@@ -2,13 +2,13 @@
 title: "Almonds"
 food_slug: balkh-almonds
 section: food_content
-save_to: src/content/food/produce/balkh-almonds.md
+save_to: src/content/food/dried-fruits/balkh-almonds.md
 hero_image: "/assets/images/food/dried-fruits/balkh-almonds/hero.webp"
 image: "/assets/images/food/dried-fruits/balkh-almonds/hero.webp"
 ---
 
 ### Overview
-Almonds grown in northern Afghanistan known for quality and flavor.
+Afghan-grown almonds are prized for their flavor and are an established part of Afghanistan’s dried-fruit and nut tradition. They are enjoyed with tea, used in sweets, and offered to guests. Northern Afghanistan, including Balkh, is part of this wider almond-growing tradition.
 
 ### Cultural Context
 

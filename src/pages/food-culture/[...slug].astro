@@ -157,8 +157,9 @@ const PORTRAIT_HEROES = new Set(['/assets/images/food/dried-fruits/paktia-pine-n
 // The watermelon source photo was rejected by the owner as non-Afghan.
 // Bypass dedicated folders and frontmatter image paths to avoid reintroducing it.
 const heroImage =
-  [data.hero_image, dedicatedHero, data.image, '/assets/images/heroes/food-and-culture/hero.webp']
-    .find((src) => src && !isRejectedImage(src));
+  data.image_mode === 'none' ? '' :
+    [data.hero_image, dedicatedHero, data.image, '/assets/images/heroes/food-and-culture/hero.webp']
+      .find((src) => src && !isRejectedImage(src));
 
 const categoryLabels: Record<string, string> = {
   dishes: 'Afghan Dish',
@@ -442,6 +443,7 @@ const foodHref = (candidate: any) =>
 
 const foodImage = (candidate: any) => {
   const candidateData = candidate.data as any;
+  if (candidateData.image_mode === 'none') return '';
 
   return [candidateData.hero_image, candidateData.image, '/assets/images/heroes/food-and-culture/hero.webp']
     .find((src) => src && !isRejectedImage(src));
@@ -461,7 +463,7 @@ const contactHref = buildInquiryHref({
   image={heroImage}
 >
   <section class="food-detail-hero">
-    <img class:list={["food-detail-hero-image", PORTRAIT_HEROES.has(heroImage) && "food-detail-hero-image--portrait"]} src={heroImage} alt={altFor(heroImage, title)} fetchpriority="high" />
+    {heroImage && <img class:list={["food-detail-hero-image", PORTRAIT_HEROES.has(heroImage) && "food-detail-hero-image--portrait"]} src={heroImage} alt={altFor(heroImage, title)} fetchpriority="high" />}
     <div class="food-detail-hero-overlay" aria-hidden="true"></div>
 
     <div class="food-detail-hero-inner">
@@ -485,7 +487,7 @@ const contactHref = buildInquiryHref({
       </div>
     </div>
   </section>
-  <PhotoCredits images={[heroImage, ...galleryImages]} />
+  <PhotoCredits images={[heroImage, ...galleryImages].filter(Boolean)} />
 
   <section class="food-facts-shell">
     <div class="food-facts">
@@ -623,9 +625,9 @@ const contactHref = buildInquiryHref({
 
             return (
               <a class="related-food-card" href={foodHref(candidate)}>
-                <div class="related-food-image">
+                {foodImage(candidate) && <div class="related-food-image">
                   <img src={foodImage(candidate)} alt={candidateData.title} loading="lazy" />
-                </div>
+                </div>}
 
                 <div class="related-food-copy">
                   <p>
@@ -686,10 +688,10 @@ const contactHref = buildInquiryHref({
     </div>
   </section>
 
-  <dialog id="food-gallery-dialog" class="food-dialog">
+  {galleryImages.length > 0 && <dialog id="food-gallery-dialog" class="food-dialog">
     <button type="button" class="food-dialog-close" aria-label="Close image">×</button>
     <img id="food-gallery-dialog-image" src={heroImage} alt={title} />
-  </dialog>
+  </dialog>}
 </BaseLayout>
 
 <script is:inline>

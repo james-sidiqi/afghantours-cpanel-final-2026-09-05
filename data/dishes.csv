@@ -18,8 +18,7 @@ AF-KBL-DOG,Dogh,dogh,CENTRAL,KBL,KBLC,Beverage,Drink,0,1,12,Cooling yogurt drink
 AF-BMY-POT,Potatoes,bamyan-potatoes,CENTRAL,BMY,BMYC,Produce,Ingredient,1,9,11,"Potatoes, a staple of Afghan home cooking.",/assets/images/food/dishes/bamyan-potatoes/hero.webp,TRUE
 AF-KDR-POM,Pomegranates,kandahar-pomegranate,SOUTH,KDR,KDRC,Produce,Snack,1,9,11,Ruby-red pomegranates; Kandahar is historically the main producing province.,/assets/images/food/produce/kandahar-pomegranate/hero.webp,TRUE
 AF-HER-SAF,Saffron,herat-saffron,WEST,HER,HERC,Produce,Ingredient,1,10,11,"Afghan saffron, grown mostly in Herat Province.",/assets/images/food/dried-fruits/herat-saffron/hero.webp,TRUE
-AF-BAL-MEL,Melons,balkh-melon,NORTH,BAL,MAZC,Produce,Snack,1,8,10,Sweet summer melons popular across Afghanistan.,/assets/images/food/produce/balkh-melons/hero.webp,TRUE
-AF-KDZ-MEL,Kunduz Melon,kunduz-melon,NORTH,KDZ,MAZC,Produce,Snack,1,7,9,Northern summer melon with floral aroma.,/assets/images/food/produce/kunduz-melon/hero.webp,TRUE
+AF-BAL-MEL,Melons,balkh-melon,NORTH,BAL,MAZC,Produce,Snack,1,8,10,Sweet Afghan summer melons including the northern harvests of Balkh and Kunduz.,/assets/images/food/produce/balkh-melons/hero.webp,TRUE
 AF-PJR-WAL,Walnuts,panjshir-walnuts,CENTRAL,PJR,KBLC,Produce,Snack,1,9,10,"Walnuts, fresh in season and dried in bazaars.",/assets/images/food/dried-fruits/panjshir-walnuts/fresh-walnuts-original.webp,TRUE
 AF-FRH-WAT,Watermelons,farah-watermelon,WEST,FRH,HERC,Produce,Snack,1,5,8,Large summer watermelons.,,TRUE
 AF-SAM-PIS,Pistachios,samangan-pistachios,NORTH,SAM,MAZC,Produce,Snack,1,8,10,"Pistachios, including from the wild forests of Badghis and Samangan.",/assets/images/food/dried-fruits/samangan-pistachios/hero.webp,TRUE

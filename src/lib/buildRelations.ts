@@ -300,7 +300,7 @@ const FOOD_ROUTE_OVERRIDES: Record<string, string> = {
   'wardak-apples': '/food-culture/produce/wardak-apples/',
   'balkh-almonds': '/food-culture/dried-fruits/balkh-almonds/',
   'herat-raisins': '/food-culture/dried-fruits/herat-raisins/',
-  'kunduz-melon': '/food-culture/produce/kunduz-melon/',
+  'kunduz-melon': '/food-culture/produce/balkh-melon/',
   'panjshir-walnuts': '/food-culture/dried-fruits/panjshir-walnuts/',
   'shola': '/food-culture/dishes/shola/',
   'qorma-e-gosht': '/food-culture/dishes/qorma-e-gosht/',

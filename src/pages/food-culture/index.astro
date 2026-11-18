@@ -40,6 +40,7 @@ const imageForId = (id) => {
   if (approved && hasRealImage(approved)) return normalizeImagePath(approved, '');
   if (NO_CARD_IMAGE.has(id)) return null;
   const item = itemMap.get(normalizeFoodKey(id));
+  if (item?.data?.image_mode === 'none') return null;
   return [
     item?.data?.hero_image,
     item?.data?.image,
@@ -239,8 +240,8 @@ const produce = [
   {
     id: 'produce/central-valley-mulberries',
     title: 'Mulberries',
-    location: 'Fresh & dried',
-    description: `Sweet white and black mulberries (toot), eaten fresh in late spring or sun-dried and paired with walnuts.`,
+    location: 'Fresh · Seasonal',
+    description: `Sweet white and black mulberries (toot), enjoyed fresh during the Afghan spring and early summer harvest.`,
   },
   {
     id: 'produce/farah-watermelon',
@@ -267,13 +268,6 @@ const produce = [
     description: `Ruby-red pomegranates. Kandahar is historically the main pomegranate-producing province, known for the Kandahari variety.`,
   },
   {
-    id: 'produce/kunduz-melon',
-    title: 'Kunduz Melon',
-    location: 'Regional',
-    description: `Popular northern melon grown in fertile plains.`,
-  },
-
-  {
     id: 'produce/wardak-apples',
     title: 'Fresh Afghan Apples',
     location: 'Maidan Wardak, Ghazni, Kabul, Paktia',
@@ -291,25 +285,21 @@ const driedFruit = [
   {
     id: 'dried-fruits/balkh-almonds',
     title: 'Almonds',
-    location: 'Bazaar',
-    description: `Almonds sold raw or roasted in bazaars across Afghanistan.`,
+    description: `Afghan-grown almonds, prized for their flavor and enjoyed with tea, in sweets, and as part of Afghanistan’s dried-fruit and nut tradition.`,
   },
   {
     id: 'dried-fruits/dried-fruits',
     title: 'Dried Fruits',
-    location: 'Bazaar',
     description: `Afghanistan’s famous export mix of raisins, apricots, figs, and nuts.`,
   },
   {
     id: 'dried-fruits/herat-raisins',
     title: 'Raisins',
-    location: 'Bazaar',
     description: `Raisins, one of Afghanistan’s traditional dried-fruit staples, sold by variety in bazaars.`,
   },
   {
     id: 'dried-fruits/panjshir-walnuts',
     title: 'Walnuts',
-    location: 'Bazaar',
     description: `Walnuts eaten fresh in season and sold dried in bazaars, often paired with dried mulberries.`,
   },
   {
@@ -320,15 +310,14 @@ const driedFruit = [
   },
   {
     id: 'dried-fruits/paktia-pine-nuts',
-    title: 'The Pine Nut Harvest of Paktia',
-    location: 'Paktia',
-    description: `Paktia belongs to Afghanistan's pine nut belt. Pine nuts are a prized product, an export item, and a point of regional pride.`,
+    title: 'Pine Nuts',
+    location: 'Eastern & Southeastern Afghanistan',
+    description: `Chilgoza pine nuts from Afghanistan’s mountain forests, valued for their rich flavor, harvest traditions, and place in Afghan hospitality.`,
   },
   {
-    id: 'dried-fruits/badghis-pistachios',
-    title: 'The Pistachio Forests of Badghis',
-    location: 'Badghis',
-    description: `Badghis has one of Afghanistan's strongest agricultural identities: pistachios.`,
+    id: 'dried-fruits/dried-mulberries',
+    title: 'Dried Mulberries',
+    description: `Toot-e-khoshk: Afghan mulberries sun-dried for year-round snacks, traditionally shared with walnuts and tea.`,
   },
 ];
 
@@ -489,14 +478,7 @@ const categories = [
     eyebrow: 'Produce',
     description: 'Saffron, melons, pomegranates, mulberries, sugarcane, potatoes, apples, nuts, and produce tied directly to Afghan geography.',
     href: '#produce',
-    count: produce.length,
-  },
-  {
-    title: 'Export Heritage',
-    eyebrow: 'Dried Fruits',
-    description: 'Raisins, almonds, walnuts, pistachios, and the Afghan dried fruit economy travelers see in bazaars.',
-    href: '#dried-fruits',
-    count: driedFruit.length,
+    count: produce.length + driedFruit.length,
   },
   {
     title: 'Living Traditions',
@@ -641,7 +623,7 @@ const categories = [
     <section id="produce" class="content-section" aria-labelledby="produce-title">
       <div class="section-head compact">
         <p class="kicker">Produce</p>
-        <h2 id="produce-title">Regional Harvests & Market Identity</h2>
+        <h2 id="produce-title">Regional Harvests</h2>
       </div>
 
       <div class="premium-grid">
@@ -659,12 +641,9 @@ const categories = [
           </article>
         ))}
       </div>
-    </section>
-
-    <section id="dried-fruits" class="content-section" aria-labelledby="dried-title">
+    <section id="dried-fruits" class="harvest-subsection" aria-labelledby="dried-title">
       <div class="section-head compact">
-        <p class="kicker">Dried Fruits</p>
-        <h2 id="dried-title">Export Heritage</h2>
+        <h3 id="dried-title">Afghan Dried Fruits &amp; Nuts</h3>
       </div>
 
       <div class="premium-grid small">
@@ -675,13 +654,14 @@ const categories = [
                 ? <img src={imageForId(item.id)} alt={item.title} loading="lazy" style={CARD_FOCUS[item.id] ? `object-position:${CARD_FOCUS[item.id]}` : undefined} />
                 : <span class="food-card__noimg" aria-hidden="true">{item.title.split(':')[0]}</span>}
             </div>
-            <p>{item.location}</p>
-            <h3>{item.title}</h3>
+            {item.location && <p>{item.location}</p>}
+            <h4>{item.title}</h4>
             <span>{item.description}</span>
             <a href={foodHref(item.id)}>View dried fruit note</a>
           </article>
         ))}
       </div>
+    </section>
     </section>
 
     <section id="experiences" class="content-section experiences" aria-labelledby="experiences-title">
@@ -907,6 +887,7 @@ const categories = [
 
   .category-card h3,
   .food-card h3,
+  .food-card h4,
   .experience-row h3 {
     margin: .8rem 0;
     font-family: Georgia, "Times New Roman", serif;
@@ -954,8 +935,7 @@ const categories = [
     min-width: 0;
   }
 
-  .premium-grid .food-card h3,
-  .premium-grid.small .food-card h3 {
+  .premium-grid .food-card :is(h3, h4) {
     margin: .55rem 0 .55rem;
   }
 
@@ -1016,6 +996,20 @@ const categories = [
 
   .experiences {
     padding-bottom: 7rem;
+  }
+
+  .harvest-subsection {
+    margin-top: 3rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(16,24,32,.12);
+    scroll-margin-top: 6rem;
+  }
+
+  .harvest-subsection .section-head h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    line-height: 1.1;
   }
 
   .experience-list {
@@ -1218,7 +1212,7 @@ const categories = [
 
   .category-grid {
     display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
     gap: .85rem !important;
     align-items: stretch !important;
   }
@@ -1265,7 +1259,7 @@ const categories = [
 
   @media (max-width: 1000px) {
     .category-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
   }
 
@@ -1297,6 +1291,6 @@ const categories = [
 
   /* FOOD-TOP-COMPACT-END */
 
-  .food-card__noimg { display:flex; align-items:center; justify-content:center; width:100%; height:100%; min-height:200px; padding:1rem;
+  .food-card .food-card__noimg { display:flex; align-items:center; justify-content:center; width:100%; height:100%; min-height:200px; padding:1rem;
     background:linear-gradient(135deg,#0f241b,#163a2a); color:#f3e7c8; font-family:Georgia,'Times New Roman',serif; font-size:1.25rem; text-align:center; }
 </style>

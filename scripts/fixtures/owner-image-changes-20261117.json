@@ -107,11 +107,12 @@
     ],
     "h1": "Afghan Kabob"
   },
-  "/food-culture/dried-fruits/badghis-pistachios/": {
-    "hero": "/assets/images/food/dried-fruits/badghis-pistachios/pista-tree-badghis.webp",
+  "/food-culture/samangan-pistachios/": {
+    "hero": "/assets/images/food/dried-fruits/samangan-pistachios/hero.webp",
     "gallery": [
+      "/assets/images/food/dried-fruits/samangan-pistachios/gallery-1.webp",
       "/assets/images/food/dried-fruits/badghis-pistachios/pista-forest-gallery.webp"
     ],
-    "h1": "The Pistachio Forests of Badghis"
+    "h1": "Pistachios"
   }
 }

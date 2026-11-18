@@ -113,5 +113,7 @@ RewriteRule ^food-culture/dishes/chicken-kabuli/?$ /food-culture/#dishes [R=301,
 RewriteRule ^food-culture/dishes/chicken-qabili/?$ /food-culture/#dishes [R=301,L,NE]
 RewriteRule ^food-culture/ouzi/?$ /food-culture/#dishes [R=301,L,NE]
 RewriteRule ^cultural-experiences/paktika-livestock-markets/?$ /cultural-experiences/ [R=301,L,NE]
+RewriteRule ^food-culture/produce/kunduz-melon/?$ /food-culture/produce/balkh-melon/ [R=301,L,NE]
+RewriteRule ^food-culture/dried-fruits/badghis-pistachios/?$ /food-culture/samangan-pistachios/ [R=301,L,NE]
 </IfModule>
 # END OWNER-RETIRED-ROUTES

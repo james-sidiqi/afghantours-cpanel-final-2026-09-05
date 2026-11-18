@@ -123,13 +123,6 @@
     "gallery_mode": "explicit",
     "gallery_exclude_hero": true
   },
-  "food/badghis-pistachios": {
-    "hero_image": "/assets/images/food/dried-fruits/badghis-pistachios/pista-tree-badghis.webp",
-    "gallery_images": [
-      "/assets/images/food/dried-fruits/badghis-pistachios/pista-forest-gallery.webp"
-    ],
-    "gallery_mode": "explicit"
-  },
   "food/kandahar-grapes": {
     "hero_image": "/assets/images/food/produce/kandahar-grapes/owner-afghan-grapes.webp",
     "card_image": "/assets/images/food/produce/kandahar-grapes/owner-afghan-grapes.webp",
@@ -420,12 +413,22 @@
     "gallery_mode": "explicit",
     "gallery_exclude_hero": true
   },
-  "food/kunduz-melon": {
-    "hero_image": "/assets/images/food/produce/balkh-melons/gallery-1.webp",
-    "card_image": "/assets/images/food/produce/balkh-melons/gallery-1.webp",
+  "food/balkh-melon": {
+    "hero_image": "/assets/images/food/produce/balkh-melons/hero.webp",
     "gallery_images": [
+      "/assets/images/food/produce/balkh-melons/gallery-1.webp",
       "/assets/images/food/produce/kunduz-melon/hero.webp",
-      "/assets/images/food/produce/kunduz-melon/gallery-1.webp"
+      "/assets/images/food/produce/kunduz-melon/gallery-1.webp",
+      "/assets/images/food/produce/balkh-melons/gallery/melon-halves.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "food/samangan-pistachios": {
+    "hero_image": "/assets/images/food/dried-fruits/samangan-pistachios/hero.webp",
+    "gallery_images": [
+      "/assets/images/food/dried-fruits/samangan-pistachios/gallery-1.webp",
+      "/assets/images/food/dried-fruits/badghis-pistachios/pista-forest-gallery.webp"
     ],
     "gallery_mode": "explicit",
     "gallery_exclude_hero": true
