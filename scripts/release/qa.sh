@@ -2,6 +2,7 @@
 # Same fail-closed checks for PRs and publishable releases. PHP and Chromium required.
 set -euo pipefail
 node --test scripts/ci-dist-drift-diagnose.test.mjs
+node --test scripts/related-food.test.mjs
 node scripts/validate-booking-data.mjs
 node scripts/check-owner-venues.mjs
 node --test scripts/booking-test/core.test.mjs

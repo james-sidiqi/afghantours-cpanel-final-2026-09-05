@@ -25,7 +25,7 @@ for (const item of allFoodItems) {
 
 // Cards whose stored image does not show the item itself (Shor Chai pointed at a
 // Faizabad landscape) render as intentional image-free cards.
-const NO_CARD_IMAGE = new Set(['drinks/shor-chai-of-badakhshan', 'produce/farah-watermelon', 'dishes/kabul-kabob', 'dishes/kandahari-rosh']);
+const NO_CARD_IMAGE = new Set(['drinks/shor-chai-of-badakhshan', 'produce/farah-watermelon', 'dishes/kabul-kabob']);
 // Per-card focal point so the subject stays in frame in the fixed card crop.
 const CARD_FOCUS = { 'drinks/sheer-chai': '50% 50%', 'dried-fruits/paktia-pine-nuts': '50% 12%' };
 // Rosh now has an owner-provided matching photo. Other intentional image-free cards stay blocked.
@@ -33,7 +33,6 @@ const APPROVED_CARD_IMAGES = {
   "produce/farah-watermelon": "/assets/images/food/produce/watermelons/hero.webp",
   "drinks/shor-chai-of-badakhshan": "/assets/images/food/drinks/shor-chai-of-badakhshan/hero.webp",
   'dishes/kabul-kabob': "/assets/images/food/dishes/afghan-kabob/roadside-kabob.webp",
-  'dishes/kandahari-rosh': '/assets/images/food/dishes/kandahari-rosh/owner-rosh.webp',
 };
 const imageForId = (id) => {
   const approved = APPROVED_CARD_IMAGES[id];
@@ -50,7 +49,6 @@ const imageForId = (id) => {
 
 // Pages for these entries are built at their content `slug` (flat URL), not at the folder id.
 const FLAT_FOOD_SLUGS = {
-  'dishes/kandahari-rosh': 'kandahar-rosht',
   'dishes/chiken-korma': 'korma-e-herati',
   'dishes/kabuli-pulao': 'kabuli-pulao',
   'produce/kandahar-pomegranate': 'kandahar-pomegranate',
@@ -97,11 +95,11 @@ const dishes = [
     overviewOnly: false,
   },
   {
-    id: 'dishes/kandahari-rosh',
+    id: 'dishes/rosh',
     title: 'Rosh (Rosht)',
     location: 'Across Afghanistan',
     description: `Slow-cooked meat traditionally shared with naan and simple sides; preparation varies by household and locality.`,
-    overviewOnly: true,
+    overviewOnly: false,
   },
   {
     id: 'dishes/kabuli-pulao',
@@ -425,7 +423,7 @@ const experienceGroups = [
       },
       {
         title: 'Rosh Hospitality Stops',
-        href: '#dishes',
+        href: '/food-culture/dishes/rosh/',
         description: `Traditional culinary stops featuring slow-cooked, tender jointed lamb served with fresh hot tandoor naan, onions, and local seasonal sides.`,
       },
     ],

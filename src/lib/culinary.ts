@@ -26,8 +26,8 @@ export const RESTAURANT_TO_CULINARY: Record<string, string> = {
 const FOOD_HREF_FALLBACKS: Record<string, string> = {
   'chapli-kabob': '/food-culture/dishes/chapli-kabob/',
   'kunar-trout': '/food-culture/dishes/kunar-trout/',
-  'kandahar-rosht': '/food-culture/#dishes',
-  'kandahari-rosh': '/food-culture/#dishes',
+  'kandahar-rosht': '/food-culture/dishes/rosh/',
+  'kandahari-rosh': '/food-culture/dishes/rosh/',
   dogh: '/food-culture/drinks/dogh/',
   'qurut-markets-of-bamyan': '/food-culture/produce/qurut-markets-of-bamyan/',
   qurut: '/food-culture/produce/qurut-markets-of-bamyan/',

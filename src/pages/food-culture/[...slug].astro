@@ -1,5 +1,7 @@
 ---
-import { listGalleryImages, isGalleryImage } from '../../lib/images';
+import { listGalleryImages, isGalleryImage, normalizeImagePath, hasRealImage } from '../../lib/images';
+import { selectRelatedFood } from '../../lib/relatedFood.mjs';
+import retiredRoutes from '../../../data/retired_public_routes.json';
 import { isRejectedImage } from '../../data/rejectedImages';
 import PhotoCredits from '../../components/PhotoCredits.astro';
 import { altFor } from '../../data/photoCredits';
@@ -375,60 +377,7 @@ const galleryImages = galleryCandidates
   .filter((src) => !((data.gallery_exclude_hero || GALLERY_EXCLUDES_HERO.has(foodPath)) && src === heroImage))
   .slice(0, 9);
 
-const currentProvinceSet = new Set(provinces.map(normalizeKey));
-const pairedKeys = pairedFoods.map(normalizeKey);
-
-const scoredFood = allFood
-  .filter((candidate) => candidate.id !== entry.id)
-  .map((candidate) => {
-    const candidateData = candidate.data as any;
-    const candidatePath =
-      candidate.slug || candidate.id.replace(/\.md$/, '');
-    const candidateParts = candidatePath.split('/');
-    const candidateBase = candidateParts[candidateParts.length - 1];
-    const candidateCategory =
-      candidateParts.length > 1 ? candidateParts[0] : 'food';
-
-    const candidateTitle = normalizeKey(candidateData.title);
-    const candidateSlugKey = normalizeKey(candidateBase);
-
-    let score = 0;
-
-    for (const pairing of pairedKeys) {
-      if (!pairing) continue;
-
-      if (
-        candidateTitle === pairing ||
-        candidateSlugKey === pairing ||
-        candidateTitle.includes(pairing) ||
-        pairing.includes(candidateTitle) ||
-        candidateSlugKey.includes(pairing) ||
-        pairing.includes(candidateSlugKey)
-      ) {
-        score += 10;
-      }
-    }
-
-    const candidateProvinces = Array.isArray(candidateData.provinces)
-      ? candidateData.provinces
-      : [];
-
-    candidateProvinces.map(normalizeKey).forEach((province) => {
-      if (currentProvinceSet.has(province)) score += 4;
-    });
-
-    if (candidateCategory === categorySlug) score += 2;
-
-    return { candidate, score };
-  })
-  .filter((item) => item.score > 0)
-  .sort(
-    (a, b) =>
-      b.score - a.score ||
-      a.candidate.data.title.localeCompare(b.candidate.data.title)
-  );
-
-const relatedFood = scoredFood.slice(0, 6).map((result) => result.candidate);
+const relatedFood = selectRelatedFood(entry, allFood, retiredRoutes);
 
 const culinaryLinks = [
   ...culinaryLinksForFoodSlug(sourceBaseSlug),
@@ -443,8 +392,9 @@ const foodHref = (candidate: any) =>
 const foodImage = (candidate: any) => {
   const candidateData = candidate.data as any;
 
-  return [candidateData.hero_image, candidateData.image, '/assets/images/heroes/food-and-culture/hero.webp']
-    .find((src) => src && !isRejectedImage(src));
+  return [candidateData.hero_image, candidateData.image, candidateData.card_image]
+    .filter(Boolean).map((src) => normalizeImagePath(src, ''))
+    .find((src) => src !== '/assets/images/heroes/food-and-culture/hero.webp' && hasRealImage(src)) || '';
 };
 
 const contactHref = buildInquiryHref({
@@ -623,9 +573,9 @@ const contactHref = buildInquiryHref({
 
             return (
               <a class="related-food-card" href={foodHref(candidate)}>
-                <div class="related-food-image">
+                {foodImage(candidate) && <div class="related-food-image">
                   <img src={foodImage(candidate)} alt={candidateData.title} loading="lazy" />
-                </div>
+                </div>}
 
                 <div class="related-food-copy">
                   <p>
