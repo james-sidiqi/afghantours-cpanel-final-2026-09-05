@@ -7,7 +7,7 @@ experience_type: "Crafts & Heritage"
 hero_image: "/assets/images/experiences/cultural/afghan-carpets/hero.webp"
 image: "/assets/images/experiences/cultural/afghan-carpets/thumb.webp"
 gallery_images:
-  - "/assets/images/experiences/cultural/afghan-carpets/gallery/01-carpet-shop-unfurling.webp"
+  - "/assets/images/experiences/cultural/afghan-carpets/hero.webp"
   - "/assets/images/experiences/cultural/afghan-carpets/gallery/02-kneeling-striped-carpet.webp"
   - "/assets/images/experiences/cultural/afghan-carpets/gallery/03-loom-weavers.webp"
 gallery_exclude:

@@ -1,28 +1,28 @@
 ---
-title: "The Pine Nut Harvest of Paktia"
-subtitle: "Southeastern Afghanistan’s pine forests, village markets, and prized pine nuts."
-card_description: "Explore Paktia’s pine nut identity through markets, forest products, and green tea hospitality."
-category: "Cultural Experiences"
-experience_type: "Food & Culture Experience"
+title: "Pine Nuts"
+subtitle: "Chilgoza pine nuts from Afghanistan’s eastern and southeastern mountain forests."
+card_description: "Afghan chilgoza pine nuts, mountain harvests, village markets, and green tea hospitality."
+category: "Dried Fruits & Nuts"
+experience_type: "Dried Fruits & Nuts"
 hero_image: "/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/hero.webp"
 image: "/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/hero.webp"
 card_image: "/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/hero.webp"
 gallery_images: ["/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/gallery-1.webp", "/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/gallery-2.webp", "/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/gallery-3.webp"]
-provinces: ["Paktia"]
+provinces: ["Paktia", "Paktika", "Khost", "Kunar", "Nuristan"]
 paired_foods: ["Pine Nuts", "Green Tea"]
 best_season: "Autumn harvest / market season"
 duration: "30–90 minutes"
 related_tours: ["custom-tours"]
-nearby: ["Gardez", "Zurmat Highlands", "Paktia Markets"]
+nearby: ["Eastern and Southeastern Mountain Forests", "Afghan Bazaars"]
 ---
 
-Paktia belongs to Afghanistan's pine nut belt. Pine nuts are a prized product, an export item, and a point of regional pride.
+Chilgoza pine nuts are a prized Afghan forest product. Afghanistan’s pine nut belt spans eastern and southeastern mountain regions, including Paktia, Paktika, Khost, Kunar, and Nuristan; this harvest tradition reaches beyond any one province.
 
 ## Forest Product Culture
 
 Harvesting and trading pine nuts connects mountain communities to markets across Afghanistan and beyond. Visitors may encounter pine nuts in bazaars, homes, and roadside shops.
 
-## A Taste of the Southeast
+## A Taste of Afghanistan
 
 Pine nuts are small, rich, and deeply associated with hospitality. They are offered to guests, added to foods, or served with tea.
 

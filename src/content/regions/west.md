@@ -3,6 +3,8 @@ title: Western Afghanistan
 region_slug: west
 section: region_content
 save_to: src/content/regions/west.md
+hero_image: "/assets/images/regions/west/owner-western-afghanistan.webp"
+image: "/assets/images/regions/west/owner-western-afghanistan.webp"
 ---
 
 ### Overview

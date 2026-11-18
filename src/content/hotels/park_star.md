@@ -6,7 +6,7 @@ save_to: src/content/hotels/park_star.md
 destination_code: KBLC
 tier: standard
 star_rating: 3
-cover_image: /assets/images/hotels/kabul/park-star/hotel-exterior-1.webp
+cover_image: /assets/images/hotels/kabul/park-star/hero.webp
 gallery_images:
 ---
 

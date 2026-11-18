@@ -15,12 +15,12 @@ gallery_images:
   - "/assets/images/experiences/cultural/buzkashi/gallery/01.webp"
   - "/assets/images/experiences/cultural/buzkashi/gallery/02.webp"
   - "/assets/images/experiences/cultural/buzkashi/gallery/05.webp"
-  - "/assets/images/featured-tours/buzkashi-expedition/overview.webp"
-  - "/assets/images/featured-tours/buzkashi-expedition/01.webp"
-  - "/assets/images/featured-tours/buzkashi-expedition/02.webp"
-  - "/assets/images/featured-tours/buzkashi-expedition/03.webp"
+  - "/assets/images/tours/featured/buzkashi-expedition/overview.webp"
+  - "/assets/images/tours/featured/buzkashi-expedition/01.webp"
+  - "/assets/images/tours/featured/buzkashi-expedition/02.webp"
+  - "/assets/images/tours/featured/buzkashi-expedition/03.webp"
 gallery_exclude:
-  - "/assets/images/featured-tours/buzkashi-expedition/hero.webp"
+  - "/assets/images/tours/featured/buzkashi-expedition/hero.webp"
   - "/assets/images/experiences/cultural/buzkashi/gallery/04.webp"
 ---
 

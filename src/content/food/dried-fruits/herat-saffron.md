@@ -3,8 +3,8 @@ title: "Saffron"
 food_slug: herat-saffron
 section: food_content
 save_to: src/content/food/produce/herat-saffron.md
-hero_image: "/assets/images/food/dried-fruit/herat-saffron/hero.webp"
-image: "/assets/images/food/dried-fruit/herat-saffron/hero.webp"
+hero_image: "/assets/images/food/dried-fruits/herat-saffron/hero.webp"
+image: "/assets/images/food/dried-fruits/herat-saffron/hero.webp"
 ---
 
 ### Overview

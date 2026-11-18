@@ -3,6 +3,12 @@ title: "Watermelons"
 food_slug: farah-watermelon
 section: food_content
 save_to: src/content/food/produce/farah-watermelon.md
+hero_image: "/assets/images/food/produce/watermelons/hero.webp"
+card_image: "/assets/images/food/produce/watermelons/hero.webp"
+gallery_images: []
+gallery_mode: "explicit"
+gallery_exclude_hero: true
+image: "/assets/images/food/produce/watermelons/hero.webp"
 ---
 
 ### Overview

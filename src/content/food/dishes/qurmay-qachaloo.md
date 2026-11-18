@@ -4,6 +4,12 @@ food_slug: "qurmay-qachaloo"
 subtitle: "Potato curry"
 card_description: "Potatoes simmered in a tomato-onion sauce with Afghan spices."
 category: "Afghan Dish"
+hero_image: "/assets/images/food/dishes/qurmay-qachaloo/github-hero.webp"
+card_image: "/assets/images/food/dishes/qurmay-qachaloo/github-hero.webp"
+gallery_images: ["/assets/images/food/dishes/qurmay-qachaloo/hero.webp"]
+gallery_mode: "explicit"
+gallery_exclude_hero: true
+image: "/assets/images/food/dishes/qurmay-qachaloo/github-hero.webp"
 ---
 
 ### Overview

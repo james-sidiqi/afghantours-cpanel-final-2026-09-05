@@ -1,4 +1,5 @@
 ---
+import { getAttractionImage } from '../../lib/images';
 import { regionDisplayName } from '../../lib/regionNames';
 import { ATTRACTION_OVERRIDES } from '../../data/attractionOverrides';
 import {
@@ -34,7 +35,7 @@ const normalized = attractions
     const slug = a.slug || clean(a.href).replace(/^\/attractions\//, '').replace(/\/$/, '');
     const desc = strip(a.desc_short || a.excerpt || a.summary || a.description || a.desc_long || a.content || '');
     const long = strip(a.desc_long || a.description || a.content || a.desc_short || a.excerpt || '');
-    const image = a.image || a.image_path || a.hero_image || a.thumbnail_path || `/assets/images/attractions/${slug}/hero.webp`;
+    const image = getAttractionImage(a);
     const province = a.province || a.province_name || a.province_code || '';
     const region = regionDisplayName(a.region || '');
     const category = a.category || 'Attraction';

@@ -5,7 +5,7 @@ subtitle: "Highland trekking from Faizabad, paced to your time, fitness and the 
 card_description: "Trekking from Faizabad, paced to you and the conditions on the trail."
 best_season: "Varies by season and access (subject to conditions)"
 duration: "Varies by time, difficulty, route, and access — discuss during planning"
-hero_image: "/assets/images/experiences/activities/trekking/hero.webp"
+hero_image: "/assets/images/experiences/activities/trekking/owner-trekking.webp"
 ---
 
 Trekking starts from **Faizabad**, the gateway to Badakhshan's high valleys and the road towards the Wakhan.

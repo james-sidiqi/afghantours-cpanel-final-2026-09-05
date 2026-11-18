@@ -8,7 +8,7 @@ tier: standard
 star_rating: 2
 cover_image: /assets/images/hotels/jalalabad/spinghar/hotel-exterior-1.webp
 gallery_images:
-  - /assets/images/hotels/jalalabad/spinghar/hotel-exterior-2.webp
+  - /assets/images/hotels/jalalabad/spinghar/hero.webp
 ---
 
 ### Overview

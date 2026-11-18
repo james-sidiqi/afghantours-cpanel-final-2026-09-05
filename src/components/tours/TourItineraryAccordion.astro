@@ -1,4 +1,5 @@
 ---
+import { getPreferredImage, getAttractionImage } from '../../lib/images';
 import { buildAttractionTopMeta, buildAttractionTravelerNotes } from '../../lib/attractionMeta';
 import { attractions, locations, hotels } from "../../lib/data";
 
@@ -52,16 +53,7 @@ function hubDisplayName(hub) {
   return hubName(hub) || "Overnight Hub";
 }
 
-function hubImage(hub) {
-  return (
-    hub?.hero_image_path ||
-    hub?.card_image_path ||
-    hub?.image_path ||
-    hub?.hero_image ||
-    hub?.card_image ||
-    "/assets/images/placeholders/default-card.webp"
-  );
-}
+function hubImage(hub) { return getPreferredImage(hub); }
 
 function findHub(day) {
   const raw = String(day.overnight_hub || day.hub || day.location || "").toLowerCase().trim();
@@ -94,17 +86,7 @@ function findHub(day) {
   );
 }
 
-function attractionImage(attraction) {
-  return (
-    attraction.hero_image ||
-    attraction.hero_image_path ||
-    attraction.card_image ||
-    attraction.card_image_path ||
-    attraction.image_path ||
-    (attraction.slug ? `/assets/images/attractions/${attraction.slug}/hero.webp` : null) ||
-    "/assets/images/placeholders/default-attraction.webp"
-  );
-}
+function attractionImage(attraction) { return getAttractionImage(attraction); }
 
 function attractionSummary(attraction) {
   return (
@@ -162,16 +144,7 @@ function hotelName(hotel) {
   return hotel.display_name || hotel.hotel_name || hotel.name || "Hotel Option";
 }
 
-function hotelImage(hotel) {
-  return (
-    hotel.image_path_property_1 ||
-    hotel.image_path_property_2 ||
-    hotel.image_path_property_3 ||
-    hotel.hero_image ||
-    hotel.card_image ||
-    "/assets/images/placeholders/default-card.webp"
-  );
-}
+function hotelImage(hotel) { return getPreferredImage(hotel); }
 
 function hotelTier(hotel) {
   return String(hotel.tier || hotel.category || hotel.price_tier || hotel.class || "standard").toLowerCase();

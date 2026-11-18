@@ -3,6 +3,12 @@ title: Shola
 food_slug: shola
 section: food_content
 save_to: src/content/food/dishes/shola.md
+hero_image: "/assets/images/food/dishes/shola/hero.webp"
+card_image: "/assets/images/food/dishes/shola/hero.webp"
+gallery_images: ["/assets/images/food/dishes/shor-nakhut/gallery-1.webp"]
+gallery_mode: "explicit"
+gallery_exclude_hero: true
+image: "/assets/images/food/dishes/shola/hero.webp"
 ---
 
 ### Overview

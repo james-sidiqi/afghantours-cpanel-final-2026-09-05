@@ -12,7 +12,7 @@ const normalized = (items || []).filter(Boolean).map((item, index) => ({
   label: item.label || item.eyebrow || item.region || item.group || 'AfghanTours',
   description: item.description || item.summary || item.short_blurb || item.excerpt || '',
   details: item.details || item.content || '',
-  image: item.image || item.hero_image || item.hero_image_path || item.thumbnail_image_path || item.map_image || '/assets/images/placeholders/default-card.webp',
+  image: item.hero_image || item.hero_image_path || item.image || item.thumbnail_image_path || item.map_image || '/assets/images/placeholders/default-card.webp',
   href: item.href || '#',
   cta: item.cta || 'Explore',
   meta: item.meta || item.duration || item.best_for || item.bestFor || '',

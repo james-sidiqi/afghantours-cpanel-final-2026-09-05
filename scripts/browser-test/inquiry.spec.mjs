@@ -125,10 +125,21 @@ test('navigation works on light pages with touch/click and Escape', async ({ pag
 });
 
 test('retired regional food URLs lead to the consolidated dishes section', async ({ page }) => {
-  await page.goto('/food-culture/dishes/kabul-kabob/');
+  await page.goto('/food-culture/dishes/herat-kabob/');
   await expect(page).toHaveURL(/\/food-culture\/#dishes$/);
   await expect(page.getByRole('heading', { name: 'Afghan Kabob', exact: true })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Qabeli Palaw', exact: true })).toBeVisible();
+});
+
+test('restored Afghan Kabob page keeps the owner-selected hero and original gallery photo', async ({ page }) => {
+  await page.goto('/food-culture/dishes/kabul-kabob/');
+  await expect(page).toHaveURL(/\/food-culture\/dishes\/kabul-kabob\/$/);
+  await expect(page.getByRole('heading', { name: 'Afghan Kabob', exact: true }).first()).toBeVisible();
+  const hero = page.locator('img[src="/assets/images/food/dishes/afghan-kabob/roadside-kabob.webp"]').first();
+  await expect.poll(() => hero.evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
+  const original = page.locator('.food-gallery-grid img[src="/assets/images/food/dishes/kabul-kabob/hero.webp"]');
+  await original.scrollIntoViewIfNeeded();
+  await expect.poll(() => original.evaluate(img => img.complete && img.naturalWidth > 0)).toBe(true);
 });
 
 test('Baghlan directory card and popup load their existing image', async ({ page }) => {

@@ -1,7 +1,7 @@
 import { hubDisplayName } from './hubNames';
 import fs from 'node:fs';
 import path from 'node:path';
-import { normalizeImagePath, getTourHeroImage, getTourOverviewImage, getAttractionImage, getHotelImage, getRegionImage, getProvinceImage, getFoodImage, getHubImage, buildGallery, hasRealImage, listPublicImages, PLACEHOLDERS } from './images';
+import { normalizeImagePath, getTourHeroImage, getTourOverviewImage, getAttractionImage, getHotelImage, getRegionImage, getProvinceImage, getFoodImage, getHubImage, buildGallery, hasRealImage, listGalleryImages, isGalleryImage, PLACEHOLDERS } from './images';
 import { bookingDepartureRows } from './booking/site';
 
 const ROOT = process.cwd();
@@ -251,12 +251,12 @@ function normalizeTour(row: Row): Row {
 
 function normalizeAttraction(row: Row): Row {
   const slug = row.slug || row.attraction_slug || slugify(row.name || row.title);
-  return { ...row, slug, title: row.title || row.name || slug, name: row.name || row.title || slug, image: getAttractionImage(row) };
+  return { ...row, slug, title: row.title || row.name || slug, name: row.name || row.title || slug, hero_image: getAttractionImage({ ...row, slug }), image: getAttractionImage({ ...row, slug }) };
 }
 
 function normalizeHotel(row: Row): Row {
   const slug = row.slug || row.hotel_slug || slugify(row.hotel_name || row.name);
-  return { ...row, slug, title: row.title || row.hotel_name || row.name || slug, name: row.hotel_name || row.name || slug, image: getHotelImage(row), gallery: buildGallery(row, 'hotel') };
+  return { ...row, slug, title: row.title || row.hotel_name || row.name || slug, name: row.hotel_name || row.name || slug, hero_image: getHotelImage({ ...row, slug }), image: getHotelImage({ ...row, slug }), gallery: buildGallery(row, 'hotel') };
 }
 
 function normalizeRegion(row: Row): Row {
@@ -281,7 +281,7 @@ function normalizeFood(row: Row): Row {
 }
 
 const FOOD_ROUTE_OVERRIDES: Record<string, string> = {
-  'kabul-kabob': '/food-culture/#dishes',
+  'kabul-kabob': '/food-culture/dishes/kabul-kabob/',
   'herat-kabob': '/food-culture/#dishes',
   'kandahar-rosht': '/food-culture/#dishes',
   'kandahari-rosh': '/food-culture/#dishes',
@@ -300,7 +300,7 @@ const FOOD_ROUTE_OVERRIDES: Record<string, string> = {
   'wardak-apples': '/food-culture/produce/wardak-apples/',
   'balkh-almonds': '/food-culture/dried-fruits/balkh-almonds/',
   'herat-raisins': '/food-culture/dried-fruits/herat-raisins/',
-  'kunduz-melon': '/food-culture/produce/kunduz-melon/',
+  'kunduz-melon': '/food-culture/produce/balkh-melon/',
   'panjshir-walnuts': '/food-culture/dried-fruits/panjshir-walnuts/',
   'shola': '/food-culture/dishes/shola/',
   'qorma-e-gosht': '/food-culture/dishes/qorma-e-gosht/',
@@ -352,7 +352,7 @@ export function getHotels(): Row[] {
         (r.hotel_id && r.hotel_id === hotel.hotel_id)
       )
       .map((room) => {
-        let discovered = listPublicImages(room.gallery_folder, true);
+        let discovered = listGalleryImages(room.gallery_folder, true);
 
         // When typed gallery subfolders are absent, match sibling files in the
         // hero's rooms/ directory by room_type keywords (no unrelated borrowing).
@@ -374,7 +374,7 @@ export function getHotels(): Row[] {
               three_twins: ['three'],
             };
             const keys = aliases[roomType] || roomType.replace(/_/g, '-').split('-').filter(Boolean);
-            const siblings = listPublicImages(roomsDir, false).filter((src) => {
+            const siblings = listGalleryImages(roomsDir, false).filter((src) => {
               const base = String(src).split('/').pop()?.toLowerCase() || '';
               return keys.some((k) => base.includes(k));
             });
@@ -386,7 +386,7 @@ export function getHotels(): Row[] {
           room.hero_image,
           ...discovered,
         ].filter((src) =>
-          src && !String(src).includes('/placeholders/')
+          isGalleryImage(src)
         ));
 
         return {
@@ -400,12 +400,12 @@ export function getHotels(): Row[] {
     // Top-level images are property/exterior images.
     // Anything under /rooms/ is treated as a room/interior image,
     // even when a matching room CSV record does not yet exist.
-    const discoveredPropertyImages = listPublicImages(
+    const discoveredPropertyImages = listGalleryImages(
       hotel.gallery_folder,
       false
     );
 
-    const discoveredAllHotelImages = listPublicImages(
+    const discoveredAllHotelImages = listGalleryImages(
       hotel.gallery_folder,
       true
     );
@@ -419,7 +419,7 @@ export function getHotels(): Row[] {
       ...(Array.isArray(hotel.gallery) ? hotel.gallery : []),
       ...discoveredPropertyImages,
     ].filter((src) =>
-      src && !String(src).includes('/placeholders/')
+      isGalleryImage(src)
     ));
 
     const roomImages = unique([

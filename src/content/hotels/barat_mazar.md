@@ -6,7 +6,7 @@ save_to: src/content/hotels/barat_mazar.md
 destination_code: MAZC
 tier: standard
 star_rating: 3
-cover_image: /assets/images/hotels/mazar/barat/hotel-exterior-1.webp
+cover_image: /assets/images/hotels/mazar/barat/hero.webp
 gallery_images:
 ---
 

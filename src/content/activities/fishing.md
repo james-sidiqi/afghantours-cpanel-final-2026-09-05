@@ -5,12 +5,14 @@ subtitle: "Fishing in Afghanistan can be as relaxed or as dedicated as you want 
 card_description: "Add a few hours of fishing to a wider itinerary, or plan a private Custom Journey around it."
 best_season: "Varies by region and season"
 duration: "A few hours within a tour, up to a dedicated fishing journey"
-hero_image: "/assets/images/experiences/activities/fishing/hero.webp"
-hero_alt: "James fishing during an AfghanTours outing"
+hero_image: "/assets/images/experiences/activities/fishing/owner-fishing.webp"
+hero_alt: "Angler fishing beside water in a mountain landscape"
 gallery_images:
   - "/assets/images/experiences/activities/fishing/gallery/panjshir-river-fishing.webp"
 gallery_alt:
   - "People fishing in Panjshir Valley"
+gallery_mode: "explicit"
+gallery_exclude_hero: true
 ---
 
 Fishing in Afghanistan can be as relaxed or as dedicated as you want it to be.

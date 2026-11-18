@@ -1,4 +1,5 @@
 ---
+import { listGalleryImages, isGalleryImage } from '../../lib/images';
 import PhotoCredits from '../../components/PhotoCredits.astro';
 import { isRejectedImage } from '../../data/rejectedImages';
 import { altFor } from '../../data/photoCredits';
@@ -109,7 +110,7 @@ const addImage = (value) => {
 
   if (
     normalized &&
-    isRealImage(normalized) &&
+    isGalleryImage(normalized) &&
     !imageCandidates.includes(normalized)
   ) {
     imageCandidates.push(normalized);
@@ -117,10 +118,12 @@ const addImage = (value) => {
 };
 
 
+const curatedGallery = data.gallery_mode === 'explicit' || (Array.isArray(data.gallery_images) && data.gallery_images.length > 0);
 (data.gallery_images || []).forEach(addImage);
-
-addImage(heroImage);
-addImage(data.image);
+if (!curatedGallery) {
+  addImage(heroImage);
+  addImage(data.image);
+}
 
 
 /*
@@ -160,74 +163,8 @@ if (
 
 
 // A curated gallery_images list is used as-is: no folder discovery (keeps unrelated files in the folder out).
-const curatedGallery = Array.isArray(data.gallery_images) && data.gallery_images.length > 0;
 for (const folder of (curatedGallery ? [] : foldersToCheck)) {
-
-  const diskFolder = path.join(
-    process.cwd(),
-    'public',
-    folder.replace(/^\/+/, '')
-  );
-
-
-  try {
-
-    if (!fs.existsSync(diskFolder)) {
-      continue;
-    }
-
-
-    const images = fs
-      .readdirSync(diskFolder)
-      .filter((name) =>
-        /\.(webp|jpg|jpeg|png|avif)$/i.test(name)
-      )
-      .sort((a, b) => {
-
-        const rank = (name) => {
-          const lower =
-            name.toLowerCase();
-
-          if (
-            lower.startsWith('hero.')
-          ) return 0;
-
-          if (
-            lower.includes('overview')
-          ) return 1;
-
-          if (
-            lower.includes('gallery')
-          ) return 2;
-
-          return 3;
-        };
-
-
-        return (
-          rank(a) -
-          rank(b) ||
-          a.localeCompare(b)
-        );
-
-      });
-
-
-    images.forEach((name) =>
-      addImage(
-        `${folder.replace(/\/?$/, '/')}${name}`
-      )
-    );
-
-  } catch (error) {
-
-    console.warn(
-      `Gallery discovery failed for ${slug}`,
-      error
-    );
-
-  }
-
+  listGalleryImages(folder).forEach(addImage);
 }
 
 
@@ -254,7 +191,7 @@ const seenHashes = [];
 for (const src of imageCandidates) {
   // Responsive crops (/crops/) are hero/card variants, never gallery items; skip files that do not exist.
   if (/\/crops\//.test(String(src))) continue;
-  if (galleryExclude.has(String(src)) || isRejectedImage(String(src))) continue;
+  if (galleryExclude.has(String(src)) || isRejectedImage(String(src)) || (data.gallery_exclude_hero && src === heroImage)) continue;
   if (!fs.existsSync(path.join(process.cwd(), 'public', String(src).replace(/^\/+/, '')))) continue;
   const h = await imageHash(src);
   if (h && seenHashes.some((o) => o.reduce((d, bit, i) => d + (bit !== h[i] ? 1 : 0), 0) <= 12)) continue;
@@ -804,7 +741,7 @@ const uniqueGalleryImages = (items = []) =>
        GALLERY / LIGHTBOX
        ===================================================== -->
 
-  {galleryImages.length > 1 && (
+  {galleryImages.length > 0 && (
 
     <section class="culture-gallery-section">
 

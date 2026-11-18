@@ -1,4 +1,5 @@
 ---
+import { listGalleryImages, isGalleryImage } from '../../lib/images';
 import { isRejectedImage } from '../../data/rejectedImages';
 import PhotoCredits from '../../components/PhotoCredits.astro';
 import { altFor } from '../../data/photoCredits';
@@ -140,24 +141,7 @@ const resolvedFoodImageFolder =
   dedicatedFolderCandidates.find((folder) =>
     publicAssetExists(`${folder}hero.webp`)
   ) ||
-  dedicatedFolderCandidates.find((folder) => {
-    const diskFolder = path.join(
-      process.cwd(),
-      'public',
-      folder.replace(/^\/+/, '')
-    );
-
-    try {
-      return (
-        fs.existsSync(diskFolder) &&
-        fs.readdirSync(diskFolder).some((file) =>
-          /\.(webp|jpg|jpeg|png|avif)$/i.test(file)
-        )
-      );
-    } catch {
-      return false;
-    }
-  }) ||
+  dedicatedFolderCandidates.find((folder) => listGalleryImages(folder, false).length > 0) ||
   '';
 
 const dedicatedHero =
@@ -173,7 +157,7 @@ const PORTRAIT_HEROES = new Set(['/assets/images/food/dried-fruits/paktia-pine-n
 // The watermelon source photo was rejected by the owner as non-Afghan.
 // Bypass dedicated folders and frontmatter image paths to avoid reintroducing it.
 const heroImage =
-  [dedicatedHero, data.hero_image, data.image, '/assets/images/heroes/food-and-culture/hero.webp']
+  [data.hero_image, dedicatedHero, data.image, '/assets/images/heroes/food-and-culture/hero.webp']
     .find((src) => src && !isRejectedImage(src));
 
 const categoryLabels: Record<string, string> = {
@@ -301,7 +285,6 @@ const explicitTours = mergedExplicitTourSlugs
 const aliasMap: Record<string, string[]> = {
   'kabuli-pulao': ['qabuli-palaw', 'kabuli-palaw'],
   'ghazni-qabili-pulao': ['qabuli-palaw'],
-  'chicken-qabili': ['qabuli-palaw'],
   samosa: ['sambosa'],
   'sambosa-pastry': ['sambosa'],
   aushak: ['ashak'],
@@ -345,77 +328,24 @@ const galleryCandidates: string[] = [];
 const addGalleryImage = (value: any) => {
   if (!value) return;
   const src = String(value).trim();
-  if (src && !/\/crops\//.test(src) && !isRejectedImage(src) && !galleryCandidates.includes(src)) galleryCandidates.push(src);
+  if (isGalleryImage(src) && !isRejectedImage(src) && !galleryCandidates.includes(src)) galleryCandidates.push(src);
 };
 
 if (Array.isArray(data.gallery_images)) data.gallery_images.forEach(addGalleryImage);
 
-addGalleryImage(heroImage);
+const explicitGallery = data.gallery_mode === 'explicit';
+if (!explicitGallery && !data.gallery_exclude_hero) addGalleryImage(heroImage);
 
-if (data.image && data.image !== heroImage) addGalleryImage(data.image);
+if (!explicitGallery && data.image && data.image !== heroImage) addGalleryImage(data.image);
 
 const scanFoodImageFolder = (publicFolder: string) => {
-  if (!publicFolder || !publicFolder.startsWith('/')) return;
-
-  const diskFolder = path.join(
-    process.cwd(),
-    'public',
-    publicFolder.replace(/^\/+/, '')
-  );
-
-  try {
-    if (!fs.existsSync(diskFolder)) return;
-
-    let files = fs.readdirSync(diskFolder)
-      .filter((file) =>
-        /\.(webp|jpg|jpeg|png|avif)$/i.test(file)
-      )
-      .filter((file) =>
-        !/^(thumb|thumbnail)\./i.test(file)
-      );
-
-    /*
-     * If curated gallery-N files exist, prefer those over duplicate
-     * numeric aliases such as 01.webp.
-     */
-    const hasNamedGallery = files.some((file) =>
-      /^gallery-\d+/i.test(file)
-    );
-
-    if (hasNamedGallery) {
-      files = files.filter(
-        (file) =>
-          /^hero\./i.test(file) ||
-          /^gallery-\d+/i.test(file)
-      );
-    }
-
-    files
-      .sort((a, b) => {
-        const rank = (file: string) => {
-          if (/^hero\./i.test(file)) return 0;
-          if (/^gallery-/i.test(file)) return 1;
-          if (/^\d+/i.test(file)) return 2;
-          return 3;
-        };
-
-        return rank(a) - rank(b) || a.localeCompare(b);
-      })
-      .forEach((file) =>
-        addGalleryImage(`${publicFolder}${file}`)
-      );
-  } catch (error) {
-    console.warn(
-      `Could not inspect food image folder ${publicFolder}`,
-      error
-    );
-  }
+  listGalleryImages(publicFolder).forEach(addGalleryImage);
 };
 
 /*
  * First inspect the canonical route-specific food folder.
  */
-if (resolvedFoodImageFolder) {
+if (!explicitGallery && resolvedFoodImageFolder) {
   scanFoodImageFolder(resolvedFoodImageFolder);
 }
 
@@ -423,7 +353,7 @@ if (resolvedFoodImageFolder) {
  * Also inspect an explicitly configured hero's folder if it is
  * different from the canonical folder.
  */
-if (heroImage.startsWith('/')) {
+if (!explicitGallery && heroImage.startsWith('/')) {
   const configuredHeroFolder =
     heroImage.substring(
       0,
@@ -442,7 +372,7 @@ if (heroImage.startsWith('/')) {
 const GALLERY_EXCLUDES_HERO = new Set(['dried-fruits/paktia-pine-nuts']);
 const NO_RELATED_JOURNEYS = new Set(['dried-fruits/paktia-pine-nuts']);
 const galleryImages = galleryCandidates
-  .filter((src) => !(GALLERY_EXCLUDES_HERO.has(foodPath) && src === heroImage))
+  .filter((src) => !((data.gallery_exclude_hero || GALLERY_EXCLUDES_HERO.has(foodPath)) && src === heroImage))
   .slice(0, 9);
 
 const currentProvinceSet = new Set(provinces.map(normalizeKey));
@@ -615,7 +545,7 @@ const contactHref = buildInquiryHref({
     </div>
   </main>
 
-  {galleryImages.length > 1 && (
+  {galleryImages.length > 0 && (
     <section class="food-gallery-section">
       <div class="food-gallery-wrap">
         <div class="food-section-heading">

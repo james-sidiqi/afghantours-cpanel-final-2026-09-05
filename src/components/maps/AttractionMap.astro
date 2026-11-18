@@ -1,4 +1,5 @@
 ---
+import { getAttractionImage } from '../../lib/images';
 interface Props {
   height?: string;
   initialZoom?: number;
@@ -114,7 +115,7 @@ import "leaflet/dist/leaflet.css";
   }
 
   function popupHtml(attraction) {
-    const image = attraction.card_image || attraction.hero_image || "";
+    const image = getAttractionImage(attraction);
     const url = `/attractions/${attraction.slug}/`;
     return `
       <article class="map-popup-card">

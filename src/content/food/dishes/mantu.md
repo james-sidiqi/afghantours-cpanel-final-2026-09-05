@@ -4,6 +4,10 @@ food_slug: mantu
 section: food_content
 save_to: src/content/food/dishes/mantu.md
 hero_image: "/assets/images/food/dishes/mantu/hero.webp"
+card_image: "/assets/images/food/dishes/mantu/hero.webp"
+gallery_images: ["/assets/images/food/dishes/mantu/gallery-1.webp", "/assets/images/food/dishes/mantu/gallery-2.webp"]
+gallery_mode: "explicit"
+gallery_exclude_hero: true
 image: "/assets/images/food/dishes/mantu/hero.webp"
 ---
 

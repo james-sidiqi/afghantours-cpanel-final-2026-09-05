@@ -6,7 +6,7 @@ save_to: src/content/hotels/intercon_kabul.md
 destination_code: KBLC
 tier: premium
 star_rating: 4
-cover_image: /assets/images/hotels/kabul/intercontinental/hotel-exterior-1.webp
+cover_image: /assets/images/hotels/kabul/intercontinental/hero.webp
 gallery_images:
 ---
 
