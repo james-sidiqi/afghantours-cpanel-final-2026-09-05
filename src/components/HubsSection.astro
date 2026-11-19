@@ -35,9 +35,8 @@ const hubs = (Array.isArray(props.hubs) && props.hubs.length && props.hubs[0]?.a
       </h1>
 
       <p>
-        Each hub connects you to places to stay, local food, cultural and
-        historical attractions, activities, and the routes that continue
-        deeper into the country.
+        Each hub connects you to places to stay, local culinary and cultural experiences,
+        activities, attractions, and routes that continue deeper into the country.
       </p>
     </div>
   </div>
@@ -153,8 +152,8 @@ const hubs = (Array.isArray(props.hubs) && props.hubs.length && props.hubs[0]?.a
         </div>
 
         <p>
-          Hotels, food, attractions and activities are shown together so you
-          can understand what each hub actually gives you access to.
+          Hotels, culinary experiences, activities and cultural traditions are shown together
+          using experiences specifically linked to each travel hub.
         </p>
       </div>
 
@@ -166,7 +165,7 @@ const hubs = (Array.isArray(props.hubs) && props.hubs.length && props.hubs[0]?.a
         <section class="access-column">
 
           <div class="access-column-heading">
-            <span class="access-icon">01</span>
+            <span class="access-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v14"/><path d="M9 21v-5h6v5M7 9h2m6 0h2M7 12h2m6 0h2M2 21h20"/></svg></span>
 
             <div>
               <small>Stay</small>
@@ -184,70 +183,70 @@ const hubs = (Array.isArray(props.hubs) && props.hubs.length && props.hubs[0]?.a
         </section>
 
 
-        <!-- FOOD -->
+        <!-- CULINARY EXPERIENCES -->
 
         <section class="access-column">
 
           <div class="access-column-heading">
-            <span class="access-icon">02</span>
+            <span class="access-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3v7a3 3 0 0 0 6 0V3M7 3v18M20 21V3c-4.5 2-5 7-5 11h5"/></svg></span>
 
             <div>
-              <small>Eat</small>
-              <h3>Local Food</h3>
+              <small>Taste</small>
+              <h3>Culinary Experiences</h3>
             </div>
 
-            <a href="/food-culture/">Explore food →</a>
+            <a href="/cultural-experiences/culinary/">All culinary →</a>
           </div>
 
           <div
-            id="hub-food"
+            id="hub-culinary"
             class="access-items"
           ></div>
 
         </section>
 
 
-        <!-- ATTRACTIONS -->
+        <!-- HUB ACTIVITIES -->
 
         <section class="access-column">
 
           <div class="access-column-heading">
-            <span class="access-icon">03</span>
-
-            <div>
-              <small>Explore</small>
-              <h3>Attractions</h3>
-            </div>
-
-            <a href="/attractions/">All attractions →</a>
-          </div>
-
-          <div
-            id="hub-attractions"
-            class="access-items"
-          ></div>
-
-        </section>
-
-
-        <!-- ACTIVITIES -->
-
-        <section class="access-column">
-
-          <div class="access-column-heading">
-            <span class="access-icon">04</span>
+            <span class="access-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m2 20 7-12 4 6 3-5 6 11H2Z"/><path d="m7 11 2-3 2 3M4 4h.01"/></svg></span>
 
             <div>
               <small>Do</small>
-              <h3>Activities & Trips</h3>
+              <h3>Activities</h3>
             </div>
 
-            <a href="/tours/">View tours →</a>
+            <a href="/activities/">All activities →</a>
           </div>
 
           <div
             id="hub-activities"
             class="activity-items"
+          ></div>
+
+        </section>
+
+
+        <!-- CULTURAL EXPERIENCES -->
+
+        <section class="access-column">
+
+          <div class="access-column-heading">
+            <span class="access-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V9m5 12V9m4 12V9m5 12V9M2 9h20L12 3 2 9Z"/></svg></span>
+
+            <div>
+              <small>Discover</small>
+              <h3>Cultural Experiences</h3>
+            </div>
+
+            <a href="/cultural-experiences/">All culture →</a>
+          </div>
+
+          <div
+            id="hub-cultural"
+            class="access-items"
           ></div>
 
         </section>
@@ -296,9 +295,9 @@ const hubs = (Array.isArray(props.hubs) && props.hubs.length && props.hubs[0]?.a
     const accessTitle = document.getElementById('access-title');
 
     const hotelsEl = document.getElementById('hub-hotels');
-    const foodEl = document.getElementById('hub-food');
-    const attractionsEl = document.getElementById('hub-attractions');
+    const culinaryEl = document.getElementById('hub-culinary');
     const activitiesEl = document.getElementById('hub-activities');
+    const culturalEl = document.getElementById('hub-cultural');
     const transportEl = document.getElementById('hub-transport');
 
 
@@ -320,7 +319,7 @@ const hubs = (Array.isArray(props.hubs) && props.hubs.length && props.hubs[0]?.a
       if (!sliced.length) {
         element.innerHTML = `
           <p class="access-empty">
-            More recommendations are being added.
+            No experiences are linked to this hub yet.
           </p>
         `;
         return;
@@ -350,14 +349,12 @@ const hubs = (Array.isArray(props.hubs) && props.hubs.length && props.hubs[0]?.a
     function renderActivities(element, hub) {
       if (!element) return;
 
-      const activities = (hub.activities && hub.activities.length
-        ? hub.activities
-        : (hub.tours || [])).slice(0, 4);
+      const activities = (hub.activities || []).slice(0, 3);
 
       if (!activities.length) {
         element.innerHTML = `
           <p class="access-empty">
-            More activities are being added.
+            No activities are linked to this hub yet.
           </p>
         `;
         return;
@@ -495,15 +492,8 @@ const hubs = (Array.isArray(props.hubs) && props.hubs.length && props.hubs[0]?.a
       );
 
       renderImageItems(
-        foodEl,
-        hub.food,
-        hub,
-        3
-      );
-
-      renderImageItems(
-        attractionsEl,
-        hub.attractions,
+        culinaryEl,
+        hub.culinary,
         hub,
         3
       );
@@ -511,6 +501,13 @@ const hubs = (Array.isArray(props.hubs) && props.hubs.length && props.hubs[0]?.a
       renderActivities(
         activitiesEl,
         hub
+      );
+
+      renderImageItems(
+        culturalEl,
+        hub.cultural,
+        hub,
+        3
       );
 
       renderTransport(
@@ -1156,9 +1153,10 @@ const hubs = (Array.isArray(props.hubs) && props.hubs.length && props.hubs[0]?.a
 
     color: #986018;
 
-    font-size: .58rem;
-    font-weight: 900;
+    flex: 0 0 auto;
   }
+
+  .access-icon svg { display: block; }
 
 
   .access-column-heading small {
