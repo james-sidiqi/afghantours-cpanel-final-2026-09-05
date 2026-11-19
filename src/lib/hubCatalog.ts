@@ -11,7 +11,7 @@ import {
 } from './buildRelations';
 import { ACTIVE_HUB_SLUGS, getActivitiesForHub, getCulturalForHub } from './experiences';
 import { getCulinaryForHub } from './culinary';
-import { listPublicImages, listGalleryImages, cleanGallery, normalizeImagePath } from './images';
+import { getCulturalExperienceImage, listPublicImages, listGalleryImages, cleanGallery, normalizeImagePath } from './images';
 
 type Row = Record<string, any>;
 export type HubCatalogItem = {
@@ -30,8 +30,8 @@ export type HubCatalogItem = {
   transport: [string, string, string][];
   tours: [string, string][];
   activities: [string, string][];
-  cultural: [string, string][];
-  culinary: [string, string][];
+  cultural: [string, string, string][];
+  culinary: [string, string, string][];
 };
 
 function readGlance(): Map<string, Row> {
@@ -136,6 +136,29 @@ function matchesHub(row: Row, hub: Row): boolean {
     || (provinceCode && provinceFields.includes(provinceCode))
     || (provinceName && provinceFields.includes(provinceName))
   );
+}
+
+/** Use published cultural pages rather than inventing hub experiences. */
+function culturalPageMeta(slug: string): { title: string; hero_image: string; image: string } | null {
+  if (!/^[a-z0-9-]+$/.test(slug)) return null;
+  const file = path.join(process.cwd(), 'src', 'content', 'cultural-experiences', slug + '.md');
+  let source: string;
+  try {
+    source = fs.readFileSync(file, 'utf8');
+  } catch {
+    return null;
+  }
+  const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!frontmatter) return null;
+  const field = (key: string) => {
+    const match = frontmatter[1].match(new RegExp('^' + key + ':\\s*(.*)$', 'm'));
+    return match ? match[1].trim().replace(/^["']|["']$/g, '') : '';
+  };
+  return {
+    title: field('title') || slug.replace(/-/g, ' ').replace(/\b\w/g, (char) => char.toUpperCase()),
+    hero_image: field('hero_image'),
+    image: field('image'),
+  };
 }
 
 /**
@@ -282,18 +305,22 @@ export function buildHubIndexCatalog(): HubCatalogItem[] {
       });
 
     const cultural = getCulturalForHub(slug)
-      .slice(0, 4)
-      .map((rel): [string, string] => {
-        const cSlug = String(rel.experience_slug);
-        return [cSlug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()), `/cultural-experiences/${cSlug}/`];
-      });
+      .map((rel): [string, string, string] | null => {
+        const cSlug = String(rel.experience_slug || '');
+        const md = culturalPageMeta(cSlug);
+        if (!md) return null;
+        const image = getCulturalExperienceImage({ slug: cSlug, hero_image: md.hero_image, image: md.image });
+        return [md.title, image, '/cultural-experiences/' + cSlug + '/'];
+      })
+      .filter((item): item is [string, string, string] => item !== null)
+      .slice(0, 3);
 
     const culinary = getCulinaryForHub(slug)
-      .slice(0, 4)
-      .map((rel): [string, string] => {
+      .slice(0, 3)
+      .map((rel): [string, string, string] => {
         const cSlug = String(rel.slug || rel.experience_slug);
         const cName = String(rel.name || rel.title || cSlug);
-        return [cName, `/cultural-experiences/culinary/${cSlug}/`];
+        return [cName, String(rel.image), '/cultural-experiences/culinary/' + cSlug + '/'];
       });
 
     const transport: [string, string, string][] = [];
