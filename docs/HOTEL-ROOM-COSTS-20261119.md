@@ -1,18 +1,25 @@
-# Hotel room costs — 19 November 2026
+# AfghanTours hotel supplier costs — 19 November 2026
 
-Source of truth: `data/hotel_rooms.csv`.
+## Supplier-only data
 
-The owner supplied 43 room rows across 21 properties in eight hub cities, with nightly supplier costs in both AFN and USD, using exactly **65 AFN/USD**. The file retains room slugs, unique room IDs, room type, max occupancy, descriptions, photos, is_active and the pre-existing USD selling-price column. The explicit **nightly_cost_afn** column is placed adjacent to nightly_cost_usd so the source does not depend on a future currency assumption.
+The authoritative room-level cost input is `data/hotel_rooms.csv`. It contains **43 room types at 21 properties in eight hub cities**, with room identifiers, room type, maximum occupancy, source descriptions/photos, nightly supplier costs in AFN and USD, and active flags. The conversion for each supplied rate is exactly **65 AFN = USD 1**.
 
-## Changes and review
+The `nightly_sell_price_usd` column and **all 43 values have been removed**. No hotel selling prices are to be calculated, stored, advertised, or reused from this cost-input data during the supplier-cost collection stage.
 
-* 42 of 43 existing supplier USD costs already matched the supplied table and were preserved.
-* Kabul Grand Hotel, suite room ID 2: supplier nightly cost corrected from $180 (11,700 AFN) to **$220 (14,300 AFN)**.
-* Its current `nightly_sell_price_usd` remains **$220**, producing a zero gross margin before overhead, payment charges and taxes. The selling price requires owner approval, and must not be automatically increased.
-* Other selling prices and occupancy assignments are unchanged. Values like `two_doubles` with occupancy 2 have been preserved exactly as approved, without guessing capacity from bed counts.
+## Supplier cost reconciliation
 
-## Publication boundary
+* 42 existing USD supplier costs already matched the owner-supplied rates.
+* The one corrected cost is Kabul Grand Hotel suite room 2: **14,300 AFN / USD 220** (previous USD cost was 180).
+* All existing identifiers, capacities, room types and photographs remain unchanged.
+* A room type with two double beds still retains the explicitly supplied `max_occupancy=2`; do not infer or increase capacity from the bed count.
 
-The cost columns represent supplier inputs, **not customer-facing tariffs**. The current static hotel pages use hotel metadata/images rather than advertising these room costs. The PHP quotation desk or a future itinerary calculator must use the appropriate source field, explicit FX allowances, and approved margin policies. The per-room public selling rates are not approved by this update.
+## Verification needed before supplier prices are considered final
 
-This change is stacked on the November 19 hub showcase branch. It does not modify existing staging PHP, booking records, cPanel configuration, or a production website.
+* Confirm that each amount is an actual AfghanTours supplier/net booking rate (not a walk-in or advertised retail rate), with quote date, supplier contact, taxes and breakfast/heating/air-conditioning inclusions.
+* Verify deposit and cancellation costs, seasonal changes, and contracted room availability.
+* Reconcile earlier Kandahar hotel ranges (Dubai Inn fan versus AC, Continental Guesthouse categories) to the correct room records; do not overwrite specific room rates with an unmatched quote.
+* Confirm rural/provincial accommodation coverage outside the eight hubs.
+
+The public-facing hotel property's `price_range` field (relative $/$$/$$$ category) is separate display metadata and was not changed here. This document authorizes **supplier-cost inputs only**, with overhead, markup, margin, FX allowance, and payment fees deferred to later pricing work.
+
+This update is stacked on the November 19 hub showcase branch and does not modify production or staging servers.
