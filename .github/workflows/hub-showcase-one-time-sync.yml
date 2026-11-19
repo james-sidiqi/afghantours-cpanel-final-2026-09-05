@@ -1,0 +1,12 @@
+name: One-time hub build
+on:
+  push:
+    branches: [fix/hub-experience-showcase-20261119]
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo 'building hub candidate'
