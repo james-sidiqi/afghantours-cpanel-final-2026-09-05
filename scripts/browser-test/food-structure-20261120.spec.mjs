@@ -56,3 +56,35 @@ test('retired dessert routes lead to their replacements', async ({ page }) => {
   await page.goto('/restaurants/sweet-streets-of-mazar/');
   await expect(page).toHaveURL(/\/cultural-experiences\/culinary\/sweet-streets-of-mazar\/$/);
 });
+
+test('owner dessert photographs (20 Nov package) render on cards and detail pages', async ({ page }) => {
+  const S = '/assets/images/food/sweets';
+  const cases = [
+    ['halwa', '/assets/images/food/dishes/halwa/hero.webp', [`${S}/halwa/gallery-owner-20261120.webp`]],
+    ['halwa-sona', `${S}/halwa-sona/hero-owner-20261120.webp`, [`${S}/halwa-sona/gallery-owner-20261120.webp`]],
+    ['sheer-birinj', `${S}/sheer-birinj/hero-owner-20261120.webp`, []],
+    ['sheer-pira', `${S}/sheer-pira/hero-owner-20261120.webp`, [`${S}/sheer-pira/gallery-owner-20261120.webp`]],
+  ];
+  for (const [slug, hero, gallery] of cases) {
+    await page.goto(`/food-culture/desserts/${slug}/`);
+    await expect(page.locator('.food-detail-hero-pending')).toHaveCount(0);
+    const heroImg = page.locator('.food-detail-hero-image');
+    await expect(heroImg).toHaveAttribute('src', hero);
+    expect(await heroImg.evaluate(async el => { await el.decode(); return el.naturalWidth; })).toBeGreaterThan(0);
+    const g = page.locator('.food-gallery-grid img');
+    await expect(g).toHaveCount(gallery.length);
+    for (const [i, src] of gallery.entries()) {
+      await expect(g.nth(i)).toHaveAttribute('src', src);
+      await expect(g.nth(i)).not.toHaveAttribute('alt', /image \d+$/);
+      expect(await g.nth(i).evaluate(async el => { el.loading = 'eager'; await el.decode(); return el.naturalWidth; })).toBeGreaterThan(0);
+    }
+    await expect(page.locator('img[src*="hero-ai-recreation"]')).toHaveCount(0);
+  }
+  await page.goto('/food-culture/');
+  const core = page.locator('#desserts > .premium-grid > article.food-card');
+  for (const [title, src] of [['Halwa Sona', `${S}/halwa-sona/hero-owner-20261120.webp`], ['Sheer Birinj (Sheer Barinj)', `${S}/sheer-birinj/hero-owner-20261120.webp`], ['Sheer Pira', `${S}/sheer-pira/hero-owner-20261120.webp`]]) {
+    const card = core.filter({ has: page.getByRole('heading', { name: title, exact: true }) });
+    await expect(card.locator('img')).toHaveAttribute('src', src);
+    await expect(card.locator('.food-card__noimg--pending')).toHaveCount(0);
+  }
+});

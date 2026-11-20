@@ -519,12 +519,12 @@ const contactHref = buildInquiryHref({
                 index === 0 && galleryImages.length >= 3 && 'food-gallery-featured',
               ]}
               data-food-image={src}
-              data-food-alt={`${title} — image ${index + 1}`}
+              data-food-alt={altFor(src, `${title} — image ${index + 1}`)}
               aria-label={`Open image ${index + 1}`}
             >
               <img
                 src={src}
-                alt={`${title} — image ${index + 1}`}
+                alt={altFor(src, `${title} — image ${index + 1}`)}
                 loading={index < 2 ? 'eager' : 'lazy'}
               />
             </button>

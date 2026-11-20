@@ -1,6 +1,13 @@
 // Alt text for images whose photo credit is still pending (no visible credit line yet).
 // Credits are tracked in docs/image-register-*.csv; move an entry to photoCredits.ts once confirmed.
 export const IMAGE_ALTS: Record<string, string> = {
+  // Owner-supplied dessert photographs, 20 Nov 2026
+  '/assets/images/food/sweets/sheer-birinj/hero-owner-20261120.webp': 'Bowl of sheer birinj, Afghan rice pudding, topped with chopped green nuts',
+  '/assets/images/food/sweets/halwa-sona/hero-owner-20261120.webp': 'Pieces of halwa sona topped with pistachios in a patterned box',
+  '/assets/images/food/sweets/halwa-sona/gallery-owner-20261120.webp': 'Close-up of halwa sona pieces topped with pistachios',
+  '/assets/images/food/sweets/halwa/gallery-owner-20261120.webp': 'Crumbly halwa with nuts on a blue-and-white plate',
+  '/assets/images/food/sweets/sheer-pira/hero-owner-20261120.webp': 'Sheer pira squares served with tea on an Afghan carpet',
+  '/assets/images/food/sweets/sheer-pira/gallery-owner-20261120.webp': 'Close-up of sheer pira squares on a metal tray',
   '/assets/images/food/dried-fruits/dried-mulberries/white-dried-mulberries.webp': 'White dried mulberries (toot-e-khoshk)',
   '/assets/images/food/dried-fruits/dried-mulberries/dark-dried-mulberries.webp': 'Dark dried mulberries',
   '/assets/images/experiences/cultural/afghan-carpets/hero.webp': 'Two men unfurling a red and orange hand-knotted carpet in a shop stacked with rolled carpets',
