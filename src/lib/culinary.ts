@@ -20,6 +20,8 @@ export const RESTAURANT_TO_CULINARY: Record<string, string> = {
   'chashma-e-dough': '/cultural-experiences/culinary/chashma-e-dogh/',
   'spoghmai-restaurant': '/cultural-experiences/culinary/spoghmai-restaurant-qargha/',
   'spoghmai-restaurant-qargha': '/cultural-experiences/culinary/spoghmai-restaurant-qargha/',
+  // Owner 2026-11-20: Sweet Streets of Mazar is a Culinary Experience, not a dessert or restaurant page.
+  'sweet-streets-of-mazar': '/cultural-experiences/culinary/sweet-streets-of-mazar/',
 };
 
 
@@ -34,6 +36,10 @@ const FOOD_HREF_FALLBACKS: Record<string, string> = {
   quroot: '/food-culture/produce/qurut-markets-of-bamyan/',
   'kabuli-pulao': '/food-culture/kabuli-pulao/',
   'kabuli-palaw': '/food-culture/kabuli-pulao/',
+  halwa: '/food-culture/desserts/halwa/',
+  'green-tea': '/food-culture/drinks/green-tea/',
+  'herat-saffron': '/food-culture/dried-fruits/herat-saffron/',
+  'sheer-yakh': '/food-culture/desserts/sheer-yakh/',
 };
 
 export function getCulinaryExperiences(): CulinaryRow[] {
@@ -146,6 +152,9 @@ export const FOOD_TO_CULINARY: Record<string, string[]> = {
   doogh: ['chashma-e-dogh'],
   'qurut-markets-of-bamyan': ['band-e-amir-quroot-dairy'],
   qurut: ['band-e-amir-quroot-dairy'],
+  halwa: ['sweet-streets-of-mazar'],
+  'sheer-yakh': ['saffron-ice-cream-of-herat'],
+  'herat-saffron': ['saffron-ice-cream-of-herat'],
 };
 
 export function culinaryLinksForFoodSlug(foodSlug: string): Array<{ slug: string; href: string; title: string }> {

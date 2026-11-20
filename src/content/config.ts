@@ -109,6 +109,8 @@ const foodCollection = defineCollection({
     gallery_images: z.array(z.string()).default([]),
     gallery_mode: z.enum(['explicit', 'manifest']).optional(),
     gallery_exclude_hero: z.boolean().default(false),
+    // 'pending' = no accurate photograph yet; pages show a labelled placeholder, never a substitute photo.
+    image_status: z.enum(['pending']).optional(),
     paired_foods: z.array(z.string()).default([]),
     best_season: z.string().optional(),
     duration: z.string().optional(),

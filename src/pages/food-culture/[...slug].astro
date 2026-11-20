@@ -162,6 +162,10 @@ const heroImage =
   [data.hero_image, dedicatedHero, data.image, '/assets/images/heroes/food-and-culture/hero.webp']
     .find((src) => src && !isRejectedImage(src));
 
+// Owner rule: an item without an accurate photograph shows a clearly labelled pending
+// panel, never a generic or unrelated photo presented as the item itself.
+const photoPending = data.image_status === 'pending';
+
 const categoryLabels: Record<string, string> = {
   dishes: 'Afghan Dish',
   drinks: 'Tea & Drinks',
@@ -411,7 +415,9 @@ const contactHref = buildInquiryHref({
   image={heroImage}
 >
   <section class="food-detail-hero">
-    <img class:list={["food-detail-hero-image", PORTRAIT_HEROES.has(heroImage) && "food-detail-hero-image--portrait"]} src={heroImage} alt={altFor(heroImage, title)} fetchpriority="high" />
+    {photoPending
+      ? <div class="food-detail-hero-pending" role="img" aria-label={`Photograph of ${title} pending`}><span>Photograph pending</span></div>
+      : <img class:list={["food-detail-hero-image", PORTRAIT_HEROES.has(heroImage) && "food-detail-hero-image--portrait"]} src={heroImage} alt={altFor(heroImage, title)} fetchpriority="high" />}
     <div class="food-detail-hero-overlay" aria-hidden="true"></div>
 
     <div class="food-detail-hero-inner">
@@ -435,7 +441,7 @@ const contactHref = buildInquiryHref({
       </div>
     </div>
   </section>
-  <PhotoCredits images={[heroImage, ...galleryImages]} />
+  <PhotoCredits images={photoPending ? galleryImages : [heroImage, ...galleryImages]} />
 
   <section class="food-facts-shell">
     <div class="food-facts">
@@ -672,6 +678,27 @@ const contactHref = buildInquiryHref({
     overflow: hidden;
     background: #101820;
     color: #fff;
+  }
+
+  .food-detail-hero-pending {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 6.5rem 1.25rem 1.25rem;
+    background: repeating-linear-gradient(135deg, #1b2630 0 18px, #16202a 18px 36px);
+  }
+
+  .food-detail-hero-pending span {
+    border: 1px solid rgba(255,255,255,.45);
+    border-radius: 999px;
+    padding: .4rem .9rem;
+    font-size: .78rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #f4e7cf;
+    background: rgba(0,0,0,.35);
   }
 
   .food-detail-hero-image {

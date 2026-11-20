@@ -1016,8 +1016,7 @@
     "/assets/images/experiences/cultural/kuchi-nomads/owner-kuchi-nomads.webp"
   ],
   "/assets/images/food/drinks/sheer-chai": [
-    "/assets/images/food/drinks/sheer-chai/hero.webp",
-    "/assets/images/food/drinks/sheer-chai/github-hero.webp"
+    "/assets/images/food/drinks/sheer-chai/gallery-1.webp"
   ],
   "/assets/images/food/dishes/banjan-sia": [],
   "/assets/images/food/dishes/dopiaza": [],
@@ -1030,7 +1029,9 @@
     "/assets/images/food/dishes/sabzi-palak/gallery-1.webp",
     "/assets/images/food/dishes/sabzi-palak/github-hero.webp"
   ],
-  "/assets/images/food/dishes/shor-nakhut": [],
+  "/assets/images/food/dishes/shor-nakhut": [
+    "/assets/images/food/dishes/shor-nakhut/gallery-1.webp"
+  ],
   "/assets/images/food/dishes/kabul-kabob": [
     "/assets/images/food/dishes/kabul-kabob/hero.webp",
     "/assets/images/food/dishes/herat-kabob/hero.webp",
@@ -1040,9 +1041,7 @@
   "/assets/images/food/dishes/chiken-korma": [
     "/assets/images/food/dishes/chiken-korma/gallery-1.webp"
   ],
-  "/assets/images/food/dishes/shola": [
-    "/assets/images/food/dishes/shor-nakhut/gallery-1.webp"
-  ],
+  "/assets/images/food/dishes/shola": [],
   "/assets/images/food/dried-fruits/dried-mulberries": [
     "/assets/images/food/dried-fruits/dried-mulberries/dark-dried-mulberries.webp"
   ]

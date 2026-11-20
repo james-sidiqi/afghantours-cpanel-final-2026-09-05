@@ -3,6 +3,10 @@ title: "Kandahar Sweets"
 slug: "kandahar-sweets"
 food_slug: "kandahar-sweets"
 category: "Dessert"
+image_status: "pending"
+gallery_images: []
+gallery_mode: "explicit"
+gallery_exclude_hero: true
 ---
 
 ### Kandahar Sweets

@@ -285,11 +285,10 @@
     "gallery_exclude_hero": true
   },
   "food/sheer-chai": {
-    "hero_image": "/assets/images/food/drinks/sheer-chai/owner-sheer-chai.webp",
-    "card_image": "/assets/images/food/drinks/sheer-chai/owner-sheer-chai.webp",
+    "hero_image": "/assets/images/food/drinks/sheer-chai/github-hero.webp",
+    "card_image": "/assets/images/food/drinks/sheer-chai/github-hero.webp",
     "gallery_images": [
-      "/assets/images/food/drinks/sheer-chai/hero.webp",
-      "/assets/images/food/drinks/sheer-chai/github-hero.webp"
+      "/assets/images/food/drinks/sheer-chai/gallery-1.webp"
     ],
     "gallery_mode": "explicit",
     "gallery_exclude_hero": true
@@ -367,7 +366,9 @@
   "food/shor-nakhut": {
     "hero_image": "/assets/images/food/dishes/shor-nakhut/hero.webp",
     "card_image": "/assets/images/food/dishes/shor-nakhut/hero.webp",
-    "gallery_images": [],
+    "gallery_images": [
+      "/assets/images/food/dishes/shor-nakhut/gallery-1.webp"
+    ],
     "gallery_mode": "explicit",
     "gallery_exclude_hero": true
   },
@@ -407,9 +408,7 @@
   "food/shola": {
     "hero_image": "/assets/images/food/dishes/shola/hero.webp",
     "card_image": "/assets/images/food/dishes/shola/hero.webp",
-    "gallery_images": [
-      "/assets/images/food/dishes/shor-nakhut/gallery-1.webp"
-    ],
+    "gallery_images": [],
     "gallery_mode": "explicit",
     "gallery_exclude_hero": true
   },

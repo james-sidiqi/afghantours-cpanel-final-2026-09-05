@@ -3,6 +3,10 @@ title: "Kulcha Cookie"
 slug: "kulcha-cookie"
 food_slug: "kulcha-cookie"
 category: "Dessert"
+image_status: "pending"
+gallery_images: []
+gallery_mode: "explicit"
+gallery_exclude_hero: true
 ---
 
 ### Kulcha Cookie

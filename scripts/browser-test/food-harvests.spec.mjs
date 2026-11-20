@@ -7,10 +7,11 @@ const gallery = page => page.locator('.food-gallery-grid img');
 
 test('regional harvests include one melon, one pistachio and the Afghan nut entries', async ({ page }) => {
   await page.goto('/food-culture/');
+  // Owner 2026-11-20: Produce and Dried Fruits & Nuts are separate top-level sections.
   const harvests = page.locator('#produce');
-  await expect(harvests.getByRole('heading', { name: 'Regional Harvests', exact: true })).toBeVisible();
-  await expect(harvests.locator('#dried-fruits')).toHaveCount(1);
-  await expect(harvests.getByRole('heading', { name: 'Afghan Dried Fruits & Nuts', exact: true })).toHaveCount(1);
+  await expect(harvests.getByRole('heading', { name: 'Produce', exact: true })).toBeVisible();
+  await expect(page.locator('section#dried-fruits')).toHaveCount(1);
+  await expect(page.locator('#dried-fruits').getByRole('heading', { name: 'Dried Fruits & Nuts', exact: true })).toHaveCount(1);
   await expect(card(page, 'Melons')).toHaveCount(1);
   await expect(card(page, 'Pistachios')).toHaveCount(1);
   await expect(card(page, 'Almonds')).toContainText('Afghan-grown almonds');
@@ -25,7 +26,8 @@ test('regional harvests include one melon, one pistachio and the Afghan nut entr
   await expect(page.locator('#dried-fruits .food-card > p').filter({ hasText: /^Bazaar$/ })).toHaveCount(0);
 
   const experiences = page.locator('.experience-card');
-  await expect(experiences).toHaveCount(14);
+  // 14 earlier cards + Saffron Ice Cream of Herat (Sweet Streets of Mazar replaced the Mazar sweets card).
+  await expect(experiences).toHaveCount(15);
   for (const img of await experiences.locator('img').all()) {
     expect(await img.evaluate(async el => { el.loading = 'eager'; await el.decode(); return el.naturalWidth; })).toBeGreaterThan(0);
   }

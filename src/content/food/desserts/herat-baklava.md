@@ -3,6 +3,10 @@ title: "Herat Baklava"
 slug: "herat-baklava"
 food_slug: "herat-baklava"
 category: "Dessert"
+image_status: "pending"
+gallery_images: []
+gallery_mode: "explicit"
+gallery_exclude_hero: true
 ---
 
 ### Herat Baklava

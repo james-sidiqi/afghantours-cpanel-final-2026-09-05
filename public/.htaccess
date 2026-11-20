@@ -116,5 +116,9 @@ RewriteRule ^cultural-experiences/paktika-livestock-markets/?$ /cultural-experie
 RewriteRule ^food-culture/produce/kunduz-melon/?$ /food-culture/produce/balkh-melon/ [R=301,L,NE]
 RewriteRule ^food-culture/dried-fruits/badghis-pistachios/?$ /food-culture/samangan-pistachios/ [R=301,L,NE]
 RewriteRule ^specialist-services/media-journalist/?$ /specialist-services/photography-documentary/ [R=301,L,NE]
+RewriteRule ^food-culture/desserts/ghazni-sheer-pira/?$ /food-culture/desserts/sheer-pira/ [R=301,L,NE]
+RewriteRule ^food-culture/herat-ice-cream/?$ /cultural-experiences/culinary/saffron-ice-cream-of-herat/ [R=301,L,NE]
+RewriteRule ^food-culture/desserts/saffron-ice-cream/?$ /cultural-experiences/culinary/saffron-ice-cream-of-herat/ [R=301,L,NE]
+RewriteRule ^food-culture/desserts/sweet-streets-of-mazar/?$ /cultural-experiences/culinary/sweet-streets-of-mazar/ [R=301,L,NE]
 </IfModule>
 # END OWNER-RETIRED-ROUTES

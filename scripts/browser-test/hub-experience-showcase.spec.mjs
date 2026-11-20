@@ -15,9 +15,11 @@ test('hub showcase uses category icons and linked experiences for Mazar and Kabu
 
   await page.locator('.hub-choice').filter({ hasText: 'Mazar-e-Sharif' }).click();
   const culinary = page.locator('#hub-culinary .access-card');
-  await expect(culinary).toHaveCount(1);
+  await expect(culinary).toHaveCount(2);
   await expect(culinary.first()).toContainText('Mansoor Kabob');
   await expect(culinary.first()).toHaveAttribute('href', '/cultural-experiences/culinary/mansoor-kabob/');
+  await expect(culinary.nth(1)).toContainText('Sweet Streets of Mazar');
+  await expect(culinary.nth(1)).toHaveAttribute('href', '/cultural-experiences/culinary/sweet-streets-of-mazar/');
 
   const cultural = page.locator('#hub-cultural .access-card');
   await expect(cultural).toHaveCount(2);
