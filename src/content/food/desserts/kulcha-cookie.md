@@ -3,8 +3,10 @@ title: "Kulcha Cookie"
 slug: "kulcha-cookie"
 food_slug: "kulcha-cookie"
 category: "Dessert"
-image_status: "pending"
-gallery_images: []
+hero_image: "/assets/images/food/sweets/kulcha-cookie/hero-owner-20261121.webp"
+image: "/assets/images/food/sweets/kulcha-cookie/hero-owner-20261121.webp"
+card_image: "/assets/images/food/sweets/kulcha-cookie/hero-owner-20261121.webp"
+gallery_images: ["/assets/images/food/sweets/kulcha-cookie/gallery-owner-5-bakery-shelf-20261121.webp", "/assets/images/food/sweets/kulcha-cookie/gallery-owner-4-box-20261121.webp", "/assets/images/food/sweets/kulcha-cookie/gallery-owner-2-20261121.webp", "/assets/images/food/sweets/kulcha-cookie/gallery-owner-1-collage-20261121.webp"]
 gallery_mode: "explicit"
 gallery_exclude_hero: true
 ---

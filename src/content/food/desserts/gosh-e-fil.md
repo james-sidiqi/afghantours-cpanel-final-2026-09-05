@@ -3,10 +3,11 @@ title: "Gosh-e-Fil"
 food_slug: gosh-e-fil
 section: food_content
 save_to: src/content/food/dishes/gosh-e-fil.md
-hero_image: "/assets/images/food/sweets/gosh-e-fil/hero.webp"
-image: "/assets/images/food/sweets/gosh-e-fil/hero.webp"
+hero_image: "/assets/images/food/sweets/gosh-e-fil/hero-owner-20261121.webp"
+image: "/assets/images/food/sweets/gosh-e-fil/hero-owner-20261121.webp"
+card_image: "/assets/images/food/sweets/gosh-e-fil/hero-owner-20261121.webp"
 card_description: "Traditional fried pastry commonly served with sugar or powdered sugar."
-gallery_images: ["/assets/images/food/dishes/gosh-e-fil/hero.webp"]
+gallery_images: ["/assets/images/food/sweets/gosh-e-fil/hero.webp", "/assets/images/food/dishes/gosh-e-fil/hero.webp"]
 gallery_mode: "explicit"
 gallery_exclude_hero: true
 ---

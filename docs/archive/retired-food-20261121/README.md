@@ -1,0 +1,1 @@
+Food records removed from the public catalog on 21 Nov 2026 (owner instruction t419u): Cake Sheeri, Herat Baklava and Kandahar Sweets. Herat Baklava and Kandahar Sweets were live on afghantours.com, so their URLs 301 to /food-culture/#desserts via data/retired_public_routes.json. Cake Sheeri was never live in production and has no redirect. Kept here for history only; not built.

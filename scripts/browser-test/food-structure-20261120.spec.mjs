@@ -1,15 +1,16 @@
 import { test, expect } from '@playwright/test';
 
+// Owner 2026-11-21 (t419u): Cake Sheeri removed, nine core desserts.
 const DESSERTS = ['Halwa', 'Halwa Sona', 'Jalebi (Jelabi)', 'Firni', 'Sheer Birinj (Sheer Barinj)', 'Sheer Khorma',
-  'Cake Sheeri (Milk Cake)', 'Gosh-e-Fil', 'Sheer Pira', 'Sheer Yakh'];
+  'Gosh-e-Fil', 'Sheer Pira', 'Sheer Yakh'];
 
-test('Food & Culture shows the owner-approved sections and exactly ten core desserts', async ({ page }) => {
+test('Food & Culture shows the owner-approved sections and exactly nine core desserts', async ({ page }) => {
   await page.goto('/food-culture/');
   for (const id of ['dishes', 'desserts', 'drinks', 'produce', 'dried-fruits', 'culinary-experiences', 'cultural-experiences']) {
     await expect(page.locator(`section#${id}`)).toHaveCount(1);
   }
   const core = page.locator('#desserts > .premium-grid > article.food-card');
-  await expect(core).toHaveCount(10);
+  await expect(core).toHaveCount(9);
   await expect(core.locator('h3')).toHaveText(DESSERTS);
   await expect(page.locator('#desserts')).not.toContainText('Ghazni');
   await expect(page.locator('#desserts')).not.toContainText('Sweet Streets');
@@ -18,9 +19,12 @@ test('Food & Culture shows the owner-approved sections and exactly ten core dess
   // Owner 2026-11-21: re-cropped owner photo replaces the withdrawn Turkish Bakery & Cafe cup photo.
   await expect(sk.locator('img')).toHaveAttribute('src', '/assets/images/food/sweets/sheer-khurma/hero-owner-20261121.webp');
   await expect(sk.locator('.food-card__noimg--pending')).toHaveCount(0);
-  const cake = core.filter({ has: page.getByRole('heading', { name: 'Cake Sheeri (Milk Cake)', exact: true }) });
-  await expect(cake.locator('.food-card__noimg--pending')).toContainText('Photograph pending');
-  await expect(cake.locator('img')).toHaveCount(0);
+  for (const gone of ['Cake Sheeri', 'Herat Baklava', 'Kandahar Sweets']) await expect(page.locator('body')).not.toContainText(gone);
+  await expect(page.locator('#desserts .food-card__noimg--pending')).toHaveCount(0);
+  const kulcha = page.locator('#desserts article.food-card').filter({ has: page.getByRole('heading', { name: 'Kulcha Cookie', exact: true }) });
+  await expect(kulcha.locator('img')).toHaveAttribute('src', '/assets/images/food/sweets/kulcha-cookie/hero-owner-20261121.webp');
+  const gosh = core.filter({ has: page.getByRole('heading', { name: 'Gosh-e-Fil', exact: true }) });
+  await expect(gosh.locator('img')).toHaveAttribute('src', '/assets/images/food/sweets/gosh-e-fil/hero-owner-20261121.webp');
   const culinary = page.locator('#culinary-experiences');
   await expect(culinary.locator('a[href="/cultural-experiences/culinary/sweet-streets-of-mazar/"]')).toHaveCount(1);
   await expect(culinary.locator('a[href="/cultural-experiences/culinary/saffron-ice-cream-of-herat/"]')).toHaveCount(1);
@@ -33,27 +37,40 @@ test('Food & Culture shows the owner-approved sections and exactly ten core dess
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test('owner photos 21 Nov: Sheer Khorma re-crop and sheer-e-yakh for Saffron Ice Cream of Herat', async ({ page }) => {
+test('owner photos 21 Nov: Sheer Khorma, Saffron Ice Cream, Sheer Yakh, Kulcha Cookie and Gosh-e-Fil', async ({ page }) => {
   const SK = '/assets/images/food/sweets/sheer-khurma/hero-owner-20261121.webp';
-  const SY = '/assets/images/food/sweets/saffron-ice-cream/sheer-e-yakh-owner-20261121.webp';
+  const SI = '/assets/images/food/sweets/saffron-ice-cream/hero-owner-20261121.webp';
+  const SY = '/assets/images/food/sweets/sheer-yakh/sheer-e-yakh-owner-20261121.webp';
+  const KB = '/assets/images/food/sweets/kulcha-cookie/';
+  const GF = '/assets/images/food/sweets/gosh-e-fil/hero-owner-20261121.webp';
   await page.goto('/food-culture/desserts/sheer-khorma/');
   await expect(page.locator('.food-detail-hero-image')).toHaveAttribute('src', SK);
   await expect(page.locator('.food-detail-hero-image')).toHaveAttribute('alt', 'Sheer khurma topped with a date in a glass bowl');
-  await expect(page.locator('.food-detail-hero-pending')).toHaveCount(0);
   await expect(page.locator('img[src$="/sheer-khurma/hero.webp"]')).toHaveCount(0);
   await page.goto('/cultural-experiences/culinary/saffron-ice-cream-of-herat/');
-  await expect(page.locator('img[src="' + SY + '"]').first()).toBeVisible();
-  await expect(page.locator('img[src="' + SY + '"]').first()).toHaveAttribute('alt', /sheer-e-yakh, Afghan ice cream/);
+  await expect(page.locator('.culin-hero-image')).toHaveAttribute('src', SI);
+  await expect(page.locator('.culin-hero-image')).toHaveAttribute('alt', /saffron ice cream/);
+  await expect(page.locator('.culin-hero-image')).not.toHaveClass(/portrait/);
+  await expect(page.locator('img[src*="sheer-e-yakh"]')).toHaveCount(0);
   // The flagged earlier images stay published in the gallery (authenticity review pending).
   await expect(page.locator('img[src="/assets/images/food/sweets/saffron-ice-cream/hero.webp"]')).not.toHaveCount(0);
   await expect(page.locator('img[src="/assets/images/food/dishes/saffron-ice-cream/hero.webp"]')).not.toHaveCount(0);
-  // Portrait hero shows in a right-hand panel on wide screens; cards keep the front cone in frame.
-  await expect(page.locator('.culin-hero-image')).toHaveClass(/culin-hero-image--portrait/);
-  const wide = await page.evaluate(() => innerWidth >= 900);
-  expect(await page.locator('.culin-hero-image').evaluate(el => getComputedStyle(el).objectPosition)).toBe(wide ? '55% 45%' : '60% 62%');
+  await page.goto('/food-culture/desserts/sheer-yakh/');
+  await expect(page.locator('.food-gallery-grid img[src="' + SY + '"]')).toHaveCount(1);
+  await page.goto('/food-culture/kulcha-cookie/');
+  await expect(page.locator('.food-detail-hero-image')).toHaveAttribute('src', KB + 'hero-owner-20261121.webp');
+  await expect(page.locator('.food-detail-hero-pending')).toHaveCount(0);
+  for (const g of ['gallery-owner-5-bakery-shelf-20261121.webp', 'gallery-owner-4-box-20261121.webp', 'gallery-owner-2-20261121.webp', 'gallery-owner-1-collage-20261121.webp']) {
+    await expect(page.locator('.food-gallery-grid img[src="' + KB + g + '"]')).toHaveCount(1);
+  }
+  await page.goto('/food-culture/desserts/gosh-e-fil/');
+  await expect(page.locator('.food-detail-hero-image')).toHaveAttribute('src', GF);
+  await expect(page.locator('.food-gallery-grid img[src="/assets/images/food/sweets/gosh-e-fil/hero.webp"]')).toHaveCount(1);
   await page.goto('/food-culture/');
-  await expect(page.locator('#culinary-experiences a[href="/cultural-experiences/culinary/saffron-ice-cream-of-herat/"] img')).toHaveAttribute('src', SY);
-  expect(await page.locator('#culinary-experiences a[href="/cultural-experiences/culinary/saffron-ice-cream-of-herat/"] img').evaluate(el => getComputedStyle(el).objectPosition)).toBe('60% 62%');
+  await expect(page.locator('#culinary-experiences a[href="/cultural-experiences/culinary/saffron-ice-cream-of-herat/"] img')).toHaveAttribute('src', SI);
+  for (const img of await page.locator('#desserts img').all()) {
+    expect(await img.evaluate(async el => { el.loading = 'eager'; await el.decode(); return el.naturalWidth; })).toBeGreaterThan(0);
+  }
 });
 
 test('owner food photographs render on their detail pages', async ({ page }) => {
@@ -66,8 +83,7 @@ test('owner food photographs render on their detail pages', async ({ page }) => 
   await page.goto('/food-culture/dishes/dopiaza/');
   await expect(page.locator('.food-detail-hero-image')).toHaveAttribute('src', '/assets/images/food/dishes/dopiaza/hero.webp');
   await page.goto('/food-culture/desserts/cake-sheeri/');
-  await expect(page.locator('.food-detail-hero-pending')).toContainText('Photograph pending');
-  await expect(page.locator('.food-detail-hero-image')).toHaveCount(0);
+  expect((await page.title())).not.toContain('Cake Sheeri');
 });
 
 test('retired dessert routes lead to their replacements', async ({ page }) => {
@@ -80,6 +96,11 @@ test('retired dessert routes lead to their replacements', async ({ page }) => {
   await expect(page).toHaveURL(/\/cultural-experiences\/culinary\/sweet-streets-of-mazar\/$/);
   await page.goto('/restaurants/sweet-streets-of-mazar/');
   await expect(page).toHaveURL(/\/cultural-experiences\/culinary\/sweet-streets-of-mazar\/$/);
+  // Owner 2026-11-21 (t419u): removed desserts that were live in production go to the desserts section.
+  for (const gone of ['/food-culture/herat-baklava/', '/food-culture/kandahar-sweets/']) {
+    await page.goto(gone);
+    await expect(page).toHaveURL(/\/food-culture\/#desserts$/);
+  }
 });
 
 test('owner dessert photographs (20 Nov package) render on cards and detail pages', async ({ page }) => {

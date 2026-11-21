@@ -22,5 +22,7 @@
   "/food-culture/desserts/ghazni-sheer-pira/": "/food-culture/desserts/sheer-pira/",
   "/food-culture/herat-ice-cream/": "/cultural-experiences/culinary/saffron-ice-cream-of-herat/",
   "/food-culture/desserts/saffron-ice-cream/": "/cultural-experiences/culinary/saffron-ice-cream-of-herat/",
-  "/food-culture/desserts/sweet-streets-of-mazar/": "/cultural-experiences/culinary/sweet-streets-of-mazar/"
+  "/food-culture/desserts/sweet-streets-of-mazar/": "/cultural-experiences/culinary/sweet-streets-of-mazar/",
+  "/food-culture/herat-baklava/": "/food-culture/#desserts",
+  "/food-culture/kandahar-sweets/": "/food-culture/#desserts"
 }

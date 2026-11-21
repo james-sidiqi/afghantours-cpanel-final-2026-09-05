@@ -352,7 +352,16 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "source": "",
     "alt": "Qargha Lake seen from the terrace of the Spogmai Restaurant, Kabul",
     "note": ""
-  }
+  },
+  {"paths": ["/assets/images/food/sweets/sheer-khurma/hero-owner-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Sheer khurma topped with a date in a glass bowl", "note": ""},
+  {"paths": ["/assets/images/food/sweets/sheer-yakh/sheer-e-yakh-owner-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Two tall swirls of sheer-e-yakh, Afghan ice cream, topped with crushed pistachios", "note": ""},
+  {"paths": ["/assets/images/food/sweets/saffron-ice-cream/hero-owner-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Two scoops of saffron ice cream topped with chopped pistachios and rose petals", "note": ""},
+  {"paths": ["/assets/images/food/sweets/kulcha-cookie/hero-owner-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Kulcha cookies with a criss-cross pattern and crushed pistachios on a decorated plate", "note": ""},
+  {"paths": ["/assets/images/food/sweets/kulcha-cookie/gallery-owner-2-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Golden ring-shaped kulcha cookies sprinkled with nigella seeds", "note": ""},
+  {"paths": ["/assets/images/food/sweets/kulcha-cookie/gallery-owner-1-collage-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Two photos of kulcha cookies: crosshatched cookies on paper, and patterned cookies topped with pistachios", "note": ""},
+  {"paths": ["/assets/images/food/sweets/gosh-e-fil/hero-owner-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "A plate of gosh-e-fil, crisp fried pastries dusted with powdered sugar", "note": ""},
+  {"paths": ["/assets/images/food/sweets/kulcha-cookie/gallery-owner-4-box-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "A box of assorted kulcha cookies and pastries from a Kabul bakery", "note": ""},
+  {"paths": ["/assets/images/food/sweets/kulcha-cookie/gallery-owner-5-bakery-shelf-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Round kulcha cookies stacked high on metal bakery shelves in Kabul", "note": ""}
 ];
 const byPath = new Map<string, PhotoCredit>();
 PHOTO_CREDITS.forEach((c) => c.paths.forEach((p) => byPath.set(p, c)));

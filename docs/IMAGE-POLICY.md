@@ -25,8 +25,11 @@ Generate `dist/` through `npm run build` only. The browser check opens the built
 ## Owner photo decisions — 21 November 2026
 
 * **Sheer Khorma:** the photograph showing a branded "Turkish Bakery & Cafe" cup is withdrawn (kept in `unpublished-assets/food/withdrawn-20261121/`). James supplied a re-crop with the branding removed (`sheer-khurma/hero-owner-20261121.webp`), now the hero and card image.
-* **Saffron Ice Cream of Herat:** James's sheer-e-yakh photo (`saffron-ice-cream/sheer-e-yakh-owner-20261121.webp`) is the hero and card image; the earlier flagged images stay in the gallery under authenticity review.
+* **Saffron Ice Cream of Herat:** James's saffron ice cream photo (`saffron-ice-cream/hero-owner-20261121.webp`) is the hero and every card image (t417u). The sheer-e-yakh photo moved to the Sheer Yakh gallery (`sheer-yakh/sheer-e-yakh-owner-20261121.webp`). The earlier flagged ice cream images stay in the Saffron gallery under authenticity review.
 * Owner provenance for both: `docs/image-register-owner-20261121.csv`. Card/hero crop focus is set in `src/styles/global.css`.
 * **Sheer Pira:** the owner-supplied photographs (`hero-owner-20261120.webp`, `gallery-owner-20261120.webp`) remain the hero and gallery images.
-* **Saffron Ice Cream and Gosh-e-Fil:** flagged for **authenticity review** in `docs/image-authenticity-review-20261121.csv`. They stay published until the owner decides; do not reuse them elsewhere.
-* **Cake Sheeri, Herat Baklava, Kulcha Cookie, Kandahar Sweets:** keep the Photograph pending panels until suitable photographs are supplied.
+* **Earlier Saffron Ice Cream and Gosh-e-Fil images:** flagged for **authenticity review** in `docs/image-authenticity-review-20261121.csv`. They stay published until the owner decides; do not reuse them elsewhere.
+* **Kulcha Cookie:** owner photos fill the page: `kulcha-cookie/hero-owner-20261121.webp` hero/card, four gallery photos (two genuine Kabul bakery photos plus two older owner-supplied images).
+* **Gosh-e-Fil:** owner photo `gosh-e-fil/hero-owner-20261121.webp` is the hero (portrait panel on wide screens) and card; the earlier flagged images stay in the gallery under authenticity review.
+* **Cake Sheeri, Herat Baklava, Kandahar Sweets:** removed from the site on 21 Nov 2026 (t419u). Herat Baklava and Kandahar Sweets were live in production, so they 301 to `/food-culture/#desserts`; sources archived in `docs/archive/retired-food-20261121/`.
+* James confirmed all photos he supplied on 21 Nov are OK to publish (t420u); they are credited "Photo: AfghanTours".

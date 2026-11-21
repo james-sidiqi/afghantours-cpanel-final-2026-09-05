@@ -120,5 +120,7 @@ RewriteRule ^food-culture/desserts/ghazni-sheer-pira/?$ /food-culture/desserts/s
 RewriteRule ^food-culture/herat-ice-cream/?$ /cultural-experiences/culinary/saffron-ice-cream-of-herat/ [R=301,L,NE]
 RewriteRule ^food-culture/desserts/saffron-ice-cream/?$ /cultural-experiences/culinary/saffron-ice-cream-of-herat/ [R=301,L,NE]
 RewriteRule ^food-culture/desserts/sweet-streets-of-mazar/?$ /cultural-experiences/culinary/sweet-streets-of-mazar/ [R=301,L,NE]
+RewriteRule ^food-culture/herat-baklava/?$ /food-culture/#desserts [R=301,L,NE]
+RewriteRule ^food-culture/kandahar-sweets/?$ /food-culture/#desserts [R=301,L,NE]
 </IfModule>
 # END OWNER-RETIRED-ROUTES
