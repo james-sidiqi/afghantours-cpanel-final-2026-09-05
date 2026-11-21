@@ -87,22 +87,20 @@
     "hero_image": "/assets/images/experiences/culinary/aziz-bakery/owner-haji-aziz-hero.webp",
     "card_image": "/assets/images/experiences/culinary/aziz-bakery/owner-haji-aziz-hero.webp",
     "gallery_images": [
-      "/assets/images/experiences/culinary/aziz-bakery/gallery/01.webp",
-      "/assets/images/experiences/culinary/aziz-bakery/gallery/03.webp",
-      "/assets/images/experiences/culinary/aziz-bakery/gallery/04.webp",
-      "/assets/images/experiences/culinary/aziz-bakery/gallery/05.webp",
-      "/assets/images/experiences/culinary/aziz-bakery/gallery/06.webp",
-      "/assets/images/experiences/culinary/aziz-bakery/gallery/07.webp",
-      "/assets/images/experiences/culinary/aziz-bakery/gallery/02.webp"
+      "/assets/images/experiences/culinary/aziz-bakery/owner-haji-aziz-hero.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-01-stacked-cookies.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-03-shelves-cookies.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-04-pistachio-swirls.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-05-assorted-trays.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-06-street-front-display.webp"
     ],
     "gallery_mode": "explicit",
-    "gallery_exclude_hero": true
+    "gallery_exclude_hero": false
   },
   "culinary/kabul-chainaki": {
-    "hero_image": "/assets/images/experiences/culinary/kabul-chainaki/gallery/01.webp",
-    "gallery_images": [
-      "/assets/images/experiences/culinary/kabul-chainaki/gallery/02.webp"
-    ],
+    "hero_image": "/assets/images/experiences/culinary/kabul-chainaki/gallery/02.webp",
+    "hide_card_image": true,
+    "gallery_images": [],
     "gallery_mode": "explicit"
   },
   "activities/hiking": {

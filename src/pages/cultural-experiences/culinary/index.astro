@@ -6,7 +6,7 @@ import {
   publicVenueLabel,
   routeContextLabel,
 } from '../../../lib/culinary';
-import { getCulinaryImage } from '../../../lib/images';
+import { getCulinaryCardImage, isPlaceholder } from '../../../lib/images';
 
 const csvItems = getCulinaryExperiences();
 const mdItems = await getCollection('culinary-experiences');
@@ -18,9 +18,10 @@ const items = csvItems.map((row) => {
   const md = mdBySlug.get(row.slug);
   const title = md?.data.title || row.name;
   const card = md?.data.card_description || row.card_description || '';
-  const image = getCulinaryImage({
+  const image = getCulinaryCardImage({
     slug: row.slug,
     hero_image: md?.data.hero_image || row.hero_image,
+    hide_card_image: md?.data.hide_card_image,
   });
   return {
     ...row,
@@ -64,7 +65,9 @@ const items = csvItems.map((row) => {
         {items.map((item) => (
           <a class="culin-index-card" href={item.href}>
             <div class="culin-index-image">
-              <img src={item.image} alt={item.title} loading="lazy" />
+              {item.image && !isPlaceholder(item.image)
+                ? <img src={item.image} alt={item.title} loading="lazy" />
+                : <span class="culin-index-noimg" aria-hidden="true">{item.title}</span>}
             </div>
             <div class="culin-index-copy">
               <p>Culinary Experience</p>
@@ -189,6 +192,19 @@ const items = csvItems.map((row) => {
     object-fit: cover;
     display: block;
     transition: transform .45s ease;
+  }
+  .culin-index-noimg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    color: #f3e7c8;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.15rem;
+    text-align: center;
+    background: linear-gradient(135deg, #0f241b, #163a2a);
   }
   .culin-index-card:hover img { transform: scale(1.035); }
   .culin-index-copy { padding: 1.35rem; }

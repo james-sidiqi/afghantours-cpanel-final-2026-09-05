@@ -2,7 +2,7 @@ import culinaryRaw from '../../data/culinary_experiences.csv?raw';
 import tourCulinaryRaw from '../../data/tour_culinary_map.csv?raw';
 import venueDetailsRaw from '../../data/venue_details.csv?raw';
 import { parseCSV, isActive, splitList } from './csv';
-import { getCulinaryImage } from './images';
+import { getCulinaryCardImage } from './images';
 
 export type CulinaryRow = Record<string, any>;
 
@@ -54,7 +54,7 @@ export function getCulinaryExperiences(): CulinaryRow[] {
         ...(venue ? { venue_name: venue.venue_name, venue_address: venue.address, venue_status: 'operator-provided' } : {}),
         related_food_slugs: related,
         provinces,
-        image: getCulinaryImage({ ...row, slug: row.slug }),
+        image: getCulinaryCardImage({ ...row, slug: row.slug }),
         href: `/cultural-experiences/culinary/${row.slug}/`,
       };
     })

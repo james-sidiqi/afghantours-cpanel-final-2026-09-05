@@ -207,7 +207,9 @@ const image = getHubImage(hub);
         <div class="simple-grid">
           {culinary.map((item) => (
             <a class="simple-card" href={item.href}>
-              <img src={item.image} alt={item.name} loading="lazy" />
+              {item.image && !isPlaceholder(item.image)
+                ? <img src={item.image} alt={item.name} loading="lazy" />
+                : <span class="simple-card__noimg" aria-hidden="true">{item.name}</span>}
               <div class="culin-hub-card-copy">
                 <small>{routeContextLabel(item.route_context)}</small>
                 <h3>{item.name}</h3>

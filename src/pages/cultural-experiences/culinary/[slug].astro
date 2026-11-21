@@ -13,7 +13,7 @@ import {
   relatedFoodLinks,
   getCulinaryForTour,
 } from '../../../lib/culinary';
-import { getCulinaryImage, getCulinaryGallery } from '../../../lib/images';
+import { getCulinaryImage, getCulinaryGallery, isPlaceholder } from '../../../lib/images';
 import { altFor } from '../../../data/photoCredits';
 
 export async function getStaticPaths() {
@@ -53,9 +53,13 @@ const description =
   `Explore ${title}, a hub-based culinary experience in Afghanistan.`;
 
 const heroImage = getCulinaryImage({ slug, hero_image: data.hero_image, image: data.image });
-const galleryImages = getCulinaryGallery({ slug, gallery_images: data.gallery_images }).filter(
-  // Card/thumb crops are never gallery items.
-  (src) => src !== heroImage && !/\/thumb(nail)?\.webp$/.test(src)
+const galleryImages = getCulinaryGallery({
+  slug,
+  gallery_images: data.gallery_images,
+  gallery_exclude_hero: data.gallery_exclude_hero,
+}).filter(
+  // Card/thumb crops are never gallery items. Hero stays if gallery_exclude_hero is false.
+  (src) => !/\/thumb(nail)?\.webp$/.test(src)
 ).slice(0, 8);
 
 const venueLabel = publicVenueLabel(data);
@@ -261,7 +265,9 @@ const contactHref = buildInquiryHref({
         <div class="culin-mini-grid">
           {siblingCulinary.map((item) => (
             <a class="culin-mini-card" href={item.href}>
-              <img src={item.image} alt={item.name} loading="lazy" />
+              {item.image && !isPlaceholder(item.image)
+                ? <img src={item.image} alt={item.name} loading="lazy" />
+                : <span class="culin-mini-noimg" aria-hidden="true"></span>}
               <div>
                 <p>{routeContextLabel(item.route_context)}</p>
                 <h3>{item.name}</h3>
@@ -610,6 +616,11 @@ const contactHref = buildInquiryHref({
     height: 100%;
     min-height: 120px;
     object-fit: cover;
+  }
+  .culin-mini-noimg {
+    width: 120px;
+    min-height: 120px;
+    background: linear-gradient(135deg, #0f241b, #163a2a);
   }
   .culin-mini-card div { padding: 1rem; }
   .culin-mini-card p {

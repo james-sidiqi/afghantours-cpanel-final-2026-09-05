@@ -152,6 +152,18 @@ export function getCulinaryImage(item: any): string {
     slug ? `${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}/hero.webp` : null,
     slug ? `/assets/images/food/${slug}/hero.webp` : null], PLACEHOLDERS.food);
 }
+/** Card image for culinary tiles. Empty string means render the card with no photo (no placeholder). */
+export function getCulinaryCardImage(item: any): string {
+  const slug = item?.slug || item?.culinary_slug || item?.experience_slug;
+  const merged = { ...item, ...((ownerSelections as Record<string, any>)[`culinary/${slug}`] || {}) };
+  if (merged.hide_card_image === true || merged.card_image === '' || merged.card_image === false) return '';
+  if (merged.card_image) {
+    const src = normalizeImagePath(merged.card_image, '');
+    return hasRealImage(src) ? src : '';
+  }
+  const hero = getCulinaryImage(merged);
+  return isPlaceholder(hero) ? '' : hero;
+}
 export function getCulturalExperienceImage(item: any): string {
   const slug = item?.slug || item?.id?.replace(/\.md$/, '');
   item = { ...item, ...((ownerSelections as Record<string, any>)[`cultural/${slug}`] || {}) };
@@ -165,8 +177,10 @@ export function getActivityImage(item: any): string {
 function experienceGallery(item: any, roots: string[], hero: string): string[] {
   // Curated lists take precedence; discovery is from explicit manifest entries only.
   const supplied = buildGallery(item);
-  return cleanGallery(item?.gallery_mode === 'explicit' || supplied.length ? supplied : roots.flatMap((folder) => listGalleryImages(folder)))
-    .filter((src) => src !== hero);
+  const images = cleanGallery(item?.gallery_mode === 'explicit' || supplied.length ? supplied : roots.flatMap((folder) => listGalleryImages(folder)));
+  // Default: keep the hero out of the gallery. Set gallery_exclude_hero: false to show it there too.
+  if (item?.gallery_exclude_hero === false) return images;
+  return images.filter((src) => src !== hero);
 }
 export function getCulinaryGallery(item: any): string[] {
   const slug = item?.slug || item?.culinary_slug;

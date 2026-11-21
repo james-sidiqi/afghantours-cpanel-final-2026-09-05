@@ -1,6 +1,14 @@
 // Alt text for images whose photo credit is still pending (no visible credit line yet).
 // Credits are tracked in docs/image-register-*.csv; move an entry to photoCredits.ts once confirmed.
 export const IMAGE_ALTS: Record<string, string> = {
+  // Owner-supplied Haji Aziz Bakery photographs, 22 Nov 2026
+  '/assets/images/experiences/culinary/aziz-bakery/owner-haji-aziz-hero.webp': 'Storefront of Haji Aziz Bakery on a paved street, with a window display of stacked cookies and a sign in Dari and English',
+  '/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-01-stacked-cookies.webp': 'Stacked round cookies in a bakery display case, with pastry rolls on the shelf below and the street visible through the glass',
+  '/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-03-shelves-cookies.webp': 'Metal bakery shelves of stacked round cookies, layered cake bars and rosette cookies, with sweet boxes on the bottom shelf',
+  '/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-04-pistachio-swirls.webp': 'Bakery display case with stacked cookies, green pistachio swirls, sausage-shaped pastries and cream rolls',
+  '/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-05-assorted-trays.webp': 'Bakery shelves of orange cookies, cream buns, waffle biscuits, iced buns with chocolate dots, coconut macaroons and stacked sweet boxes',
+  '/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-06-street-front-display.webp': 'Street-front bakery display of filled pastries, cream rolls, square biscuits and chocolate buns',
+  '/assets/images/experiences/culinary/kabul-chainaki/gallery/02.webp': 'Open teapots of chainaki stew, with meat and broth cooked in the pots, seen from above',
   // Owner-supplied photographs, 21 Nov 2026
   '/assets/images/food/sweets/sheer-khurma/hero-owner-20261121.webp': 'Sheer khurma topped with a date in a glass bowl',
   '/assets/images/food/sweets/sheer-yakh/sheer-e-yakh-owner-20261121.webp': 'Two tall swirls of sheer-e-yakh, Afghan ice cream, topped with crushed pistachios',

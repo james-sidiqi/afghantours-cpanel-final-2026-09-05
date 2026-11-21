@@ -340,7 +340,13 @@
   "/assets/images/experiences/culinary/arg-restaurant-herat/gallery": [
     "/assets/images/experiences/culinary/arg-restaurant-herat/gallery/01.webp"
   ],
-  "/assets/images/experiences/culinary/aziz-bakery/gallery": [],
+  "/assets/images/experiences/culinary/aziz-bakery/gallery": [
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-01-stacked-cookies.webp",
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-03-shelves-cookies.webp",
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-04-pistachio-swirls.webp",
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-05-assorted-trays.webp",
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-06-street-front-display.webp"
+  ],
   "/assets/images/experiences/culinary/bamyan-kabob/gallery": [
     "/assets/images/experiences/culinary/bamyan-kabob/gallery/01.webp",
     "/assets/images/experiences/culinary/bamyan-kabob/gallery/02.webp"
@@ -351,7 +357,6 @@
     "/assets/images/experiences/culinary/chashma-e-dogh/gallery/06.webp"
   ],
   "/assets/images/experiences/culinary/kabul-chainaki/gallery": [
-    "/assets/images/experiences/culinary/kabul-chainaki/gallery/01.webp",
     "/assets/images/experiences/culinary/kabul-chainaki/gallery/02.webp"
   ],
   "/assets/images/experiences/culinary/kandahari-rosh/gallery": [
@@ -1011,13 +1016,11 @@
     "/assets/images/attractions/farah-citadel/owner-farah-citadel.webp"
   ],
   "/assets/images/experiences/culinary/aziz-bakery": [
-    "/assets/images/experiences/culinary/aziz-bakery/gallery/01.webp",
-    "/assets/images/experiences/culinary/aziz-bakery/gallery/03.webp",
-    "/assets/images/experiences/culinary/aziz-bakery/gallery/04.webp",
-    "/assets/images/experiences/culinary/aziz-bakery/gallery/05.webp",
-    "/assets/images/experiences/culinary/aziz-bakery/gallery/06.webp",
-    "/assets/images/experiences/culinary/aziz-bakery/gallery/07.webp",
-    "/assets/images/experiences/culinary/aziz-bakery/gallery/02.webp"
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-01-stacked-cookies.webp",
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-03-shelves-cookies.webp",
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-04-pistachio-swirls.webp",
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-05-assorted-trays.webp",
+    "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-06-street-front-display.webp"
   ],
   "/assets/images/experiences/cultural/kuchi-nomads": [
     "/assets/images/experiences/cultural/kuchi-nomads/owner-kuchi-nomads-gallery.webp",

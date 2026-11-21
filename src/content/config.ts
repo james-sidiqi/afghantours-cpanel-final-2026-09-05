@@ -195,6 +195,7 @@ const culinaryExperiencesCollection = defineCollection({
     duration: z.string().optional(),
     hero_image: z.string().optional(),
     image: z.string().optional(),
+    hide_card_image: z.boolean().optional(),
     gallery_images: z.array(z.string()).default([]),
     gallery_mode: z.enum(['explicit', 'manifest']).optional(),
     gallery_exclude_hero: z.boolean().default(false),
