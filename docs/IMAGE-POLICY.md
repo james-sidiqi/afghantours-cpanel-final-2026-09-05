@@ -24,7 +24,9 @@ Generate `dist/` through `npm run build` only. The browser check opens the built
 
 ## Owner photo decisions — 21 November 2026
 
-* **Sheer Khorma:** the photograph showing a branded "Turkish Bakery & Cafe" cup is withdrawn (moved to `unpublished-assets/food/withdrawn-20261121/`). No verified replacement exists in the repository or owner packages, so the card and detail page show **Photograph pending**.
+* **Sheer Khorma:** the photograph showing a branded "Turkish Bakery & Cafe" cup is withdrawn (kept in `unpublished-assets/food/withdrawn-20261121/`). James supplied a re-crop with the branding removed (`sheer-khurma/hero-owner-20261121.webp`), now the hero and card image.
+* **Saffron Ice Cream of Herat:** James's sheer-e-yakh photo (`saffron-ice-cream/sheer-e-yakh-owner-20261121.webp`) is the hero and card image; the earlier flagged images stay in the gallery under authenticity review.
+* Owner provenance for both: `docs/image-register-owner-20261121.csv`. Card/hero crop focus is set in `src/styles/global.css`.
 * **Sheer Pira:** the owner-supplied photographs (`hero-owner-20261120.webp`, `gallery-owner-20261120.webp`) remain the hero and gallery images.
 * **Saffron Ice Cream and Gosh-e-Fil:** flagged for **authenticity review** in `docs/image-authenticity-review-20261121.csv`. They stay published until the owner decides; do not reuse them elsewhere.
 * **Cake Sheeri, Herat Baklava, Kulcha Cookie, Kandahar Sweets:** keep the Photograph pending panels until suitable photographs are supplied.

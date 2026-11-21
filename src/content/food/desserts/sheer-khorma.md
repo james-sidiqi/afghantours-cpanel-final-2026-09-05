@@ -4,7 +4,9 @@ food_slug: "sheer-khorma"
 category: "Dessert"
 alternative_name: "Sheer Khurma"
 card_description: "Traditional milk-based dessert commonly prepared with dates, vermicelli and nuts, especially for Eid celebrations."
-image_status: "pending"
+hero_image: "/assets/images/food/sweets/sheer-khurma/hero-owner-20261121.webp"
+image: "/assets/images/food/sweets/sheer-khurma/hero-owner-20261121.webp"
+card_image: "/assets/images/food/sweets/sheer-khurma/hero-owner-20261121.webp"
 gallery_images: []
 gallery_mode: "explicit"
 gallery_exclude_hero: true

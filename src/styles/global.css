@@ -224,3 +224,7 @@ p { line-height: var(--line-body); }
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Owner photos, 21 Nov 2026: keep the subject in frame wherever the image is cropped (heroes and cards). */
+html body img[src$="/food/sweets/saffron-ice-cream/sheer-e-yakh-owner-20261121.webp"] { object-position: 60% 62% !important; }
+html body img[src$="/food/sweets/sheer-khurma/hero-owner-20261121.webp"] { object-position: 55% 68% !important; }

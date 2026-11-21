@@ -15,9 +15,9 @@ test('Food & Culture shows the owner-approved sections and exactly ten core dess
   await expect(page.locator('#desserts')).not.toContainText('Sweet Streets');
   await expect(page.locator('#desserts')).not.toContainText('Saffron Ice Cream');
   const sk = core.filter({ has: page.getByRole('heading', { name: 'Sheer Khorma', exact: true }) });
-  // Owner 2026-11-21: the Turkish Bakery & Cafe cup photo was withdrawn; no verified replacement yet.
-  await expect(sk.locator('.food-card__noimg--pending')).toContainText('Photograph pending');
-  await expect(sk.locator('img')).toHaveCount(0);
+  // Owner 2026-11-21: re-cropped owner photo replaces the withdrawn Turkish Bakery & Cafe cup photo.
+  await expect(sk.locator('img')).toHaveAttribute('src', '/assets/images/food/sweets/sheer-khurma/hero-owner-20261121.webp');
+  await expect(sk.locator('.food-card__noimg--pending')).toHaveCount(0);
   const cake = core.filter({ has: page.getByRole('heading', { name: 'Cake Sheeri (Milk Cake)', exact: true }) });
   await expect(cake.locator('.food-card__noimg--pending')).toContainText('Photograph pending');
   await expect(cake.locator('img')).toHaveCount(0);
@@ -33,10 +33,27 @@ test('Food & Culture shows the owner-approved sections and exactly ten core dess
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test('Sheer Khorma detail page shows Photograph pending, not the withdrawn cafe photo', async ({ page }) => {
+test('owner photos 21 Nov: Sheer Khorma re-crop and sheer-e-yakh for Saffron Ice Cream of Herat', async ({ page }) => {
+  const SK = '/assets/images/food/sweets/sheer-khurma/hero-owner-20261121.webp';
+  const SY = '/assets/images/food/sweets/saffron-ice-cream/sheer-e-yakh-owner-20261121.webp';
   await page.goto('/food-culture/desserts/sheer-khorma/');
-  await expect(page.locator('.food-detail-hero-pending')).toContainText('Photograph pending');
-  await expect(page.locator('img[src*="sheer-khurma"]')).toHaveCount(0);
+  await expect(page.locator('.food-detail-hero-image')).toHaveAttribute('src', SK);
+  await expect(page.locator('.food-detail-hero-image')).toHaveAttribute('alt', 'Sheer khurma topped with a date in a glass bowl');
+  await expect(page.locator('.food-detail-hero-pending')).toHaveCount(0);
+  await expect(page.locator('img[src$="/sheer-khurma/hero.webp"]')).toHaveCount(0);
+  await page.goto('/cultural-experiences/culinary/saffron-ice-cream-of-herat/');
+  await expect(page.locator('img[src="' + SY + '"]').first()).toBeVisible();
+  await expect(page.locator('img[src="' + SY + '"]').first()).toHaveAttribute('alt', /sheer-e-yakh, Afghan ice cream/);
+  // The flagged earlier images stay published in the gallery (authenticity review pending).
+  await expect(page.locator('img[src="/assets/images/food/sweets/saffron-ice-cream/hero.webp"]')).not.toHaveCount(0);
+  await expect(page.locator('img[src="/assets/images/food/dishes/saffron-ice-cream/hero.webp"]')).not.toHaveCount(0);
+  // Portrait hero shows in a right-hand panel on wide screens; cards keep the front cone in frame.
+  await expect(page.locator('.culin-hero-image')).toHaveClass(/culin-hero-image--portrait/);
+  const wide = await page.evaluate(() => innerWidth >= 900);
+  expect(await page.locator('.culin-hero-image').evaluate(el => getComputedStyle(el).objectPosition)).toBe(wide ? '55% 45%' : '60% 62%');
+  await page.goto('/food-culture/');
+  await expect(page.locator('#culinary-experiences a[href="/cultural-experiences/culinary/saffron-ice-cream-of-herat/"] img')).toHaveAttribute('src', SY);
+  expect(await page.locator('#culinary-experiences a[href="/cultural-experiences/culinary/saffron-ice-cream-of-herat/"] img').evaluate(el => getComputedStyle(el).objectPosition)).toBe('60% 62%');
 });
 
 test('owner food photographs render on their detail pages', async ({ page }) => {

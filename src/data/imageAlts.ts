@@ -1,6 +1,9 @@
 // Alt text for images whose photo credit is still pending (no visible credit line yet).
 // Credits are tracked in docs/image-register-*.csv; move an entry to photoCredits.ts once confirmed.
 export const IMAGE_ALTS: Record<string, string> = {
+  // Owner-supplied photographs, 21 Nov 2026
+  '/assets/images/food/sweets/sheer-khurma/hero-owner-20261121.webp': 'Sheer khurma topped with a date in a glass bowl',
+  '/assets/images/food/sweets/saffron-ice-cream/sheer-e-yakh-owner-20261121.webp': 'Two tall swirls of sheer-e-yakh, Afghan ice cream, topped with crushed pistachios',
   // Owner-supplied dessert photographs, 20 Nov 2026
   '/assets/images/food/sweets/sheer-birinj/hero-owner-20261120.webp': 'Bowl of sheer birinj, Afghan rice pudding, topped with chopped green nuts',
   '/assets/images/food/sweets/halwa-sona/hero-owner-20261120.webp': 'Pieces of halwa sona topped with pistachios in a patterned box',
