@@ -273,8 +273,9 @@
       "slug": "afghanistan-discovery-tour-spring",
       "name": "Afghanistan Discovery Tour Spring",
       "category": "A",
-      "duration_days": 9,
-      "nights": 8,
+      "duration_days": 10,
+      "nights": 9,
+      "duration_display": "10 days / 9 nights",
       "active": true,
       "listed_on_tours_page": true,
       "url": "/tours/afghanistan-discovery-tour-spring/",
@@ -320,7 +321,13 @@
         "private_tour"
       ],
       "shared_max_group": 18,
-      "group_rule": "long_6_18"
+      "group_rule": "long_6_18",
+      "content_revision": {
+        "batch": "AFGHANTOURS-TOUR-REVISIONS-01-05",
+        "date": "2026-11-21",
+        "note": "Duration 9 days / 8 nights -> 10 days / 9 nights (owner brief). Price NOT changed: commercial re-costing review required before the published price is confirmed for 10 days.",
+        "recosting_review_required": true
+      }
     },
     {
       "code": "ADTF",
@@ -433,10 +440,11 @@
     {
       "code": "CAD",
       "slug": "central-afghanistan-discovery",
-      "name": "Central Afghanistan Discovery",
+      "name": "7-Day Afghanistan Journey",
       "category": "B",
       "duration_days": 7,
       "nights": 6,
+      "duration_display": "7 days / 6 nights",
       "active": true,
       "listed_on_tours_page": true,
       "url": "/tours/central-afghanistan-discovery/",
@@ -482,15 +490,22 @@
         "private_tour"
       ],
       "shared_max_group": 18,
-      "group_rule": "long_6_18"
+      "group_rule": "long_6_18",
+      "content_revision": {
+        "batch": "AFGHANTOURS-TOUR-REVISIONS-01-05",
+        "date": "2026-11-21",
+        "note": "Display title changed from \"Central Afghanistan Discovery\" (owner brief); code, slug, URL, price and departures unchanged.",
+        "recosting_review_required": false
+      }
     },
     {
       "code": "BSKI",
       "slug": "bamyan-skiing-tour",
       "name": "Bamyan Skiing Tour",
       "category": "B",
-      "duration_days": 5,
-      "nights": 4,
+      "duration_days": 6,
+      "nights": 5,
+      "duration_display": "6 days / 5 nights",
       "active": true,
       "listed_on_tours_page": true,
       "url": "/tours/bamyan-skiing-tour/",
@@ -536,7 +551,13 @@
         "private_tour"
       ],
       "shared_max_group": 18,
-      "group_rule": "long_6_18"
+      "group_rule": "long_6_18",
+      "content_revision": {
+        "batch": "AFGHANTOURS-TOUR-REVISIONS-01-05",
+        "date": "2026-11-21",
+        "note": "Duration 5 days / 4 nights -> 6 days / 5 nights (owner brief). Price NOT changed: commercial re-costing review required before the published price is confirmed for 6 days.",
+        "recosting_review_required": true
+      }
     },
     {
       "code": "PVEH",
@@ -545,6 +566,7 @@
       "category": "B",
       "duration_days": 4,
       "nights": 3,
+      "duration_display": "4 days / 3 nights",
       "active": true,
       "listed_on_tours_page": true,
       "url": "/tours/panjshir-valley-emeralds-history/",
