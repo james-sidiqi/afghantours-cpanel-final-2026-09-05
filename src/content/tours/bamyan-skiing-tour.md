@@ -6,7 +6,7 @@ save_to: src/content/tours/bamyan-skiing-tour.md
 ---
 
 ### Overview
-The Bamyan Backcountry Skiing Tour is a rare winter expedition into the snow-covered landscapes of Afghanistan’s central highlands. Operating during the winter season in and around Bamyan, this experience focuses on human-powered backcountry skiing across the Koh-e-Baba mountain range with support from experienced local ski guides familiar with regional terrain, weather patterns, and snow conditions.
+The Bamyan Backcountry Skiing Tour is a rare winter expedition into the snow-covered landscapes of Afghanistan’s central highlands. Operating during the winter season in and around Bamyan, this six-day, five-night tour focuses on human-powered backcountry ski touring in the Koh-e-Baba mountain range, with one dedicated ski day and an optional second outing when conditions allow.
 
 Unlike commercial ski destinations, Bamyan offers a raw alpine environment with no resort infrastructure, creating a far more authentic and physically demanding mountain experience. Guests move through remote valleys, traditional mountain villages, and untouched snowfields surrounded by dramatic highland scenery and wide-open terrain rarely visited by international skiers.
 
@@ -19,6 +19,13 @@ This is a true backcountry skiing experience with no ski lifts, groomed runs, or
 Guests should expect flexible scheduling and expedition-style logistics rather than rigid resort operations. Some days may involve shorter ski touring routes due to changing conditions or visibility. If weather conditions limit mountain access, lower-elevation cultural activities, village visits, historical exploration, or scenic touring around Bamyan may be substituted.
 
 Road movement between Kabul and Bamyan is also weather-dependent during the winter season.
+
+### Where You Stay
+- Kabul: nights 1 and 5
+- Bamyan: nights 2, 3 and 4
+
+### Ski Conditions and What Is Confirmed
+This is not resort skiing, and the second ski day is never promised. Before a departure is confirmed we validate the ski guide’s qualifications, each participant’s capability, equipment, the avalanche assessment, and the emergency response and rescue arrangements. Ski guiding, ski equipment and mountain rescue are included only when they are contracted and confirmed in writing on your proposal. Road and weather contingencies stay in place throughout.
 
 ### Equipment
 
@@ -46,7 +53,7 @@ This experience may not be suitable for guests expecting resort amenities, fixed
 
 Accommodation standards in Kabul and Bamyan are comfortable, reliable, and carefully selected for international guests operating in Afghanistan’s winter conditions.
 
-In Kabul, guests typically stay in vetted hotels offering private rooms, heating, Wi-Fi, restaurant service, and secure transportation coordination depending on operational requirements.
+In Kabul, guests typically stay in vetted hotels offering private rooms, heating, Wi-Fi, restaurant service, and transport coordination depending on operational requirements.
 
 In Bamyan, tours utilize some of the region’s best available hotels and guesthouses. Most properties used for expeditions provide heated rooms, running hot water, private accommodations, Wi-Fi access, and restaurant or dining facilities. While infrastructure in the central highlands is more limited than in major international ski destinations, accommodations are well suited for winter tourism and expedition-style travel.
 

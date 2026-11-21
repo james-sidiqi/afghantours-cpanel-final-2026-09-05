@@ -22,7 +22,7 @@ Bamyan is the base for the Buddha Niches, the ruined citadel of Shahr-e-Gholghol
 * Chehel Burj Bamyan Ruins
 
 ### Travel Role
-Bamyan is the Central Highlands' centre for trekking, skiing, archaeology and eco-tourism. It is reached overland from Kabul by 4WD, usually 8–10 hours, via the Ghorband or Hajigak routes; the road is chosen for conditions and schedule rather than fixed in advance. Bamyan Airport (BIN) serves the valley. Journeys using Bamyan include Central Afghanistan Discovery, the Afghanistan Discovery Tours (spring and fall), the Bamyan Skiing Tour, and the Summer and Winter Circuits.
+Bamyan is the Central Highlands' centre for trekking, skiing, archaeology and eco-tourism. It is reached overland from Kabul by 4WD, usually 8–10 hours, via the Ghorband or Hajigak routes; the road is chosen for conditions and schedule rather than fixed in advance. Bamyan Airport (BIN) serves the valley. Journeys using Bamyan include the 7-Day Afghanistan Journey, the Afghanistan Discovery Tours (spring and fall), the Bamyan Skiing Tour, and the Summer and Winter Circuits.
 
 ### Visitor Notes
 The climate is cold alpine and semi-arid. May–June and September–October suit most touring; the Bamyan Skiing Tour runs January–March in the Koh-e-Baba mountains. Plan for altitude and for days that start early so you are not crossing mountain roads in the dark. Provincial tourist permits are processed in advance for booked tours.
