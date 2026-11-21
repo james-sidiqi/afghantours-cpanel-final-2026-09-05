@@ -3,6 +3,7 @@
 set -euo pipefail
 node --test scripts/ci-dist-drift-diagnose.test.mjs
 node --test scripts/related-food.test.mjs
+node --test scripts/supplier-cost-privacy.test.mjs
 node scripts/validate-booking-data.mjs
 node scripts/check-owner-venues.mjs
 node --test scripts/booking-test/core.test.mjs

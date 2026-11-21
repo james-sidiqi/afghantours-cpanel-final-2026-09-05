@@ -15,7 +15,9 @@ test('Food & Culture shows the owner-approved sections and exactly ten core dess
   await expect(page.locator('#desserts')).not.toContainText('Sweet Streets');
   await expect(page.locator('#desserts')).not.toContainText('Saffron Ice Cream');
   const sk = core.filter({ has: page.getByRole('heading', { name: 'Sheer Khorma', exact: true }) });
-  await expect(sk.locator('img')).toHaveAttribute('src', '/assets/images/food/sweets/sheer-khurma/hero.webp');
+  // Owner 2026-11-21: the Turkish Bakery & Cafe cup photo was withdrawn; no verified replacement yet.
+  await expect(sk.locator('.food-card__noimg--pending')).toContainText('Photograph pending');
+  await expect(sk.locator('img')).toHaveCount(0);
   const cake = core.filter({ has: page.getByRole('heading', { name: 'Cake Sheeri (Milk Cake)', exact: true }) });
   await expect(cake.locator('.food-card__noimg--pending')).toContainText('Photograph pending');
   await expect(cake.locator('img')).toHaveCount(0);
@@ -29,6 +31,12 @@ test('Food & Culture shows the owner-approved sections and exactly ten core dess
     expect(await img.evaluate(async el => { el.loading = 'eager'; await el.decode(); return el.naturalWidth; })).toBeGreaterThan(0);
   }
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test('Sheer Khorma detail page shows Photograph pending, not the withdrawn cafe photo', async ({ page }) => {
+  await page.goto('/food-culture/desserts/sheer-khorma/');
+  await expect(page.locator('.food-detail-hero-pending')).toContainText('Photograph pending');
+  await expect(page.locator('img[src*="sheer-khurma"]')).toHaveCount(0);
 });
 
 test('owner food photographs render on their detail pages', async ({ page }) => {

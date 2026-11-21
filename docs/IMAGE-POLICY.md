@@ -21,3 +21,10 @@ node scripts/verify-image-browser.mjs
 ```
 
 Generate `dist/` through `npm run build` only. The browser check opens the built site at desktop and iPhone widths and checks images, galleries, popups and the attraction lightbox. Its default Chrome executable is the macOS Chrome application; adjust that path for another platform.
+
+## Owner photo decisions — 21 November 2026
+
+* **Sheer Khorma:** the photograph showing a branded "Turkish Bakery & Cafe" cup is withdrawn (moved to `unpublished-assets/food/withdrawn-20261121/`). No verified replacement exists in the repository or owner packages, so the card and detail page show **Photograph pending**.
+* **Sheer Pira:** the owner-supplied photographs (`hero-owner-20261120.webp`, `gallery-owner-20261120.webp`) remain the hero and gallery images.
+* **Saffron Ice Cream and Gosh-e-Fil:** flagged for **authenticity review** in `docs/image-authenticity-review-20261121.csv`. They stay published until the owner decides; do not reuse them elsewhere.
+* **Cake Sheeri, Herat Baklava, Kulcha Cookie, Kandahar Sweets:** keep the Photograph pending panels until suitable photographs are supplied.
