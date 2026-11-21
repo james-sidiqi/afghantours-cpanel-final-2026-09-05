@@ -24,7 +24,7 @@ export function getBySlug<T extends Record<string, string>>(items: T[], slug: st
 }
 
 export function primaryImage(item: Record<string, string>, fallback = '/assets/images/placeholders/default-card.webp'): string {
-  return item.hero_image_path || item.image_path || item.thumbnail_image_path || item.thumbnail_path || item.cover_image_path || item.img_path || item.image_path_property_1 || fallback;
+  return item.hero_image || item.hero_image_path || item.image_path || item.thumbnail_image_path || item.thumbnail_path || item.cover_image_path || item.img_path || item.image_path_property_1 || fallback;
 }
 
 export function priceLabel(tour: Record<string, string>): string {

@@ -5,9 +5,13 @@ subtitle: "Birding can be incorporated naturally into many AfghanTours itinerari
 card_description: "Add time for birdlife observation to most tours, or plan a private itinerary around particular habitats and target species."
 best_season: "Varies by region, habitat and season"
 duration: "Extra observation time within a tour, up to a private birding itinerary"
-hero_image: "/assets/images/experiences/activities/birding/peacock-kabul-jsp012.webp"
-hero_alt: "Peacock displaying its fanned tail on a dirt yard in Kabul"
-hero_credit: "AfghanTours"
+hero_image: "/assets/images/experiences/activities/birding/owner-birding-hero.webp"
+image: "/assets/images/experiences/activities/birding/owner-birding-hero.webp"
+gallery_images: ["/assets/images/attractions/qargha-lake/gallery-5.webp", "/assets/images/experiences/activities/birding/gallery/02.webp", "/assets/images/experiences/activities/birding/peacock-kabul-jsp012.webp", "/assets/images/experiences/activities/birding/owner-01.webp"]
+gallery_mode: "explicit"
+gallery_exclude_hero: true
+hero_alt: "Bird of prey perched outdoors"
+hero_credit: ""
 ---
 
 Birding can be incorporated naturally into many AfghanTours itineraries.

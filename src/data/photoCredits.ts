@@ -1,3 +1,4 @@
+import IMAGE_PATH_ALIASES from './imagePathAliases.json';
 import { IMAGE_ALTS } from './imageAlts';
 // Photo credits for images that need (or carry) a visible credit.
 // Source of truth for <PhotoCredits> and the /photo-credits/ page.
@@ -182,17 +183,6 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
   },
   {
     "paths": [
-      "/assets/images/food/dried-fruits/badghis-pistachios/hero.webp"
-    ],
-    "author": "Ayri8888",
-    "license": "CC BY-SA 4.0",
-    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
-    "source": "https://commons.wikimedia.org/wiki/File:A_Wild_Pistachio_Tree-Feshgeldarre_Mountains.jpg",
-    "alt": "Wild pistachio tree on a dry hillside",
-    "note": ""
-  },
-  {
-    "paths": [
       "/assets/images/food/produce/balkh-melons/hero.webp",
       "/assets/images/food/produce/balkh-melons/thumb.webp"
     ],
@@ -217,8 +207,8 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
   },
   {
     "paths": [
-      "/assets/images/food/dried-fruit/herat-raisins/hero.webp",
-      "/assets/images/food/dried-fruit/herat-raisins/thumb.webp"
+      "/assets/images/food/dried-fruits/herat-raisins/hero.webp",
+      "/assets/images/food/dried-fruits/herat-raisins/thumb.webp"
     ],
     "author": "Bim24",
     "license": "CC BY 4.0",
@@ -317,9 +307,9 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
   },
   {
     "paths": [
-      "/assets/images/custom-tours/veteran-return/hero.webp",
-      "/assets/images/custom-tours/veteran-return/thumb.webp",
-      "/assets/images/custom-tours/veteran-return/thumbnail.webp"
+      "/assets/images/tours/custom/veteran-return/hero.webp",
+      "/assets/images/tours/custom/veteran-return/thumb.webp",
+      "/assets/images/tours/custom/veteran-return/thumbnail.webp"
     ],
     "author": "Jim Kelly",
     "license": "CC BY 2.0",
@@ -362,13 +352,33 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "source": "",
     "alt": "Qargha Lake seen from the terrace of the Spogmai Restaurant, Kabul",
     "note": ""
-  }
+  },
+  {"paths": ["/assets/images/food/sweets/sheer-khurma/hero-owner-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Sheer khurma topped with a date in a glass bowl", "note": ""},
+  {"paths": ["/assets/images/food/sweets/sheer-yakh/sheer-e-yakh-owner-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Two tall swirls of sheer-e-yakh, Afghan ice cream, topped with crushed pistachios", "note": ""},
+  {"paths": ["/assets/images/food/sweets/saffron-ice-cream/hero-owner-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Two scoops of saffron ice cream topped with chopped pistachios and rose petals", "note": ""},
+  {"paths": ["/assets/images/food/sweets/kulcha-cookie/hero-owner-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Kulcha cookies with a criss-cross pattern and crushed pistachios on a decorated plate", "note": ""},
+  {"paths": ["/assets/images/food/sweets/kulcha-cookie/gallery-owner-2-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Golden ring-shaped kulcha cookies sprinkled with nigella seeds", "note": ""},
+  {"paths": ["/assets/images/food/sweets/kulcha-cookie/gallery-owner-1-collage-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Two photos of kulcha cookies: crosshatched cookies on paper, and patterned cookies topped with pistachios", "note": ""},
+  {"paths": ["/assets/images/food/sweets/gosh-e-fil/hero-owner-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "A plate of gosh-e-fil, crisp fried pastries dusted with powdered sugar", "note": ""},
+  {"paths": ["/assets/images/food/sweets/kulcha-cookie/gallery-owner-4-box-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "A box of assorted kulcha cookies and pastries from a Kabul bakery", "note": ""},
+  {"paths": ["/assets/images/food/sweets/kulcha-cookie/gallery-owner-5-bakery-shelf-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Round kulcha cookies stacked high on metal bakery shelves in Kabul", "note": ""}
 ];
 const byPath = new Map<string, PhotoCredit>();
 PHOTO_CREDITS.forEach((c) => c.paths.forEach((p) => byPath.set(p, c)));
+// Shared file aliases preserve existing attribution records.
+for (const [original, canonical] of Object.entries(IMAGE_PATH_ALIASES)) {
+  if (!byPath.has(canonical) && byPath.has(original)) byPath.set(canonical, byPath.get(original)!);
+}
+// This hero was a wrong-subject mosque photo; use the furnace photo's metadata.
+const GLASS_PHOTO = '/assets/images/experiences/cultural/glassblowers-of-herat/gallery/02.webp';
+const GLASS_HERO = '/assets/images/experiences/cultural/glassblowers-of-herat/hero.webp';
+if (byPath.has(GLASS_PHOTO)) byPath.set(GLASS_HERO, byPath.get(GLASS_PHOTO)!);
+else byPath.delete(GLASS_HERO);
 const norm = (src?: string | null) => (src || '').split('?')[0].replace(/^https?:\/\/[^/]+/, '');
 export const creditFor = (src?: string | null) => byPath.get(norm(src));
-export const altFor = (src: string | null | undefined, fallback: string) => creditFor(src)?.alt || IMAGE_ALTS[norm(src)] || fallback;
+export const altFor = (src: string | null | undefined, fallback: string) => norm(src) === GLASS_HERO
+  ? creditFor(GLASS_PHOTO)?.alt || IMAGE_ALTS[GLASS_PHOTO] || 'Glassblower working beside a furnace in Herat'
+  : creditFor(src)?.alt || IMAGE_ALTS[norm(src)] || fallback;
 export const creditsFor = (srcs: (string | null | undefined)[]) => {
   const out: PhotoCredit[] = [];
   srcs.forEach((s) => { const c = creditFor(s); if (c && !out.includes(c)) out.push(c); });

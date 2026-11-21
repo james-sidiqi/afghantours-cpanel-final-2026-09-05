@@ -5,6 +5,10 @@ section: food_content
 save_to: src/content/food/dishes/sheer-yakh.md
 hero_image: "/assets/images/food/dishes/sheer-yakh/hero.webp"
 image: "/assets/images/food/dishes/sheer-yakh/hero.webp"
+card_description: "Traditional Afghan-style ice cream."
+gallery_images: ["/assets/images/food/sweets/sheer-yakh/sheer-e-yakh-owner-20261121.webp"]
+gallery_mode: "explicit"
+gallery_exclude_hero: true
 ---
 
 ### Overview

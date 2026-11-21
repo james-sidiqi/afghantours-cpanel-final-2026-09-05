@@ -69,7 +69,7 @@ Classification key:
 | `data/tour_itinerary.csv` | USED AT RUNTIME | Day plans |
 | `data/tour_attractions_map.csv` / `tour_activity_map.csv` / `tour_culinary_map.csv` | USED AT RUNTIME | Relationships |
 | `data/tour_dates.csv` / `tour_inclusions.csv` | USED AT RUNTIME | Dates / inclusions |
-| `data/pricing_reference.csv` | REPORT/AUDIT ONLY / UNKNOWN — REVIEW | Do not invent public prices from this without James approval |
+| ~~`data/pricing_reference.csv`~~ | REMOVED 2026-11-21 (private supplier costs) | Held privately for the staff quotation system; see `docs/SUPPLIER-COSTS-PRIVATE.md` |
 | `data/page_assets.csv` | USED ONLY FOR BUILD / USED AT RUNTIME | Page asset mapping |
 
 ## Transport & logistics data
@@ -109,5 +109,5 @@ Classification key:
 1. Confirm delete-or-keep for empty `tours_custom.csv` only (`tours_featured.csv` is used for featured selection — keep).
 2. Confirm FAQ SoT (`faq.csv` vs hard-coded `[slug].astro` sections vs `data/faqs*`) — **do not consolidate FAQ in inquiry/hub PR #3**; defer to trust/FAQ phase.
 3. Confirm whether `about.md` / `contact.md` can move to archive.
-4. Confirm public use of `pricing_reference.csv`.
+4. ~~Confirm public use of `pricing_reference.csv`.~~ Removed from the public repository on 2026-11-21; supplier costs belong to the private staff quotation system.
 5. Confirm restaurant collection long-term vs culinary-only public IA.

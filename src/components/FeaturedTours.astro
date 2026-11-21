@@ -1,4 +1,5 @@
 ---
+import { getTourHeroImage, listGalleryImages, cleanGallery } from '../lib/images';
 import { getCatalogTour, tourPriceLabel, tourBookingLabel } from '../lib/booking/site';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -110,19 +111,12 @@ const customSlugs = new Set([
 ]);
 
 const folderFor = (tour: Tour) =>
-  customSlugs.has(tour.slug) ? 'custom-tours' : 'featured-tours';
+  customSlugs.has(tour.slug) ? 'tours/custom' : 'tours/featured';
 
 const titleOf = (tour: Tour) =>
   tour.title || tour.name || 'Afghanistan Tour';
 
-const heroOf = (tour: Tour) =>
-  tour.hero_image ||
-  tour.hero_image_path ||
-  tour.image ||
-  tour.overview_image ||
-  tour.overview_image_path ||
-  tour.thumbnail_image_path ||
-  `/assets/images/${folderFor(tour)}/${tour.slug}/hero.webp`;
+const heroOf = (tour: Tour) => getTourHeroImage(tour);
 
 const summaryOf = (tour: Tour) =>
   tour.summary ||
@@ -143,6 +137,12 @@ const priceLabelOf = (tour: Tour) => {
     : raw;
 };
 
+
+const selectorPriceOf = (tour: Tour) => {
+  const label = priceLabelOf(tour);
+  const match = label.match(/^(From\s+\$[\d,.]+)(.*)$/);
+  return match ? { amount: match[1], support: match[2] } : { amount: label, support: '' };
+};
 
 const productClassOf = (tour: Tour) => tourBookingLabel(tour.slug);
 
@@ -169,17 +169,12 @@ const routeOf = (tour: Tour) => {
   return (hubs.length ? hubs : provinces).slice(0, 6);
 };
 
-const galleryOf = (tour: Tour) => {
-  const supplied = Array.isArray(tour.gallery) ? tour.gallery : [];
-
-  return [
-    ...supplied,
-    heroOf(tour),
-  ]
-    .filter(Boolean)
-    .filter((item, index, arr) => arr.indexOf(item) === index)
-    .slice(0, 4);
-};
+const galleryOf = (tour: Tour) => cleanGallery([
+  heroOf(tour),
+  ...(Array.isArray(tour.gallery) ? tour.gallery : []),
+  ...listGalleryImages(`/assets/images/tours/featured/${tour.slug}`),
+  ...listGalleryImages(`/assets/images/tours/custom/${tour.slug}`),
+]).slice(0, 4);
 
 const allTours = getTours().filter((tour: Tour) => tour?.slug);
 const featuredIds = getFeaturedIds();
@@ -213,13 +208,13 @@ const clientTours = safeTours.map((tour: any) => ({
   activity_level: tour.activity_level,
   summary: tour.summary,
   description: tour.description,
-  hero_image: tour.hero_image,
+  hero_image: heroOf(tour),
   hero_image_path: tour.hero_image_path,
   image: tour.image,
   overview_image: tour.overview_image,
   overview_image_path: tour.overview_image_path,
   thumbnail_image_path: tour.thumbnail_image_path,
-  gallery: Array.isArray(tour.gallery) ? tour.gallery : [],
+  gallery: galleryOf(tour),
   hubs: Array.isArray(tour.hubs)
     ? tour.hubs.map((h: any) => ({ name: h?.name, title: h?.title, slug: h?.slug }))
     : [],
@@ -276,9 +271,22 @@ const clientTours = safeTours.map((tour: any) => ({
           {safeTours.map((tour, index) => (
             <button type="button" class={`featured-thumb ${index === 0 ? 'is-active' : ''}`} data-featured-select={index}>
               <img src={heroOf(tour)} alt={titleOf(tour)} loading="lazy" />
-              <span>{productClassOf(tour)} · {tour.season || 'Year-round'}</span>
-              <strong>{titleOf(tour)}</strong>
-              <small class="featured-thumb-price">{priceLabelOf(tour)}</small>
+              <span class="featured-thumb-copy">
+                <span class="featured-thumb-meta">
+                  {productClassOf(tour).split(' · ').map((label, labelIndex) => (
+                    <>
+                      {labelIndex > 0 && <span class="featured-thumb-separator" aria-hidden="true">{' · '}</span>}
+                      <span class="featured-thumb-category">{label}</span>
+                    </>
+                  ))}
+                  <span class="featured-thumb-separator" aria-hidden="true">{' · '}</span>
+                  <span class="featured-thumb-season">{tour.season || 'Year-round'}</span>
+                </span>
+                <strong>{titleOf(tour)}</strong>
+                <small class="featured-thumb-price">
+                  <span class="featured-thumb-price-amount">{selectorPriceOf(tour).amount}</span><span class="featured-thumb-price-support">{selectorPriceOf(tour).support}</span>
+                </small>
+              </span>
             </button>
           ))}
         </div>
@@ -339,19 +347,12 @@ const clientTours = safeTours.map((tour: any) => ({
   ]);
 
   const folderForClient = (tour) =>
-    customSlugs.has(tour.slug) ? 'custom-tours' : 'featured-tours';
+    customSlugs.has(tour.slug) ? 'tours/custom' : 'tours/featured';
 
   const titleOfClient = (tour) =>
     tour.title || tour.name || 'Afghanistan Tour';
 
-  const heroOfClient = (tour) =>
-    tour.hero_image ||
-    tour.hero_image_path ||
-    tour.image ||
-    tour.overview_image ||
-    tour.overview_image_path ||
-    tour.thumbnail_image_path ||
-    `/assets/images/${folderForClient(tour)}/${tour.slug}/hero.webp`;
+  const heroOfClient = (tour) => tour.hero_image || tour.hero_image_path || '/assets/images/placeholders/default-tour.webp';
 
   const summaryOfClient = (tour) =>
     tour.summary ||
@@ -379,14 +380,7 @@ const clientTours = safeTours.map((tour: any) => ({
     return (hubs.length ? hubs : provinces).slice(0, 6);
   };
 
-  const galleryOfClient = (tour) => {
-    const supplied = Array.isArray(tour.gallery) ? tour.gallery : [];
-
-    return [
-      ...supplied,
-      heroOfClient(tour),
-    ].filter(Boolean).filter((item, index, arr) => arr.indexOf(item) === index).slice(0, 4);
-  };
+  const galleryOfClient = (tour) => (Array.isArray(tour.gallery) ? tour.gallery : []).slice(0, 4);
 
   function setActive(index) {
     if (!panels.length || !thumbs.length) return;
@@ -646,22 +640,39 @@ const clientTours = safeTours.map((tour: any) => ({
     color: #fff;
   }
 
+  /* Compact selector cards; the featured panel and modal keep their own typography. */
   .featured-rail {
     display: flex;
-    gap: 1rem;
+    align-items: stretch;
+    gap: var(--space-4);
     overflow-x: auto;
     padding: 1.05rem .2rem .25rem;
     scrollbar-width: thin;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: .2rem;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   .featured-thumb {
-    flex: 0 0 190px;
+    flex: 0 0 240px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 0;
     text-align: left;
     border: 1px solid rgba(16,24,32,.1);
     border-radius: 1.25rem;
     overflow: hidden;
     background: #fff;
+    color: var(--at-ink);
+    font-family: var(--font-body);
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: none;
     cursor: pointer;
+    scroll-snap-align: start;
     box-shadow: 0 12px 35px rgba(20,14,8,.08);
     transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
   }
@@ -669,38 +680,97 @@ const clientTours = safeTours.map((tour: any) => ({
   .featured-thumb:hover,
   .featured-thumb.is-active {
     transform: translateY(-3px);
-    border-color: #d6a23a;
+    border-color: var(--at-gold);
     box-shadow: 0 18px 42px rgba(20,14,8,.14);
   }
 
+  .featured-thumb:focus-visible {
+    outline: 2px solid var(--at-gold-text);
+    outline-offset: 3px;
+  }
+
   .featured-thumb img {
+    flex: 0 0 104px;
     width: 100%;
     height: 104px;
     object-fit: cover;
     display: block;
   }
 
-  .featured-thumb span,
-  .featured-thumb strong {
-    display: block;
-    padding-inline: 1rem;
+  .featured-thumb-copy {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
+    padding: 14px;
   }
 
-  .featured-thumb span {
-    padding-top: .75rem;
-    color: #b77926;
-    font-size: .64rem;
-    font-weight: 950;
-    letter-spacing: .22em;
+  .featured-thumb-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 3px 5px;
+    min-height: 28px;
+    color: var(--at-gold-text);
+    font-family: var(--font-body);
+    font-size: 9.5px;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: .65px;
     text-transform: uppercase;
   }
 
+  .featured-thumb-category { white-space: nowrap; }
+  .featured-thumb-season { min-width: 0; }
+
   .featured-thumb strong {
-    padding-top: .45rem;
-    padding-bottom: 1rem;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 1.08rem;
-    line-height: 1.05;
+    display: block;
+    min-height: 3.75rem;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: none;
+    text-wrap: pretty;
+  }
+
+  .featured-thumb-price {
+    display: block;
+    box-sizing: border-box;
+    min-height: 2.5rem;
+    margin-top: auto;
+    padding-top: var(--space-1);
+    color: var(--at-gold-text);
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: normal;
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: none;
+  }
+
+  .featured-thumb-price-amount {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .featured-thumb-price-support {
+    display: block;
+    margin-top: 3px;
+    color: var(--at-text);
+  }
+
+  @media (max-width: 640px) {
+    .featured-thumb { flex-basis: 80%; }
   }
 
   .featured-modal[hidden] {
@@ -833,22 +903,5 @@ const clientTours = safeTours.map((tour: any) => ({
     letter-spacing: .01em;
   }
 
-  /* FEATURED-THUMB-PRICE-START */
-
-  .featured-thumb strong {
-    padding-bottom: .35rem;
-  }
-
-  .featured-thumb-price {
-    display: block;
-    padding: 0 1rem .9rem;
-    color: #945d08;
-    font-size: .76rem;
-    line-height: 1.25;
-    font-weight: 900;
-    letter-spacing: .01em;
-  }
-
-  /* FEATURED-THUMB-PRICE-END */
 
 </style>

@@ -6,9 +6,9 @@ save_to: src/content/hotels/taj_kabul.md
 destination_code: KBLC
 tier: premium
 star_rating: 5
-cover_image: /assets/images/hotels/kabul/taj/hotel-exterior-1.webp
+cover_image: /assets/images/hotels/kabul/taj/hero.webp
 gallery_images:
-  - /assets/images/hotels/kabul/taj/hotel-pool-1.webp
+  - /assets/images/hotels/kabul/taj/01.webp
 ---
 
 ### Overview

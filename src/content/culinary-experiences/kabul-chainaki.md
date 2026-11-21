@@ -13,8 +13,11 @@ related_food_slugs: []
 provinces: ["Kabul"]
 best_season: "Year round"
 duration: "1–2 hours"
-hero_image: "/assets/images/experiences/culinary/kabul-chainaki/hero.webp"
+hero_image: "/assets/images/experiences/culinary/kabul-chainaki/gallery/01.webp"
 nearby: ["Kabul City", "Chicken Street", "Murad Khane"]
+image: "/assets/images/experiences/culinary/kabul-chainaki/gallery/01.webp"
+gallery_images: ["/assets/images/experiences/culinary/kabul-chainaki/gallery/02.webp"]
+gallery_mode: "explicit"
 ---
 
 Chainaki is one of Kabul’s most distinctive comfort dishes: meat and broth slow-cooked in a metal teapot (*chainak*), then poured over bread. It is everyday food with a strong local identity.

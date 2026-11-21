@@ -3,6 +3,12 @@ title: "Afghan Grapes"
 food_slug: kandahar-grapes
 section: food_content
 save_to: src/content/food/produce/kandahar-grapes.md
+hero_image: "/assets/images/food/produce/kandahar-grapes/owner-afghan-grapes.webp"
+image: "/assets/images/food/produce/kandahar-grapes/owner-afghan-grapes.webp"
+card_image: "/assets/images/food/produce/kandahar-grapes/owner-afghan-grapes.webp"
+gallery_images: ["/assets/images/food/produce/kandahar-grapes/hero.webp"]
+gallery_mode: "explicit"
+gallery_exclude_hero: true
 ---
 
 ### Overview

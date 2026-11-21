@@ -3,6 +3,11 @@ title: "Chicken Korma"
 slug: "korma-e-herati"
 food_slug: "korma-e-herati"
 category: "Main"
+hero_image: "/assets/images/food/dishes/chiken-korma/hero.webp"
+card_image: "/assets/images/food/dishes/chiken-korma/hero.webp"
+gallery_images: ["/assets/images/food/dishes/chiken-korma/gallery-1.webp"]
+gallery_mode: "explicit"
+gallery_exclude_hero: true
 image: "/assets/images/food/dishes/chiken-korma/hero.webp"
 ---
 

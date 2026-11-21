@@ -34,10 +34,10 @@ const imageFor = (tour:any) => {
   ]);
 
   if (customCodes.has(code)) {
-    return `/assets/images/custom-tours/${tour.slug}/hero.webp`;
+    return `/assets/images/tours/custom/${tour.slug}/hero.webp`;
   }
 
-  return `/assets/images/featured-tours/${tour.slug}/hero.webp`;
+  return `/assets/images/tours/featured/${tour.slug}/hero.webp`;
 };
 
 const unique = (field:string) =>

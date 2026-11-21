@@ -5,6 +5,10 @@ section: food_content
 save_to: src/content/food/dishes/halwa.md
 hero_image: "/assets/images/food/dishes/halwa/hero.webp"
 image: "/assets/images/food/dishes/halwa/hero.webp"
+card_description: "Traditional Afghan sweet prepared using ingredients such as flour, sugar, oil or butter, with regional variations."
+gallery_images: ["/assets/images/food/sweets/halwa/gallery-owner-20261120.webp"]
+gallery_mode: "explicit"
+gallery_exclude_hero: true
 ---
 
 ### Overview

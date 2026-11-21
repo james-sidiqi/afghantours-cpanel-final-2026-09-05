@@ -6,7 +6,7 @@ save_to: src/content/hotels/royal_bamyan.md
 destination_code: BMYC
 tier: standard
 star_rating: 3
-cover_image: /assets/images/hotels/bamyan/royal/hotel-exterior-1.webp
+cover_image: /assets/images/hotels/bamyan/royal/hero.webp
 gallery_images:
 ---
 

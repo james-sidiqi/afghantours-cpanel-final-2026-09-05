@@ -3,8 +3,8 @@ title: "Raisins"
 food_slug: herat-raisins
 section: food_content
 save_to: src/content/food/produce/herat-raisins.md
-hero_image: "/assets/images/food/dried-fruit/herat-raisins/hero.webp"
-image: "/assets/images/food/dried-fruit/herat-raisins/hero.webp"
+hero_image: "/assets/images/food/dried-fruits/herat-raisins/hero.webp"
+image: "/assets/images/food/dried-fruits/herat-raisins/hero.webp"
 ---
 
 ### Overview

@@ -107,6 +107,10 @@ const foodCollection = defineCollection({
     image: z.string().optional(),
     card_image: z.string().optional(),
     gallery_images: z.array(z.string()).default([]),
+    gallery_mode: z.enum(['explicit', 'manifest']).optional(),
+    gallery_exclude_hero: z.boolean().default(false),
+    // 'pending' = no accurate photograph yet; pages show a labelled placeholder, never a substitute photo.
+    image_status: z.enum(['pending']).optional(),
     paired_foods: z.array(z.string()).default([]),
     best_season: z.string().optional(),
     duration: z.string().optional(),
@@ -152,6 +156,8 @@ const culturalExperiencesCollection = defineCollection({
     hero_image: z.string().optional(),
     image: z.string().optional(),
     gallery_images: z.array(z.string()).default([]),
+    gallery_mode: z.enum(['explicit', 'manifest']).optional(),
+    gallery_exclude_hero: z.boolean().default(false),
     // Images James removed from this page's gallery only (files may still be used elsewhere).
     gallery_exclude: z.array(z.string()).default([]),
 
@@ -190,6 +196,8 @@ const culinaryExperiencesCollection = defineCollection({
     hero_image: z.string().optional(),
     image: z.string().optional(),
     gallery_images: z.array(z.string()).default([]),
+    gallery_mode: z.enum(['explicit', 'manifest']).optional(),
+    gallery_exclude_hero: z.boolean().default(false),
     nearby: z.array(z.string()).default([]),
     related_tours: z.array(z.string()).default([]),
   }),
@@ -209,6 +217,8 @@ const activitiesCollection = defineCollection({
     hero_image: z.string().optional(),
     image: z.string().optional(),
     gallery_images: z.array(z.string()).default([]),
+    gallery_mode: z.enum(['explicit', 'manifest']).optional(),
+    gallery_exclude_hero: z.boolean().default(false),
     hero_alt: z.string().optional(),
     hero_credit: z.string().optional(),
     hero_credit_url: z.string().optional(),

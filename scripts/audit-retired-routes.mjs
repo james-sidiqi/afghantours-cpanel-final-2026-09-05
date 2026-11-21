@@ -47,5 +47,8 @@ for (const file of walk('dist').filter(f => f.endsWith('.html'))) {
   if (/\/assets\/images\/food\/produce\/farah-waterm(?:elon|ellons)\//.test(html)) {
     throw new Error(`Rejected watermelon imagery still rendered: ${file}`);
   }
+  if (html.includes('/assets/images/food/dried-fruits/badghis-pistachios/pista-tree-badghis.webp')) {
+    throw new Error(`Owner-rejected non-Afghan pistachio photo still rendered: ${file}`);
+  }
 }
 console.log(`Retired routes: ${Object.keys(routes).length} redirects verified; no retired sitemap entries, public links or rejected watermelon images.`);

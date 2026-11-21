@@ -9,7 +9,6 @@ const csv = getActivities();
 const mdItems = await getCollection('activities');
 const mdBySlug = new Map(mdItems.map((i) => [i.id.replace(/\.md$/, ''), i]));
 
-const ADDITIONAL = new Set(['birding']);
 const allItems = csv.map((row) => {
   const md = mdBySlug.get(row.slug);
   const hubs = getHubsForActivity(row.slug);
@@ -22,13 +21,12 @@ const allItems = csv.map((row) => {
     hubs,
   };
 });
-const items = allItems.filter((i) => !ADDITIONAL.has(i.slug));
-const extraItems = allItems.filter((i) => ADDITIONAL.has(i.slug));
+const items = allItems;
 ---
 
 <BaseLayout
   title="Activities | AfghanTours"
-  description="Hiking, fishing, trekking, skiing, shopping, sightseeing, horse riding and cycling across Afghanistan, arranged by our local team — plus birding."
+  description="Hiking, fishing, trekking, skiing, shopping, sightseeing, horse riding, cycling and birding across Afghanistan, arranged by our local team."
   image={items[0]?.image}
 >
   <section class="act-hero">
@@ -36,7 +34,7 @@ const extraItems = allItems.filter((i) => ADDITIONAL.has(i.slug));
       <p class="section-kicker">Activities</p>
       <h1>Activities across Afghanistan</h1>
       <p>
-        Eight ways to spend your days — hiking, fishing, trekking, skiing, shopping, sightseeing, horse riding and cycling —
+        Nine ways to spend your days — hiking, fishing, trekking, skiing, shopping, sightseeing, horse riding, cycling and birding —
         arranged by our local team from the cities and valleys you visit. We match each one to the season and confirm the details with you as we plan.
       </p>
       <p class="act-note">
@@ -61,24 +59,6 @@ const extraItems = allItems.filter((i) => ADDITIONAL.has(i.slug));
           </a>
         ))}
       </div>
-      {extraItems.length > 0 && (
-        <div class="act-extra">
-          <p class="section-kicker">Also available</p>
-          <div class="act-grid">
-            {extraItems.map((item) => (
-              <a class="act-card" href={item.href}>
-                <img src={item.image} alt={item.title} loading="lazy" />
-                <div class="act-card-copy">
-                  <small>Also available</small>
-                  <h2>{item.title}</h2>
-                  <p>{item.card_description || item.subtitle}</p>
-                  <strong>Explore activity →</strong>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   </section>
 </BaseLayout>
@@ -91,7 +71,6 @@ const extraItems = allItems.filter((i) => ADDITIONAL.has(i.slug));
   .act-hero p { max-width: 48rem; line-height: 1.6; }
   .act-note { margin-top: 1rem; font-size: 0.95rem; }
   .act-note a { text-decoration: underline; }
-  .act-extra { margin-top: clamp(2.5rem, 5vw, 3.5rem); }
   .act-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.25rem; }
   .act-card { display: flex; flex-direction: column; background: #fff; border-radius: 16px; overflow: hidden; color: inherit; text-decoration: none; box-shadow: 0 10px 30px rgba(16,24,32,0.06); }
   .act-card img { aspect-ratio: 16/10; object-fit: cover; width: 100%; }

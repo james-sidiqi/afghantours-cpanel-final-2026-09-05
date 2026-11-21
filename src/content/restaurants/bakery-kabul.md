@@ -1,7 +1,7 @@
 ---
 title: "Bakery Kabul: Sweet Traditions on Chicken Street"
 subtitle: "Cakes, cookies, crème rolls, and Kabul celebration sweets in the heart of Chicken Street."
-card_description: "Stop at Aziz Bakery for Afghan cakes, cookies, crème rolls, and the sweets that families carry to visits and celebrations."
+card_description: "Stop at Haji Aziz Bakery for Afghan cakes, cookies, crème rolls, and the sweets that families carry to visits and celebrations."
 category: "Cultural Experiences"
 experience_type: "Food & Culture Experience"
 hero_image: "/assets/images/food/dishes/naan/hero.webp"
@@ -14,7 +14,7 @@ related_tours: ["weekend-in-kabul", "kabul-surroundings", "custom-tours"]
 nearby: ["Chicken Street", "Shah-e-Du Shamshira", "Murad Khane"]
 ---
 
-Chicken Street is known for carpets, antiques, jewelry, gifts, and handicrafts. Aziz Bakery adds another layer to the experience: Kabul sweets.
+Chicken Street is known for carpets, antiques, jewelry, gifts, and handicrafts. Haji Aziz Bakery adds another layer to the experience: Kabul sweets.
 
 ## A Kabul Sweet Stop
 

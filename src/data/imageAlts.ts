@@ -1,6 +1,25 @@
 // Alt text for images whose photo credit is still pending (no visible credit line yet).
 // Credits are tracked in docs/image-register-*.csv; move an entry to photoCredits.ts once confirmed.
 export const IMAGE_ALTS: Record<string, string> = {
+  // Owner-supplied photographs, 21 Nov 2026
+  '/assets/images/food/sweets/sheer-khurma/hero-owner-20261121.webp': 'Sheer khurma topped with a date in a glass bowl',
+  '/assets/images/food/sweets/sheer-yakh/sheer-e-yakh-owner-20261121.webp': 'Two tall swirls of sheer-e-yakh, Afghan ice cream, topped with crushed pistachios',
+  '/assets/images/food/sweets/saffron-ice-cream/hero-owner-20261121.webp': 'Two scoops of saffron ice cream topped with chopped pistachios and rose petals',
+  '/assets/images/food/sweets/kulcha-cookie/hero-owner-20261121.webp': 'Kulcha cookies with a criss-cross pattern and crushed pistachios on a decorated plate',
+  '/assets/images/food/sweets/kulcha-cookie/gallery-owner-2-20261121.webp': 'Golden ring-shaped kulcha cookies sprinkled with nigella seeds',
+  '/assets/images/food/sweets/kulcha-cookie/gallery-owner-1-collage-20261121.webp': 'Two photos of kulcha cookies: crosshatched cookies on paper, and patterned cookies topped with pistachios',
+  '/assets/images/food/sweets/gosh-e-fil/hero-owner-20261121.webp': 'A plate of gosh-e-fil, crisp fried pastries dusted with powdered sugar',
+  '/assets/images/food/sweets/kulcha-cookie/gallery-owner-4-box-20261121.webp': 'A box of assorted kulcha cookies and pastries from a Kabul bakery',
+  '/assets/images/food/sweets/kulcha-cookie/gallery-owner-5-bakery-shelf-20261121.webp': 'Round kulcha cookies stacked high on metal bakery shelves in Kabul',
+  // Owner-supplied dessert photographs, 20 Nov 2026
+  '/assets/images/food/sweets/sheer-birinj/hero-owner-20261120.webp': 'Bowl of sheer birinj, Afghan rice pudding, topped with chopped green nuts',
+  '/assets/images/food/sweets/halwa-sona/hero-owner-20261120.webp': 'Pieces of halwa sona topped with pistachios in a patterned box',
+  '/assets/images/food/sweets/halwa-sona/gallery-owner-20261120.webp': 'Close-up of halwa sona pieces topped with pistachios',
+  '/assets/images/food/sweets/halwa/gallery-owner-20261120.webp': 'Crumbly halwa with nuts on a blue-and-white plate',
+  '/assets/images/food/sweets/sheer-pira/hero-owner-20261120.webp': 'Sheer pira squares served with tea on an Afghan carpet',
+  '/assets/images/food/sweets/sheer-pira/gallery-owner-20261120.webp': 'Close-up of sheer pira squares on a metal tray',
+  '/assets/images/food/dried-fruits/dried-mulberries/white-dried-mulberries.webp': 'White dried mulberries (toot-e-khoshk)',
+  '/assets/images/food/dried-fruits/dried-mulberries/dark-dried-mulberries.webp': 'Dark dried mulberries',
   '/assets/images/experiences/cultural/afghan-carpets/hero.webp': 'Two men unfurling a red and orange hand-knotted carpet in a shop stacked with rolled carpets',
   '/assets/images/experiences/cultural/afghan-carpets/thumb.webp': 'Two men unfurling a red and orange hand-knotted carpet in a shop stacked with rolled carpets',
   '/assets/images/experiences/cultural/afghan-carpets/gallery/01-carpet-shop-unfurling.webp': 'Two men unfurling a red and orange hand-knotted carpet in a shop stacked with rolled carpets',

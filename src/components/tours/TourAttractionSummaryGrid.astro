@@ -1,21 +1,12 @@
 ---
+import { getPreferredImage, getAttractionImage } from '../../lib/images';
 const {
   attractions = [],
   title = "Featured Attractions",
   intro = "",
 } = Astro.props;
 
-function imageFor(item) {
-  return (
-    item?.hero_image_path ||
-    item?.card_image_path ||
-    item?.hero_image ||
-    item?.card_image ||
-    item?.image_path ||
-    item?.image ||
-    "/assets/images/placeholders/default-card.webp"
-  );
-}
+function imageFor(item) { return getPreferredImage(item); }
 
 function summaryFor(item) {
   return (

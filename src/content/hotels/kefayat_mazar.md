@@ -6,7 +6,7 @@ save_to: src/content/hotels/kefayat_mazar.md
 destination_code: MAZC
 tier: premium
 star_rating: 3
-cover_image: /assets/images/hotels/mazar/kefayat/hotel-exterior-1.webp
+cover_image: /assets/images/hotels/mazar/kefayat/hero.webp
 gallery_images:
 ---
 

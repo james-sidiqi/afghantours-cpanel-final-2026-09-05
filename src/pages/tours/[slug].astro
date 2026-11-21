@@ -1,4 +1,5 @@
 ---
+import { getTourHeroImage } from '../../lib/images';
 import { getFoodImage, isPlaceholder } from '../../lib/images';
 import GuestFilms from '../../components/GuestFilms.astro';
 import BaseLayout from "../../layouts/BaseLayout.astro";
@@ -52,11 +53,7 @@ function humanize(value) {
 
 const tourName = tour.title || tour.name || "Afghanistan Tour";
 const isCustomJourney = false;
-const heroImage =
-  tour.hero_image ||
-  tour.hero_image_path ||
-  tour.thumbnail_image_path ||
-  "/assets/images/placeholders/default-hero.webp";
+const heroImage = getTourHeroImage(tour);
 const overviewImage =
   tour.overview_image ||
   tour.overview_image_path ||

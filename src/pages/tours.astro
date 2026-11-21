@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FeaturedTours from '../components/FeaturedTours.astro';
 import TourDirectory from '../components/TourDirectory.astro';
-import { getItineraryTours } from '../lib/buildRelations';
+import { getItineraryTours, getSpecialistServices } from '../lib/buildRelations';
 import { catalogByCategory, getCategory } from '../lib/booking/site';
 
 const itineraryTours = getItineraryTours().filter((tour) => tour.is_active !== false && tour.slug);
@@ -16,7 +16,13 @@ const inCategory = (key: string) => {
 const groupTours = inCategory('A');
 const groupAndPrivate = inCategory('B');
 const privateTours = inCategory('C');
-const services = catalogByCategory('D');
+const specialistServices = getSpecialistServices();
+const services = catalogByCategory('D')
+  .filter((entry, index, all) => all.findIndex((other) => other.current_page === entry.current_page) === index)
+  .map((entry) => ({
+    ...entry,
+    name: specialistServices.find((service) => entry.current_page === `/specialist-services/${service.slug}/`)?.name || entry.name,
+  }));
 const cat = { A: getCategory('A'), B: getCategory('B'), C: getCategory('C'), D: getCategory('D') };
 
 const featuredTours = itineraryTours

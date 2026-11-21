@@ -1,4 +1,5 @@
 ---
+import { normalizeImagePath, hasRealImage } from '../../lib/images';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import fs from 'node:fs';
@@ -24,36 +25,47 @@ for (const item of allFoodItems) {
 
 // Cards whose stored image does not show the item itself (Shor Chai pointed at a
 // Faizabad landscape) render as intentional image-free cards.
-const NO_CARD_IMAGE = new Set(['drinks/shor-chai-of-badakhshan', 'produce/farah-watermelon', 'dishes/kabul-kabob', 'dishes/kandahari-rosh']);
+const NO_CARD_IMAGE = new Set(['drinks/shor-chai-of-badakhshan', 'produce/farah-watermelon', 'dishes/kabul-kabob']);
 // Per-card focal point so the subject stays in frame in the fixed card crop.
-const CARD_FOCUS = { 'drinks/sheer-chai': '72% 88%', 'dried-fruits/paktia-pine-nuts': '50% 12%' };
-const publicFile = (src) => !!src && !/\/placeholders\//.test(src) &&
-  fs.existsSync(path.join(process.cwd(), 'public', String(src).replace(/^\/+/, '')));
+const CARD_FOCUS = { 'drinks/sheer-chai': '50% 50%', 'desserts/sheer-khorma': '55% 68%', 'dried-fruits/paktia-pine-nuts': '50% 12%' };
+// Rosh now has an owner-provided matching photo. Other intentional image-free cards stay blocked.
+const APPROVED_CARD_IMAGES = {
+  "produce/farah-watermelon": "/assets/images/food/produce/watermelons/hero.webp",
+  "drinks/shor-chai-of-badakhshan": "/assets/images/food/drinks/shor-chai-of-badakhshan/hero.webp",
+  'dishes/kabul-kabob': "/assets/images/food/dishes/afghan-kabob/roadside-kabob.webp",
+};
+const isPhotoPending = (id) => itemMap.get(normalizeFoodKey(id))?.data?.image_status === 'pending';
 const imageForId = (id) => {
+  if (isPhotoPending(id)) return null;
+  const approved = APPROVED_CARD_IMAGES[id];
+  if (approved && hasRealImage(approved)) return normalizeImagePath(approved, '');
   if (NO_CARD_IMAGE.has(id)) return null;
   const item = itemMap.get(normalizeFoodKey(id));
-  const folder = String(id);
   return [
-    item?.data?.card_image,
-    item?.data?.image,
     item?.data?.hero_image,
-    `/assets/images/food/${folder}/hero.webp`,
-    `/assets/images/food/${folder.replace(/^dried-fruits\//, 'dried-fruit/')}/hero.webp`,
-  ].find(publicFile) || null;
+    item?.data?.image,
+    `/assets/images/food/${id}/hero.webp`,
+    item?.data?.card_image,
+  ].filter(Boolean).map((src) => normalizeImagePath(src, '')).find(hasRealImage) || null;
 };
 
 // Pages for these entries are built at their content `slug` (flat URL), not at the folder id.
 const FLAT_FOOD_SLUGS = {
-  'dishes/kandahari-rosh': 'kandahar-rosht',
   'dishes/chiken-korma': 'korma-e-herati',
-  'dishes/chicken-kabuli': 'chicken-qabili',
   'dishes/kabuli-pulao': 'kabuli-pulao',
   'produce/kandahar-pomegranate': 'kandahar-pomegranate',
   'dried-fruits/samangan-pistachios': 'samangan-pistachios',
+  'desserts/kulcha-cookie': 'kulcha-cookie',
 };
 const foodHref = (id) => `/food-culture/${FLAT_FOOD_SLUGS[id] || id}/`;
 
 const dishes = [
+  {
+    id: 'dishes/shola',
+    title: 'Shola',
+    location: 'Rice dish',
+    description: 'Traditional rice and lentil dish slow cooked with spices.',
+  },
   {
     id: 'dishes/ash',
     title: 'Aush',
@@ -83,14 +95,14 @@ const dishes = [
     title: 'Afghan Kabob',
     location: 'Across Afghanistan',
     description: `Grilled skewers of meat served with Afghan naan, onions and seasonal accompaniments. Styles vary among cooks and regions.`,
-    overviewOnly: true,
+    overviewOnly: false,
   },
   {
-    id: 'dishes/kandahari-rosh',
+    id: 'dishes/rosh',
     title: 'Rosh (Rosht)',
     location: 'Across Afghanistan',
     description: `Slow-cooked meat traditionally shared with naan and simple sides; preparation varies by household and locality.`,
-    overviewOnly: true,
+    overviewOnly: false,
   },
   {
     id: 'dishes/kabuli-pulao',
@@ -117,6 +129,12 @@ const dishes = [
     description: `Herat-style herb stew with tender meat.`,
   },
   {
+    id: 'dishes/qorma-e-sabzi',
+    title: 'Qorma-e Sabzi',
+    location: 'Countrywide',
+    description: `Spinach and herb stew served with rice.`,
+  },
+  {
     id: 'dishes/mantu',
     title: 'Mantu',
     location: 'Countrywide',
@@ -127,12 +145,6 @@ const dishes = [
     title: 'Naan',
     location: 'Countrywide',
     description: `Traditional Afghan bread baked fresh daily.`,
-  },
-  {
-    id: 'dishes/chicken-kabuli',
-    title: 'Chicken Kabuli',
-    location: 'Countrywide',
-    description: `Chicken variation of Kabuli Pulao.`,
   },
   {
     id: 'dishes/qurmay-qachaloo',
@@ -170,12 +182,7 @@ const dishes = [
     location: 'Meat dish',
     description: `Succulent meat cooked with plenty of onions and aromatic spices.`,
   },
-  {
-    id: 'dishes/ouzi',
-    title: 'Ouzi (Rice-Stuffed Sheep)',
-    location: 'Meat dish',
-    description: `A celebratory whole sheep or lamb stuffed with seasoned rice and slow-cooked.`,
-  },
+
   {
     id: 'dishes/qawardagh',
     title: 'Qawardagh (Qurdagh)',
@@ -188,6 +195,24 @@ const dishes = [
     location: 'Parwan / Ghorband Valley',
     description: `A rich, savory sticky short-grain rice dish slow-cooked with mung beans, aromatic spices, and meat gravy, finished with garlic-mint chaka (strained yogurt) or melted roghen-e-zard (clarified butter).`,
   },
+];
+
+// Owner 2026-11-20: core desserts, in this order (2026-11-21: Cake Sheeri removed, now nine). Sweet Streets of Mazar and
+// Saffron Ice Cream of Herat are Culinary Experiences, not dessert entries.
+const desserts = [
+  { id: 'desserts/halwa', title: 'Halwa', location: 'Countrywide', description: `Traditional Afghan sweet prepared using ingredients such as flour, sugar, oil or butter, with regional variations.` },
+  { id: 'desserts/halwa-sona', title: 'Halwa Sona', location: 'Traditional sweet', description: `A separate traditional Afghan halwa variety.` },
+  { id: 'desserts/jalebi', title: 'Jalebi (Jelabi)', location: 'Countrywide', description: `Traditional spiral-shaped fried sweet soaked in sugar syrup.` },
+  { id: 'desserts/firni-pudding', title: 'Firni', location: 'Milk pudding', description: `Afghan milk-based pudding, commonly flavored with cardamom and sometimes decorated with nuts.` },
+  { id: 'desserts/sheer-birinj', title: 'Sheer Birinj (Sheer Barinj)', location: 'Rice pudding', description: `Traditional Afghan rice pudding prepared with milk, rice, sugar and often cardamom.` },
+  { id: 'desserts/sheer-khorma', title: 'Sheer Khorma', location: 'Eid celebrations', description: `Traditional milk-based dessert commonly prepared with dates, vermicelli and nuts, especially for Eid celebrations.` },
+  { id: 'desserts/gosh-e-fil', title: 'Gosh-e-Fil', location: 'Countrywide', description: `Traditional fried pastry commonly served with sugar or powdered sugar.` },
+  { id: 'desserts/sheer-pira', title: 'Sheer Pira', location: 'Countrywide', description: `Traditional Afghan milk-based sweet confection.` },
+  { id: 'desserts/sheer-yakh', title: 'Sheer Yakh', location: 'Countrywide', description: `Traditional Afghan-style ice cream.` },
+];
+// Listed separately from the core desserts (2026-11-21: Herat Baklava and Kandahar Sweets removed by the owner).
+const dessertExtras = [
+  { id: 'desserts/kulcha-cookie', title: 'Kulcha Cookie', location: 'Tea time', description: `Traditional Afghan tea cookie.` },
 ];
 
 const drinks = [
@@ -239,8 +264,8 @@ const produce = [
   {
     id: 'produce/central-valley-mulberries',
     title: 'Mulberries',
-    location: 'Fresh & dried',
-    description: `Sweet white and black mulberries (toot), eaten fresh in late spring or sun-dried and paired with walnuts.`,
+    location: 'Fresh · Seasonal',
+    description: `Sweet white and black mulberries (toot), enjoyed fresh during the Afghan spring and early summer harvest.`,
   },
   {
     id: 'produce/farah-watermelon',
@@ -267,18 +292,6 @@ const produce = [
     description: `Ruby-red pomegranates. Kandahar is historically the main pomegranate-producing province, known for the Kandahari variety.`,
   },
   {
-    id: 'produce/kunduz-melon',
-    title: 'Kunduz Melon',
-    location: 'Regional',
-    description: `Popular northern melon grown in fertile plains.`,
-  },
-  {
-    id: 'produce/logar-orchard-gardens',
-    title: 'The Gardens of Logar: Kabul’s Orchard Province',
-    location: 'Logar',
-    description: `Logar's orchard country is known for gardens and fruit-growing areas that help supply nearby Kabul markets, giving travelers a broader view of the province.`,
-  },
-  {
     id: 'produce/wardak-apples',
     title: 'Fresh Afghan Apples',
     location: 'Maidan Wardak, Ghazni, Kabul, Paktia',
@@ -296,25 +309,21 @@ const driedFruit = [
   {
     id: 'dried-fruits/balkh-almonds',
     title: 'Almonds',
-    location: 'Bazaar',
-    description: `Almonds sold raw or roasted in bazaars across Afghanistan.`,
+    description: `Afghan-grown almonds, prized for their flavor and enjoyed with tea, in sweets, and as part of Afghanistan’s dried-fruit and nut tradition.`,
   },
   {
     id: 'dried-fruits/dried-fruits',
     title: 'Dried Fruits',
-    location: 'Bazaar',
     description: `Afghanistan’s famous export mix of raisins, apricots, figs, and nuts.`,
   },
   {
     id: 'dried-fruits/herat-raisins',
     title: 'Raisins',
-    location: 'Bazaar',
     description: `Raisins, one of Afghanistan’s traditional dried-fruit staples, sold by variety in bazaars.`,
   },
   {
     id: 'dried-fruits/panjshir-walnuts',
     title: 'Walnuts',
-    location: 'Bazaar',
     description: `Walnuts eaten fresh in season and sold dried in bazaars, often paired with dried mulberries.`,
   },
   {
@@ -325,17 +334,41 @@ const driedFruit = [
   },
   {
     id: 'dried-fruits/paktia-pine-nuts',
-    title: 'The Pine Nut Harvest of Paktia',
-    location: 'Paktia',
-    description: `Paktia belongs to Afghanistan's pine nut belt. Pine nuts are a prized product, an export item, and a point of regional pride.`,
+    title: 'Pine Nuts',
+    location: 'Eastern & Southeastern Afghanistan',
+    description: `Chilgoza pine nuts from Afghanistan’s mountain forests, valued for their rich flavor, harvest traditions, and place in Afghan hospitality.`,
   },
   {
-    id: 'dried-fruits/badghis-pistachios',
-    title: 'The Pistachio Forests of Badghis',
-    location: 'Badghis',
-    description: `Badghis has one of Afghanistan's strongest agricultural identities: pistachios.`,
+    id: 'dried-fruits/dried-mulberries',
+    title: 'Dried Mulberries',
+    description: `Toot-e-khoshk: Afghan mulberries sun-dried for year-round snacks, traditionally shared with walnuts and tea.`,
   },
 ];
+
+// Images are explicitly matched to verified, existing local assets. A few regional
+// photos are contextual rather than photographs of the specific activity.
+const experienceImages = {
+  "Haji Aziz Bakery": "/assets/images/experiences/culinary/aziz-bakery/owner-haji-aziz-hero.webp",
+  "Istalif Pottery Village": "/assets/images/attractions/istalif-village/hero.webp",
+  "Kite Flying & Gudiparan Bazi": "/assets/images/experiences/cultural/gudiparan-bazi/hero.webp",
+  "Chashma-e-Dogh": "/assets/images/experiences/culinary/chashma-e-dogh/hero.webp",
+  "Bakery Kabul": "/assets/images/experiences/culinary/aziz-bakery/owner-haji-aziz-hero.webp",
+  "Balkh Carpet Weaving & Loom Workshops": "/assets/images/experiences/cultural/afghan-carpets/hero.webp",
+  "Sweet Streets of Mazar": "/assets/images/hubs/mazar-e-sharif/hero.webp",
+  "Saffron Ice Cream of Herat": "/assets/images/food/sweets/saffron-ice-cream/hero-owner-20261121.webp",
+  "Nuristan Wood Carpentry & Carving": "/assets/images/provinces/nuristan/hero.webp",
+  "Adam Khan Chapli Kabob & Sugarcane Stops": "/assets/images/experiences/culinary/adam-khan-chapli-kabob/hero.webp",
+  "Saffron Tea Houses of Herat": "/assets/images/food/drinks/saffron-tea/hero.webp",
+  "Glassblowers of Herat": "/assets/images/experiences/cultural/glassblowers-of-herat/owner-glassblower-at-furnace.webp",
+  "Pomegranate Orchards & Harvest Walks": "/assets/images/food/produce/kandahar-pomegranate/hero.webp",
+  "Rosh Hospitality Stops": "/assets/images/food/dishes/kandahari-rosh/owner-rosh.webp",
+  "Shor Chai Mountain Tea Houses": "/assets/images/food/drinks/shor-chai-of-badakhshan/hero.webp",
+  "Qurut Markets of Bamyan": "/assets/images/experiences/culinary/band-e-amir-quroot-dairy/hero.webp",
+};
+const regionalContextPhotos = {
+  'Sweet Streets of Mazar': 'Mazar-e-Sharif regional context',
+  'Nuristan Wood Carpentry & Carving': 'Nuristan regional context',
+};
 
 const experienceGroups = [
   {
@@ -357,7 +390,7 @@ const experienceGroups = [
         description: `A destination-style food stop that pairs naturally with Kabul itineraries and city planning.`,
       },
       {
-        title: 'Bakery Kabul',
+        title: 'Haji Aziz Bakery',
         href: '/restaurants/bakery-kabul/',
         description: `Chicken Street sweets, crème rolls, cookies, and tea culture connected to Kabul city walks.`,
       },
@@ -372,9 +405,9 @@ const experienceGroups = [
         description: `Artisan visits to Turkmen and Northern weaving families producing world-famous hand-knotted Afghan wool carpets (Mauri, Khal Mohammadi) using natural vegetable dyes and traditional loom techniques.`,
       },
       {
-        title: 'Kabobs, Sweets & Northern Hospitality',
-        href: '/restaurants/sweet-streets-of-mazar/',
-        description: `Northern culinary traditions connecting street-side shish kabobs with regional desserts, crispy Qatlama Mazari pastry, and sesame halva alongside Buzkashi sports and old-city travel days.`,
+        title: 'Sweet Streets of Mazar',
+        href: '/cultural-experiences/culinary/sweet-streets-of-mazar/',
+        description: `Traditional sweet shops and bazaars: sesame sweets, halwa and regional pastries, local confectionery, and northern Afghan tea-house hospitality.`,
       },
     ],
   },
@@ -402,6 +435,11 @@ const experienceGroups = [
         description: `A hospitality experience that pairs hot saffron tea with old-city bazaar walks—featuring seasonal saffron-infused treats like saffron ice cream in summer or saffron candy (nabaat) with saffron tea year-round.`,
       },
       {
+        title: 'Saffron Ice Cream of Herat',
+        href: '/cultural-experiences/culinary/saffron-ice-cream-of-herat/',
+        description: `Herat’s saffron-growing heritage, Afghan saffron in regional sweets, and locally prepared saffron ice cream, subject to local availability.`,
+      },
+      {
         title: 'Glassblowers of Herat',
         href: '/cultural-experiences/glassblowers-of-herat/',
         description: `A cultural craft experience that pairs naturally with Herat food, bazaars, and old city visits.`,
@@ -418,7 +456,7 @@ const experienceGroups = [
       },
       {
         title: 'Rosh Hospitality Stops',
-        href: '#dishes',
+        href: '/food-culture/dishes/rosh/',
         description: `Traditional culinary stops featuring slow-cooked, tender jointed lamb served with fresh hot tandoor naan, onions, and local seasonal sides.`,
       },
     ],
@@ -445,46 +483,71 @@ const experienceGroups = [
   },
 ];
 
-const experienceCount = experienceGroups.reduce(
-  (total, group) => total + group.items.length,
-  0
-);
+// Owner 2026-11-20 structure: food-related stops are Culinary Experiences; crafts,
+// kites and other non-food traditions are Other Cultural Experiences.
+const isCulturalHref = (href) => href.startsWith('/cultural-experiences/') && !href.startsWith('/cultural-experiences/culinary/')
+  && href !== '/cultural-experiences/chashma-e-dogh/';
+const NON_FOOD_DESTINATION_ITEMS = new Set(['Nuristan Wood Carpentry & Carving']);
+const isCultural = (item) => isCulturalHref(item.href) || NON_FOOD_DESTINATION_ITEMS.has(item.title);
+const culinaryGroups = experienceGroups
+  .map((group) => ({ ...group, items: group.items.filter((item) => !isCultural(item)) }))
+  .filter((group) => group.items.length);
+const culturalGroups = experienceGroups
+  .map((group) => ({ ...group, items: group.items.filter(isCultural) }))
+  .filter((group) => group.items.length);
+const countItems = (groups) => groups.reduce((total, group) => total + group.items.length, 0);
+const culinaryCount = countItems(culinaryGroups);
+const culturalCount = countItems(culturalGroups);
 
 const categories = [
   {
-    title: 'Afghan Table',
+    title: 'Afghan Dishes',
     eyebrow: 'Dishes',
-    description: 'Core Afghan meals, sticky rice dishes, meats, quails, breads, dumplings, kabobs, sweets, and regional specialties travelers encounter en route.',
+    description: 'Traditional meals, rice dishes, meat dishes, breads, dumplings, kabobs and other prepared foods travelers encounter en route.',
     href: '#dishes',
     count: dishes.length,
   },
   {
-    title: 'Tea & Refreshment',
+    title: 'Desserts & Traditional Sweets',
+    eyebrow: 'Desserts',
+    description: 'Halwa, jalebi, firni, sheer birinj, sheer khorma, gosh-e-fil, sheer pira, sheer yakh and more traditional Afghan sweets.',
+    href: '#desserts',
+    count: desserts.length,
+  },
+  {
+    title: 'Drinks & Tea',
     eyebrow: 'Drinks',
-    description: 'Green tea, sheer chai, saffron tea, dogh, and the hospitality rituals that shape Afghan travel days.',
+    description: 'Green tea, sheer chai, saffron tea, shor chai, dogh, and the hospitality rituals that shape Afghan travel days.',
     href: '#drinks',
     count: drinks.length,
   },
   {
-    title: 'Regional Harvests',
-    eyebrow: 'Produce',
-    description: 'Saffron, melons, pomegranates, mulberries, sugarcane, potatoes, apples, nuts, and produce tied directly to Afghan geography.',
+    title: 'Produce',
+    eyebrow: 'Regional Harvests',
+    description: 'Saffron, melons, pomegranates, mulberries, sugarcane, potatoes, apples and grapes tied directly to Afghan geography.',
     href: '#produce',
     count: produce.length,
   },
   {
-    title: 'Export Heritage',
+    title: 'Dried Fruits & Nuts',
     eyebrow: 'Dried Fruits',
-    description: 'Raisins, almonds, walnuts, pistachios, and the Afghan dried fruit economy travelers see in bazaars.',
+    description: 'Almonds, raisins, walnuts, pistachios, pine nuts and dried mulberries from Afghanistan’s dried-fruit and nut tradition.',
     href: '#dried-fruits',
     count: driedFruit.length,
   },
   {
-    title: 'Living Traditions',
+    title: 'Culinary Experiences',
     eyebrow: 'Experiences',
-    description: 'Food stops, artisan craft visits, pottery villages, carpet workshops, woodcraft traditions, tea houses, kite markets, orchards, bazaars, bakeries, and local encounters built into itinerary planning.',
-    href: '#experiences',
-    count: experienceCount,
+    description: 'Food stops, restaurants, markets, bakeries, tea houses, orchards and tasting experiences organized by hub.',
+    href: '#culinary-experiences',
+    count: culinaryCount,
+  },
+  {
+    title: 'Other Cultural Experiences',
+    eyebrow: 'Culture',
+    description: 'Artisan craft visits, pottery villages, carpet workshops, woodcraft and kite-flying traditions connected to the same hubs.',
+    href: '#cultural-experiences',
+    count: culturalCount,
   },
 ];
 ---
@@ -575,7 +638,7 @@ const categories = [
     <section id="dishes" class="content-section" aria-labelledby="dishes-title">
       <div class="section-head compact">
         <p class="kicker">Dishes</p>
-        <h2 id="dishes-title">The Afghan Table Staples</h2>
+        <h2 id="dishes-title">Afghan Dishes</h2>
         <p>The dishes marked vegetarian are generally meat-free, but recipes vary. Vegan travelers should inform AfghanTours in advance. We will confirm with the establishment whether vegetable oil is used instead of ghee or other animal fats, and check for dairy, meat stock and other animal-derived ingredients. Vegan preparation cannot be guaranteed without confirmation.</p>
       </div>
 
@@ -596,10 +659,59 @@ const categories = [
       </div>
     </section>
 
+    <section id="desserts" class="content-section" aria-labelledby="desserts-title">
+      <div class="section-head compact">
+        <p class="kicker">Desserts</p>
+        <h2 id="desserts-title">Desserts &amp; Traditional Sweets</h2>
+        <p>{desserts.length} traditional Afghan desserts. Where we do not yet have an accurate photograph, the card says so rather than showing an unrelated picture.</p>
+      </div>
+
+      <div class="premium-grid">
+        {desserts.map((item) => (
+          <article class="food-card">
+            <div class="food-card__image">
+              {imageForId(item.id)
+                ? <img src={imageForId(item.id)} alt={item.title} loading="lazy" style={CARD_FOCUS[item.id] ? `object-position:${CARD_FOCUS[item.id]}` : undefined} />
+                : isPhotoPending(item.id)
+                  ? <span class="food-card__noimg food-card__noimg--pending" role="img" aria-label={`Photograph of ${item.title} pending`}><b>{item.title}</b><small>Photograph pending</small></span>
+                  : <span class="food-card__noimg" aria-hidden="true">{item.title.split(':')[0]}</span>}
+            </div>
+            <p>{item.location}</p>
+            <h3>{item.title}</h3>
+            <span>{item.description}</span>
+            <a href={foodHref(item.id)}>View dessert note</a>
+          </article>
+        ))}
+      </div>
+
+      <div class="harvest-subsection">
+        <div class="section-head compact">
+          <h3 id="more-sweets-title">More Sweets &amp; Bakery Traditions</h3>
+        </div>
+        <div class="premium-grid small">
+        {dessertExtras.map((item) => (
+          <article class="food-card gold">
+            <div class="food-card__image">
+              {imageForId(item.id)
+                ? <img src={imageForId(item.id)} alt={item.title} loading="lazy" style={CARD_FOCUS[item.id] ? `object-position:${CARD_FOCUS[item.id]}` : undefined} />
+                : isPhotoPending(item.id)
+                  ? <span class="food-card__noimg food-card__noimg--pending" role="img" aria-label={`Photograph of ${item.title} pending`}><b>{item.title}</b><small>Photograph pending</small></span>
+                  : <span class="food-card__noimg" aria-hidden="true">{item.title.split(':')[0]}</span>}
+            </div>
+            <p>{item.location}</p>
+            <h4>{item.title}</h4>
+            <span>{item.description}</span>
+            <a href={foodHref(item.id)}>View sweet note</a>
+          </article>
+        ))}
+        </div>
+      </div>
+    </section>
+
     <section id="drinks" class="content-section split" aria-labelledby="drinks-title">
       <div class="section-head compact">
         <p class="kicker">Drinks</p>
-        <h2 id="drinks-title">Tea, Dogh & Refreshment Culture</h2>
+        <h2 id="drinks-title">Drinks &amp; Tea</h2>
       </div>
 
       <div class="premium-grid small">
@@ -621,8 +733,8 @@ const categories = [
 
     <section id="produce" class="content-section" aria-labelledby="produce-title">
       <div class="section-head compact">
-        <p class="kicker">Produce</p>
-        <h2 id="produce-title">Regional Harvests & Market Identity</h2>
+        <p class="kicker">Regional Harvests</p>
+        <h2 id="produce-title">Produce</h2>
       </div>
 
       <div class="premium-grid">
@@ -645,7 +757,7 @@ const categories = [
     <section id="dried-fruits" class="content-section" aria-labelledby="dried-title">
       <div class="section-head compact">
         <p class="kicker">Dried Fruits</p>
-        <h2 id="dried-title">Export Heritage</h2>
+        <h2 id="dried-title">Dried Fruits &amp; Nuts</h2>
       </div>
 
       <div class="premium-grid small">
@@ -656,7 +768,7 @@ const categories = [
                 ? <img src={imageForId(item.id)} alt={item.title} loading="lazy" style={CARD_FOCUS[item.id] ? `object-position:${CARD_FOCUS[item.id]}` : undefined} />
                 : <span class="food-card__noimg" aria-hidden="true">{item.title.split(':')[0]}</span>}
             </div>
-            <p>{item.location}</p>
+            {item.location && <p>{item.location}</p>}
             <h3>{item.title}</h3>
             <span>{item.description}</span>
             <a href={foodHref(item.id)}>View dried fruit note</a>
@@ -665,29 +777,82 @@ const categories = [
       </div>
     </section>
 
-    <section id="experiences" class="content-section experiences" aria-labelledby="experiences-title">
+    <span id="experiences" aria-hidden="true"></span>
+    <section id="culinary-experiences" class="content-section experiences" aria-labelledby="culinary-experiences-title">
       <div class="section-head compact">
-        <p class="kicker">Restaurants, Tea Houses, Markets & Cultural Experiences</p>
+        <p class="kicker">Restaurants, Tea Houses, Markets &amp; Tastings</p>
 
-        <h2 id="experiences-title">Experiences belong to hubs.</h2>
+        <h2 id="culinary-experiences-title">Culinary Experiences</h2>
 
         <p>
-          Explore food, markets, tea houses, restaurants, and cultural
-          experiences in the hubs where travelers are most likely to encounter
-          them.
+          Food stops, restaurants, markets, bakeries, tea houses and tasting
+          experiences in the hubs where travelers are most likely to encounter them.
         </p>
       </div>
 
-      {experienceGroups.map((group) => (
+      {culinaryGroups.map((group) => (
         <div class="experience-hub">
           <h3 class="experience-hub-title">{group.hub}</h3>
 
           <div class="experience-list">
             {group.items.map((item) => (
-              <a href={item.href} class="experience-row">
-                <span>{group.hub}</span>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
+              <a href={item.href} class="experience-card">
+                <div class="experience-card__media">
+                  <img
+                    src={normalizeImagePath(experienceImages[item.title], '')}
+                    alt={regionalContextPhotos[item.title] || item.title}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  {regionalContextPhotos[item.title] && <span class="experience-card__context">Regional photo</span>}
+                </div>
+                <div class="experience-card__body">
+                  <span class="experience-card__kicker">{group.hub}</span>
+                  <h4>{item.title}</h4>
+                  <p>{item.description}</p>
+                  <span class="experience-card__action">Explore experience <span aria-hidden="true">→</span></span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <section id="cultural-experiences" class="content-section experiences" aria-labelledby="cultural-experiences-title">
+      <div class="section-head compact">
+        <p class="kicker">Crafts &amp; Living Traditions</p>
+
+        <h2 id="cultural-experiences-title">Other Cultural Experiences</h2>
+
+        <p>
+          Non-culinary traditions, artisan workshops and cultural encounters
+          connected to the same hubs. See all <a href="/cultural-experiences/">cultural experiences</a>.
+        </p>
+      </div>
+
+      {culturalGroups.map((group) => (
+        <div class="experience-hub">
+          <h3 class="experience-hub-title">{group.hub}</h3>
+
+          <div class="experience-list">
+            {group.items.map((item) => (
+              <a href={item.href} class="experience-card">
+                <div class="experience-card__media">
+                  <img
+                    src={normalizeImagePath(experienceImages[item.title], '')}
+                    alt={regionalContextPhotos[item.title] || item.title}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  {regionalContextPhotos[item.title] && <span class="experience-card__context">Regional photo</span>}
+                </div>
+                <div class="experience-card__body">
+                  <span class="experience-card__kicker">{group.hub}</span>
+                  <h4>{item.title}</h4>
+                  <p>{item.description}</p>
+                  <span class="experience-card__action">Explore experience <span aria-hidden="true">→</span></span>
+                </div>
               </a>
             ))}
           </div>
@@ -876,6 +1041,7 @@ const categories = [
 
   .category-card h3,
   .food-card h3,
+  .food-card h4,
   .experience-row h3 {
     margin: .8rem 0;
     font-family: Georgia, "Times New Roman", serif;
@@ -923,8 +1089,7 @@ const categories = [
     min-width: 0;
   }
 
-  .premium-grid .food-card h3,
-  .premium-grid.small .food-card h3 {
+  .premium-grid .food-card :is(h3, h4) {
     margin: .55rem 0 .55rem;
   }
 
@@ -987,26 +1152,111 @@ const categories = [
     padding-bottom: 7rem;
   }
 
+  .harvest-subsection {
+    margin-top: 3rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(16,24,32,.12);
+    scroll-margin-top: 6rem;
+  }
+
+  .harvest-subsection .section-head h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    line-height: 1.1;
+  }
+
   .experience-list {
     display: grid;
-    gap: .85rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.1rem;
   }
 
-  .experience-row {
-    display: grid;
-    grid-template-columns: 160px .55fr 1fr;
-    gap: 1rem;
-    align-items: center;
+  .experience-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
     border: 1px solid rgba(16,24,32,.12);
-    border-radius: 1rem;
+    border-radius: 1.15rem;
     background: #fffaf1;
-    padding: 1rem 1.25rem;
     color: #101820;
+    text-decoration: none;
+    box-shadow: 0 10px 26px rgba(16,24,32,.07);
+    transition: transform .2s ease, box-shadow .2s ease;
   }
 
-  .experience-row h3,
-  .experience-row p {
+  .experience-card:hover, .experience-card:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px rgba(16,24,32,.14);
+    outline-offset: 3px;
+  }
+
+  .experience-card__media {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    background: #0e291d;
+  }
+
+  .experience-card__media img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .experience-card__context {
+    position: absolute;
+    left: .75rem;
+    bottom: .75rem;
+    padding: .3rem .55rem;
+    border-radius: .35rem;
+    background: rgba(16,24,32,.8);
+    color: white;
+    font-size: .69rem;
+    font-weight: 700;
+  }
+
+  .experience-card__body {
+    padding: 1.1rem 1.2rem 1.3rem;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: .7rem;
+  }
+
+  .experience-card__kicker {
+    color: #a66e24;
+    font-size: .68rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .experience-card__body h4 {
     margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.4rem, 2vw, 1.85rem);
+    line-height: 1.1;
+  }
+
+  .experience-card__body p {
+    margin: 0;
+    line-height: 1.6;
+    color: #435061;
+    font-size: .92rem;
+  }
+
+  .experience-card__action {
+    display: inline-flex;
+    gap: .35rem;
+    align-items: center;
+    margin-top: auto;
+    padding-top: .5rem;
+    color: #9a6512;
+    font-weight: 900;
+    font-size: .83rem;
   }
 
   @media(max-width: 1050px) {
@@ -1016,9 +1266,12 @@ const categories = [
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .editorial-band,
-    .experience-row {
+    .editorial-band {
       grid-template-columns: 1fr;
+    }
+
+    .experience-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
@@ -1029,7 +1282,8 @@ const categories = [
 
     .category-grid,
     .premium-grid,
-    .premium-grid.small {
+    .premium-grid.small,
+    .experience-list {
       grid-template-columns: 1fr;
     }
 
@@ -1112,7 +1366,7 @@ const categories = [
 
   .category-grid {
     display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
     gap: .85rem !important;
     align-items: stretch !important;
   }
@@ -1159,7 +1413,7 @@ const categories = [
 
   @media (max-width: 1000px) {
     .category-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
   }
 
@@ -1191,6 +1445,9 @@ const categories = [
 
   /* FOOD-TOP-COMPACT-END */
 
-  .food-card__noimg { display:flex; align-items:center; justify-content:center; width:100%; height:100%; min-height:200px; padding:1rem;
+  .food-card .food-card__noimg { display:flex; align-items:center; justify-content:center; width:100%; height:100%; min-height:200px; padding:1rem;
     background:linear-gradient(135deg,#0f241b,#163a2a); color:#f3e7c8; font-family:Georgia,'Times New Roman',serif; font-size:1.25rem; text-align:center; }
+  .food-card .food-card__noimg--pending { flex-direction:column; gap:.6rem; background:repeating-linear-gradient(135deg,#1b2630 0 16px,#16202a 16px 32px); }
+  .food-card .food-card__noimg--pending small { font-family:inherit; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+    border:1px solid rgba(243,231,200,.55); border-radius:999px; padding:.3rem .75rem; }
 </style>
