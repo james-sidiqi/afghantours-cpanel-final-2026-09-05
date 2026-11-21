@@ -1471,7 +1471,7 @@ const contactHref = buildTourInquiryHref(tour);
     .tour-breadcrumbs strong { color: var(--tour-ink); font-weight: 700; }
 
     .tour-hero {
-      border: 1px solid var(--tour-line); background: #fff; overflow: hidden;
+      border: 1px solid var(--tour-line); background: var(--at-surface); overflow: hidden;
     }
     .tour-hero__copy { padding: clamp(1.7rem, 3.2vw, 3rem); }
     .tour-kicker { margin: 0 0 .55rem; color: #8a6526; font-size: .72rem; line-height: 1.2; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; }
@@ -1486,7 +1486,7 @@ const contactHref = buildTourInquiryHref(tour);
     .tour-button:hover { transform: translateY(-1px); }
     .tour-button--primary { background: var(--tour-dark); color: #fff; }
     .tour-button--primary:hover { background: #29332f; }
-    .tour-button--ghost { border: 1px solid #aaa79f; color: var(--tour-ink); background: #fff; }
+    .tour-button--ghost { border: 1px solid #aaa79f; color: var(--tour-ink); background: var(--at-surface); }
     .tour-button--wide { width: 100%; margin-top: 1rem; }
 
     .tour-hero__gallery {
@@ -1498,7 +1498,7 @@ const contactHref = buildTourInquiryHref(tour);
       padding: 4px;
       height: auto;
       min-height: 0;
-      background: #fff;
+      background: var(--at-surface);
       border-top: 1px solid var(--tour-line);
     }
 
@@ -1650,7 +1650,7 @@ const contactHref = buildTourInquiryHref(tour);
     .tour-check-list li span { display: block; margin-top: .15rem; color: #777970; font-size: .7rem; }
 
     .tour-itinerary { display: grid; gap: .65rem; margin-top: 1.4rem; }
-    .tour-day { border: 1px solid var(--tour-line); border-radius: 12px; background: #fff; overflow: hidden; }
+    .tour-day { border: 1px solid var(--tour-line); border-radius: 12px; background: var(--at-surface); overflow: hidden; }
     .tour-day summary { display: grid; grid-template-columns: 74px 1fr 24px; gap: .75rem; align-items: center; cursor: pointer; list-style: none; padding: 1rem; }
     .tour-day summary::-webkit-details-marker { display: none; }
     .tour-day__number { justify-self: start; border-radius: 999px; padding: .38rem .55rem; background: var(--tour-dark); color: #fff; font-size: .64rem; font-weight: 900; text-transform: uppercase; }
@@ -1664,7 +1664,7 @@ const contactHref = buildTourInquiryHref(tour);
     .tour-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: .9rem; margin-top: 1.2rem; }
     .tour-card-grid--two { grid-template-columns: repeat(2, minmax(0,1fr)); }
     .tour-card-grid--three { grid-template-columns: repeat(3, minmax(0,1fr)); }
-    .tour-image-card { min-width: 0; overflow: hidden; border: 1px solid var(--tour-line); border-radius: 10px; background: #fff; color: inherit; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease; }
+    .tour-image-card { min-width: 0; overflow: hidden; border: 1px solid var(--tour-line); border-radius: 10px; background: var(--at-surface); color: inherit; text-decoration: none; transition: transform .15s ease, box-shadow .15s ease; }
     .tour-image-card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(25,25,20,.08); }
     .tour-image-card img { width: 100%; height: 155px; display: block; object-fit: cover; }
     .tour-image-card div { padding: .85rem .9rem 1rem; }
@@ -1679,12 +1679,12 @@ const contactHref = buildTourInquiryHref(tour);
     .tour-practical-grid strong { display: block; margin-top: .35rem; font-size: .84rem; line-height: 1.35; }
     .tour-practical-grid p { margin: .45rem 0 0; color: #686a63; font-size: .7rem; line-height: 1.5; }
     .tour-transport-strip { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1rem; }
-    .tour-transport-strip span { border: 1px solid var(--tour-line); border-radius: 999px; padding: .45rem .65rem; background: #fff; color: #5b5d56; font-size: .67rem; font-weight: 800; }
+    .tour-transport-strip span { border: 1px solid var(--tour-line); border-radius: 999px; padding: .45rem .65rem; background: var(--at-surface); color: #5b5d56; font-size: .67rem; font-weight: 800; }
 
     .tour-empty { margin-top: 1rem; border: 1px dashed #c7c3b8; border-radius: 10px; padding: 1rem; background: var(--tour-soft); color: #65675f; font-size: .78rem; line-height: 1.55; }
 
     .tour-sidebar { position: sticky; top: 145px; }
-    .tour-plan-card { border: 1px solid #d7d3ca; border-radius: 14px; padding: 1.35rem; background: #fff; box-shadow: 0 12px 34px rgba(25,25,20,.06); }
+    .tour-plan-card { border: 1px solid #d7d3ca; border-radius: 14px; padding: 1.35rem; background: var(--at-surface); box-shadow: 0 12px 34px rgba(25,25,20,.06); }
     .tour-summary-label { display: inline-flex; align-items: center; margin-bottom: .9rem; border-radius: 999px; padding: .38rem .62rem; background: var(--tour-soft); color: #74551e; font-size: .62rem; font-weight: 900; letter-spacing: .06em; text-transform: uppercase; }
     .tour-plan-card__price { font: 700 1.55rem/1.1 Georgia, "Times New Roman", serif; }
     .tour-plan-card__sub { margin: .55rem 0 0; color: #73756f; font-size: .7rem; line-height: 1.5; }
@@ -1726,7 +1726,7 @@ const contactHref = buildTourInquiryHref(tour);
     .tour-itinerary-group__header span { padding-left: .8rem; border-left: 1px solid #bdbab2; color: #696b65; font-size: .72rem; }
     .tour-itinerary-group__days { display: grid; gap: 1.25rem; }
     .tour-day-block { position: relative; }
-    .tour-day-block__dot { position: absolute; left: -2.56rem; top: .48rem; width: 5px; height: 5px; border-radius: 50%; background: #fff; border: 1px solid var(--tour-dark); }
+    .tour-day-block__dot { position: absolute; left: -2.56rem; top: .48rem; width: 5px; height: 5px; border-radius: 50%; background: var(--at-surface); border: 1px solid var(--tour-dark); }
     .tour-day-block h4 { margin: 0; font-size: .86rem; line-height: 1.45; }
     .tour-day-block__body { margin-top: .45rem; color: #4f514b; font-size: .78rem; line-height: 1.68; }
     .tour-day-block__body > p { margin: 0; }
@@ -1737,12 +1737,12 @@ const contactHref = buildTourInquiryHref(tour);
     .tour-day-highlights > strong { display: block; margin-bottom: .5rem; font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; }
     .tour-day-highlights ul { margin: 0; padding-left: 1.1rem; }
     .tour-day-highlights li { margin: .32rem 0; font-size: .72rem; line-height: 1.5; }
-    .tour-itinerary-toggle { margin-top: .8rem; border: 1px solid #8c8b85; border-radius: 999px; padding: .48rem .75rem; background: #fff; color: #242522; font-size: .68rem; font-weight: 800; cursor: pointer; }
+    .tour-itinerary-toggle { margin-top: .8rem; border: 1px solid #8c8b85; border-radius: 999px; padding: .48rem .75rem; background: var(--at-surface); color: #242522; font-size: .68rem; font-weight: 800; cursor: pointer; }
     .tour-itinerary-timeline.is-collapsed .tour-day-block__body { display: none; }
     .tour-itinerary-timeline.is-collapsed .tour-itinerary-group { padding-bottom: 1rem; }
 
     .tour-stay-scroller, .tour-excursion-scroller { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(230px, 31%); gap: .7rem; margin-top: 1.2rem; padding-bottom: .55rem; overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: thin; }
-    .tour-stay-card { overflow: hidden; border: 1px solid #9f9d96; border-radius: 12px; background: #fff; color: inherit; text-decoration: none; scroll-snap-align: start; }
+    .tour-stay-card { overflow: hidden; border: 1px solid #9f9d96; border-radius: 12px; background: var(--at-surface); color: inherit; text-decoration: none; scroll-snap-align: start; }
     .tour-stay-card img { width: 100%; aspect-ratio: 4/3; display: block; object-fit: cover; }
     .tour-stay-card__body { padding: .8rem .8rem 1rem; }
     .tour-stay-card__hub {
@@ -1759,7 +1759,7 @@ const contactHref = buildTourInquiryHref(tour);
 
     .tour-customize { margin-top: 2.3rem; }
     .tour-customize > p { max-width: 680px; margin: -.2rem 0 0; color: #64665f; font-size: .72rem; line-height: 1.55; }
-    .tour-excursion-card { overflow: hidden; border: 1px solid #9f9d96; border-radius: 12px; background: #fff; scroll-snap-align: start; }
+    .tour-excursion-card { overflow: hidden; border: 1px solid #9f9d96; border-radius: 12px; background: var(--at-surface); scroll-snap-align: start; }
     .tour-excursion-card img { width: 100%; aspect-ratio: 16/9; display: block; object-fit: cover; }
     .tour-excursion-card > div { padding: .75rem .8rem .9rem; }
     .tour-excursion-card strong { display: block; font-size: .78rem; line-height: 1.35; }
@@ -1788,7 +1788,7 @@ const contactHref = buildTourInquiryHref(tour);
     .tour-date-selector__note { margin: .7rem 0 0; color: #74766f; font-size: .62rem; line-height: 1.45; }
     .tour-date-planner > p { margin: .4rem 0 .85rem; color: #6d6f68; font-size: .68rem; line-height: 1.5; }
     .tour-date-planner label { display: block; margin-top: .65rem; color: #4b4d48; font-size: .65rem; font-weight: 800; }
-    .tour-date-planner input, .tour-date-planner select { width: 100%; margin-top: .3rem; border: 1px solid #cbc8c0; border-radius: 8px; padding: .7rem .75rem; background: #fff; color: #222; font: inherit; font-size: .72rem; }
+    .tour-date-planner input, .tour-date-planner select { width: 100%; margin-top: .3rem; border: 1px solid #cbc8c0; border-radius: 8px; padding: .7rem .75rem; background: var(--at-surface); color: #222; font: inherit; font-size: .72rem; }
 
     @media (max-width: 980px) {
       .tour-tabs { position: static; }

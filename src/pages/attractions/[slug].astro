@@ -1009,7 +1009,7 @@ const provinceHref =
     position: relative;
     z-index: 4;
 
-    background: #fbf6ed;
+    background: var(--at-section-light);
   }
 
 
@@ -1037,7 +1037,7 @@ const provinceHref =
 
     border-radius: 1.4rem;
 
-    background: #fff;
+    background: var(--at-surface);
 
     box-shadow:
       0 20px 55px
@@ -1093,7 +1093,7 @@ const provinceHref =
      ====================================================== */
 
   .attraction-main {
-    background: #fbf6ed;
+    background: var(--at-section-light);
     color: #101820;
 
     padding:
@@ -1249,7 +1249,7 @@ const provinceHref =
 
     border-radius: 1.6rem;
 
-    background: #fff;
+    background: var(--at-surface);
 
     padding:
       clamp(1.5rem, 2.5vw, 2rem);
@@ -1459,7 +1459,7 @@ const provinceHref =
      ====================================================== */
 
   .no-tour-section {
-    background: #fff;
+    background: var(--at-section-light);
 
     padding:
       clamp(4rem, 7vw, 7rem)
@@ -1483,7 +1483,7 @@ const provinceHref =
 
     border-radius: 1.6rem;
 
-    background: #fbf6ed;
+    background: var(--at-surface);
 
     padding:
       clamp(1.6rem, 4vw, 3rem);
@@ -1772,4 +1772,7 @@ const provinceHref =
 
   }
 
+
+  /* Ivory theme: small gold labels on the wallpaper use the AA gold token. */
+  .attraction-story > .section-kicker { color: var(--at-gold-text); }
 </style>

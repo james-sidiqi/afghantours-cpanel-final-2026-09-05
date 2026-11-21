@@ -820,7 +820,7 @@ const contactHref = buildInquiryHref({
   .food-facts-shell {
     position: relative;
     z-index: 4;
-    background: #fbf6ed;
+    background: var(--at-section-light);
   }
 
   .food-facts {
@@ -832,7 +832,7 @@ const contactHref = buildInquiryHref({
     overflow: hidden;
     border: 1px solid rgba(16,24,32,.08);
     border-radius: 1.4rem;
-    background: #fff;
+    background: var(--at-surface);
     box-shadow: 0 18px 50px rgba(20,15,8,.12);
   }
 
@@ -862,7 +862,7 @@ const contactHref = buildInquiryHref({
 
   .food-story-section {
     padding: clamp(2rem, 4vw, 4rem) 0 clamp(5rem, 8vw, 8rem);
-    background: #fbf6ed;
+    background: var(--at-section-light);
     color: #101820;
   }
 
@@ -929,7 +929,7 @@ const contactHref = buildInquiryHref({
     padding: clamp(1.45rem, 2.5vw, 2rem);
     border: 1px solid rgba(16,24,32,.09);
     border-radius: 1.5rem;
-    background: #fff;
+    background: var(--at-surface);
     box-shadow: 0 18px 46px rgba(20,15,8,.09);
   }
 
@@ -1083,7 +1083,7 @@ const contactHref = buildInquiryHref({
     overflow: hidden;
     border: 1px solid rgba(16,24,32,.08);
     border-radius: 1.3rem;
-    background: #fff;
+    background: var(--at-surface);
     color: inherit;
     text-decoration: none;
     box-shadow: 0 14px 34px rgba(20,15,8,.07);
@@ -1148,7 +1148,7 @@ const contactHref = buildInquiryHref({
 
   .food-custom-tour-section {
     padding: clamp(4rem, 7vw, 7rem) 0;
-    background: #fff;
+    background: var(--at-section-light);
   }
 
   .food-custom-tour-card {
@@ -1160,7 +1160,7 @@ const contactHref = buildInquiryHref({
     align-items: center;
     gap: 2rem;
     border-radius: 1.5rem;
-    background: #fbf6ed;
+    background: var(--at-surface);
   }
 
   .food-custom-tour-card > div { max-width: 720px; }
@@ -1324,4 +1324,7 @@ const contactHref = buildInquiryHref({
 
     .food-fact:last-child { border-bottom: 0; }
   }
+
+  /* Ivory theme: small gold labels on the wallpaper use the AA gold token. */
+  .food-story-section .section-kicker { color: var(--at-gold-text); }
 </style>

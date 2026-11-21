@@ -25,7 +25,7 @@ const { eyebrow = 'Planning', title = '', intro = '', image = '', mapImage = '',
 </section>
 
 <style>
-  .supporting-page { background: #fbf8f2; color:#11100d; padding: clamp(3rem, 7vw, 6rem) 0; }
+  .supporting-page { background: var(--at-section-light); color:#11100d; padding: clamp(3rem, 7vw, 6rem) 0; }
   .supporting-page__inner { width:min(980px, calc(100% - 2rem)); margin:0 auto; }
   .supporting-page__header { display:grid; grid-template-columns: 1fr minmax(260px, 0.52fr); gap:2rem; align-items:start; margin-bottom:2rem; }
   .supporting-page__header p { margin:0 0 0.85rem; color:#b45309; font-size:0.72rem; font-weight:900; letter-spacing:0.28em; text-transform:uppercase; }
@@ -34,7 +34,7 @@ const { eyebrow = 'Planning', title = '', intro = '', image = '', mapImage = '',
   .supporting-page__visual { overflow:hidden; border-radius:2rem; background:#efe7da; box-shadow:0 18px 46px rgba(0,0,0,0.10); ring:1px solid rgba(0,0,0,0.06); }
   .supporting-page__visual img { width:100%; max-height:360px; object-fit:cover; display:block; }
   .supporting-page__visual img + img { object-fit:contain; padding:1rem; background:#efe7da; }
-  .supporting-page__body { background:#fffaf0; border:1px solid rgba(17,16,13,0.08); border-radius:2rem; padding:clamp(1.5rem, 4vw, 3rem); box-shadow:0 18px 46px rgba(0,0,0,0.06); }
+  .supporting-page__body { background:var(--at-surface); border:1px solid rgba(17,16,13,0.08); border-radius:2rem; padding:clamp(1.5rem, 4vw, 3rem); box-shadow:0 18px 46px rgba(0,0,0,0.06); }
   .supporting-page__body :global(h2), .supporting-page__body :global(h3) { font-family:Georgia,'Times New Roman',serif; letter-spacing:-0.035em; }
   .supporting-page__body :global(p), .supporting-page__body :global(li) { line-height:1.8; }
   .supporting-page__cta { margin-top:2rem; text-align:center; border-radius:2rem; background:#071b12; color:#fff8ec; padding:2rem; }

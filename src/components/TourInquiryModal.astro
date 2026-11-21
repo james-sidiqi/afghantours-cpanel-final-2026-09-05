@@ -455,7 +455,7 @@
   .tour-inquiry-modal { position: fixed; inset: 0; z-index: 5000; display: grid; place-items: center; padding: 1rem; }
   .tour-inquiry-modal__backdrop { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; border-radius: 0; background: rgba(6, 12, 9, .78); backdrop-filter: blur(7px); cursor: default; }
   .tour-inquiry-modal__panel { position: relative; z-index: 1; width: min(760px, 100%); max-height: calc(100vh - 2rem); overflow: auto; border: 1px solid rgba(16,24,32,.12); border-radius: 1.45rem; background: #fffaf2; color: #101820; box-shadow: 0 30px 90px rgba(0,0,0,.35); }
-  .tour-inquiry-modal__close { position: absolute; right: 1rem; top: 1rem; z-index: 2; width: 40px; height: 40px; border: 1px solid #d8c9b5; border-radius: 999px; background: #fff; color: #101820; font-size: 1.7rem; line-height: 1; cursor: pointer; }
+  .tour-inquiry-modal__close { position: absolute; right: 1rem; top: 1rem; z-index: 2; width: 40px; height: 40px; border: 1px solid #d8c9b5; border-radius: 999px; background: var(--at-surface); color: #101820; font-size: 1.7rem; line-height: 1; cursor: pointer; }
   .tour-inquiry-modal__heading { padding: 1.7rem 1.7rem 1rem; border-bottom: 1px solid #e5d9c7; }
   .tour-inquiry-modal__heading p { margin: 0 0 .55rem; color: #a86a12; text-transform: uppercase; letter-spacing: .18em; font-size: .68rem; font-weight: 900; }
   .tour-inquiry-modal__heading h2 { margin: 0; padding-right: 3rem; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.2rem, 5vw, 3.7rem); line-height: .92; letter-spacing: -.055em; }
@@ -464,13 +464,13 @@
   .tour-inquiry-form__grid { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; }
   .tour-inquiry-form label { display: grid; gap: .38rem; margin: 0 0 .9rem; color: #101820; font-size: .78rem; font-weight: 900; }
   .tour-inquiry-form [hidden] { display: none !important; }
-  .tour-inquiry-form select { width: 100%; box-sizing: border-box; border: 1px solid #d6c8b4; border-radius: .72rem; background: #fff; color: #101820; padding: .85rem .9rem; font: inherit; min-height: 48px; }
+  .tour-inquiry-form select { width: 100%; box-sizing: border-box; border: 1px solid #d6c8b4; border-radius: .72rem; background: var(--at-surface); color: #101820; padding: .85rem .9rem; font: inherit; min-height: 48px; }
   .tour-inquiry-form__hint { margin: -.2rem 0 .9rem; padding: .7rem .85rem; border-left: 3px solid #c99027; background: #fbf6ec; color: #4d473e; font-size: .8rem; line-height: 1.5; }
   .tour-inquiry-form__extras { margin: 0 0 .9rem; padding: 0; border: 0; }
   .tour-inquiry-form__extras legend { margin-bottom: .45rem; font-size: .78rem; font-weight: 900; }
   .tour-inquiry-form__extras label { display: flex !important; align-items: center; gap: .55rem; margin: 0 0 .35rem !important; font-weight: 700 !important; }
   .tour-inquiry-form__extras input { width: auto !important; }
-  .tour-inquiry-form input, .tour-inquiry-form textarea { width: 100%; box-sizing: border-box; border: 1px solid #d6c8b4; border-radius: .72rem; background: #fff; color: #101820; padding: .85rem .9rem; font: inherit; }
+  .tour-inquiry-form input, .tour-inquiry-form textarea { width: 100%; box-sizing: border-box; border: 1px solid #d6c8b4; border-radius: .72rem; background: var(--at-surface); color: #101820; padding: .85rem .9rem; font: inherit; }
   .tour-inquiry-form input[readonly] { background: #f2eadf; font-weight: 800; }
   .tour-inquiry-form input:focus, .tour-inquiry-form textarea:focus { outline: 2px solid rgba(214,162,58,.28); border-color: #c99027; }
   .tour-inquiry-form textarea { resize: vertical; min-height: 120px; }

@@ -132,7 +132,7 @@ const items = csvItems.map((row) => {
   }
   .culin-index-main {
     padding: clamp(4rem, 7vw, 7rem) 0;
-    background: #fbf6ed;
+    background: var(--at-section-light);
     color: #101820;
   }
   .culin-index-wrap {
@@ -168,7 +168,7 @@ const items = csvItems.map((row) => {
     overflow: hidden;
     border: 1px solid rgba(16,24,32,.08);
     border-radius: 1.35rem;
-    background: #fff;
+    background: var(--at-surface);
     color: inherit;
     text-decoration: none;
     box-shadow: 0 14px 36px rgba(20,15,8,.07);
@@ -243,4 +243,7 @@ const items = csvItems.map((row) => {
     .culin-index-heading { flex-direction: column; align-items: flex-start; }
     .culin-index-grid { grid-template-columns: 1fr; }
   }
+
+  /* Ivory theme: small gold labels on the wallpaper use the AA gold token. */
+  .culin-index-heading p { color: var(--at-gold-text); }
 </style>

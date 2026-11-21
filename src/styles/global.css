@@ -21,7 +21,7 @@ html {
 
 body {
   margin: 0;
-  background: var(--at-paper);
+  background: var(--at-wallpaper);
   color: var(--at-text);
   font-family: var(--font-body);
   font-size: var(--text-body);
@@ -127,7 +127,7 @@ p { line-height: var(--line-body); }
 
 .at-card,
 .text-card {
-  background: var(--at-white);
+  background: var(--at-surface);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
@@ -154,14 +154,14 @@ p { line-height: var(--line-body); }
   background: var(--at-gold);
   color: var(--at-ink);
 }
-.at-button--primary:hover { background: var(--at-white); }
+.at-button--primary:hover { background: var(--at-surface); }
 
 .at-button--outline-light {
   border: 1px solid rgba(255,255,255,.35);
   color: var(--at-white);
 }
 .at-button--outline-light:hover {
-  background: var(--at-white);
+  background: var(--at-surface);
   color: var(--at-ink);
 }
 
@@ -199,17 +199,22 @@ p { line-height: var(--line-body); }
 .tour-modal::backdrop { background: rgba(0,0,0,.72); backdrop-filter: blur(6px); }
 .tour-modal { border: 0; border-radius: var(--radius-card); padding: 0; max-width: min(920px, calc(100vw - 2rem)); background: transparent; }
 
-.featured-tours-section { background: var(--at-white) !important; }
-.custom-tours-section { background: var(--at-sand) !important; }
+.featured-tours-section { background: var(--at-section-light) !important; }
+.custom-tours-section { background: var(--at-section-light) !important; }
 .tour-directory,
 .tour-list-intro,
 .map-section,
-.interactive-map-section { background: var(--at-white) !important; }
+.interactive-map-section { background: var(--at-section-light) !important; }
 .food-preview-section,
-.food-culture-preview { background: var(--at-paper) !important; }
+.food-culture-preview { background: var(--at-section-light) !important; }
 .hubs-section,
 #hubs-section { background-color: var(--at-ink); }
 .why-section { border-top: 1px solid var(--border-soft); }
+
+/* Form fields default to the warm-white surface (zero specificity so component styles still win). */
+:where(input:not([type="checkbox"], [type="radio"], [type="range"], [type="color"], [type="submit"], [type="button"]), select, textarea) {
+  background-color: var(--at-surface);
+}
 
 @media (max-width: 640px) {
   .floating-whatsapp span { display: none; }

@@ -116,7 +116,7 @@ import AboutTravelerGallery from '../components/AboutTravelerGallery.astro';
   .trust-line {
     border-top: 1px solid rgba(185,130,55,.22);
     border-bottom: 1px solid rgba(185,130,55,.22);
-    background: #f7f1e7;
+    background: var(--at-surface);
     color: #172127;
   }
 
@@ -158,7 +158,7 @@ import AboutTravelerGallery from '../components/AboutTravelerGallery.astro';
     border: 0;
     border-radius: 1.25rem;
     padding: 0;
-    background: #fbf7ef;
+    background: var(--at-surface);
     color: #101820;
     box-shadow: 0 30px 100px rgba(0,0,0,.45);
   }
@@ -182,7 +182,7 @@ import AboutTravelerGallery from '../components/AboutTravelerGallery.astro';
     height: 2.5rem;
     border: 1px solid rgba(16,24,32,.15);
     border-radius: 999px;
-    background: #fff;
+    background: var(--at-surface);
     color: #101820;
     cursor: pointer;
     font-size: 1.5rem;
@@ -211,7 +211,7 @@ import AboutTravelerGallery from '../components/AboutTravelerGallery.astro';
     object-fit: contain;
     margin: 0 auto;
     border-radius: .75rem;
-    background: #fff;
+    background: var(--at-surface);
   }
 
   .license-dialog__note {
@@ -389,7 +389,7 @@ import AboutTravelerGallery from '../components/AboutTravelerGallery.astro';
 
   .trust-card__media--license img {
     object-fit: contain;
-    background: #fff;
+    background: var(--at-surface);
     border-radius: .9rem;
   }
 
@@ -456,9 +456,9 @@ import AboutTravelerGallery from '../components/AboutTravelerGallery.astro';
   .trust-proof-strip span { display: block; margin-top: .35rem; font-size: .82rem; color: rgba(255,250,240,.8); }
 
   .home-section-band { border-top: 1px solid rgba(185,130,55,.14); }
-  .home-section-band--featured { background: #fffaf0; }
-  .home-section-band--custom { background: #f1eadc; }
-  .home-section-band--why { background: #fbf6ed; }
+  .home-section-band--featured { background: var(--at-section-light); }
+  .home-section-band--custom { background: var(--at-section-light); }
+  .home-section-band--why { background: var(--at-section-light); }
 
   @media(max-width:900px) {
     .trust-cards { grid-template-columns: 1fr; }
