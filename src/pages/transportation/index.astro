@@ -276,7 +276,7 @@ const planningFactors = [
   .license-strip__status { font-weight: 900; }
   .license-strip__inner span:last-child { color: #ddd1bd; }
 
-  .transport-intro { background: #f7f2e9; color: #11100d; padding: clamp(3.25rem, 6vw, 5.5rem) 1rem; }
+  .transport-intro { background: var(--at-section-light); color: #11100d; padding: clamp(3.25rem, 6vw, 5.5rem) 1rem; }
   .transport-intro__inner { width: min(1040px, 100%); margin: 0 auto; }
   h2 { margin: 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.2rem, 4.5vw, 4.1rem); line-height: 0.98; letter-spacing: -0.05em; color: #101820; }
   .transport-intro p:last-of-type, .support-header p, .planning-copy > p:last-child, .route-cta__copy > p:not(.eyebrow) { color: #514c44; line-height: 1.75; font-size: 1rem; }
@@ -284,11 +284,11 @@ const planningFactors = [
   .intro-trust { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1.35rem; }
   .intro-trust span { border-radius: 999px; border: 1px solid rgba(16,24,32,.1); background: rgba(255,255,255,.7); color: #3e3a34; padding: .58rem .8rem; font-size: .76rem; font-weight: 800; }
 
-  .support-section { background: #fbf8f2; padding: clamp(3rem, 6vw, 5.5rem) 1rem; }
+  .support-section { background: var(--at-section-light); padding: clamp(3rem, 6vw, 5.5rem) 1rem; }
   .support-header { width: min(1180px, 100%); margin: 0 auto 1.75rem; }
   .support-header p:last-child { max-width: 720px; margin-top: 0.85rem; }
   .support-grid { width: min(1180px, 100%); margin: 0 auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.1rem; }
-  .support-card { overflow: hidden; border-radius: 26px; background: white; border: 1px solid rgba(16,24,32,0.1); box-shadow: 0 16px 36px rgba(16,24,32,0.08); display: flex; flex-direction: column; }
+  .support-card { overflow: hidden; border-radius: 26px; background: var(--at-surface); border: 1px solid rgba(16,24,32,0.1); box-shadow: 0 16px 36px rgba(16,24,32,0.08); display: flex; flex-direction: column; }
   .support-card__image { position: relative; height: 210px; overflow: hidden; background: #ddd3c3; }
   .support-card__image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .45s ease; }
   .support-card:hover img { transform: scale(1.045); }
@@ -301,7 +301,7 @@ const planningFactors = [
   .support-card a, .route-step button, .route-form button { display: inline-flex; align-items: center; justify-content: center; margin-top: 1rem; border: 0; border-radius: 999px; background: #07110d; color: #fff8ec; padding: .82rem 1rem; font-size: .78rem; font-weight: 900; text-decoration: none; cursor: pointer; }
   .support-card a { align-self: flex-start; margin-top: auto; transform: translateY(1rem); }
 
-  .planning-section { background: #f7f2e9; padding: clamp(3rem, 6vw, 5.5rem) 1rem; }
+  .planning-section { background: var(--at-section-light); padding: clamp(3rem, 6vw, 5.5rem) 1rem; }
   .planning-panel { width: min(1180px, 100%); margin: 0 auto; display: grid; grid-template-columns: .82fr 1.18fr; gap: 2rem; align-items: start; border-radius: 34px; background: #fffaf2; border: 1px solid rgba(16,24,32,.1); padding: clamp(1.5rem, 4vw, 3rem); box-shadow: 0 18px 42px rgba(16,24,32,.07); }
   .planning-copy { position: sticky; top: 1.5rem; }
   .planning-copy > p:last-child { max-width: 660px; margin: 1rem 0 0; }
@@ -332,7 +332,7 @@ const planningFactors = [
   .route-form label { display: grid; gap: .38rem; color: #f2eadf; font-size: .78rem; font-weight: 900; }
   .route-form input, .route-form select { width: 100%; border: 1px solid rgba(255,255,255,.18); border-radius: 13px; background: rgba(255,255,255,.08); color: #fff; padding: .9rem .95rem; font: inherit; outline: none; }
   .route-form input::placeholder { color: #bdb5a9; }
-  .route-form select option { color: #101820; background: #fff; }
+  .route-form select option { color: #101820; background: var(--at-surface); }
   .route-form input:focus, .route-form select:focus { border-color: #d3a24f; box-shadow: 0 0 0 3px rgba(211,162,79,.16); }
   .form-actions { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; }
   .form-actions a { color: #f0c982; font-size: .8rem; font-weight: 900; }
@@ -489,4 +489,7 @@ const planningFactors = [
 
   /* TRANSPORT-HERO-TEXT-COLOR-END */
 
+
+  /* Ivory theme: small gold labels on the wallpaper use the AA gold token. */
+  :is(.transport-intro, .support-section, .planning-section) .eyebrow { color: var(--at-gold-text); }
 </style>

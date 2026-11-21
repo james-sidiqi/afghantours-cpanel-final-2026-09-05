@@ -865,7 +865,7 @@ const categories = [
 
 <style>
   .food-page {
-    background: #fbf6ed;
+    background: var(--at-section-light);
     color: #101820;
   }
 
@@ -1116,7 +1116,7 @@ const categories = [
     min-height: 245px;
     border: 1px solid rgba(16,24,32,.12);
     border-radius: 1rem;
-    background: #fff;
+    background: var(--at-surface);
     padding: 1.25rem;
     color: #101820;
     box-shadow: 0 16px 38px rgba(28,20,11,.08);
@@ -1305,7 +1305,7 @@ const categories = [
 
   .experience-hub-title {
     margin: 0 0 1rem;
-    color: #b98237;
+    color: var(--at-gold-text);
     font-family: Georgia, "Times New Roman", serif;
     font-size: 1.8rem;
   }
@@ -1450,4 +1450,7 @@ const categories = [
   .food-card .food-card__noimg--pending { flex-direction:column; gap:.6rem; background:repeating-linear-gradient(135deg,#1b2630 0 16px,#16202a 16px 32px); }
   .food-card .food-card__noimg--pending small { font-family:inherit; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
     border:1px solid rgba(243,231,200,.55); border-radius:999px; padding:.3rem .75rem; }
+
+  /* Ivory theme: small gold labels on the wallpaper use the AA gold token. */
+  .food-page .kicker { color: var(--at-gold-text); }
 </style>

@@ -20,14 +20,26 @@
   /* Brand */
   --at-ink: #101820;
   --at-text: #374151;
-  --at-muted: #6b7280;
+  --at-muted: #5d636f; /* was #6b7280; darkened for AA on the ivory wallpaper */
   --at-gold: #d6a23a;
-  --at-gold-text: #9a6517;
+  --at-gold-text: #885914; /* was #9a6517; darkened for AA (>=4.5:1) on the ivory wallpaper */
   --at-gold-light: #f3b72d;
   --at-paper: #fbf6ed;
   --at-sand: #efe8dc;
   --at-white: #ffffff;
   --at-footer: #06110d;
+  --at-green: #0f241b;        /* deep Afghan green: header and selected contrast bands */
+  --at-green-dark: #0a1a13;
+  --at-surface: #fffdf8;      /* solid warm white for cards, panels and form fields */
+
+  /* Ivory Afghan-textile wallpaper (seamless 768x674 tile, light sections only).
+     Light sections use --at-section-light (transparent) so the page wallpaper
+     runs continuously behind them; never place it over hero or photo areas. */
+  --at-wallpaper-color: #fcf0dd; /* mean colour of the tile, shown while it loads */
+  --at-wallpaper-image: url("/assets/images/backgrounds/afghan-textile-ivory.webp");
+  --at-wallpaper-size: 640px auto;
+  --at-wallpaper: var(--at-wallpaper-color) var(--at-wallpaper-image) repeat 0 0 / var(--at-wallpaper-size);
+  --at-section-light: transparent;
 
   /* Layout */
   --content-max: 1280px;

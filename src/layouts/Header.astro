@@ -136,8 +136,8 @@ const informationLinks = [
 <style>
   /* Opaque by design: literal fallbacks so the header never turns transparent if tokens fail to load. */
   .site-header {
-    --hdr-bg: #0f241b;
-    --hdr-bg-2: #0a1a13;
+    --hdr-bg: var(--at-green, #0f241b);
+    --hdr-bg-2: var(--at-green-dark, #0a1a13);
     --hdr-text: #f4efe4;
     --hdr-gold: var(--at-gold, #d6a23a);
     position: sticky;
