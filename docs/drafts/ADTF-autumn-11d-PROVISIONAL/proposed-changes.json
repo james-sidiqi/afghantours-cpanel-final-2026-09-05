@@ -1,0 +1,53 @@
+{
+  "_status": "PROVISIONAL — owner-requested route redesign pending final owner approval (batch AFGHANTOURS-TOUR-REVISIONS-01-05). NOT applied to data/. Do not publish the 11-day duration or route until approved.",
+  "tours_csv": {
+    "duration_days": "11",
+    "summary": "Eleven autumn days by road: Kabul, the Ghaznavid capital at Ghazni, Kandahar in pomegranate season, then the Bamyan valley and Band-e-Amir. Private 4WD throughout, no domestic flights.",
+    "regions": "Central;South",
+    "provinces": "Kabul;Wardak;Ghazni;Zabul;Kandahar;Parwan;Bamyan",
+    "min_group_size": "6",
+    "max_group_size": "18",
+    "group_size_display": "Group departures 6–18 (minimum 6 confirmed) · private on request",
+    "accommodation_note": "Kabul nights 1, 2, 6 and 10; Ghazni night 3; Kandahar nights 4 and 5; Bamyan nights 7, 8 and 9. Hotels for Ghazni and Kandahar to be confirmed.",
+    "transport_note": "Private 4WD throughout; no domestic flights"
+  },
+  "catalog": {
+    "duration_days": 11,
+    "nights": 10,
+    "duration_display": "11 days / 10 nights",
+    "price_note": "Price NOT changed (reference 1950 USD approved for the 9-day Herat route). Commercial re-costing review required."
+  },
+  "departures": "Existing ADTF departures in data/booking/departures.json are 9-day records (DEP-ADTF-20261107 proposed, DEP-ADTF-20270918/20271016/20271106 proposed; 20260921 and 20261012 history). Promotion requires an owner decision on each record; the validator will fail until durations match.",
+  "on_approval_also": [
+    "src/content/provinces/herat.md: remove afghanistan-discovery-tour-fall from related_tour_slugs",
+    "src/content/provinces/ghazni.md, kandahar.md, zabul.md: add afghanistan-discovery-tour-fall to related_tour_slugs",
+    "src/content/cultural-experiences/glassblowers-of-herat.md: remove afghanistan-discovery-tour-fall from related_tours",
+    "data/tour_inclusions.csv ADTF 'Fall route planning' row (currently malformed/inactive): review",
+    "src/content/hubs/bamyan-city.md and other text naming the Discovery Tours 'spring and fall' via Herat: review"
+  ],
+  "images_dropping_out_on_approval": [
+    "HER-001 Herat Old City & Bazaars — /assets/images/attractions/herat-old-city-bazaars/hero.webp (no longer linked from this tour; file kept, used elsewhere)",
+    "HER-002 Herat Citadel — /assets/images/attractions/herat-citadel-qala-ye-ikhtiyaruddin/hero.webp",
+    "HER-003 Herat Friday Mosque — /assets/images/attractions/herat-friday-mosque-masjid-e-jami/hero.webp",
+    "HER-004 Herat Minarets — /assets/images/attractions/herat-minarets-musalla-complex/hero.webp",
+    "PRW-001 Salang Pass — /assets/images/attractions/salang-pass/hero.webp",
+    "Sadaf Hotel (Herat standard hotel) card image — drops out of the accommodation section",
+    "Tour folder /assets/images/tours/featured/afghanistan-discovery-tour-fall/ (01, hero = Paghman arch, overview) — no Herat images found; kept"
+  ],
+  "added_by_route": [
+    "GHZ-001 Ghazni Minarets",
+    "GHZ-002 Bala Hisar of Ghazni (Ghazni Citadel)",
+    "GHZ-003 Tomb of Sultan Mahmud",
+    "KDR-001 Tomb of Ahmad Shah Durrani",
+    "KDR-004 Mosque of the Sacred Cloak (exterior where permitted)",
+    "KDR-005 Chilzina and the Forty Steps",
+    "BMY-006 Dragon Valley"
+  ],
+  "no_catalog_id_yet": [
+    "Ghazni Traditional Bazaar",
+    "Arghandab Valley",
+    "Kandahar pomegranate harvest experience",
+    "Bamyan Market",
+    "Bamyan dairy and qurut experience"
+  ]
+}
