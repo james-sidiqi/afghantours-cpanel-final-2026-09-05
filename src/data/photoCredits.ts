@@ -571,6 +571,17 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "source": "",
     "alt": "Shoppers walking along Chicken Street in Kabul in winter",
     "note": "James-supplied (t271). Already the live hero and card; the Casimiri Commons shop photo was removed from the gallery 22 Nov 2026 (t447u)."
+  },
+  {
+    "paths": [
+      "/assets/images/food/dishes/bolani/owner-bolani-plated-20261122.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "A stack of pan-fried bolani on a blue-and-gold scalloped plate, one piece showing a green herb filling, with green chillies and naan behind",
+    "note": "James-supplied photograph (t453u). Used as the Bolani hero and Food & Culture card."
   }
 ];
 const byPath = new Map<string, PhotoCredit>();

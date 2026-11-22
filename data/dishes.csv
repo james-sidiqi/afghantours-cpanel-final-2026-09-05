@@ -2,7 +2,7 @@ dish_code,name,slug,region_code,province_code,destination_code,category,meal_typ
 AF-KBL-PUL,Qabuli Palaw,kabuli-palaw,CENTRAL,KBL,KBLC,Main,Dinner,0,1,12,Afghanistan's national rice dish with lamb carrots and raisins.,/assets/images/food/dishes/kabuli-palaw/hero.webp,TRUE
 AF-KBL-MAN,Mantu,mantu,CENTRAL,KBL,KBLC,Main,Lunch,0,1,12,Steamed dumplings filled with meat and topped with yogurt and lentils.,/assets/images/food/dishes/mantu/hero.webp,TRUE
 AF-KBL-ASH,Ashak,ashak,CENTRAL,KBL,KBLC,Main,Lunch,0,1,12,Dumplings filled with leeks and topped with yogurt and meat sauce.,/assets/images/food/dishes/aushak/hero.webp,TRUE
-AF-KBL-BOL,Bolani,bolani,CENTRAL,KBL,KBLC,Street Food,Snack,0,1,12,Stuffed flatbread filled with potato pumpkin or leeks.,/assets/images/food/dishes/bolani/owner-bolani.webp,TRUE
+AF-KBL-BOL,Bolani,bolani,CENTRAL,KBL,KBLC,Street Food,Snack,0,1,12,Stuffed flatbread filled with potato pumpkin or leeks.,/assets/images/food/dishes/bolani/owner-bolani-plated-20261122.webp,TRUE
 AF-NGH-CHK,Chapli Kabob,chapli-kabob,EAST,NGH,JBDC,Main,Lunch,0,1,12,Famous eastern Afghan chapli kabob traditionally enjoyed in Jalalabad including at Adam Khan Restaurant.,/assets/images/food/dishes/chapli-kabob/hero.webp,TRUE
 AF-KBL-SHO,Shola,shola,CENTRAL,KBL,KBLC,Main,Dinner,0,1,12,Traditional rice and lentil dish slow cooked with spices.,/assets/images/placeholders/default-food.webp,TRUE
 AF-KBL-QGS,Qorma-e Gosht,qorma-e-gosht,CENTRAL,KBL,KBLC,Main,Dinner,0,1,12,Traditional Afghan meat stew served with rice.,/assets/images/placeholders/default-food.webp,TRUE

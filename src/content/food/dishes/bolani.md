@@ -3,10 +3,10 @@ title: Bolani
 food_slug: bolani
 section: food_content
 save_to: src/content/food/dishes/bolani.md
-hero_image: "/assets/images/food/dishes/bolani/owner-bolani.webp"
-image: "/assets/images/food/dishes/bolani/owner-bolani.webp"
-card_image: "/assets/images/food/dishes/bolani/owner-bolani.webp"
-gallery_images: ["/assets/images/food/dishes/bolani/hero.webp", "/assets/images/food/dishes/bolani/gallery-1.webp", "/assets/images/food/dishes/bolani/owner-bolani-stand.webp"]
+hero_image: "/assets/images/food/dishes/bolani/owner-bolani-plated-20261122.webp"
+image: "/assets/images/food/dishes/bolani/owner-bolani-plated-20261122.webp"
+card_image: "/assets/images/food/dishes/bolani/owner-bolani-plated-20261122.webp"
+gallery_images: ["/assets/images/food/dishes/bolani/owner-bolani.webp", "/assets/images/food/dishes/bolani/hero.webp", "/assets/images/food/dishes/bolani/gallery-1.webp", "/assets/images/food/dishes/bolani/owner-bolani-stand.webp"]
 gallery_mode: "explicit"
 gallery_exclude_hero: true
 ---

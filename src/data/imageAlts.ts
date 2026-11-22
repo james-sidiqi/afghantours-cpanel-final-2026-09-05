@@ -1,6 +1,8 @@
 // Alt text for images whose photo credit is still pending (no visible credit line yet).
 // Credits are tracked in docs/image-register-*.csv; move an entry to photoCredits.ts once confirmed.
 export const IMAGE_ALTS: Record<string, string> = {
+  // Owner-supplied Bolani photograph, 22 Nov 2026 (t453u)
+  '/assets/images/food/dishes/bolani/owner-bolani-plated-20261122.webp': 'A stack of pan-fried bolani on a blue-and-gold scalloped plate, one piece showing a green herb filling, with green chillies and naan behind',
   // Owner-supplied Sugarcane photographs, 22 Nov 2026 (t452u)
   '/assets/images/food/produce/jalalabad-sugarcane/hero.webp': 'Clear bags of cut sugarcane pieces and red crates of cane cubes on a market stall',
   '/assets/images/food/produce/jalalabad-sugarcane/card.webp': 'An older man in a white cap and striped apron cutting a sugarcane stalk beside a juice press',
