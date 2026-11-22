@@ -8,6 +8,7 @@ export const IMAGE_ALTS: Record<string, string> = {
   '/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-04-pistachio-swirls.webp': 'Bakery display case with stacked cookies, green pistachio swirls, sausage-shaped pastries and cream rolls',
   '/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-05-assorted-trays.webp': 'Bakery shelves of orange cookies, cream buns, waffle biscuits, iced buns with chocolate dots, coconut macaroons and stacked sweet boxes',
   '/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-06-street-front-display.webp': 'Street-front bakery display of filled pastries, cream rolls, square biscuits and chocolate buns',
+  '/assets/images/experiences/culinary/kabul-chainaki/gallery/01.webp': 'A floral enamel teapot standing among rows of metal cooking pots',
   '/assets/images/experiences/culinary/kabul-chainaki/gallery/02.webp': 'Open teapots of chainaki stew, with meat and broth cooked in the pots, seen from above',
   // Owner-supplied photographs, 21 Nov 2026
   '/assets/images/food/sweets/sheer-khurma/hero-owner-20261121.webp': 'Sheer khurma topped with a date in a glass bowl',

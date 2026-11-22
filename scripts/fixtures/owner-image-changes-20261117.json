@@ -80,8 +80,10 @@
     "h1": "Haji Aziz Bakery"
   },
   "/cultural-experiences/culinary/kabul-chainaki/": {
-    "hero": "/assets/images/experiences/culinary/kabul-chainaki/gallery/02.webp",
-    "gallery": [],
+    "hero": "/assets/images/experiences/culinary/kabul-chainaki/gallery/01.webp",
+    "gallery": [
+      "/assets/images/experiences/culinary/kabul-chainaki/gallery/02.webp"
+    ],
     "h1": "Traditional Chainaki in Kabul"
   },
   "/activities/hiking/": {

@@ -91,7 +91,7 @@ const plan = [
     slug: 'kandahari-rosh',
     heroes: [
       '/assets/images/food/dishes/kandahari-rosh/hero.webp',
-      '/assets/images/food/dishes/kandahari-rosh/hero.png',
+      '/assets/images/food/dishes/kandahari-rosh/hero.webp',
     ],
     galleryFrom: ['/assets/images/food/dishes/kandahari-rosh'],
   },
