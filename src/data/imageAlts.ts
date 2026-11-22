@@ -4,6 +4,7 @@ export const IMAGE_ALTS: Record<string, string> = {
   // Owner-supplied Herat photographs, 22 Nov 2026 (t457u)
   '/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-musalla-overview.webp': 'An overview of the Musalla complex in Herat, with the remaining minarets standing among the city',
   '/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-mausoleum.webp': 'The exterior of the tomb of Gohar Shad at the Musalla complex in Herat, with its ribbed blue dome',
+  '/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-mausoleum-card.webp': 'The ribbed dome of the tomb of Gohar Shad at the Musalla complex in Herat, seen above its tiled brick facade',
   '/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-up-close.webp': 'Close view of the tiled drum of the tomb of Gohar Shad at the Musalla complex in Herat',
   '/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside.webp': 'The interior of the tomb of Gohar Shad at the Musalla complex in Herat, with stone grave markers on a red carpet',
   '/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside-2.webp': 'The tomb of Gohar Shad in Herat, looking toward the stained-glass windows at the far end',

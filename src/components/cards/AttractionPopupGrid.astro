@@ -1,7 +1,7 @@
 ---
-import { getAttractionImage } from '../../lib/images';
+import { getAttractionCardImage } from '../../lib/images';
 import { regionDisplayName } from '../../lib/regionNames';
-import { ATTRACTION_OVERRIDES } from '../../data/attractionOverrides';
+import { ATTRACTION_OVERRIDES, attractionCardImgStyle } from '../../data/attractionOverrides';
 import {
   buildAttractionTopMeta,
   buildAttractionTravelerNotes,
@@ -35,7 +35,7 @@ const normalized = attractions
     const slug = a.slug || clean(a.href).replace(/^\/attractions\//, '').replace(/\/$/, '');
     const desc = strip(a.desc_short || a.excerpt || a.summary || a.description || a.desc_long || a.content || '');
     const long = strip(a.desc_long || a.description || a.content || a.desc_short || a.excerpt || '');
-    const image = getAttractionImage(a);
+    const image = getAttractionCardImage(a);
     const province = a.province || a.province_name || a.province_code || '';
     const region = regionDisplayName(a.region || '');
     const category = a.category || 'Attraction';
@@ -56,6 +56,7 @@ const normalized = attractions
       desc,
       long: ATTRACTION_OVERRIDES[slug]?.popupAbout || long,
       image,
+      cardStyle: attractionCardImgStyle(slug),
       href: a.href || `/attractions/${slug}/`,
       duration,
       access,
@@ -90,7 +91,7 @@ const normalized = attractions
         {normalized.map((item, index) => (
           <button type="button" class="attraction-popup-card" data-attraction-index={index} aria-label={`Preview ${item.title}`}>
             <div class="attraction-card-image">
-              <img src={item.image} alt={item.title} loading="lazy" />
+              <img src={item.image} alt={item.title} loading="lazy" style={item.cardStyle} />
             </div>
             <div class="attraction-card-body">
               <p class="card-kicker">{item.province || item.region || 'Afghanistan'}</p>

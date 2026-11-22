@@ -1,5 +1,6 @@
 ---
-import { getPreferredImage, getAttractionImage } from '../../lib/images';
+import { getAttractionCardImage } from '../../lib/images';
+import { attractionCardImgStyle } from '../../data/attractionOverrides';
 const {
   attractions = [],
   title = "Featured Attractions",
@@ -8,7 +9,7 @@ const {
   embedded = false,
 } = Astro.props;
 
-function imageFor(item) { return getPreferredImage(item); }
+function imageFor(item) { return getAttractionCardImage(item); }
 
 function summaryFor(item) {
   return (
@@ -51,6 +52,7 @@ const featured = attractions.slice(0, 8);
               src={imageFor(item)}
               alt={item.name || item.title || "Tour attraction"}
               loading="lazy"
+              style={attractionCardImgStyle(item.slug)}
             />
 
             <div>

@@ -5,6 +5,7 @@ export type AttractionOverride = {
   ctaLabel?: string;
   heroLayout?: 'panorama';
   heroObjectPosition?: string; // CSS object-position for the hero image only
+  cardObjectPosition?: string; // CSS object-position for listing cards only; do not change shared card CSS
   heroAlt?: string;
   heroSrcset?: string;
   regionLabel?: string;
@@ -66,4 +67,17 @@ export const ATTRACTION_OVERRIDES: Record<string, AttractionOverride> = {
   'herat-old-city-bazaars': {
     heroObjectPosition: '40% center',
   },
+  // t477: portrait exterior (Mausoleum-3). Hero is biased up so the ribbed dome
+  // stays in the wide desktop crop; cards use a dedicated 16:9 crop and sit at
+  // the top so wide tiles do not recrop the dome off.
+  'gawhar-shad-mausoleum': {
+    heroObjectPosition: 'center 15%',
+    cardObjectPosition: 'center top',
+  },
 };
+
+export function attractionCardImgStyle(slug?: string): string | undefined {
+  if (!slug) return undefined;
+  const pos = ATTRACTION_OVERRIDES[slug]?.cardObjectPosition;
+  return pos ? `object-position: ${pos}` : undefined;
+}

@@ -665,7 +665,7 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "note": "James-supplied photograph (t457u). Experience hero and Musalla attraction gallery."
   },
   {
-    "paths": ["/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-mausoleum.webp"],
+    "paths": ["/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-mausoleum.webp", "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-mausoleum-card.webp"],
     "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
     "alt": "The exterior of the tomb of Gohar Shad at the Musalla complex in Herat, with its ribbed blue dome",
     "note": "James-supplied photograph (t457u)."
