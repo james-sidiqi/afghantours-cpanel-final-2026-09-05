@@ -1,6 +1,13 @@
 // Alt text for images whose photo credit is still pending (no visible credit line yet).
 // Credits are tracked in docs/image-register-*.csv; move an entry to photoCredits.ts once confirmed.
 export const IMAGE_ALTS: Record<string, string> = {
+  // Owner-supplied Sugarcane photographs, 22 Nov 2026 (t452u)
+  '/assets/images/food/produce/jalalabad-sugarcane/hero.webp': 'Clear bags of cut sugarcane pieces and red crates of cane cubes on a market stall',
+  '/assets/images/food/produce/jalalabad-sugarcane/card.webp': 'An older man in a white cap and striped apron cutting a sugarcane stalk beside a juice press',
+  '/assets/images/food/produce/jalalabad-sugarcane/gallery-1-vendor-bags.webp': 'A vendor in a grey shirt and green gloves cutting sugarcane behind red crates and clear bags of cane cubes',
+  '/assets/images/food/produce/jalalabad-sugarcane/gallery-2-crates-stalks.webp': 'Red crates of cut sugarcane pieces and whole stalks on a stall, with a vendor in green gloves holding a cutter and a juice-press wheel behind',
+  '/assets/images/food/produce/jalalabad-sugarcane/gallery-3-juice-pour.webp': 'A man in an embroidered cap pouring sugarcane juice from a steel jug into a glass, with a press wheel and cane stalks behind him',
+  '/assets/images/food/produce/jalalabad-sugarcane/gallery-4-cutting-cane.webp': 'An older man in a white cap and striped apron cutting a sugarcane stalk beside a juice press',
   // Owner-supplied Haji Aziz Bakery photographs, 22 Nov 2026
   '/assets/images/experiences/culinary/aziz-bakery/owner-haji-aziz-hero.webp': 'Storefront of Haji Aziz Bakery on a paved street, with a window display of stacked cookies and a sign in Dari and English',
   '/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-01-stacked-cookies.webp': 'Stacked round cookies in a bakery display case, with pastry rolls on the shelf below and the street visible through the glass',

@@ -1048,5 +1048,11 @@
   "/assets/images/food/dishes/shola": [],
   "/assets/images/food/dried-fruits/dried-mulberries": [
     "/assets/images/food/dried-fruits/dried-mulberries/dark-dried-mulberries.webp"
+  ],
+  "/assets/images/food/produce/jalalabad-sugarcane": [
+    "/assets/images/food/produce/jalalabad-sugarcane/gallery-1-vendor-bags.webp",
+    "/assets/images/food/produce/jalalabad-sugarcane/gallery-2-crates-stalks.webp",
+    "/assets/images/food/produce/jalalabad-sugarcane/gallery-3-juice-pour.webp",
+    "/assets/images/food/produce/jalalabad-sugarcane/gallery-4-cutting-cane.webp"
   ]
 }

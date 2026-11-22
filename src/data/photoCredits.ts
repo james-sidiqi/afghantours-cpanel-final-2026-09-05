@@ -183,15 +183,69 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "note": "Illustrative photo: Kashtun village, Waygal valley, Nuristan Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/attractions/nuristan-national-park/gallery-mountainside-trees.webp, /assets/images/attractions/barg-e-matal-lakes/thumb.webp."
   },
   {
-    "paths": [
-      "/assets/images/food/produce/jalalabad-sugarcane/hero.webp"
-    ],
+    "paths": [],
     "author": "SPC Vang Seng Thao",
     "license": "Public domain",
     "licenseUrl": "",
     "source": "https://commons.wikimedia.org/wiki/File:Afghan_residents_sell_sugarcane_in_the_market_district_of_Jalalabad,_Nangarhar_province,_Afghanistan,_June_1,_2013_130601-A-WI517-037.jpg",
     "alt": "Sugarcane for sale in a Jalalabad market",
-    "note": ""
+    "note": "Withdrawn from public 22 Nov 2026 (t452u, owner-supplied replacements). File kept in unpublished-assets/sugarcane-replaced-20261122/. Former public path: /assets/images/food/produce/jalalabad-sugarcane/hero.webp."
+  },
+  {
+    "paths": [
+      "/assets/images/food/produce/jalalabad-sugarcane/hero.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Clear bags of cut sugarcane pieces and red crates of cane cubes on a market stall",
+    "note": "James-supplied photograph (t452u). Landscape crop of the vendor-and-bags stall photo, used as the Sugarcane hero."
+  },
+  {
+    "paths": [
+      "/assets/images/food/produce/jalalabad-sugarcane/gallery-1-vendor-bags.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "A vendor in a grey shirt and green gloves cutting sugarcane behind red crates and clear bags of cane cubes",
+    "note": "James-supplied photograph (t452u)."
+  },
+  {
+    "paths": [
+      "/assets/images/food/produce/jalalabad-sugarcane/gallery-2-crates-stalks.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Red crates of cut sugarcane pieces and whole stalks on a stall, with a vendor in green gloves holding a cutter and a juice-press wheel behind",
+    "note": "James-supplied photograph (t452u)."
+  },
+  {
+    "paths": [
+      "/assets/images/food/produce/jalalabad-sugarcane/gallery-3-juice-pour.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "A man in an embroidered cap pouring sugarcane juice from a steel jug into a glass, with a press wheel and cane stalks behind him",
+    "note": "James-supplied photograph (t452u). The file looks heavily retouched."
+  },
+  {
+    "paths": [
+      "/assets/images/food/produce/jalalabad-sugarcane/card.webp",
+      "/assets/images/food/produce/jalalabad-sugarcane/gallery-4-cutting-cane.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "An older man in a white cap and striped apron cutting a sugarcane stalk beside a juice press",
+    "note": "James-supplied photograph (t452u). Export metadata records Apple Photos Clean Up. Used as the Sugarcane card image."
   },
   {
     "paths": [
