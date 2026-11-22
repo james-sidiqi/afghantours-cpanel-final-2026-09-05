@@ -130,6 +130,15 @@ export function getAttractionImage(item: any): string {
     code ? `/assets/images/attractions/${code}/hero.webp` : null, code ? `/assets/images/attractions/${code}.webp` : null,
     item?.slug ? `/assets/images/attractions/${item.slug}/card.webp` : null], PLACEHOLDERS.attraction);
 }
+/** Listing-card image. Prefers a dedicated card/thumb crop when one is set. */
+export function getAttractionCardImage(item: any): string {
+  const merged = { ...item, ...((ownerSelections as Record<string, any>)[`attractions/${item?.slug}`] || {}) };
+  if (merged?.card_image) {
+    const src = normalizeImagePath(merged.card_image, '');
+    if (hasRealImage(src)) return src;
+  }
+  return getAttractionImage(merged);
+}
 export function buildGallery(entity: any, fallbackType: keyof typeof PLACEHOLDERS = 'card'): string[] {
   let supplied = entity?.gallery_images;
   if (typeof supplied === 'string') {

@@ -1,5 +1,6 @@
 ---
-import { getPreferredImage, getAttractionImage } from '../../lib/images';
+import { getPreferredImage, getAttractionCardImage } from '../../lib/images';
+import { attractionCardImgStyle } from '../../data/attractionOverrides';
 import { attractions, locations, hotels, dishes } from "../../lib/data";
 
 const { itinerary = [] } = Astro.props;
@@ -24,6 +25,8 @@ function titleCaseHyphen(value) {
 }
 
 function imageFor(item) { return getPreferredImage(item); }
+function attractionImage(item) { return getAttractionCardImage(item); }
+
 
 function textFor(item) {
   return (
@@ -251,15 +254,16 @@ import { getFoodHref } from '../../lib/buildRelations';
                             onclick={`document.getElementById('${attractionDialogId}').showModal()`}
                             data-preview-card
                             data-preview-title={attraction.name}
-                            data-preview-image={imageFor(attraction)}
+                            data-preview-image={attractionImage(attraction)}
                             data-preview-text={textFor(attraction)}
                             class="overflow-hidden rounded-[1.5rem] bg-[#fbf8f2] text-left shadow-sm transition hover:-translate-y-1 hover:shadow-lg"
                           >
                             <img
-                              src={imageFor(attraction)}
+                              src={attractionImage(attraction)}
                               alt={attraction.name}
                               loading="lazy"
                               class="h-44 w-full object-cover"
+                              style={attractionCardImgStyle(attraction.slug)}
                             />
                             <div class="p-5">
                               <p class="text-xs font-black uppercase tracking-[0.18em] text-amber-700">
@@ -275,7 +279,7 @@ import { getFoodHref } from '../../lib/buildRelations';
                           <dialog id={attractionDialogId} class="w-[min(760px,92vw)] rounded-[2rem] p-0 backdrop:bg-black/70">
                             <div class="max-h-[86vh] overflow-y-auto bg-white text-stone-950">
                               <img
-                                src={imageFor(attraction)}
+                                src={attractionImage(attraction)}
                                 alt={attraction.name}
                                 class="h-72 w-full bg-stone-950 object-contain"
                               />
@@ -437,7 +441,7 @@ import { getFoodHref } from '../../lib/buildRelations';
                 <div class="overflow-hidden rounded-2xl bg-stone-950">
                   <img
                     data-preview-image-target
-                    src={attractionsForDay[0] ? imageFor(attractionsForDay[0]) : imageFor(hub)}
+                    src={attractionsForDay[0] ? attractionImage(attractionsForDay[0]) : imageFor(hub)}
                     alt={day.title || day.location || `Day ${index + 1}`}
                     loading="lazy"
                     class="h-52 w-full object-cover"

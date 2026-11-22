@@ -11,7 +11,7 @@ import {
 } from './buildRelations';
 import { ACTIVE_HUB_SLUGS, getActivitiesForHub, getCulturalForHub } from './experiences';
 import { getCulinaryForHub } from './culinary';
-import { getCulturalExperienceImage, listPublicImages, listGalleryImages, cleanGallery, normalizeImagePath } from './images';
+import { getAttractionCardImage, getCulturalExperienceImage, listPublicImages, listGalleryImages, cleanGallery, normalizeImagePath } from './images';
 import ownerSelections from '../data/ownerImageSelections.json';
 
 type Row = Record<string, any>;
@@ -235,7 +235,7 @@ export function buildHubIndexCatalog(): HubCatalogItem[] {
       .slice(0, 6)
       .map((a): [string, string, string] => [
         String(a.title || a.name || a.slug),
-        String(a.hero_image || a.hero_image_path || a.image || `/assets/images/attractions/${a.slug}/hero.webp`),
+        getAttractionCardImage(a),
         `/attractions/${a.slug}/`,
       ]);
 
