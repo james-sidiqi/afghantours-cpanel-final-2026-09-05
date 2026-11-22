@@ -16,7 +16,7 @@ hero_image: "/assets/images/hubs/mazar-e-sharif/hero.webp"
 gallery_images: []
 gallery_mode: "explicit"
 nearby: ["Blue Mosque", "Mazar Bazaar", "Ancient Balkh"]
-related_tours: ["afghanistan-discovery-tour-spring", "afghanistan-discovery-tour-fall", "treasures-of-silk-road-afghanistan", "custom-tours"]
+related_tours: ["treasures-of-silk-road-afghanistan", "custom-tours"]
 ---
 
 Mazar-e-Sharif is not only the Blue Mosque and buzkashi. It is also a city of sweets, tea houses, nuts, sesame, and northern Afghan food traditions. This culinary experience explores Mazar’s traditional sweets and market culture rather than a single dessert.
