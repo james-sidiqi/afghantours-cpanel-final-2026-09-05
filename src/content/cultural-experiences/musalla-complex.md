@@ -11,7 +11,6 @@ hero_image: "/assets/images/attractions/herat-minarets-musalla-complex/owner-202
 gallery_images:
   - "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-mausoleum.webp"
   - "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-up-close.webp"
-  - "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside.webp"
   - "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside-2.webp"
   - "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside-3.webp"
   - "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-musalla-minaret.webp"

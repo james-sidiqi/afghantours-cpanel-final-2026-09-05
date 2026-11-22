@@ -5,6 +5,8 @@ subtitle: "Easy rides in and around Kabul when the weather and roads allow."
 card_description: "Relaxed cycling around Kabul — our team plans the route and timing with you."
 best_season: "Varies (subject to conditions)"
 duration: "Varies — typically 1–3 hours; discuss during planning"
+hero_image: "/assets/images/experiences/activities/cycling/owner-20261122-bandeamir-riders-hero.webp"
+card_image: "/assets/images/experiences/activities/cycling/owner-20261122-bandeamir-riders-hero.webp"
 ---
 
 Cycling around **Kabul** is a relaxed way to see the city's quieter neighbourhoods and its edges, when traffic and road conditions are good.

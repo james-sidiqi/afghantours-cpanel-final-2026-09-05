@@ -6,9 +6,18 @@ intro_heading: "Among the remains of old Balkh"
 places_heading: "Places in this visit"
 experience_type: "Historic City Visit"
 provinces: ["Balkh"]
-hero_image: "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-walls.webp"
-gallery_images: ["/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-tower.webp", "/assets/images/attractions/tomb-of-rabia-balkhi/balkh-rabia-balkhi-tomb.webp", "/assets/images/attractions/rumi-home-madrasa/balkh-rumi-house.webp"]
-gallery_exclude: ["/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-walls.webp"]
+hero_image: "/assets/images/experiences/cultural/ancient-city-of-balkh/owner-20261122-balkh-overview-aerial.webp"
+gallery_images:
+  - "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-ancient-city-panorama.webp"
+  - "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-wall-pavilion-portrait.webp"
+  - "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-octagonal-pavilion.webp"
+  - "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-walls.webp"
+  - "/assets/images/attractions/haji-piyada-nine-domes/owner-20261122-haji-piyada-arches.webp"
+  - "/assets/images/attractions/rumi-home-madrasa/owner-20261122-rumi-madrasa-shelter.webp"
+  - "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-tower.webp"
+  - "/assets/images/attractions/tomb-of-rabia-balkhi/balkh-rabia-balkhi-tomb.webp"
+  - "/assets/images/attractions/rumi-home-madrasa/balkh-rumi-house.webp"
+gallery_exclude_hero: true
 nearby: ["Balkh", "Mazar-e-Sharif"]
 related_attractions:
   - balkh-bala-hisar-ancient-walls

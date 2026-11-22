@@ -394,16 +394,13 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "note": " Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/tours/custom/veteran-return/hero.webp, /assets/images/tours/custom/veteran-return/thumb.webp, /assets/images/tours/custom/veteran-return/thumbnail.webp."
   },
   {
-    "paths": [
-      "/assets/images/experiences/activities/cycling/hero.webp",
-      "/assets/images/experiences/activities/cycling/thumb.webp"
-    ],
+    "paths": [],
     "author": "Sgt. Ken Scar, U.S. Army",
     "license": "Public domain",
     "licenseUrl": "",
     "source": "https://commons.wikimedia.org/wiki/File:Boys_with_bicycles_in_Bamyan-2012.jpg",
     "alt": "Two local boys cycling up a dirt road in the Bamyan valley, the empty Buddha niche in the cliffs behind",
-    "note": "Editorial photo, 2012: local children, not tour guests"
+    "note": "Withdrawn from public 22 Nov 2026 (t460u). File kept in unpublished-assets/cycling-replaced-20261122/. Editorial photo, 2012: local children, not tour guests. Former public paths: /assets/images/experiences/activities/cycling/hero.webp, /assets/images/experiences/activities/cycling/thumb.webp."
   },
   {
     "paths": [
@@ -736,7 +733,119 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
     "alt": "The Malek cistern in Herat's old city, shown from outside and inside the vaulted hall",
     "note": "James-supplied photographs (t457u). Placed on the Herat Old City & Bazaars gallery; there is no standalone cistern page."
+  },
+
+  {
+    "paths": ["/assets/images/experiences/cultural/ancient-city-of-balkh/owner-20261122-balkh-overview-aerial.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "Aerial view of the ancient city of Balkh, with the tree-filled park and blue dome of the shrine of Abu Nasr Khwaja Parsa at the center",
+    "note": "James-supplied photograph (t458u). Experience hero for /cultural-experiences/ancient-city-of-balkh/."
+  },
+  {
+    "paths": [
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-octagonal-pavilion.webp",
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-ancient-city-panorama.webp",
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-wall-pavilion-portrait.webp"
+    ],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "The Bala Hisar and ancient city of Balkh: an octagonal pavilion, a wide view of the circular earthworks, and a view along the earthen walls",
+    "note": "James-supplied photographs (t459u). Gallery on the Bala Hisar attraction page; the panorama and wall views are also in the Ancient City of Balkh experience gallery."
+  },
+  {
+    "paths": ["/assets/images/attractions/haji-piyada-nine-domes/owner-20261122-haji-piyada-arches.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "The remaining arches and carved columns of Haji Piyada, the Nine Domes Mosque in Balkh, under a protective roof",
+    "note": "James-supplied photograph (t459u). Gallery only."
+  },
+  {
+    "paths": ["/assets/images/attractions/rumi-home-madrasa/owner-20261122-rumi-madrasa-shelter.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "The ruined mud-brick arches of Rumi's father's house in Balkh, standing under a steel conservation shelter",
+    "note": "James-supplied photograph (t459u). Gallery only."
+  },
+  {
+    "paths": [
+      "/assets/images/attractions/minaret-of-jam/owner-20261122-jam-aerial-river.webp",
+      "/assets/images/attractions/minaret-of-jam/owner-20261122-jam-minaret-mountains.webp"
+    ],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "The Minaret of Jam in Ghor, shown from above beside the river and from the valley against the mountains",
+    "note": "James-supplied photographs (t460u). Gallery only; existing hero kept."
+  },
+  {
+    "paths": [
+      "/assets/images/attractions/band-e-amir-national-park/owner-20261122-lakes-aerial.webp",
+      "/assets/images/attractions/band-e-amir-national-park/owner-20261122-blue-water-ledge.webp",
+      "/assets/images/attractions/band-e-amir-national-park/owner-20261122-cliffs-lake.webp",
+      "/assets/images/attractions/band-e-amir-national-park/owner-20261122-rock-pillar-aerial.webp"
+    ],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "Band-e-Amir in Bamyan: lakes, cliffs, and a rock ledge above blue water",
+    "note": "James-supplied photographs (t460u). Gallery only; existing hero kept."
+  },
+  {
+    "paths": ["/assets/images/experiences/activities/cycling/owner-20261122-bandeamir-riders-hero.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "Cyclists riding a dirt track beside a lake and cliffs at Band-e-Amir in Bamyan",
+    "note": "James-supplied photograph (t460u). Cycling activity hero and card, 16:9 crop."
+  },
+  {
+    "paths": [
+      "/assets/images/attractions/takht-e-rostam/owner-20261122-stupa-top.webp",
+      "/assets/images/attractions/takht-e-rostam/owner-20261122-stupa-aerial.webp"
+    ],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "The rock-cut stupa at Takht-e Rostam in Samangan, seen from the top and from above",
+    "note": "James-supplied photographs (t461u). Gallery only; existing hero kept. The Samangan roadside spring photos already in this gallery were left in place."
+  },
+  {
+    "paths": [
+      "/assets/images/attractions/chehel-burj-bamyan-ruins/owner-20261122-ridge-wide.webp",
+      "/assets/images/attractions/chehel-burj-bamyan-ruins/owner-20261122-towers-close.webp",
+      "/assets/images/attractions/chehel-burj-bamyan-ruins/owner-20261122-ruins-valley.webp"
+    ],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "The ruined towers of Chehel Burj in Bamyan, on a mountain ridge above a valley",
+    "note": "James-supplied photographs (t461u). ruins-valley is the new hero and card; the previous overcast hero is in unpublished-assets/chehel-burj-hero-20261122/."
+  },
+  {
+    "paths": ["/assets/images/attractions/nuristan-national-park/owner-20261122-forest-valley-river-road.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "A forested valley in Nuristan, with a river and a road along the valley floor",
+    "note": "James-supplied photograph (t462u). Gallery on Nuristan National Park and Nuristan River Valleys & Villages. Destination pages are hero-only and were not changed."
+  },
+  {
+    "paths": [
+      "/assets/images/attractions/wakhan-corridor/owner-20261122-suv-gravel-plain.webp",
+      "/assets/images/attractions/wakhan-corridor/owner-20261122-alpine-valley-stream.webp",
+      "/assets/images/attractions/wakhan-corridor/owner-20261122-golden-valley-snowpeaks.webp"
+    ],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "Landscapes in the Wakhan: a gravel plain, a green alpine valley, and a river under snow-covered peaks",
+    "note": "James-supplied photographs (t462u). Gallery on the Wakhan Corridor attraction page. The Wakhan trek tour remains unpublished."
+  },
+  {
+    "paths": [
+      "/assets/images/experiences/activities/trekking/owner-20261122-rocky-peaks-green-snow.webp",
+      "/assets/images/experiences/activities/trekking/owner-20261122-snow-range-aerial.webp"
+    ],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "Mountain landscapes: rocky peaks above a green valley, and an aerial view of a snow-covered range",
+    "note": "James-supplied photographs (t462u). Generic mountain landscapes, placed on the trekking activity gallery without naming a specific place."
+  },
+  {
+    "paths": ["/assets/images/attractions/herat-citadel-qala-ye-ikhtiyaruddin/owner-20261122-citadel-overview.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "Aerial view of the Herat Citadel (Qala-e Ikhtiyaruddin) in the old city, with a blue-domed mosque nearby",
+    "note": "James-supplied photograph (t463u). Gallery on the Herat Citadel attraction page and in the Herat hub catalog inventory. Existing citadel hero kept."
+  },
+  {
+    "paths": ["/assets/images/attractions/bala-hisar-of-ghazni/owner-20261122-ghazni-city-overview.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "Aerial view of Ghazni, with the walled city and the citadel on the hill",
+    "note": "James-supplied photograph (t463u). Gallery on the Bala Hisar of Ghazni attraction page and in the Ghazni hub catalog inventory. Destination pages are hero-only and were not changed."
   }
+
 ];
 const byPath = new Map<string, PhotoCredit>();
 PHOTO_CREDITS.forEach((c) => c.paths.forEach((p) => byPath.set(p, c)));

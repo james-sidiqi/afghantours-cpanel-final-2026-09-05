@@ -869,8 +869,7 @@ const uniqueGalleryImages = (items = []) =>
 
   {
     (
-      pairedFoods.length > 0 ||
-      nearby.length > 0
+      pairedFoods.length > 0
     ) && (
 
       <section class="pairings-section">
@@ -928,33 +927,6 @@ const uniqueGalleryImages = (items = []) =>
             )}
 
 
-            {nearby.length > 0 && (
-
-              <div class="pairing-card">
-
-                <span class="pairing-number">
-                  {pairedFoods.length > 0 ? '02' : '01'}
-                </span>
-
-                <h3>
-                  Complementary places
-                </h3>
-
-                <div class="pairing-pills">
-
-                  {nearby.map(
-                    (place) => (
-                      <span>
-                        {place}
-                      </span>
-                    )
-                  )}
-
-                </div>
-
-              </div>
-
-            )}
 
           </div>
 
