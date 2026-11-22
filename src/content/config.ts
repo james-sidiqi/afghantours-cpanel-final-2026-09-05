@@ -165,6 +165,9 @@ const culturalExperiencesCollection = defineCollection({
     paired_foods: z.array(z.string()).default([]),
     related_tours: z.array(z.string()).default([]),
     nearby: z.array(z.string()).default([]),
+    related_attractions: z.array(z.string()).default([]),
+    intro_heading: z.string().optional(),
+    places_heading: z.string().optional(),
 
     best_season: z.string().optional(),
     duration: z.string().optional(),

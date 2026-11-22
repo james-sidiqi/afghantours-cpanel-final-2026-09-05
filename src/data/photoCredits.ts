@@ -660,6 +660,82 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "source": "",
     "alt": "The same natural spring on the side of the road between Tangi Tashkurgan and the Salang, in Samangan province, from a wider angle showing the cliff and mountain above",
     "note": "James-supplied photograph (t455u). Gallery only, on the Takht-e Rostam and Salang Pass attraction pages."
+  },
+  {
+    "paths": ["/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-musalla-overview.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "An overview of the Musalla complex in Herat, with the remaining minarets standing among the city",
+    "note": "James-supplied photograph (t457u). Experience hero and Musalla attraction gallery."
+  },
+  {
+    "paths": ["/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-mausoleum.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "The exterior of the tomb of Gohar Shad at the Musalla complex in Herat, with its ribbed blue dome",
+    "note": "James-supplied photograph (t457u)."
+  },
+  {
+    "paths": ["/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-up-close.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "Close view of the tiled drum of the tomb of Gohar Shad at the Musalla complex in Herat",
+    "note": "James-supplied photograph (t457u)."
+  },
+  {
+    "paths": [
+      "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside.webp",
+      "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside-2.webp",
+      "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside-3.webp"
+    ],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "The interior of the tomb of Gohar Shad at the Musalla complex in Herat, with stone grave markers on a red carpet",
+    "note": "James-supplied photographs (t457u). Three interior views of the same tomb."
+  },
+  {
+    "paths": ["/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-musalla-minaret.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "One of the remaining minarets of the Musalla complex in Herat",
+    "note": "James-supplied photograph (t457u)."
+  },
+  {
+    "paths": ["/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-nava-i-mausoleum.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "The mausoleum of Mir Ali-Shir Nava'i at the Musalla complex in Herat",
+    "note": "James-supplied photograph (t457u). Full-size frame; a smaller 469×257 copy was not used."
+  },
+  {
+    "paths": ["/assets/images/attractions/herat-friday-mosque-masjid-e-jami/owner-20261122-friday-mosque-hall.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "Looking through an arch into a tiled hall of the Herat Friday Mosque",
+    "note": "James-supplied photograph (t457u)."
+  },
+  {
+    "paths": ["/assets/images/attractions/herat-friday-mosque-masjid-e-jami/owner-20261122-friday-mosque-tilework.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "Tilework and a grilled window in the Herat Friday Mosque",
+    "note": "James-supplied photograph (t457u)."
+  },
+  {
+    "paths": [
+      "/assets/images/attractions/herat-friday-mosque-masjid-e-jami/owner-20261122-tileworkers-1.webp",
+      "/assets/images/attractions/herat-friday-mosque-masjid-e-jami/owner-20261122-tileworkers.webp"
+    ],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "Tileworkers at the Herat Friday Mosque workshop, where artisans still maintain the mosque's tilework",
+    "note": "James-supplied photographs (t457u). Placed on the Friday Mosque page, which describes the on-site tile workshop."
+  },
+  {
+    "paths": ["/assets/images/attractions/herat-old-city-bazaars/owner-20261122-old-city-bazaar.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "Rooftops and lanes of the old city bazaar in Herat",
+    "note": "James-supplied photograph (t457u)."
+  },
+  {
+    "paths": [
+      "/assets/images/attractions/herat-old-city-bazaars/owner-20261122-malek-cistern.webp",
+      "/assets/images/attractions/herat-old-city-bazaars/owner-20261122-malek-cistern-inside.webp"
+    ],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "The Malek cistern in Herat's old city, shown from outside and inside the vaulted hall",
+    "note": "James-supplied photographs (t457u). Placed on the Herat Old City & Bazaars gallery; there is no standalone cistern page."
   }
 ];
 const byPath = new Map<string, PhotoCredit>();

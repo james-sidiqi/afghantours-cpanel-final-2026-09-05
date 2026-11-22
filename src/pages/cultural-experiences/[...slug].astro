@@ -9,6 +9,7 @@ import path from 'node:path';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { buildInquiryHref } from '../../lib/inquiry';
 import TourCardGrid from '../../components/cards/TourCardGrid.astro';
+import TourAttractionSummaryGrid from '../../components/tours/TourAttractionSummaryGrid.astro';
 
 import {
   getCollection,
@@ -18,7 +19,13 @@ import {
 import {
   getTours,
   getHubBySlug,
+  getAttractionBySlug,
 } from '../../lib/buildRelations';
+import {
+  extractAttractionSlugsFromMarkdown,
+  splitIntroAndPlanning,
+  renderExperienceMarkdown,
+} from '../../lib/experiencePlaces';
 import {
   getHubsForCultural,
   accessTypeLabel,
@@ -460,6 +467,23 @@ const culturalHubs = culturalHubRels.map((rel) => {
   };
 });
 
+const introHeading = data.intro_heading || 'The experience';
+const placesFromFrontmatter = (Array.isArray(data.related_attractions) ? data.related_attractions : [])
+  .map((s) => String(s || '').trim())
+  .filter(Boolean);
+const placesFromBody = extractAttractionSlugsFromMarkdown(item.body || '');
+const relatedAttractionSlugs = [...new Set((placesFromFrontmatter.length ? placesFromFrontmatter : placesFromBody))];
+const relatedAttractions = relatedAttractionSlugs
+  .map((attractionSlug) => getAttractionBySlug(attractionSlug))
+  .filter(Boolean);
+const placesHeading = data.places_heading || 'Places in this visit';
+const placesSplit = relatedAttractions.length
+  ? splitIntroAndPlanning(item.body || '')
+  : { before: '', after: '' };
+const renderProseParts = relatedAttractions.length > 0;
+const proseBeforeHtml = renderProseParts ? renderExperienceMarkdown(placesSplit.before || '') : '';
+const proseAfterHtml = renderProseParts ? renderExperienceMarkdown(placesSplit.after || '') : '';
+
 
 const uniqueGalleryImages = (items = []) =>
   [...new Set(
@@ -629,7 +653,7 @@ const uniqueGalleryImages = (items = []) =>
 
 
         <h2>
-          The experience
+          {introHeading}
         </h2>
 
 
@@ -638,9 +662,27 @@ const uniqueGalleryImages = (items = []) =>
         </p>
 
 
-        <div class="culture-prose">
-          <Content />
-        </div>
+        {renderProseParts ? (
+          <>
+            {proseBeforeHtml && (
+              <div class="culture-prose" set:html={proseBeforeHtml} />
+            )}
+            <div class="culture-places">
+              <TourAttractionSummaryGrid
+                attractions={relatedAttractions}
+                title={placesHeading}
+                embedded={true}
+              />
+            </div>
+            {proseAfterHtml && (
+              <div class="culture-prose" set:html={proseAfterHtml} />
+            )}
+          </>
+        ) : (
+          <div class="culture-prose">
+            <Content />
+          </div>
+        )}
 
       </article>
 
@@ -1673,6 +1715,10 @@ const uniqueGalleryImages = (items = []) =>
     line-height: 1.55;
   }
 
+
+  .culture-places {
+    margin: 0 0 2.2rem;
+  }
 
   .culture-prose {
     color: #333b40;

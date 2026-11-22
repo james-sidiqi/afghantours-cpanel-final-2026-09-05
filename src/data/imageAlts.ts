@@ -1,6 +1,22 @@
 // Alt text for images whose photo credit is still pending (no visible credit line yet).
 // Credits are tracked in docs/image-register-*.csv; move an entry to photoCredits.ts once confirmed.
 export const IMAGE_ALTS: Record<string, string> = {
+  // Owner-supplied Herat photographs, 22 Nov 2026 (t457u)
+  '/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-musalla-overview.webp': 'An overview of the Musalla complex in Herat, with the remaining minarets standing among the city',
+  '/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-mausoleum.webp': 'The exterior of the tomb of Gohar Shad at the Musalla complex in Herat, with its ribbed blue dome',
+  '/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-up-close.webp': 'Close view of the tiled drum of the tomb of Gohar Shad at the Musalla complex in Herat',
+  '/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside.webp': 'The interior of the tomb of Gohar Shad at the Musalla complex in Herat, with stone grave markers on a red carpet',
+  '/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside-2.webp': 'The tomb of Gohar Shad in Herat, looking toward the stained-glass windows at the far end',
+  '/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside-3.webp': 'The tomb of Gohar Shad in Herat, with grave markers on a red carpet and a stained-glass window beyond',
+  '/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-musalla-minaret.webp': 'One of the remaining minarets of the Musalla complex in Herat',
+  '/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-nava-i-mausoleum.webp': "The mausoleum of Mir Ali-Shir Nava'i at the Musalla complex in Herat",
+  '/assets/images/attractions/herat-friday-mosque-masjid-e-jami/owner-20261122-friday-mosque-hall.webp': 'Looking through an arch into a tiled hall of the Herat Friday Mosque',
+  '/assets/images/attractions/herat-friday-mosque-masjid-e-jami/owner-20261122-friday-mosque-tilework.webp': 'Tilework and a grilled window in the Herat Friday Mosque',
+  '/assets/images/attractions/herat-friday-mosque-masjid-e-jami/owner-20261122-tileworkers-1.webp': 'Glazed tiles laid out in the workshop of the Herat Friday Mosque',
+  '/assets/images/attractions/herat-friday-mosque-masjid-e-jami/owner-20261122-tileworkers.webp': 'Artisans cutting and shaping tile in the workshop of the Herat Friday Mosque',
+  '/assets/images/attractions/herat-old-city-bazaars/owner-20261122-old-city-bazaar.webp': 'Rooftops and lanes of the old city bazaar in Herat',
+  '/assets/images/attractions/herat-old-city-bazaars/owner-20261122-malek-cistern.webp': "The brick dome of the Malek cistern in Herat's old city",
+  '/assets/images/attractions/herat-old-city-bazaars/owner-20261122-malek-cistern-inside.webp': "The vaulted interior of the Malek cistern in Herat's old city",
   // Owner-supplied Samangan roadside spring photographs, 22 Nov 2026 (t455u)
   '/assets/images/provinces/samangan/owner-20261122-roadside-spring-cave.webp': 'A natural spring flowing from a cave mouth into a clear pool, on the side of the road between Tangi Tashkurgan and the Salang, in Samangan province',
   '/assets/images/provinces/samangan/owner-20261122-roadside-spring-wide.webp': 'The same natural spring on the side of the road between Tangi Tashkurgan and the Salang, in Samangan province, from a wider angle showing the cliff and mountain above',
