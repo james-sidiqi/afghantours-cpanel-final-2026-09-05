@@ -33,6 +33,7 @@ const APPROVED_CARD_IMAGES = {
   "produce/farah-watermelon": "/assets/images/food/produce/watermelons/hero.webp",
   "drinks/shor-chai-of-badakhshan": "/assets/images/food/drinks/shor-chai-of-badakhshan/hero.webp",
   'dishes/kabul-kabob': "/assets/images/food/dishes/afghan-kabob/roadside-kabob.webp",
+  "produce/jalalabad-sugarcane": "/assets/images/food/produce/jalalabad-sugarcane/card.webp",
 };
 const isPhotoPending = (id) => itemMap.get(normalizeFoodKey(id))?.data?.image_status === 'pending';
 const imageForId = (id) => {
@@ -391,7 +392,7 @@ const experienceGroups = [
       },
       {
         title: 'Haji Aziz Bakery',
-        href: '/restaurants/bakery-kabul/',
+        href: '/cultural-experiences/culinary/aziz-bakery/',
         description: `Chicken Street sweets, crème rolls, cookies, and tea culture connected to Kabul city walks.`,
       },
     ],

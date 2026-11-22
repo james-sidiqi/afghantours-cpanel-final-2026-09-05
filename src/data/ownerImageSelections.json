@@ -22,6 +22,7 @@
     "hero_image": "/assets/images/attractions/haji-piyada-nine-domes/hero.webp",
     "card_image": "/assets/images/attractions/haji-piyada-nine-domes/hero.webp",
     "gallery_images": [
+      "/assets/images/attractions/haji-piyada-nine-domes/owner-20261122-haji-piyada-arches.webp",
       "/assets/images/attractions/haji-piyada-nine-domes/gallery-1.webp",
       "/assets/images/attractions/haji-piyada-nine-domes/balkh-noh-gumbad-mosque-1.webp",
       "/assets/images/attractions/haji-piyada-nine-domes/balkh-noh-gumbad-mosque-2.webp"
@@ -33,6 +34,7 @@
     "hero_image": "/assets/images/attractions/rumi-home-madrasa/hero.webp",
     "card_image": "/assets/images/attractions/rumi-home-madrasa/hero.webp",
     "gallery_images": [
+      "/assets/images/attractions/rumi-home-madrasa/owner-20261122-rumi-madrasa-shelter.webp",
       "/assets/images/attractions/rumi-home-madrasa/gallery-1.webp",
       "/assets/images/attractions/rumi-home-madrasa/balkh-rumi-house.webp"
     ],
@@ -50,6 +52,8 @@
     "hero_image": "/assets/images/attractions/minaret-of-jam/gallery-2.webp",
     "card_image": "/assets/images/attractions/minaret-of-jam/gallery-2.webp",
     "gallery_images": [
+      "/assets/images/attractions/minaret-of-jam/owner-20261122-jam-minaret-mountains.webp",
+      "/assets/images/attractions/minaret-of-jam/owner-20261122-jam-aerial-river.webp",
       "/assets/images/attractions/minaret-of-jam/gallery-1.webp"
     ],
     "gallery_exclude_hero": true,
@@ -69,15 +73,16 @@
     "gallery_mode": "explicit"
   },
   "attractions/balkh-bala-hisar-ancient-walls": {
-    "hero_image": "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-walls.webp",
-    "card_image": "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-walls.webp",
+    "hero_image": "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-wall-pavilion-aerial.webp",
+    "card_image": "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-wall-pavilion-aerial.webp",
     "gallery_images": [
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-ancient-city-panorama.webp",
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-wall-pavilion-portrait.webp",
+      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-octagonal-pavilion.webp",
       "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-tower.webp",
       "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-ancient-city-ayaran-tower.webp",
       "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-ancient-city-walls.webp",
       "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-ancient-walls.webp",
-      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-citadel-3.webp",
-      "/assets/images/attractions/balkh-bala-hisar-ancient-walls/balkh-citadel-4.webp",
       "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ruins-ancient-city-balkh-wall.webp"
     ],
     "gallery_exclude_hero": true,
@@ -87,19 +92,19 @@
     "hero_image": "/assets/images/experiences/culinary/aziz-bakery/owner-haji-aziz-hero.webp",
     "card_image": "/assets/images/experiences/culinary/aziz-bakery/owner-haji-aziz-hero.webp",
     "gallery_images": [
-      "/assets/images/experiences/culinary/aziz-bakery/gallery/01.webp",
-      "/assets/images/experiences/culinary/aziz-bakery/gallery/03.webp",
-      "/assets/images/experiences/culinary/aziz-bakery/gallery/04.webp",
-      "/assets/images/experiences/culinary/aziz-bakery/gallery/05.webp",
-      "/assets/images/experiences/culinary/aziz-bakery/gallery/06.webp",
-      "/assets/images/experiences/culinary/aziz-bakery/gallery/07.webp",
-      "/assets/images/experiences/culinary/aziz-bakery/gallery/02.webp"
+      "/assets/images/experiences/culinary/aziz-bakery/owner-haji-aziz-hero.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-01-stacked-cookies.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-03-shelves-cookies.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-04-pistachio-swirls.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-05-assorted-trays.webp",
+      "/assets/images/experiences/culinary/aziz-bakery/gallery/owner-20261122-06-street-front-display.webp"
     ],
     "gallery_mode": "explicit",
-    "gallery_exclude_hero": true
+    "gallery_exclude_hero": false
   },
   "culinary/kabul-chainaki": {
     "hero_image": "/assets/images/experiences/culinary/kabul-chainaki/gallery/01.webp",
+    "card_image": "/assets/images/experiences/culinary/kabul-chainaki/gallery/01.webp",
     "gallery_images": [
       "/assets/images/experiences/culinary/kabul-chainaki/gallery/02.webp"
     ],
@@ -109,7 +114,14 @@
     "hero_image": "/assets/images/experiences/activities/hiking/owner-hiking.webp"
   },
   "activities/trekking": {
-    "hero_image": "/assets/images/experiences/activities/trekking/owner-trekking.webp"
+    "hero_image": "/assets/images/experiences/activities/trekking/owner-trekking.webp",
+    "gallery_images": [
+      "/assets/images/experiences/activities/trekking/owner-20261122-snow-range-aerial.webp",
+      "/assets/images/experiences/activities/trekking/owner-20261122-rocky-peaks-green-snow.webp",
+      "/assets/images/experiences/activities/trekking/gallery/02.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
   },
   "food/kabul-kabob": {
     "hero_image": "/assets/images/food/dishes/afghan-kabob/roadside-kabob.webp",
@@ -145,6 +157,9 @@
     "hero_image": "/assets/images/attractions/wakhan-corridor/hero.webp",
     "card_image": "/assets/images/attractions/wakhan-corridor/hero.webp",
     "gallery_images": [
+      "/assets/images/attractions/wakhan-corridor/owner-20261122-golden-valley-snowpeaks.webp",
+      "/assets/images/attractions/wakhan-corridor/owner-20261122-alpine-valley-stream.webp",
+      "/assets/images/attractions/wakhan-corridor/owner-20261122-suv-gravel-plain.webp",
       "/assets/images/attractions/wakhan-corridor/gallery-2.webp",
       "/assets/images/attractions/wakhan-corridor/gallery-3.webp"
     ],
@@ -174,6 +189,10 @@
     "hero_image": "/assets/images/attractions/band-e-amir-national-park/hero.webp",
     "card_image": "/assets/images/attractions/band-e-amir-national-park/hero.webp",
     "gallery_images": [
+      "/assets/images/attractions/band-e-amir-national-park/owner-20261122-lakes-aerial.webp",
+      "/assets/images/attractions/band-e-amir-national-park/owner-20261122-blue-water-ledge.webp",
+      "/assets/images/attractions/band-e-amir-national-park/owner-20261122-cliffs-lake.webp",
+      "/assets/images/attractions/band-e-amir-national-park/owner-20261122-rock-pillar-aerial.webp",
       "/assets/images/attractions/band-e-amir-national-park/owner-band-e-amir-spring.webp",
       "/assets/images/attractions/band-e-amir-national-park/owner-band-e-amir-light-snow.webp",
       "/assets/images/attractions/band-e-amir-national-park/owner-band-e-amir.webp"
@@ -227,7 +246,6 @@
     "hero_image": "/assets/images/attractions/chicken-street/card.webp",
     "card_image": "/assets/images/attractions/chicken-street/card.webp",
     "gallery_images": [
-      "/assets/images/attractions/chicken-street/hero.webp",
       "/assets/images/attractions/chicken-street/gallery-1.webp"
     ],
     "gallery_mode": "explicit",
@@ -274,9 +292,10 @@
     "gallery_exclude_hero": true
   },
   "food/bolani": {
-    "hero_image": "/assets/images/food/dishes/bolani/owner-bolani.webp",
-    "card_image": "/assets/images/food/dishes/bolani/owner-bolani.webp",
+    "hero_image": "/assets/images/food/dishes/bolani/owner-bolani-plated-20261122.webp",
+    "card_image": "/assets/images/food/dishes/bolani/owner-bolani-plated-20261122.webp",
     "gallery_images": [
+      "/assets/images/food/dishes/bolani/owner-bolani.webp",
       "/assets/images/food/dishes/bolani/hero.webp",
       "/assets/images/food/dishes/bolani/gallery-1.webp",
       "/assets/images/food/dishes/bolani/owner-bolani-stand.webp"
@@ -448,5 +467,160 @@
     ],
     "gallery_mode": "explicit",
     "gallery_exclude_hero": true
+  },
+  "attractions/shahr-e-gholghola": {
+    "hero_image": "/assets/images/attractions/shahr-e-gholghola/card.webp",
+    "card_image": "/assets/images/attractions/shahr-e-gholghola/card.webp",
+    "gallery_images": [
+      "/assets/images/attractions/shahr-e-gholghola/gallery-1.webp",
+      "/assets/images/attractions/shahr-e-gholghola/gallery-ruins-through-trees.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/dragon-valley-dara-e-ajdahar": {
+    "hero_image": "/assets/images/attractions/dragon-valley-dara-e-ajdahar/hero.webp",
+    "card_image": "/assets/images/attractions/dragon-valley-dara-e-ajdahar/hero.webp",
+    "gallery_images": [],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/takht-e-rostam": {
+    "hero_image": "/assets/images/attractions/takht-e-rostam/hero.webp",
+    "card_image": "/assets/images/attractions/takht-e-rostam/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/takht-e-rostam/owner-20261122-stupa-top.webp",
+      "/assets/images/attractions/takht-e-rostam/owner-20261122-stupa-aerial.webp",
+      "/assets/images/attractions/takht-e-rostam/gallery-1.webp",
+      "/assets/images/provinces/samangan/owner-20261122-roadside-spring-cave.webp",
+      "/assets/images/provinces/samangan/owner-20261122-roadside-spring-wide.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/chehel-burj-bamyan-ruins": {
+    "hero_image": "/assets/images/attractions/chehel-burj-bamyan-ruins/owner-20261122-ruins-valley.webp",
+    "card_image": "/assets/images/attractions/chehel-burj-bamyan-ruins/owner-20261122-ruins-valley.webp",
+    "gallery_images": [
+      "/assets/images/attractions/chehel-burj-bamyan-ruins/owner-20261122-ridge-wide.webp",
+      "/assets/images/attractions/chehel-burj-bamyan-ruins/owner-20261122-towers-close.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/nuristan-national-park": {
+    "hero_image": "/assets/images/attractions/nuristan-national-park/hero.webp",
+    "card_image": "/assets/images/attractions/nuristan-national-park/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/nuristan-national-park/owner-20261122-forest-valley-river-road.webp",
+      "/assets/images/attractions/nuristan-national-park/gallery-1-forested-meadow-boulder.webp",
+      "/assets/images/attractions/nuristan-national-park/gallery-3-sunset-village-river.webp",
+      "/assets/images/attractions/nuristan-national-park/gallery-4-dirt-road-forested-slope.webp",
+      "/assets/images/attractions/nuristan-national-park/gallery-hillside-village.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/nuristan-river-valleys-villages": {
+    "hero_image": "/assets/images/attractions/nuristan-river-valleys-villages/hero.webp",
+    "card_image": "/assets/images/attractions/nuristan-river-valleys-villages/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/nuristan-national-park/owner-20261122-forest-valley-river-road.webp",
+      "/assets/images/attractions/nuristan-river-valleys-villages/gallery-bashgal-village-river.webp",
+      "/assets/images/attractions/nuristan-river-valleys-villages/gallery-bashgal-village-riverside.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/herat-citadel-qala-ye-ikhtiyaruddin": {
+    "hero_image": "/assets/images/attractions/herat-citadel-qala-ye-ikhtiyaruddin/hero.webp",
+    "card_image": "/assets/images/attractions/herat-citadel-qala-ye-ikhtiyaruddin/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/herat-citadel-qala-ye-ikhtiyaruddin/owner-20261122-citadel-overview.webp",
+      "/assets/images/attractions/herat-citadel-qala-ye-ikhtiyaruddin/gallery-1.webp",
+      "/assets/images/attractions/herat-citadel-qala-ye-ikhtiyaruddin/gallery-3.webp",
+      "/assets/images/attractions/herat-citadel-qala-ye-ikhtiyaruddin/gallery-5.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/bala-hisar-of-ghazni": {
+    "hero_image": "/assets/images/attractions/bala-hisar-of-ghazni/hero.webp",
+    "card_image": "/assets/images/attractions/bala-hisar-of-ghazni/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/bala-hisar-of-ghazni/owner-20261122-ghazni-city-overview.webp",
+      "/assets/images/attractions/bala-hisar-of-ghazni/gallery-1.webp",
+      "/assets/images/attractions/bala-hisar-of-ghazni/gallery-2.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "activities/cycling": {
+    "hero_image": "/assets/images/experiences/activities/cycling/owner-20261122-bandeamir-riders-hero.webp",
+    "card_image": "/assets/images/experiences/activities/cycling/owner-20261122-bandeamir-riders-hero.webp"
+  },
+  "attractions/jahan-nama-palace": {
+    "hero_image": "/assets/images/attractions/jahan-nama-palace/owner-20261122-jahan-nama-facade.webp",
+    "card_image": "/assets/images/attractions/jahan-nama-palace/owner-20261122-jahan-nama-facade.webp",
+    "gallery_images": [
+      "/assets/images/attractions/jahan-nama-palace/owner-20261122-jahan-nama-mountains-pool.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/gawhar-shad-mausoleum": {
+    "hero_image": "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-mausoleum.webp",
+    "card_image": "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-mausoleum-card.webp",
+    "gallery_images": [
+      "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-up-close.webp",
+      "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside.webp",
+      "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside-2.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/ali-shir-navai-mausoleum": {
+    "hero_image": "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-nava-i-mausoleum.webp",
+    "card_image": "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-nava-i-mausoleum.webp",
+    "gallery_images": [],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/khwaja-abdullah-ansari-shrine": {
+    "hero_image": "/assets/images/attractions/khwaja-abdullah-ansari-shrine/hero.webp",
+    "card_image": "/assets/images/attractions/khwaja-abdullah-ansari-shrine/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/khwaja-abdullah-ansari-shrine/owner-20261122-gazargah-shrine.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/baba-wali-shrine": {
+    "hero_image": "/assets/images/attractions/baba-wali-shrine/hero.webp",
+    "card_image": "/assets/images/attractions/baba-wali-shrine/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/baba-wali-shrine/gallery-1.webp",
+      "/assets/images/attractions/baba-wali-shrine/gallery-2.webp",
+      "/assets/images/attractions/baba-wali-shrine/owner-20261122-domes-through-trees.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/herat-old-city-bazaars": {
+    "hero_image": "/assets/images/attractions/herat-old-city-bazaars/owner-20261122-covered-bazaar-interior.webp",
+    "card_image": "/assets/images/attractions/herat-old-city-bazaars/owner-20261122-covered-bazaar-interior.webp",
+    "gallery_images": [
+      "/assets/images/attractions/herat-old-city-bazaars/gallery-1.webp",
+      "/assets/images/attractions/herat-old-city-bazaars/gallery-2.webp",
+      "/assets/images/attractions/herat-old-city-bazaars/owner-20261122-old-city-bazaar.webp",
+      "/assets/images/attractions/herat-old-city-bazaars/owner-20261122-malek-cistern.webp",
+      "/assets/images/attractions/herat-old-city-bazaars/owner-20261122-malek-cistern-inside.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "hubs/ghazni-city": {
+    "hero_image": "/assets/images/hubs/ghazni-city/owner-20261122-city-walls-aerial.webp",
+    "card_image": "/assets/images/hubs/ghazni-city/owner-20261122-city-walls-aerial.webp"
   }
 }

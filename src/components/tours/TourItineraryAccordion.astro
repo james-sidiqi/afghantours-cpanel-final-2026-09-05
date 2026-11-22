@@ -1,5 +1,6 @@
 ---
-import { getPreferredImage, getAttractionImage } from '../../lib/images';
+import { getPreferredImage, getAttractionCardImage } from '../../lib/images';
+import { attractionCardImgStyle } from '../../data/attractionOverrides';
 import { buildAttractionTopMeta, buildAttractionTravelerNotes } from '../../lib/attractionMeta';
 import { attractions, locations, hotels } from "../../lib/data";
 
@@ -86,7 +87,7 @@ function findHub(day) {
   );
 }
 
-function attractionImage(attraction) { return getAttractionImage(attraction); }
+function attractionImage(attraction) { return getAttractionCardImage(attraction); }
 
 function attractionSummary(attraction) {
   return (
@@ -278,6 +279,7 @@ function upgradedHotelsForHub(hub) {
                             alt={attraction.name}
                             loading="lazy"
                             class="h-40 w-full object-cover"
+                            style={attractionCardImgStyle(attraction.slug)}
                           />
                           <div class="p-4">
                             <p class="text-[10px] font-black uppercase tracking-[0.18em] text-amber-700">
@@ -400,7 +402,7 @@ function upgradedHotelsForHub(hub) {
                       onclick={`document.getElementById('${attractionDialogId}').close(); document.getElementById('${detailId}').showModal()`}
                       class="overflow-hidden rounded-[1.25rem] bg-[#fbf8f2] text-left shadow-sm"
                     >
-                      <img src={attractionImage(attraction)} alt={attraction.name} loading="lazy" class="h-44 w-full object-cover" />
+                      <img src={attractionImage(attraction)} alt={attraction.name} loading="lazy" class="h-44 w-full object-cover" style={attractionCardImgStyle(attraction.slug)} />
                       <div class="p-4">
                         <p class="text-[10px] font-black uppercase tracking-[0.18em] text-amber-700">{attraction.category || "Attraction"}</p>
                         <h4 class="mt-1 text-lg font-black">{attraction.name}</h4>
@@ -445,6 +447,7 @@ function upgradedHotelsForHub(hub) {
                         alt={attraction.name}
                         loading="lazy"
                         class="max-h-[42vh] w-full object-cover sm:max-h-[48vh]"
+                        style={attractionCardImgStyle(attraction.slug)}
                       />
                       <div class="space-y-4 p-5 sm:p-6">
                         <div>

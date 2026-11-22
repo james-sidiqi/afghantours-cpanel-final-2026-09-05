@@ -355,6 +355,7 @@ const provinceHref =
       srcset={ov.heroSrcset}
       sizes={ov.heroSrcset ? '100vw' : undefined}
       alt={ov.heroAlt ?? ATTRACTION_IMAGE_ALT[item.slug] ?? altFor(heroImage, title)}
+      style={ov.heroObjectPosition ? `object-position: ${ov.heroObjectPosition}` : undefined}
       fetchpriority="high"
     />
 

@@ -118,6 +118,7 @@ export function getHubImage(hub: any): string {
   const slug = hub?.slug || hub?.location_slug || hub?.destination_slug;
   const base = String(slug || '').replace(/-city$/, '');
   const short = base === 'mazar-e-sharif' ? 'mazar' : base;
+  hub = { ...hub, ...((ownerSelections as Record<string, any>)[`hubs/${slug}`] || {}) };
   return entityHero(hub, [slug ? `/assets/images/hubs/${slug}/hero.webp` : null,
     base ? `/assets/images/hubs/${base}/hero.webp` : null, base ? `/assets/images/hubs/${base}/01.webp` : null,
     slug ? `/assets/images/hubs/${slug}-1.webp` : null, short ? `/assets/images/hubs/${short}-1.webp` : null], PLACEHOLDERS.hub);
@@ -128,6 +129,15 @@ export function getAttractionImage(item: any): string {
   return entityHero(item, [item?.slug ? `/assets/images/attractions/${item.slug}/hero.webp` : null,
     code ? `/assets/images/attractions/${code}/hero.webp` : null, code ? `/assets/images/attractions/${code}.webp` : null,
     item?.slug ? `/assets/images/attractions/${item.slug}/card.webp` : null], PLACEHOLDERS.attraction);
+}
+/** Listing-card image. Prefers a dedicated card/thumb crop when one is set. */
+export function getAttractionCardImage(item: any): string {
+  const merged = { ...item, ...((ownerSelections as Record<string, any>)[`attractions/${item?.slug}`] || {}) };
+  if (merged?.card_image) {
+    const src = normalizeImagePath(merged.card_image, '');
+    if (hasRealImage(src)) return src;
+  }
+  return getAttractionImage(merged);
 }
 export function buildGallery(entity: any, fallbackType: keyof typeof PLACEHOLDERS = 'card'): string[] {
   let supplied = entity?.gallery_images;
@@ -152,6 +162,18 @@ export function getCulinaryImage(item: any): string {
     slug ? `${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}/hero.webp` : null,
     slug ? `/assets/images/food/${slug}/hero.webp` : null], PLACEHOLDERS.food);
 }
+/** Card image for culinary tiles. Empty string means render the card with no photo (no placeholder). */
+export function getCulinaryCardImage(item: any): string {
+  const slug = item?.slug || item?.culinary_slug || item?.experience_slug;
+  const merged = { ...item, ...((ownerSelections as Record<string, any>)[`culinary/${slug}`] || {}) };
+  if (merged.hide_card_image === true || merged.card_image === '' || merged.card_image === false) return '';
+  if (merged.card_image) {
+    const src = normalizeImagePath(merged.card_image, '');
+    return hasRealImage(src) ? src : '';
+  }
+  const hero = getCulinaryImage(merged);
+  return isPlaceholder(hero) ? '' : hero;
+}
 export function getCulturalExperienceImage(item: any): string {
   const slug = item?.slug || item?.id?.replace(/\.md$/, '');
   item = { ...item, ...((ownerSelections as Record<string, any>)[`cultural/${slug}`] || {}) };
@@ -165,8 +187,10 @@ export function getActivityImage(item: any): string {
 function experienceGallery(item: any, roots: string[], hero: string): string[] {
   // Curated lists take precedence; discovery is from explicit manifest entries only.
   const supplied = buildGallery(item);
-  return cleanGallery(item?.gallery_mode === 'explicit' || supplied.length ? supplied : roots.flatMap((folder) => listGalleryImages(folder)))
-    .filter((src) => src !== hero);
+  const images = cleanGallery(item?.gallery_mode === 'explicit' || supplied.length ? supplied : roots.flatMap((folder) => listGalleryImages(folder)));
+  // Default: keep the hero out of the gallery. Set gallery_exclude_hero: false to show it there too.
+  if (item?.gallery_exclude_hero === false) return images;
+  return images.filter((src) => src !== hero);
 }
 export function getCulinaryGallery(item: any): string[] {
   const slug = item?.slug || item?.culinary_slug;

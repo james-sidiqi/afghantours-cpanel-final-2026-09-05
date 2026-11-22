@@ -7,7 +7,7 @@ hero_image: "/assets/images/food/sweets/gosh-e-fil/hero-owner-20261121.webp"
 image: "/assets/images/food/sweets/gosh-e-fil/hero-owner-20261121.webp"
 card_image: "/assets/images/food/sweets/gosh-e-fil/hero-owner-20261121.webp"
 card_description: "Traditional fried pastry commonly served with sugar or powdered sugar."
-gallery_images: ["/assets/images/food/sweets/gosh-e-fil/hero.webp", "/assets/images/food/dishes/gosh-e-fil/hero.webp"]
+gallery_images: []
 gallery_mode: "explicit"
 gallery_exclude_hero: true
 ---

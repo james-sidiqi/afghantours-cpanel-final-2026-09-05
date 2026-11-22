@@ -52,9 +52,9 @@ test('owner photos 21 Nov: Sheer Khorma, Saffron Ice Cream, Sheer Yakh, Kulcha C
   await expect(page.locator('.culin-hero-image')).toHaveAttribute('alt', /saffron ice cream/);
   await expect(page.locator('.culin-hero-image')).not.toHaveClass(/portrait/);
   await expect(page.locator('img[src*="sheer-e-yakh"]')).toHaveCount(0);
-  // The flagged earlier images stay published in the gallery (authenticity review pending).
-  await expect(page.locator('img[src="/assets/images/food/sweets/saffron-ice-cream/hero.webp"]')).not.toHaveCount(0);
-  await expect(page.locator('img[src="/assets/images/food/dishes/saffron-ice-cream/hero.webp"]')).not.toHaveCount(0);
+  // Possible-AI gallery photos were unpublished 22 Nov 2026 (t447u).
+  await expect(page.locator('img[src="/assets/images/food/sweets/saffron-ice-cream/hero.webp"]')).toHaveCount(0);
+  await expect(page.locator('img[src="/assets/images/food/dishes/saffron-ice-cream/hero.webp"]')).toHaveCount(0);
   await page.goto('/food-culture/desserts/sheer-yakh/');
   await expect(page.locator('.food-gallery-grid img[src="' + SY + '"]')).toHaveCount(1);
   await page.goto('/food-culture/kulcha-cookie/');
@@ -65,7 +65,8 @@ test('owner photos 21 Nov: Sheer Khorma, Saffron Ice Cream, Sheer Yakh, Kulcha C
   }
   await page.goto('/food-culture/desserts/gosh-e-fil/');
   await expect(page.locator('.food-detail-hero-image')).toHaveAttribute('src', GF);
-  await expect(page.locator('.food-gallery-grid img[src="/assets/images/food/sweets/gosh-e-fil/hero.webp"]')).toHaveCount(1);
+  await expect(page.locator('.food-gallery-grid img[src="/assets/images/food/sweets/gosh-e-fil/hero.webp"]')).toHaveCount(0);
+  await expect(page.locator('.food-gallery-grid img[src="/assets/images/food/dishes/gosh-e-fil/hero.webp"]')).toHaveCount(0);
   await page.goto('/food-culture/');
   await expect(page.locator('#culinary-experiences a[href="/cultural-experiences/culinary/saffron-ice-cream-of-herat/"] img')).toHaveAttribute('src', SI);
   for (const img of await page.locator('#desserts img').all()) {

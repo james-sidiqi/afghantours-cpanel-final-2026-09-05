@@ -165,6 +165,9 @@ const culturalExperiencesCollection = defineCollection({
     paired_foods: z.array(z.string()).default([]),
     related_tours: z.array(z.string()).default([]),
     nearby: z.array(z.string()).default([]),
+    related_attractions: z.array(z.string()).default([]),
+    intro_heading: z.string().optional(),
+    places_heading: z.string().optional(),
 
     best_season: z.string().optional(),
     duration: z.string().optional(),
@@ -195,6 +198,7 @@ const culinaryExperiencesCollection = defineCollection({
     duration: z.string().optional(),
     hero_image: z.string().optional(),
     image: z.string().optional(),
+    hide_card_image: z.boolean().optional(),
     gallery_images: z.array(z.string()).default([]),
     gallery_mode: z.enum(['explicit', 'manifest']).optional(),
     gallery_exclude_hero: z.boolean().default(false),
