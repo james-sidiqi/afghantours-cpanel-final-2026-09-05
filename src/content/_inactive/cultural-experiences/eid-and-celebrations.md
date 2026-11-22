@@ -4,8 +4,8 @@ subtitle: "Eid hospitality, family visits, festive sweets, and Afghanistan’s p
 card_description: "Explore how Afghan families and communities mark Eid, public holidays, family visits, sweets, clothing, and hospitality."
 category: "Cultural Experiences"
 experience_type: "Living Traditions"
-hero_image: "/assets/images/food/dishes/gosh-e-fil/hero.webp"
-image: "/assets/images/food/dishes/gosh-e-fil/hero.webp"
+hero_image: "/assets/images/food/sweets/gosh-e-fil/hero-owner-20261121.webp"
+image: "/assets/images/food/sweets/gosh-e-fil/hero-owner-20261121.webp"
 provinces: ["Kabul", "Herat", "Balkh", "Kandahar"]
 paired_foods: ["Kocha", "Festive Sweets", "Green Tea"]
 best_season: "Eid and public holidays"

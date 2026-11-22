@@ -227,7 +227,6 @@
     "hero_image": "/assets/images/attractions/chicken-street/card.webp",
     "card_image": "/assets/images/attractions/chicken-street/card.webp",
     "gallery_images": [
-      "/assets/images/attractions/chicken-street/hero.webp",
       "/assets/images/attractions/chicken-street/gallery-1.webp"
     ],
     "gallery_mode": "explicit",
@@ -446,6 +445,23 @@
     "gallery_images": [
       "/assets/images/food/dishes/kandahari-rosh/rosh-james.webp"
     ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/shahr-e-gholghola": {
+    "hero_image": "/assets/images/attractions/shahr-e-gholghola/card.webp",
+    "card_image": "/assets/images/attractions/shahr-e-gholghola/card.webp",
+    "gallery_images": [
+      "/assets/images/attractions/shahr-e-gholghola/gallery-1.webp",
+      "/assets/images/attractions/shahr-e-gholghola/gallery-ruins-through-trees.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/dragon-valley-dara-e-ajdahar": {
+    "hero_image": "/assets/images/attractions/dragon-valley-dara-e-ajdahar/hero.webp",
+    "card_image": "/assets/images/attractions/dragon-valley-dara-e-ajdahar/hero.webp",
+    "gallery_images": [],
     "gallery_mode": "explicit",
     "gallery_exclude_hero": true
   }

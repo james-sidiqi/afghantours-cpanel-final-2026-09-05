@@ -13,7 +13,7 @@ provinces: ["Herat"]
 best_season: "Spring–autumn / availability varies"
 duration: "30–60 minutes"
 hero_image: "/assets/images/food/sweets/saffron-ice-cream/hero-owner-20261121.webp"
-gallery_images: ["/assets/images/food/sweets/saffron-ice-cream/hero.webp", "/assets/images/food/dishes/saffron-ice-cream/hero.webp"]
+gallery_images: []
 gallery_mode: "explicit"
 nearby: ["Herat Old City", "Herat Citadel"]
 ---

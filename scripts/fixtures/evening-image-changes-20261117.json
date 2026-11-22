@@ -73,7 +73,6 @@
     "/attractions/chicken-street/": {
       "hero": "/assets/images/attractions/chicken-street/card.webp",
       "gallery": [
-        "/assets/images/attractions/chicken-street/hero.webp",
         "/assets/images/attractions/chicken-street/gallery-1.webp"
       ]
     },

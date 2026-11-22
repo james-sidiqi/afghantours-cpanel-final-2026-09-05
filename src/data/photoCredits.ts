@@ -4,17 +4,77 @@ import { IMAGE_ALTS } from './imageAlts';
 // Source of truth for <PhotoCredits> and the /photo-credits/ page.
 export interface PhotoCredit { paths: string[]; author: string; license: string; licenseUrl: string; source: string; alt: string; note: string }
 export const PHOTO_CREDITS: PhotoCredit[] = [
-  {"paths": ["/assets/images/experiences/cultural/afghan-weddings/crops/city-star-wedding-hall-night-hero.webp", "/assets/images/experiences/cultural/afghan-weddings/crops/city-star-wedding-hall-night-card.webp", "/assets/images/experiences/cultural/afghan-weddings/city-star-wedding-hall-night.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Illuminated wedding hall at night with a City Star sign and a lit archway entrance", "note": "Supplied and approved by James 2026-10-14 (t245)"},
-  {"paths": ["/assets/images/experiences/cultural/afghan-weddings/wedding-hall-interior.webp", "/assets/images/experiences/cultural/afghan-weddings/crops/wedding-hall-interior-hero.webp", "/assets/images/experiences/cultural/afghan-weddings/crops/wedding-hall-interior-card.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Interior of a large wedding hall with a gold domed ceiling and chandeliers above seated guests", "note": "Supplied and approved by James 2026-10-14 (t245)"},
-  {"paths": ["/assets/images/experiences/cultural/afghan-weddings/wedding-guests-table.webp", "/assets/images/experiences/cultural/afghan-weddings/crops/wedding-guests-table-hero.webp", "/assets/images/experiences/cultural/afghan-weddings/crops/wedding-guests-table-card.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Guests at a wedding table set with rice, side dishes and canned drinks", "note": "Supplied and approved by James 2026-10-14 (t245)"},
-  {"paths": ["/assets/images/food/produce/mulberries/mulberry-basket.webp", "/assets/images/food/produce/mulberries/crops/mulberry-basket-hero.webp", "/assets/images/food/produce/mulberries/crops/mulberry-basket-card.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Basket of fresh white, pink and black mulberries", "note": "Supplied and approved by James 2026-10-14 (t245)"},
-  {"paths": ["/assets/images/food/produce/mulberries/black-mulberries-jsp013.webp", "/assets/images/food/produce/mulberries/crops/black-mulberries-jsp013-hero.webp", "/assets/images/food/produce/mulberries/crops/black-mulberries-jsp013-card.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Fresh black mulberries in a clear tub on a patterned carpet", "note": "Supplied and approved by James 2026-10-14 (t245)"},
+  {
+    "paths": [
+      "/assets/images/experiences/cultural/afghan-weddings/crops/city-star-wedding-hall-night-hero.webp",
+      "/assets/images/experiences/cultural/afghan-weddings/crops/city-star-wedding-hall-night-card.webp",
+      "/assets/images/experiences/cultural/afghan-weddings/city-star-wedding-hall-night.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Illuminated wedding hall at night with a City Star sign and a lit archway entrance",
+    "note": "Supplied and approved by James 2026-10-14 (t245)"
+  },
+  {
+    "paths": [
+      "/assets/images/experiences/cultural/afghan-weddings/wedding-hall-interior.webp",
+      "/assets/images/experiences/cultural/afghan-weddings/crops/wedding-hall-interior-hero.webp",
+      "/assets/images/experiences/cultural/afghan-weddings/crops/wedding-hall-interior-card.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Interior of a large wedding hall with a gold domed ceiling and chandeliers above seated guests",
+    "note": "Supplied and approved by James 2026-10-14 (t245)"
+  },
+  {
+    "paths": [
+      "/assets/images/experiences/cultural/afghan-weddings/wedding-guests-table.webp",
+      "/assets/images/experiences/cultural/afghan-weddings/crops/wedding-guests-table-hero.webp",
+      "/assets/images/experiences/cultural/afghan-weddings/crops/wedding-guests-table-card.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Guests at a wedding table set with rice, side dishes and canned drinks",
+    "note": "Supplied and approved by James 2026-10-14 (t245)"
+  },
+  {
+    "paths": [
+      "/assets/images/food/produce/mulberries/mulberry-basket.webp",
+      "/assets/images/food/produce/mulberries/crops/mulberry-basket-hero.webp",
+      "/assets/images/food/produce/mulberries/crops/mulberry-basket-card.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Basket of fresh white, pink and black mulberries",
+    "note": "Supplied and approved by James 2026-10-14 (t245)"
+  },
+  {
+    "paths": [
+      "/assets/images/food/produce/mulberries/black-mulberries-jsp013.webp",
+      "/assets/images/food/produce/mulberries/crops/black-mulberries-jsp013-hero.webp",
+      "/assets/images/food/produce/mulberries/crops/black-mulberries-jsp013-card.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Fresh black mulberries in a clear tub on a patterned carpet",
+    "note": "Supplied and approved by James 2026-10-14 (t245)"
+  },
   {
     "paths": [
       "/assets/images/food/produce/mulberries/gallery-1.webp"
     ],
     "author": "AfghanTours",
-    "license": "\u00a9 AfghanTours",
+    "license": "© AfghanTours",
     "licenseUrl": "",
     "source": "",
     "alt": "Fresh dark mulberries in a clear tub on an Afghan carpet, Kabul",
@@ -66,51 +126,40 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "note": ""
   },
   {
-    "paths": [
-      "/assets/images/attractions/chicken-street/hero.webp",
-      "/assets/images/attractions/chicken-street/thumb.webp"
-    ],
+    "paths": [],
     "author": "Casimiri at English Wikipedia",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
     "source": "https://commons.wikimedia.org/wiki/File:Kabul_Antiquity_Shop2.jpg",
     "alt": "Shelves of antiques and traditional crafts in a shop on Chicken Street, Kabul",
-    "note": ""
+    "note": " Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/attractions/chicken-street/hero.webp, /assets/images/attractions/chicken-street/thumb.webp."
   },
   {
-    "paths": [
-      "/assets/images/attractions/dragon-valley-dara-e-ajdahar/hero.webp",
-      "/assets/images/attractions/dragon-valley-dara-e-ajdahar/thumb.webp"
-    ],
+    "paths": [],
     "author": "Danial",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
     "source": "https://commons.wikimedia.org/wiki/File:Dragon_Valley.jpg",
     "alt": "Folded ochre ridges of Dragon Valley (Darra-e Ajdahar) near Bamyan",
-    "note": ""
+    "note": " Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/attractions/dragon-valley-dara-e-ajdahar/thumb.webp. The current public hero.webp is James’s photo (t271/t273), not this Commons work. The Commons photo was later stored as gallery-valley-hills.webp and has been unpublished."
   },
   {
-    "paths": [
-      "/assets/images/attractions/shahr-e-gholghola/hero.webp",
-      "/assets/images/attractions/shahr-e-gholghola/thumb.webp"
-    ],
+    "paths": [],
     "author": "WilliamEHenry",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
     "source": "https://commons.wikimedia.org/wiki/File:Shahr-e-Gholghola.jpg",
     "alt": "Ruined mud-brick citadel of Shahr-e-Gholghola on its hill near Bamyan",
-    "note": ""
+    "note": " Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/attractions/shahr-e-gholghola/hero.webp, /assets/images/attractions/shahr-e-gholghola/thumb.webp."
   },
   {
-    "paths": [
-      "/assets/images/food/produce/central-valley-mulberries/hero.webp"
-    ],
+    "paths": [],
     "author": "Zeynel Cebeci",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "source": "https://commons.wikimedia.org/wiki/File:Dried_mulberries,_Malatya_01.jpg",
     "alt": "Dried white mulberries",
-    "note": ""
+    "note": " Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/food/produce/central-valley-mulberries/hero.webp."
   },
   {
     "paths": [
@@ -125,16 +174,13 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "note": ""
   },
   {
-    "paths": [
-      "/assets/images/attractions/nuristan-national-park/gallery-mountainside-trees.webp",
-      "/assets/images/attractions/barg-e-matal-lakes/thumb.webp"
-    ],
+    "paths": [],
     "author": "Abdul Qahar Nuristan",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
     "source": "https://commons.wikimedia.org/wiki/File:Kashtun_da_waygale_Nuristan_-_panoramio.jpg",
     "alt": "Rocky mountainside with scattered trees in Nuristan",
-    "note": "Illustrative photo: Kashtun village, Waygal valley, Nuristan"
+    "note": "Illustrative photo: Kashtun village, Waygal valley, Nuristan Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/attractions/nuristan-national-park/gallery-mountainside-trees.webp, /assets/images/attractions/barg-e-matal-lakes/thumb.webp."
   },
   {
     "paths": [
@@ -171,15 +217,13 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "note": ""
   },
   {
-    "paths": [
-      "/assets/images/food/dried-fruits/paktia-pine-nuts/hero.webp"
-    ],
+    "paths": [],
     "author": "Abdul qayoum",
     "license": "CC BY 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
     "source": "https://commons.wikimedia.org/wiki/File:Pinus_gerardiana_forest,_Khost_Province,_Afghanistan.jpg",
     "alt": "Chilgoza pine forest in south-eastern Afghanistan",
-    "note": ""
+    "note": " Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/food/dried-fruits/paktia-pine-nuts/hero.webp."
   },
   {
     "paths": [
@@ -194,16 +238,13 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "note": ""
   },
   {
-    "paths": [
-      "/assets/images/food/produce/farah-watermelon/hero.webp",
-      "/assets/images/food/produce/farah-watermelon/thumb.webp"
-    ],
+    "paths": [],
     "author": "PAULIX04",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "source": "https://commons.wikimedia.org/wiki/File:Fresh_Watermelons_Stacked.jpg",
     "alt": "Stacked fresh watermelons at a market stall",
-    "note": ""
+    "note": " Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/food/produce/farah-watermelon/hero.webp, /assets/images/food/produce/farah-watermelon/thumb.webp."
   },
   {
     "paths": [
@@ -227,96 +268,76 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "note": "Record kept: photo withdrawn from the walnuts card 2026-10-14 (rejected by James); file kept in qc/fix-2026-10-14/rejected and git history"
   },
   {
-    "paths": [
-      "/assets/images/experiences/cultural/istalif-pottery/gallery/02.webp"
-    ],
+    "paths": [],
     "author": "Tigerlily143",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "source": "https://commons.wikimedia.org/wiki/File:Istalif-shop-pottery.jpg",
     "alt": "Glazed turquoise pottery on display in an Istalif shop",
-    "note": ""
+    "note": " Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/experiences/cultural/istalif-pottery/gallery/02.webp."
   },
   {
-    "paths": [
-      "/assets/images/experiences/cultural/istalif-pottery/gallery/03.webp"
-    ],
+    "paths": [],
     "author": "Afghanistan Matters from Brunssum, Netherlands",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
     "source": "https://commons.wikimedia.org/wiki/File:Pottery_Merchant_(4311459614).jpg",
     "alt": "A pottery merchant in Istalif with his wares",
-    "note": ""
+    "note": " Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/experiences/cultural/istalif-pottery/gallery/03.webp."
   },
   {
-    "paths": [
-      "/assets/images/experiences/cultural/istalif-pottery/gallery/04.webp"
-    ],
+    "paths": [],
     "author": "Annemarie Schwarzenbach",
     "license": "Public domain",
     "licenseUrl": "",
     "source": "https://commons.wikimedia.org/wiki/File:CH-NB_-_Afghanistan,_Jstalif_(Istalif)-_Geb%C3%A4ude_-_Annemarie_Schwarzenbach_-_SLA-Schwarzenbach-A-5-21-026.jpg",
     "alt": "Historical photograph of pottery stacked outside a house in Istalif",
-    "note": ""
+    "note": " Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/experiences/cultural/istalif-pottery/gallery/04.webp."
   },
   {
-    "paths": [
-      "/assets/images/experiences/cultural/istalif-pottery/gallery/05.webp"
-    ],
+    "paths": [],
     "author": "Christopher Killalea",
     "license": "CC BY-SA 3.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
     "source": "https://commons.wikimedia.org/wiki/File:Istalif_Village,_Kabul_Province,_Afghanistan.JPG",
     "alt": "Istalif village on its hillside above the Shamali Plain",
-    "note": ""
+    "note": " Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/experiences/cultural/istalif-pottery/gallery/05.webp."
   },
   {
-    "paths": [
-      "/assets/images/experiences/activities/shopping/hero.webp",
-      "/assets/images/experiences/activities/shopping/thumb.webp"
-    ],
+    "paths": [],
     "author": "Jim Kelly",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
     "source": "https://commons.wikimedia.org/wiki/File:2009_shopping_Herat_Afghanistan_(4072194273).jpg",
     "alt": "A fruit seller with his cart in a Herat bazaar",
-    "note": ""
+    "note": " Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/experiences/activities/shopping/hero.webp, /assets/images/experiences/activities/shopping/thumb.webp."
   },
   {
-    "paths": [
-      "/assets/images/experiences/activities/sightseeing/hero.webp"
-    ],
+    "paths": [],
     "author": "AhmadElhan",
     "license": "CC BY-SA 4.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
     "source": "https://commons.wikimedia.org/wiki/File:Rowza_Shrine_Hazrat_Ali_Mazar-e_Sharif_Afghanistan......._front.jpg",
     "alt": "The blue-tiled Shrine of Hazrat Ali in Mazar-e Sharif",
-    "note": ""
+    "note": " Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/experiences/activities/sightseeing/hero.webp."
   },
   {
-    "paths": [
-      "/assets/images/experiences/activities/hiking/hero.webp",
-      "/assets/images/experiences/activities/hiking/thumb.webp"
-    ],
+    "paths": [],
     "author": "Peretz Partensky from San Francisco, USA",
     "license": "CC BY-SA 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
     "source": "https://commons.wikimedia.org/wiki/File:Jalalabad,_Afghanistan_(5397994701).jpg",
     "alt": "Sunset over the hills north of the Kabul River near Jalalabad",
-    "note": ""
+    "note": " Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/experiences/activities/hiking/hero.webp, /assets/images/experiences/activities/hiking/thumb.webp."
   },
   {
-    "paths": [
-      "/assets/images/tours/custom/veteran-return/hero.webp",
-      "/assets/images/tours/custom/veteran-return/thumb.webp",
-      "/assets/images/tours/custom/veteran-return/thumbnail.webp"
-    ],
+    "paths": [],
     "author": "Jim Kelly",
     "license": "CC BY 2.0",
     "licenseUrl": "https://creativecommons.org/licenses/by/2.0",
     "source": "https://commons.wikimedia.org/wiki/File:Kabul_skyline_-a.jpg",
     "alt": "Kabul city skyline against the mountains",
-    "note": ""
+    "note": " Withdrawn from public 22 Nov 2026 (t447u, high-risk replacement). File kept in unpublished-assets/high-risk-replaced-20261122/. Do not restore without a visible credit or a verified replacement. Former public paths: /assets/images/tours/custom/veteran-return/hero.webp, /assets/images/tours/custom/veteran-return/thumb.webp, /assets/images/tours/custom/veteran-return/thumbnail.webp."
   },
   {
     "paths": [
@@ -353,15 +374,150 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "alt": "Qargha Lake seen from the terrace of the Spogmai Restaurant, Kabul",
     "note": ""
   },
-  {"paths": ["/assets/images/food/sweets/sheer-khurma/hero-owner-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Sheer khurma topped with a date in a glass bowl", "note": ""},
-  {"paths": ["/assets/images/food/sweets/sheer-yakh/sheer-e-yakh-owner-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Two tall swirls of sheer-e-yakh, Afghan ice cream, topped with crushed pistachios", "note": ""},
-  {"paths": ["/assets/images/food/sweets/saffron-ice-cream/hero-owner-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Two scoops of saffron ice cream topped with chopped pistachios and rose petals", "note": ""},
-  {"paths": ["/assets/images/food/sweets/kulcha-cookie/hero-owner-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Kulcha cookies with a criss-cross pattern and crushed pistachios on a decorated plate", "note": ""},
-  {"paths": ["/assets/images/food/sweets/kulcha-cookie/gallery-owner-2-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Golden ring-shaped kulcha cookies sprinkled with nigella seeds", "note": ""},
-  {"paths": ["/assets/images/food/sweets/kulcha-cookie/gallery-owner-1-collage-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Two photos of kulcha cookies: crosshatched cookies on paper, and patterned cookies topped with pistachios", "note": ""},
-  {"paths": ["/assets/images/food/sweets/gosh-e-fil/hero-owner-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "A plate of gosh-e-fil, crisp fried pastries dusted with powdered sugar", "note": ""},
-  {"paths": ["/assets/images/food/sweets/kulcha-cookie/gallery-owner-4-box-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "A box of assorted kulcha cookies and pastries from a Kabul bakery", "note": ""},
-  {"paths": ["/assets/images/food/sweets/kulcha-cookie/gallery-owner-5-bakery-shelf-20261121.webp"], "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "", "alt": "Round kulcha cookies stacked high on metal bakery shelves in Kabul", "note": ""}
+  {
+    "paths": [
+      "/assets/images/food/sweets/sheer-khurma/hero-owner-20261121.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Sheer khurma topped with a date in a glass bowl",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/food/sweets/sheer-yakh/sheer-e-yakh-owner-20261121.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Two tall swirls of sheer-e-yakh, Afghan ice cream, topped with crushed pistachios",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/food/sweets/saffron-ice-cream/hero-owner-20261121.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Two scoops of saffron ice cream topped with chopped pistachios and rose petals",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/food/sweets/kulcha-cookie/hero-owner-20261121.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Kulcha cookies with a criss-cross pattern and crushed pistachios on a decorated plate",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/food/sweets/kulcha-cookie/gallery-owner-2-20261121.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Golden ring-shaped kulcha cookies sprinkled with nigella seeds",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/food/sweets/kulcha-cookie/gallery-owner-1-collage-20261121.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Two photos of kulcha cookies: crosshatched cookies on paper, and patterned cookies topped with pistachios",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/food/sweets/gosh-e-fil/hero-owner-20261121.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "A plate of gosh-e-fil, crisp fried pastries dusted with powdered sugar",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/food/sweets/kulcha-cookie/gallery-owner-4-box-20261121.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "A box of assorted kulcha cookies and pastries from a Kabul bakery",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/food/sweets/kulcha-cookie/gallery-owner-5-bakery-shelf-20261121.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Round kulcha cookies stacked high on metal bakery shelves in Kabul",
+    "note": ""
+  },
+  {
+    "paths": [
+      "/assets/images/attractions/dragon-valley-dara-e-ajdahar/hero.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "White mineral mounds and rock formations in Dragon Valley with mountains beyond",
+    "note": "James-supplied photo used as Dragon Valley hero (t271; content confirmed t273). Credit record corrected 22 Nov 2026 (t447u) — this path is not the Danial Commons photograph."
+  },
+  {
+    "paths": [
+      "/assets/images/attractions/shahr-e-gholghola/card.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "The ruined tower of Shahr-e-Gholghola standing above the Bamyan valley",
+    "note": "James-supplied (t271). Promoted to hero and card 22 Nov 2026 (t447u) replacing the WilliamEHenry CC BY-SA 4.0 photograph."
+  },
+  {
+    "paths": [
+      "/assets/images/tours/custom/veteran-return/hero.webp",
+      "/assets/images/tours/custom/veteran-return/thumb.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "James Sidiqi, jsp-003, Kabul sunset panorama from the InterContinental Hotel grounds (owner-confirmed 13 Oct 2026)",
+    "alt": "Sunset over the city of Kabul, seen from the grounds of the InterContinental Hotel",
+    "note": "Replaced the Jim Kelly CC BY 2.0 Kabul skyline on veteran-return cards 22 Nov 2026 (t447u)."
+  },
+  {
+    "paths": [
+      "/assets/images/attractions/chicken-street/card.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Shoppers walking along Chicken Street in Kabul in winter",
+    "note": "James-supplied (t271). Already the live hero and card; the Casimiri Commons shop photo was removed from the gallery 22 Nov 2026 (t447u)."
+  }
 ];
 const byPath = new Map<string, PhotoCredit>();
 PHOTO_CREDITS.forEach((c) => c.paths.forEach((p) => byPath.set(p, c)));

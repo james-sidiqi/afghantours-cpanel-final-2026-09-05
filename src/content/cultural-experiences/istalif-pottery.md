@@ -13,7 +13,6 @@ duration: "Half day"
 related_tours: ["weekend-in-kabul", "kabul-surroundings", "custom-tours"]
 nearby: ["Paghman", "Qargha Lake", "Chashma-e-Dogh"]
 gallery_exclude:
-  - "/assets/images/experiences/cultural/istalif-pottery/gallery/04.webp"
   - "/assets/images/attractions/istalif-village/thumb.webp"
 ---
 

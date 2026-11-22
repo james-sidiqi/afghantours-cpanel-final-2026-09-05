@@ -39,7 +39,6 @@
     "/assets/images/attractions/buddha-niches-of-bamyan/gallery-2.webp"
   ],
   "/assets/images/attractions/chicken-street": [
-    "/assets/images/attractions/chicken-street/hero.webp",
     "/assets/images/attractions/chicken-street/gallery-1.webp"
   ],
   "/assets/images/attractions/chilzina-forty-steps": [
@@ -61,9 +60,7 @@
     "/assets/images/attractions/daykundi-highlands/gallery-1.webp",
     "/assets/images/attractions/daykundi-highlands/gallery-2.webp"
   ],
-  "/assets/images/attractions/dragon-valley-dara-e-ajdahar": [
-    "/assets/images/attractions/dragon-valley-dara-e-ajdahar/gallery-valley-hills.webp"
-  ],
+  "/assets/images/attractions/dragon-valley-dara-e-ajdahar": [],
   "/assets/images/attractions/gardez-zurmat-highlands": [
     "/assets/images/attractions/gardez-zurmat-highlands/gallery-1.webp"
   ],
@@ -163,8 +160,7 @@
     "/assets/images/attractions/nuristan-national-park/gallery-1-forested-meadow-boulder.webp",
     "/assets/images/attractions/nuristan-national-park/gallery-3-sunset-village-river.webp",
     "/assets/images/attractions/nuristan-national-park/gallery-4-dirt-road-forested-slope.webp",
-    "/assets/images/attractions/nuristan-national-park/gallery-hillside-village.webp",
-    "/assets/images/attractions/nuristan-national-park/gallery-mountainside-trees.webp"
+    "/assets/images/attractions/nuristan-national-park/gallery-hillside-village.webp"
   ],
   "/assets/images/attractions/nuristan-river-valleys-villages": [
     "/assets/images/attractions/nuristan-river-valleys-villages/gallery-bashgal-village-river.webp",
@@ -401,11 +397,7 @@
     "/assets/images/experiences/cultural/gudiparan-bazi/gallery/02.webp"
   ],
   "/assets/images/experiences/cultural/istalif-pottery/gallery": [
-    "/assets/images/experiences/cultural/istalif-pottery/gallery/01.webp",
-    "/assets/images/experiences/cultural/istalif-pottery/gallery/02.webp",
-    "/assets/images/experiences/cultural/istalif-pottery/gallery/03.webp",
-    "/assets/images/experiences/cultural/istalif-pottery/gallery/04.webp",
-    "/assets/images/experiences/cultural/istalif-pottery/gallery/05.webp"
+    "/assets/images/experiences/cultural/istalif-pottery/gallery/01.webp"
   ],
   "/assets/images/experiences/cultural/kaftar-bazi/gallery": [
     "/assets/images/experiences/cultural/kaftar-bazi/gallery/02.webp",

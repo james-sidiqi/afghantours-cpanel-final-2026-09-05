@@ -20,7 +20,6 @@ gallery_images:
   - "/assets/images/tours/featured/buzkashi-expedition/02.webp"
   - "/assets/images/tours/featured/buzkashi-expedition/03.webp"
 gallery_exclude:
-  - "/assets/images/tours/featured/buzkashi-expedition/hero.webp"
   - "/assets/images/experiences/cultural/buzkashi/gallery/04.webp"
 ---
 
