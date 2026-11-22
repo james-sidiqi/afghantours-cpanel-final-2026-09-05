@@ -871,6 +871,20 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
     "alt": "The turquoise domes of the Baba Wali shrine in Kandahar, seen through trees, with Afghan flags on the terrace",
     "note": "James-supplied photograph (t469u/t470u PNG). The Baba Wali file in the Herat zip is the same Kandahar shrine and the same frame (less saturated), so it was not also added. Published on the existing Kandahar Baba Wali gallery; the hillside establishing shot remains the hero."
+  },
+
+  {
+    "paths": ["/assets/images/attractions/herat-old-city-bazaars/owner-20261122-covered-bazaar-interior.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "Interior of a two-storey covered bazaar hall in Herat’s old city, with wooden doors, sunburst fanlights, a timber-ribbed roof and sacks on the courtyard floor",
+    "note": "James-supplied photograph (t471u). Replaces the previous hero and card on the Herat Old City & Bazaars attraction page."
+  },
+
+  {
+    "paths": ["/assets/images/hubs/ghazni-city/owner-20261122-city-walls-aerial.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "Aerial view of Ghazni’s old city, with the round-towered walls in the foreground, the citadel on the hill to the left, and the town beyond",
+    "note": "James-supplied photograph (t475u). Replaces the previous Ghazni City hub hero and card. The same scene is already in the Bala Hisar of Ghazni attraction gallery; that gallery was left unchanged."
   }
 
 ];

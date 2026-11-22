@@ -135,4 +135,6 @@ export const IMAGE_ALTS: Record<string, string> = {
   '/assets/images/attractions/khwaja-abdullah-ansari-shrine/owner-20261122-gazargah-shrine.webp': 'The shrine of Khwaja Abdullah Ansari at Gazargah in Herat, with a tiled iwan and gravestones in the courtyard',
   '/assets/images/attractions/baba-wali-shrine/owner-20261122-domes-through-trees.webp': 'The turquoise domes of the Baba Wali shrine in Kandahar, seen through trees, with Afghan flags on the terrace',
   '/assets/images/attractions/khwaja-abdullah-ansari-shrine/hero.webp': 'Aerial view of the shrine of Khwaja Abdullah Ansari at Gazargah in Herat, with the tiled sanctuary, courtyard graves, and the town around it',
+  '/assets/images/attractions/herat-old-city-bazaars/owner-20261122-covered-bazaar-interior.webp': 'Interior of a two-storey covered bazaar hall in Herat’s old city, with wooden doors, sunburst fanlights, a timber-ribbed roof and sacks on the courtyard floor',
+  '/assets/images/hubs/ghazni-city/owner-20261122-city-walls-aerial.webp': 'Aerial view of Ghazni’s old city, with the round-towered walls in the foreground, the citadel on the hill to the left, and the town beyond',
 };

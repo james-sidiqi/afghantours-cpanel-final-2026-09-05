@@ -4,6 +4,7 @@ export type AttractionOverride = {
   seoDescription?: string;
   ctaLabel?: string;
   heroLayout?: 'panorama';
+  heroObjectPosition?: string; // CSS object-position for the hero image only
   heroAlt?: string;
   heroSrcset?: string;
   regionLabel?: string;
@@ -59,5 +60,10 @@ export const ATTRACTION_OVERRIDES: Record<string, AttractionOverride> = {
       { label: 'Transport', value: 'Road' },
       { label: 'Access', value: 'By arrangement' },
     ],
+  },
+  // t471u: wide ~1.68:1 hall interior. Bias left so the sunburst-arched doors
+  // stay in frame in the tall mobile hero; vertical crop on desktop stays near centre.
+  'herat-old-city-bazaars': {
+    heroObjectPosition: '40% center',
   },
 };

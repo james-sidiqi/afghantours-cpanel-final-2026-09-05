@@ -118,6 +118,7 @@ export function getHubImage(hub: any): string {
   const slug = hub?.slug || hub?.location_slug || hub?.destination_slug;
   const base = String(slug || '').replace(/-city$/, '');
   const short = base === 'mazar-e-sharif' ? 'mazar' : base;
+  hub = { ...hub, ...((ownerSelections as Record<string, any>)[`hubs/${slug}`] || {}) };
   return entityHero(hub, [slug ? `/assets/images/hubs/${slug}/hero.webp` : null,
     base ? `/assets/images/hubs/${base}/hero.webp` : null, base ? `/assets/images/hubs/${base}/01.webp` : null,
     slug ? `/assets/images/hubs/${slug}-1.webp` : null, short ? `/assets/images/hubs/${short}-1.webp` : null], PLACEHOLDERS.hub);

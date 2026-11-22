@@ -124,6 +124,7 @@ const image = getHubImage(hub);
     text={hub.summary || hub.description || `Operational information for routes, attractions, hotels, food, and transportation connected to ${hubName}.`}
     image={image}
     height="min-h-[62vh]"
+    imagePosition={hubSlug === 'ghazni-city' ? '34% 48%' : undefined}
   />
 
   <section class="hub-overview">

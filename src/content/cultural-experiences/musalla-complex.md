@@ -1,7 +1,7 @@
 ---
 title: "Musalla Complex"
-subtitle: "The surviving minarets of Herat’s Musalla, the tombs of Gohar Shad and Mir Ali-Shir Nava’i, and the shrine of Khwaja Abdullah Ansari at Gazargah."
-card_description: "A visit from Herat to the Musalla complex — the remaining minarets and the tombs of Gohar Shad and Mir Ali-Shir Nava’i — and to the shrine at Gazargah."
+subtitle: "The surviving minarets of Herat’s Musalla — once part of a Timurid madrasa and mosque — and the tombs of Gohar Shad and Mir Ali-Shir Nava’i."
+card_description: "A visit from Herat to the Musalla complex: the remaining minarets and the tombs of Gohar Shad and Mir Ali-Shir Nava’i."
 intro_heading: "Among the minarets of the Musalla"
 places_heading: "Places in this visit"
 experience_type: "Historic City Visit"
@@ -28,7 +28,6 @@ related_attractions:
   - herat-minarets-musalla-complex
   - gawhar-shad-mausoleum
   - ali-shir-navai-mausoleum
-  - khwaja-abdullah-ansari-shrine
 ---
 
 The Musalla still shows why Herat was a center of the Timurid Renaissance. The brick minarets that remain once belonged to a large madrasa and mosque; beside them is the tomb of Gohar Shad.

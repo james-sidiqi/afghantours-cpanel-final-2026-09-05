@@ -605,5 +605,22 @@
     ],
     "gallery_mode": "explicit",
     "gallery_exclude_hero": true
+  },
+  "attractions/herat-old-city-bazaars": {
+    "hero_image": "/assets/images/attractions/herat-old-city-bazaars/owner-20261122-covered-bazaar-interior.webp",
+    "card_image": "/assets/images/attractions/herat-old-city-bazaars/owner-20261122-covered-bazaar-interior.webp",
+    "gallery_images": [
+      "/assets/images/attractions/herat-old-city-bazaars/gallery-1.webp",
+      "/assets/images/attractions/herat-old-city-bazaars/gallery-2.webp",
+      "/assets/images/attractions/herat-old-city-bazaars/owner-20261122-old-city-bazaar.webp",
+      "/assets/images/attractions/herat-old-city-bazaars/owner-20261122-malek-cistern.webp",
+      "/assets/images/attractions/herat-old-city-bazaars/owner-20261122-malek-cistern-inside.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "hubs/ghazni-city": {
+    "hero_image": "/assets/images/hubs/ghazni-city/owner-20261122-city-walls-aerial.webp",
+    "card_image": "/assets/images/hubs/ghazni-city/owner-20261122-city-walls-aerial.webp"
   }
 }

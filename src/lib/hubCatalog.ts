@@ -12,6 +12,7 @@ import {
 import { ACTIVE_HUB_SLUGS, getActivitiesForHub, getCulturalForHub } from './experiences';
 import { getCulinaryForHub } from './culinary';
 import { getCulturalExperienceImage, listPublicImages, listGalleryImages, cleanGallery, normalizeImagePath } from './images';
+import ownerSelections from '../data/ownerImageSelections.json';
 
 type Row = Record<string, any>;
 export type HubCatalogItem = {
@@ -191,7 +192,10 @@ export function buildHubIndexCatalog(): HubCatalogItem[] {
     if (short !== slug) {
       for (const p of listPublicImages(`/assets/images/hubs/${short}`)) existingHubImages.add(p);
     }
+    const ownerHub = (ownerSelections as Record<string, any>)[`hubs/${slug}`] || {};
     const imageCandidates = [
+      ownerHub.hero_image,
+      ownerHub.card_image,
       `/assets/images/hubs/${slug}/hero.webp`,
       `/assets/images/hubs/${slug}/01.webp`,
       `/assets/images/hubs/${short}/hero.webp`,
@@ -203,13 +207,15 @@ export function buildHubIndexCatalog(): HubCatalogItem[] {
       || imageCandidates.find((p) => existingHubImages.has(p))
       || String(hub.image || `/assets/images/hubs/${slug}/hero.webp`);
     const cardCandidates = [
+      ownerHub.card_image,
+      ownerHub.hero_image,
       `/assets/images/hubs/${slug}/01.webp`,
       `/assets/images/hubs/${slug}/thumb.webp`,
       `/assets/images/hubs/${slug}/gallery-1.webp`,
       `/assets/images/hubs/${short}/01.webp`,
       `/assets/images/hubs/${short}/thumb.webp`,
       image,
-    ].map((src) => normalizeImagePath(src, ''));
+    ].filter(Boolean).map((src) => normalizeImagePath(src, ''));
     const cardImage = cardCandidates.find((p) => existingHubImages.has(p)) || image;
 
     const summary = firstSentence(
