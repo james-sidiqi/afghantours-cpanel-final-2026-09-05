@@ -73,8 +73,8 @@
     "gallery_mode": "explicit"
   },
   "attractions/balkh-bala-hisar-ancient-walls": {
-    "hero_image": "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-walls.webp",
-    "card_image": "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-walls.webp",
+    "hero_image": "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-wall-pavilion-aerial.webp",
+    "card_image": "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-wall-pavilion-aerial.webp",
     "gallery_images": [
       "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-ancient-city-panorama.webp",
       "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-wall-pavilion-portrait.webp",
@@ -558,5 +558,52 @@
   "activities/cycling": {
     "hero_image": "/assets/images/experiences/activities/cycling/owner-20261122-bandeamir-riders-hero.webp",
     "card_image": "/assets/images/experiences/activities/cycling/owner-20261122-bandeamir-riders-hero.webp"
+  },
+  "attractions/jahan-nama-palace": {
+    "hero_image": "/assets/images/attractions/jahan-nama-palace/owner-20261122-jahan-nama-facade.webp",
+    "card_image": "/assets/images/attractions/jahan-nama-palace/owner-20261122-jahan-nama-facade.webp",
+    "gallery_images": [
+      "/assets/images/attractions/jahan-nama-palace/owner-20261122-jahan-nama-mountains-pool.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/gawhar-shad-mausoleum": {
+    "hero_image": "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-mausoleum.webp",
+    "card_image": "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-mausoleum.webp",
+    "gallery_images": [
+      "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-up-close.webp",
+      "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside.webp",
+      "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside-2.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/ali-shir-navai-mausoleum": {
+    "hero_image": "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-nava-i-mausoleum.webp",
+    "card_image": "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-nava-i-mausoleum.webp",
+    "gallery_images": [],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/khwaja-abdullah-ansari-shrine": {
+    "hero_image": "/assets/images/attractions/khwaja-abdullah-ansari-shrine/hero.webp",
+    "card_image": "/assets/images/attractions/khwaja-abdullah-ansari-shrine/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/khwaja-abdullah-ansari-shrine/owner-20261122-gazargah-shrine.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
+  },
+  "attractions/baba-wali-shrine": {
+    "hero_image": "/assets/images/attractions/baba-wali-shrine/hero.webp",
+    "card_image": "/assets/images/attractions/baba-wali-shrine/hero.webp",
+    "gallery_images": [
+      "/assets/images/attractions/baba-wali-shrine/gallery-1.webp",
+      "/assets/images/attractions/baba-wali-shrine/gallery-2.webp",
+      "/assets/images/attractions/baba-wali-shrine/owner-20261122-domes-through-trees.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
   }
 }

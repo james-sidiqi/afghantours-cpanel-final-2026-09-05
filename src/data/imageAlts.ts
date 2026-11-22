@@ -129,4 +129,10 @@ export const IMAGE_ALTS: Record<string, string> = {
   '/assets/images/experiences/activities/trekking/owner-20261122-snow-range-aerial.webp': 'Aerial view of a snow-covered mountain range',
   '/assets/images/attractions/herat-citadel-qala-ye-ikhtiyaruddin/owner-20261122-citadel-overview.webp': 'Aerial view of the Herat Citadel (Qala-e Ikhtiyaruddin) in the old city, with a blue-domed mosque nearby',
   '/assets/images/attractions/bala-hisar-of-ghazni/owner-20261122-ghazni-city-overview.webp': 'Aerial view of Ghazni, with the walled city and the citadel on the hill',
+  '/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-wall-pavilion-aerial.webp': 'Aerial view of the Bala Hisar in Balkh, with the octagonal domed pavilion in the foreground and the earthen wall running into the distance between fields and the town',
+  '/assets/images/attractions/jahan-nama-palace/owner-20261122-jahan-nama-facade.webp': 'The facade and forecourt of the Jahan Nama palace in Khulm',
+  '/assets/images/attractions/jahan-nama-palace/owner-20261122-jahan-nama-mountains-pool.webp': 'The Jahan Nama palace and garden in Khulm, with a pool in the foreground and mountains beyond',
+  '/assets/images/attractions/khwaja-abdullah-ansari-shrine/owner-20261122-gazargah-shrine.webp': 'The shrine of Khwaja Abdullah Ansari at Gazargah in Herat, with a tiled iwan and gravestones in the courtyard',
+  '/assets/images/attractions/baba-wali-shrine/owner-20261122-domes-through-trees.webp': 'The turquoise domes of the Baba Wali shrine in Kandahar, seen through trees, with Afghan flags on the terrace',
+  '/assets/images/attractions/khwaja-abdullah-ansari-shrine/hero.webp': 'Aerial view of the shrine of Khwaja Abdullah Ansari at Gazargah in Herat, with the tiled sanctuary, courtyard graves, and the town around it',
 };

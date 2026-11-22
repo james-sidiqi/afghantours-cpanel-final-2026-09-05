@@ -844,6 +844,33 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
     "alt": "Aerial view of Ghazni, with the walled city and the citadel on the hill",
     "note": "James-supplied photograph (t463u). Gallery on the Bala Hisar of Ghazni attraction page and in the Ghazni hub catalog inventory. Destination pages are hero-only and were not changed."
+  },
+
+  {
+    "paths": ["/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-wall-pavilion-aerial.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "Aerial view of the Bala Hisar in Balkh, with the octagonal domed pavilion in the foreground and the earthen wall running into the distance between fields and the town",
+    "note": "James-supplied photograph (t467u). Replaces the previous wall-walk hero on the Bala Hisar attraction page; also in the Ancient City of Balkh experience gallery."
+  },
+
+  {
+    "paths": ["/assets/images/attractions/jahan-nama-palace/owner-20261122-jahan-nama-facade.webp", "/assets/images/attractions/jahan-nama-palace/owner-20261122-jahan-nama-mountains-pool.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "The Jahan Nama palace and garden in Khulm (Tashqurghan)",
+    "note": "James-supplied photographs (t461u, published t468u). Facade is the attraction hero; the mountains-and-pool view is in the gallery."
+  },
+  {
+    "paths": ["/assets/images/attractions/khwaja-abdullah-ansari-shrine/owner-20261122-gazargah-shrine.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "The shrine of Khwaja Abdullah Ansari at Gazargah in Herat, with a tiled iwan and gravestones in the courtyard",
+    "note": "James-supplied photograph (t457u incoming, published t468u) in the Gazargah shrine gallery. The page hero is the existing aerial of the complex."
+  },
+
+  {
+    "paths": ["/assets/images/attractions/baba-wali-shrine/owner-20261122-domes-through-trees.webp"],
+    "author": "AfghanTours", "license": "© AfghanTours", "licenseUrl": "", "source": "",
+    "alt": "The turquoise domes of the Baba Wali shrine in Kandahar, seen through trees, with Afghan flags on the terrace",
+    "note": "James-supplied photograph (t469u/t470u PNG). The Baba Wali file in the Herat zip is the same Kandahar shrine and the same frame (less saturated), so it was not also added. Published on the existing Kandahar Baba Wali gallery; the hillside establishing shot remains the hero."
   }
 
 ];

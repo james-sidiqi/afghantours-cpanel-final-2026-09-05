@@ -13,7 +13,8 @@
   ],
   "/assets/images/attractions/baba-wali-shrine": [
     "/assets/images/attractions/baba-wali-shrine/gallery-1.webp",
-    "/assets/images/attractions/baba-wali-shrine/gallery-2.webp"
+    "/assets/images/attractions/baba-wali-shrine/gallery-2.webp",
+    "/assets/images/attractions/baba-wali-shrine/owner-20261122-domes-through-trees.webp"
   ],
   "/assets/images/attractions/baburs-gardens": [
     "/assets/images/attractions/baburs-gardens/gallery-1.webp",
@@ -1103,5 +1104,16 @@
   "/assets/images/attractions/chehel-burj-bamyan-ruins": [
     "/assets/images/attractions/chehel-burj-bamyan-ruins/owner-20261122-ridge-wide.webp",
     "/assets/images/attractions/chehel-burj-bamyan-ruins/owner-20261122-towers-close.webp"
+  ],
+  "/assets/images/attractions/jahan-nama-palace": [
+    "/assets/images/attractions/jahan-nama-palace/owner-20261122-jahan-nama-mountains-pool.webp"
+  ],
+  "/assets/images/attractions/gawhar-shad-mausoleum": [
+    "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-up-close.webp",
+    "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside.webp",
+    "/assets/images/attractions/herat-minarets-musalla-complex/owner-20261122-gawhar-shad-inside-2.webp"
+  ],
+  "/assets/images/attractions/khwaja-abdullah-ansari-shrine": [
+    "/assets/images/attractions/khwaja-abdullah-ansari-shrine/owner-20261122-gazargah-shrine.webp"
   ]
 }

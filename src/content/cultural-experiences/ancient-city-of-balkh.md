@@ -8,10 +8,10 @@ experience_type: "Historic City Visit"
 provinces: ["Balkh"]
 hero_image: "/assets/images/experiences/cultural/ancient-city-of-balkh/owner-20261122-balkh-overview-aerial.webp"
 gallery_images:
+  - "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-wall-pavilion-aerial.webp"
   - "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-ancient-city-panorama.webp"
   - "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-wall-pavilion-portrait.webp"
   - "/assets/images/attractions/balkh-bala-hisar-ancient-walls/owner-20261122-octagonal-pavilion.webp"
-  - "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-walls.webp"
   - "/assets/images/attractions/haji-piyada-nine-domes/owner-20261122-haji-piyada-arches.webp"
   - "/assets/images/attractions/rumi-home-madrasa/owner-20261122-rumi-madrasa-shelter.webp"
   - "/assets/images/attractions/balkh-bala-hisar-ancient-walls/ancient-city-balkh-tower.webp"
