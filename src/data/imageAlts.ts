@@ -1,6 +1,9 @@
 // Alt text for images whose photo credit is still pending (no visible credit line yet).
 // Credits are tracked in docs/image-register-*.csv; move an entry to photoCredits.ts once confirmed.
 export const IMAGE_ALTS: Record<string, string> = {
+  // Owner-supplied Samangan roadside spring photographs, 22 Nov 2026 (t455u)
+  '/assets/images/provinces/samangan/owner-20261122-roadside-spring-cave.webp': 'A natural spring flowing from a cave mouth into a clear pool, on the side of the road between Tangi Tashkurgan and the Salang, in Samangan province',
+  '/assets/images/provinces/samangan/owner-20261122-roadside-spring-wide.webp': 'The same natural spring on the side of the road between Tangi Tashkurgan and the Salang, in Samangan province, from a wider angle showing the cliff and mountain above',
   // Owner-supplied Mazar road photographs, 22 Nov 2026 (t454u)
   '/assets/images/attractions/shrine-of-hazrat-ali-blue-mosque/owner-20261122-white-pigeon-flight.webp': 'A white pigeon in flight on the Blue Mosque plaza in Mazar-i-Sharif',
   '/assets/images/hubs/mazar-e-sharif/balkh-white-pigeons.webp': 'A man crouching to feed white pigeons at the Blue Mosque in Mazar-i-Sharif',

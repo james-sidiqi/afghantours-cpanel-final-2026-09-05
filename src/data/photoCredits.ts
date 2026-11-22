@@ -638,6 +638,28 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "source": "",
     "alt": "Large vehicles heading south toward the Salang at the entrance of Tangi Tashkurgan gorge",
     "note": "James-supplied photograph (t454u). A screenshot of the original; used as a gallery image only."
+  },
+  {
+    "paths": [
+      "/assets/images/provinces/samangan/owner-20261122-roadside-spring-cave.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "A natural spring flowing from a cave mouth into a clear pool, on the side of the road between Tangi Tashkurgan and the Salang, in Samangan province",
+    "note": "James-supplied photograph (t455u). Gallery only, on the Takht-e Rostam and Salang Pass attraction pages."
+  },
+  {
+    "paths": [
+      "/assets/images/provinces/samangan/owner-20261122-roadside-spring-wide.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "The same natural spring on the side of the road between Tangi Tashkurgan and the Salang, in Samangan province, from a wider angle showing the cliff and mountain above",
+    "note": "James-supplied photograph (t455u). Gallery only, on the Takht-e Rostam and Salang Pass attraction pages."
   }
 ];
 const byPath = new Map<string, PhotoCredit>();
