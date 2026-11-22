@@ -1,6 +1,13 @@
 // Alt text for images whose photo credit is still pending (no visible credit line yet).
 // Credits are tracked in docs/image-register-*.csv; move an entry to photoCredits.ts once confirmed.
 export const IMAGE_ALTS: Record<string, string> = {
+  // Owner-supplied Mazar road photographs, 22 Nov 2026 (t454u)
+  '/assets/images/attractions/shrine-of-hazrat-ali-blue-mosque/owner-20261122-white-pigeon-flight.webp': 'A white pigeon in flight on the Blue Mosque plaza in Mazar-i-Sharif',
+  '/assets/images/hubs/mazar-e-sharif/balkh-white-pigeons.webp': 'A man crouching to feed white pigeons at the Blue Mosque in Mazar-i-Sharif',
+  '/assets/images/hubs/mazar-e-sharif/gallery-3.webp': 'A man crouching to feed white pigeons at the Blue Mosque in Mazar-i-Sharif',
+  '/assets/images/attractions/salang-pass/owner-20261122-roadside-shop-salang-mazar.webp': 'A roadside shop under a cliff on the road between the Salang and Mazar-i-Sharif, selling naan, snacks and drinks',
+  '/assets/images/hubs/mazar-e-sharif/owner-20261122-sheep-herd-outside-mazar.webp': 'A passing herd of sheep outside Mazar-i-Sharif, with mountains behind',
+  '/assets/images/hubs/mazar-e-sharif/owner-20261122-trucks-tangi-tashkurgan.webp': 'Large vehicles heading south toward the Salang at the entrance of Tangi Tashkurgan gorge',
   // Owner-supplied Bolani photograph, 22 Nov 2026 (t453u)
   '/assets/images/food/dishes/bolani/owner-bolani-plated-20261122.webp': 'A stack of pan-fried bolani on a blue-and-gold scalloped plate, one piece showing a green herb filling, with green chillies and naan behind',
   // Owner-supplied Sugarcane photographs, 22 Nov 2026 (t452u)

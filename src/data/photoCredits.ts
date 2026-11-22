@@ -582,6 +582,62 @@ export const PHOTO_CREDITS: PhotoCredit[] = [
     "source": "",
     "alt": "A stack of pan-fried bolani on a blue-and-gold scalloped plate, one piece showing a green herb filling, with green chillies and naan behind",
     "note": "James-supplied photograph (t453u). Used as the Bolani hero and Food & Culture card."
+  },
+  {
+    "paths": [
+      "/assets/images/attractions/shrine-of-hazrat-ali-blue-mosque/owner-20261122-white-pigeon-flight.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "A white pigeon in flight on the Blue Mosque plaza in Mazar-i-Sharif",
+    "note": "James-supplied photograph (t454u)."
+  },
+  {
+    "paths": [
+      "/assets/images/hubs/mazar-e-sharif/balkh-white-pigeons.webp",
+      "/assets/images/hubs/mazar-e-sharif/gallery-3.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "A man crouching to feed white pigeons at the Blue Mosque in Mazar-i-Sharif",
+    "note": "James-supplied photograph (t454u). Already on the Mazar-e-Sharif hub as balkh-white-pigeons.webp and a smaller copy as gallery-3.webp; now also shown in the Blue Mosque attraction gallery."
+  },
+  {
+    "paths": [
+      "/assets/images/attractions/salang-pass/owner-20261122-roadside-shop-salang-mazar.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "A roadside shop under a cliff on the road between the Salang and Mazar-i-Sharif, selling naan, snacks and drinks",
+    "note": "James-supplied photograph (t454u)."
+  },
+  {
+    "paths": [
+      "/assets/images/hubs/mazar-e-sharif/owner-20261122-sheep-herd-outside-mazar.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "A passing herd of sheep outside Mazar-i-Sharif, with mountains behind",
+    "note": "James-supplied photograph (t454u)."
+  },
+  {
+    "paths": [
+      "/assets/images/hubs/mazar-e-sharif/owner-20261122-trucks-tangi-tashkurgan.webp"
+    ],
+    "author": "AfghanTours",
+    "license": "© AfghanTours",
+    "licenseUrl": "",
+    "source": "",
+    "alt": "Large vehicles heading south toward the Salang at the entrance of Tangi Tashkurgan gorge",
+    "note": "James-supplied photograph (t454u). A screenshot of the original; used as a gallery image only."
   }
 ];
 const byPath = new Map<string, PhotoCredit>();

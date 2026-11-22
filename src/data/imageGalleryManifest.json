@@ -214,7 +214,8 @@
     "/assets/images/attractions/sakhi-shrine-karte-sakhi/gallery-1.webp"
   ],
   "/assets/images/attractions/salang-pass": [
-    "/assets/images/attractions/salang-pass/gallery-1.webp"
+    "/assets/images/attractions/salang-pass/gallery-1.webp",
+    "/assets/images/attractions/salang-pass/owner-20261122-roadside-shop-salang-mazar.webp"
   ],
   "/assets/images/attractions/sar-e-pol-meadows": [
     "/assets/images/attractions/sar-e-pol-meadows/gallery-1.webp"
@@ -233,7 +234,9 @@
     "/assets/images/attractions/shahr-e-zohak/gallery-1.webp"
   ],
   "/assets/images/attractions/shrine-of-hazrat-ali-blue-mosque": [
-    "/assets/images/attractions/shrine-of-hazrat-ali-blue-mosque/gallery-2.webp"
+    "/assets/images/attractions/shrine-of-hazrat-ali-blue-mosque/gallery-2.webp",
+    "/assets/images/attractions/shrine-of-hazrat-ali-blue-mosque/owner-20261122-white-pigeon-flight.webp",
+    "/assets/images/hubs/mazar-e-sharif/balkh-white-pigeons.webp"
   ],
   "/assets/images/attractions/shrine-of-mirwais-hotak": [
     "/assets/images/attractions/shrine-of-mirwais-hotak/gallery-1.webp"
@@ -743,7 +746,10 @@
     "/assets/images/hubs/mazar-e-sharif/balkh-white-pigeons.webp",
     "/assets/images/hubs/mazar-e-sharif/gallery-1.webp",
     "/assets/images/heroes/cultural-experiences/hero.webp",
-    "/assets/images/hubs/mazar-e-sharif/gallery-3.webp"
+    "/assets/images/hubs/mazar-e-sharif/gallery-3.webp",
+    "/assets/images/attractions/shrine-of-hazrat-ali-blue-mosque/owner-20261122-white-pigeon-flight.webp",
+    "/assets/images/hubs/mazar-e-sharif/owner-20261122-sheep-herd-outside-mazar.webp",
+    "/assets/images/hubs/mazar-e-sharif/owner-20261122-trucks-tangi-tashkurgan.webp"
   ],
   "/assets/images/hubs/parun": [
     "/assets/images/hubs/parun/gallery-1.webp"
