@@ -12,7 +12,7 @@ ADTF,afghanistan-discovery-tour-fall,seasonal,Fall route planning,Itinerary timi
 ADTS,afghanistan-discovery-tour-spring,seasonal,Spring route planning,Itinerary timing adjusted for spring landscapes, weather, and road access.
 BSKI,bamyan-skiing-tour,special_activity,Ski logistics coordination,Coordination for Bamyan backcountry skiing days with local support.,1,10
 BUZE,buzkashi-expedition,special_activity,Buzkashi coordination,Coordination for scheduled buzkashi match days where available.,1,10
-CAD,central-afghanistan-discovery,regional,Central Afghanistan routing,Route planning across Kabul, Panjshir, Bamyan
+CAD,central-afghanistan-discovery,regional,Central Afghanistan routing,"Route planning across Kabul, Bamyan and Band-e-Amir",0,
 KBLS,kabul-surroundings,regional,Kabul area routing,Route planning for Kabul, Panjshir, Parwan
 KTDE,kandahar-durrani-empire-tour,flight,Domestic flight coordination,Coordination for scheduled Kabul-Kandahar-Kabul domestic flights.,1,10
 TGHT,timurid-grandeur-herat-tour,flight,Domestic flight coordination,Coordination for scheduled Kabul-Herat-Kabul domestic flights.,1,10

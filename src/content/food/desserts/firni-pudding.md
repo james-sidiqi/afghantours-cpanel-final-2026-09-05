@@ -3,6 +3,12 @@ title: Firni
 food_slug: firni
 section: food_content
 save_to: src/content/food/dishes/firni.md
+card_description: "Afghan milk-based pudding, commonly flavored with cardamom and sometimes decorated with nuts."
+hero_image: "/assets/images/food/dishes/firni/hero.webp"
+image: "/assets/images/food/dishes/firni/hero.webp"
+gallery_images: ["/assets/images/food/sweets/firni/hero.webp"]
+gallery_mode: "explicit"
+gallery_exclude_hero: true
 ---
 
 ### Overview

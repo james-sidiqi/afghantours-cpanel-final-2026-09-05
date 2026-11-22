@@ -41,7 +41,7 @@ const getSnippet = (item: any) => {
 };
 
 const getHref = (item: any) => `/food-culture/${item.slug || item.id}/`;
-const getImage = (item: any) => item.data.image || item.data.hero_image || '/assets/images/placeholders/default-food.webp';
+const getImage = (item: any) => item.data.hero_image || item.data.image || '/assets/images/placeholders/default-food.webp';
 ---
 
 <BaseLayout title="Food & Culture | AfghanTours" description="Explore Afghan food, hospitality, crafts, sport, ceremony, and living traditions through experiences that can be included in real AfghanTours itineraries.">

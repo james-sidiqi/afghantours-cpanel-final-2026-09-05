@@ -1,328 +1,210 @@
+import ownerSelections from '../data/ownerImageSelections.json';
 import { isRejectedImage } from '../data/rejectedImages';
+import aliases from '../data/imagePathAliases.json';
+import galleries from '../data/imageGalleryManifest.json';
+import assets from '../data/imageAssetManifest.json';
 import fs from 'node:fs';
 import path from 'node:path';
 
-export const PLACEHOLDERS = {
-  tour: '/assets/images/placeholders/default-tour.webp',
-  attraction: '/assets/images/placeholders/default-attraction.webp',
-  hotel: '/assets/images/placeholders/default-hotel.webp',
-  region: '/assets/images/placeholders/default-region.webp',
-  province: '/assets/images/placeholders/default-province.webp',
-  food: '/assets/images/placeholders/default-food.webp',
-  hub: '/assets/images/placeholders/default-hub.webp',
-  hero: '/assets/images/placeholders/default-hero.webp',
-  card: '/assets/images/placeholders/default-card.webp',
-  transport: '/assets/images/placeholders/default-transport.webp',
-};
+export const PLACEHOLDERS = Object.fromEntries(
+  ['tour', 'attraction', 'hotel', 'region', 'province', 'food', 'hub', 'hero', 'card', 'transport']
+    .map((kind) => [kind, `/assets/images/placeholders/default-${kind}.webp`])
+) as Record<'tour' | 'attraction' | 'hotel' | 'region' | 'province' | 'food' | 'hub' | 'hero' | 'card' | 'transport', string>;
 
-function assetExists(publicPath?: string | null): boolean {
-  const value = normalizeImagePath(publicPath || '', '');
-  if (!value || value.startsWith('http://') || value.startsWith('https://')) return Boolean(value);
-  return fs.existsSync(path.join(process.cwd(), 'public', value.replace(/^\//, '')));
+export function normalizeImagePath(value?: string | null, fallback = PLACEHOLDERS.card): string {
+  const raw = String(value || '').trim().replace(/^['"]+|['"]+$/g, '');
+  if (!raw) return fallback;
+  if (/^https?:\/\//.test(raw)) return raw;
+  let cleaned = raw.replace(/^public\//, '').replace(/^\.\//, '').replace(/^\/+/, '');
+  if (cleaned.startsWith('images/')) cleaned = `assets/${cleaned}`;
+  let result = `/${cleaned}`;
+  // Exact mappings preserve distinct same-name files from the folder merge.
+  result = (aliases as Record<string, string>)[result] || result;
+  return result.replace('/assets/images/province/', '/assets/images/provinces/')
+    .replace('/assets/images/food/dried-fruit/', '/assets/images/food/dried-fruits/')
+    .replace('/assets/images/featured-tours/', '/assets/images/tours/featured/')
+    .replace('/assets/images/custom-tours/', '/assets/images/tours/custom/');
 }
 
-function firstExisting(paths: Array<string | null | undefined>, fallback: string): string {
-  const normalized = paths.map((p) => normalizeImagePath(p || '', '')).filter(Boolean);
-  // Placeholder graphics in data are "no image": keep looking for a real file.
-  return normalized.find((p) => !isPlaceholder(p) && !isRejectedImage(p) && assetExists(p)) || fallback;
+function assetExists(value?: string | null): boolean {
+  const src = normalizeImagePath(value, '');
+  if (!src) return false;
+  if (/^https?:\/\//.test(src)) return true;
+  return fs.existsSync(path.join(process.cwd(), 'public', src.replace(/^\//, '')));
 }
-
 export function isPlaceholder(src?: string | null): boolean {
   return !src || /\/placeholders\//.test(String(src));
 }
-
-export function normalizeImagePath(pathValue?: string | null, fallback = PLACEHOLDERS.card): string {
-  const raw = String(pathValue || '').trim();
-  if (!raw) return fallback;
-  if (raw.startsWith('http://') || raw.startsWith('https://')) return raw;
-  let cleaned = raw.replace(/^public\//, '').replace(/^\.\//, '');
-  if (cleaned.startsWith('/')) cleaned = cleaned.slice(1);
-  if (cleaned.startsWith('assets/')) return `/${cleaned}`;
-  if (cleaned.startsWith('images/')) return `/assets/${cleaned}`;
-  return `/${cleaned}`;
+export function hasRealImage(src?: string | null): boolean {
+  const value = normalizeImagePath(src, '');
+  return Boolean(value && !isPlaceholder(value) && !isRejectedImage(value) && assetExists(value));
+}
+function firstExisting(values: any[], fallback: string): string {
+  return values.map((v) => normalizeImagePath(v, '')).find(hasRealImage) || fallback;
 }
 
-
-export function listPublicImages(publicFolder?: string | null, recursive = true): string[] {
-  const normalized = normalizeImagePath(publicFolder || '', '');
-  if (!normalized || normalized.startsWith('http://') || normalized.startsWith('https://')) return [];
-
-  const publicRoot = path.join(process.cwd(), 'public');
-  const diskRoot = path.join(publicRoot, normalized.replace(/^\//, ''));
-
-  if (!fs.existsSync(diskRoot)) return [];
-
-  const allowed = new Set(['.webp', '.jpg', '.jpeg', '.png', '.avif']);
-  const results: string[] = [];
-
-  const walk = (dir: string) => {
-    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-      if (entry.name.startsWith('.')) continue;
-
-      const full = path.join(dir, entry.name);
-
-      if (entry.isDirectory()) {
-        // 'sizes/' holds responsive variants (e.g. -800w) — never gallery items.
-        if (recursive && entry.name !== 'sizes') walk(full);
-        continue;
-      }
-
-      if (!allowed.has(path.extname(entry.name).toLowerCase())) continue;
-
-      const relative = path.relative(publicRoot, full).split(path.sep).join('/');
-      if (isRejectedImage('/' + relative)) continue;
-      results.push(`/${relative}`);
-    }
-  };
-
-  walk(diskRoot);
-
-  return [...new Set(results)].sort((a, b) => {
-    const aHero = /\/hero\.[^.]+$/i.test(a) ? 0 : 1;
-    const bHero = /\/hero\.[^.]+$/i.test(b) ? 0 : 1;
-    return aHero - bHero || a.localeCompare(b);
-  });
+/** Card and responsive assets never belong in a photo gallery, even if supplied in data. */
+export function isGalleryImage(value?: string | null): boolean {
+  const src = normalizeImagePath(value, '');
+  const pathname = src.split(/[?#]/)[0];
+  const name = pathname.split('/').pop() || '';
+  return /\.(webp|jpe?g|png|avif)$/i.test(pathname)
+    && !/(^|[-_])(thumb(?:nail)?s?|cards?)([-_\d.]|$)/i.test(name)
+    && !/\/(sizes|crops|thumbnails|cards)\//i.test(pathname)
+    && hasRealImage(src);
+}
+export function cleanGallery(values: any[]): string[] {
+  return [...new Set(values.filter(Boolean).map((v) => normalizeImagePath(v, '')).filter(isGalleryImage))];
 }
 
+/** Explicit inventory only: adding files to public/ never silently changes a gallery. */
+export function listGalleryImages(folder?: string | null, recursive = true): string[] {
+  const root = normalizeImagePath(folder, '').replace(/\/$/, '');
+  if (!root || /^https?:/.test(root)) return [];
+  const list = Object.entries(galleries as Record<string, string[]>)
+    .filter(([dir]) => dir === root || (recursive && dir.startsWith(`${root}/`)))
+    .flatMap(([, entries]) => entries);
+  return cleanGallery(list);
+}
+/** General asset lookup uses an explicit inventory too; this is not a gallery API. */
+export function listPublicImages(folder?: string | null, recursive = true): string[] {
+  const root = normalizeImagePath(folder, '').replace(/\/$/, '');
+  if (!root) return [];
+  return [...new Set((assets as string[]).filter((src) => src.startsWith(`${root}/`)
+    && (recursive || !src.slice(root.length + 1).includes('/')))
+    .map((src) => normalizeImagePath(src, '')).filter(hasRealImage))];
+}
+
+function entityHero(item: any, candidates: any[], fallback: string): string {
+  return firstExisting([item?.hero_image, item?.hero_image_path, ...candidates,
+    item?.featured_image, item?.cover_image_path, item?.image_path_property_1,
+    item?.property_image, item?.image_path, item?.image, item?.img_path,
+    item?.square_image_path, item?.card_image, item?.thumbnail_image_path, item?.thumbnail_path], fallback);
+}
+export function getPreferredImage(item: any, fallback = PLACEHOLDERS.card): string {
+  return entityHero(item, [], fallback);
+}
 export function getTourHeroImage(tour: any): string {
-  return firstExisting([
-    tour?.hero_image,
-    tour?.hero_image_path,
-    tour?.thumbnail_image_path,
-    tour?.image_path,
-    tour?.image,
-    tour?.featured_image,
-    tour?.slug ? `/assets/images/featured-tours/${tour.slug}/hero.webp` : null,
-    tour?.slug ? `/assets/images/custom-tours/${tour.slug}/hero.webp` : null,
-  ], PLACEHOLDERS.tour);
+  return entityHero(tour, ['featured', 'custom', 'general'].map((kind) => tour?.slug
+    ? `/assets/images/tours/${kind}/${tour.slug}/hero.webp` : null), PLACEHOLDERS.tour);
 }
-
 export function getTourOverviewImage(tour: any): string {
-  return firstExisting([
-    tour?.overview_image,
-    tour?.overview_image_path,
-    tour?.secondary_image,
-    tour?.slug ? `/assets/images/featured-tours/${tour.slug}/overview.webp` : null,
-    tour?.slug ? `/assets/images/custom-tours/${tour.slug}/overview.webp` : null,
-    tour?.hero_image,
-    tour?.hero_image_path,
-  ], PLACEHOLDERS.tour);
+  return firstExisting([tour?.overview_image, tour?.overview_image_path, tour?.secondary_image,
+    ...['featured', 'custom', 'general'].map((kind) => tour?.slug ? `/assets/images/tours/${kind}/${tour.slug}/overview.webp` : null),
+    getTourHeroImage(tour)], PLACEHOLDERS.tour);
 }
 export function getHotelImage(hotel: any): string {
-  return firstExisting([
-    hotel?.image_path_property_1,
-    hotel?.property_image,
-    hotel?.image,
-    hotel?.hero_image,
-  ], PLACEHOLDERS.hotel);
+  return entityHero(hotel, [hotel?.slug ? `/assets/images/hotels/${hotel.slug}/hero.webp` : null], PLACEHOLDERS.hotel);
 }
-
 export function getRegionImage(region: any): string {
   const slug = region?.slug || region?.region_slug;
-  return firstExisting([
-    region?.img_path,
-    region?.image_path,
-    region?.hero_image,
-    slug ? `/assets/images/regions/${slug}.webp` : null,
-  ], PLACEHOLDERS.region);
+  region = { ...region, ...((ownerSelections as Record<string, any>)[`regions/${slug}`] || {}) };
+  return entityHero(region, [slug ? `/assets/images/regions/${slug}/hero.webp` : null,
+    slug ? `/assets/images/regions/${slug}.webp` : null], PLACEHOLDERS.region);
 }
-
 export function getProvinceImage(province: any): string {
   const slug = province?.slug || province?.province_slug;
-  return firstExisting([
-    province?.cover_image_path,
-    province?.square_image_path,
-    province?.image_path,
-    province?.hero_image,
-    slug ? `/assets/images/provinces/${slug}/hero.webp` : null,
-    slug ? `/assets/images/provinces/${slug}/hero.webp` : null,
-    slug ? `/assets/images/provinces/${slug}.webp` : null,
-    slug ? `/assets/images/provinces/${slug}.webp` : null,
-  ], PLACEHOLDERS.province);
+  return entityHero(province, [slug ? `/assets/images/provinces/${slug}/hero.webp` : null,
+    slug ? `/assets/images/provinces/${slug}.webp` : null], PLACEHOLDERS.province);
 }
-
 export function getFoodImage(item: any): string {
   const slug = item?.slug || item?.food_slug || item?.dish_slug;
-  return firstExisting([
-    item?.image_path,
-    item?.image,
-    item?.hero_image,
-    slug ? `/assets/images/food/dishes/${slug}/hero.webp` : null,
-    slug ? `/assets/images/food/drinks/${slug}/hero.webp` : null,
-    slug ? `/assets/images/food/produce/${slug}/hero.webp` : null,
-    slug ? `/assets/images/food/dried-fruit/${slug}/hero.webp` : null,
-    slug ? `/assets/images/food/dishes/${slug}.webp` : null,
-    slug ? `/assets/images/food/drinks/${slug}.webp` : null,
-    slug ? `/assets/images/food/produce/${slug}.webp` : null,
-    slug ? `/assets/images/food/${slug}.webp` : null,
-  ], PLACEHOLDERS.food);
+  item = { ...item, ...((ownerSelections as Record<string, any>)[`food/${slug}`] || {}) };
+  return entityHero(item, [...['dishes', 'drinks', 'produce', 'dried-fruits'].map((kind) => slug
+    ? `/assets/images/food/${kind}/${slug}/hero.webp` : null),
+    ...['dishes', 'drinks', 'produce', ''].map((kind) => slug ? `/assets/images/food/${kind ? kind + '/' : ''}${slug}.webp` : null)], PLACEHOLDERS.food);
 }
-
-export function hasRealImage(publicPath?: string | null): boolean {
-  const normalized = normalizeImagePath(publicPath || '', '');
-  return Boolean(normalized && !isPlaceholder(normalized) && assetExists(normalized));
-}
-
 export function getHubImage(hub: any): string {
   const slug = hub?.slug || hub?.location_slug || hub?.destination_slug;
   const base = String(slug || '').replace(/-city$/, '');
-  const map: Record<string, string> = {
-    'mazar-e-sharif': 'mazar',
-    'mazar-e-sharif-city': 'mazar',
-    'kabul-city': 'kabul',
-    'kandahar-city': 'kandahar',
-    'bamyan-city': 'bamyan',
-    'herat-city': 'herat',
-    'faizabad-city': 'faizabad',
-    'jalalabad-city': 'jalalabad',
-    'ghazni-city': 'ghazni',
-  };
-  const short = map[String(slug)] || map[base] || base;
-  return firstExisting([
-    hub?.image_path,
-    hub?.hero_image,
-    hub?.image,
-    slug ? `/assets/images/hubs/${slug}/hero.webp` : null,
-    base ? `/assets/images/hubs/${base}/hero.webp` : null,
-    base ? `/assets/images/hubs/${base}/01.webp` : null,
-    slug ? `/assets/images/hubs/${slug}-1.webp` : null,
-    short ? `/assets/images/hubs/${short}-1.webp` : null,
-  ], PLACEHOLDERS.hub);
+  const short = base === 'mazar-e-sharif' ? 'mazar' : base;
+  hub = { ...hub, ...((ownerSelections as Record<string, any>)[`hubs/${slug}`] || {}) };
+  return entityHero(hub, [slug ? `/assets/images/hubs/${slug}/hero.webp` : null,
+    base ? `/assets/images/hubs/${base}/hero.webp` : null, base ? `/assets/images/hubs/${base}/01.webp` : null,
+    slug ? `/assets/images/hubs/${slug}-1.webp` : null, short ? `/assets/images/hubs/${short}-1.webp` : null], PLACEHOLDERS.hub);
 }
-
+export function getAttractionImage(item: any): string {
+  item = { ...item, ...((ownerSelections as Record<string, any>)[`attractions/${item?.slug}`] || {}) };
+  const code = String(item?.attraction_code || item?.code || '').toLowerCase();
+  return entityHero(item, [item?.slug ? `/assets/images/attractions/${item.slug}/hero.webp` : null,
+    code ? `/assets/images/attractions/${code}/hero.webp` : null, code ? `/assets/images/attractions/${code}.webp` : null,
+    item?.slug ? `/assets/images/attractions/${item.slug}/card.webp` : null], PLACEHOLDERS.attraction);
+}
+/** Listing-card image. Prefers a dedicated card/thumb crop when one is set. */
+export function getAttractionCardImage(item: any): string {
+  const merged = { ...item, ...((ownerSelections as Record<string, any>)[`attractions/${item?.slug}`] || {}) };
+  if (merged?.card_image) {
+    const src = normalizeImagePath(merged.card_image, '');
+    if (hasRealImage(src)) return src;
+  }
+  return getAttractionImage(merged);
+}
 export function buildGallery(entity: any, fallbackType: keyof typeof PLACEHOLDERS = 'card'): string[] {
-  const values = [
-    entity?.gallery_image_1,
-    entity?.gallery_image_2,
-    entity?.gallery_image_3,
-    entity?.gallery1,
-    entity?.gallery2,
-    entity?.gallery3,
-    entity?.image_path_property_1,
-    entity?.image_path_property_2,
-    entity?.image_path_property_3,
-  ].filter(Boolean);
-  return [...new Set(values.map((v) => normalizeImagePath(v, PLACEHOLDERS[fallbackType])) as string[])];
+  let supplied = entity?.gallery_images;
+  if (typeof supplied === 'string') {
+    try { supplied = JSON.parse(supplied); } catch { supplied = supplied.split('|').filter(Boolean); }
+  }
+  return cleanGallery([...(Array.isArray(supplied) ? supplied : []),
+    entity?.gallery_image_1, entity?.gallery_image_2, entity?.gallery_image_3,
+    entity?.gallery1, entity?.gallery2, entity?.gallery3,
+    entity?.image_path_property_1, entity?.image_path_property_2, entity?.image_path_property_3]);
 }
-
-export function getAttractionImage(attraction: any): string {
-  const code = String(attraction?.attraction_code || attraction?.code || '').toLowerCase();
-  return firstExisting([
-    attraction?.image_path,
-    attraction?.image,
-    attraction?.thumbnail_path,
-    // Optional dedicated card image (t271); falls through to hero when absent.
-    attraction?.slug ? `/assets/images/attractions/${attraction.slug}/card.webp` : null,
-    attraction?.slug ? `/assets/images/attractions/${attraction.slug}/hero.webp` : null,
-    code ? `/assets/images/attractions/${code}/hero.webp` : null,
-    code ? `/assets/images/attractions/${code}.webp` : null,
-    attraction?.card_image,
-    attraction?.hero_image,
-  ], PLACEHOLDERS.attraction);
-}
-
-/** Documented experience asset roots (long-term hierarchy). */
 export const EXPERIENCE_ASSET_ROOTS = {
   culinary: '/assets/images/experiences/culinary',
   cultural: '/assets/images/experiences/cultural',
   activities: '/assets/images/experiences/activities',
 } as const;
-
 export function getCulinaryImage(item: any): string {
   const slug = item?.slug || item?.culinary_slug || item?.experience_slug;
-  return firstExisting([
-    item?.hero_image,
-    item?.image,
-    item?.image_path,
-    slug ? `${EXPERIENCE_ASSET_ROOTS.culinary}/${slug}/hero.webp` : null,
-    slug ? `${EXPERIENCE_ASSET_ROOTS.culinary}/${slug}/thumb.webp` : null,
-    // Renamed culinary slug fallback
+  item = { ...item, ...((ownerSelections as Record<string, any>)[`culinary/${slug}`] || {}) };
+  return entityHero(item, [slug ? `${EXPERIENCE_ASSET_ROOTS.culinary}/${slug}/hero.webp` : null,
     slug === 'band-e-amir-quroot-dairy' ? `${EXPERIENCE_ASSET_ROOTS.culinary}/band-e-amir-dairy-market-quroot/hero.webp` : null,
-    // Legacy interim locations still present in this repo
-    slug ? `/assets/images/experiences/cultural/${slug}/hero.webp` : null,
-    slug ? `/assets/images/food/${slug}/hero.webp` : null,
-  ], PLACEHOLDERS.food);
+    slug ? `${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}/hero.webp` : null,
+    slug ? `/assets/images/food/${slug}/hero.webp` : null], PLACEHOLDERS.food);
 }
-
-export function getCulinaryGallery(item: any): string[] {
-  const slug = item?.slug || item?.culinary_slug;
-  const explicit = [
-    ...(Array.isArray(item?.gallery_images) ? item.gallery_images : []),
-    item?.gallery_image_1,
-    item?.gallery_image_2,
-    item?.gallery_image_3,
-  ].filter(Boolean).map((v) => normalizeImagePath(v, ''));
-
-  const discovered = slug
-    ? [
-        ...listPublicImages(`${EXPERIENCE_ASSET_ROOTS.culinary}/${slug}`, true),
-        ...listPublicImages(`/assets/images/experiences/cultural/${slug}`, true),
-      ]
-    : [];
-
-  return [...new Set([...explicit, ...discovered].filter(Boolean))];
+/** Card image for culinary tiles. Empty string means render the card with no photo (no placeholder). */
+export function getCulinaryCardImage(item: any): string {
+  const slug = item?.slug || item?.culinary_slug || item?.experience_slug;
+  const merged = { ...item, ...((ownerSelections as Record<string, any>)[`culinary/${slug}`] || {}) };
+  if (merged.hide_card_image === true || merged.card_image === '' || merged.card_image === false) return '';
+  if (merged.card_image) {
+    const src = normalizeImagePath(merged.card_image, '');
+    return hasRealImage(src) ? src : '';
+  }
+  const hero = getCulinaryImage(merged);
+  return isPlaceholder(hero) ? '' : hero;
 }
-
 export function getCulturalExperienceImage(item: any): string {
   const slug = item?.slug || item?.id?.replace(/\.md$/, '');
-  return firstExisting([
-    item?.hero_image,
-    item?.image,
-    slug ? `${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}/hero.webp` : null,
-    slug ? `/assets/images/experiences/cultural/${slug}/hero.webp` : null,
-  ], PLACEHOLDERS.attraction);
+  item = { ...item, ...((ownerSelections as Record<string, any>)[`cultural/${slug}`] || {}) };
+  return entityHero(item, [slug ? `${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}/hero.webp` : null], PLACEHOLDERS.attraction);
 }
-
-export function getCulturalExperienceGallery(item: any): string[] {
-  const slug = item?.slug || item?.id?.replace(/\.md$/, '');
-  const explicit = [
-    ...(Array.isArray(item?.gallery_images) ? item.gallery_images : []),
-    item?.gallery_image_1,
-    item?.gallery_image_2,
-    item?.gallery_image_3,
-  ].filter(Boolean).map((v) => normalizeImagePath(v, ''));
-
-  const discovered = slug
-    ? [
-        ...listPublicImages(`${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}`, true),
-        ...listPublicImages(`/assets/images/experiences/cultural/${slug}`, true),
-      ]
-    : [];
-
-  return [...new Set([...explicit, ...discovered].filter(Boolean))];
-}
-
 export function getActivityImage(item: any): string {
   const slug = item?.slug || item?.activity_slug;
-  // Exact entity assets only — never cross-substitute another activity's hero
-  // (e.g. fishing→horse-riding other/01, cycling→hiking).
-  return firstExisting([
-    item?.hero_image,
-    item?.image,
-    item?.image_path,
-    slug ? `${EXPERIENCE_ASSET_ROOTS.activities}/${slug}/hero.webp` : null,
-    slug ? `${EXPERIENCE_ASSET_ROOTS.activities}/${slug}/thumb.webp` : null,
-  ], PLACEHOLDERS.card);
+  item = { ...item, ...((ownerSelections as Record<string, any>)[`activities/${slug}`] || {}) };
+  return entityHero(item, [slug ? `${EXPERIENCE_ASSET_ROOTS.activities}/${slug}/hero.webp` : null], PLACEHOLDERS.card);
 }
-
+function experienceGallery(item: any, roots: string[], hero: string): string[] {
+  // Curated lists take precedence; discovery is from explicit manifest entries only.
+  const supplied = buildGallery(item);
+  const images = cleanGallery(item?.gallery_mode === 'explicit' || supplied.length ? supplied : roots.flatMap((folder) => listGalleryImages(folder)));
+  // Default: keep the hero out of the gallery. Set gallery_exclude_hero: false to show it there too.
+  if (item?.gallery_exclude_hero === false) return images;
+  return images.filter((src) => src !== hero);
+}
+export function getCulinaryGallery(item: any): string[] {
+  const slug = item?.slug || item?.culinary_slug;
+  item = { ...item, ...((ownerSelections as Record<string, any>)[`culinary/${slug}`] || {}) };
+  return experienceGallery(item, slug ? [`${EXPERIENCE_ASSET_ROOTS.culinary}/${slug}`,
+    `${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}`] : [], getCulinaryImage(item));
+}
+export function getCulturalExperienceGallery(item: any): string[] {
+  const slug = item?.slug || item?.id?.replace(/\.md$/, '');
+  return experienceGallery(item, slug ? [`${EXPERIENCE_ASSET_ROOTS.cultural}/${slug}`] : [], getCulturalExperienceImage(item));
+}
 export function getActivityGallery(item: any): string[] {
   const slug = item?.slug || item?.activity_slug;
-  const explicit = [
-    ...(Array.isArray(item?.gallery_images) ? item.gallery_images : []),
-    item?.gallery_image_1,
-    item?.gallery_image_2,
-    item?.gallery_image_3,
-  ].filter(Boolean).map((v) => normalizeImagePath(v, ''));
-
-  // Entity gallery only — do not pull sibling activity folders or cross-entity page-assets.
-  const discovered = slug
-    ? [
-        ...listPublicImages(`${EXPERIENCE_ASSET_ROOTS.activities}/${slug}`, true),
-        ...listPublicImages(`/assets/images/page-assets/activities/${slug}`, true),
-      ]
-    : [];
-
-  const hero = getActivityImage(item);
-  return [...new Set([...explicit, ...discovered].filter((src) => src && src !== hero))];
+  item = { ...item, ...((ownerSelections as Record<string, any>)[`activities/${slug}`] || {}) };
+  return experienceGallery(item, slug ? [`${EXPERIENCE_ASSET_ROOTS.activities}/${slug}`,
+    `/assets/images/page-assets/activities/${slug}`] : [], getActivityImage(item));
 }
-

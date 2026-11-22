@@ -1,0 +1,28 @@
+[
+  {
+    "original_mac_path": "/Users/halfghan/Downloads/white dried mulberries.png",
+    "original_sha256": "e9985f973fa5a40e02f3adf7c1e1e04dae75954b57b69b401b66124544d9e278",
+    "public_path": "/assets/images/food/dried-fruits/dried-mulberries/white-dried-mulberries.webp",
+    "webp_sha256": "e187b8d7c982a72c28fd1c88323d671105c19d35e0e5ca954bc081116c3ceac9",
+    "dimensions": [
+      366,
+      336
+    ],
+    "encoding": "lossless WebP, no resizing",
+    "pixels_match_original": true,
+    "approval": "Owner provided and requested these photos in chat, 18 November 2026"
+  },
+  {
+    "original_mac_path": "/Users/halfghan/Downloads/dark dried mulberries.png",
+    "original_sha256": "069b4be278dfa7fbf504493d45ef60c3e7a8ca605d291197fe93cd161ea5946e",
+    "public_path": "/assets/images/food/dried-fruits/dried-mulberries/dark-dried-mulberries.webp",
+    "webp_sha256": "a372fb544964ca77ee35ce669af63d120726477eb3d03d7960978fa5304cb212",
+    "dimensions": [
+      305,
+      235
+    ],
+    "encoding": "lossless WebP, no resizing",
+    "pixels_match_original": true,
+    "approval": "Owner provided and requested these photos in chat, 18 November 2026"
+  }
+]

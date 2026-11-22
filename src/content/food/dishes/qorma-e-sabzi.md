@@ -3,6 +3,12 @@ title: Qorma-e Sabzi
 food_slug: qorma-e-sabzi
 section: food_content
 save_to: src/content/food/dishes/qorma-e-sabzi.md
+hero_image: "/assets/images/food/dishes/qorma-e-sabzi/hero.webp"
+card_image: "/assets/images/food/dishes/qorma-e-sabzi/hero.webp"
+gallery_images: []
+gallery_mode: "explicit"
+gallery_exclude_hero: true
+image: "/assets/images/food/dishes/qorma-e-sabzi/hero.webp"
 ---
 
 ### Overview

@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import FeaturedTours from '../components/FeaturedTours.astro';
 import TourDirectory from '../components/TourDirectory.astro';
-import { getItineraryTours } from '../lib/buildRelations';
+import { getItineraryTours, getSpecialistServices } from '../lib/buildRelations';
 import { catalogByCategory, getCategory } from '../lib/booking/site';
 
 const itineraryTours = getItineraryTours().filter((tour) => tour.is_active !== false && tour.slug);
@@ -16,7 +16,13 @@ const inCategory = (key: string) => {
 const groupTours = inCategory('A');
 const groupAndPrivate = inCategory('B');
 const privateTours = inCategory('C');
-const services = catalogByCategory('D');
+const specialistServices = getSpecialistServices();
+const services = catalogByCategory('D')
+  .filter((entry, index, all) => all.findIndex((other) => other.current_page === entry.current_page) === index)
+  .map((entry) => ({
+    ...entry,
+    name: specialistServices.find((service) => entry.current_page === `/specialist-services/${service.slug}/`)?.name || entry.name,
+  }));
 const cat = { A: getCategory('A'), B: getCategory('B'), C: getCategory('C'), D: getCategory('D') };
 
 const featuredTours = itineraryTours
@@ -95,7 +101,7 @@ const featuredTours = itineraryTours
 
 <style>
   .tour-list-intro {
-    background: var(--at-white);
+    background: var(--at-section-light);
     color: var(--at-ink);
     padding: clamp(3.5rem, 5vw, 5rem) 0 1rem;
     border-top: 1px solid rgba(16,24,32,.08);
@@ -127,7 +133,7 @@ const featuredTours = itineraryTours
     font-size: 1.05rem;
   }
   .class-band { padding-top: 1.5rem; }
-  .class-band--alt { background: var(--at-paper); padding-bottom: 1rem; }
+  .class-band--alt { background: var(--at-section-light); padding-bottom: 1rem; }
   .class-wrap {
     width: min(1180px, calc(100% - 2rem));
     margin: 0 auto;
@@ -157,7 +163,7 @@ const featuredTours = itineraryTours
   .service-list a:hover { color: #9a5d04; }
   .service-list li:nth-child(odd) a { padding-right: 1.5rem; }
   .service-more { display: flex; flex-wrap: wrap; gap: .5rem 1.4rem; margin: 1.3rem 0 0; }
-  .service-more a { color: #9a5d04; font-size: .78rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; }
+  .service-more a { color: var(--at-gold-text); font-size: .78rem; font-weight: 900; letter-spacing: .04em; text-transform: uppercase; text-decoration: none; }
   @media (max-width: 640px) { .service-list { grid-template-columns: 1fr; } .service-list li:nth-child(odd) a { padding-right: 0; } }
   .outbound {
     width: min(1180px, calc(100% - 2rem));
@@ -169,7 +175,7 @@ const featuredTours = itineraryTours
     gap: 1rem;
   }
   .outbound-card {
-    background: var(--at-paper);
+    background: var(--at-surface);
     border: 1px solid var(--border-soft);
     border-radius: .75rem;
     padding: 1.35rem 1.25rem;

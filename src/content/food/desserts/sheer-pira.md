@@ -3,8 +3,13 @@ title: Sheer Pira
 food_slug: sheer-pira
 section: food_content
 save_to: src/content/food/dishes/sheer-pira.md
-hero_image: "/assets/images/food/dishes/sheer-pira/hero.webp"
-image: "/assets/images/food/dishes/sheer-pira/hero.webp"
+card_description: "Traditional Afghan milk-based sweet confection."
+hero_image: "/assets/images/food/sweets/sheer-pira/hero-owner-20261120.webp"
+image: "/assets/images/food/sweets/sheer-pira/hero-owner-20261120.webp"
+card_image: "/assets/images/food/sweets/sheer-pira/hero-owner-20261120.webp"
+gallery_images: ["/assets/images/food/sweets/sheer-pira/gallery-owner-20261120.webp"]
+gallery_mode: "explicit"
+gallery_exclude_hero: true
 ---
 
 ### Overview

@@ -16,7 +16,7 @@ duration: "1–3 hours"
 hero_image: "/assets/images/experiences/culinary/spoghmai-restaurant-qargha/hero.webp"
 image: "/assets/images/experiences/culinary/spoghmai-restaurant-qargha/thumb.webp"
 gallery_images:
-  - "/assets/images/experiences/culinary/spoghmai-restaurant-qargha/gallery/01-pines-seating.webp"
+  - "/assets/images/experiences/culinary/spoghmai-restaurant-qargha/hero.webp"
   - "/assets/images/experiences/culinary/spoghmai-restaurant-qargha/gallery/02-lake-panorama.webp"
   - "/assets/images/experiences/culinary/spoghmai-restaurant-qargha/gallery/03-peninsula-red-roofs.webp"
   - "/assets/images/experiences/culinary/spoghmai-restaurant-qargha/gallery/04-walkway-pelican.webp"

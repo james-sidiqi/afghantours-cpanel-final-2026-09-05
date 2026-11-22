@@ -6,9 +6,9 @@ save_to: src/content/hotels/dunya_faizabad.md
 destination_code: FAIC
 tier: standard
 star_rating: 3
-cover_image: /assets/images/hotels/faizabad/bam-dunya/hotel-exterior-1.webp
+cover_image: /assets/images/hotels/faizabad/bam-dunya/hero.webp
 gallery_images:
-  - /assets/images/hotels/faizabad/bam-dunya/hotel-exterior-2.webp
+  - /assets/images/hotels/faizabad/bam-dunya/01.webp
 ---
 
 ### Overview

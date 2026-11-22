@@ -18,7 +18,6 @@ River valleys and agricultural heartlands of the northeast.
 Takhar is known for fertile lands, rivers, and a strong agricultural economy. Its location near Central Asian borders highlights its historic role in regional trade.
 
 ### Key Attractions
-- Ai-Khanoum
 
 ### Travel Notes
 - **Region:** Northern Afghanistan

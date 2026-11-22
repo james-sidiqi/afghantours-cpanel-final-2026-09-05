@@ -10,7 +10,8 @@ const {
   primaryLabel = '',
   secondaryHref = '',
   secondaryLabel = '',
-  height = 'min-h-[76vh]'
+  height = 'min-h-[76vh]',
+  imagePosition = '',
 } = Astro.props;
 
 const heightMatch = String(height).match(/(\d+)vh/);
@@ -40,6 +41,7 @@ const heroMin = Math.max(430, Math.min(650, Math.round(heroVh * 8)));
       src={image}
       alt={title}
       class="page-hero__media"
+      style={imagePosition ? `object-position: ${imagePosition}` : undefined}
     />
   )}
 
@@ -235,7 +237,7 @@ const heroMin = Math.max(430, Math.min(650, Math.round(heroVh * 8)));
   }
 
   .page-hero__button--secondary:hover {
-    background: #fff;
+    background: var(--at-surface);
     color: #07100d;
   }
 

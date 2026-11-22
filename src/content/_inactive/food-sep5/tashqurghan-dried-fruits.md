@@ -4,8 +4,8 @@ subtitle: "Dried fruits, nuts, merchant culture, and roadside trade in historic 
 card_description: "Visit Tashqurghan for dried fruits, nuts, tasting culture, and the merchant traditions of northern Afghanistan."
 category: "Cultural Experiences"
 experience_type: "Food & Culture Experience"
-hero_image: "/assets/images/food/dried-fruit/hero.webp"
-image: "/assets/images/food/dried-fruit/hero.webp"
+hero_image: "/assets/images/food/dried-fruits/hero.webp"
+image: "/assets/images/food/dried-fruits/hero.webp"
 provinces: ["Samangan", "Balkh"]
 paired_foods: ["Dried Fruits", "Green Tea", "Pistachios"]
 best_season: "Year round"

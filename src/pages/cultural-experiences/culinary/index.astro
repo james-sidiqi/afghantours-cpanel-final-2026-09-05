@@ -6,7 +6,7 @@ import {
   publicVenueLabel,
   routeContextLabel,
 } from '../../../lib/culinary';
-import { getCulinaryImage } from '../../../lib/images';
+import { getCulinaryCardImage, isPlaceholder } from '../../../lib/images';
 
 const csvItems = getCulinaryExperiences();
 const mdItems = await getCollection('culinary-experiences');
@@ -18,9 +18,10 @@ const items = csvItems.map((row) => {
   const md = mdBySlug.get(row.slug);
   const title = md?.data.title || row.name;
   const card = md?.data.card_description || row.card_description || '';
-  const image = getCulinaryImage({
+  const image = getCulinaryCardImage({
     slug: row.slug,
     hero_image: md?.data.hero_image || row.hero_image,
+    hide_card_image: md?.data.hide_card_image,
   });
   return {
     ...row,
@@ -38,7 +39,7 @@ const items = csvItems.map((row) => {
   description="Culinary experiences across Afghanistan — restaurants, bakeries, markets and roadside food culture, woven into your journey."
 >
   <section class="culin-index-hero">
-    <img class="index-hero-media" src="/assets/images/heroes/culinary-experiences/hero.webp" srcset="/assets/images/heroes/culinary-experiences/sizes/hero-800w.webp 800w, /assets/images/heroes/culinary-experiences/hero.webp 1721w" sizes="100vw" alt="A table spread with Afghan dishes, including rice, kebabs, salads, dips and flatbread" fetchpriority="high" />
+    <img class="index-hero-media" src="/assets/images/heroes/culinary-experiences/hero.webp" srcset="/assets/images/heroes/culinary-experiences/hero.webp 800w, /assets/images/heroes/culinary-experiences/hero.webp 1721w" sizes="100vw" alt="A table spread with Afghan dishes, including rice, kebabs, salads, dips and flatbread" fetchpriority="high" />
     <div class="culin-index-hero-inner">
       <p>Food on the journey</p>
       <h1>Culinary Experiences</h1>
@@ -64,7 +65,9 @@ const items = csvItems.map((row) => {
         {items.map((item) => (
           <a class="culin-index-card" href={item.href}>
             <div class="culin-index-image">
-              <img src={item.image} alt={item.title} loading="lazy" />
+              {item.image && !isPlaceholder(item.image)
+                ? <img src={item.image} alt={item.title} loading="lazy" />
+                : <span class="culin-index-noimg" aria-hidden="true">{item.title}</span>}
             </div>
             <div class="culin-index-copy">
               <p>Culinary Experience</p>
@@ -132,7 +135,7 @@ const items = csvItems.map((row) => {
   }
   .culin-index-main {
     padding: clamp(4rem, 7vw, 7rem) 0;
-    background: #fbf6ed;
+    background: var(--at-section-light);
     color: #101820;
   }
   .culin-index-wrap {
@@ -168,7 +171,7 @@ const items = csvItems.map((row) => {
     overflow: hidden;
     border: 1px solid rgba(16,24,32,.08);
     border-radius: 1.35rem;
-    background: #fff;
+    background: var(--at-surface);
     color: inherit;
     text-decoration: none;
     box-shadow: 0 14px 36px rgba(20,15,8,.07);
@@ -189,6 +192,19 @@ const items = csvItems.map((row) => {
     object-fit: cover;
     display: block;
     transition: transform .45s ease;
+  }
+  .culin-index-noimg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    color: #f3e7c8;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.15rem;
+    text-align: center;
+    background: linear-gradient(135deg, #0f241b, #163a2a);
   }
   .culin-index-card:hover img { transform: scale(1.035); }
   .culin-index-copy { padding: 1.35rem; }
@@ -243,4 +259,7 @@ const items = csvItems.map((row) => {
     .culin-index-heading { flex-direction: column; align-items: flex-start; }
     .culin-index-grid { grid-template-columns: 1fr; }
   }
+
+  /* Ivory theme: small gold labels on the wallpaper use the AA gold token. */
+  .culin-index-heading p { color: var(--at-gold-text); }
 </style>

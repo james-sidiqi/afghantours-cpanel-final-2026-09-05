@@ -36,7 +36,7 @@ RewriteRule ^attractions/barg-e-matal-lakes/?$ /attractions/nuristan-national-pa
 # t276: Bashgal Valley attraction replaced by Nuristan River Valleys & Villages
 RewriteRule ^attractions/bashgal-valley/?$ /attractions/nuristan-river-valleys-villages/ [R=301,L]
 RewriteRule ^tours/scientific-expeditions/?$ /specialist-services/scientific-research/ [R=301,L]
-RewriteRule ^tours/media-support/?$ /specialist-services/media-journalist/ [R=301,L]
+RewriteRule ^tours/media-support/?$ /specialist-services/photography-documentary/ [R=301,L]
 RewriteRule ^tours/business-investment/?$ /specialist-services/business-investment/ [R=301,L]
 RewriteRule ^tours/noshaq-expedition-support/?$ /specialist-services/noshaq-expedition-support/ [R=301,L]
 RewriteRule ^tours/ski-expeditions/?$ /specialist-services/ski-expeditions/ [R=301,L]
@@ -96,7 +96,6 @@ RewriteRule ^regions/wakhan-northeast/?$ /destinations/badakhshan/ [R=301,L]
 # BEGIN OWNER-RETIRED-ROUTES
 <IfModule mod_rewrite.c>
 RewriteEngine On
-RewriteRule ^food-culture/dishes/kabul-kabob/?$ /food-culture/#dishes [R=301,L,NE]
 RewriteRule ^food-culture/dishes/herat-kabob/?$ /food-culture/#dishes [R=301,L,NE]
 RewriteRule ^food-culture/kandahar-rosht/?$ /food-culture/#dishes [R=301,L,NE]
 RewriteRule ^food-culture/dishes/kandahari-rosh/?$ /food-culture/#dishes [R=301,L,NE]
@@ -105,5 +104,23 @@ RewriteRule ^cultural-experiences/culinary/bamyan-kabob/?$ /food-culture/#dishes
 RewriteRule ^cultural-experiences/culinary/ghazni-palaw/?$ /food-culture/kabuli-pulao/ [R=301,L,NE]
 RewriteRule ^attractions/buddhist-cave-monasteries/?$ /attractions/ [R=301,L,NE]
 RewriteRule ^attractions/tomb-of-nader-khan/?$ /attractions/ [R=301,L,NE]
+RewriteRule ^attractions/ai-khanoum/?$ /attractions/ [R=301,L,NE]
+RewriteRule ^food-culture/dishes/ouzi/?$ /food-culture/#dishes [R=301,L,NE]
+RewriteRule ^food-culture/produce/logar-orchard-gardens/?$ /food-culture/#produce [R=301,L,NE]
+RewriteRule ^food-culture/chicken-qabili/?$ /food-culture/#dishes [R=301,L,NE]
+RewriteRule ^food-culture/chicken-kabuli/?$ /food-culture/#dishes [R=301,L,NE]
+RewriteRule ^food-culture/dishes/chicken-kabuli/?$ /food-culture/#dishes [R=301,L,NE]
+RewriteRule ^food-culture/dishes/chicken-qabili/?$ /food-culture/#dishes [R=301,L,NE]
+RewriteRule ^food-culture/ouzi/?$ /food-culture/#dishes [R=301,L,NE]
+RewriteRule ^cultural-experiences/paktika-livestock-markets/?$ /cultural-experiences/ [R=301,L,NE]
+RewriteRule ^food-culture/produce/kunduz-melon/?$ /food-culture/produce/balkh-melon/ [R=301,L,NE]
+RewriteRule ^food-culture/dried-fruits/badghis-pistachios/?$ /food-culture/samangan-pistachios/ [R=301,L,NE]
+RewriteRule ^specialist-services/media-journalist/?$ /specialist-services/photography-documentary/ [R=301,L,NE]
+RewriteRule ^food-culture/desserts/ghazni-sheer-pira/?$ /food-culture/desserts/sheer-pira/ [R=301,L,NE]
+RewriteRule ^food-culture/herat-ice-cream/?$ /cultural-experiences/culinary/saffron-ice-cream-of-herat/ [R=301,L,NE]
+RewriteRule ^food-culture/desserts/saffron-ice-cream/?$ /cultural-experiences/culinary/saffron-ice-cream-of-herat/ [R=301,L,NE]
+RewriteRule ^food-culture/desserts/sweet-streets-of-mazar/?$ /cultural-experiences/culinary/sweet-streets-of-mazar/ [R=301,L,NE]
+RewriteRule ^food-culture/herat-baklava/?$ /food-culture/#desserts [R=301,L,NE]
+RewriteRule ^food-culture/kandahar-sweets/?$ /food-culture/#desserts [R=301,L,NE]
 </IfModule>
 # END OWNER-RETIRED-ROUTES

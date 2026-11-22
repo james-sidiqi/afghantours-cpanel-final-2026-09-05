@@ -1,9 +1,8 @@
 ---
+import { getAttractionImage, buildGallery, cleanGallery, listGalleryImages } from '../../lib/images';
 import { regionDisplayName } from '../../lib/regionNames';
 import PhotoCredits from '../../components/PhotoCredits.astro';
 import { altFor } from '../../data/photoCredits';
-import fs from 'node:fs';
-import path from 'node:path';
 
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { ATTRACTION_IMAGE_ALT } from '../../lib/attraction-image-alt';
@@ -66,13 +65,7 @@ const attractionCode =
   ).trim();
 
 
-const heroImage =
-  item.hero_image ||
-  item.image ||
-  item.image_path ||
-  item.card_image ||
-  item.thumbnail_path ||
-  '/assets/images/placeholders/default-attraction.webp';
+const heroImage = getAttractionImage(item);
 
 
 const shortDescription =
@@ -92,73 +85,15 @@ const longDescription =
    BUILD GALLERY FROM THE EXISTING ATTRACTION IMAGE FOLDER
    --------------------------------------------------------- */
 
-const galleryCandidates = [];
-
-const configuredFolder =
-  item.gallery_folder ||
-  `/assets/images/attractions/${item.slug}/`;
-
-const publicFolder = path.join(
-  process.cwd(),
-  'public',
-  configuredFolder.replace(/^\/+/, '')
-);
-
-try {
-  if (fs.existsSync(publicFolder)) {
-    const files = fs
-      .readdirSync(publicFolder)
-      .filter((file) =>
-        /\.(webp|jpg|jpeg|png|avif)$/i.test(file)
-      )
-      .sort((a, b) => {
-        const score = (name) => {
-          const lower = name.toLowerCase();
-
-          if (lower.startsWith('hero.')) return 0;
-          if (lower.includes('overview')) return 1;
-          if (lower.includes('gallery')) return 2;
-
-          return 3;
-        };
-
-        return score(a) - score(b) ||
-          a.localeCompare(b);
-      });
-
-    files.forEach((file) => {
-      galleryCandidates.push(
-        `${configuredFolder.replace(/\/?$/, '/')}${file}`
-      );
-    });
-  }
-} catch (error) {
-  console.warn(
-    `Could not build gallery for ${item.slug}:`,
-    error
-  );
-}
-
-
-[
-  heroImage,
-  item.card_image,
-  item.image,
-  item.image_path,
-  item.thumbnail_path,
-].filter(Boolean).forEach((src) => {
-  galleryCandidates.unshift(src);
-});
-
-
-const galleryImages = [
-  ...new Set(
-    galleryCandidates
-      .filter(Boolean)
-      .map((src) => String(src).trim())
-  )
-].slice(0, 8);
-
+const configuredFolder = item.gallery_folder || `/assets/images/attractions/${item.slug}/`;
+const suppliedGallery = buildGallery(item);
+const explicitGallery = String(item.gallery_images || '').trim().startsWith('[') || Array.isArray(item.gallery_images);
+const galleryImages = cleanGallery([
+  ...(String(item.gallery_exclude_hero) === '1' ? [] : [heroImage]),
+  item.overview_image,
+  item.overview_image_path,
+  ...(explicitGallery || suppliedGallery.length ? suppliedGallery : listGalleryImages(configuredFolder)),
+]).slice(0, 8);
 
 /* ---------------------------------------------------------
    TOUR RELATIONSHIPS
@@ -420,6 +355,7 @@ const provinceHref =
       srcset={ov.heroSrcset}
       sizes={ov.heroSrcset ? '100vw' : undefined}
       alt={ov.heroAlt ?? ATTRACTION_IMAGE_ALT[item.slug] ?? altFor(heroImage, title)}
+      style={ov.heroObjectPosition ? `object-position: ${ov.heroObjectPosition}` : undefined}
       fetchpriority="high"
     />
 
@@ -650,7 +586,7 @@ const provinceHref =
        GALLERY
        ===================================================== -->
 
-  {galleryImages.length > 1 && (
+  {galleryImages.length > 0 && (
 
     <section class="gallery-section">
 
@@ -690,6 +626,7 @@ const provinceHref =
 
               <img
                 src={src}
+                data-lightbox
                 alt={altFor(src, `${title}${index > 0 ? ` — view ${index + 1}` : ''}`)}
                 loading={index === 0 ? 'eager' : 'lazy'}
               />
@@ -1073,7 +1010,7 @@ const provinceHref =
     position: relative;
     z-index: 4;
 
-    background: #fbf6ed;
+    background: var(--at-section-light);
   }
 
 
@@ -1101,7 +1038,7 @@ const provinceHref =
 
     border-radius: 1.4rem;
 
-    background: #fff;
+    background: var(--at-surface);
 
     box-shadow:
       0 20px 55px
@@ -1157,7 +1094,7 @@ const provinceHref =
      ====================================================== */
 
   .attraction-main {
-    background: #fbf6ed;
+    background: var(--at-section-light);
     color: #101820;
 
     padding:
@@ -1313,7 +1250,7 @@ const provinceHref =
 
     border-radius: 1.6rem;
 
-    background: #fff;
+    background: var(--at-surface);
 
     padding:
       clamp(1.5rem, 2.5vw, 2rem);
@@ -1523,7 +1460,7 @@ const provinceHref =
      ====================================================== */
 
   .no-tour-section {
-    background: #fff;
+    background: var(--at-section-light);
 
     padding:
       clamp(4rem, 7vw, 7rem)
@@ -1547,7 +1484,7 @@ const provinceHref =
 
     border-radius: 1.6rem;
 
-    background: #fbf6ed;
+    background: var(--at-surface);
 
     padding:
       clamp(1.6rem, 4vw, 3rem);
@@ -1836,4 +1773,7 @@ const provinceHref =
 
   }
 
+
+  /* Ivory theme: small gold labels on the wallpaper use the AA gold token. */
+  .attraction-story > .section-kicker { color: var(--at-gold-text); }
 </style>

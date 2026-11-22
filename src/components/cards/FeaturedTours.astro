@@ -1,4 +1,5 @@
 ---
+import { getTourHeroImage, listGalleryImages, cleanGallery } from '../../lib/images';
 interface Tour {
   slug: string;
   tour_code?: string;
@@ -31,7 +32,7 @@ interface Props {
 
 const { tours = [] } = Astro.props;
 
-const safeTours = tours
+let safeTours = tours
   .filter((tour) => {
     const flag = String(tour.is_featured ?? '').trim().toLowerCase();
     const style = String(tour.travel_style || tour.style || '').toLowerCase();
@@ -41,23 +42,14 @@ const safeTours = tours
 
 const titleOf = (tour: Tour) => tour.title || tour.name || 'Afghanistan Tour';
 
-const heroOf = (tour: Tour) =>
-  tour.hero_image ||
-  tour.hero_image_path ||
-  tour.image ||
-  tour.overview_image ||
-  tour.overview_image_path ||
-  tour.thumbnail_image_path ||
-  `/assets/images/featured-tours/${tour.slug}/hero.webp`;
+const heroOf = (tour: Tour) => getTourHeroImage(tour);
 
-const galleryOf = (tour: Tour) => {
-  const base = `/assets/images/featured-tours/${tour.slug}`;
-  const supplied = Array.isArray(tour.gallery) ? tour.gallery : [];
-  return [...supplied, heroOf(tour), `${base}/01.webp`, `${base}/02.webp`, `${base}/03.webp`]
-    .filter(Boolean)
-    .filter((item, index, arr) => arr.indexOf(item) === index)
-    .slice(0, 4);
-};
+const galleryOf = (tour: Tour) => cleanGallery([
+  heroOf(tour),
+  ...(Array.isArray(tour.gallery) ? tour.gallery : []),
+  ...listGalleryImages(`/assets/images/tours/featured/${tour.slug}`),
+  ...listGalleryImages(`/assets/images/tours/custom/${tour.slug}`),
+]).slice(0, 4);
 
 const metaOf = (tour: Tour) => [
   tour.duration_days ? `${tour.duration_days} Days` : 'Private Journey',
@@ -82,10 +74,15 @@ const attractionCards = (tour: Tour) => {
   const items = Array.isArray(tour.attractions) ? tour.attractions : [];
   const normalized = items.map((a: any) => [
     a.name || a.title || a.slug || 'Attraction',
-    a.image_path || a.hero_image || a.thumbnail_path || `/assets/images/attractions/${a.slug}/hero.webp`,
+    a.hero_image || a.hero_image_path || a.image_path || a.thumbnail_path || `/assets/images/attractions/${a.slug}/hero.webp`,
   ]);
   return (normalized.length ? normalized : fallbackAttractions).slice(0, 4);
 };
+// Resolve once before serializing the client popup data.
+safeTours = safeTours.map((tour) => ({
+  ...tour, hero_image: heroOf(tour), gallery: galleryOf(tour),
+}));
+
 ---
 
 {safeTours.length > 0 && (
@@ -177,15 +174,8 @@ const attractionCards = (tour: Tour) => {
 
 <script define:vars={{ safeTours, fallbackAttractions }}>
   const titleOfClient = (tour) => tour.title || tour.name || 'Afghanistan Tour';
-  const heroOfClient = (tour) => tour.hero_image || tour.hero_image_path || tour.image || tour.overview_image || tour.overview_image_path || tour.thumbnail_image_path || `/assets/images/featured-tours/${tour.slug}/hero.webp`;
-  const galleryOfClient = (tour) => {
-    const base = `/assets/images/featured-tours/${tour.slug}`;
-    const supplied = Array.isArray(tour.gallery) ? tour.gallery : [];
-    return [...supplied, heroOfClient(tour), `${base}/01.webp`, `${base}/02.webp`, `${base}/03.webp`]
-      .filter(Boolean)
-      .filter((item, index, arr) => arr.indexOf(item) === index)
-      .slice(0, 4);
-  };
+  const heroOfClient = (tour) => tour.hero_image || tour.hero_image_path || '/assets/images/placeholders/default-tour.webp';
+  const galleryOfClient = (tour) => (Array.isArray(tour.gallery) ? tour.gallery : []).slice(0, 4);
   const routeOfClient = (tour) => {
     const hubs = Array.isArray(tour.hubs) ? tour.hubs.map((h) => h.name || h.title || h.slug).filter(Boolean) : [];
     const provinces = Array.isArray(tour.provinces) ? tour.provinces.map((p) => p.name || p.title || p.slug).filter(Boolean) : [];
@@ -195,7 +185,7 @@ const attractionCards = (tour: Tour) => {
     const items = Array.isArray(tour.attractions) ? tour.attractions : [];
     const normalized = items.map((a) => [
       a.name || a.title || a.slug || 'Attraction',
-      a.image_path || a.hero_image || a.thumbnail_path || `/assets/images/attractions/${a.slug}/hero.webp`,
+      a.hero_image || a.hero_image_path || a.image_path || a.thumbnail_path || `/assets/images/attractions/${a.slug}/hero.webp`,
     ]);
     return (normalized.length ? normalized : fallbackAttractions).slice(0, 4);
   };
@@ -452,7 +442,7 @@ const attractionCards = (tour: Tour) => {
 
   .featured-preview-band {
     position: relative;
-    background: #fbf6ed;
+    background: var(--at-section-light);
     color: #101820;
     padding: clamp(3rem, 6vw, 5rem) 0;
   }
@@ -503,7 +493,7 @@ const attractionCards = (tour: Tour) => {
   }
 
   .preview-route {
-    background: #fff;
+    background: var(--at-surface);
     border: 1px solid rgba(16,24,32,.1);
     border-radius: 1rem;
     padding: 1rem;
@@ -523,7 +513,7 @@ const attractionCards = (tour: Tour) => {
   }
 
   .preview-attractions div {
-    background: #fff;
+    background: var(--at-surface);
     border: 1px solid rgba(16,24,32,.1);
     border-radius: 1rem;
     overflow: hidden;

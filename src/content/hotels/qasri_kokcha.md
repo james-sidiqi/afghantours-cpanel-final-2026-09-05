@@ -6,7 +6,7 @@ save_to: src/content/hotels/qasri_kokcha.md
 destination_code: FAIC
 tier: standard
 star_rating: 3
-cover_image: /assets/images/hotels/faizabad/qasri-kokcha/hotel-exterior-1.webp
+cover_image: /assets/images/hotels/faizabad/qasri-kokcha/hero.webp
 gallery_images:
 ---
 

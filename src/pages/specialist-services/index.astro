@@ -6,17 +6,18 @@ const services = getSpecialistServices();
 ---
 <BaseLayout
   title="Specialist Services | AfghanTours"
-  description="Tailored ground support in Afghanistan for photographers, researchers, journalists, business visitors and mountaineering teams."
-  image="/assets/images/custom-tours/scientific-expeditions/hero.webp"
+  description="Specialist ground support in Afghanistan for photography, documentary and media projects, research, business and expeditions, plus return journeys for diaspora families and veterans."
+  image="/assets/images/tours/custom/scientific-expeditions/hero--f65c73d0bb2b.webp"
 >
   <section class="svc-hero">
     <div class="svc-wrap">
       <p class="kicker">Specialist Services</p>
-      <h1>Expert ground support, built around your work.</h1>
+      <h1>Specialist support, planned around your goals.</h1>
       <p class="lead">
-        From our base in Kabul we support photographers, researchers, journalists, business visitors,
-        mountaineers and other specialist teams. Tell us what you need to achieve — our team plans the
-        logistics, local contacts and timing, and sends you a personal proposal.
+        From our base in Kabul we support photographers, documentary makers, journalists, researchers,
+        business visitors and mountaineers. We also plan personal return journeys for Afghan diaspora
+        families and veterans. Tell us your goals — our team plans the logistics, local contacts and
+        timing, and sends you a personal proposal.
       </p>
       <div class="svc-cta-row">
         <a class="btn-primary" href="/contact/?type=specialist">Request a Proposal</a>
@@ -42,6 +43,17 @@ const services = getSpecialistServices();
             </div>
           </a>
         ))}
+        <a class="svc-card" href="/return-journeys/">
+          <div class="svc-card__img">
+            <img src="/assets/images/tours/custom/veteran-return/hero.webp" alt="Sunset over Kabul, for return journeys of diaspora families and veterans" loading="lazy" />
+          </div>
+          <div class="svc-card__body">
+            <p class="svc-card__label">Diaspora &amp; Veterans</p>
+            <h2>Return Journeys</h2>
+            <p>Heritage returns for Afghan diaspora families and personal return visits for veterans, contractors and diplomats — planned around your history, privacy and pace.</p>
+            <span class="svc-card__cta">Explore return journeys →</span>
+          </div>
+        </a>
       </div>
     </div>
   </section>
@@ -58,8 +70,8 @@ const services = getSpecialistServices();
   .btn-primary { background: #b98237; color: #fff; }
   .btn-ghost { border: 1px solid rgba(255,255,255,.45); color: #fff; }
   .svc-grid-section { padding: 3.5rem 0 5rem; background: #f7f4ee; }
-  .svc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.25rem; }
-  .svc-card { background: #fff; border: 1px solid #e5dccf; border-radius: .75rem; overflow: hidden; text-decoration: none; color: inherit; box-shadow: 0 10px 28px rgba(40,28,12,.06); display: flex; flex-direction: column; }
+  .svc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 1.25rem; }
+  .svc-card { background: var(--at-surface); border: 1px solid #e5dccf; border-radius: .75rem; overflow: hidden; text-decoration: none; color: inherit; box-shadow: 0 10px 28px rgba(40,28,12,.06); display: flex; flex-direction: column; }
   .svc-card__img img { width: 100%; height: 190px; object-fit: cover; display: block; }
   .svc-card__body { padding: 1.15rem 1.2rem 1.35rem; display: grid; gap: .55rem; }
   .svc-card__label { margin: 0; color: #b46b00; font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 900; }

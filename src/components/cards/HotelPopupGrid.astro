@@ -1,4 +1,6 @@
 ---
+import { hasRealImage, normalizeImagePath } from '../../lib/images';
+
 const { hotels = [], title = "Hotels", intro = "" } = Astro.props;
 
 function splitPipe(value) {
@@ -10,10 +12,10 @@ function splitPipe(value) {
 
 function uniqueImages(items) {
   const seen = new Set();
-  return items.filter((src) => {
+  return items.map((src) => normalizeImagePath(src, '')).filter((src) => {
     if (!src) return false;
     const key = String(src).trim();
-    if (!key || seen.has(key)) return false;
+    if (!key || seen.has(key) || !hasRealImage(key)) return false;
     seen.add(key);
     return true;
   });
@@ -64,6 +66,7 @@ const normalizedHotels = hotels.map((hotel) => {
   const propertyGallery = hotelImages(hotel);
   const rooms = roomImages(hotel);
   const allImages = uniqueImages([...propertyGallery, ...rooms]);
+  if (!allImages.length) allImages.push("/assets/images/placeholders/default-hotel.webp");
 
   return {
     slug: hotel.slug || hotel.hotel_slug,
@@ -75,7 +78,7 @@ const normalizedHotels = hotels.map((hotel) => {
     starRating: hotel.star_rating || hotel.stars || "",
     priceRange: hotel.price_range || "",
     description: hotel.description || hotel.content || "",
-    image: propertyGallery[0] || rooms[0] || hotel.image || "/assets/images/placeholders/default-hotel.webp",
+    image: allImages[0],
     propertyGallery,
     rooms,
     allImages,
@@ -131,7 +134,7 @@ const normalizedHotels = hotels.map((hotel) => {
       <div class="hotel-modal-media">
         <div class="hotel-main-frame">
           <button class="hotel-gallery-nav hotel-gallery-prev" type="button" data-gallery-prev aria-label="Previous image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg></button>
-          <img class="hotel-modal-main-image" id="hotel-modal-main-image" src="" alt="" />
+          <img class="hotel-modal-main-image" id="hotel-modal-main-image" alt="" loading="eager" decoding="async" />
           <button class="hotel-gallery-nav hotel-gallery-next" type="button" data-gallery-next aria-label="Next image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg></button>
         </div>
 
@@ -182,6 +185,13 @@ const normalizedHotels = hotels.map((hotel) => {
 
   const modal = document.getElementById("hotel-modal");
   const mainImage = document.getElementById("hotel-modal-main-image");
+  const hotelImageFallback = "/assets/images/placeholders/default-hotel.webp";
+  mainImage?.addEventListener("error", () => {
+    if (!mainImage.src.endsWith(hotelImageFallback)) {
+      mainImage.src = hotelImageFallback;
+      mainImage.alt = "Hotel image unavailable";
+    }
+  });
   const thumbs = document.getElementById("hotel-modal-thumbs");
   const imageCounter = document.getElementById("hotel-image-counter");
   const modalHub = document.getElementById("hotel-modal-hub");
@@ -269,11 +279,11 @@ const normalizedHotels = hotels.map((hotel) => {
     }
 
     modalLink.href = hotel.href || "/hotels/";
-    modalContact.href = `/contact/&hotel=${encodeURIComponent(hotel.displayName || "")}`;
+    modalContact.href = `/contact/?type=hotel&hotel=${encodeURIComponent(hotel.displayName || "")}`;
 
-    setImage(0);
-
+    // Make the image container visible before assigning src on Safari/iPadOS.
     modal.setAttribute("aria-hidden", "false");
+    setImage(0);
     document.body.style.overflow = "hidden";
   }
 
@@ -322,7 +332,7 @@ const normalizedHotels = hotels.map((hotel) => {
 
 <style>
   .hotel-grid-section {
-    background: #fbf6ed;
+    background: var(--at-section-light);
     color: #101820;
     padding: clamp(4rem, 7vw, 7rem) 0;
   }
@@ -371,7 +381,7 @@ const normalizedHotels = hotels.map((hotel) => {
   .hotel-card {
     appearance: none;
     border: 1px solid rgba(16, 24, 32, 0.1);
-    background: #fff;
+    background: var(--at-surface);
     padding: 0;
     text-align: left;
     border-radius: 1.5rem;
@@ -505,7 +515,7 @@ const normalizedHotels = hotels.map((hotel) => {
   .hotel-modal-media {
     background: #111;
     display: grid;
-    grid-template-rows: 1fr auto auto;
+    grid-template-rows: minmax(0, 1fr) auto auto;
     min-height: 0;
   }
 
@@ -516,6 +526,8 @@ const normalizedHotels = hotels.map((hotel) => {
   }
 
   .hotel-modal-main-image {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     min-height: 0;

@@ -6,10 +6,10 @@ save_to: src/content/hotels/kabul_grand.md
 destination_code: KBLC
 tier: luxury
 star_rating: 5
-cover_image: /assets/images/hotels/kabul/kabul-grand/hotel-exterior-2.webp
+cover_image: /assets/images/hotels/kabul/kabul-grand/02.webp
 gallery_images:
-  - /assets/images/hotels/kabul/kabul-grand/hotel-exterior-2.webp
-  - /assets/images/hotels/kabul/kabul-grand/hotel-interior-1.webp
+  - /assets/images/hotels/kabul/kabul-grand/02.webp
+  - /assets/images/hotels/kabul/kabul-grand/01.webp
 ---
 
 ### Overview

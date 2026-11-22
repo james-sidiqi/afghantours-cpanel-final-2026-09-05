@@ -1,27 +1,26 @@
 ---
 title: "Melons"
+description: "Sweet Afghan melon varieties, including the northern harvests of Balkh and Kunduz."
 food_slug: balkh-melon
-section: food_content
-save_to: src/content/food/produce/balkh-melon.md
 hero_image: "/assets/images/food/produce/balkh-melons/hero.webp"
 image: "/assets/images/food/produce/balkh-melons/hero.webp"
+card_image: "/assets/images/food/produce/balkh-melons/hero.webp"
+gallery_images: ["/assets/images/food/produce/balkh-melons/gallery-1.webp", "/assets/images/food/produce/kunduz-melon/hero.webp", "/assets/images/food/produce/kunduz-melon/gallery-1.webp", "/assets/images/food/produce/balkh-melons/gallery/melon-halves.webp"]
+gallery_mode: "explicit"
+gallery_exclude_hero: true
+provinces: ["Balkh", "Kunduz"]
+paired_foods: ["Watermelons"]
+best_season: "Summer / local harvest season"
 ---
 
-### Overview
-Sweet northern melon varieties popular across Afghanistan.
+## Afghan Melons
 
-### Cultural Context
+Sweet melon varieties are a highlight of Afghanistan’s summer markets. Northern growing areas, including Balkh and Kunduz, contribute to this shared Afghan harvest tradition.
 
-This item reflects part of Afghanistan’s long culinary and agricultural tradition. Food and hospitality remain central to Afghan social life, and many dishes, drinks, and agricultural products are closely tied to regional identity, family gatherings, tea culture, seasonal harvests, and traditional cooking methods.
+## The Kunduz Harvest
 
-### What Travelers Should Expect
+Kunduz’s fertile plains are known for their summer melons. Local varieties and ripeness vary with the harvest; market visits bring these northern melons together with produce from other Afghan regions.
 
-Travelers should expect authentic regional preparation styles, seasonal variation, and locally sourced ingredients whenever available. Depending on the region and venue, presentation may range from simple roadside hospitality to formal traditional dining settings.
+## Markets and Hospitality
 
-### Regional Notes
-
-Different provinces often prepare or serve this item differently depending on climate, local ingredients, and cultural traditions. Availability may vary by season and location.
-
-### Traveler Notes
-
-Tours typically utilize vetted restaurants, tea houses, markets, and dining locations accustomed to working with international travelers.
+Melons are often shared fresh, cut into slices, and offered to guests. Expect the best selection during the local summer harvest, with availability shaped by the route and season.

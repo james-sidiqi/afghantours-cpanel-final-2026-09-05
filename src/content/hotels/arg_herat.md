@@ -6,7 +6,7 @@ save_to: src/content/hotels/arg_herat.md
 destination_code: HERC
 tier: premium
 star_rating: 4
-cover_image: /assets/images/hotels/herat/arg/hotel-exterior-1.webp
+cover_image: /assets/images/hotels/herat/arg/hero.webp
 gallery_images:
 ---
 

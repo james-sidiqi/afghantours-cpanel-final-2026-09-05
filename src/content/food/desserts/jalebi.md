@@ -1,8 +1,15 @@
 ---
-title: Jalebi
+title: "Jalebi (Jelabi)"
 food_slug: jalebi
 section: food_content
 save_to: src/content/food/dishes/jalebi.md
+alternative_name: "Jelabi"
+card_description: "Traditional spiral-shaped fried sweet soaked in sugar syrup."
+hero_image: "/assets/images/food/dishes/jelabi/hero.webp"
+image: "/assets/images/food/dishes/jelabi/hero.webp"
+gallery_images: ["/assets/images/food/sweets/jelabi/hero.webp", "/assets/images/food/sweets/jelabi/gallery-2.webp"]
+gallery_mode: "explicit"
+gallery_exclude_hero: true
 ---
 
 ### Overview

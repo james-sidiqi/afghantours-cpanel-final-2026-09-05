@@ -1,14 +1,9 @@
 ---
+import { getTourHeroImage } from '../../lib/images';
 import { getCatalogTour, tourPriceLabel } from '../../lib/booking/site';
 const { tours = [], title = "Related Tours", intro = "" } = Astro.props;
 
-const imageFor = (tour) =>
-  tour.hero_image ||
-  tour.hero_image_path ||
-  tour.image ||
-  tour.overview_image ||
-  tour.overview_image_path ||
-  `/assets/images/featured-tours/${tour.slug}/hero.webp`;
+const imageFor = (tour) => getTourHeroImage(tour);
 
 const durationLabel = (tour) =>
   tour.duration_days ? `${tour.duration_days} Days` : (tour.duration || 'Custom Duration');
@@ -66,7 +61,7 @@ const priceLabel = (tour) => {
 
 <style>
   .related-tour-section {
-    background: var(--at-white);
+    background: var(--at-section-light);
     color: var(--at-ink);
     padding: clamp(2.75rem, 4.5vw, 4.25rem) 0;
   }
@@ -115,7 +110,7 @@ const priceLabel = (tour) => {
     overflow: hidden;
     border: 1px solid rgba(16,24,32,.1);
     border-radius: 1.35rem;
-    background: var(--at-paper);
+    background: var(--at-surface);
     color: inherit;
     text-decoration: none;
     box-shadow: 0 14px 38px rgba(21,16,9,.08);
@@ -181,7 +176,7 @@ const priceLabel = (tour) => {
     border-radius: 1.5rem;
     border: 1px dashed #d5c7b4;
     padding: 2rem;
-    background: var(--at-white);
+    background: var(--at-surface);
     color: var(--at-text);
   }
 

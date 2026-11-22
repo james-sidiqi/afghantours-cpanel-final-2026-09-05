@@ -1,9 +1,10 @@
 ---
+import { getTourHeroImage } from '../../lib/images';
 import { getCatalogTour, tourPriceLabel } from '../../lib/booking/site';
 const { tour } = Astro.props;
 
 const title = tour.title || tour.name;
-const image = tour.thumbnail_image || tour.hero_image || tour.hero_image_path || "/assets/images/placeholders/default-tour.webp";
+const image = getTourHeroImage(tour);
 const href = `/tours/${tour.slug}/`;
 
 const rawDuration = tour.duration || tour.duration_days || "";
@@ -79,7 +80,7 @@ const priceLabel = (() => {
   .tour-card {
     overflow: hidden;
     border-radius: 22px;
-    background: #fff;
+    background: var(--at-surface);
     border: 1px solid rgba(15, 23, 42, 0.08);
     box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
     transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;

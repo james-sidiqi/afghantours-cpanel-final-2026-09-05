@@ -6,7 +6,7 @@ save_to: src/content/hotels/ghazanfar_mazar.md
 destination_code: MAZC
 tier: premium
 star_rating: 3
-cover_image: /assets/images/hotels/mazar/ghazanfar/hotel-exterior-1.webp
+cover_image: /assets/images/hotels/mazar/ghazanfar/hero.webp
 gallery_images:
 ---
 

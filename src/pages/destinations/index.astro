@@ -2,6 +2,7 @@
 import { hubDisplayName } from '../../lib/hubNames';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getProvinces, getHubs } from '../../lib/buildRelations';
+import { getProvinceImage, hasRealImage, listPublicImages } from '../../lib/images';
 
 const titleOf = (item) => item?.title || item?.name || item?.province_name || item?.display_name || item?.slug || 'Destination';
 const cleanRegion = (value) => String(value || 'Afghanistan').replace(/_/g, ' ').replace(/-/g, ' ');
@@ -70,7 +71,15 @@ const hubImageOverrides = {
   'mazar-e-sharif': '/assets/images/hubs/mazar-e-sharif/hero.webp',
 };
 
-const imageForProvince = (p) => p.image || p.cover_image_path || `/assets/images/provinces/${p.slug}/hero.webp`;
+const imageForProvince = (p) => {
+  const preferred = getProvinceImage(p);
+  if (hasRealImage(preferred)) return preferred;
+  return listPublicImages(`/assets/images/provinces/${p.slug}`)[0] || preferred;
+};
+const mapForProvince = (p) => {
+  const preferred = p.map_image_path || `/assets/maps/provinces/${p.slug}-map.webp`;
+  return hasRealImage(preferred) ? preferred : '';
+};
 const imageForHub = (h) => hubImageOverrides[h.slug] || h.image || h.image_path || `/assets/images/hubs/${h.slug}/hero.webp`;
 const displayHubName = (h) => hubDisplayName(h.slug, '') || hubNameOverrides[h.slug] || h.display_name || h.title || h.name || 'Travel Hub';
 
@@ -84,7 +93,7 @@ const provinceCards = provinces.map((province) => {
     description,
     fullDescription: province.full_blurb || province.description || description,
     image: imageForProvince(province),
-    map: province.map_image_path || `/assets/maps/provinces/${province.slug}-map.webp`,
+    map: mapForProvince(province),
     href: `/destinations/${province.slug}/`,
   };
 });
@@ -214,7 +223,7 @@ const provinceCards = provinces.map((province) => {
     <div class="province-modal-panel" role="dialog" aria-modal="true" aria-labelledby="province-modal-title">
       <button class="province-modal-close" type="button" data-close-province>×</button>
       <div class="province-modal-media">
-        <img id="province-modal-image" src="" alt="" />
+        <img id="province-modal-image" alt="" loading="eager" decoding="async" />
       </div>
       <div class="province-modal-content">
         <p class="province-modal-kicker" id="province-modal-region"></p>
@@ -223,9 +232,9 @@ const provinceCards = provinces.map((province) => {
           <p class="section-label">About this province</p>
           <p id="province-modal-description"></p>
         </div>
-        <div class="province-modal-section province-map-wrap">
+        <div class="province-modal-section province-map-wrap" id="province-modal-map-section">
           <p class="section-label">Map reference</p>
-          <img id="province-modal-map" src="" alt="" />
+          <img id="province-modal-map" alt="" loading="eager" decoding="async" />
         </div>
         <div class="province-modal-actions">
           <a id="province-modal-link" href="/destinations/">Open province page</a>
@@ -242,6 +251,18 @@ const provinceCards = provinces.map((province) => {
   const modal = document.getElementById('province-modal');
   const modalImage = document.getElementById('province-modal-image');
   const modalMap = document.getElementById('province-modal-map');
+  const modalMapSection = document.getElementById('province-modal-map-section');
+
+  const provinceFallback = '/assets/images/placeholders/default-province.webp';
+  modalImage.addEventListener('error', () => {
+    if (!modalImage.src.endsWith(provinceFallback)) {
+      modalImage.src = provinceFallback;
+      modalImage.alt = 'Province image unavailable';
+    }
+  });
+  modalMap.addEventListener('error', () => {
+    if (modalMapSection) modalMapSection.hidden = true;
+  });
   const modalRegion = document.getElementById('province-modal-region');
   const modalTitle = document.getElementById('province-modal-title');
   const modalDescription = document.getElementById('province-modal-description');
@@ -252,9 +273,12 @@ const provinceCards = provinces.map((province) => {
     const province = provinces[index];
     if (!province || !modal) return;
 
-    modalImage.src = province.image || '/assets/images/placeholders/default-province.webp';
+    modal.setAttribute('aria-hidden', 'false');
+    modalImage.src = province.image || provinceFallback;
     modalImage.alt = province.title || 'Province';
-    modalMap.src = province.map || '';
+    if (modalMapSection) modalMapSection.hidden = !province.map;
+    if (province.map) modalMap.src = province.map;
+    else modalMap.removeAttribute('src');
     modalMap.alt = `${province.title || 'Province'} map`;
     modalRegion.textContent = province.region || 'Afghanistan';
     modalTitle.textContent = province.title || 'Province';
@@ -262,7 +286,6 @@ const provinceCards = provinces.map((province) => {
     modalLink.href = province.href || '/destinations/';
     modalContact.href = `/contact/?type=destination&province=${encodeURIComponent(province.title || '')}`;
 
-    modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
   }
 
@@ -362,7 +385,7 @@ const provinceCards = provinces.map((province) => {
   }
 
   .dest-page {
-    background: #fbf6ed;
+    background: var(--at-section-light);
     color: #101820;
     padding-bottom: 5rem;
   }
@@ -383,7 +406,7 @@ const provinceCards = provinces.map((province) => {
 
   .dest-tabs a {
     border-radius: 999px;
-    background: #fff;
+    background: var(--at-surface);
     border: 1px solid #eadfce;
     color: #101820;
     text-decoration: none;
@@ -453,7 +476,7 @@ const provinceCards = provinces.map((province) => {
     height: 46px;
     border-radius: 999px;
     border: 1px solid rgba(16,24,32,.14);
-    background: #fff;
+    background: var(--at-surface);
     color: #101820;
     display: grid;
     place-items: center;
@@ -479,7 +502,7 @@ const provinceCards = provinces.map((province) => {
   .region-card,
   .destination-card {
     display: block;
-    background: #fff;
+    background: var(--at-surface);
     color: inherit;
     text-decoration: none;
     border: 1px solid rgba(16,24,32,.1);
@@ -619,11 +642,15 @@ const provinceCards = provinces.map((province) => {
   }
 
   .province-modal-media {
+    position: relative;
+    overflow: hidden;
     background: #111;
     min-height: 0;
   }
 
   .province-modal-media img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -654,7 +681,10 @@ const provinceCards = provinces.map((province) => {
     line-height: 1.75;
   }
 
+  .province-map-wrap[hidden] { display: none; }
+
   .province-map-wrap img {
+    display: block;
     margin-top: .9rem;
     width: 100%;
     max-height: 220px;

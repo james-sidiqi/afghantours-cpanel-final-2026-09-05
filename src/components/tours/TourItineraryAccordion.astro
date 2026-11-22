@@ -1,4 +1,6 @@
 ---
+import { getPreferredImage, getAttractionCardImage } from '../../lib/images';
+import { attractionCardImgStyle } from '../../data/attractionOverrides';
 import { buildAttractionTopMeta, buildAttractionTravelerNotes } from '../../lib/attractionMeta';
 import { attractions, locations, hotels } from "../../lib/data";
 
@@ -52,16 +54,7 @@ function hubDisplayName(hub) {
   return hubName(hub) || "Overnight Hub";
 }
 
-function hubImage(hub) {
-  return (
-    hub?.hero_image_path ||
-    hub?.card_image_path ||
-    hub?.image_path ||
-    hub?.hero_image ||
-    hub?.card_image ||
-    "/assets/images/placeholders/default-card.webp"
-  );
-}
+function hubImage(hub) { return getPreferredImage(hub); }
 
 function findHub(day) {
   const raw = String(day.overnight_hub || day.hub || day.location || "").toLowerCase().trim();
@@ -94,17 +87,7 @@ function findHub(day) {
   );
 }
 
-function attractionImage(attraction) {
-  return (
-    attraction.hero_image ||
-    attraction.hero_image_path ||
-    attraction.card_image ||
-    attraction.card_image_path ||
-    attraction.image_path ||
-    (attraction.slug ? `/assets/images/attractions/${attraction.slug}/hero.webp` : null) ||
-    "/assets/images/placeholders/default-attraction.webp"
-  );
-}
+function attractionImage(attraction) { return getAttractionCardImage(attraction); }
 
 function attractionSummary(attraction) {
   return (
@@ -162,16 +145,7 @@ function hotelName(hotel) {
   return hotel.display_name || hotel.hotel_name || hotel.name || "Hotel Option";
 }
 
-function hotelImage(hotel) {
-  return (
-    hotel.image_path_property_1 ||
-    hotel.image_path_property_2 ||
-    hotel.image_path_property_3 ||
-    hotel.hero_image ||
-    hotel.card_image ||
-    "/assets/images/placeholders/default-card.webp"
-  );
-}
+function hotelImage(hotel) { return getPreferredImage(hotel); }
 
 function hotelTier(hotel) {
   return String(hotel.tier || hotel.category || hotel.price_tier || hotel.class || "standard").toLowerCase();
@@ -305,6 +279,7 @@ function upgradedHotelsForHub(hub) {
                             alt={attraction.name}
                             loading="lazy"
                             class="h-40 w-full object-cover"
+                            style={attractionCardImgStyle(attraction.slug)}
                           />
                           <div class="p-4">
                             <p class="text-[10px] font-black uppercase tracking-[0.18em] text-amber-700">
@@ -427,7 +402,7 @@ function upgradedHotelsForHub(hub) {
                       onclick={`document.getElementById('${attractionDialogId}').close(); document.getElementById('${detailId}').showModal()`}
                       class="overflow-hidden rounded-[1.25rem] bg-[#fbf8f2] text-left shadow-sm"
                     >
-                      <img src={attractionImage(attraction)} alt={attraction.name} loading="lazy" class="h-44 w-full object-cover" />
+                      <img src={attractionImage(attraction)} alt={attraction.name} loading="lazy" class="h-44 w-full object-cover" style={attractionCardImgStyle(attraction.slug)} />
                       <div class="p-4">
                         <p class="text-[10px] font-black uppercase tracking-[0.18em] text-amber-700">{attraction.category || "Attraction"}</p>
                         <h4 class="mt-1 text-lg font-black">{attraction.name}</h4>
@@ -472,6 +447,7 @@ function upgradedHotelsForHub(hub) {
                         alt={attraction.name}
                         loading="lazy"
                         class="max-h-[42vh] w-full object-cover sm:max-h-[48vh]"
+                        style={attractionCardImgStyle(attraction.slug)}
                       />
                       <div class="space-y-4 p-5 sm:p-6">
                         <div>

@@ -6,7 +6,7 @@ save_to: src/content/hotels/taj_ghaz.md
 destination_code: GHZC
 tier: standard
 star_rating: 2
-cover_image: /assets/images/hotels/ghazni/taj-continental/hotel-exterior-1.webp
+cover_image: /assets/images/hotels/ghazni/taj-continental/hero.webp
 gallery_images:
 ---
 

@@ -106,7 +106,7 @@
     "slug": "balkh",
     "is_hub": false,
     "is_active": true,
-    "image_path": "/assets/images/featured-tours/treasures-of-silk-road-afghanistan/hero.webp",
+    "image_path": "/assets/images/tours/featured/treasures-of-silk-road-afghanistan/hero.webp",
     "map_image_path": ""
   },
   {
@@ -161,7 +161,7 @@
     "slug": "ghazni",
     "is_hub": true,
     "is_active": true,
-    "image_path": "/assets/images/hubs/ghazni-city/hero.webp",
+    "image_path": "/assets/images/hubs/ghazni-city/owner-20261122-city-walls-aerial.webp",
     "map_image_path": ""
   },
   {
@@ -480,7 +480,7 @@
     "slug": "ghazni-city",
     "is_hub": true,
     "is_active": true,
-    "image_path": "/assets/images/hubs/ghazni-city/hero.webp",
+    "image_path": "/assets/images/hubs/ghazni-city/owner-20261122-city-walls-aerial.webp",
     "map_image_path": ""
   },
   {

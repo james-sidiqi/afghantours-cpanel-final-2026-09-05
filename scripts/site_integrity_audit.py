@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 import re
 import sys
 from collections import Counter, defaultdict
@@ -69,8 +70,11 @@ def check_text(root: Path, issues):
 
 def check_image_refs(root: Path, issues):
     asset_re = re.compile(r"/assets/[A-Za-z0-9_./()\-]+\.(?:webp|png|jpe?g|gif|svg|mp4|webm|mov)", re.I)
+    alias_file = root / 'src/data/imagePathAliases.json'
+    aliases = json.loads(alias_file.read_text()) if alias_file.exists() else {}
     seen = set()
-    for p in iter_text_files(root):
+    built_files = [p for p in (root / 'dist').rglob('*') if p.is_file() and p.suffix in {'.html', '.css', '.js'}]
+    for p in [*iter_text_files(root), *built_files]:
         try:
             text = p.read_text(encoding='utf-8')
         except UnicodeDecodeError:
@@ -80,7 +84,11 @@ def check_image_refs(root: Path, issues):
             if key in seen:
                 continue
             seen.add(key)
-            target = root / 'public' / ref.lstrip('/')
+            built = root / 'dist' in p.parents
+            # Source metadata intentionally retains historical aliases. Built URLs
+            # must resolve directly: browsers do not execute our source resolver.
+            resolved = ref if built else aliases.get(ref, ref)
+            target = root / ('dist' if built else 'public') / resolved.lstrip('/')
             if not target.exists():
                 add_issue(issues, 'ERROR', 'missing-asset', f'Referenced asset does not exist: {ref}', rel(root, p))
 

@@ -87,24 +87,14 @@ if (path.startsWith('/food-culture/') && path !== '/food-culture') {
   }
 }
 
+// Cultural experience detail pages already render “Journeys connected to…”
+// from explicit related_tours plus province matches. Do not fill this footer
+// here: when hub/province fields were empty, tours fell through to
+// featuredFallback (Bamyan Skiing, Kabul & Surroundings, Weekend in Kabul),
+// which are unrelated to Herat and Balkh pages. If no additional genuinely
+// related tours exist beyond that section, hide this block rather than pad it.
 if (path.startsWith('/cultural-experiences/') && path !== '/cultural-experiences') {
-  const relative = path.replace(/^\/cultural-experiences\//, '');
-  const entries = await getCollection('cultural-experiences');
-  const entry = entries.find((item) => item.slug === relative || item.slug.split('/').pop() === relative.split('/').pop());
-  if (entry) {
-    const hub = norm(entry.data.hub);
-    const province = norm(entry.data.province);
-    const titleToken = norm(entry.data.title);
-    tours = allTours.filter((tour) => {
-      const text = tourText(tour);
-      const direct = titleToken.length > 4 && text.includes(titleToken);
-      const locationMatch = (hub && text.includes(hub)) || (province && text.includes(province));
-      return direct || locationMatch;
-    });
-    title = `Tours that can connect with ${entry.data.title}`;
-    intro = 'Cultural experiences support the itinerary. We connect them to journeys where the location, timing, local access, and traveler interests make sense.';
-    show = true;
-  }
+  show = false;
 }
 
 if (path === '/transportation') {
@@ -114,7 +104,10 @@ if (path === '/transportation') {
   show = true;
 }
 
-if (show && tours.length === 0) tours = featuredFallback.slice(0, 3);
+if (show && tours.length === 0) {
+  if (path.startsWith('/cultural-experiences/')) show = false;
+  else tours = featuredFallback.slice(0, 3);
+}
 ---
 
 {show && (

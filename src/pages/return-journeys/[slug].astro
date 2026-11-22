@@ -15,7 +15,7 @@ if (!journey) return Astro.redirect('/return-journeys/');
 
 const inquiryHref = buildReturnInquiryHref(journey);
 const hero = journey.hero_image_path || journey.image_path || '/assets/images/placeholders/default-hero.webp';
-// James t265: kaf-overlook-portrait and kaf-tower-interior removed from this gallery (files kept). thumb = 4:3 recentred crop; originals unmodified.
+// James t265: redundant KAF overlook portrait removed; kaf-tower.webp remains in the gallery. Thumbnails retain their 4:3 crops.
 const diasporaExampleGallery = journey.slug === 'diaspora' ? [
   {
     src: '/assets/images/return-journeys/diaspora/james-family/father-son-airport/kaf-father-son-overlook.webp',
@@ -166,7 +166,7 @@ const ctaLabel = rawCta && !/^\/|\/assets\/|\.(webp|jpe?g|png)$/i.test(rawCta) ?
   .gallery-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .75rem; margin-top: 1.25rem; }
   @media (max-width: 700px) { .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .gallery-grid img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: .65rem; }
-  .tile { border: 1px solid #e5dccf; border-radius: .85rem; padding: 1rem 1.1rem; background: #fff; }
+  .tile { border: 1px solid #e5dccf; border-radius: .85rem; padding: 1rem 1.1rem; background: var(--at-surface); }
   .tile h3 { margin: 0 0 .45rem; font-size: 1rem; }
   .cta-band { margin-top: 2.8rem; background: #101820; color: #fff; border-radius: 1rem; padding: 2rem 1.5rem; text-align: center; }
   .cta-band h2 { color: #fff; margin-top: 0; }

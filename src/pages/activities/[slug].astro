@@ -28,7 +28,7 @@ const title = data.title || row.name;
 const subtitle = data.subtitle || data.card_description || row.card_description || '';
 const description = data.card_description || row.card_description || `Explore ${title} in Afghanistan with AfghanTours.`;
 const heroImage = getActivityImage({ slug, hero_image: data.hero_image, image: data.image });
-const galleryImages = getActivityGallery({ slug, gallery_images: data.gallery_images }).slice(0, 9);
+const galleryImages = getActivityGallery({ slug, gallery_images: data.gallery_images });
 const hubRels = getHubsForActivity(slug);
 const hubs = hubRels.map((rel) => {
   const hub = getHubBySlug(rel.hub_slug);
@@ -164,7 +164,7 @@ const journeyHref = buildActivityInquiryHref({
 </BaseLayout>
 
 <style>
-  .act-detail-hero, .act-detail-body, .act-gallery, .act-siblings, .act-related-tours { background: #fbf6ed; color: #101820; padding: clamp(2.5rem, 5vw, 4.5rem) 0; }
+  .act-detail-hero, .act-detail-body, .act-gallery, .act-siblings, .act-related-tours { background: var(--at-section-light); color: #101820; padding: clamp(2.5rem, 5vw, 4.5rem) 0; }
   .act-detail-wrap { width: min(1120px, calc(100% - 2rem)); margin: 0 auto; }
   .section-kicker { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; opacity: 0.7; margin: 0 0 0.75rem; }
   .section-kicker a { color: inherit; }
@@ -182,7 +182,7 @@ const journeyHref = buildActivityInquiryHref({
   @media (max-width: 860px) { .body-grid { grid-template-columns: 1fr; } }
   .editorial-prose :global(h2) { margin-top: 1.5rem; }
   .editorial-prose :global(p), .editorial-prose :global(li) { line-height: 1.65; }
-  .sidebar { background: #fff; border-radius: 16px; padding: 1.25rem; box-shadow: 0 10px 30px rgba(16,24,32,0.06); height: fit-content; }
+  .sidebar { background: var(--at-surface); border-radius: 16px; padding: 1.25rem; box-shadow: 0 10px 30px rgba(16,24,32,0.06); height: fit-content; }
   .sidebar h2 { margin: 0 0 0.5rem; font-size: 1.15rem; }
   .side-intro { margin: 0 0 0.75rem; font-size: 0.9rem; opacity: 0.8; }
   .sidebar ul { list-style: none; padding: 0; margin: 0 0 1rem; display: grid; gap: 0.65rem; }
@@ -192,7 +192,7 @@ const journeyHref = buildActivityInquiryHref({
   .sidebar-secondary { font-size: 0.9rem; }
   .related-intro { opacity: 0.8; max-width: 42rem; margin: 0.5rem 0 1.25rem; }
   .tour-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
-  .tour-card { display: grid; gap: 0.65rem; text-decoration: none; color: inherit; background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(16,24,32,0.06); }
+  .tour-card { display: grid; gap: 0.65rem; text-decoration: none; color: inherit; background: var(--at-surface); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(16,24,32,0.06); }
   .tour-card img { width: 100%; aspect-ratio: 16/10; object-fit: cover; }
   .tour-card > div { padding: 0 1rem 1rem; display: grid; gap: 0.35rem; }
   .card-kicker { margin: 0; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem; opacity: 0.65; font-weight: 700; }

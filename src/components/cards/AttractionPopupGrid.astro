@@ -1,6 +1,7 @@
 ---
+import { getAttractionCardImage } from '../../lib/images';
 import { regionDisplayName } from '../../lib/regionNames';
-import { ATTRACTION_OVERRIDES } from '../../data/attractionOverrides';
+import { ATTRACTION_OVERRIDES, attractionCardImgStyle } from '../../data/attractionOverrides';
 import {
   buildAttractionTopMeta,
   buildAttractionTravelerNotes,
@@ -34,7 +35,7 @@ const normalized = attractions
     const slug = a.slug || clean(a.href).replace(/^\/attractions\//, '').replace(/\/$/, '');
     const desc = strip(a.desc_short || a.excerpt || a.summary || a.description || a.desc_long || a.content || '');
     const long = strip(a.desc_long || a.description || a.content || a.desc_short || a.excerpt || '');
-    const image = a.image || a.image_path || a.hero_image || a.thumbnail_path || `/assets/images/attractions/${slug}/hero.webp`;
+    const image = getAttractionCardImage(a);
     const province = a.province || a.province_name || a.province_code || '';
     const region = regionDisplayName(a.region || '');
     const category = a.category || 'Attraction';
@@ -55,6 +56,7 @@ const normalized = attractions
       desc,
       long: ATTRACTION_OVERRIDES[slug]?.popupAbout || long,
       image,
+      cardStyle: attractionCardImgStyle(slug),
       href: a.href || `/attractions/${slug}/`,
       duration,
       access,
@@ -89,7 +91,7 @@ const normalized = attractions
         {normalized.map((item, index) => (
           <button type="button" class="attraction-popup-card" data-attraction-index={index} aria-label={`Preview ${item.title}`}>
             <div class="attraction-card-image">
-              <img src={item.image} alt={item.title} loading="lazy" />
+              <img src={item.image} alt={item.title} loading="lazy" style={item.cardStyle} />
             </div>
             <div class="attraction-card-body">
               <p class="card-kicker">{item.province || item.region || 'Afghanistan'}</p>
@@ -217,7 +219,7 @@ const normalized = attractions
 
 <style>
   .attraction-popup-section {
-    background: #fbf6ed;
+    background: var(--at-section-light);
     color: #101820;
     padding: clamp(4rem, 7vw, 7rem) 0;
   }
@@ -265,7 +267,7 @@ const normalized = attractions
 
   .attraction-popup-card {
     border: 1px solid rgba(16,24,32,.12);
-    background: #fff;
+    background: var(--at-surface);
     padding: 0;
     text-align: left;
     border-radius: 1.35rem;
@@ -354,7 +356,7 @@ const normalized = attractions
     border-radius: 1.5rem;
     border: 1px dashed #d5c7b4;
     padding: 2rem;
-    background: #fff;
+    background: var(--at-surface);
     color: var(--at-text);
   }
 
@@ -467,7 +469,7 @@ const normalized = attractions
   .practical-list div {
     border: 1px solid rgba(16,24,32,.09);
     border-radius: 1rem;
-    background: #fff;
+    background: var(--at-surface);
     padding: .8rem;
   }
 

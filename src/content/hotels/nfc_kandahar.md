@@ -6,9 +6,9 @@ save_to: src/content/hotels/nfc_kandahar.md
 destination_code: KDRC
 tier: standard
 star_rating: 3
-cover_image: /assets/images/hotels/kandahar/nfc/hotel-exterior-1.webp
+cover_image: /assets/images/hotels/kandahar/nfc/hero.webp
 gallery_images:
-  - /assets/images/hotels/kandahar/nfc/hotel-pool-1.webp
+  - /assets/images/hotels/kandahar/nfc/01.webp
 ---
 
 ### Overview

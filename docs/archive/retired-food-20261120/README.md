@@ -1,0 +1,1 @@
+Food records retired from the public catalog on 20 Nov 2026 (owner instruction). Their URLs 301 to the replacement pages listed in data/retired_public_routes.json. Kept here for history only; not built.

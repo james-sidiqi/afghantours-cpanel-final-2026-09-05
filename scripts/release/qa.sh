@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 # Same fail-closed checks for PRs and publishable releases. PHP and Chromium required.
 set -euo pipefail
+node --test scripts/ci-dist-drift-diagnose.test.mjs
+node --test scripts/related-food.test.mjs
+node --test scripts/supplier-cost-privacy.test.mjs
 node scripts/validate-booking-data.mjs
 node scripts/check-owner-venues.mjs
 node --test scripts/booking-test/core.test.mjs
 python3 -m unittest discover -s scripts/release -p 'test_*.py'
 npm run build
+git diff --exit-code -- public/.htaccess
 php -l public/tour-inquiry.php
 php scripts/booking-test/test-inquiry-guards.php
 node scripts/booking-test/parity.mjs

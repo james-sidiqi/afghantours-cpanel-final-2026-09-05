@@ -1,4 +1,7 @@
 ---
+import { listGalleryImages, isGalleryImage, normalizeImagePath, hasRealImage } from '../../lib/images';
+import { selectRelatedFood } from '../../lib/relatedFood.mjs';
+import retiredRoutes from '../../../data/retired_public_routes.json';
 import { isRejectedImage } from '../../data/rejectedImages';
 import PhotoCredits from '../../components/PhotoCredits.astro';
 import { altFor } from '../../data/photoCredits';
@@ -140,24 +143,7 @@ const resolvedFoodImageFolder =
   dedicatedFolderCandidates.find((folder) =>
     publicAssetExists(`${folder}hero.webp`)
   ) ||
-  dedicatedFolderCandidates.find((folder) => {
-    const diskFolder = path.join(
-      process.cwd(),
-      'public',
-      folder.replace(/^\/+/, '')
-    );
-
-    try {
-      return (
-        fs.existsSync(diskFolder) &&
-        fs.readdirSync(diskFolder).some((file) =>
-          /\.(webp|jpg|jpeg|png|avif)$/i.test(file)
-        )
-      );
-    } catch {
-      return false;
-    }
-  }) ||
+  dedicatedFolderCandidates.find((folder) => listGalleryImages(folder, false).length > 0) ||
   '';
 
 const dedicatedHero =
@@ -168,13 +154,17 @@ const dedicatedHero =
     : '';
 
 // t277: tall subject photos shown as a right-hand panel on desktop so the whole subject stays in frame.
-const PORTRAIT_HEROES = new Set(['/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/hero.webp']);
+const PORTRAIT_HEROES = new Set(['/assets/images/food/dried-fruits/paktia-pine-nuts/harvest/hero.webp', '/assets/images/food/sweets/gosh-e-fil/hero-owner-20261121.webp', '/assets/images/food/dishes/bolani/owner-bolani-plated-20261122.webp']);
 
 // The watermelon source photo was rejected by the owner as non-Afghan.
 // Bypass dedicated folders and frontmatter image paths to avoid reintroducing it.
 const heroImage =
-  [dedicatedHero, data.hero_image, data.image, '/assets/images/heroes/food-and-culture/hero.webp']
+  [data.hero_image, dedicatedHero, data.image, '/assets/images/heroes/food-and-culture/hero.webp']
     .find((src) => src && !isRejectedImage(src));
+
+// Owner rule: an item without an accurate photograph shows a clearly labelled pending
+// panel, never a generic or unrelated photo presented as the item itself.
+const photoPending = data.image_status === 'pending';
 
 const categoryLabels: Record<string, string> = {
   dishes: 'Afghan Dish',
@@ -301,7 +291,6 @@ const explicitTours = mergedExplicitTourSlugs
 const aliasMap: Record<string, string[]> = {
   'kabuli-pulao': ['qabuli-palaw', 'kabuli-palaw'],
   'ghazni-qabili-pulao': ['qabuli-palaw'],
-  'chicken-qabili': ['qabuli-palaw'],
   samosa: ['sambosa'],
   'sambosa-pastry': ['sambosa'],
   aushak: ['ashak'],
@@ -345,77 +334,24 @@ const galleryCandidates: string[] = [];
 const addGalleryImage = (value: any) => {
   if (!value) return;
   const src = String(value).trim();
-  if (src && !/\/crops\//.test(src) && !isRejectedImage(src) && !galleryCandidates.includes(src)) galleryCandidates.push(src);
+  if (isGalleryImage(src) && !isRejectedImage(src) && !galleryCandidates.includes(src)) galleryCandidates.push(src);
 };
 
 if (Array.isArray(data.gallery_images)) data.gallery_images.forEach(addGalleryImage);
 
-addGalleryImage(heroImage);
+const explicitGallery = data.gallery_mode === 'explicit';
+if (!explicitGallery && !data.gallery_exclude_hero) addGalleryImage(heroImage);
 
-if (data.image && data.image !== heroImage) addGalleryImage(data.image);
+if (!explicitGallery && data.image && data.image !== heroImage) addGalleryImage(data.image);
 
 const scanFoodImageFolder = (publicFolder: string) => {
-  if (!publicFolder || !publicFolder.startsWith('/')) return;
-
-  const diskFolder = path.join(
-    process.cwd(),
-    'public',
-    publicFolder.replace(/^\/+/, '')
-  );
-
-  try {
-    if (!fs.existsSync(diskFolder)) return;
-
-    let files = fs.readdirSync(diskFolder)
-      .filter((file) =>
-        /\.(webp|jpg|jpeg|png|avif)$/i.test(file)
-      )
-      .filter((file) =>
-        !/^(thumb|thumbnail)\./i.test(file)
-      );
-
-    /*
-     * If curated gallery-N files exist, prefer those over duplicate
-     * numeric aliases such as 01.webp.
-     */
-    const hasNamedGallery = files.some((file) =>
-      /^gallery-\d+/i.test(file)
-    );
-
-    if (hasNamedGallery) {
-      files = files.filter(
-        (file) =>
-          /^hero\./i.test(file) ||
-          /^gallery-\d+/i.test(file)
-      );
-    }
-
-    files
-      .sort((a, b) => {
-        const rank = (file: string) => {
-          if (/^hero\./i.test(file)) return 0;
-          if (/^gallery-/i.test(file)) return 1;
-          if (/^\d+/i.test(file)) return 2;
-          return 3;
-        };
-
-        return rank(a) - rank(b) || a.localeCompare(b);
-      })
-      .forEach((file) =>
-        addGalleryImage(`${publicFolder}${file}`)
-      );
-  } catch (error) {
-    console.warn(
-      `Could not inspect food image folder ${publicFolder}`,
-      error
-    );
-  }
+  listGalleryImages(publicFolder).forEach(addGalleryImage);
 };
 
 /*
  * First inspect the canonical route-specific food folder.
  */
-if (resolvedFoodImageFolder) {
+if (!explicitGallery && resolvedFoodImageFolder) {
   scanFoodImageFolder(resolvedFoodImageFolder);
 }
 
@@ -423,7 +359,7 @@ if (resolvedFoodImageFolder) {
  * Also inspect an explicitly configured hero's folder if it is
  * different from the canonical folder.
  */
-if (heroImage.startsWith('/')) {
+if (!explicitGallery && heroImage.startsWith('/')) {
   const configuredHeroFolder =
     heroImage.substring(
       0,
@@ -442,63 +378,10 @@ if (heroImage.startsWith('/')) {
 const GALLERY_EXCLUDES_HERO = new Set(['dried-fruits/paktia-pine-nuts']);
 const NO_RELATED_JOURNEYS = new Set(['dried-fruits/paktia-pine-nuts']);
 const galleryImages = galleryCandidates
-  .filter((src) => !(GALLERY_EXCLUDES_HERO.has(foodPath) && src === heroImage))
+  .filter((src) => !((data.gallery_exclude_hero || GALLERY_EXCLUDES_HERO.has(foodPath)) && src === heroImage))
   .slice(0, 9);
 
-const currentProvinceSet = new Set(provinces.map(normalizeKey));
-const pairedKeys = pairedFoods.map(normalizeKey);
-
-const scoredFood = allFood
-  .filter((candidate) => candidate.id !== entry.id)
-  .map((candidate) => {
-    const candidateData = candidate.data as any;
-    const candidatePath =
-      candidate.slug || candidate.id.replace(/\.md$/, '');
-    const candidateParts = candidatePath.split('/');
-    const candidateBase = candidateParts[candidateParts.length - 1];
-    const candidateCategory =
-      candidateParts.length > 1 ? candidateParts[0] : 'food';
-
-    const candidateTitle = normalizeKey(candidateData.title);
-    const candidateSlugKey = normalizeKey(candidateBase);
-
-    let score = 0;
-
-    for (const pairing of pairedKeys) {
-      if (!pairing) continue;
-
-      if (
-        candidateTitle === pairing ||
-        candidateSlugKey === pairing ||
-        candidateTitle.includes(pairing) ||
-        pairing.includes(candidateTitle) ||
-        candidateSlugKey.includes(pairing) ||
-        pairing.includes(candidateSlugKey)
-      ) {
-        score += 10;
-      }
-    }
-
-    const candidateProvinces = Array.isArray(candidateData.provinces)
-      ? candidateData.provinces
-      : [];
-
-    candidateProvinces.map(normalizeKey).forEach((province) => {
-      if (currentProvinceSet.has(province)) score += 4;
-    });
-
-    if (candidateCategory === categorySlug) score += 2;
-
-    return { candidate, score };
-  })
-  .filter((item) => item.score > 0)
-  .sort(
-    (a, b) =>
-      b.score - a.score ||
-      a.candidate.data.title.localeCompare(b.candidate.data.title)
-  );
-
-const relatedFood = scoredFood.slice(0, 6).map((result) => result.candidate);
+const relatedFood = selectRelatedFood(entry, allFood, retiredRoutes);
 
 const culinaryLinks = [
   ...culinaryLinksForFoodSlug(sourceBaseSlug),
@@ -513,8 +396,9 @@ const foodHref = (candidate: any) =>
 const foodImage = (candidate: any) => {
   const candidateData = candidate.data as any;
 
-  return [candidateData.hero_image, candidateData.image, '/assets/images/heroes/food-and-culture/hero.webp']
-    .find((src) => src && !isRejectedImage(src));
+  return [candidateData.hero_image, candidateData.image, candidateData.card_image]
+    .filter(Boolean).map((src) => normalizeImagePath(src, ''))
+    .find((src) => src !== '/assets/images/heroes/food-and-culture/hero.webp' && hasRealImage(src)) || '';
 };
 
 const contactHref = buildInquiryHref({
@@ -531,7 +415,9 @@ const contactHref = buildInquiryHref({
   image={heroImage}
 >
   <section class="food-detail-hero">
-    <img class:list={["food-detail-hero-image", PORTRAIT_HEROES.has(heroImage) && "food-detail-hero-image--portrait"]} src={heroImage} alt={altFor(heroImage, title)} fetchpriority="high" />
+    {photoPending
+      ? <div class="food-detail-hero-pending" role="img" aria-label={`Photograph of ${title} pending`}><span>Photograph pending</span></div>
+      : <img class:list={["food-detail-hero-image", PORTRAIT_HEROES.has(heroImage) && "food-detail-hero-image--portrait"]} src={heroImage} alt={altFor(heroImage, title)} fetchpriority="high" />}
     <div class="food-detail-hero-overlay" aria-hidden="true"></div>
 
     <div class="food-detail-hero-inner">
@@ -555,7 +441,7 @@ const contactHref = buildInquiryHref({
       </div>
     </div>
   </section>
-  <PhotoCredits images={[heroImage, ...galleryImages]} />
+  <PhotoCredits images={photoPending ? galleryImages : [heroImage, ...galleryImages]} />
 
   <section class="food-facts-shell">
     <div class="food-facts">
@@ -615,7 +501,7 @@ const contactHref = buildInquiryHref({
     </div>
   </main>
 
-  {galleryImages.length > 1 && (
+  {galleryImages.length > 0 && (
     <section class="food-gallery-section">
       <div class="food-gallery-wrap">
         <div class="food-section-heading">
@@ -633,12 +519,12 @@ const contactHref = buildInquiryHref({
                 index === 0 && galleryImages.length >= 3 && 'food-gallery-featured',
               ]}
               data-food-image={src}
-              data-food-alt={`${title} — image ${index + 1}`}
+              data-food-alt={altFor(src, `${title} — image ${index + 1}`)}
               aria-label={`Open image ${index + 1}`}
             >
               <img
                 src={src}
-                alt={`${title} — image ${index + 1}`}
+                alt={altFor(src, `${title} — image ${index + 1}`)}
                 loading={index < 2 ? 'eager' : 'lazy'}
               />
             </button>
@@ -693,9 +579,9 @@ const contactHref = buildInquiryHref({
 
             return (
               <a class="related-food-card" href={foodHref(candidate)}>
-                <div class="related-food-image">
+                {foodImage(candidate) && <div class="related-food-image">
                   <img src={foodImage(candidate)} alt={candidateData.title} loading="lazy" />
-                </div>
+                </div>}
 
                 <div class="related-food-copy">
                   <p>
@@ -792,6 +678,27 @@ const contactHref = buildInquiryHref({
     overflow: hidden;
     background: #101820;
     color: #fff;
+  }
+
+  .food-detail-hero-pending {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 6.5rem 1.25rem 1.25rem;
+    background: repeating-linear-gradient(135deg, #1b2630 0 18px, #16202a 18px 36px);
+  }
+
+  .food-detail-hero-pending span {
+    border: 1px solid rgba(255,255,255,.45);
+    border-radius: 999px;
+    padding: .4rem .9rem;
+    font-size: .78rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #f4e7cf;
+    background: rgba(0,0,0,.35);
   }
 
   .food-detail-hero-image {
@@ -913,7 +820,7 @@ const contactHref = buildInquiryHref({
   .food-facts-shell {
     position: relative;
     z-index: 4;
-    background: #fbf6ed;
+    background: var(--at-section-light);
   }
 
   .food-facts {
@@ -925,7 +832,7 @@ const contactHref = buildInquiryHref({
     overflow: hidden;
     border: 1px solid rgba(16,24,32,.08);
     border-radius: 1.4rem;
-    background: #fff;
+    background: var(--at-surface);
     box-shadow: 0 18px 50px rgba(20,15,8,.12);
   }
 
@@ -955,7 +862,7 @@ const contactHref = buildInquiryHref({
 
   .food-story-section {
     padding: clamp(2rem, 4vw, 4rem) 0 clamp(5rem, 8vw, 8rem);
-    background: #fbf6ed;
+    background: var(--at-section-light);
     color: #101820;
   }
 
@@ -1022,7 +929,7 @@ const contactHref = buildInquiryHref({
     padding: clamp(1.45rem, 2.5vw, 2rem);
     border: 1px solid rgba(16,24,32,.09);
     border-radius: 1.5rem;
-    background: #fff;
+    background: var(--at-surface);
     box-shadow: 0 18px 46px rgba(20,15,8,.09);
   }
 
@@ -1176,7 +1083,7 @@ const contactHref = buildInquiryHref({
     overflow: hidden;
     border: 1px solid rgba(16,24,32,.08);
     border-radius: 1.3rem;
-    background: #fff;
+    background: var(--at-surface);
     color: inherit;
     text-decoration: none;
     box-shadow: 0 14px 34px rgba(20,15,8,.07);
@@ -1241,7 +1148,7 @@ const contactHref = buildInquiryHref({
 
   .food-custom-tour-section {
     padding: clamp(4rem, 7vw, 7rem) 0;
-    background: #fff;
+    background: var(--at-section-light);
   }
 
   .food-custom-tour-card {
@@ -1253,7 +1160,7 @@ const contactHref = buildInquiryHref({
     align-items: center;
     gap: 2rem;
     border-radius: 1.5rem;
-    background: #fbf6ed;
+    background: var(--at-surface);
   }
 
   .food-custom-tour-card > div { max-width: 720px; }
@@ -1417,4 +1324,7 @@ const contactHref = buildInquiryHref({
 
     .food-fact:last-child { border-bottom: 0; }
   }
+
+  /* Ivory theme: small gold labels on the wallpaper use the AA gold token. */
+  .food-story-section .section-kicker { color: var(--at-gold-text); }
 </style>
