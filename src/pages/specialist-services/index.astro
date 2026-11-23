@@ -7,7 +7,7 @@ const services = getSpecialistServices();
 <BaseLayout
   title="Specialist Services | AfghanTours"
   description="Specialist ground support in Afghanistan for photography, documentary and media projects, research, business and expeditions, plus return journeys for diaspora families and veterans."
-  image="/assets/images/tours/custom/scientific-expeditions/hero--f65c73d0bb2b.webp"
+  image="/assets/images/heroes/hubs/hero.webp"
 >
   <section class="svc-hero">
     <div class="svc-wrap">
@@ -61,7 +61,24 @@ const services = getSpecialistServices();
 
 <style>
   .svc-wrap { width: min(1180px, calc(100% - 2rem)); margin: 0 auto; }
-  .svc-hero { background: #101820; color: #fff; padding: clamp(3.5rem, 6vw, 5.5rem) 0; }
+  .svc-hero {
+    color: #fff;
+    padding: clamp(3.5rem, 6vw, 5.5rem) 0;
+    background-color: #101820;
+    /* Use the approved Kabul city photograph behind the right-hand side of the hero.
+       Keep the text area opaque enough for readable contrast on tablets and phones. */
+    background-image:
+      linear-gradient(90deg, #101820 0%, rgba(16,24,32,.99) 34%, rgba(16,24,32,.76) 62%, rgba(16,24,32,.3) 100%),
+      url('/assets/images/heroes/hubs/hero.webp');
+    background-position: center, center 48%;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  @media (max-width: 740px) {
+    .svc-hero { background-image:
+      linear-gradient(90deg, rgba(16,24,32,.96), rgba(16,24,32,.78)),
+      url('/assets/images/heroes/hubs/hero.webp'); }
+  }
   .kicker { margin: 0; color: #d6a548; font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; font-weight: 900; }
   .svc-hero h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.4rem, 5vw, 3.8rem); line-height: 1.05; letter-spacing: -.04em; margin: .6rem 0 1rem; max-width: 18ch; }
   .lead { max-width: 62ch; color: rgba(255,255,255,.82); line-height: 1.7; }
