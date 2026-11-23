@@ -11,6 +11,14 @@ from pathlib import Path
 
 TEXT_EXTS = {'.astro', '.md', '.csv', '.ts', '.js', '.mjs', '.json', '.html'}
 SKIP_PARTS = {'node_modules', 'dist', '.git', '.astro', '_inactive'}
+# These files index images by historic/original filename and intentionally retain
+# retired or rejected paths as lookup keys. They do not request those assets.
+# Inspect actual source usages and built URLs for broken images instead.
+HISTORICAL_IMAGE_LOOKUPS = {
+    'src/data/photoCredits.ts',
+    'src/data/imageAlts.ts',
+    'src/data/rejectedImages.ts',
+}
 FORBIDDEN = [
     'Kunar should be fish',
     'Logar should not duplicate Wardak',
@@ -75,6 +83,10 @@ def check_image_refs(root: Path, issues):
     seen = set()
     built_files = [p for p in (root / 'dist').rglob('*') if p.is_file() and p.suffix in {'.html', '.css', '.js'}]
     for p in [*iter_text_files(root), *built_files]:
+        if rel(root, p) in HISTORICAL_IMAGE_LOOKUPS:
+            # A path appearing only as a photo-credit, alt-text, or rejection
+            # key is not a displayed image URL. Retain such records for history.
+            continue
         try:
             text = p.read_text(encoding='utf-8')
         except UnicodeDecodeError:
