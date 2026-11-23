@@ -139,7 +139,23 @@ const journeyHref = buildActivityInquiryHref({
       <div class="act-detail-wrap">
         <h2>Gallery</h2>
         <div class="gal-grid">
-          {galleryImages.map((src, i) => <img src={src} alt={((data.gallery_alt || [])[(data.gallery_images || []).indexOf(src)]) || altFor(src, `${title} — photo ${i + 1}`)} loading="lazy" />)}
+          {galleryImages.map((src, i) => (
+            <button
+              type="button"
+              class="gal-photo"
+              data-lightbox-trigger
+              aria-label={`Enlarge ${title} gallery photo ${i + 1}`}
+            >
+              <img
+                src={src}
+                alt={((data.gallery_alt || [])[(data.gallery_images || []).indexOf(src)]) || altFor(src, `${title} — photo ${i + 1}`)}
+                data-lightbox
+                loading={i < 4 ? 'eager' : 'lazy'}
+                decoding="async"
+                fetchpriority="low"
+              />
+            </button>
+          ))}
         </div>
       </div>
     </section>
@@ -197,7 +213,13 @@ const journeyHref = buildActivityInquiryHref({
   .tour-card > div { padding: 0 1rem 1rem; display: grid; gap: 0.35rem; }
   .card-kicker { margin: 0; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.7rem; opacity: 0.65; font-weight: 700; }
   .tour-note { margin: 0; font-size: 0.88rem; line-height: 1.45; opacity: 0.8; }
-  .gal-grid, .sib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.85rem; }
-  .gal-grid img, .sib-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 12px; }
+  .gal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: .85rem; }
+  .sib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: .85rem; }
+  .gal-photo { display: block; padding: 0; margin: 0; border: 0; width: 100%; background: transparent; border-radius: 12px; overflow: hidden; cursor: zoom-in; }
+  .gal-photo:focus-visible { outline: 3px solid #b98237; outline-offset: 3px; }
+  .gal-photo img { width: 100%; aspect-ratio: 4/3; height: auto; object-fit: cover; display: block; transition: transform .2s ease; }
+  .gal-photo:hover img { transform: scale(1.02); }
+  .sib-card img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 12px; }
+  @media (prefers-reduced-motion: reduce) { .gal-photo img { transition: none; } }
   .sib-card { text-decoration: none; color: inherit; display: grid; gap: 0.4rem; }
 </style>
