@@ -319,6 +319,7 @@
     "hero_image": "/assets/images/experiences/activities/fishing/owner-fishing.webp",
     "card_image": "/assets/images/experiences/activities/fishing/owner-fishing.webp",
     "gallery_images": [
+      "/assets/images/experiences/activities/fishing/gallery/02.webp",
       "/assets/images/experiences/activities/fishing/gallery/panjshir-river-fishing.webp"
     ],
     "gallery_mode": "explicit",
@@ -622,5 +623,17 @@
   "hubs/ghazni-city": {
     "hero_image": "/assets/images/hubs/ghazni-city/owner-20261122-city-walls-aerial.webp",
     "card_image": "/assets/images/hubs/ghazni-city/owner-20261122-city-walls-aerial.webp"
+  },
+  "activities/skiing": {
+    "gallery_images": [
+      "/assets/images/tours/featured/bamyan-skiing-tour/hero.webp",
+      "/assets/images/experiences/activities/skiing/gallery/03.webp",
+      "/assets/images/page-assets/activities/skiing/03.webp",
+      "/assets/images/page-assets/activities/skiing/04.webp",
+      "/assets/images/page-assets/activities/skiing/05.webp",
+      "/assets/images/page-assets/activities/skiing/06.webp"
+    ],
+    "gallery_mode": "explicit",
+    "gallery_exclude_hero": true
   }
 }

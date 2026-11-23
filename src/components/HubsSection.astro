@@ -18,7 +18,7 @@ const hubs = (Array.isArray(props.hubs) && props.hubs.length && props.hubs[0]?.a
     <div class="hub-hero-bg" aria-hidden="true">
       {hubs.map((hub, index) => (
         <img
-          src={hub.image}
+          src={hub.cardImage || hub.image}
           alt=""
           class={`hub-bg-image ${index === 0 ? 'is-active' : ''}`}
           data-bg-index={index}

@@ -8,8 +8,10 @@ duration: "A few hours within a tour, up to a dedicated fishing journey"
 hero_image: "/assets/images/experiences/activities/fishing/owner-fishing.webp"
 hero_alt: "Angler fishing beside water in a mountain landscape"
 gallery_images:
+  - "/assets/images/experiences/activities/fishing/gallery/02.webp"
   - "/assets/images/experiences/activities/fishing/gallery/panjshir-river-fishing.webp"
 gallery_alt:
+  - "Angler fishing beside a clear highland river"
   - "People fishing in Panjshir Valley"
 gallery_mode: "explicit"
 gallery_exclude_hero: true

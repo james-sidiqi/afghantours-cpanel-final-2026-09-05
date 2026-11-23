@@ -13,9 +13,18 @@ function walk(dir, built = false) {
   }
 }
 walk(path.join(root, 'src')); walk(path.join(root, 'data')); walk(path.join(root, 'dist'), true);
+// Lookup-only keys may refer to deliberately retired assets. Validate actual
+// source usage and built browser URLs, but do not treat a historic credit,
+// alt-text, or rejected-image key as a request to load that image.
+const HISTORICAL_IMAGE_LOOKUPS = new Set([
+  'src/data/photoCredits.ts',
+  'src/data/imageAlts.ts',
+  'src/data/rejectedImages.ts',
+]);
 const refs = new Map();
 const re = /\/assets\/images\/[^\s"'`)<>,}\\\]]+?\.(?:webp|png|jpe?g|gif|svg|avif)(?=[?\s"'`),<>\]}]|$)/gi;
 for (const { file, built } of files) {
+  if (!built && HISTORICAL_IMAGE_LOOKUPS.has(path.relative(root, file).split(path.sep).join('/'))) continue;
   for (const match of fs.readFileSync(file, 'utf8').matchAll(re)) {
     const ref = match[0].replace(/[.,;]+$/, '').split(';')[0];
     if (ref.includes('${')) continue;
