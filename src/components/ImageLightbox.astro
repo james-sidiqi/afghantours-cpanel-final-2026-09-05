@@ -13,11 +13,11 @@
   const lightboxCaption = lightbox?.querySelector('[data-lightbox-caption]');
   let lastTrigger = null;
 
-  function openLightbox(trigger) {
+  function openLightbox(trigger, focusTarget = trigger) {
     if (!lightbox || !lightboxImage || !trigger) return;
     const src = trigger.getAttribute('data-lightbox-src') || trigger.getAttribute('src');
     if (!src) return;
-    lastTrigger = trigger;
+    lastTrigger = focusTarget;
     // Clear any earlier load failure before displaying a newly selected photo.
     lightboxImage.classList.remove('img-failed');
     lightboxImage.parentElement?.classList.remove('img-missing');
@@ -43,11 +43,15 @@
 
   document.addEventListener('click', (event) => {
     const target = event.target;
-    const image = target?.closest?.('img[data-lightbox]');
+    // Gallery buttons support keyboard/touch activation; existing standalone
+    // data-lightbox images remain clickable without changing other pages.
+    const button = target?.closest?.('[data-lightbox-trigger]');
+    const image = button?.querySelector('img[data-lightbox]')
+      || target?.closest?.('img[data-lightbox]');
     if (image) {
       event.preventDefault();
       event.stopPropagation();
-      openLightbox(image);
+      openLightbox(image, button || image);
       return;
     }
     if (target?.closest?.('[data-lightbox-close]')) closeLightbox();
