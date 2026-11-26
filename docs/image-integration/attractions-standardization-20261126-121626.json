@@ -1,0 +1,1137 @@
+{
+  "backup": "attractions-pre-standardization-20261126-121626",
+  "folders": [
+    {
+      "slug": "ahmad-shah-massoud-mausoleum",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "ai-khanoum",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "alingar-valley",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "alingar-valley.jpeg": "gallery-02.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "ancient-city-of-balkh",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-10.webp": "gallery-02.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "ayno-mina-kandahar",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "baba-wali-shrine",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "baburs-gardens",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp",
+        "gallery-3.webp": "gallery-03.webp",
+        "gallery-4.png": "gallery-04.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "badakhshan-mountains-and-lakes",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "badghis-hills-nomadic-pastures",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "bagh-e-bala",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "bala-hisar-of-gardez",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "bala-hisar-of-ghazni",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp",
+        "owner-20261122-ghazni-city-overview.webp": "gallery-03.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "bala-hissar-kabul",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "balkh-bala-hisar-ancient-walls",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp",
+        "gallery/gallery-4.webp": "gallery-04.webp",
+        "gallery/gallery-5.webp": "gallery-05.webp",
+        "gallery/gallery-6.webp": "gallery-06.webp",
+        "gallery/gallery-7.webp": "gallery-07.webp",
+        "gallery/gallery-8.webp": "gallery-08.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "band-e-amir-national-park",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp",
+        "gallery-3.webp": "gallery-03.webp",
+        "gallery-4.webp": "gallery-04.webp",
+        "gallery-5.webp": "gallery-05.webp",
+        "gallery-6.webp": "gallery-06.webp",
+        "gallery-7.webp": "gallery-07.webp",
+        "gallery-8.webp": "gallery-08.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "barg-e-matal-lakes",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [
+        "gallery-2.webp"
+      ],
+      "missing": []
+    },
+    {
+      "slug": "buddha-niches-of-bamyan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "buddhist-cave-monasteries",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "chehel-burj-bamyan-ruins",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "owner-20261122-ridge-wide.webp": "gallery-01.webp",
+        "owner-20261122-ruins-valley.webp": "gallery-02.webp",
+        "owner-20261122-towers-close.webp": "gallery-03.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "chicken-street",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "chilsitoon-garden",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "chilzina-forty-steps",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "darulaman-palace",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp",
+        "gallery/gallery-4.webp": "gallery-04.webp",
+        "gallery/gallery-5.webp": "gallery-05.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "darunta-lake",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "daykundi-highlands",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "dragon-valley-dara-e-ajdahar",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "farah-citadel",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "faryab-cultural-villages",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "gandamak-last-stand-site",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "gardez-zurmat-highlands",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "ghazi-olympic-stadium",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "ghazni-minarets",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "haji-piyada-nine-domes",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "helmand-river-landscape",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "herat-citadel-qala-ye-ikhtiyaruddin",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp",
+        "gallery/gallery-4.webp": "gallery-04.webp",
+        "gallery/gallery-5.webp": "gallery-05.webp",
+        "gallery/gallery-6.webp": "gallery-06.webp",
+        "gallery/gallery-7.webp": "gallery-07.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "herat-friday-mosque-masjid-e-jami",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp",
+        "gallery/gallery-4.webp": "gallery-04.webp",
+        "gallery/gallery-5.webp": "gallery-05.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "herat-minarets-musalla-complex",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp",
+        "gallery/gallery-4.webp": "gallery-04.webp",
+        "gallery/gallery-5.webp": "gallery-05.webp",
+        "gallery/gallery-6.webp": "gallery-06.webp",
+        "gallery/gallery-7.webp": "gallery-07.webp",
+        "gallery/gallery-8.webp": "gallery-08.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "herat-old-city-bazaars",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp",
+        "gallery/gallery-4.webp": "gallery-04.webp",
+        "gallery/gallery-5.webp": "gallery-05.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "istalif-village",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "jabal-saraj-palace",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "jahan-nama-palace",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "kabul-national-museum",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "kabul-zoo",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "kahfroshi-bird-market",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "kajaki-dam",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "kamal-khan-dam",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "kharqa-sharif-mosque",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "khost-city-scenery",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "khurd-kabul-pass-1842",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "khwaja-abdullah-ansari-shrine",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "koh-e-baba-range",
+      "mapping": {
+        "hero.png": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "kunar-river-valley",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "kunduz-city-farmlands",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "logar-valleys",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "mausoleum-of-ghazi-amanullah",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "mausoleum-of-shah-shahid",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "minaret-of-jam",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp",
+        "gallery/gallery-4.webp": "gallery-04.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "mount-noshaq",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "mujahideen-museum",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "murad-khane-old-city",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "nijrab-valley",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "nimroz-citadel",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "nuristan-national-park",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp",
+        "gallery/gallery-4.webp": "gallery-04.webp",
+        "gallery/gallery-5.webp": "gallery-05.webp",
+        "gallery/gallery-6.webp": "gallery-06.webp",
+        "gallery/gallery-7.webp": "gallery-07.webp",
+        "gallery/gallery-8.webp": "gallery-08.webp",
+        "gallery/gallery-9.webp": "gallery-09.webp",
+        "gallery/gallery-10.webp": "gallery-10.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "nuristan-river-valleys-villages",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-4.webp": "gallery-03.webp",
+        "gallery/gallery-5.webp": "gallery-04.webp",
+        "gallery/gallery-6.webp": "gallery-05.webp",
+        "gallery/gallery-7.webp": "gallery-06.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "omar-landmine-museum",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "paghman-palace",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp",
+        "gallery/gallery-4.webp": "gallery-04.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "paktika-highlands",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "palace-of-sultan-masud-iii",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "parun-valley",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "paryan-valley",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "qala-e-bost-arch",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "qala-muhammad",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "qalai-jangi-fortress",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "qargha-lake",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp",
+        "gallery/gallery-4.webp": "gallery-04.webp",
+        "gallery/gallery-5.webp": "gallery-05.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "rumi-home-madrasa",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "rural-ghor-highlands",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "sakhi-shrine-karte-sakhi",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "salang-pass",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "sar-e-pol-meadows",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "shah-e-du-shamshira",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "shahjoy-qalat-valleys",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "shahr-e-gholghola",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "shahr-e-zohak",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.png": "gallery-01.webp",
+        "gallery/gallery-2.png": "gallery-02.webp",
+        "gallery/gallery-3.png": "gallery-03.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "shrine-of-hazrat-ali-blue-mosque",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "owner-20261122-white-pigeon-flight.webp": "gallery-02.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "shrine-of-mirwais-hotak",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "sultan-dam",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "surkh-kotal",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.jpeg": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp",
+        "gallery/gallery-4.webp": "gallery-04.webp",
+        "gallery/gallery-5.webp": "gallery-05.webp",
+        "gallery/gallery-6.webp": "gallery-06.webp",
+        "gallery/gallery-7.webp": "gallery-07.webp",
+        "gallery/gallery-8.webp": "gallery-08.webp",
+        "gallery/gallery-9.webp": "gallery-09.webp",
+        "gallery/gallery-10.webp": "gallery-10.webp",
+        "gallery/gallery-11.webp": "gallery-11.webp",
+        "gallery/gallery-12.webp": "gallery-12.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "takht-e-rostam",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.jpeg": "gallery-02.webp",
+        "gallery/gallery-3.jpeg": "gallery-03.webp",
+        "gallery/gallery-4.webp": "gallery-04.webp",
+        "gallery/gallery-5.jpeg": "gallery-05.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "tala-tepe",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "tapa-sardar-archaeological-site",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "tape-maranjan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "tape-tajbeg-palace",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "tape-tajbeg.png": "gallery-02.webp"
+      },
+      "duplicates": [
+        "overview.webp"
+      ],
+      "missing": []
+    },
+    {
+      "slug": "taq-e-zafar-paghman",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "tarin-kot-surroundings",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "tomb-of-ahmad-shah-durrani",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery/01.webp": "gallery-02.webp",
+        "owner-mausoleum-of-ahmad-shah-durrani-gallery.webp": "gallery-03.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "tomb-of-nader-khan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "tomb-of-rabia-balkhi",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "tomb-of-sultan-mahmud-ghaznavi",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "topdara-stupa",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "tv-tower-hill-asmai",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "wakhan-corridor",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp",
+        "gallery/gallery-4.webp": "gallery-04.webp",
+        "gallery/gallery-5.webp": "gallery-05.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "wardak-highlands",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    },
+    {
+      "slug": "wazir-akbar-khan-hill",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "duplicates": [],
+      "missing": []
+    }
+  ],
+  "errors": []
+}

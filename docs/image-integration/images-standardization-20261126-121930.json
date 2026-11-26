@@ -1,0 +1,4017 @@
+{
+  "backup": "images-pre-standardization-20261126-121930",
+  "folders": [
+    {
+      "folder": "custom-tours/business-investment",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "custom-tours/custom-expedition",
+      "mapping": {
+        "gallery-1.webp": "hero.webp",
+        "gallery-2.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from gallery-1.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "custom-tours/media-support",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "custom-tours/noshaq-expedition-support",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "custom-tours/noshaq-expeditions",
+      "mapping": {
+        "thumb.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from thumb.webp",
+        "thumb"
+      ],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "custom-tours/photography-tour",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "04.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "custom-tours/scientific-expeditions",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "01.webp": "gallery-02.webp",
+        "02.webp": "gallery-03.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "custom-tours/ski-expeditions",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "custom-tours/veteran-return",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "experiences/activities/birding",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp",
+        "gallery/gallery-4.webp": "gallery-04.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/activities/cycling",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/activities/fishing",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/activities/hiking",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/activities/horse-riding",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/activities/shopping",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/activities/sightseeing",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery/01.webp": "gallery-01.webp",
+        "gallery/02.webp": "gallery-02.webp",
+        "owner-kabul-street-wide.webp": "gallery-03.webp",
+        "shah-e-do-shamshira-kabul-jsp015.webp": "gallery-04.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/activities/sightseeing/historical",
+      "mapping": {
+        "03.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from 03.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/activities/sightseeing/religious",
+      "mapping": {
+        "02.webp": "hero.webp",
+        "03.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from 02.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/activities/sightseeing/scenic",
+      "mapping": {
+        "band-e-amir-lakes.webp": "hero.webp",
+        "mountains-above-green-valley-kunduz-takhar.webp": "gallery-01.webp",
+        "northern-plains-sheep.webp": "gallery-02.webp",
+        "scenic-river.webp": "gallery-03.webp"
+      },
+      "generated": [
+        "hero selected from band-e-amir-lakes.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/activities/sightseeing/shopping",
+      "mapping": {
+        "majid-mall.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from majid-mall.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/activities/sightseeing/street-life",
+      "mapping": {
+        "street-kid-brothers.webp": "hero.webp",
+        "zarang-crates-kabul-street.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from street-kid-brothers.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/activities/skiing",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/02.webp": "gallery-01.webp",
+        "gallery/03.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/activities/trekking",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/02.webp": "gallery-01.webp",
+        "owner-20261122-rocky-peaks-green-snow.webp": "gallery-02.webp",
+        "owner-20261122-snow-range-aerial.webp": "gallery-03.webp",
+        "owner-trekking.webp": "gallery-04.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/culinary/adam-khan-chapli-kabob",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/culinary/arg-restaurant-herat",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/01.jpeg": "gallery-01.webp",
+        "gallery/01.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/culinary/aziz-bakery",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/01.webp": "gallery-01.webp",
+        "gallery/02.webp": "gallery-02.webp",
+        "gallery/03.webp": "gallery-03.webp",
+        "gallery/04.webp": "gallery-04.webp",
+        "gallery/05.webp": "gallery-05.webp",
+        "gallery/06.webp": "gallery-06.webp",
+        "gallery/07.webp": "gallery-07.webp",
+        "gallery/owner-20261122-01-stacked-cookies.webp": "gallery-08.webp",
+        "gallery/owner-20261122-03-shelves-cookies.webp": "gallery-09.webp",
+        "gallery/owner-20261122-04-pistachio-swirls.webp": "gallery-10.webp",
+        "gallery/owner-20261122-05-assorted-trays.webp": "gallery-11.webp",
+        "gallery/owner-20261122-06-street-front-display.webp": "gallery-12.webp",
+        "owner-haji-aziz-hero.webp": "gallery-13.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/culinary/bamyan-kabob",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/01.webp": "gallery-01.webp",
+        "gallery/02.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/culinary/band-e-amir-quroot-dairy",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/culinary/chashma-e-dogh",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/03.webp": "gallery-01.webp",
+        "gallery/05.webp": "gallery-02.webp",
+        "gallery/06.webp": "gallery-03.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/culinary/kabul-chainaki",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/01.webp": "gallery-01.webp",
+        "gallery/02.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/culinary/kandahari-rosh",
+      "mapping": {
+        "hero.png": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "hero.webp": "gallery-01.webp",
+        "gallery/03.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/culinary/mansoor-kabob",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery/04.webp": "gallery-01.webp",
+        "gallery/05.webp": "gallery-02.webp",
+        "gallery/06.webp": "gallery-03.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/culinary/spoghmai-restaurant-qargha",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/01-pines-seating.webp": "gallery-01.webp",
+        "gallery/02-lake-panorama.webp": "gallery-02.webp",
+        "gallery/03-peninsula-red-roofs.webp": "gallery-03.webp",
+        "gallery/04-walkway-pelican.webp": "gallery-04.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/cultural/afghan-carpets",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/01-carpet-shop-unfurling.webp": "gallery-01.webp",
+        "gallery/02-kneeling-striped-carpet.webp": "gallery-02.webp",
+        "gallery/03-loom-weavers.webp": "gallery-03.webp",
+        "gallery/04-carpet-shop-two-men.webp": "gallery-04.webp",
+        "gallery/sizes/04-carpet-shop-two-men-800w.webp": "gallery-05.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/cultural/afghan-weddings",
+      "mapping": {
+        "city-star-wedding-hall-night.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "wedding-guests-table.webp": "gallery-01.webp",
+        "wedding-hall-interior.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "hero selected from city-star-wedding-hall-night.webp"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/cultural/afghan-weddings/crops",
+      "mapping": {
+        "city-star-wedding-hall-night-card.webp": "hero.webp",
+        "city-star-wedding-hall-night-hero.webp": "gallery-01.webp",
+        "wedding-guests-table-card.webp": "gallery-02.webp",
+        "wedding-guests-table-hero.webp": "gallery-03.webp",
+        "wedding-hall-interior-card.webp": "gallery-04.webp",
+        "wedding-hall-interior-hero.webp": "gallery-05.webp"
+      },
+      "generated": [
+        "hero selected from city-star-wedding-hall-night-card.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/cultural/ancient-city-of-balkh",
+      "mapping": {
+        "owner-20261122-balkh-overview-aerial.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from owner-20261122-balkh-overview-aerial.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/cultural/buzkashi",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-10.webp": "gallery-02.webp",
+        "gallery/gallery-2.webp": "gallery-03.webp",
+        "gallery/gallery-3.webp": "gallery-04.webp",
+        "gallery/gallery-4.webp": "gallery-05.webp",
+        "gallery/gallery-5.webp": "gallery-06.webp",
+        "gallery/gallery-6.webp": "gallery-07.webp",
+        "gallery/gallery-7.webp": "gallery-08.webp",
+        "gallery/gallery-8.webp": "gallery-09.webp",
+        "gallery/gallery-9.webp": "gallery-10.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/cultural/glassblowers-of-herat",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp",
+        "gallery/gallery-3.webp": "gallery-03.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/cultural/gudiparan-bazi",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/02.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/cultural/istalif-pottery",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/cultural/kaftar-bazi",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/cultural/kuchi-nomads",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/gallery-1.webp": "gallery-01.webp",
+        "gallery/gallery-2.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/cultural/pahlawani",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery/02.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "experiences/cultural/the-last-box-camera-photographer-of-kabul",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery/01.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "featured-tours/afghanistan-discovery-tour-fall",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "01.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "featured-tours/afghanistan-discovery-tour-spring",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "01.webp": "gallery-01.webp",
+        "02.webp": "gallery-02.webp",
+        "spring-wheat-panorama-hero.webp": "gallery-03.webp",
+        "spring-wheat-panorama-thumbnail.webp": "gallery-04.webp",
+        "spring-wheat-path-hero.webp": "gallery-05.webp",
+        "spring-wheat-path-thumbnail.webp": "gallery-06.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "featured-tours/bamyan-skiing-tour",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "02.webp": "gallery-02.webp",
+        "03.webp": "gallery-03.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "featured-tours/buzkashi-expedition",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "01.webp": "gallery-02.webp",
+        "02.webp": "gallery-03.webp",
+        "03.webp": "gallery-04.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "featured-tours/central-afghanistan-discovery",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "01.webp": "gallery-02.webp",
+        "02.webp": "gallery-03.webp",
+        "hilltop-ruin-sunset-hero.webp": "gallery-04.webp",
+        "hilltop-ruin-sunset-thumb.webp": "gallery-05.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "featured-tours/kabul-surroundings",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "03.webp": "gallery-02.webp",
+        "04.webp": "gallery-03.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "featured-tours/kandahar-durrani-empire-tour",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "02.webp": "gallery-01.webp",
+        "03.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "featured-tours/panjshir-valley-emeralds-history",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "rough-emeralds-hero.webp": "gallery-02.webp",
+        "rough-emeralds-thumb.webp": "gallery-03.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "featured-tours/summer-circuit",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "01.webp": "gallery-02.webp",
+        "03.webp": "gallery-03.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "featured-tours/timurid-grandeur-herat-tour",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "01.webp": "gallery-01.webp",
+        "02.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "featured-tours/timurid-grandeur-herat-tour-add-minaret-e-jam",
+      "mapping": {
+        "01.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "02.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "featured-tours/treasures-of-silk-road-afghanistan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "herat-friday-mosque-hero.webp": "gallery-02.webp",
+        "herat-friday-mosque-overview.webp": "gallery-03.webp",
+        "herat-friday-mosque-thumb.webp": "gallery-04.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "featured-tours/trek-the-wakhan-corridor",
+      "mapping": {
+        "03.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from 03.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "featured-tours/weekend-in-kabul",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "01.webp": "gallery-02.webp",
+        "03.webp": "gallery-03.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "featured-tours/winter-circuit",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "01.webp": "gallery-02.webp",
+        "02.webp": "gallery-03.webp",
+        "03.webp": "gallery-04.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "food/desserts/sweet-streets-of-mazar",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/afghan-kabob",
+      "mapping": {
+        "roadside-kabob.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from roadside-kabob.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/ash",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/ashak",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/aushak",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/bamyan-potatoes",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/banjan-sia",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/bodana",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/bolani",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery/01.webp": "gallery-02.webp",
+        "gallery-2.webp": "gallery-03.webp",
+        "gallery/03.webp": "gallery-04.webp",
+        "gallery/04.webp": "gallery-05.webp",
+        "gallery/05.webp": "gallery-06.webp",
+        "owner-bolani-plated-20261122.webp": "gallery-07.webp",
+        "owner-bolani-stand.webp": "gallery-08.webp",
+        "owner-bolani.webp": "gallery-09.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/borani-banjan",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/chapli-kabob",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery/01.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/chicken-kabuli",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery/01.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/chiken-korma",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/dopiaza",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/firni",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/gosh-e-fil",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/halwa",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/herat-kabob",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/jelabi",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/kabob",
+      "mapping": {
+        "thumb.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from thumb.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/kabul-kabob",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "herati.webp": "gallery-01.webp",
+        "mazari-grill.webp": "gallery-02.webp",
+        "mazari.webp": "gallery-03.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/kabuli-palaw",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/kabuli-pulao",
+      "mapping": {
+        "gallery-1.webp": "hero.webp",
+        "gallery-2.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from gallery-1.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/kadoo",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/kandahari-rosh",
+      "mapping": {
+        "hero.png": "hero.webp",
+        "hero.webp": "gallery-01.webp",
+        "gallery/rosh-platter.webp": "gallery-02.webp",
+        "owner-rosh.webp": "gallery-03.webp",
+        "rosh-james.webp": "gallery-04.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/kunar-trout",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "01.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "gallery-1.webp"
+      ]
+    },
+    {
+      "folder": "food/dishes/mantu",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery/01.webp": "gallery-02.webp",
+        "gallery-2.webp": "gallery-03.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/naan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/qawardagh",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/qorma-e-gosht",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/qorma-e-kachaloo",
+      "mapping": {
+        "thumb.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from thumb.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/qorma-e-sabzi",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/qurmay-qachaloo",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "github-hero.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/sabzi-palak",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "github-hero.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/saffron-ice-cream",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/samosa",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/sheer-pira",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/sheer-yakh",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/shola",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/shola-e-ghorbandi",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/shor-nakhut",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dishes/yoghurt",
+      "mapping": {
+        "gallery-1.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from gallery-1.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruit",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruit/balkh-almonds",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruit/herat-raisins",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruit/herat-saffron",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruit/panjshir-walnuts",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "fresh-walnuts-original.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruit/samangan-pistachios",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruits",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruits/badghis-pistachios",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery/01.webp": "gallery-01.webp",
+        "pista-forest-gallery.webp": "gallery-02.webp",
+        "pista-tree-badghis.webp": "gallery-03.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruits/balkh-almonds",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruits/dried-fruits",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruits/dried-mulberries",
+      "mapping": {
+        "dark-dried-mulberries.webp": "hero.webp",
+        "white-dried-mulberries.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from dark-dried-mulberries.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruits/farah-date-palms",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruits/herat-raisins",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruits/herat-saffron",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruits/paktia-pine-nuts",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery/01.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruits/paktia-pine-nuts/harvest",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp",
+        "gallery-3.webp": "gallery-03.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruits/panjshir-walnuts",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "fresh-walnuts-original.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/dried-fruits/samangan-pistachios",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/drinks",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/drinks/dogh",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/drinks/doogh",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/drinks/green-tea",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/drinks/saffron-tea",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/drinks/sheer-chai",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "github-hero.webp": "gallery-02.webp",
+        "owner-sheer-chai.webp": "gallery-03.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/drinks/shor-chai-of-badakhshan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/produce",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/produce/balkh-melons",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery/melon-halves.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/produce/bamyan-potatoes",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/produce/central-valley-mulberries",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/produce/cherries",
+      "mapping": {
+        "gallery-1.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from gallery-1.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/produce/farah-watermelon",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/produce/grapes",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery/02.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/produce/jalalabad-sugarcane",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1-vendor-bags.webp": "gallery-01.webp",
+        "gallery-2-crates-stalks.webp": "gallery-02.webp",
+        "gallery-3-juice-pour.webp": "gallery-03.webp",
+        "gallery-4-cutting-cane.webp": "gallery-04.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "card.webp"
+      ]
+    },
+    {
+      "folder": "food/produce/kandahar-grapes",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "owner-afghan-grapes.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/produce/kandahar-pomegranate",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/produce/kunduz-melon",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/produce/mulberries",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "black-mulberries-jsp013.webp": "gallery-02.webp",
+        "mulberry-basket.webp": "gallery-03.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/produce/mulberries/crops",
+      "mapping": {
+        "black-mulberries-jsp013-card.webp": "hero.webp",
+        "black-mulberries-jsp013-hero.webp": "gallery-01.webp",
+        "mulberry-basket-card.webp": "gallery-02.webp",
+        "mulberry-basket-hero.webp": "gallery-03.webp"
+      },
+      "generated": [
+        "hero selected from black-mulberries-jsp013-card.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/produce/qurut-markets-of-bamyan",
+      "mapping": {
+        "qurut-bamyan.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from qurut-bamyan.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/produce/seasonal-fruit",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/produce/wardak-apples",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/produce/watermelons",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/setting_table",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/sweets/firni",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/sweets/gosh-e-fil",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "hero-owner-20261121.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/sweets/halwa",
+      "mapping": {
+        "gallery-1.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-owner-20261120.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from gallery-1.webp"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/sweets/halwa-sona",
+      "mapping": {
+        "gallery-owner-20261120.webp": "hero.webp",
+        "hero-owner-20261120.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from gallery-owner-20261120.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/sweets/jelabi",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-2.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/sweets/kulcha-cookie",
+      "mapping": {
+        "gallery-owner-1-collage-20261121.webp": "hero.webp",
+        "gallery-owner-2-20261121.webp": "gallery-01.webp",
+        "gallery-owner-4-box-20261121.webp": "gallery-02.webp",
+        "gallery-owner-5-bakery-shelf-20261121.webp": "gallery-03.webp",
+        "hero-owner-20261121.webp": "gallery-04.webp"
+      },
+      "generated": [
+        "hero selected from gallery-owner-1-collage-20261121.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/sweets/saffron-ice-cream",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "hero-owner-20261121.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/sweets/sheer-birinj",
+      "mapping": {
+        "hero-owner-20261120.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from hero-owner-20261120.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/sweets/sheer-khurma",
+      "mapping": {
+        "gallery-1.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "hero-owner-20261121.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from gallery-1.webp"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "food/sweets/sheer-pira",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-owner-20261120.webp": "gallery-01.webp",
+        "hero-owner-20261120.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "food/sweets/sheer-yakh",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "sheer-e-yakh-owner-20261121.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "hotels/bamyan/gholghola",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hotel-exterior-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "01.webp"
+      ]
+    },
+    {
+      "folder": "hotels/bamyan/gholghola/rooms",
+      "mapping": {
+        "01.webp": "hero.webp",
+        "02.webp": "gallery-01.webp",
+        "03.webp": "gallery-02.webp",
+        "04.webp": "gallery-03.webp",
+        "05.webp": "gallery-04.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": [
+        "bathroom.webp",
+        "deluxe-bedroom.webp",
+        "single-bedroom.webp",
+        "suite-bedroom.webp",
+        "three-single-bedroom.webp"
+      ]
+    },
+    {
+      "folder": "hotels/bamyan/royal",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hotel-exterior-1.webp"
+      ]
+    },
+    {
+      "folder": "hotels/bamyan/royal/rooms",
+      "mapping": {
+        "two-twin-bedroom.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from two-twin-bedroom.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "hotels/faizabad/bam-dunya",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "01.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hotel-exterior-1.webp",
+        "hotel-exterior-2.webp"
+      ]
+    },
+    {
+      "folder": "hotels/faizabad/bam-dunya/rooms",
+      "mapping": {
+        "01.webp": "hero.webp",
+        "02.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": [
+        "two-twin-bedroom.webp",
+        "two-twin-bedroom1.webp"
+      ]
+    },
+    {
+      "folder": "hotels/faizabad/qasri-kokcha",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hotel-exterior-1.webp"
+      ]
+    },
+    {
+      "folder": "hotels/faizabad/qasri-kokcha/rooms",
+      "mapping": {
+        "01.webp": "hero.webp",
+        "02.webp": "gallery-01.webp",
+        "03.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": [
+        "four-twin-bedroom.webp",
+        "single-bedroom.webp",
+        "two-twin-bedroom.webp"
+      ]
+    },
+    {
+      "folder": "hotels/ghazni/taj-continental",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hotel-exterior-1.webp"
+      ]
+    },
+    {
+      "folder": "hotels/ghazni/taj-continental/rooms",
+      "mapping": {
+        "01.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": [
+        "two-twin-bedroom.webp"
+      ]
+    },
+    {
+      "folder": "hotels/herat/arg",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hotel-exterior-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "hotels/herat/arg/rooms",
+      "mapping": {
+        "01.webp": "hero.webp",
+        "02.webp": "gallery-01.webp",
+        "03.webp": "gallery-02.webp",
+        "04.webp": "gallery-03.webp",
+        "05.webp": "gallery-04.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": [
+        "double-bedroom.webp",
+        "single-bedroom.webp",
+        "single-bedroom1.webp",
+        "suite-bedroom.webp",
+        "vip-bedroom.webp"
+      ]
+    },
+    {
+      "folder": "hotels/herat/sadaf",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hotel-exterior-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "hotels/herat/sadaf/rooms",
+      "mapping": {
+        "01.webp": "hero.webp",
+        "02.webp": "gallery-01.webp",
+        "03.webp": "gallery-02.webp",
+        "04.webp": "gallery-03.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": [
+        "double-bedroom.webp",
+        "double-bedroom1.webp",
+        "single-bedroom.webp",
+        "suite-bedroom.webp"
+      ]
+    },
+    {
+      "folder": "hotels/jalalabad/spinghar",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hotel-exterior-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "01.webp",
+        "hotel-exterior-2.webp"
+      ]
+    },
+    {
+      "folder": "hotels/jalalabad/spinghar/rooms",
+      "mapping": {
+        "01.webp": "hero.webp",
+        "02.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": [
+        "hotel-livingroom.webp",
+        "standard-bedroom.webp"
+      ]
+    },
+    {
+      "folder": "hotels/kabul/intercontinental",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "01.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hotel-exterior-1.webp"
+      ]
+    },
+    {
+      "folder": "hotels/kabul/intercontinental/rooms",
+      "mapping": {
+        "01.webp": "hero.webp",
+        "02.webp": "gallery-01.webp",
+        "03.webp": "gallery-02.webp",
+        "04.webp": "gallery-03.webp",
+        "05.webp": "gallery-04.webp",
+        "06.webp": "gallery-05.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": [
+        "double-twin-room.webp",
+        "double-twin-room1.webp",
+        "hotel-room.webp",
+        "single-deluxe-room.webp",
+        "single-deluxe-room1.webp",
+        "suite-room.webp"
+      ]
+    },
+    {
+      "folder": "hotels/kabul/kabul-grand",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "01.webp": "gallery-01.webp",
+        "02.webp": "gallery-02.webp",
+        "03.webp": "gallery-03.webp",
+        "hotel-exterior-1.webp": "gallery-04.webp",
+        "hotel-interior-1.webp": "gallery-05.webp",
+        "kabul-grand-restaurant.webp": "gallery-06.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hotel-exterior-2.webp",
+        "hotel-pool-1.webp"
+      ]
+    },
+    {
+      "folder": "hotels/kabul/kabul-grand/rooms",
+      "mapping": {
+        "kabul-grand-bathroom.webp": "hero.webp",
+        "kabul-grand-room.webp": "gallery-01.webp",
+        "single-bedroom.webp": "gallery-02.webp",
+        "two-twin-bedroom.webp": "gallery-03.webp"
+      },
+      "generated": [
+        "hero selected from kabul-grand-bathroom.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "hotels/kabul/kabul-star",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hotel-exterior-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "hotels/kabul/kabul-star/rooms",
+      "mapping": {
+        "01.webp": "hero.webp",
+        "02.webp": "gallery-01.webp",
+        "03.webp": "gallery-02.webp",
+        "04.webp": "gallery-03.webp",
+        "05.webp": "gallery-04.webp",
+        "06.webp": "gallery-05.webp",
+        "07.webp": "gallery-06.webp",
+        "08.webp": "gallery-07.webp",
+        "suite-room.webp": "gallery-08.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": [
+        "delux-bedroom.webp",
+        "two-twin-bedroom.webp"
+      ]
+    },
+    {
+      "folder": "hotels/kabul/khyber",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hotel-exterior-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "hotels/kabul/khyber/rooms",
+      "mapping": {
+        "01.webp": "hero.webp",
+        "02.webp": "gallery-01.webp",
+        "03.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": [
+        "single-bedroom.webp",
+        "single-bedroom1.webp",
+        "twin-bedroom.webp"
+      ]
+    },
+    {
+      "folder": "hotels/kabul/park-star",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hotel-exterior-1.webp"
+      ]
+    },
+    {
+      "folder": "hotels/kabul/park-star/rooms",
+      "mapping": {
+        "01.webp": "hero.webp",
+        "02.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": [
+        "double-bedroom.webp",
+        "two-twin-bedroom.webp"
+      ]
+    },
+    {
+      "folder": "hotels/kabul/taj",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "01.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hotel-exterior-1.webp",
+        "hotel-pool-1.webp"
+      ]
+    },
+    {
+      "folder": "hotels/kabul/taj/rooms",
+      "mapping": {
+        "01.webp": "hero.webp",
+        "02.webp": "gallery-01.webp",
+        "03.webp": "gallery-02.webp",
+        "04.webp": "gallery-03.webp",
+        "05.webp": "gallery-04.webp",
+        "06.webp": "gallery-05.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": [
+        "four-single-bedroom.webp",
+        "four-single-bedroom1.webp",
+        "suite-bedroom.webp",
+        "suite-bedroom1.webp",
+        "suite-livingroom.webp",
+        "two-twin-bedroom.webp"
+      ]
+    },
+    {
+      "folder": "hotels/kandahar/continental",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hotel-exterior-1.webp"
+      ]
+    },
+    {
+      "folder": "hotels/kandahar/continental/rooms",
+      "mapping": {
+        "double-bedroom.webp": "hero.webp",
+        "three-double-bedroom.webp": "gallery-01.webp",
+        "three-twin-bedroom.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "hero selected from double-bedroom.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "hotels/kandahar/dubai-inn",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hotel-exterior-1.webp"
+      ]
+    },
+    {
+      "folder": "hotels/kandahar/dubai-inn/rooms",
+      "mapping": {
+        "two-single-bedroom.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from two-single-bedroom.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "hotels/kandahar/nfc",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "01.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hotel-exterior-1.webp",
+        "hotel-pool-1.webp"
+      ]
+    },
+    {
+      "folder": "hotels/kandahar/nfc/rooms",
+      "mapping": {
+        "four-twin-bedroom.webp": "hero.webp",
+        "single-bedroom.webp": "gallery-01.webp",
+        "single-bedroom1.webp": "gallery-02.webp",
+        "single-bedroom2.webp": "gallery-03.webp",
+        "suite-bedroom.webp": "gallery-04.webp",
+        "suite-bedroom1.webp": "gallery-05.webp",
+        "two-twin-bedroom.webp": "gallery-06.webp"
+      },
+      "generated": [
+        "hero selected from four-twin-bedroom.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "hotels/kandahar/royal",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hotel-exterior-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "hotels/kandahar/royal/rooms",
+      "mapping": {
+        "suite-bedroom.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from suite-bedroom.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "hotels/mazar/barat",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hotel-exterior-1.webp"
+      ]
+    },
+    {
+      "folder": "hotels/mazar/barat/rooms",
+      "mapping": {
+        "standard-bedroom.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from standard-bedroom.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "hotels/mazar/ghazanfar",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hotel-exterior-1.webp"
+      ]
+    },
+    {
+      "folder": "hotels/mazar/ghazanfar/rooms",
+      "mapping": {
+        "two-double-bedroom.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from two-double-bedroom.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "hotels/mazar/kefayat",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hotel-exterior-1.webp"
+      ]
+    },
+    {
+      "folder": "hotels/mazar/kefayat/rooms",
+      "mapping": {
+        "double-bedroom.webp": "hero.webp",
+        "two-single-bedroom.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from double-bedroom.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "hubs/bamyan-city",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-3.webp": "gallery-02.webp",
+        "gallery-4.webp": "gallery-03.webp",
+        "gallery-5.webp": "gallery-04.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "01.webp"
+      ]
+    },
+    {
+      "folder": "hubs/faizabad",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp",
+        "gallery-3.webp": "gallery-03.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "01.webp"
+      ]
+    },
+    {
+      "folder": "hubs/ghazni-city",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp",
+        "gallery-3.webp": "gallery-03.webp",
+        "gallery-4.webp": "gallery-04.webp",
+        "owner-20261122-city-walls-aerial.webp": "gallery-05.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "hubs/herat-city",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "01.webp": "gallery-01.webp",
+        "gallery-3.webp": "gallery-02.webp",
+        "gallery-4.webp": "gallery-03.webp",
+        "gallery/02.webp": "gallery-04.webp",
+        "gallery/05.webp": "gallery-05.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "hubs/jalalabad",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp",
+        "gallery-3.webp": "gallery-03.webp",
+        "gallery-4.webp": "gallery-04.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "01.webp"
+      ]
+    },
+    {
+      "folder": "hubs/kabul-city",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "01.webp": "gallery-01.webp",
+        "gallery-1.webp": "gallery-02.webp",
+        "gallery-2.webp": "gallery-03.webp",
+        "gallery-3.webp": "gallery-04.webp",
+        "gallery-4.webp": "gallery-05.webp",
+        "gallery-5.webp": "gallery-06.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "gallery-8.webp"
+      ]
+    },
+    {
+      "folder": "hubs/kandahar-city",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-3.webp": "gallery-02.webp",
+        "gallery-5.webp": "gallery-03.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "01.webp"
+      ]
+    },
+    {
+      "folder": "hubs/lashkar-gah",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-2.webp": "gallery-01.webp",
+        "gallery-3.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "hubs/mazar-e-sharif",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "balkh-white-pigeons.jpg": "gallery-02.webp",
+        "balkh-white-pigeons.webp": "gallery-03.webp",
+        "gallery-2.webp": "gallery-04.webp",
+        "gallery-3.webp": "gallery-05.webp",
+        "owner-20261122-sheep-herd-outside-mazar.webp": "gallery-06.webp",
+        "owner-20261122-trucks-tangi-tashkurgan.webp": "gallery-07.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "01.webp"
+      ]
+    },
+    {
+      "folder": "hubs/parun",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp",
+        "gallery-3.webp": "gallery-03.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/badakhshan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp",
+        "gallery-3.webp": "gallery-03.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/badghis",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/baghlan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-2.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/balkh",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/bamyan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-2.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/daykundi",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/farah",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/faryab",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/ghazni",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/ghor",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/helmand",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-2.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/herat",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/jowzjan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/kabul",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp",
+        "gallery-3.webp": "gallery-03.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/kandahar",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-2.webp": "gallery-01.webp",
+        "gallery-3.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/kapisa",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/khost",
+      "mapping": {
+        "gallery-1.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from gallery-1.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/kunar",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/kunduz",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/laghman",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/logar",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/nangarhar",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/nimroz",
+      "mapping": {
+        "gallery-1.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from gallery-1.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/nuristan",
+      "mapping": {
+        "gallery-1.webp": "hero.webp",
+        "gallery-2.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from gallery-1.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/paktia",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/paktika",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/panjshir",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/parwan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-2.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/samangan",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/sar-e-pol",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/uruzgan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/wardak",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "province/zabul",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "provinces/badakhshan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2-alt1.webp": "gallery-02.webp",
+        "gallery-2.webp": "gallery-03.webp",
+        "gallery-3-alt1.webp": "gallery-04.webp",
+        "gallery-3.webp": "gallery-05.webp",
+        "hero--31327140363c.webp": "gallery-06.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/badghis",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hero--3c93efab226b.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/baghlan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-2.webp": "gallery-01.webp",
+        "hero--444ccdda8bde.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/balkh",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "provinces/bamyan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2-alt1.webp": "gallery-02.webp",
+        "gallery-2.webp": "gallery-03.webp",
+        "gallery-4.webp": "gallery-04.webp",
+        "gallery-5.webp": "gallery-05.webp",
+        "gallery-6.jpeg": "gallery-06.webp",
+        "gallery-6.webp": "gallery-07.webp",
+        "gallery-7.webp": "gallery-08.webp",
+        "hero--234e11e688f0.webp": "gallery-09.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/daykundi",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hero--7d554c48cdcd.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/farah",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hero--037d9581d69d.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/faryab",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "hero--9a93a892c56d.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/ghazni",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "hero--c8c7b33faf65.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/ghor",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "hero--7771924e6bbf.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/helmand",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-2.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "provinces/herat",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hero--18c2bc4caf2a.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/jowzjan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "hero--b1917b64a891.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/kabul",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp",
+        "gallery-3.webp": "gallery-03.webp",
+        "hero--734c5d9eee4e.webp": "gallery-04.webp",
+        "kabul-016.webp": "gallery-05.webp",
+        "kabul-hero1.webp": "gallery-06.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/kandahar",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery/01.webp": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp",
+        "gallery-3.webp": "gallery-03.webp",
+        "gallery/02.webp": "gallery-04.webp",
+        "gallery/04.webp": "gallery-05.webp",
+        "hero--b2b4d27dd983.webp": "gallery-06.webp",
+        "kandahar-001.webp": "gallery-07.webp",
+        "kandahar-003.webp": "gallery-08.webp",
+        "kandahar-004.webp": "gallery-09.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/kapisa",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hero--c54bad4e21e5.webp": "gallery-01.webp",
+        "kapisa-002.webp": "gallery-02.webp",
+        "kapisa-003.webp": "gallery-03.webp",
+        "kapisa-005.webp": "gallery-04.webp",
+        "kapisa-006.webp": "gallery-05.webp",
+        "kapisa.webp": "gallery-06.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/khost",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "provinces/kunar",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hero--e46c7f09801b.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/kunduz",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "hero--ba45f0616338.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/laghman",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hero--38000b0797e2.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/logar",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hero--531e5a998630.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/nangarhar",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "hero--9f94c5a0d210.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/nimroz",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "provinces/nuristan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "gallery-1-alt1.webp": "gallery-02.webp",
+        "gallery-2-alt1.webp": "gallery-03.webp",
+        "gallery-2.webp": "gallery-04.webp",
+        "gallery-3.webp": "gallery-05.webp",
+        "gallery-4.webp": "gallery-06.webp",
+        "gallery-5.webp": "gallery-07.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "provinces/paktia",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hero--58eb35cc10de.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/paktika",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hero--374837251b7d.webp": "gallery-01.webp",
+        "paktika-001.webp": "gallery-02.webp",
+        "paktika-004.webp": "gallery-03.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/panjshir",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-2.webp": "gallery-01.webp",
+        "hero--3485609cf484.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/parwan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-2.jpeg": "gallery-01.webp",
+        "gallery-2.webp": "gallery-02.webp",
+        "gallery-3.webp": "gallery-03.webp",
+        "hero--dcf4f8b6785b.webp": "gallery-04.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/samangan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "hero--a7f809872630.webp": "gallery-01.webp",
+        "owner-20261122-roadside-spring-cave.webp": "gallery-02.webp",
+        "owner-20261122-roadside-spring-wide.webp": "gallery-03.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/sar-e-pol",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "hero--28771fd6f56b.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/takhar",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "provinces/uruzgan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "hero--9587e054517d.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/wardak",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "hero--6624339f7c4e.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "provinces/zabul",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp",
+        "hero--8c5369423102.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": [
+        "hero-alt1.webp"
+      ]
+    },
+    {
+      "folder": "tours/afghanistan-discovery-tour-fall",
+      "mapping": {
+        "gallery-1.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from gallery-1.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "tours/custom/business-investment",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumbnail.webp": "thumb.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "tours/custom/media-support",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumbnail.webp": "thumb.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "tours/custom/noshaq-expedition-support",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "tours/custom/noshaq-expeditions",
+      "mapping": {
+        "thumb.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from thumb.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "tours/custom/photography-tour",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "tours/custom/scientific-expeditions",
+      "mapping": {
+        "overview.webp": "hero.webp",
+        "hero--93aca529040d.webp": "gallery-01.webp",
+        "hero--f65c73d0bb2b.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "hero selected from overview.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "tours/custom/ski-expeditions",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumbnail.webp": "thumb.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "tours/custom/veteran-return",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "thumbnail.webp": "gallery-01.webp"
+      },
+      "generated": [],
+      "duplicates": []
+    },
+    {
+      "folder": "tours/custom-scenic",
+      "mapping": {
+        "overview.webp": "hero.webp",
+        "gallery-1.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from overview.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "tours/featured/afghanistan-discovery-tour-fall",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "01.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "tours/featured/afghanistan-discovery-tour-spring",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "01.webp": "gallery-01.webp",
+        "02.webp": "gallery-02.webp",
+        "spring-wheat-panorama-hero.webp": "gallery-03.webp",
+        "spring-wheat-panorama-thumbnail.webp": "gallery-04.webp",
+        "spring-wheat-path-hero.webp": "gallery-05.webp",
+        "spring-wheat-path-thumbnail.webp": "gallery-06.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "tours/featured/bamyan-skiing-tour",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "02.webp": "gallery-02.webp",
+        "03.webp": "gallery-03.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "tours/featured/buzkashi-expedition",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "01.webp": "gallery-02.webp",
+        "02.webp": "gallery-03.webp",
+        "03.webp": "gallery-04.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "tours/featured/central-afghanistan-discovery",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "01.webp": "gallery-02.webp",
+        "02.webp": "gallery-03.webp",
+        "hilltop-ruin-sunset-hero.webp": "gallery-04.webp",
+        "hilltop-ruin-sunset-thumb.webp": "gallery-05.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "tours/featured/kabul-surroundings",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "03.webp": "gallery-02.webp",
+        "04.webp": "gallery-03.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "tours/featured/kandahar-durrani-empire-tour",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "02.webp": "gallery-01.webp",
+        "03.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "tours/featured/panjshir-valley-emeralds-history",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "rough-emeralds-hero.webp": "gallery-02.webp",
+        "rough-emeralds-thumb.webp": "gallery-03.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "tours/featured/summer-circuit",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "01.webp": "gallery-02.webp",
+        "03.webp": "gallery-03.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "tours/featured/timurid-grandeur-herat-tour",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "01.webp": "gallery-01.webp",
+        "02.webp": "gallery-02.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "tours/featured/timurid-grandeur-herat-tour-add-minaret-e-jam",
+      "mapping": {
+        "01.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "02.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "tours/featured/treasures-of-silk-road-afghanistan",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "herat-friday-mosque-hero.webp": "gallery-02.webp",
+        "herat-friday-mosque-overview.webp": "gallery-03.webp",
+        "herat-friday-mosque-thumb.webp": "gallery-04.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "tours/featured/trek-the-wakhan-corridor",
+      "mapping": {
+        "03.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from 03.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "tours/featured/weekend-in-kabul",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "01.webp": "gallery-02.webp",
+        "03.webp": "gallery-03.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "tours/featured/winter-circuit",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "thumb.webp": "thumb.webp",
+        "overview.webp": "gallery-01.webp",
+        "01.webp": "gallery-02.webp",
+        "02.webp": "gallery-03.webp",
+        "03.webp": "gallery-04.webp"
+      },
+      "generated": [],
+      "duplicates": [
+        "thumbnail.webp"
+      ]
+    },
+    {
+      "folder": "tours/general/great-game-1842-history-route",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "tours/great-game-1842-history-route",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "overview.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "tours/scientific-expeditions",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/airlines/ariana",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "01.webp": "gallery-01.webp",
+        "logo.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/airlines/kam-air",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "01.webp": "gallery-01.webp",
+        "logo.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/airports/herat-city",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/airports/kabul-city",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/airports/kandahar-city",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/airports/mazar-e-sharif",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/budget/bus",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/budget/suv",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/budget/taxi",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/budget/van-old",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/luxury/armored-suv",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "01.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/luxury/suv",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/premium/sedan",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/premium/suv",
+      "mapping": {
+        "hero.webp": "hero.webp",
+        "01.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/premium/van",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/roads/bamyan-band-e-amir",
+      "mapping": {
+        "01.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/roads/bamyan-wardak-kabul",
+      "mapping": {
+        "03.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from 03.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/roads/jalalabad-parun",
+      "mapping": {
+        "02.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from 02.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/roads/kabul-parwan-bamyan",
+      "mapping": {
+        "01.webp": "hero.webp",
+        "02.webp": "gallery-01.webp",
+        "03.webp": "gallery-02.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/roads/off-road",
+      "mapping": {
+        "01.webp": "hero.webp",
+        "02.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/roads/salang-mazar",
+      "mapping": {
+        "01.webp": "hero.webp",
+        "02.webp": "gallery-01.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/standard/bus",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/standard/sedan",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/standard/suv",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/standard/taxi",
+      "mapping": {
+        "hero.webp": "hero.webp"
+      },
+      "generated": [
+        "thumb"
+      ],
+      "duplicates": []
+    },
+    {
+      "folder": "transport/standard/van",
+      "mapping": {
+        "01.webp": "hero.webp"
+      },
+      "generated": [
+        "hero selected from 01.webp",
+        "thumb"
+      ],
+      "duplicates": []
+    }
+  ],
+  "errors": []
+}
