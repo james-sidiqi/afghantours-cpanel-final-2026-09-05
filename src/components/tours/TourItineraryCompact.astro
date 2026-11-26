@@ -1,0 +1,461 @@
+---
+import { attractions, locations, dishes } from "../../lib/data";
+import { getFoodHref } from "../../lib/buildRelations";
+
+const { itinerary = [] } = Astro.props;
+
+const attractionByCode = new Map(
+  attractions.map((item) => [
+    String(item.attraction_code || "").trim(),
+    item,
+  ])
+);
+
+function parseCodes(value) {
+  return String(value || "")
+    .split(/[|;,]/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function unique(items) {
+  const seen = new Set();
+
+  return items.filter((item) => {
+    const key = String(item || "").trim().toLowerCase();
+
+    if (!key || seen.has(key)) return false;
+
+    seen.add(key);
+    return true;
+  });
+}
+
+function dayAttractions(day) {
+  return parseCodes(day.attraction_codes)
+    .map((code) => attractionByCode.get(code))
+    .filter(Boolean);
+}
+
+function isHub(location) {
+  return (
+    String(location?.type || "").toLowerCase().includes("hub") ||
+    String(location?.location_type || "").toLowerCase().includes("hub") ||
+    String(location?.is_hub || "").toLowerCase() === "true" ||
+    String(location?.is_hub || "") === "1"
+  );
+}
+
+function hubSlug(hub) {
+  return hub?.slug || hub?.location_slug || hub?.hub_slug || "";
+}
+
+function hubName(hub) {
+  return (
+    hub?.name ||
+    hub?.location_name ||
+    hub?.hub_name ||
+    hub?.title ||
+    ""
+  );
+}
+
+function pretty(value) {
+  return String(value || "")
+    .replace(/[_-]+/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase())
+    .trim();
+}
+
+function findHub(day) {
+  const raw = String(
+    day.overnight_hub ||
+    day.hub ||
+    day.location ||
+    ""
+  )
+    .toLowerCase()
+    .trim();
+
+  if (!raw) return null;
+
+  const clean = raw.replace(/\s+/g, "-");
+
+  const matches = locations.filter((location) => {
+    if (!isHub(location)) return false;
+
+    const text = [
+      location.name,
+      location.location_name,
+      location.hub_name,
+      location.slug,
+      location.location_slug,
+      location.hub_slug,
+    ]
+      .join(" ")
+      .toLowerCase();
+
+    return text.includes(raw) || text.includes(clean);
+  });
+
+  return (
+    matches.find(
+      (hub) =>
+        String(hubSlug(hub)).toLowerCase() === `${clean}-city`
+    ) ||
+    matches.find(
+      (hub) =>
+        String(hubSlug(hub)).toLowerCase().includes(`${clean}-city`)
+    ) ||
+    matches[0] ||
+    null
+  );
+}
+
+function displayHub(day, hub) {
+  if (hub) {
+    return (
+      hubName(hub) ||
+      pretty(String(hubSlug(hub)).replace(/-city$/, ""))
+    );
+  }
+
+  return pretty(day.overnight_hub || day.hub || "");
+}
+
+function foodForDay(day, hub) {
+  const explicit = String(
+    day.food_culture ||
+    day.food ||
+    ""
+  )
+    .toLowerCase()
+    .trim();
+
+  const hubTokens = [
+    hubName(hub),
+    hubSlug(hub),
+    String(hubSlug(hub) || "").replace("-city", ""),
+    day.location,
+    day.provinces_traversed,
+  ]
+    .filter(Boolean)
+    .map((item) => String(item).toLowerCase());
+
+  if (explicit) {
+    const exactish = dishes.find((dish) =>
+      [
+        dish.name,
+        dish.slug,
+        dish.title,
+        dish.category,
+        dish.desc_short,
+        dish.description,
+      ]
+        .join(" ")
+        .toLowerCase()
+        .includes(explicit)
+    );
+
+    if (exactish) return exactish;
+  }
+
+  return dishes.find((dish) => {
+    const text = [
+      dish.name,
+      dish.slug,
+      dish.province_code,
+      dish.destination_code,
+      dish.region_code,
+      dish.hub,
+      dish.desc_short,
+      dish.description,
+    ]
+      .join(" ")
+      .toLowerCase();
+
+    return hubTokens.some((token) => text.includes(token));
+  });
+}
+---
+
+<section class="tour-itinerary-compact">
+  <div class="tour-itinerary-wrap">
+    <header class="tour-itinerary-head">
+      <p>Day by Day</p>
+      <h2>Itinerary</h2>
+      <span>
+        Scan the route here, then use the attraction, food, hub, and
+        accommodation sections for deeper detail. This keeps each day focused
+        on what you actually do and where you sleep.
+      </span>
+    </header>
+
+    <div class="tour-days">
+      {itinerary.map((day, index) => {
+        const hub = findHub(day);
+        const overnight = displayHub(day, hub);
+        const attractionsForDay = dayAttractions(day);
+        const food = foodForDay(day, hub);
+        const foodHref = food ? getFoodHref(food) : undefined;
+
+        const chips = unique([
+          day.location && `Location: ${day.location}`,
+          overnight && `Overnight: ${overnight}`,
+          day.provinces_traversed &&
+            `Province: ${day.provinces_traversed}`,
+          day.drive_time_notes &&
+            `Drive: ${day.drive_time_notes}`,
+        ].filter(Boolean));
+
+        return (
+          <article class="tour-day">
+            <div class="tour-day-marker">
+              <span>Day</span>
+              <strong>{day.day_number || index + 1}</strong>
+            </div>
+
+            <div class="tour-day-copy">
+              <h3>
+                {day.title || day.location || `Day ${index + 1}`}
+              </h3>
+
+              {day.description && (
+                <p class="tour-day-description">
+                  {day.description}
+                </p>
+              )}
+
+              {chips.length > 0 && (
+                <div class="tour-day-meta">
+                  {chips.map((chip) => (
+                    <span>{chip}</span>
+                  ))}
+                </div>
+              )}
+
+              {attractionsForDay.length > 0 && (
+                <div class="tour-day-links">
+                  <span>Stops</span>
+
+                  <div>
+                    {attractionsForDay.map((attraction) => (
+                      attraction.slug ? (
+                        <a href={`/attractions/${attraction.slug}/`}>
+                          {attraction.name}
+                        </a>
+                      ) : (
+                        <b>{attraction.name}</b>
+                      )
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {food && (
+                <div class="tour-day-links">
+                  <span>Food & Culture</span>
+
+                  <div>
+                    {foodHref ? (
+                      <a href={foodHref}>
+                        {food.name || food.title}
+                      </a>
+                    ) : (
+                      <b>{food.name || food.title}</b>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          </article>
+        );
+      })}
+    </div>
+
+    <div class="tour-itinerary-note">
+      <strong>Accommodation:</strong>
+      Hotel choices are grouped once by overnight hub elsewhere on this page
+      rather than repeated inside every day of the itinerary.
+    </div>
+  </div>
+</section>
+
+<style>
+  .tour-itinerary-compact {
+    background: #fff;
+    color: #101820;
+    padding: clamp(4rem, 7vw, 7rem) 0;
+  }
+
+  .tour-itinerary-wrap {
+    width: min(1120px, calc(100% - 2rem));
+    margin: auto;
+  }
+
+  .tour-itinerary-head {
+    max-width: 780px;
+    margin-bottom: 2.4rem;
+  }
+
+  .tour-itinerary-head > p {
+    margin: 0;
+    color: #a4650d;
+    font-size: .7rem;
+    font-weight: 900;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+  }
+
+  .tour-itinerary-head h2 {
+    margin: .5rem 0 .9rem;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.8rem, 5vw, 4.8rem);
+    line-height: .94;
+    letter-spacing: -.055em;
+  }
+
+  .tour-itinerary-head > span {
+    display: block;
+    color: #5a6268;
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .tour-days {
+    display: grid;
+    gap: .85rem;
+  }
+
+  .tour-day {
+    display: grid;
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 1.15rem;
+    padding: clamp(1.2rem, 2.5vw, 1.7rem);
+    border: 1px solid rgba(16,24,32,.09);
+    border-radius: 1.25rem;
+    background: #fbf8f2;
+  }
+
+  .tour-day-marker {
+    width: 64px;
+    height: 64px;
+    border-radius: 999px;
+    background: #101820;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
+  .tour-day-marker span {
+    color: #e0ad4a;
+    font-size: .58rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .tour-day-marker strong {
+    margin-top: .2rem;
+    font-size: 1.2rem;
+  }
+
+  .tour-day-copy h3 {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.45rem, 2.5vw, 2rem);
+    line-height: 1.08;
+    letter-spacing: -.035em;
+  }
+
+  .tour-day-description {
+    max-width: 800px;
+    margin: .7rem 0 0;
+    color: #485056;
+    line-height: 1.68;
+  }
+
+  .tour-day-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+    margin-top: .9rem;
+  }
+
+  .tour-day-meta span {
+    border-radius: 999px;
+    background: #fff;
+    padding: .42rem .65rem;
+    color: #625d55;
+    font-size: .71rem;
+    font-weight: 800;
+  }
+
+  .tour-day-links {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: .8rem;
+    margin-top: .9rem;
+    padding-top: .85rem;
+    border-top: 1px solid rgba(16,24,32,.08);
+  }
+
+  .tour-day-links > span {
+    color: #8d5c0f;
+    font-size: .66rem;
+    font-weight: 900;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+
+  .tour-day-links > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .42rem;
+  }
+
+  .tour-day-links a,
+  .tour-day-links b {
+    border-radius: 999px;
+    background: #fff;
+    padding: .4rem .62rem;
+    color: #101820;
+    font-size: .73rem;
+    font-weight: 850;
+    text-decoration: none;
+  }
+
+  .tour-day-links a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .tour-itinerary-note {
+    margin-top: 1.2rem;
+    border-left: 3px solid #d7a542;
+    background: #f4ead8;
+    padding: 1rem 1.15rem;
+    color: #4d4a44;
+    font-size: .86rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 650px) {
+    .tour-day {
+      grid-template-columns: 1fr;
+    }
+
+    .tour-day-marker {
+      width: 56px;
+      height: 56px;
+    }
+
+    .tour-day-links {
+      grid-template-columns: 1fr;
+      gap: .45rem;
+    }
+  }
+</style>

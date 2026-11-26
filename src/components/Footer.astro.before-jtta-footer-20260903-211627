@@ -1,0 +1,349 @@
+---
+const year = new Date().getFullYear();
+
+const socialLinks = [
+  { label: 'X', href: 'https://x.com/AfghanTours', text: '𝕏' },
+  { label: 'Facebook', href: 'https://www.facebook.com/AfghanTours', text: 'f' },
+  { label: 'Instagram', href: 'https://www.instagram.com/AfghanTours', text: '◎' },
+  { label: 'Google Business', href: 'https://www.google.com/maps/search/?api=1&query=James%20Tourist%20%26%20Travel%20Agency%20Majid%20Mall%20Shahr-e-Naw%20Kabul%20Afghanistan', text: 'G' },
+];
+---
+
+<footer class="site-footer">
+  <div class="footer-bg"></div>
+
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <section class="footer-brand" aria-label="Company information">
+        <img src="/assets/images/logo/jtta-logo.webp" alt="James Tourist & Travel Agency" class="footer-logo" loading="lazy" />
+
+        <p class="footer-motto">Service <span>•</span> Integrity <span>•</span> Excellence</p>
+
+        <p class="footer-company">
+          AfghanTours.com is owned and operated by <strong>James Tourist & Travel Agency</strong>,
+          a licensed Afghanistan travel operator based in Kabul.
+        </p>
+
+        <div class="footer-social" aria-label="Social media links">
+          {socialLinks.map((link) => (
+            <a href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.label} title={link.label}>
+              <span>{link.text}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <nav class="footer-col" aria-label="Explore links">
+        <h3>Explore</h3>
+        <a href="/attractions/">Attractions</a>
+        <a href="/destinations/">Destinations</a>
+        <a href="/food-culture/">Food & Culture</a>
+        <a href="/hubs/">Hubs</a>
+        <a href="/destinations/#provinces">Provinces</a>
+        <a href="/destinations/#regions">Regions</a>
+      </nav>
+
+      <nav class="footer-col" aria-label="Planning links">
+        <h3>Plan</h3>
+        <a href="/hotels/">Hotels</a>
+        <a href="/transportation/">Transportation</a>
+        <a href="/contact/?type=custom-tour">Custom Inquiry</a>
+        <a href="/faq/">FAQs</a>
+      </nav>
+
+      <nav class="footer-col" aria-label="Tours links">
+        <h3>Tours</h3>
+        <a href="/tours/#featured">Featured Tours</a>
+        <a href="/tours/#custom">Custom Expeditions</a>
+        <a href="/tours/">All Itineraries</a>
+      </nav>
+
+      <section class="footer-col footer-contact" aria-label="Contact information">
+        <h3>Contact & Legal</h3>
+        <a href="/contact/">Contact Us</a>
+        <a href="/faq/">FAQs</a>
+        <a href="/privacy/">Privacy Policy</a>
+        <a href="/terms/">Terms & Conditions</a>
+
+        <div class="footer-contact-block">
+          <div class="footer-contact-item">
+            <span>Email</span>
+            <a class="footer-contact-link footer-contact-link--email" href="mailto:info@afghantours.com">info@afghantours.com</a>
+          </div>
+          <div class="footer-contact-item">
+            <span>Phone</span>
+            <a class="footer-contact-link" href="tel:+93780123456">+93 780 123 456</a>
+          </div>
+          <a class="footer-whatsapp" href="https://wa.me/93780123456" target="_blank" rel="noopener noreferrer" aria-label="Contact AfghanTours on WhatsApp">
+            <span class="footer-whatsapp__mark" aria-hidden="true">●</span>
+            <span>WhatsApp</span>
+            <strong>+93 780 123 456</strong>
+          </a>
+          <div class="footer-contact-item footer-contact-item--address">
+            <span>Visit us</span>
+            <a class="footer-address" href="/contact/#office-map">
+              2nd Floor, Majid Mall<br />
+              Shahr-e-Naw, District 10<br />
+              Kabul, Afghanistan
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© {year} AfghanTours.com / James Tourist & Travel Agency</span>
+      <span><a href="/about/">Licensed Afghan Tour Operator</a> • Kabul, Afghanistan</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    position: relative;
+    overflow: hidden;
+    background: #06110d;
+    color: #efe7d8;
+    border-top: 1px solid rgba(218, 169, 77, .28);
+  }
+
+  .footer-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(rgba(5, 14, 11, .88), rgba(5, 14, 11, .94)),
+      url('/assets/images/regions/afghanistan.webp') center/cover no-repeat;
+  }
+
+  .footer-inner {
+    position: relative;
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: clamp(2.8rem, 4vw, 4rem) 0 1.1rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.28fr .66fr .66fr .76fr 1.18fr;
+    gap: clamp(1.35rem, 2.5vw, 2.3rem);
+    align-items: start;
+  }
+
+  .footer-logo {
+    width: 128px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 1rem;
+  }
+
+  .footer-motto {
+    color: #d6a548;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(1.02rem, 1.45vw, 1.22rem);
+    line-height: 1.2;
+    letter-spacing: .02em;
+    margin: 0 auto 1rem;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .footer-motto span {
+    padding: 0 .32rem;
+  }
+
+  .footer-company {
+    max-width: 310px;
+    text-align: center;
+    margin: 0 auto;
+    color: rgba(239, 231, 216, .82);
+    font-size: .93rem;
+    line-height: 1.7;
+  }
+
+  .footer-company strong {
+    color: #fff;
+  }
+
+  .footer-social {
+    display: flex;
+    justify-content: center;
+    gap: .7rem;
+    margin-top: 1.05rem;
+  }
+
+  .footer-social a {
+    width: 38px;
+    height: 38px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(214, 165, 72, .45);
+    background: rgba(255, 255, 255, .06);
+    color: #d6a548;
+    text-decoration: none;
+    font-weight: 900;
+    font-size: 1rem;
+    transition: transform .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
+  }
+
+  .footer-social a:hover {
+    transform: translateY(-2px);
+    background: #d6a548;
+    color: #06110d;
+    border-color: #d6a548;
+  }
+
+  .footer-col h3 {
+    color: #d6a548;
+    text-transform: uppercase;
+    font-size: .76rem;
+    letter-spacing: .18em;
+    margin: 0 0 1.05rem;
+    font-weight: 900;
+  }
+
+  .footer-col a {
+    display: block;
+    color: rgba(239, 231, 216, .8);
+    text-decoration: none;
+    margin: .66rem 0;
+    font-size: .94rem;
+    line-height: 1.45;
+    transition: color .2s ease, transform .2s ease;
+  }
+
+  .footer-col a:hover {
+    color: #fff;
+    transform: translateX(3px);
+  }
+
+  .footer-contact-block {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, .11);
+    display: grid;
+    gap: .9rem;
+  }
+
+  .footer-contact-item {
+    display: grid;
+    gap: .22rem;
+  }
+
+  .footer-contact-item > span {
+    color: rgba(239,231,216,.52);
+    font-size: .66rem;
+    font-weight: 900;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+  }
+
+  .footer-contact-link,
+  .footer-address {
+    margin: 0 !important;
+    font-size: .94rem !important;
+    line-height: 1.5 !important;
+  }
+
+  .footer-contact-link--email {
+    color: #f0c568 !important;
+    text-decoration: underline !important;
+    text-decoration-thickness: 1px !important;
+    text-underline-offset: 4px !important;
+  }
+
+  .footer-whatsapp {
+    margin: .05rem 0 !important;
+    display: grid !important;
+    grid-template-columns: auto 1fr;
+    column-gap: .55rem;
+    row-gap: .12rem;
+    align-items: center;
+    border: 1px solid rgba(214,165,72,.45);
+    border-radius: 1rem;
+    background: rgba(214,165,72,.08);
+    padding: .8rem .9rem;
+    color: #fff !important;
+  }
+
+  .footer-whatsapp__mark {
+    grid-row: 1 / span 2;
+    color: #25d366;
+    font-size: .78rem;
+  }
+
+  .footer-whatsapp span:not(.footer-whatsapp__mark) {
+    color: #f0c568;
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+
+  .footer-whatsapp strong {
+    color: #fff;
+    font-size: .9rem;
+    line-height: 1.25;
+  }
+
+  .footer-whatsapp:hover {
+    transform: none !important;
+    border-color: #d6a548;
+    background: rgba(214,165,72,.16);
+  }
+
+  .footer-address {
+    color: rgba(239,231,216,.84) !important;
+  }
+
+  .footer-bottom {
+    margin-top: clamp(2rem, 3vw, 3rem);
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    color: rgba(239, 231, 216, .58);
+    font-size: .82rem;
+  }
+
+  @media (max-width: 1050px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-contact {
+      grid-column: 1 / -1;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .footer-logo {
+      width: 112px;
+    }
+
+    .footer-motto {
+      font-size: .98rem;
+    }
+  }
+</style>

@@ -1,0 +1,569 @@
+---
+interface Tour {
+  slug: string;
+  tour_code?: string;
+  code?: string;
+  title?: string;
+  name?: string;
+  description?: string;
+  summary?: string;
+  duration_days?: number | string;
+  style?: string;
+  travel_style?: string;
+  activity_level?: string;
+  season?: string;
+  is_featured?: string | number | boolean;
+  hero_image?: string;
+  hero_image_path?: string;
+  overview_image?: string;
+  overview_image_path?: string;
+  thumbnail_image_path?: string;
+  image?: string;
+  gallery?: string[];
+  hubs?: any[];
+  provinces?: any[];
+  attractions?: any[];
+}
+
+interface Props {
+  tours?: Tour[];
+}
+
+const { tours = [] } = Astro.props;
+
+const safeTours = tours
+  .filter((tour) => {
+    const flag = String(tour.is_featured ?? '').trim().toLowerCase();
+    const style = String(tour.travel_style || tour.style || '').toLowerCase();
+    return flag === '1' || flag === 'true' || (style !== 'custom' && String(tour.hero_image_path || tour.hero_image || '').includes('/featured/'));
+  })
+  .slice(0, 8);
+
+const titleOf = (tour: Tour) => tour.title || tour.name || 'Afghanistan Tour';
+
+const heroOf = (tour: Tour) =>
+  tour.hero_image ||
+  tour.hero_image_path ||
+  tour.image ||
+  tour.overview_image ||
+  tour.overview_image_path ||
+  tour.thumbnail_image_path ||
+  `/assets/images/featured-tours/${tour.slug}/hero.webp`;
+
+const galleryOf = (tour: Tour) => {
+  const base = `/assets/images/featured-tours/${tour.slug}`;
+  const supplied = Array.isArray(tour.gallery) ? tour.gallery : [];
+  return [...supplied, heroOf(tour), `${base}/01.webp`, `${base}/02.webp`, `${base}/03.webp`]
+    .filter(Boolean)
+    .filter((item, index, arr) => arr.indexOf(item) === index)
+    .slice(0, 4);
+};
+
+const metaOf = (tour: Tour) => [
+  tour.duration_days ? `${tour.duration_days} Days` : 'Private Journey',
+  tour.travel_style || tour.style || 'Cultural',
+  tour.activity_level || 'Route-aware',
+].filter(Boolean);
+
+const routeOf = (tour: Tour) => {
+  const hubs = Array.isArray(tour.hubs) ? tour.hubs.map((h: any) => h.name || h.title || h.slug).filter(Boolean) : [];
+  const provinces = Array.isArray(tour.provinces) ? tour.provinces.map((p: any) => p.name || p.title || p.slug).filter(Boolean) : [];
+  return (hubs.length ? hubs : provinces).slice(0, 5);
+};
+
+const fallbackAttractions = [
+  ['Band-e-Amir', '/assets/images/attractions/band-e-amir-national-park/hero.webp'],
+  ['Buddha Niches', '/assets/images/attractions/buddha-niches-of-bamyan/hero.webp'],
+  ['Herat Citadel', '/assets/images/attractions/herat-citadel-qala-ye-ikhtiyaruddin/hero.webp'],
+  ['Blue Mosque', '/assets/images/attractions/shrine-of-hazrat-ali-blue-mosque/hero.webp'],
+];
+
+const attractionCards = (tour: Tour) => {
+  const items = Array.isArray(tour.attractions) ? tour.attractions : [];
+  const normalized = items.map((a: any) => [
+    a.name || a.title || a.slug || 'Attraction',
+    a.image_path || a.hero_image || a.thumbnail_path || `/assets/images/attractions/${a.slug}/hero.webp`,
+  ]);
+  return (normalized.length ? normalized : fallbackAttractions).slice(0, 4);
+};
+---
+
+{safeTours.length > 0 && (
+  <section id="featured-section" class="featured-tours">
+    <div class="featured-bg">
+      {safeTours.map((tour, index) => (
+        <img
+          id={`featured-bg-${index}`}
+          src={heroOf(tour)}
+          alt=""
+          class={index === 0 ? 'is-active' : ''}
+        />
+      ))}
+      <div class="featured-overlay"></div>
+    </div>
+
+    <div class="featured-hero">
+      <div class="featured-copy">
+        <p class="section-kicker">Featured Tours</p>
+
+        {safeTours.map((tour, index) => (
+          <article id={`featured-main-${index}`} class={index === 0 ? 'is-active' : ''}>
+            <h2>{titleOf(tour)}</h2>
+            <div class="featured-meta">
+              {metaOf(tour).map((item) => <span>{item}</span>)}
+            </div>
+            <p>{tour.summary || tour.description || 'A carefully designed Afghanistan journey built around real access, local knowledge, and operational support.'}</p>
+            {routeOf(tour).length > 0 && <strong>{routeOf(tour).join(' → ')}</strong>}
+            <div class="featured-actions">
+              <button type="button" data-featured-preview={index}>Preview Details</button>
+              <a href={`/tours/${tour.slug}/`}>View Full Itinerary</a>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="featured-rail">
+        {safeTours.map((tour, index) => (
+          <button type="button" data-featured-index={index} class={index === 0 ? 'is-active' : ''}>
+            <img src={heroOf(tour)} alt={titleOf(tour)} loading="lazy" />
+            <span>{tour.season || 'Year-round'}</span>
+            <h3>{titleOf(tour)}</h3>
+            <p>{metaOf(tour).slice(0, 2).join(' • ')}</p>
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <section class="featured-preview-band" id="featured-preview-band">
+      <div class="preview-wrap">
+        <div class="preview-heading">
+          <p class="section-kicker">Tour Preview</p>
+          <h2 id="featured-preview-title">{titleOf(safeTours[0])}</h2>
+          <p id="featured-preview-summary">{safeTours[0].summary || safeTours[0].description}</p>
+        </div>
+
+        <div class="preview-grid">
+          <div>
+            <p class="mini-label">Gallery</p>
+            <div class="preview-gallery" id="featured-preview-gallery">
+              {galleryOf(safeTours[0]).map((image) => <img src={image} alt={titleOf(safeTours[0])} loading="lazy" />)}
+            </div>
+          </div>
+
+          <div>
+            <p class="mini-label">Route</p>
+            <p class="preview-route" id="featured-preview-route">{routeOf(safeTours[0]).join(' → ')}</p>
+
+            <p class="mini-label attractions-label">Top Attractions</p>
+            <div class="preview-attractions" id="featured-preview-attractions">
+              {attractionCards(safeTours[0]).map(([name, image]) => (
+                <div>
+                  <img src={image} alt={name} loading="lazy" />
+                  <span>{name}</span>
+                </div>
+              ))}
+            </div>
+
+            <div class="preview-actions">
+              <a id="featured-preview-itinerary" href={`/tours/${safeTours[0].slug}/`}>Full Itinerary</a>
+              <a id="featured-preview-inquire" href="/contact/">Inquire</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </section>
+)}
+
+<script define:vars={{ safeTours, fallbackAttractions }}>
+  const titleOfClient = (tour) => tour.title || tour.name || 'Afghanistan Tour';
+  const heroOfClient = (tour) => tour.hero_image || tour.hero_image_path || tour.image || tour.overview_image || tour.overview_image_path || tour.thumbnail_image_path || `/assets/images/featured-tours/${tour.slug}/hero.webp`;
+  const galleryOfClient = (tour) => {
+    const base = `/assets/images/featured-tours/${tour.slug}`;
+    const supplied = Array.isArray(tour.gallery) ? tour.gallery : [];
+    return [...supplied, heroOfClient(tour), `${base}/01.webp`, `${base}/02.webp`, `${base}/03.webp`]
+      .filter(Boolean)
+      .filter((item, index, arr) => arr.indexOf(item) === index)
+      .slice(0, 4);
+  };
+  const routeOfClient = (tour) => {
+    const hubs = Array.isArray(tour.hubs) ? tour.hubs.map((h) => h.name || h.title || h.slug).filter(Boolean) : [];
+    const provinces = Array.isArray(tour.provinces) ? tour.provinces.map((p) => p.name || p.title || p.slug).filter(Boolean) : [];
+    return (hubs.length ? hubs : provinces).slice(0, 5);
+  };
+  const attractionCardsClient = (tour) => {
+    const items = Array.isArray(tour.attractions) ? tour.attractions : [];
+    const normalized = items.map((a) => [
+      a.name || a.title || a.slug || 'Attraction',
+      a.image_path || a.hero_image || a.thumbnail_path || `/assets/images/attractions/${a.slug}/hero.webp`,
+    ]);
+    return (normalized.length ? normalized : fallbackAttractions).slice(0, 4);
+  };
+
+  let activeIndex = 0;
+
+  function updatePreview(tour) {
+    const title = document.getElementById('featured-preview-title');
+    const summary = document.getElementById('featured-preview-summary');
+    const gallery = document.getElementById('featured-preview-gallery');
+    const route = document.getElementById('featured-preview-route');
+    const attractions = document.getElementById('featured-preview-attractions');
+    const itinerary = document.getElementById('featured-preview-itinerary');
+    const inquire = document.getElementById('featured-preview-inquire');
+
+    if (!tour || !title || !gallery || !route || !attractions || !itinerary || !inquire) return;
+
+    title.textContent = titleOfClient(tour);
+    if (summary) summary.textContent = tour.summary || tour.description || '';
+
+    gallery.innerHTML = galleryOfClient(tour)
+      .map((image) => `<img src="${image}" alt="${titleOfClient(tour)}" loading="lazy" />`)
+      .join('');
+
+    route.textContent = routeOfClient(tour).join(' → ') || 'Route confirmed during planning';
+
+    attractions.innerHTML = attractionCardsClient(tour)
+      .map(([name, image]) => `
+        <div>
+          <img src="${image}" alt="${name}" loading="lazy" />
+          <span>${name}</span>
+        </div>
+      `)
+      .join('');
+
+    itinerary.href = `/tours/${tour.slug}/`;
+    inquire.href = "/contact/";
+  }
+
+  function setActive(index) {
+    activeIndex = index;
+    const tour = safeTours[index];
+
+    document.querySelectorAll('[id^="featured-bg-"]').forEach((bg, i) => bg.classList.toggle('is-active', i === index));
+    document.querySelectorAll('[id^="featured-main-"]').forEach((panel, i) => panel.classList.toggle('is-active', i === index));
+    document.querySelectorAll('[data-featured-index]').forEach((button, i) => button.classList.toggle('is-active', i === index));
+
+    updatePreview(tour);
+  }
+
+  document.querySelectorAll('[data-featured-index]').forEach((button) => {
+    button.addEventListener('click', () => setActive(Number(button.dataset.featuredIndex)));
+  });
+
+  document.querySelectorAll('[data-featured-preview]').forEach((button) => {
+    button.addEventListener('click', () => {
+      setActive(Number(button.dataset.featuredPreview));
+      document.getElementById('featured-preview-band')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+</script>
+
+<style>
+  .featured-tours {
+    position: relative;
+    background: #050807;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  .featured-bg {
+    position: absolute;
+    inset: 0;
+  }
+
+  .featured-bg img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 760px;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity .7s ease;
+  }
+
+  .featured-bg img.is-active {
+    opacity: 1;
+  }
+
+  .featured-overlay {
+    position: absolute;
+    inset: 0;
+    height: 760px;
+    background:
+      linear-gradient(90deg, rgba(0,0,0,.76), rgba(0,0,0,.38), rgba(0,0,0,.22)),
+      linear-gradient(0deg, rgba(0,0,0,.58), transparent 42%);
+  }
+
+  .featured-hero {
+    position: relative;
+    width: min(1280px, calc(100% - 2rem));
+    min-height: 680px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding: 6rem 0 0;
+  }
+
+  .section-kicker,
+  .mini-label {
+    margin: 0;
+    color: #d6a23a;
+    font-size: .72rem;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+
+  .featured-copy {
+    display: flex;
+    align-items: center;
+    max-width: 820px;
+  }
+
+  .featured-copy article {
+    display: none;
+  }
+
+  .featured-copy article.is-active {
+    display: block;
+  }
+
+  .featured-copy h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(3rem, 5vw, 5.9rem);
+    line-height: .92;
+    letter-spacing: -.065em;
+    margin: .8rem 0 1.1rem;
+  }
+
+  .featured-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .85rem;
+    margin-bottom: 1.1rem;
+  }
+
+  .featured-meta span {
+    font-size: .75rem;
+    font-weight: 900;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.82);
+  }
+
+  .featured-copy p:not(.section-kicker) {
+    max-width: 700px;
+    color: rgba(255,255,255,.86);
+    line-height: 1.7;
+    font-size: 1.05rem;
+  }
+
+  .featured-copy strong {
+    display: block;
+    margin-top: 1rem;
+    color: #d6a23a;
+  }
+
+  .featured-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.8rem;
+  }
+
+  .featured-actions button,
+  .featured-actions a,
+  .preview-actions a {
+    border: 0;
+    border-radius: 999px;
+    background: #d6a23a;
+    color: #111;
+    padding: .95rem 1.25rem;
+    text-decoration: none;
+    font-size: .78rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    cursor: pointer;
+  }
+
+  .featured-actions a,
+  .preview-actions a + a {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.32);
+    color: #fff;
+  }
+
+  .featured-rail {
+    display: flex;
+    gap: 1rem;
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 1rem 0 1.4rem;
+    scrollbar-width: thin;
+  }
+
+  .featured-rail button {
+    flex: 0 0 190px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 1rem;
+    overflow: hidden;
+    background: #101010;
+    color: #fff;
+    text-align: left;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .featured-rail button.is-active {
+    border-color: #d6a23a;
+  }
+
+  .featured-rail img {
+    width: 100%;
+    height: 96px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .featured-rail span {
+    display: block;
+    color: #d6a23a;
+    font-size: .64rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    font-weight: 900;
+    padding: .8rem .85rem 0;
+  }
+
+  .featured-rail h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.15rem;
+    line-height: 1;
+    margin: .35rem .85rem .4rem;
+  }
+
+  .featured-rail p {
+    color: rgba(255,255,255,.65);
+    font-size: .78rem;
+    padding: 0 .85rem .85rem;
+    margin: 0;
+  }
+
+  .featured-preview-band {
+    position: relative;
+    background: #fbf6ed;
+    color: #101820;
+    padding: clamp(3rem, 6vw, 5rem) 0;
+  }
+
+  .preview-wrap {
+    width: min(1280px, calc(100% - 2rem));
+    margin: 0 auto;
+  }
+
+  .preview-heading {
+    max-width: 860px;
+    margin-bottom: 2rem;
+  }
+
+  .preview-heading h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.6rem, 4vw, 4.5rem);
+    line-height: .95;
+    letter-spacing: -.06em;
+    margin: .5rem 0 1rem;
+  }
+
+  .preview-heading p:not(.section-kicker) {
+    color: #4b5563;
+    line-height: 1.75;
+  }
+
+  .preview-grid {
+    display: grid;
+    grid-template-columns: 1fr .75fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  .preview-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: .8rem;
+  }
+
+  .preview-gallery img,
+  .preview-attractions img {
+    width: 100%;
+    height: 150px;
+    border-radius: 1rem;
+    object-fit: cover;
+    display: block;
+  }
+
+  .preview-route {
+    background: #fff;
+    border: 1px solid rgba(16,24,32,.1);
+    border-radius: 1rem;
+    padding: 1rem;
+    font-weight: 800;
+  }
+
+  .attractions-label {
+    display: block;
+    margin-top: 1.4rem;
+  }
+
+  .preview-attractions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .8rem;
+    margin-top: .8rem;
+  }
+
+  .preview-attractions div {
+    background: #fff;
+    border: 1px solid rgba(16,24,32,.1);
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  .preview-attractions img {
+    height: 105px;
+    border-radius: 0;
+  }
+
+  .preview-attractions span {
+    display: block;
+    padding: .75rem;
+    font-weight: 900;
+    line-height: 1.25;
+  }
+
+  .preview-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-top: 1.3rem;
+  }
+
+  .preview-actions a + a {
+    background: #101820;
+    border-color: #101820;
+  }
+
+  @media(max-width: 900px) {
+    .featured-hero {
+      min-height: 620px;
+    }
+
+    .preview-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .preview-gallery {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

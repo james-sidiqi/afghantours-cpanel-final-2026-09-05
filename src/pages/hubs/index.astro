@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HubsSection from '../../components/HubsSection.astro';
+import { buildHubIndexCatalog } from '../../lib/hubCatalog';
+
+const hubs = buildHubIndexCatalog();
+---
+
+<BaseLayout
+  title="Travel Hubs | AfghanTours"
+  description="Operational hubs for Afghanistan travel, routing, attractions, hotels, food, and transportation."
+  image="/assets/images/heroes/hubs/hero.webp"
+>
+  <HubsSection hubs={hubs} />
+</BaseLayout>

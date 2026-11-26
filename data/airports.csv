@@ -1,0 +1,22 @@
+name,city,latitude,longitude,is_active,image_path
+Kabul International Airport,Kabul,34.5658,69.2125,true,/assets/images/transport/airports/kabul-city/hero.webp
+Herat International Airport,Herat,34.21,62.2283,true,/assets/images/transport/airports/herat-city/hero.webp
+Ahmad Shah Baba International Airport,Kandahar,31.5058,65.8478,true,/assets/images/transport/airports/kandahar-city/hero.webp
+Maulana Jalaluddin Balkhi International Airport,Mazar-e-Sharif,36.7069,67.2092,true,/assets/images/transport/airports/mazar-e-sharif/hero.webp
+Jalalabad Airport,Jalalabad,34.3994,70.4986,false,
+Kunduz Airport,Kunduz,36.6653,68.9108,false,
+Faizabad Airport,Faizabad,37.1211,70.5186,false,
+Tarin Kowt Airport,Tarin Kot,32.6053,65.8644,false,
+Bast Airport,Lashkar Gah,31.5589,64.3642,false,
+Chaghcharan Airport,Chaghcharan,34.5267,65.2717,false,
+Zaranj Airport,Zaranj,31.0003,61.8658,false,
+Maymana Airport,Maymana,35.9308,64.7611,false,
+Qala-i-Naw Airport,Qala-i-Naw,34.9842,63.1172,false,
+Bamyan Airport,Bamyan,34.8161,67.8183,false,
+Ghazni Airport,Ghazni,33.5286,68.4183,false,
+Khost Airport,Khost,33.3844,69.9519,false,
+Farah Airport,Farah,32.3653,62.1644,false,
+Sharana Airstrip,Sharana,33.1275,68.8369,false,
+Gardez Airport,Gardez,33.6231,69.2433,false,
+Qalat Airport,Qalat,32.1158,66.9014,false,
+Sheberghan Airfield,Sheberghan,36.6661,65.7336,false,

@@ -1,0 +1,266 @@
+---
+const {
+  eyebrow = 'AfghanTours',
+  title = 'Afghanistan, planned with care',
+  text = '',
+  image = '/assets/images/heroes/default-hero.webp',
+  video = '',
+  poster = '',
+  primaryHref = '',
+  primaryLabel = '',
+  secondaryHref = '',
+  secondaryLabel = '',
+  height = 'min-h-[76vh]'
+} = Astro.props;
+
+const heightMatch = String(height).match(/(\d+)vh/);
+const heroVh = heightMatch ? Number(heightMatch[1]) : 62;
+const heroMin = Math.max(430, Math.min(650, Math.round(heroVh * 8)));
+---
+
+<section
+  class="page-hero"
+  style={`--page-hero-min:${heroMin}px`}
+>
+  {video ? (
+    <video
+      class="page-hero__media"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster={poster || image}
+      aria-label={title}
+    >
+      <source src={video} />
+    </video>
+  ) : (
+    <img
+      src={image}
+      alt={title}
+      class="page-hero__media"
+    />
+  )}
+
+  <div class="page-hero__overlay"></div>
+
+  <div class="page-hero__inner">
+    <p class="page-hero__eyebrow">
+      {eyebrow}
+    </p>
+
+    <h1 class="page-hero__title">
+      {title}
+    </h1>
+
+    {text && (
+      <p class="page-hero__text">
+        {text}
+      </p>
+    )}
+
+    {(primaryHref || secondaryHref) && (
+      <div class="page-hero__actions">
+        {primaryHref && (
+          <a
+            href={primaryHref}
+            class="page-hero__button page-hero__button--primary"
+          >
+            {primaryLabel}
+          </a>
+        )}
+
+        {secondaryHref && (
+          <a
+            href={secondaryHref}
+            class="page-hero__button page-hero__button--secondary"
+          >
+            {secondaryLabel}
+          </a>
+        )}
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    position: relative;
+    width: 100%;
+    min-height: var(--page-hero-min, 500px);
+    height: clamp(
+      var(--page-hero-min, 500px),
+      48vw,
+      620px
+    );
+    max-height: 620px;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    isolation: isolate;
+    background: #07100d;
+    color: #fff;
+  }
+
+  .page-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center 48%;
+  }
+
+  .page-hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(
+        90deg,
+        rgba(5, 13, 10, .86) 0%,
+        rgba(5, 13, 10, .65) 35%,
+        rgba(5, 13, 10, .27) 68%,
+        rgba(5, 13, 10, .08) 100%
+      ),
+      linear-gradient(
+        0deg,
+        rgba(5, 13, 10, .58) 0%,
+        rgba(5, 13, 10, .14) 54%,
+        transparent 100%
+      );
+  }
+
+  .page-hero__inner {
+    position: relative;
+    z-index: 2;
+    width: min(1180px, calc(100% - 2rem));
+    margin: 0 auto;
+    padding: clamp(3.75rem, 6vw, 5.75rem) 0;
+  }
+
+  .page-hero__eyebrow {
+    margin: 0 0 .85rem;
+    color: #dfa327;
+    font-family:
+      Arial,
+      Helvetica,
+      sans-serif;
+    font-size: .73rem;
+    line-height: 1.2;
+    font-weight: 900;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+  }
+
+  .page-hero__title {
+    max-width: 980px;
+    margin: 0;
+    color: #f7f2e8;
+    font-family:
+      Georgia,
+      "Times New Roman",
+      serif;
+    font-size: clamp(3.6rem, 6.7vw, 6.7rem);
+    font-weight: 700;
+    line-height: .91;
+    letter-spacing: -.055em;
+    text-wrap: balance;
+    text-shadow: 0 3px 20px rgba(0, 0, 0, .25);
+  }
+
+  .page-hero__text {
+    max-width: 760px;
+    margin: 1.25rem 0 0;
+    color: rgba(255, 255, 255, .93);
+    font-family:
+      Arial,
+      Helvetica,
+      sans-serif;
+    font-size: clamp(1rem, 1.25vw, 1.12rem);
+    line-height: 1.7;
+    font-weight: 500;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, .18);
+  }
+
+  .page-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .8rem;
+    margin-top: 1.7rem;
+  }
+
+  .page-hero__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    border-radius: 999px;
+    padding: .8rem 1.25rem;
+    font-family:
+      Arial,
+      Helvetica,
+      sans-serif;
+    font-size: .76rem;
+    font-weight: 900;
+    letter-spacing: .06em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition:
+      transform .18s ease,
+      background .18s ease,
+      color .18s ease;
+  }
+
+  .page-hero__button:hover {
+    transform: translateY(-2px);
+  }
+
+  .page-hero__button--primary {
+    background: #dfa327;
+    color: #07100d;
+  }
+
+  .page-hero__button--primary:hover {
+    background: #f7f2e8;
+  }
+
+  .page-hero__button--secondary {
+    border: 1px solid rgba(255,255,255,.5);
+    background: rgba(5,13,10,.22);
+    color: #fff;
+  }
+
+  .page-hero__button--secondary:hover {
+    background: #fff;
+    color: #07100d;
+  }
+
+  @media (max-width: 720px) {
+    .page-hero {
+      min-height: 500px;
+      height: 500px;
+      max-height: none;
+    }
+
+    .page-hero__media {
+      object-position: 58% center;
+    }
+
+    .page-hero__inner {
+      padding: 3.5rem 0;
+    }
+
+    .page-hero__title {
+      font-size: clamp(3rem, 14vw, 4.8rem);
+    }
+
+    .page-hero__text {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+  }
+</style>

@@ -1,0 +1,48 @@
+---
+const { tour } = Astro.props;
+const contentHtml = tour?.content_html || '';
+const fallbackContent = tour?.description || tour?.overview || tour?.desc_long || '';
+
+const isOnRequest = (value) =>
+  String(value || '').trim().toLowerCase() === 'inquire';
+
+const durationValue = tour?.duration_days || tour?.duration;
+const priceValue = tour?.price_from || tour?.price;
+
+const durationText = isOnRequest(durationValue)
+  ? 'Custom duration'
+  : durationValue
+    ? `${durationValue} days`
+    : 'Custom duration';
+
+const priceOnRequest = isOnRequest(priceValue);
+
+const facts = [
+  ['Duration', durationText],
+  ['Style', tour?.travel_style || 'Guided tour'],
+  ['Activity', tour?.activity_level || 'Moderate'],
+  ['Season', tour?.season || 'Ask for current window'],
+  ['Group size', tour?.group_size_display || [tour?.min_group_size, tour?.max_group_size].filter(Boolean).join('–') || 'Private / group'],
+  [priceOnRequest ? 'Pricing' : 'From', priceOnRequest ? 'Request proposal' : priceValue ? `$${priceValue}` : 'Custom quote'],
+];
+---
+<section class="bg-[#fbf8f2] py-16 text-stone-950">
+  <div class="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[1fr_0.9fr] lg:items-start">
+    <div>
+      <p class="text-xs font-black uppercase tracking-[0.28em] text-amber-700">Overview</p>
+      {contentHtml ? <div class="editorial-prose mt-5" set:html={contentHtml} /> : fallbackContent ? <p class="mt-5 text-lg leading-8 text-stone-700">{fallbackContent}</p> : <p class="mt-5 text-lg leading-8 text-stone-700">Detailed overview content is being finalized.</p>}
+    </div>
+    <aside class="rounded-[2rem] bg-white p-6 shadow-sm ring-1 ring-stone-200 lg:sticky lg:top-28">
+      <h3 class="editorial-title text-3xl font-black">Trip snapshot</h3>
+      <div class="mt-6 grid gap-3 sm:grid-cols-2">
+        {facts.map(([label, value]) => (
+          <div class="rounded-2xl bg-stone-100 p-4">
+            <p class="text-xs font-black uppercase tracking-[0.18em] text-stone-500">{label}</p>
+            <p class="mt-1 font-black text-stone-950">{value}</p>
+          </div>
+        ))}
+      </div>
+      <a href="/contact/" class="mt-6 inline-flex w-full justify-center rounded-full bg-stone-950 px-6 py-4 text-sm font-black text-white hover:bg-amber-700">Ask about this tour</a>
+    </aside>
+  </div>
+</section>

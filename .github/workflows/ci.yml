@@ -1,0 +1,32 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - name: Install PHP CLI
+        run: sudo apt-get update && sudo apt-get install -y php-cli
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Complete site, booking, mail, browser and release QA
+        run: bash scripts/release/qa.sh
+      - name: Browser failure traces
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-failure-traces
+          path: test-results/
+          if-no-files-found: ignore

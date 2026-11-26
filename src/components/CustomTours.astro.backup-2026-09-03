@@ -1,0 +1,433 @@
+---
+const cards = [
+  {
+    title: 'Photographers & Filmmakers',
+    label: 'Visual Storytelling',
+    image: '/assets/images/custom-tours/photography-tour/hero.webp',
+    text: 'Field support, location scouting, permits, fixers, translators, and route planning for visual storytellers.',
+    details: 'Built for photographers, documentary crews, artists, and filmmakers who need practical movement support, local introductions, translation, and realistic planning around sensitive locations and changing access conditions.',
+    contactType: 'photography-filmmaking'
+  },
+  {
+    title: 'Veterans & Return Visitors',
+    label: 'Return Journeys',
+    image: '/assets/images/custom-tours/veteran-return/hero.webp',
+    text: 'Private, respectful journeys for people with a personal connection to Afghanistan.',
+    details: 'Designed for former service members, diplomats, contractors, aid workers, Peace Corps families, and others returning with personal memories or unfinished connections to Afghanistan.',
+    contactType: 'veterans-return-visitors'
+  },
+  {
+    title: 'Mountaineers & Expeditions',
+    label: 'Expedition Logistics',
+    image: '/assets/images/custom-tours/noshaq-expeditions/hero.webp',
+    text: 'Ground logistics, base camp support, remote routing, and mountain travel planning.',
+    details: 'Custom support for serious mountain travelers, trekking teams, ski groups, and expedition clients who need route planning, drivers, permits, provisions, camp support, and realistic field logistics.',
+    contactType: 'mountaineers-expeditions'
+  },
+  {
+    title: 'Researchers & Institutions',
+    label: 'Field Research',
+    image: '/assets/images/custom-tours/scientific-expeditions/hero.webp',
+    text: 'Custom planning for academic, institutional, cultural, and field research visits.',
+    details: 'Support for universities, researchers, NGOs, institutions, and technical visitors requiring structured schedules, introductions, translation, ground movement, and controlled field access.',
+    contactType: 'researchers-institutions'
+  },
+  {
+    title: 'Afghan Diaspora',
+    label: 'Heritage Travel',
+    image: '/assets/images/custom-tours/custom-expedition/hero.webp',
+    text: 'Family heritage journeys, regional visits, and meaningful reconnection travel.',
+    details: 'Private journeys for Afghan families and diaspora travelers seeking safe, organized, emotionally meaningful travel to family areas, historic places, and cultural landmarks.',
+    contactType: 'afghan-diaspora'
+  },
+  {
+    title: 'Journalists & Media',
+    label: 'Media Logistics',
+    image: '/assets/images/custom-tours/media-support/hero.webp',
+    text: 'Fixers, translators, transport, route planning, and realistic field coordination.',
+    details: 'Support for journalists, media visitors, podcasters, production teams, and documentary projects that require planning discipline, local knowledge, translation, and controlled movement.',
+    contactType: 'journalists-media'
+  }
+];
+---
+
+<section id="custom-tours" class="custom-tours-section" data-custom-tours>
+  <div class="custom-wrap">
+    <div class="custom-copy">
+      <p class="section-kicker">Custom Tours</p>
+      <h2>Build a journey around your goals.</h2>
+      <p>
+        Whether you are a photographer, veteran, filmmaker, researcher, mountaineer,
+        or family exploring heritage, we design itineraries around your objectives,
+        timing, access needs, and comfort level.
+      </p>
+      <a href="/contact/?type=custom-tour" class="custom-main-button">Contact our team</a>
+    </div>
+
+    <div class="custom-carousel-wrap">
+      <button type="button" class="custom-arrow custom-arrow--left" data-custom-prev aria-label="Previous custom tour">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6" /></svg>
+      </button>
+      <div class="custom-carousel" data-custom-carousel>
+        {cards.map((card, index) => (
+          <button type="button" class="custom-card" data-custom-open={index}>
+            <img src={card.image} alt={card.title} loading="lazy" />
+            <div>
+              <p>{card.label}</p>
+              <h3>{card.title}</h3>
+              <span>{card.text}</span>
+              <strong>Preview details →</strong>
+            </div>
+          </button>
+        ))}
+      </div>
+      <button type="button" class="custom-arrow custom-arrow--right" data-custom-next aria-label="Next custom tour">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="custom-modal" data-custom-modal hidden>
+    <div class="custom-modal__overlay" data-custom-close></div>
+    <article class="custom-modal__dialog" role="dialog" aria-modal="true" aria-label="Custom tour preview">
+      <button type="button" class="custom-modal__close" data-custom-close aria-label="Close custom tour preview">×</button>
+      <div class="custom-modal__image">
+        <img data-custom-modal-image src="" alt="" />
+      </div>
+      <div class="custom-modal__content">
+        <p class="section-kicker" data-custom-modal-label></p>
+        <h3 data-custom-modal-title></h3>
+        <p data-custom-modal-details></p>
+        <div class="custom-modal__notes">
+          <span>Private planning</span>
+          <span>Route-aware access</span>
+          <span>Local coordination</span>
+        </div>
+        <a data-custom-modal-contact href="/contact/?type=custom-tour">Contact us for this custom tour</a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<script define:vars={{ cards }}>
+  const carousel = document.querySelector('[data-custom-carousel]');
+  const modal = document.querySelector('[data-custom-modal]');
+  const modalImage = document.querySelector('[data-custom-modal-image]');
+  const modalLabel = document.querySelector('[data-custom-modal-label]');
+  const modalTitle = document.querySelector('[data-custom-modal-title]');
+  const modalDetails = document.querySelector('[data-custom-modal-details]');
+  const modalContact = document.querySelector('[data-custom-modal-contact]');
+
+  const scrollByCards = (direction) => {
+    if (!carousel) return;
+    carousel.scrollBy({ left: direction * Math.min(720, carousel.clientWidth * 0.85), behavior: 'smooth' });
+  };
+
+  document.querySelector('[data-custom-prev]')?.addEventListener('click', () => scrollByCards(-1));
+  document.querySelector('[data-custom-next]')?.addEventListener('click', () => scrollByCards(1));
+
+  function openCustom(index) {
+    const card = cards[index];
+    if (!card || !modal) return;
+    modalImage.src = card.image;
+    modalImage.alt = card.title;
+    modalLabel.textContent = card.label;
+    modalTitle.textContent = card.title;
+    modalDetails.textContent = card.details || card.text;
+    modalContact.href = `/contact/?type=custom-tour&interest=${encodeURIComponent(card.contactType || card.title)}`;
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+
+  document.querySelectorAll('[data-custom-open]').forEach((button) => {
+    button.addEventListener('click', () => openCustom(Number(button.dataset.customOpen)));
+  });
+
+  document.querySelectorAll('[data-custom-close]').forEach((button) => {
+    button.addEventListener('click', () => {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+    });
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && modal && !modal.hidden) {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+    }
+  });
+</script>
+
+<style>
+  .custom-tours-section {
+    background: #efe8dc;
+    color: #101820;
+    padding: clamp(4rem, 7vw, 7rem) 0;
+  }
+
+  .custom-wrap {
+    width: min(1220px, calc(100% - 2rem));
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(280px, .42fr) minmax(0, .58fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .section-kicker {
+    color: #b77926;
+    margin: 0;
+    font-size: .72rem;
+    font-weight: 950;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+  }
+
+  .custom-copy h2 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.65rem, 4.6vw, 4.85rem);
+    line-height: .98;
+    letter-spacing: -.045em;
+    margin: .7rem 0 1.2rem;
+  }
+
+  .custom-copy p:not(.section-kicker) {
+    color: #374151;
+    line-height: 1.8;
+    max-width: 48ch;
+  }
+
+  .custom-main-button {
+    display: inline-flex;
+    margin-top: 1.5rem;
+    border-radius: 999px;
+    background: #b77926;
+    color: white;
+    padding: .95rem 1.3rem;
+    text-decoration: none;
+    font-size: .8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+
+  .custom-carousel-wrap {
+    position: relative;
+    min-width: 0;
+  }
+
+  .custom-carousel {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: .4rem .15rem 1.25rem;
+    scrollbar-width: thin;
+  }
+
+  .custom-card {
+    flex: 0 0 clamp(280px, 31vw, 360px);
+    text-align: left;
+    overflow: hidden;
+    border: 1px solid rgba(16,24,32,.1);
+    border-radius: 1.5rem;
+    background: white;
+    color: #101820;
+    box-shadow: 0 16px 42px rgba(20,14,8,.1);
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+
+  .custom-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 55px rgba(20,14,8,.16);
+  }
+
+  .custom-card img {
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    display: block;
+    background: #ddd;
+  }
+
+  .custom-card div {
+    padding: 1.25rem;
+  }
+
+  .custom-card p {
+    color: #b77926;
+    margin: 0 0 .7rem;
+    font-size: .66rem;
+    font-weight: 950;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+  }
+
+  .custom-card h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.8rem;
+    line-height: .98;
+    letter-spacing: -.045em;
+    margin: 0 0 .75rem;
+  }
+
+  .custom-card span {
+    display: block;
+    color: #4b5563;
+    font-size: .95rem;
+    line-height: 1.6;
+  }
+
+  .custom-card strong {
+    display: inline-flex;
+    margin-top: 1.1rem;
+    color: #b77926;
+    font-size: .86rem;
+    font-weight: 950;
+  }
+
+  .custom-arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 2;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border: 0;
+    border-radius: 999px;
+    background: #101820;
+    color: #fff;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    cursor: pointer;
+    box-shadow: 0 12px 30px rgba(0,0,0,.22);
+  }
+
+  .custom-arrow svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .custom-arrow--left { left: -.8rem; }
+  .custom-arrow--right { right: -.8rem; }
+
+  .custom-modal[hidden] { display: none; }
+  .custom-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+  }
+
+  .custom-modal__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10,12,14,.72);
+    backdrop-filter: blur(8px);
+  }
+
+  .custom-modal__dialog {
+    position: relative;
+    width: min(980px, 100%);
+    max-height: min(720px, 92vh);
+    overflow: auto;
+    display: grid;
+    grid-template-columns: 1.05fr .95fr;
+    border-radius: 2rem;
+    background: #fffaf2;
+    box-shadow: 0 30px 90px rgba(0,0,0,.42);
+  }
+
+  .custom-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 3;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 999px;
+    background: #101820;
+    color: #fff;
+    font-size: 1.6rem;
+    cursor: pointer;
+  }
+
+  .custom-modal__image img {
+    width: 100%;
+    height: 100%;
+    min-height: 520px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .custom-modal__content {
+    padding: clamp(2rem, 4vw, 3.5rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .custom-modal__content h3 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.2rem, 4vw, 4.5rem);
+    line-height: .92;
+    letter-spacing: -.06em;
+    margin: .75rem 0 1rem;
+  }
+
+  .custom-modal__content p:not(.section-kicker) {
+    color: #3f4a57;
+    line-height: 1.75;
+  }
+
+  .custom-modal__notes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+    margin: 1rem 0 1.5rem;
+  }
+
+  .custom-modal__notes span {
+    border-radius: 999px;
+    background: #f2eadc;
+    color: #25303b;
+    padding: .5rem .75rem;
+    font-size: .75rem;
+    font-weight: 900;
+  }
+
+  .custom-modal__content a {
+    align-self: flex-start;
+    border-radius: 999px;
+    background: #d6a23a;
+    color: #101820;
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    font-size: .8rem;
+    font-weight: 950;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+
+  @media(max-width: 980px) {
+    .custom-wrap,
+    .custom-modal__dialog {
+      grid-template-columns: 1fr;
+    }
+    .custom-modal__image img {
+      min-height: 300px;
+      max-height: 360px;
+    }
+    .custom-arrow { display: none; }
+  }
+</style>

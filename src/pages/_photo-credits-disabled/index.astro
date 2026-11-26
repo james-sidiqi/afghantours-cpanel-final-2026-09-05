@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { PHOTO_CREDITS } from '../../data/photoCredits';
+---
+<BaseLayout title="Photo credits | AfghanTours" description="Credits and licences for photographs used on the AfghanTours website.">
+  <section class="credits-page">
+    <div class="credits-wrap">
+      <p class="credits-kicker">Photography</p>
+      <h1>Photo credits</h1>
+      <p class="credits-lead">Most photographs on this site are our own. Where we use a photograph by someone else, we credit them here and next to the image, under the licence they chose.</p>
+      <ul class="credits-list">
+        {PHOTO_CREDITS.filter((c) => !c.license.startsWith('©')).map((c) => (
+          <li>
+            <img src={c.paths[0]} alt={c.alt} loading="lazy" width="120" height="80" />
+            <div>
+              <strong>{c.note || c.alt}</strong>
+              <span>Photo: {c.source ? <a href={c.source} target="_blank" rel="noopener">{c.author}</a> : c.author}{c.license && <>, {c.licenseUrl ? <a href={c.licenseUrl} target="_blank" rel="noopener license">{c.license}</a> : c.license}</>}. Resized and converted to WebP{c.license.includes('SA') ? '; the adapted image is shared under the same licence' : ''}.</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+<style>
+  .credits-page { background: #fbf6ed; color: #101820; padding: clamp(2.75rem, 5vw, 4.5rem) 0; }
+  .credits-wrap { width: min(980px, calc(100% - 2.5rem)); margin-inline: auto; }
+  .credits-kicker { font-size: .72rem; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: #9a6517; margin: 0 0 .6rem; }
+  .credits-page h1 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.4rem, 4.5vw, 3.6rem); margin: 0; color: #101820; }
+  .credits-lead { max-width: 62ch; color: #374151; line-height: 1.6; }
+  .credits-list { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: .9rem; }
+  .credits-list li { display: grid; grid-template-columns: 120px 1fr; gap: 1rem; align-items: center; background: #fff; border-radius: 14px; padding: .7rem; border: 1px solid rgba(16,24,32,.08); }
+  .credits-list img { width: 120px; height: 80px; object-fit: cover; border-radius: 10px; }
+  .credits-list strong { display: block; font-size: .95rem; }
+  .credits-list span { font-size: .85rem; color: #4b5563; }
+  .credits-list a { color: #101820; }
+</style>

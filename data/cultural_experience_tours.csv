@@ -1,0 +1,13 @@
+tour_code,name,slug,duration_days,experience_type,primary_hub,overview,is_active,featured
+CET-001,Afghan Hospitality Experience,afghan-hospitality-experience,3,Cultural,KBLC,"Experience Afghan hospitality through family-style meals, tea houses, local markets, traditional clothing, and cultural interactions in Kabul.",1,1
+CET-002,Afghan Food and Culture Journey,afghan-food-and-culture-journey,7,Cultural,KBLC,"Explore Afghanistan through its cuisine, markets, regional specialties, tea culture, traditional dining, and local hospitality.",1,1
+CET-003,Kabul Cultural Discovery,kabul-cultural-discovery,3,Cultural,KBLC,"Discover Kabul's history, architecture, museums, bazaars, gardens, and cultural landmarks while experiencing daily life in the capital.",1,1
+CET-004,Buzkashi Experience,buzkashi-experience,2,Cultural,MAZC,"Witness Afghanistan's national sport and learn about the traditions, history, horses, and culture surrounding Buzkashi.",1,1
+CET-005,Herat Arts and Architecture,herat-arts-and-architecture,4,Cultural,HERC,"Explore Herat's mosques, citadel, minarets, calligraphy, tilework, artisans, and rich Timurid heritage.",1,1
+CET-006,Mazar Spiritual and Silk Road Heritage,mazar-spiritual-silk-road-heritage,4,Cultural,MAZC,"Discover Balkh and Mazar-e-Sharif through spiritual sites, Silk Road history, architecture, and local traditions.",1,1
+CET-007,Traditional Afghan Clothing and Crafts,traditional-afghan-clothing-and-crafts,3,Cultural,KBLC,"Learn about traditional Afghan dress, tailoring, embroidery, jewelry, textiles, and regional craftsmanship.",1,0
+CET-008,Tea Houses Bazaars and Daily Life,tea-houses-bazaars-and-daily-life,3,Cultural,KBLC,"Experience traditional tea houses, local markets, craftsmen, street food, and everyday life in Afghanistan.",1,0
+CET-009,Rural Village Life Experience,rural-village-life-experience,5,Cultural,BMYC,"Spend time in rural communities learning about farming, hospitality, local traditions, and village life.",1,1
+CET-010,Kandahar Pomegranate Harvest Experience,kandahar-pomegranate-harvest-experience,4,Cultural,KDRC,"Seasonal journey focused on Kandahar's famous pomegranates, orchards, agriculture, and local traditions.",1,1
+CET-011,Afghan Tea and Chai Culture,afghan-tea-and-chai-culture,2,Cultural,KBLC,"Explore the role of tea in Afghan society through traditional tea houses, hospitality customs, and regional tea traditions.",1,0
+CET-012,Istalif Pottery and Artisan Traditions,istalif-pottery-and-artisan-traditions,2,Cultural,KBLC,"Visit Istalif's pottery workshops and learn about centuries-old ceramic traditions and artisan culture.",1,0

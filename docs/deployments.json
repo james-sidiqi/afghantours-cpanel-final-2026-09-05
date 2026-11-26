@@ -1,0 +1,5 @@
+{
+  "schema_version": 1,
+  "note": "No deployment is asserted by adding this ledger. Record verified staging/production actions only; no secrets or customer data.",
+  "deployments": []
+}

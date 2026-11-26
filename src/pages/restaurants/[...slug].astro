@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { RESTAURANT_TO_CULINARY } from '../../lib/culinary';
+
+export async function getStaticPaths() {
+  const DUPLICATE_RESTAURANTS = { 'spoghmai-restaurant-qargha': '/restaurants/spoghmai-restaurant/' };
+  const items = await getCollection('restaurants');
+
+  return items.map((item) => {
+    const slug = item.id.replace(/\.md$/, '');
+    return {
+      params: { slug },
+      props: {
+        item,
+        // spoghmai-restaurant-qargha.md is a byte-identical duplicate of spoghmai-restaurant.md → one canonical page.
+        redirectTo: RESTAURANT_TO_CULINARY[slug] || DUPLICATE_RESTAURANTS[slug] || null,
+      },
+    };
+  });
+}
+
+const { item, redirectTo } = Astro.props;
+
+if (redirectTo) {
+  return Astro.redirect(redirectTo, 301);
+}
+
+const { Content } = await render(item);
+const title = item.data.title || item.data.name || 'Restaurant';
+---
+
+<BaseLayout
+  title={`${title} | AfghanTours`}
+  description={`Explore ${title} as supporting dining context for food and travel planning in Afghanistan.`}
+>
+  <main class="restaurant-page">
+    <article>
+      <p class="eyebrow">Supporting dining notes</p>
+      <h1>{title}</h1>
+      <p class="note">
+        For guided food experiences, see our
+        <a href="/cultural-experiences/culinary/">Culinary Experiences</a>.
+        This page shares background on local dining.
+      </p>
+      <Content />
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  .restaurant-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 8rem 1.5rem 5rem;
+  }
+  article { line-height: 1.75; }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    font-size: .75rem;
+    font-weight: 700;
+  }
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    line-height: 1;
+    margin: .75rem 0 1rem;
+  }
+  .note {
+    color: #596168;
+    margin: 0 0 2rem;
+  }
+  .note a { color: #a4650d; }
+  article :global(h2) { margin-top: 2.5rem; }
+  article :global(p) { font-size: 1.05rem; }
+</style>

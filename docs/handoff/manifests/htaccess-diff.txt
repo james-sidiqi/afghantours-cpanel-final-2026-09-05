@@ -1,0 +1,12 @@
+27c27,28
+< RewriteRule ^restaurants/spoghmai-restaurant-qargha/?$ /restaurants/spoghmai-restaurant/ [R=301,L]
+---
+> # James t267: Spoghmai is now a culinary experience page
+> RewriteRule ^restaurants/spoghmai-restaurant(-qargha)?/?$ /cultural-experiences/culinary/spoghmai-restaurant-qargha/ [R=301,L]
+30a32,37
+> # James t264: Eid & Celebrations experience unpublished (content archived in src/content/_inactive/cultural-experiences/)
+> RewriteRule ^cultural-experiences/eid-and-celebrations/?$ /cultural-experiences/ [R=301,L]
+> # t271: Barg-e Matal & Lakes attraction replaced by Nuristan National Park
+> RewriteRule ^attractions/barg-e-matal-lakes/?$ /attractions/nuristan-national-park/ [R=301,L]
+> # t276: Bashgal Valley attraction replaced by Nuristan River Valleys & Villages
+> RewriteRule ^attractions/bashgal-valley/?$ /attractions/nuristan-river-valleys-villages/ [R=301,L]

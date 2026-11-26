@@ -1,0 +1,5 @@
+experience_slug,hub_slug,access_type,availability_note,priority,is_active,review_status
+istalif-pottery,kabul-city,day-trip / excursion,Half-day craft outing north of Kabul when routes and workshops are open,10,1,LOCKED
+buzkashi,kabul-city,event-based,Seasonal matches; not a fixed calendar product,20,1,LOCKED
+buzkashi,mazar-e-sharif,event-based,Primary northern corridor for winter/early-spring matches,10,1,LOCKED
+buzkashi,faizabad-city,event-based,Northern/Badakhshan corridor when local events align,30,1,LOCKED

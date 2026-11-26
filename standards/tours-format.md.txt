@@ -1,0 +1,396 @@
+AFGHANTOURS TOUR CONTENT STANDARD
+Version 1.0
+
+================================================================================
+FRONTMATTER
+
+⸻
+
+title: “”
+slug: “”
+tour_code: “”
+
+tour_type: “featured”
+
+is_active: true
+is_featured: false
+
+duration_days: 0
+duration_display: “”
+
+price_from: 0
+price_display: “”
+
+season: “”
+
+travel_style: “”
+activity_level: “”
+
+group_size_display: “”
+min_group_size: 1
+max_group_size: 8
+
+primary_hub: “”
+
+overnight_hubs:
+
+regions:
+
+provinces:
+
+transport_type: “”
+
+domestic_flights: false
+
+flights:
+
+hero_image_path: “”
+overview_image_path: “”
+
+gallery_images:
+
+featured_attractions:
+
+featured_food:
+
+featured_hotels:
+
+tour_highlights:
+
+best_for:
+
+accommodation_style: “”
+transportation_style: “”
+
+cultural_rating: 1
+photography_rating: 1
+comfort_rating: 1
+adventure_rating: 1
+
+seo_title: “”
+seo_description: “”
+
+================================================================================
+OVERVIEW
+
+Provide a comprehensive introduction explaining:
+
+• What this tour is
+• Why this itinerary exists
+• What makes it unique
+• Who it is designed for
+• What regions are visited
+• What experiences are included
+
+Target Length:
+
+400–800 words
+
+The overview should tell the story of the journey rather than simply listing destinations.
+
+================================================================================
+WHO THIS TOUR IS FOR
+
+Describe ideal travelers.
+
+Examples:
+
+• First-time visitors to Afghanistan
+• Cultural travelers
+• History enthusiasts
+• Photographers
+• Researchers
+• Adventure travelers
+• Returning veterans
+• Expedition travelers
+
+Explain why the itinerary suits them.
+
+================================================================================
+TOUR HIGHLIGHTS
+
+List the major highlights.
+
+Examples:
+
+• Babur’s Gardens
+• Band-e-Amir National Park
+• Herat Citadel
+• Blue Mosque
+• Panjshir Valley
+• Minaret of Jam
+
+Focus on experiences rather than simply locations.
+
+================================================================================
+ROUTE OVERVIEW
+
+Provide a narrative overview of the route.
+
+Explain:
+
+• Where the tour begins
+• Major hubs used
+• Key regions crossed
+• How transportation works
+• Why the route is designed this way
+
+Avoid day-by-day detail.
+
+The day-by-day itinerary handles that separately.
+
+================================================================================
+ACCOMMODATION STYLE
+
+Describe:
+
+• Typical hotel standard
+• Room expectations
+• Location style
+• Guesthouses if applicable
+• Upgrade options if available
+
+Examples:
+
+3-star and 4-star hotels in Kabul, Herat, and Bamyan.
+
+Premium and luxury upgrades may be available at additional cost depending on city and availability.
+
+Avoid guaranteeing specific hotels.
+
+================================================================================
+FOOD & CULTURE
+
+Describe:
+
+• Typical meals
+• Regional specialties
+• Tea houses
+• Markets
+• Cultural experiences
+
+Examples:
+
+• Qabuli Palaw
+• Ashak
+• Mantu
+• Chai Khana culture
+• Traditional bakeries
+• Local restaurants
+
+Focus on cultural immersion rather than luxury dining.
+
+================================================================================
+TRANSPORTATION
+
+Describe:
+
+• Domestic flights
+• 4WD vehicles
+• Highway travel
+• Mountain roads
+• Airport transfers
+
+Explain transportation realities honestly.
+
+Avoid overpromising.
+
+================================================================================
+PHOTOGRAPHY OPPORTUNITIES
+
+Describe:
+
+• Landscapes
+• Architecture
+• Markets
+• Daily life
+• Seasonal conditions
+• Sunrise and sunset opportunities
+
+Especially important for featured and photography tours.
+
+================================================================================
+BEST TIME TO TRAVEL
+
+Explain:
+
+• Seasons
+• Weather
+• Landscape conditions
+• Festivals
+• Road access
+
+Provide realistic expectations.
+
+================================================================================
+PRACTICAL INFORMATION
+
+Duration:
+Group Size:
+Activity Level:
+Travel Style:
+Primary Hub:
+Overnight Hubs:
+Domestic Flights:
+Best Season:
+
+================================================================================
+RELATED CONTENT
+
+RELATED ATTRACTIONS
+
+• Attraction A
+• Attraction B
+• Attraction C
+
+RELATED FOOD & CULTURE
+
+• Food Item A
+• Food Item B
+• Food Item C
+
+RELATED HUBS
+
+• Kabul City
+• Bamyan City
+• Herat City
+
+RELATED TOURS
+
+• Tour A
+• Tour B
+• Tour C
+
+================================================================================
+AFGHANTOURS TOUR WRITING RULES
+
+VOICE
+
+Use:
+
+• Professional
+• Experienced
+• Historically grounded
+• Hospitality-focused
+• Operationally realistic
+
+Avoid:
+
+• Bucket-list language
+• Adventure clichés
+• Political commentary
+• Travel-blog exaggeration
+• Safety guarantees
+
+================================================================================
+PRIMARY HUB RULE
+
+primary_hub ALWAYS means:
+
+“The primary overnight city used during the tour.”
+
+Examples:
+
+Weekend in Kabul
+primary_hub: kabul-city
+
+Timurid Grandeur Herat Tour
+primary_hub: herat-city
+
+Bamyan Skiing Tour
+primary_hub: bamyan-city
+
+================================================================================
+OVERNIGHT HUB RULE
+
+overnight_hubs MUST represent:
+
+Cities where travelers actually sleep during the itinerary.
+
+Examples:
+
+overnight_hubs:
+
+	•	kabul-city
+	•	bamyan-city
+	•	herat-city
+
+NOT:
+
+• Attractions
+• Provinces
+• Day trip destinations
+
+================================================================================
+TOUR PAGE ARCHITECTURE
+
+Every completed tour page should support:
+
+	1	Hero Section
+	2	Tour Highlights
+	3	Visual Journey
+	4	Overview
+	5	Route Overview
+	6	Day-by-Day Journey
+	7	Accommodation Notes
+	8	Food & Culture Notes
+	9	Transportation Notes
+	10	Practical Information
+	11	Related Content
+	12	Call To Action
+
+================================================================================
+INTERACTIVE ITINERARY STANDARD
+
+The itinerary is the center of the tour experience.
+
+Each day may contain:
+
+• Arrival
+• Departure
+• Hotel
+• Hub
+• Attraction
+• Food
+• Restaurant
+• Culture
+• Activity
+• Transportation
+• Flight
+• Drive
+• Market
+• Tea House
+• Museum
+• Mosque
+• Viewpoint
+• Hike
+
+Interaction Model:
+
+Hover
+→ Preview Card
+
+Click
+→ Popup
+
+Popup
+→ Full Page In New Tab
+
+The itinerary should expose:
+
+• Attractions
+• Food & Culture
+• Hotels
+• Hubs
+• Transportation
+• Operational Notes
+
+without requiring the traveler to leave the itinerary.
+
+================================================================================
+GOAL
+
+Every tour page should feel like a professionally designed expedition and
+cultural journey rather than a simple travel package. The focus should remain on
+history, culture, hospitality, landscapes, and realistic travel experiences
+through Afghanistan.

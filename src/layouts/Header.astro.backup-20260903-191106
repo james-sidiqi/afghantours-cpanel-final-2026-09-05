@@ -1,0 +1,226 @@
+---
+const tourLinks = [
+  ['All Tours', '/tours/'],
+  ['Featured Tours', '/tours/#featured-section'],
+  ['Custom Tours', '/tours/#custom-tours'],
+];
+
+const exploreLinks = [
+  ['Attractions', '/attractions/'],
+  ['Interactive Map', '/map/'],
+  ['Regional Map', '/destinations/#regions'],
+  ['Province Directory', '/destinations/#provinces'],
+];
+
+const planLinks = [
+  ['Travel Hubs', '/hubs/'],
+  ['Transportation', '/transportation/'],
+  ['Visa & Entry', '/visa-entry/'],
+  ['FAQ', '/faq/'],
+];
+
+const informationLinks = [
+  ['About', '/about/'],
+  ['Safety', '/safety/'],
+  ['Contact', '/contact/'],
+];
+---
+
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-brand" href="/" aria-label="AfghanTours home">
+      <img src="/assets/images/logo/header-logo.webp" alt="Afghan Tours" />
+      <div>
+        <strong>Afghan Tours</strong>
+        <span>American-led · Kabul-based</span>
+      </div>
+    </a>
+
+    <nav class="site-nav" aria-label="Main navigation">
+      <div class="site-nav__group">
+        <a class="site-nav__link" href="/tours/">Tours <span aria-hidden="true">⌄</span></a>
+        <div class="site-dropdown">
+          {tourLinks.map(([label, href]) => <a href={href}>{label}</a>)}
+        </div>
+      </div>
+
+      <div class="site-nav__group">
+        <a class="site-nav__link" href="/attractions/">Explore <span aria-hidden="true">⌄</span></a>
+        <div class="site-dropdown">
+          {exploreLinks.map(([label, href]) => <a href={href}>{label}</a>)}
+        </div>
+      </div>
+
+      <div class="site-nav__group">
+        <a class="site-nav__link" href="/hubs/">Plan <span aria-hidden="true">⌄</span></a>
+        <div class="site-dropdown">
+          {planLinks.map(([label, href]) => <a href={href}>{label}</a>)}
+        </div>
+      </div>
+
+      <div class="site-nav__group">
+        <a class="site-nav__link" href="/about/">Information <span aria-hidden="true">⌄</span></a>
+        <div class="site-dropdown">
+          {informationLinks.map(([label, href]) => <a href={href}>{label}</a>)}
+        </div>
+      </div>
+
+      <a class="site-nav__cta" href="/contact/">Contact Us</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: color-mix(in srgb, var(--at-footer) 94%, transparent);
+    border-bottom: 1px solid var(--border-dark);
+    backdrop-filter: blur(16px);
+    color: var(--at-white);
+  }
+
+  .site-header__inner {
+    width: min(var(--content-max), calc(100% - 2rem));
+    min-height: var(--header-height);
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+
+  .site-brand {
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    color: inherit;
+    text-decoration: none;
+    min-width: 0;
+  }
+
+  .site-brand img {
+    width: auto;
+    height: 48px;
+    object-fit: contain;
+  }
+
+  .site-brand strong {
+    display: block;
+    font-family: var(--font-display);
+    font-size: clamp(1.6rem, 2.2vw, 2.15rem);
+    font-weight: 700;
+    line-height: .9;
+    letter-spacing: -.04em;
+    white-space: nowrap;
+  }
+
+  .site-brand span {
+    display: block;
+    margin-top: var(--space-1);
+    color: var(--at-gold);
+    font-size: .76rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
+    font-size: .86rem;
+    font-weight: 700;
+  }
+
+  .site-nav a {
+    color: var(--at-white);
+    text-decoration: none;
+  }
+
+  .site-nav__link {
+    display: inline-flex;
+    align-items: center;
+    gap: .32rem;
+    padding: 1.7rem 0;
+    white-space: nowrap;
+    transition: color var(--motion-fast) var(--ease-standard);
+  }
+
+  .site-nav__link:hover,
+  .site-nav__group:hover > .site-nav__link {
+    color: var(--at-gold);
+  }
+
+  .site-nav__group { position: relative; }
+
+  .site-dropdown {
+    position: absolute;
+    top: calc(100% - .35rem);
+    left: 50%;
+    min-width: 230px;
+    transform: translateX(-50%) translateY(8px);
+    opacity: 0;
+    pointer-events: none;
+    border: 1px solid var(--border-dark);
+    border-radius: var(--radius-small);
+    background: color-mix(in srgb, var(--at-ink) 98%, transparent);
+    padding: .55rem;
+    box-shadow: var(--shadow-raised);
+    transition: opacity var(--motion-fast) var(--ease-standard),
+                transform var(--motion-fast) var(--ease-standard);
+  }
+
+  .site-nav__group:hover .site-dropdown,
+  .site-nav__group:focus-within .site-dropdown {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+  }
+
+  .site-dropdown a {
+    display: block;
+    border-radius: .75rem;
+    padding: .78rem .9rem;
+    color: rgba(255,255,255,.82);
+    font-size: .84rem;
+    white-space: nowrap;
+  }
+
+  .site-dropdown a:hover {
+    background: color-mix(in srgb, var(--at-gold) 14%, transparent);
+    color: var(--at-gold);
+  }
+
+  .site-nav__cta {
+    border-radius: var(--radius-pill);
+    background: var(--at-gold);
+    color: var(--at-ink) !important;
+    padding: .95rem 1.35rem;
+    white-space: nowrap;
+    transition: background-color var(--motion-fast) var(--ease-standard);
+  }
+
+  .site-nav__cta:hover { background: var(--at-white); }
+
+  @media(max-width: 980px) {
+    .site-header__inner {
+      align-items: flex-start;
+      padding: .85rem 0;
+      flex-direction: column;
+      gap: .9rem;
+    }
+
+    .site-nav {
+      width: 100%;
+      overflow-x: auto;
+      gap: var(--space-4);
+      padding-bottom: .35rem;
+      align-items: flex-start;
+    }
+
+    .site-nav__link { padding: .65rem 0; }
+    .site-dropdown { display: none; }
+    .site-brand span { display: none; }
+  }
+</style>

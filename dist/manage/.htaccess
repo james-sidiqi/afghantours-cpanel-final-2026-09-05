@@ -1,0 +1,16 @@
+# AfghanTours staff admin — never indexed or cached; only index.php is served.
+Options -Indexes
+DirectoryIndex index.php
+<FilesMatch "^(?!index\.php$).+">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+  Header set Cache-Control "no-store"
+</IfModule>

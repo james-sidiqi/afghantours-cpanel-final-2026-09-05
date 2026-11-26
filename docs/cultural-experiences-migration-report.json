@@ -1,0 +1,879 @@
+{
+  "inventory": [
+    {
+      "entity": "adam-khan-chapli-kabob",
+      "files": [
+        {
+          "name": "hero.webp",
+          "sha256": "2ce3c87b7f95f431c07d07245d36acafa8a7a9c910aefea9a3ee6e18bd1b97ef",
+          "bytes": 574476
+        }
+      ]
+    },
+    {
+      "entity": "arg-restaurant-herat",
+      "files": [
+        {
+          "name": "01.jpeg",
+          "sha256": "3c5fb8d02b5bb5cf6e570b61a52e3073f047cb9e4c860a8f85fb6602d63e8354",
+          "bytes": 358226
+        },
+        {
+          "name": "hero.webp",
+          "sha256": "c416c814e3f92991d7a2fca882d5585db20403ba6a09a37db7356f3584fc4172",
+          "bytes": 657257
+        }
+      ]
+    },
+    {
+      "entity": "aziz-bakery",
+      "files": [
+        {
+          "name": "01.webp",
+          "sha256": "aac6ba97f7fafb92316486589d83c33e25bb4e68e3754a8f80c8d56b942854ed",
+          "bytes": 558017
+        },
+        {
+          "name": "02.webp",
+          "sha256": "96f59edd79176e612b9786997150c36e112678a3ccc28f6aadec29538f18a90e",
+          "bytes": 109849
+        },
+        {
+          "name": "03.webp",
+          "sha256": "9b1d595c5231cc155df9940ac4975a00f89505e95420507afd29be1178b086d2",
+          "bytes": 90372
+        },
+        {
+          "name": "04.webp",
+          "sha256": "52bfb3cd68246014a0f41c981a7a65284e71e3bdb228a5fe4742b315b1c71e4a",
+          "bytes": 86857
+        },
+        {
+          "name": "05.webp",
+          "sha256": "4e853e6e6c95374113235bd471f0e8d274cdbc5ca1e5292f7b0c38cac410793f",
+          "bytes": 83431
+        },
+        {
+          "name": "hero.webp",
+          "sha256": "a34db48d2ce425be73db225375d82edf9211bef1d49f7980a517fe095476caa4",
+          "bytes": 489176
+        }
+      ]
+    },
+    {
+      "entity": "badghis-pistachios",
+      "files": [
+        {
+          "name": "hero.webp",
+          "sha256": "cd7082146a64b0df06374da1c70081ef3e2e3547fe6a636be2514c73147f1563",
+          "bytes": 246849
+        }
+      ]
+    },
+    {
+      "entity": "bakery-kabul",
+      "files": [
+        {
+          "name": "01.webp",
+          "sha256": "ddd633b4e43a9b32a8d7e8c5936496a8804281758949872e56466f879cd1d09c",
+          "bytes": 1215107
+        },
+        {
+          "name": "hero.webp",
+          "sha256": "1da5def9d023b7b5391691d84a42e219cde3883b9feba1ef8364e70122f81329",
+          "bytes": 342720
+        }
+      ]
+    },
+    {
+      "entity": "buzkashi-and-uzbek-palaw",
+      "files": [
+        {
+          "name": "01.webp",
+          "sha256": "8593260c01fddbab247cbc7efc409bf60a361818b0f9bc460caaa22ec9e5ddbd",
+          "bytes": 1256412
+        },
+        {
+          "name": "02.webp",
+          "sha256": "d6b22a80f648dbea76284a4a4023207ee241ba114d3fb46bb9cad5aa6b4710fc",
+          "bytes": 693437
+        },
+        {
+          "name": "03.webp",
+          "sha256": "adaef02a003b170bb566af70abf10c806c4cdc5f9de58c39b6178178a23ba9b0",
+          "bytes": 409007
+        },
+        {
+          "name": "04.webp",
+          "sha256": "3708f23f927442733e398a4676525a683928c9a12a9c603b3583d69b69a0a404",
+          "bytes": 682035
+        },
+        {
+          "name": "hero.webp",
+          "sha256": "e18a80dbc305329b859bf7fba570f7449bb745ec39901e68d2f856ba4e080e14",
+          "bytes": 431204
+        },
+        {
+          "name": "overview.webp",
+          "sha256": "1da98af38d144b94429139e75b490fff34c2329435f6a97e356360a2d9635888",
+          "bytes": 484656
+        }
+      ]
+    },
+    {
+      "entity": "chashma-e-dogh",
+      "files": [
+        {
+          "name": "01.webp",
+          "sha256": "3ec618923aed2b9b7347d26f799bfe786634051a2653f8798227fdd06458f971",
+          "bytes": 320133
+        },
+        {
+          "name": "02.webp",
+          "sha256": "49cccb6736cbb22e59d101fcf8b9b35454530e9119f50763ea30324acdc3d92f",
+          "bytes": 551169
+        },
+        {
+          "name": "03.webp",
+          "sha256": "7c3dd6a2ff50d23fdfd413ac174036bfa3f5cc7010a47d42940a0684ddca4f11",
+          "bytes": 434766
+        },
+        {
+          "name": "04.webp",
+          "sha256": "2d3e1707ef0831b5425fe23ff396b75b8407b4494706ed5902e303a92172367b",
+          "bytes": 665790
+        },
+        {
+          "name": "05.webp",
+          "sha256": "0c07ec82d6fbe5818f7b6d5694c3f21725427f0be92b82dac6481bf138e18d89",
+          "bytes": 364946
+        },
+        {
+          "name": "06.webp",
+          "sha256": "16f5c6eb58d55f37e2707188af0a3fb2bf6927f2aa67ceee485a503d950fe250",
+          "bytes": 511487
+        },
+        {
+          "name": "gallery-1.webp",
+          "sha256": "3ec618923aed2b9b7347d26f799bfe786634051a2653f8798227fdd06458f971",
+          "bytes": 320133
+        },
+        {
+          "name": "hero.webp",
+          "sha256": "adc276334cb7479ad9bcf911f190abfbfb511471bac89764600beea2c3b8922d",
+          "bytes": 489540
+        }
+      ]
+    },
+    {
+      "entity": "chashma-e-dough",
+      "files": [
+        {
+          "name": "01.webp",
+          "sha256": "3ec618923aed2b9b7347d26f799bfe786634051a2653f8798227fdd06458f971",
+          "bytes": 320133
+        },
+        {
+          "name": "02.webp",
+          "sha256": "49cccb6736cbb22e59d101fcf8b9b35454530e9119f50763ea30324acdc3d92f",
+          "bytes": 551169
+        },
+        {
+          "name": "03.webp",
+          "sha256": "7c3dd6a2ff50d23fdfd413ac174036bfa3f5cc7010a47d42940a0684ddca4f11",
+          "bytes": 434766
+        },
+        {
+          "name": "04.webp",
+          "sha256": "2d3e1707ef0831b5425fe23ff396b75b8407b4494706ed5902e303a92172367b",
+          "bytes": 665790
+        },
+        {
+          "name": "05.webp",
+          "sha256": "0c07ec82d6fbe5818f7b6d5694c3f21725427f0be92b82dac6481bf138e18d89",
+          "bytes": 364946
+        },
+        {
+          "name": "06.webp",
+          "sha256": "16f5c6eb58d55f37e2707188af0a3fb2bf6927f2aa67ceee485a503d950fe250",
+          "bytes": 511487
+        },
+        {
+          "name": "hero.webp",
+          "sha256": "adc276334cb7479ad9bcf911f190abfbfb511471bac89764600beea2c3b8922d",
+          "bytes": 489540
+        }
+      ]
+    },
+    {
+      "entity": "farah-dates",
+      "files": [
+        {
+          "name": "hero.webp",
+          "sha256": "0b0ffeacc475096ce9a523292a6b52e1426da207853dbc1063639fe6c3db2a81",
+          "bytes": 1003536
+        }
+      ]
+    },
+    {
+      "entity": "glassblowers-of-herat",
+      "files": [
+        {
+          "name": "01.webp",
+          "sha256": "6736f22b7476577c05601b2e8099d34e2adab15f6bb63891fffb0e81f95dba96",
+          "bytes": 496732
+        },
+        {
+          "name": "hero.webp",
+          "sha256": "9b484d1994db68d5d4f92e32136e1bad21a66110c07182fe9ec388c059aeeee3",
+          "bytes": 423089
+        }
+      ]
+    },
+    {
+      "entity": "gudiparan-bazi",
+      "files": [
+        {
+          "name": "kabul-kite-flying.webp",
+          "sha256": "115d3e3455b80aa35818339cf7fa8a0f97139911d255f99c06f19c2dc1422319",
+          "bytes": 2229983
+        },
+        {
+          "name": "kites-kabul-sky.webp",
+          "sha256": "ea2defcb603eccefa784d553670a9b0002913dd50974f57f06bb18e4914d8dbd",
+          "bytes": 2130820
+        }
+      ]
+    },
+    {
+      "entity": "istalif-pottery",
+      "files": [
+        {
+          "name": "hero.webp",
+          "sha256": "68b887194f41ec8a1064fe0184ac4f92b55e97886dd771c78c7b5125af4a1180",
+          "bytes": 813700
+        }
+      ]
+    },
+    {
+      "entity": "kaftar-bazi",
+      "files": [
+        {
+          "name": "kaftar-bazi.webp",
+          "sha256": "b443d499f9d478068a3066be21100b710e3e8705276669fc08c93dbf9553a33a",
+          "bytes": 396711
+        },
+        {
+          "name": "pigeons-flying.webp",
+          "sha256": "8614dfe2bd709fada8de7253b4b6d6b5bf517f558a331a75539ea7592a293da0",
+          "bytes": 301600
+        },
+        {
+          "name": "pigeons.webp",
+          "sha256": "6fb731dc2e5a235ee95bbe3baed5aa54c486b15eefe669444b239064455fbb4e",
+          "bytes": 610461
+        }
+      ]
+    },
+    {
+      "entity": "kunar-trout",
+      "files": [
+        {
+          "name": "01.webp",
+          "sha256": "d518b8893422723bc8299db1d7f258d0565f20c3f00894ea5e75ca1013ec10c4",
+          "bytes": 373601
+        },
+        {
+          "name": "hero.webp",
+          "sha256": "424dccd02d10ecc1fecb1350164a4f2718248e487b06fb2962a1b4757a52e7ea",
+          "bytes": 512384
+        }
+      ]
+    },
+    {
+      "entity": "pahlawani",
+      "files": [
+        {
+          "name": "pahlawani.webp",
+          "sha256": "c8e2e6c5dabcca93ca28e9ee6af668b9358d201a0c773c781374f7b9d2eb099f",
+          "bytes": 2421522
+        },
+        {
+          "name": "wrestling.webp",
+          "sha256": "c369b97108acf50a98b68807ed5639590581ac03ca3cc4790776086f7c1c5c00",
+          "bytes": 287730
+        }
+      ]
+    },
+    {
+      "entity": "paktia-pine-nuts",
+      "files": [
+        {
+          "name": "hero.webp",
+          "sha256": "34ce05ef918b240678ddc83660a58a0dd61e6f589016e972693a1afc5426b062",
+          "bytes": 589810
+        }
+      ]
+    },
+    {
+      "entity": "shor-chai-of-badakhshan",
+      "files": [
+        {
+          "name": "hero.webp",
+          "sha256": "44a6c527c17575849506959b22b2848ed614e8a19f622a33db66fdc65d9fdf32",
+          "bytes": 487747
+        }
+      ]
+    },
+    {
+      "entity": "spoghmai-restaurant",
+      "files": [
+        {
+          "name": "hero.webp",
+          "sha256": "657bd2e29f16c97d0dc398c462edc78c5cf6cf35e0c671e4d285bf61339dd21d",
+          "bytes": 830199
+        }
+      ]
+    },
+    {
+      "entity": "sweet-streets-of-mazar",
+      "files": [
+        {
+          "name": "hero.webp",
+          "sha256": "5d2e9b5cbc831a6031e0ed46517446505e9dbc44f05f3256e035d34085a9af98",
+          "bytes": 202374
+        }
+      ]
+    },
+    {
+      "entity": "the-last-box-camera-photographer-of-kabul",
+      "files": [
+        {
+          "name": "01.webp",
+          "sha256": "82afcfe6ac4585379494b301899d1155101056e17a45ad323d80bb3c93a989db",
+          "bytes": 254195
+        },
+        {
+          "name": "hero.webp",
+          "sha256": "b829f727710131ea914096962ef3dba12e260ba2a5f0136d3d5ec15c8246783a",
+          "bytes": 388862
+        }
+      ]
+    },
+    {
+      "entity": "wardak-apples",
+      "files": [
+        {
+          "name": "hero.webp",
+          "sha256": "b62fb7db2a2d4a67ea3179814b1b726427a856e309dd8dde14c3bff669f0f6a6",
+          "bytes": 728580
+        }
+      ]
+    }
+  ],
+  "migrations": [
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/adam-khan-chapli-kabob/hero.webp",
+      "dest": "assets/images/experiences/culinary/adam-khan-chapli-kabob",
+      "class": "culinary",
+      "sha256": "2ce3c87b7f95f431c07d07245d36acafa8a7a9c910aefea9a3ee6e18bd1b97ef",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/arg-restaurant-herat/01.jpeg",
+      "dest": "assets/images/experiences/culinary/arg-restaurant-herat",
+      "class": "culinary",
+      "sha256": "3c5fb8d02b5bb5cf6e570b61a52e3073f047cb9e4c860a8f85fb6602d63e8354",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/arg-restaurant-herat/hero.webp",
+      "dest": "assets/images/experiences/culinary/arg-restaurant-herat",
+      "class": "culinary",
+      "sha256": "c416c814e3f92991d7a2fca882d5585db20403ba6a09a37db7356f3584fc4172",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/aziz-bakery/01.webp",
+      "dest": "assets/images/experiences/culinary/aziz-bakery",
+      "class": "culinary",
+      "sha256": "aac6ba97f7fafb92316486589d83c33e25bb4e68e3754a8f80c8d56b942854ed",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/aziz-bakery/02.webp",
+      "dest": "assets/images/experiences/culinary/aziz-bakery",
+      "class": "culinary",
+      "sha256": "96f59edd79176e612b9786997150c36e112678a3ccc28f6aadec29538f18a90e",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/aziz-bakery/03.webp",
+      "dest": "assets/images/experiences/culinary/aziz-bakery",
+      "class": "culinary",
+      "sha256": "9b1d595c5231cc155df9940ac4975a00f89505e95420507afd29be1178b086d2",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/aziz-bakery/04.webp",
+      "dest": "assets/images/experiences/culinary/aziz-bakery",
+      "class": "culinary",
+      "sha256": "52bfb3cd68246014a0f41c981a7a65284e71e3bdb228a5fe4742b315b1c71e4a",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/aziz-bakery/05.webp",
+      "dest": "assets/images/experiences/culinary/aziz-bakery",
+      "class": "culinary",
+      "sha256": "4e853e6e6c95374113235bd471f0e8d274cdbc5ca1e5292f7b0c38cac410793f",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/aziz-bakery/hero.webp",
+      "dest": "assets/images/experiences/culinary/aziz-bakery",
+      "class": "culinary",
+      "sha256": "a34db48d2ce425be73db225375d82edf9211bef1d49f7980a517fe095476caa4",
+      "note": ""
+    },
+    {
+      "status": "GALLERY_COPIED",
+      "src": "assets/images/cultural-experiences/bakery-kabul/01.webp",
+      "dest": "/assets/images/experiences/culinary/aziz-bakery/gallery/06.webp",
+      "class": "culinary",
+      "sha256": "ddd633b4e43a9b32a8d7e8c5936496a8804281758949872e56466f879cd1d09c",
+      "note": "alias → aziz-bakery"
+    },
+    {
+      "status": "HERO_PRESERVED_AS_GALLERY",
+      "src": "assets/images/cultural-experiences/bakery-kabul/hero.webp",
+      "dest": "/assets/images/experiences/culinary/aziz-bakery/gallery/07.webp",
+      "class": "culinary",
+      "sha256": "1da5def9d023b7b5391691d84a42e219cde3883b9feba1ef8364e70122f81329",
+      "note": "alias → aziz-bakery (canonical hero kept)"
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/chashma-e-dogh/01.webp",
+      "dest": "assets/images/experiences/culinary/chashma-e-dogh",
+      "class": "culinary",
+      "sha256": "3ec618923aed2b9b7347d26f799bfe786634051a2653f8798227fdd06458f971",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/chashma-e-dogh/02.webp",
+      "dest": "assets/images/experiences/culinary/chashma-e-dogh",
+      "class": "culinary",
+      "sha256": "49cccb6736cbb22e59d101fcf8b9b35454530e9119f50763ea30324acdc3d92f",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/chashma-e-dogh/03.webp",
+      "dest": "assets/images/experiences/culinary/chashma-e-dogh",
+      "class": "culinary",
+      "sha256": "7c3dd6a2ff50d23fdfd413ac174036bfa3f5cc7010a47d42940a0684ddca4f11",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/chashma-e-dogh/04.webp",
+      "dest": "assets/images/experiences/culinary/chashma-e-dogh",
+      "class": "culinary",
+      "sha256": "2d3e1707ef0831b5425fe23ff396b75b8407b4494706ed5902e303a92172367b",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/chashma-e-dogh/05.webp",
+      "dest": "assets/images/experiences/culinary/chashma-e-dogh",
+      "class": "culinary",
+      "sha256": "0c07ec82d6fbe5818f7b6d5694c3f21725427f0be92b82dac6481bf138e18d89",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/chashma-e-dogh/06.webp",
+      "dest": "assets/images/experiences/culinary/chashma-e-dogh",
+      "class": "culinary",
+      "sha256": "16f5c6eb58d55f37e2707188af0a3fb2bf6927f2aa67ceee485a503d950fe250",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/chashma-e-dogh/gallery-1.webp",
+      "dest": "assets/images/experiences/culinary/chashma-e-dogh",
+      "class": "culinary",
+      "sha256": "3ec618923aed2b9b7347d26f799bfe786634051a2653f8798227fdd06458f971",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/chashma-e-dogh/hero.webp",
+      "dest": "assets/images/experiences/culinary/chashma-e-dogh",
+      "class": "culinary",
+      "sha256": "adc276334cb7479ad9bcf911f190abfbfb511471bac89764600beea2c3b8922d",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/chashma-e-dough/01.webp",
+      "dest": "assets/images/experiences/culinary/chashma-e-dogh",
+      "class": "culinary",
+      "sha256": "3ec618923aed2b9b7347d26f799bfe786634051a2653f8798227fdd06458f971",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/chashma-e-dough/02.webp",
+      "dest": "assets/images/experiences/culinary/chashma-e-dogh",
+      "class": "culinary",
+      "sha256": "49cccb6736cbb22e59d101fcf8b9b35454530e9119f50763ea30324acdc3d92f",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/chashma-e-dough/03.webp",
+      "dest": "assets/images/experiences/culinary/chashma-e-dogh",
+      "class": "culinary",
+      "sha256": "7c3dd6a2ff50d23fdfd413ac174036bfa3f5cc7010a47d42940a0684ddca4f11",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/chashma-e-dough/04.webp",
+      "dest": "assets/images/experiences/culinary/chashma-e-dogh",
+      "class": "culinary",
+      "sha256": "2d3e1707ef0831b5425fe23ff396b75b8407b4494706ed5902e303a92172367b",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/chashma-e-dough/05.webp",
+      "dest": "assets/images/experiences/culinary/chashma-e-dogh",
+      "class": "culinary",
+      "sha256": "0c07ec82d6fbe5818f7b6d5694c3f21725427f0be92b82dac6481bf138e18d89",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/chashma-e-dough/06.webp",
+      "dest": "assets/images/experiences/culinary/chashma-e-dogh",
+      "class": "culinary",
+      "sha256": "16f5c6eb58d55f37e2707188af0a3fb2bf6927f2aa67ceee485a503d950fe250",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/chashma-e-dough/hero.webp",
+      "dest": "assets/images/experiences/culinary/chashma-e-dogh",
+      "class": "culinary",
+      "sha256": "adc276334cb7479ad9bcf911f190abfbfb511471bac89764600beea2c3b8922d",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/kunar-trout/01.webp",
+      "dest": "assets/images/experiences/culinary/kunar-trout",
+      "class": "culinary",
+      "sha256": "d518b8893422723bc8299db1d7f258d0565f20c3f00894ea5e75ca1013ec10c4",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/kunar-trout/hero.webp",
+      "dest": "assets/images/experiences/culinary/kunar-trout",
+      "class": "culinary",
+      "sha256": "424dccd02d10ecc1fecb1350164a4f2718248e487b06fb2962a1b4757a52e7ea",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/glassblowers-of-herat/01.webp",
+      "dest": "assets/images/experiences/cultural/glassblowers-of-herat",
+      "class": "cultural",
+      "sha256": "6736f22b7476577c05601b2e8099d34e2adab15f6bb63891fffb0e81f95dba96",
+      "note": ""
+    },
+    {
+      "status": "HERO_PRESERVED_AS_GALLERY",
+      "src": "assets/images/cultural-experiences/glassblowers-of-herat/hero.webp",
+      "dest": "/assets/images/experiences/cultural/glassblowers-of-herat/gallery/02.webp",
+      "class": "cultural",
+      "sha256": "9b484d1994db68d5d4f92e32136e1bad21a66110c07182fe9ec388c059aeeee3",
+      "note": " (canonical hero kept)"
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/gudiparan-bazi/kabul-kite-flying.webp",
+      "dest": "assets/images/experiences/cultural/gudiparan-bazi",
+      "class": "cultural",
+      "sha256": "115d3e3455b80aa35818339cf7fa8a0f97139911d255f99c06f19c2dc1422319",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/gudiparan-bazi/kites-kabul-sky.webp",
+      "dest": "assets/images/experiences/cultural/gudiparan-bazi",
+      "class": "cultural",
+      "sha256": "ea2defcb603eccefa784d553670a9b0002913dd50974f57f06bb18e4914d8dbd",
+      "note": ""
+    },
+    {
+      "status": "HERO_PRESERVED_AS_GALLERY",
+      "src": "assets/images/cultural-experiences/istalif-pottery/hero.webp",
+      "dest": "/assets/images/experiences/cultural/istalif-pottery/gallery/01.webp",
+      "class": "cultural",
+      "sha256": "68b887194f41ec8a1064fe0184ac4f92b55e97886dd771c78c7b5125af4a1180",
+      "note": " (canonical hero kept)"
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/kaftar-bazi/kaftar-bazi.webp",
+      "dest": "assets/images/experiences/cultural/kaftar-bazi",
+      "class": "cultural",
+      "sha256": "b443d499f9d478068a3066be21100b710e3e8705276669fc08c93dbf9553a33a",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/kaftar-bazi/pigeons-flying.webp",
+      "dest": "assets/images/experiences/cultural/kaftar-bazi",
+      "class": "cultural",
+      "sha256": "8614dfe2bd709fada8de7253b4b6d6b5bf517f558a331a75539ea7592a293da0",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/kaftar-bazi/pigeons.webp",
+      "dest": "assets/images/experiences/cultural/kaftar-bazi",
+      "class": "cultural",
+      "sha256": "6fb731dc2e5a235ee95bbe3baed5aa54c486b15eefe669444b239064455fbb4e",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/pahlawani/pahlawani.webp",
+      "dest": "assets/images/experiences/cultural/pahlawani",
+      "class": "cultural",
+      "sha256": "c8e2e6c5dabcca93ca28e9ee6af668b9358d201a0c773c781374f7b9d2eb099f",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/pahlawani/wrestling.webp",
+      "dest": "assets/images/experiences/cultural/pahlawani",
+      "class": "cultural",
+      "sha256": "c369b97108acf50a98b68807ed5639590581ac03ca3cc4790776086f7c1c5c00",
+      "note": ""
+    },
+    {
+      "status": "GALLERY_COPIED",
+      "src": "assets/images/cultural-experiences/buzkashi-and-uzbek-palaw/01.webp",
+      "dest": "/assets/images/experiences/cultural/buzkashi/gallery/01.webp",
+      "class": "cultural",
+      "sha256": "8593260c01fddbab247cbc7efc409bf60a361818b0f9bc460caaa22ec9e5ddbd",
+      "note": "cultural primary (buzkashi)"
+    },
+    {
+      "status": "GALLERY_COPIED",
+      "src": "assets/images/cultural-experiences/buzkashi-and-uzbek-palaw/02.webp",
+      "dest": "/assets/images/experiences/cultural/buzkashi/gallery/02.webp",
+      "class": "cultural",
+      "sha256": "d6b22a80f648dbea76284a4a4023207ee241ba114d3fb46bb9cad5aa6b4710fc",
+      "note": "cultural primary (buzkashi)"
+    },
+    {
+      "status": "GALLERY_COPIED",
+      "src": "assets/images/cultural-experiences/buzkashi-and-uzbek-palaw/03.webp",
+      "dest": "/assets/images/experiences/cultural/buzkashi/gallery/03.webp",
+      "class": "cultural",
+      "sha256": "adaef02a003b170bb566af70abf10c806c4cdc5f9de58c39b6178178a23ba9b0",
+      "note": "cultural primary (buzkashi)"
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/cultural-experiences/buzkashi-and-uzbek-palaw/04.webp",
+      "dest": "assets/images/experiences/cultural/buzkashi",
+      "class": "cultural",
+      "sha256": "3708f23f927442733e398a4676525a683928c9a12a9c603b3583d69b69a0a404",
+      "note": "cultural primary (buzkashi)"
+    },
+    {
+      "status": "HERO_PRESERVED_AS_GALLERY",
+      "src": "assets/images/cultural-experiences/buzkashi-and-uzbek-palaw/hero.webp",
+      "dest": "/assets/images/experiences/cultural/buzkashi/gallery/04.webp",
+      "class": "cultural",
+      "sha256": "e18a80dbc305329b859bf7fba570f7449bb745ec39901e68d2f856ba4e080e14",
+      "note": "cultural primary (buzkashi) (canonical hero kept)"
+    },
+    {
+      "status": "GALLERY_COPIED",
+      "src": "assets/images/cultural-experiences/buzkashi-and-uzbek-palaw/overview.webp",
+      "dest": "/assets/images/experiences/cultural/buzkashi/gallery/05.webp",
+      "class": "cultural",
+      "sha256": "1da98af38d144b94429139e75b490fff34c2329435f6a97e356360a2d9635888",
+      "note": "cultural primary (buzkashi)"
+    },
+    {
+      "status": "GALLERY_COPIED",
+      "src": "assets/images/cultural-experiences/the-last-box-camera-photographer-of-kabul/01.webp",
+      "dest": "/assets/images/experiences/cultural/the-last-box-camera-photographer-of-kabul/gallery/01.webp",
+      "class": "cultural",
+      "sha256": "82afcfe6ac4585379494b301899d1155101056e17a45ad323d80bb3c93a989db",
+      "note": ""
+    },
+    {
+      "status": "HERO_COPIED",
+      "src": "assets/images/cultural-experiences/the-last-box-camera-photographer-of-kabul/hero.webp",
+      "dest": "/assets/images/experiences/cultural/the-last-box-camera-photographer-of-kabul/hero.webp",
+      "class": "cultural",
+      "sha256": "b829f727710131ea914096962ef3dba12e260ba2a5f0136d3d5ec15c8246783a",
+      "note": ""
+    },
+    {
+      "status": "HERO_PRESERVED_AS_GALLERY",
+      "src": "assets/images/cultural-experiences/badghis-pistachios/hero.webp",
+      "dest": "/assets/images/food/dried-fruits/badghis-pistachios/gallery/01.webp",
+      "class": "food",
+      "sha256": "cd7082146a64b0df06374da1c70081ef3e2e3547fe6a636be2514c73147f1563",
+      "note": " (canonical hero kept)"
+    },
+    {
+      "status": "HERO_COPIED",
+      "src": "assets/images/cultural-experiences/farah-dates/hero.webp",
+      "dest": "/assets/images/food/dried-fruits/farah-date-palms/hero.webp",
+      "class": "food",
+      "sha256": "0b0ffeacc475096ce9a523292a6b52e1426da207853dbc1063639fe6c3db2a81",
+      "note": ""
+    },
+    {
+      "status": "HERO_PRESERVED_AS_GALLERY",
+      "src": "assets/images/cultural-experiences/paktia-pine-nuts/hero.webp",
+      "dest": "/assets/images/food/dried-fruits/paktia-pine-nuts/gallery/01.webp",
+      "class": "food",
+      "sha256": "34ce05ef918b240678ddc83660a58a0dd61e6f589016e972693a1afc5426b062",
+      "note": " (canonical hero kept)"
+    },
+    {
+      "status": "HERO_PRESERVED_AS_GALLERY",
+      "src": "assets/images/cultural-experiences/wardak-apples/hero.webp",
+      "dest": "/assets/images/food/produce/wardak-apples/gallery/01.webp",
+      "class": "food",
+      "sha256": "b62fb7db2a2d4a67ea3179814b1b726427a856e309dd8dde14c3bff669f0f6a6",
+      "note": " (canonical hero kept)"
+    },
+    {
+      "status": "HERO_COPIED",
+      "src": "assets/images/cultural-experiences/shor-chai-of-badakhshan/hero.webp",
+      "dest": "/assets/images/food/drinks/shor-chai-of-badakhshan/hero.webp",
+      "class": "food",
+      "sha256": "44a6c527c17575849506959b22b2848ed614e8a19f622a33db66fdc65d9fdf32",
+      "note": ""
+    },
+    {
+      "status": "HERO_COPIED",
+      "src": "assets/images/cultural-experiences/sweet-streets-of-mazar/hero.webp",
+      "dest": "/assets/images/food/desserts/sweet-streets-of-mazar/hero.webp",
+      "class": "food",
+      "sha256": "5d2e9b5cbc831a6031e0ed46517446505e9dbc44f05f3256e035d34085a9af98",
+      "note": ""
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/experiences/culinary/band-e-amir-dairy-market-quroot/hero.webp",
+      "dest": "assets/images/experiences/culinary/band-e-amir-quroot-dairy",
+      "class": "culinary",
+      "sha256": "229e77eb89023f2889979243cd56061f12fa08ac7c85c48ff5578eec41b2a57b",
+      "note": "alias folder → band-e-amir-quroot-dairy"
+    },
+    {
+      "status": "DUPLICATE_SKIPPED",
+      "src": "assets/images/experiences/culinary/band-e-amir-dairy-market-quroot/thumb.webp",
+      "dest": "assets/images/experiences/culinary/band-e-amir-quroot-dairy",
+      "class": "culinary",
+      "sha256": "229e77eb89023f2889979243cd56061f12fa08ac7c85c48ff5578eec41b2a57b",
+      "note": "alias folder → band-e-amir-quroot-dairy"
+    }
+  ],
+  "uniquePreserved": 17,
+  "duplicatesRemoved": 37,
+  "aliases": [
+    {
+      "from": "chashma-e-dough",
+      "to": "chashma-e-dogh",
+      "dest": "assets/images/experiences/culinary/chashma-e-dogh"
+    },
+    {
+      "from": "band-e-amir-dairy-market-quroot",
+      "to": "band-e-amir-quroot-dairy",
+      "dest": "assets/images/experiences/culinary/band-e-amir-quroot-dairy"
+    }
+  ],
+  "obsolete": [
+    {
+      "legacy": "spoghmai-restaurant",
+      "files": [
+        "hero.webp"
+      ],
+      "note": "no canonical culinary/food entity; images obsolete if unused"
+    }
+  ],
+  "refsUpdated": [
+    "src/content/cultural-experiences/gudiparan-bazi.md",
+    "src/content/cultural-experiences/kaftar-bazi.md",
+    "src/content/cultural-experiences/pahlawani.md",
+    "src/lib/images.ts",
+    "src/pages/cultural-experiences/[...slug].astro",
+    "src/pages/food-culture/[...slug].astro",
+    "scripts/migrate-culinary-assets.mjs",
+    "scripts/migrate-hub-experience-assets.mjs"
+  ],
+  "legacyDirGone": true,
+  "culturalFolders": [
+    "afghan-carpets",
+    "afghan-weddings",
+    "buzkashi",
+    "eid-and-celebrations",
+    "glassblowers-of-herat",
+    "gudiparan-bazi",
+    "istalif-pottery",
+    "kaftar-bazi",
+    "kuchi-nomads",
+    "pahlawani",
+    "paktika-livestock-markets",
+    "the-last-box-camera-photographer-of-kabul"
+  ],
+  "culinaryFolders": [
+    "adam-khan-chapli-kabob",
+    "arg-restaurant-herat",
+    "aziz-bakery",
+    "bamyan-kabob",
+    "band-e-amir-quroot-dairy",
+    "chashma-e-dogh",
+    "ghazni-palaw",
+    "kabul-chainaki",
+    "kandahari-rosh",
+    "kunar-trout",
+    "mansoor-kabob"
+  ],
+  "activitiesFolders": [
+    "cycling",
+    "fishing",
+    "hiking",
+    "horse-riding",
+    "shopping",
+    "sightseeing",
+    "skiing",
+    "trekking"
+  ]
+}

@@ -1,0 +1,128 @@
+---
+import { getCollection } from 'astro:content';
+import TourCardGrid from './cards/TourCardGrid.astro';
+import { getTours, getHotels } from '../lib/buildRelations';
+
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const allTours = getTours().filter((tour) => String(tour.is_active ?? '1') !== '0');
+
+const norm = (value) => String(value || '')
+  .toLowerCase()
+  .replace(/&/g, ' and ')
+  .replace(/[_-]+/g, ' ')
+  .replace(/\bcity\b/g, ' ')
+  .replace(/[^a-z0-9]+/g, ' ')
+  .replace(/\s+/g, ' ')
+  .trim();
+
+const splitTokens = (value) => String(value || '')
+  .split(/[|;,]/)
+  .map(norm)
+  .filter(Boolean);
+
+const tourText = (tour) => norm([
+  tour.title,
+  tour.name,
+  tour.summary,
+  tour.province,
+  tour.provinces,
+  tour.regions,
+  tour.route,
+  tour.route_summary,
+  ...(Array.isArray(tour.itinerary) ? tour.itinerary.flatMap((day) => [
+    day.title,
+    day.location,
+    day.overnight_hub,
+    day.provinces_traversed,
+    day.food_culture,
+    day.description,
+  ]) : []),
+].join(' '));
+
+const featuredFallback = [...allTours]
+  .sort((a, b) => Number(b.is_featured || 0) - Number(a.is_featured || 0))
+  .slice(0, 6);
+
+let tours = [];
+let title = '';
+let intro = '';
+let show = false;
+
+if (path.startsWith('/hotels/')) {
+  const slug = path.split('/').filter(Boolean).pop();
+  const hotel = getHotels().find((item) => item.slug === slug || item.hotel_slug === slug);
+  if (hotel) {
+    const hub = norm(hotel.hub_name || hotel.city || hotel.destination_code);
+    tours = allTours.filter((tour) => Array.isArray(tour.itinerary) && tour.itinerary.some((day) => {
+      const overnight = norm(day.overnight_hub || day.hub || day.location);
+      return hub && (overnight === hub || overnight.includes(hub) || hub.includes(overnight));
+    }));
+    const hubLabel = hotel.hub_name || hotel.city || 'this travel hub';
+    title = `Tours that overnight in ${hubLabel}`;
+    intro = String(hotel.tier || '').toLowerCase() === 'standard'
+      ? `This property is part of our standard accommodation pool for routes overnighting in ${hubLabel}. Start with the tour; accommodation is planned around the itinerary.`
+      : `This property can be considered on routes overnighting in ${hubLabel}. Start with the tour and we will plan the appropriate hotel level around the itinerary.`;
+    show = true;
+  }
+}
+
+if (path.startsWith('/food-culture/') && path !== '/food-culture') {
+  const relative = path.replace(/^\/food-culture\//, '');
+  const entries = await getCollection('food');
+  const entry = entries.find((item) => item.slug === relative || item.slug.endsWith(`/${relative}`) || item.slug.split('/').pop() === relative.split('/').pop());
+  if (entry) {
+    const baseSlug = norm(entry.slug.split('/').pop());
+    const titleToken = norm(entry.data.title);
+    tours = allTours.filter((tour) => Array.isArray(tour.itinerary) && tour.itinerary.some((day) => {
+      const foods = splitTokens(day.food_culture);
+      const dayText = norm(`${day.title || ''} ${day.description || ''}`);
+      return foods.some((token) => token === baseSlug || token === titleToken || titleToken.includes(token) || token.includes(titleToken))
+        || (titleToken.length > 4 && dayText.includes(titleToken));
+    }));
+    title = `Taste ${entry.data.title} as part of the journey`;
+    intro = tours.length
+      ? 'These tours currently connect this food or culinary tradition to a real itinerary.'
+      : 'Afghan food is presented as part of the travel experience, not as a separate product. Start with a tour and we can incorporate relevant regional cuisine along the route.';
+    show = true;
+  }
+}
+
+if (path.startsWith('/cultural-experiences/') && path !== '/cultural-experiences') {
+  const relative = path.replace(/^\/cultural-experiences\//, '');
+  const entries = await getCollection('cultural-experiences');
+  const entry = entries.find((item) => item.slug === relative || item.slug.split('/').pop() === relative.split('/').pop());
+  if (entry) {
+    const hub = norm(entry.data.hub);
+    const province = norm(entry.data.province);
+    const titleToken = norm(entry.data.title);
+    tours = allTours.filter((tour) => {
+      const text = tourText(tour);
+      const direct = titleToken.length > 4 && text.includes(titleToken);
+      const locationMatch = (hub && text.includes(hub)) || (province && text.includes(province));
+      return direct || locationMatch;
+    });
+    title = `Tours that can connect with ${entry.data.title}`;
+    intro = 'Cultural experiences support the itinerary. We connect them to journeys where the location, timing, local access, and traveler interests make sense.';
+    show = true;
+  }
+}
+
+if (path === '/transportation') {
+  tours = featuredFallback;
+  title = 'Choose the journey first. We plan the transport around it.';
+  intro = 'Transportation is part of the tour product: airport pickup, city movement, private vehicles, overland routing, and domestic flights are selected around the actual itinerary.';
+  show = true;
+}
+
+if (show && tours.length === 0) tours = featuredFallback.slice(0, 3);
+---
+
+{show && (
+  <div id="tours-for-this-content" class="tour-sales-bridge">
+    <TourCardGrid tours={tours.slice(0, 6)} title={title} intro={intro} />
+  </div>
+)}
+
+<style>
+  .tour-sales-bridge { scroll-margin-top: 100px; }
+</style>

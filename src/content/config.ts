@@ -1,0 +1,235 @@
+import { defineCollection, z, reference } from 'astro:content';
+
+// Legal documents rendered on their own public routes. policy_full_text_received must be true (owner's full
+// text merged verbatim); the page build fails otherwise so a partial policy can never be published.
+const legalCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    effective_date: z.string().nullable(),
+    version: z.string().nullable().default(null),
+    legal_entity: z.string(),
+    operating_as: z.string(),
+    license: z.string(),
+    address: z.string().optional(),
+    policy_full_text_received: z.boolean().default(false),
+    // Terms & Conditions / Privacy Policy: true only once the owner's final text is inserted word for word.
+    full_text_received: z.boolean().default(false),
+    source_file: z.string().optional(),
+    description: z.string().optional(),
+  }),
+});
+
+const provincesCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    type: z.string().optional(),
+    province_code: z.string().optional(),
+    region: z.string().optional(),
+    center_lat: z.number().optional(),
+    center_lon: z.number().optional(),
+    province_image_path: z.string().optional(),
+    known_for: z.array(z.string()).default([]),
+    experience_tags: z.array(z.string()).default([]),
+  }),
+});
+
+const regionsCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    img_path: z.string().optional(),
+  }),
+});
+
+const hubsCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    province: z.string().optional(),
+    known_for: z.array(z.string()).default([]),
+    hub_image_path: z.string().optional(),
+  }),
+});
+
+const attractionsCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    province: z.string().optional(),
+    province_code: z.string().optional(),
+    hub: z.string().optional(),
+    attraction_code: z.string().optional(),
+    category: z.string().optional(),
+    experience_tags: z.array(z.string()).default([]),
+    themes: z.array(z.string()).default([]),
+    guide_required: z.boolean().default(false),
+    permit_required: z.boolean().default(false),
+    overnight_required: z.boolean().default(false),
+    minimum_visit_hours: z.number().default(1),
+    known_for: z.array(z.string()).default([]),
+    hero_image: z.string().optional(),
+    card_image: z.string().optional(),
+  }),
+});
+
+const toursCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    tour_code: z.string().optional(),
+    summary: z.string().optional(),
+    duration_days: z.number().optional(),
+    difficulty: z.string().optional(),
+    featured_image: z.string().optional(),
+    provinces_visited: z.array(z.string()).default([]),
+    hubs_visited: z.array(z.string()).default([]),
+  }),
+});
+
+const foodCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    food_slug: z.string().optional(),
+    subtitle: z.string().optional(),
+    alternative_name: z.string().optional(),
+    description: z.string().optional(),
+    card_description: z.string().optional(),
+    category: z.string().optional(),
+    experience_type: z.string().optional(),
+    primary_ingredients: z.array(z.string()).default([]),
+    known_for: z.array(z.string()).default([]),
+    provinces: z.array(z.string()).default([]),
+    hero_image: z.string().optional(),
+    image: z.string().optional(),
+    card_image: z.string().optional(),
+    gallery_images: z.array(z.string()).default([]),
+    paired_foods: z.array(z.string()).default([]),
+    best_season: z.string().optional(),
+    duration: z.string().optional(),
+    related_tours: z.array(z.string()).default([]),
+    nearby: z.array(z.string()).default([]),
+  }),
+});
+
+const restaurantsCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    name: z.string().optional(),
+    title: z.string().optional(),
+    hub: z.string().optional(),
+    cuisine_type: z.array(z.string()).default([]),
+    price_range: z.string().optional(),
+    safety_verified: z.boolean().default(true),
+  }),
+});
+
+const hotelsCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    name: z.string().optional(),
+    title: z.string().optional(),
+    hub: z.string().optional(),
+    star_rating: z.number().optional(),
+    amenities: z.array(z.string()).default([]),
+    foreigner_friendly: z.boolean().default(true),
+  }),
+});
+
+const culturalExperiencesCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+
+    subtitle: z.string().optional(),
+    card_description: z.string().optional(),
+    category: z.string().optional(),
+    experience_type: z.string().optional(),
+
+    hero_image: z.string().optional(),
+    image: z.string().optional(),
+    gallery_images: z.array(z.string()).default([]),
+    // Images James removed from this page's gallery only (files may still be used elsewhere).
+    gallery_exclude: z.array(z.string()).default([]),
+
+    provinces: z.array(z.string()).default([]),
+    paired_foods: z.array(z.string()).default([]),
+    related_tours: z.array(z.string()).default([]),
+    nearby: z.array(z.string()).default([]),
+
+    best_season: z.string().optional(),
+    duration: z.string().optional(),
+
+    hub: z.string().optional(),
+    province: z.string().optional(),
+    duration_hours: z.number().optional(),
+  }),
+});
+
+
+const culinaryExperiencesCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    experience_code: z.string().optional(),
+    subtitle: z.string().optional(),
+    card_description: z.string().optional(),
+    hub_slug: z.string().optional(),
+    route_context: z.enum(['in-hub', 'near-hub', 'day-trip', 'excursion']).optional(),
+    venue_name: z.string().optional(),
+    venue_type: z.string().optional(),
+    venue_status: z.string().optional(),
+    signature_food: z.string().optional(),
+    related_food_slugs: z.array(z.string()).default([]),
+    provinces: z.array(z.string()).default([]),
+    best_season: z.string().optional(),
+    duration: z.string().optional(),
+    hero_image: z.string().optional(),
+    image: z.string().optional(),
+    gallery_images: z.array(z.string()).default([]),
+    nearby: z.array(z.string()).default([]),
+    related_tours: z.array(z.string()).default([]),
+  }),
+});
+
+
+const activitiesCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    activity_code: z.string().optional(),
+    subtitle: z.string().optional(),
+    card_description: z.string().optional(),
+    category: z.string().optional(),
+    best_season: z.string().optional(),
+    duration: z.string().optional(),
+    hero_image: z.string().optional(),
+    image: z.string().optional(),
+    gallery_images: z.array(z.string()).default([]),
+    hero_alt: z.string().optional(),
+    hero_credit: z.string().optional(),
+    hero_credit_url: z.string().optional(),
+    hero_license: z.string().optional(),
+    hero_license_url: z.string().optional(),
+    hero_modifications: z.string().optional(),
+    gallery_alt: z.array(z.string()).default([]),
+  }),
+});
+
+export const collections = {
+  legal: legalCollection,
+  provinces: provincesCollection,
+  regions: regionsCollection,
+  hubs: hubsCollection,
+  attractions: attractionsCollection,
+  tours: toursCollection,
+  food: foodCollection,
+  restaurants: restaurantsCollection,
+  hotels: hotelsCollection,
+  'cultural-experiences': culturalExperiencesCollection,
+  'culinary-experiences': culinaryExperiencesCollection,
+  activities: activitiesCollection,
+};

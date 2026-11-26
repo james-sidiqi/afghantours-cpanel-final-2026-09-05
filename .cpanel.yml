@@ -1,0 +1,5 @@
+---
+deployment:
+  tasks:
+    - /bin/echo "Legacy Git deployment disabled. Use the verified static release ZIP and docs/RELEASE-RUNBOOK.md."
+    - /bin/false

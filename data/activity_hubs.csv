@@ -1,0 +1,36 @@
+activity_slug,hub_slug,access_type,availability_note,priority,is_active,source_rule
+hiking,kabul-city,from-hub,Day hikes and viewpoint walks planned from this hub when routes are open,10,1,all_active_hubs
+hiking,jalalabad-city,from-hub,Day hikes and viewpoint walks planned from this hub when routes are open,20,1,all_active_hubs
+hiking,bamyan-city,from-hub,Day hikes and viewpoint walks planned from this hub when routes are open,30,1,all_active_hubs
+hiking,mazar-e-sharif,from-hub,Day hikes and viewpoint walks planned from this hub when routes are open,40,1,all_active_hubs
+hiking,faizabad-city,from-hub,Day hikes and viewpoint walks planned from this hub when routes are open,50,1,all_active_hubs
+hiking,kandahar-city,from-hub,Day hikes and viewpoint walks planned from this hub when routes are open,60,1,all_active_hubs
+hiking,herat-city,from-hub,Day hikes and viewpoint walks planned from this hub when routes are open,70,1,all_active_hubs
+hiking,ghazni-city,from-hub,Day hikes and viewpoint walks planned from this hub when routes are open,80,1,all_active_hubs
+fishing,kabul-city,day-trip,Lakeside/river day options when season and access allow,10,1,locked_matrix
+fishing,mazar-e-sharif,day-trip,Northern corridor fishing outings when workable,20,1,locked_matrix
+fishing,faizabad-city,day-trip,Badakhshan river corridors staged from Faizabad,30,1,locked_matrix
+fishing,jalalabad-city,day-trip,Eastern river/valley fishing day options,40,1,locked_matrix
+fishing,kandahar-city,day-trip,Southern corridor fishing when access allows,50,1,locked_matrix
+trekking,faizabad-city,expedition-base,Multi-day trekking logistics staged from Faizabad,10,1,locked_matrix
+skiing,kabul-city,seasonal,Snow-season highland access coordinated from Kabul,20,1,locked_matrix
+skiing,bamyan-city,seasonal,Bamyan highland skiing when snow and routes allow,10,1,locked_matrix
+shopping,kabul-city,in-hub,Bazaars and craft streets accessible from this hub,10,1,all_active_hubs
+shopping,jalalabad-city,in-hub,Bazaars and craft streets accessible from this hub,20,1,all_active_hubs
+shopping,bamyan-city,in-hub,Bazaars and craft streets accessible from this hub,30,1,all_active_hubs
+shopping,mazar-e-sharif,in-hub,Bazaars and craft streets accessible from this hub,40,1,all_active_hubs
+shopping,faizabad-city,in-hub,Bazaars and craft streets accessible from this hub,50,1,all_active_hubs
+shopping,kandahar-city,in-hub,Bazaars and craft streets accessible from this hub,60,1,all_active_hubs
+shopping,herat-city,in-hub,Bazaars and craft streets accessible from this hub,70,1,all_active_hubs
+shopping,ghazni-city,in-hub,Bazaars and craft streets accessible from this hub,80,1,all_active_hubs
+sightseeing,kabul-city,in-hub,City and nearby field sightseeing routed from this hub,10,1,all_active_hubs
+sightseeing,jalalabad-city,in-hub,City and nearby field sightseeing routed from this hub,20,1,all_active_hubs
+sightseeing,bamyan-city,in-hub,City and nearby field sightseeing routed from this hub,30,1,all_active_hubs
+sightseeing,mazar-e-sharif,in-hub,City and nearby field sightseeing routed from this hub,40,1,all_active_hubs
+sightseeing,faizabad-city,in-hub,City and nearby field sightseeing routed from this hub,50,1,all_active_hubs
+sightseeing,kandahar-city,in-hub,City and nearby field sightseeing routed from this hub,60,1,all_active_hubs
+sightseeing,herat-city,in-hub,City and nearby field sightseeing routed from this hub,70,1,all_active_hubs
+sightseeing,ghazni-city,in-hub,City and nearby field sightseeing routed from this hub,80,1,all_active_hubs
+horse-riding,kabul-city,near-hub,Equestrian outings when horses and handlers are available,10,1,locked_matrix
+horse-riding,mazar-e-sharif,near-hub,Northern equestrian outings when locally available,20,1,locked_matrix
+cycling,kabul-city,in-hub,Urban/near-hub cycling when conditions allow,10,1,locked_matrix

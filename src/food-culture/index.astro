@@ -1,0 +1,99 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allFoodItems = await getCollection('food');
+
+const byCategory = (category: string) => allFoodItems
+  .filter((item) => (item.data.category || 'Dishes') === category)
+  .sort((a, b) => (a.data.title || '').localeCompare(b.data.title || ''));
+
+const categories = [
+  {
+    title: 'Cultural Experiences',
+    eyebrow: 'Living traditions',
+    description: 'Crafts, sports, ceremonies, nomadic life, and social traditions paired with the foods and drinks that make them memorable.',
+    items: byCategory('Cultural Experiences'),
+  },
+  {
+    title: 'Dishes',
+    eyebrow: 'Afghan table',
+    description: 'Core Afghan meals, street foods, breads, sweets, and regional specialties.',
+    items: allFoodItems.filter(item => item.id.startsWith('dishes/')),
+  },
+  {
+    title: 'Drinks',
+    eyebrow: 'Tea & refreshment',
+    description: 'Green tea, saffron tea, dogh, sheer chai, and the social customs around them.',
+    items: byCategory('Drinks'),
+  },
+  {
+    title: 'Dried Fruit & Produce',
+    eyebrow: 'Harvest culture',
+    description: 'Raisins, almonds, pistachios, saffron, melons, pomegranates, and other products tied to place.',
+    items: [...byCategory('Dried Fruit'), ...byCategory('Produce')],
+  },
+].filter((section) => section.items.length > 0);
+
+const getSnippet = (item: any) => {
+  const text = item.data.card_description || item.body || '';
+  return text.replace(/[#*`_>-]/g, '').trim().split('\n')[0].slice(0, 150) + '...';
+};
+
+const getHref = (item: any) => `/food-culture/${item.slug || item.id}/`;
+const getImage = (item: any) => item.data.image || item.data.hero_image || '/assets/images/placeholders/default-food.webp';
+---
+
+<BaseLayout title="Food & Culture | AfghanTours" description="Explore Afghan food, hospitality, crafts, sport, ceremony, and living traditions through experiences that can be included in real AfghanTours itineraries.">
+  <main class="bg-white">
+    <section class="relative overflow-hidden bg-slate-950 text-white">
+      <div class="absolute inset-0 opacity-40">
+        <img src="/assets/images/heroes/food-and-culture/hero.webp" alt="Afghan food and culture" class="h-full w-full object-cover" />
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/80 to-slate-950/20"></div>
+      <div class="relative mx-auto max-w-7xl px-4 py-24 md:py-32">
+        <p class="text-sm font-bold uppercase tracking-[0.24em] text-blue-200">Food & Culture</p>
+        <h1 class="mt-4 max-w-4xl text-4xl font-bold leading-tight md:text-6xl">Afghanistan experienced through hospitality, craft, sport, and the table.</h1>
+        <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-200">This section connects Afghan cuisine with living cultural experiences: pottery in Istalif, carpets, buzkashi, kite flying, nomadic hospitality, weddings, wrestling, tea culture, and regional foods.</p>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-4 py-14">
+      {categories.map((section) => (
+        <div class="mb-16">
+          <div class="mb-6 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p class="text-xs font-bold uppercase tracking-[0.22em] text-blue-700">{section.eyebrow}</p>
+              <h2 class="mt-2 text-3xl font-bold text-slate-950">{section.title}</h2>
+              <p class="mt-2 max-w-3xl text-slate-600">{section.description}</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {section.items.map((item) => (
+              <a href={getHref(item)} class="group overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+                <div class="relative h-56 overflow-hidden bg-slate-200">
+                  <img src={getImage(item)} alt={item.data.title} class="h-full w-full object-cover transition duration-500 group-hover:scale-105" loading="lazy" />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+                  <div class="absolute bottom-4 left-4 right-4">
+                    <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/75">{item.data.experience_type || item.data.category || 'Food & Culture'}</p>
+                    <h3 class="mt-1 text-xl font-bold leading-tight text-white">{item.data.card_title || item.data.title}</h3>
+                  </div>
+                </div>
+                <div class="p-5">
+                  <p class="text-sm leading-6 text-slate-600">{getSnippet(item)}</p>
+                  <div class="mt-4 flex flex-wrap gap-2">
+                    {item.data.provinces?.slice(0, 3).map((prov: string) => (
+                      <span class="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-slate-600">{prov}</span>
+                    ))}
+                  </div>
+                  <div class="mt-5 text-sm font-bold text-blue-700 group-hover:text-blue-900">Explore experience →</div>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+  </main>
+</BaseLayout>

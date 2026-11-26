@@ -1,0 +1,5 @@
+{
+  "_doc": "Other (non-religious) blackout dates, configurable, never hardcoded. Ramadan and Eid live in religious-calendar.json (Ramadan = advisory, Eid = five-day block for standard scheduled departures).",
+  "version": 1,
+  "blackouts": []
+}

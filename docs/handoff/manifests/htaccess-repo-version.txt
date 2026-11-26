@@ -1,0 +1,94 @@
+# Canonical host + scheme (owner 10 Oct 2026): every request ends on https://afghantours.com, path + query kept.
+# One hop for www (http or https). HTTPS / X-Forwarded-Proto checks keep it loop-free behind LiteSpeed or a proxy.
+# /.well-known/ is left alone so cPanel AutoSSL / domain validation keeps working.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{REQUEST_URI} !^/\.well-known/
+RewriteCond %{HTTP_HOST} ^www\.afghantours\.com$ [NC]
+RewriteRule ^ https://afghantours.com%{REQUEST_URI} [R=301,L,NE]
+RewriteCond %{REQUEST_URI} !^/\.well-known/
+RewriteCond %{HTTP_HOST} ^afghantours\.com$ [NC]
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !^https$ [NC]
+RewriteRule ^ https://afghantours.com%{REQUEST_URI} [R=301,L,NE]
+</IfModule>
+
+# No directory listings (individual files, e.g. /data/maps/*.json, stay readable).
+Options -Indexes
+
+# AfghanTours product separation redirects (Tour / Specialist / Return)
+# Prefer specialist/return/custom targets — no chains through /tours/
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Specialist services
+RewriteRule ^faqs/?$ /faq/ [R=301,L]
+# James t267: Spoghmai is now a culinary experience page
+RewriteRule ^restaurants/spoghmai-restaurant(-qargha)?/?$ /cultural-experiences/culinary/spoghmai-restaurant-qargha/ [R=301,L]
+RewriteRule ^tours/photography-tour/?$ /specialist-services/photography-documentary/ [R=301,L]
+# Temporary (2026-10-14, t242): public Image Credits page withdrawn; records kept in src/data/photoCredits.ts and image-library/register.csv.
+RewriteRule ^photo-credits/?$ / [R=302,L]
+# James t264: Eid & Celebrations experience unpublished (content archived in src/content/_inactive/cultural-experiences/)
+RewriteRule ^cultural-experiences/eid-and-celebrations/?$ /cultural-experiences/ [R=301,L]
+# t271: Barg-e Matal & Lakes attraction replaced by Nuristan National Park
+RewriteRule ^attractions/barg-e-matal-lakes/?$ /attractions/nuristan-national-park/ [R=301,L]
+# t276: Bashgal Valley attraction replaced by Nuristan River Valleys & Villages
+RewriteRule ^attractions/bashgal-valley/?$ /attractions/nuristan-river-valleys-villages/ [R=301,L]
+RewriteRule ^tours/scientific-expeditions/?$ /specialist-services/scientific-research/ [R=301,L]
+RewriteRule ^tours/media-support/?$ /specialist-services/media-journalist/ [R=301,L]
+RewriteRule ^tours/business-investment/?$ /specialist-services/business-investment/ [R=301,L]
+RewriteRule ^tours/noshaq-expedition-support/?$ /specialist-services/noshaq-expedition-support/ [R=301,L]
+RewriteRule ^tours/ski-expeditions/?$ /specialist-services/ski-expeditions/ [R=301,L]
+
+# Return journeys
+RewriteRule ^tours/veteran-return/?$ /return-journeys/veterans-contractors-diplomats/ [R=301,L]
+
+# Custom journey
+RewriteRule ^tours/custom-expedition/?$ /custom-requests/ [R=301,L]
+</IfModule>
+
+
+# Culinary Experiences — hub-based primary URLs
+# Flat cultural / restaurant aliases → /cultural-experiences/culinary/<slug>/
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Former cultural flat culinary URL
+RewriteRule ^cultural-experiences/chashma-e-dogh/?$ /cultural-experiences/culinary/chashma-e-dogh/ [R=301,L]
+RewriteRule ^cultural-experiences/chashma-e-dough/?$ /cultural-experiences/culinary/chashma-e-dogh/ [R=301,L]
+
+# Restaurant → culinary (KEEP AS CULINARY / MERGE)
+RewriteRule ^restaurants/adam-khan-chapli-kabob/?$ /cultural-experiences/culinary/adam-khan-chapli-kabob/ [R=301,L]
+RewriteRule ^restaurants/arg-restaurant-herat/?$ /cultural-experiences/culinary/arg-restaurant-herat/ [R=301,L]
+RewriteRule ^restaurants/aziz-bakery/?$ /cultural-experiences/culinary/aziz-bakery/ [R=301,L]
+RewriteRule ^restaurants/bakery-kabul/?$ /cultural-experiences/culinary/aziz-bakery/ [R=301,L]
+RewriteRule ^restaurants/chashma-e-dough/?$ /cultural-experiences/culinary/chashma-e-dogh/ [R=301,L]
+</IfModule>
+
+# Culinary slug rename (2026-09-25 hub architecture)
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^cultural-experiences/culinary/band-e-amir-dairy-market-quroot/?$ /cultural-experiences/culinary/band-e-amir-quroot-dairy/ [R=301,L]
+</IfModule>
+
+# Hub page slug aliases → canonical 8 runtime slugs
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^hubs/faizabad/?$ /hubs/faizabad-city/ [R=301,L]
+RewriteRule ^hubs/jalalabad/?$ /hubs/jalalabad-city/ [R=301,L]
+RewriteRule ^hubs/mazar-e-sharif-city/?$ /hubs/mazar-e-sharif/ [R=301,L]
+RewriteRule ^hubs/kabul/?$ /hubs/kabul-city/ [R=301,L]
+RewriteRule ^hubs/bamyan/?$ /hubs/bamyan-city/ [R=301,L]
+RewriteRule ^hubs/ghazni/?$ /hubs/ghazni-city/ [R=301,L]
+RewriteRule ^hubs/herat/?$ /hubs/herat-city/ [R=301,L]
+RewriteRule ^hubs/kandahar/?$ /hubs/kandahar-city/ [R=301,L]
+</IfModule>
+
+# P1: phantom /regions/wakhan-northeast/ had no page (not in regions.csv).
+# Geography remains at /destinations/badakhshan/ and /attractions/wakhan-corridor/.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^regions/wakhan-northeast/?$ /destinations/badakhshan/ [R=301,L]
+</IfModule>

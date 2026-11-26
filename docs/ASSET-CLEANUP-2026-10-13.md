@@ -1,0 +1,359 @@
+# Asset cleanup, 13 Oct 2026
+
+James marked 338 files with an X on the cleanup review PDF. This PR deletes **135**, merges **1** (references pointed at the kept copy, then the file deleted) and keeps **202** as conflicts. Space saved: **30.3 MB** (source `public/` plus the same amount in `dist/`).
+
+Full mapping, with the PDF page and X position for each file: `docs/asset-cleanup-decisions-2026-10-13.csv`.
+
+## Deleted
+
+- `/assets/images/attractions/bala-hisar-of-gardez/thumb.webp` (Unused)
+- `/assets/images/attractions/chilsitoon-garden/thumb.webp` (Unused)
+- `/assets/images/attractions/kajaki-dam/thumb.webp` (Unused)
+- `/assets/images/attractions/sultan-dam/thumb.webp` (Unused)
+- `/assets/images/attractions/tape-tajbeg-palace/gallery-3.webp` (Unused)
+- `/assets/images/custom-tours/noshaq-expedition-support/thumb.webp` (Duplicate, D5 exact (sha1))
+- `/assets/images/experiences/activities/sightseeing/scenic/01.webp` (Duplicate, D6 exact (sha1))
+- `/assets/images/experiences/activities/sightseeing/shopping/01.webp` (Duplicate, D2 exact (sha1))
+- `/assets/images/featured-tours/trek-the-wakhan-corridor/thumb.webp` (Duplicate, D212 perceptual (dhash))
+- `/assets/images/food/dishes/gallery-1.webp` (Unused)
+- `/assets/images/food/dishes/kabob/gallery-2.webp` (Duplicate, D208 perceptual (dhash))
+- `/assets/images/food/dishes/kabuli-palaw/gallery-1.webp` (Duplicate, D39 exact (sha1))
+- `/assets/images/food/dishes/kabuli-palaw/gallery-2.webp` (Duplicate, D40 exact (sha1))
+- `/assets/images/food/dishes/kabuli-pulao/thumb.webp` (Duplicate, D117 exact (sha1))
+- `/assets/images/food/dishes/mantu/thumb.webp` (Unused)
+- `/assets/images/food/dishes/qorma-e-kachaloo/gallery-1.webp` (Duplicate, D118 exact (sha1))
+- `/assets/images/food/dishes/qorma-e-kachaloo/hero.webp` (Duplicate, D119 exact (sha1))
+- `/assets/images/food/dishes/sambosa/thumb.webp` (Duplicate, D122 exact (sha1))
+- `/assets/images/food/dishes/thumb.webp` (Unused)
+- `/assets/images/food/dishes/yoghurt/thumb.webp` (Unused)
+- `/assets/images/food/drinks/gallery-1.webp` (Unused)
+- `/assets/images/food/drinks/thumb.webp` (Unused)
+- `/assets/images/food/gallery-1.webp` (Duplicate, D254 perceptual (dhash))
+- `/assets/images/food/produce/bamyan-potatoes/thumb.webp` (Duplicate, D120 exact (sha1))
+- `/assets/images/food/produce/cherries/hero.webp` (Unused)
+- `/assets/images/food/produce/cherries/thumb.webp` (Unused)
+- `/assets/images/food/produce/grapes/gallery-1.webp` (Unused)
+- `/assets/images/food/produce/grapes/thumb.webp` (Unused)
+- `/assets/images/food/produce/mulberries/thumb.webp` (Unused)
+- `/assets/images/food/produce/seasonal-fruit/gallery-1.webp` (Unused)
+- `/assets/images/food/produce/seasonal-fruit/thumb.webp` (Unused)
+- `/assets/images/food/sweets/jelabi/gallery-1.webp` (Unused)
+- `/assets/images/food/sweets/jelabi/thumb.webp` (Unused)
+- `/assets/images/hubs/faizabad/thumb.webp` (Unused)
+- `/assets/images/hubs/jalalabad/thumb.webp` (Unused)
+- `/assets/images/hubs/lashkar-gah/gallery-1.webp` (Unused)
+- `/assets/images/hubs/lashkar-gah/thumb.webp` (Unused)
+- `/assets/images/hubs/parun/thumb.webp` (Unused)
+- `/assets/images/page-assets/activities/other/guide-through-village-panorama.jpeg` (Unused)
+- `/assets/images/page-assets/activities/other/guide-through-village-panorama.webp` (Unused)
+- `/assets/images/page-assets/activities/sightseeing/historical/01.webp` (Duplicate, D210 perceptual (dhash))
+- `/assets/images/page-assets/activities/sightseeing/historical/02.webp` (Duplicate, D216 perceptual (dhash))
+- `/assets/images/page-assets/activities/sightseeing/historical/03.webp` (Duplicate, D75 exact (sha1))
+- `/assets/images/page-assets/activities/sightseeing/markets/01.webp` (Duplicate, D219 perceptual (dhash))
+- `/assets/images/page-assets/activities/sightseeing/markets/02.webp` (Duplicate, D26 exact (sha1))
+- `/assets/images/page-assets/activities/sightseeing/religious/01.webp` (Duplicate, D220 perceptual (dhash))
+- `/assets/images/page-assets/activities/sightseeing/religious/02.webp` (Duplicate, D76 exact (sha1))
+- `/assets/images/page-assets/activities/sightseeing/religious/03.webp` (Duplicate, D77 exact (sha1))
+- `/assets/images/page-assets/activities/sightseeing/scenic/01.webp` (Duplicate, D6 exact (sha1))
+- `/assets/images/page-assets/activities/sightseeing/scenic/northern-plains-sheep.webp` (Duplicate, D78 exact (sha1))
+- `/assets/images/page-assets/activities/sightseeing/shopping/01.webp` (Duplicate, D2 exact (sha1))
+- `/assets/images/page-assets/people/group-photos/i-heart-afghanistan.webp` (Duplicate, D237 perceptual (dhash))
+- `/assets/images/page-assets/people/group-photos/tourists-shahr-e-zohak.webp` (Duplicate, D251 perceptual (dhash))
+- `/assets/images/page-assets/people/hospitality/setting-table.webp` (Duplicate, D256 perceptual (dhash))
+- `/assets/images/page-assets/people/local-relationships/james-distributing-school-supplies.webp` (Unused)
+- `/assets/images/page-assets/people/local-relationships/james-distributing-to-kids.webp` (Duplicate, D263 perceptual (dhash))
+- `/assets/images/page-assets/people/tourists/tourist-photo-rainbow.webp` (Duplicate, D261 perceptual (dhash))
+- `/assets/images/page-assets/visas/afg-visa-sample.webp` (Duplicate, D201 exact (sha1))
+- `/assets/images/page-assets/website-ready/rocky-valley-hiking.webp` (Duplicate, D218 perceptual (dhash))
+- `/assets/images/province/badakhshan/thumb.webp` (Unused)
+- `/assets/images/province/badghis/gallery-1.webp` (Duplicate, D264 perceptual (dhash))
+- `/assets/images/province/badghis/thumb.webp` (Unused)
+- `/assets/images/province/baghlan/gallery-1.webp` (Duplicate, D265 perceptual (dhash))
+- `/assets/images/province/baghlan/thumb.webp` (Unused)
+- `/assets/images/province/balkh/gallery-1.webp` (Duplicate, D209 perceptual (dhash))
+- `/assets/images/province/balkh/thumb.webp` (Unused)
+- `/assets/images/province/bamyan/gallery-1.webp` (Duplicate, D267 perceptual (dhash))
+- `/assets/images/province/bamyan/gallery-3.webp` (Duplicate, D268 perceptual (dhash))
+- `/assets/images/province/bamyan/thumb.webp` (Unused)
+- `/assets/images/province/daykundi/gallery-1.webp` (Unused)
+- `/assets/images/province/daykundi/gallery-2.webp` (Duplicate, D240 perceptual (dhash))
+- `/assets/images/province/daykundi/thumb.webp` (Unused)
+- `/assets/images/province/farah/gallery-1.webp` (Duplicate, D269 perceptual (dhash))
+- `/assets/images/province/farah/thumb.webp` (Unused)
+- `/assets/images/province/faryab/thumb.webp` (Unused)
+- `/assets/images/province/ghazni/gallery-2.webp` (Duplicate, D225 perceptual (dhash))
+- `/assets/images/province/ghazni/gallery-3.webp` (Duplicate, D241 perceptual (dhash))
+- `/assets/images/province/ghazni/thumb.webp` (Unused)
+- `/assets/images/province/ghor/thumb.webp` (Unused)
+- `/assets/images/province/helmand/gallery-1.webp` (Unused)
+- `/assets/images/province/helmand/thumb.webp` (Duplicate, D243 perceptual (dhash))
+- `/assets/images/province/herat/gallery-1.webp` (Duplicate, D259 perceptual (dhash))
+- `/assets/images/province/herat/thumb.webp` (Unused)
+- `/assets/images/province/jowzjan/thumb.webp` (Unused)
+- `/assets/images/province/kabul/thumb.webp` (Unused)
+- `/assets/images/province/kandahar/gallery-1.webp` (Duplicate, D234 perceptual (dhash))
+- `/assets/images/province/kandahar/thumb.webp` (Unused)
+- `/assets/images/province/kapisa/gallery-1.webp` (Duplicate, D226 perceptual (dhash))
+- `/assets/images/province/kapisa/gallery-2.webp` (Duplicate, D271 perceptual (dhash))
+- `/assets/images/province/kapisa/gallery-3.webp` (Duplicate, D272 perceptual (dhash))
+- `/assets/images/province/kapisa/thumb.webp` (Unused)
+- `/assets/images/province/khost/hero.webp` (Unused)
+- `/assets/images/province/khost/thumb.webp` (Unused)
+- `/assets/images/province/kunar/gallery-1.webp` (Duplicate, D273 perceptual (dhash))
+- `/assets/images/province/kunar/thumb.webp` (Unused)
+- `/assets/images/province/kunduz/thumb.webp` (Unused)
+- `/assets/images/province/laghman/gallery-1.webp` (Duplicate, D274 perceptual (dhash))
+- `/assets/images/province/laghman/thumb.webp` (Unused)
+- `/assets/images/province/logar/gallery-1.webp` (Duplicate, D275 perceptual (dhash))
+- `/assets/images/province/logar/thumb.webp` (Unused)
+- `/assets/images/province/nangarhar/thumb.webp` (Unused)
+- `/assets/images/province/nimroz/hero.webp` (Unused)
+- `/assets/images/province/nimroz/thumb.webp` (Unused)
+- `/assets/images/province/nuristan/gallery-3.webp` (Duplicate, D276 perceptual (dhash))
+- `/assets/images/province/nuristan/hero.webp` (Unused)
+- `/assets/images/province/nuristan/thumb.webp` (Unused)
+- `/assets/images/province/paktia/gallery-1.webp` (Duplicate, D277 perceptual (dhash))
+- `/assets/images/province/paktia/thumb.webp` (Unused)
+- `/assets/images/province/paktika/gallery-1.webp` (Duplicate, D278 perceptual (dhash))
+- `/assets/images/province/paktika/gallery-2.webp` (Unused)
+- `/assets/images/province/paktika/gallery-3.webp` (Unused)
+- `/assets/images/province/paktika/thumb.webp` (Unused)
+- `/assets/images/province/panjshir/gallery-1.webp` (Duplicate, D232 perceptual (dhash))
+- `/assets/images/province/panjshir/gallery-2.webp` (Duplicate, D226 perceptual (dhash))
+- `/assets/images/province/panjshir/gallery-3.webp` (Unused)
+- `/assets/images/province/panjshir/thumb.webp` (Unused)
+- `/assets/images/province/parwan/gallery-1.webp` (Unused)
+- `/assets/images/province/parwan/gallery-3.webp` (Unused)
+- `/assets/images/province/parwan/thumb.webp` (Unused)
+- `/assets/images/province/samangan/gallery-1.webp` (Unused)
+- `/assets/images/province/samangan/thumb.webp` (Unused)
+- `/assets/images/province/sar-e-pol/thumb.webp` (Unused)
+- `/assets/images/province/takhar/gallery-1.webp` (Duplicate, D239 perceptual (dhash))
+- `/assets/images/province/takhar/hero.webp` (Duplicate, D239 perceptual (dhash))
+- `/assets/images/province/takhar/thumb.webp` (Unused)
+- `/assets/images/province/uruzgan/thumb.webp` (Unused)
+- `/assets/images/province/wardak/thumb.webp` (Unused)
+- `/assets/images/province/zabul/thumb.webp` (Unused)
+- `/assets/images/return-journeys/diaspora/james-family/brothers/24-father-and-brother-e86aa72d7b.webp` (Unused)
+- `/assets/images/return-journeys/diaspora/return-trips/james-and-afghan-singh.webp` (Unused)
+- `/assets/maps/regions/central-afghanistan-region-map.webp` (Unused)
+- `/assets/maps/regions/east-afghanistan-region-map.webp` (Unused)
+- `/assets/maps/regions/north-afghanistan-region-map.webp` (Unused)
+- `/assets/maps/regions/south-afghanistan-region-map.webp` (Unused)
+- `/assets/maps/regions/west-afghanistan-region-map.webp` (Unused)
+
+## Merged (references changed)
+
+- `/assets/images/page-assets/people/tourists/tourists-relaxing-tea.webp`: byte-identical; repoint src/content/_inactive/food-experiences-legacy/afghan-weddings.md to /assets/images/experiences/cultural/afghan-weddings/thumb.webp then delete (verify by rebuild)
+
+## Marked but kept (conflicts for James)
+
+### referenced (109)
+- `/assets/images/attractions/ancient-city-of-balkh/gallery-1.webp`: referenced: dist
+- `/assets/images/attractions/ancient-city-of-balkh/hero.webp`: referenced: dist, src/data literal, public text; touched by an open PR or the approval package
+- `/assets/images/attractions/band-e-amir-national-park/gallery-1.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/attractions/band-e-amir-national-park/gallery-2.webp`: referenced: dist
+- `/assets/images/attractions/herat-citadel-qala-ye-ikhtiyaruddin/gallery-2.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/attractions/herat-citadel-qala-ye-ikhtiyaruddin/gallery-4.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/attractions/khost-city-scenery/gallery-1.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/attractions/sakhi-shrine-karte-sakhi/hero.webp`: referenced: dist, src/data literal, public text; touched by an open PR or the approval package
+- `/assets/images/attractions/shrine-of-hazrat-ali-blue-mosque/gallery-1.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/attractions/takht-e-rostam/gallery-2.webp`: referenced: dist
+- `/assets/images/attractions/taq-e-zafar-paghman/gallery-1.webp`: referenced: dist
+- `/assets/images/attractions/taq-e-zafar-paghman/hero.webp`: referenced: dist, src/data literal, public text; touched by an open PR or the approval package
+- `/assets/images/custom-tours/custom-expedition/hero.webp`: referenced: dist, src/data literal; runtime path: client script builds /assets/images/<folder>/<tour>/hero.webp; touched by an open PR or the approval package
+- `/assets/images/custom-tours/noshaq-expedition-support/thumbnail.webp`: referenced: src/data literal; merge target /assets/images/custom-tours/noshaq-expeditions/thumb.webp
+- `/assets/images/experiences/activities/sightseeing/historical/01.webp`: referenced: dist
+- `/assets/images/experiences/activities/sightseeing/historical/02.webp`: referenced: dist
+- `/assets/images/experiences/activities/sightseeing/markets/01.webp`: referenced: dist
+- `/assets/images/experiences/activities/sightseeing/markets/02.webp`: referenced: dist
+- `/assets/images/experiences/activities/sightseeing/religious/01.webp`: referenced: dist
+- `/assets/images/experiences/activities/skiing/gallery/01.webp`: referenced: dist
+- `/assets/images/experiences/culinary/band-e-amir-quroot-dairy/gallery/01.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/culinary/band-e-amir-quroot-dairy/gallery/02.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/culinary/chashma-e-dogh/gallery/01.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/culinary/chashma-e-dogh/gallery/02.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/culinary/chashma-e-dogh/gallery/04.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/culinary/chashma-e-dogh/gallery/07.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/culinary/ghazni-palaw/gallery/01.webp`: referenced: dist
+- `/assets/images/experiences/culinary/ghazni-palaw/gallery/02.webp`: referenced: dist
+- `/assets/images/experiences/culinary/ghazni-palaw/hero.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package; merge target /assets/images/food/dishes/kabuli-palaw/hero.webp
+- `/assets/images/experiences/culinary/ghazni-palaw/thumb.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/culinary/kandahari-rosh/gallery/01.webp`: referenced: dist
+- `/assets/images/experiences/culinary/kandahari-rosh/gallery/02.webp`: referenced: dist
+- `/assets/images/experiences/culinary/kunar-trout/gallery/01.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/culinary/kunar-trout/gallery/02.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/culinary/kunar-trout/hero.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package; merge target /assets/images/food/dishes/kunar-trout/hero.webp
+- `/assets/images/experiences/culinary/kunar-trout/thumb.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/culinary/mansoor-kabob/gallery/01.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/culinary/mansoor-kabob/gallery/02.webp`: referenced: dist
+- `/assets/images/experiences/culinary/mansoor-kabob/gallery/03.webp`: referenced: dist
+- `/assets/images/experiences/culinary/mansoor-kabob/thumb.webp`: referenced: dist
+- `/assets/images/experiences/cultural/afghan-weddings/gallery/01.webp`: referenced: dist
+- `/assets/images/experiences/cultural/buzkashi/gallery/03.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/cultural/buzkashi/hero.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/cultural/buzkashi/thumb.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/cultural/eid-and-celebrations/hero.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/cultural/eid-and-celebrations/thumb.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/cultural/gudiparan-bazi/gallery/01.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package; merge target /assets/images/experiences/cultural/gudiparan-bazi/thumb.webp
+- `/assets/images/experiences/cultural/istalif-pottery/hero.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/cultural/istalif-pottery/thumb.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/cultural/kaftar-bazi/gallery/01.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package; merge target /assets/images/experiences/cultural/kaftar-bazi/thumb.webp
+- `/assets/images/experiences/cultural/kuchi-nomads/gallery/01.webp`: referenced: dist
+- `/assets/images/experiences/cultural/kuchi-nomads/hero.webp`: referenced: dist
+- `/assets/images/experiences/cultural/kuchi-nomads/thumb.webp`: referenced: dist
+- `/assets/images/experiences/cultural/pahlawani/gallery/01.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package; merge target /assets/images/experiences/cultural/pahlawani/thumb.webp
+- `/assets/images/experiences/cultural/paktika-livestock-markets/hero.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/experiences/cultural/paktika-livestock-markets/thumb.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/featured-tours/afghanistan-discovery-tour-spring/overview.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package
+- `/assets/images/featured-tours/kandahar-durrani-empire-tour/overview.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package; merge target /assets/images/regions/south.webp
+- `/assets/images/featured-tours/timurid-grandeur-herat-tour-add-minaret-e-jam/hero.webp`: referenced: src/data literal; runtime path: client script builds /assets/images/<folder>/<tour>/hero.webp; touched by an open PR or the approval package; merge target /assets/images/provinces/ghor/hero.webp
+- `/assets/images/featured-tours/timurid-grandeur-herat-tour-add-minaret-e-jam/overview.webp`: referenced: src/data literal; touched by an open PR or the approval package
+- `/assets/images/featured-tours/timurid-grandeur-herat-tour/overview.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package
+- `/assets/images/featured-tours/trek-the-wakhan-corridor/hero.webp`: referenced: src/data literal; runtime path: client script builds /assets/images/<folder>/<tour>/hero.webp; touched by an open PR or the approval package
+- `/assets/images/featured-tours/trek-the-wakhan-corridor/overview.webp`: referenced: src/data literal; touched by an open PR or the approval package; merge target /assets/images/provinces/badakhshan/hero.webp
+- `/assets/images/featured-tours/trek-the-wakhan-corridor/thumbnail.webp`: referenced: src/data literal
+- `/assets/images/food/adam-khan-chapli/hero.webp`: referenced: src/data literal; touched by an open PR or the approval package; merge target /assets/images/experiences/culinary/adam-khan-chapli-kabob/thumb.webp
+- `/assets/images/food/bakery-kabul/hero.webp`: referenced: src/data literal; touched by an open PR or the approval package; merge target /assets/images/food/dishes/naan/hero.webp
+- `/assets/images/food/chashma-e-dough/hero.webp`: referenced: src/data literal; touched by an open PR or the approval package; merge target /assets/images/experiences/culinary/chashma-e-dogh/thumb.webp
+- `/assets/images/food/dishes/kabob/hero.webp`: referenced: src/data literal; touched by an open PR or the approval package; merge target /assets/images/experiences/culinary/bamyan-kabob/thumb.webp
+- `/assets/images/food/dishes/kabuli-pulao/hero.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package; merge target /assets/images/food/dishes/kabuli-palaw/hero.webp
+- `/assets/images/food/dishes/sambosa/gallery-1.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/food/dishes/sambosa/gallery-2.webp`: referenced: dist
+- `/assets/images/food/dishes/sambosa/hero.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/food/produce/farah-watermellons/gallery-1.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/food/produce/farah-watermellons/hero.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package; merge target /assets/images/food/produce/farah-watermelon/hero.webp
+- `/assets/images/food/produce/qurut-markets-of-bamyan/bamyan-qurut.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package; merge target /assets/images/experiences/culinary/band-e-amir-quroot-dairy/thumb.webp
+- `/assets/images/food/sweets/halwa/hero.webp`: referenced: dist
+- `/assets/images/food/sweets/sheer-yakh/gallery-1.webp`: referenced: dist
+- `/assets/images/heroes/hotels/hero.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package
+- `/assets/images/hubs/bamyan-city/gallery-2.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/hubs/herat-city/gallery-1.webp`: referenced: dist
+- `/assets/images/hubs/herat-city/gallery-2.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/hubs/herat-city/gallery-5.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/hubs/kandahar-city/gallery-2.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/hubs/kandahar-city/gallery-4.webp`: referenced: dist; touched by an open PR or the approval package
+- `/assets/images/page-assets/about/travelers/bamyan-buddha-niche-visit.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package
+- `/assets/images/page-assets/about/travelers/bamyan-ski-summit.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package; merge target /assets/images/experiences/activities/skiing/gallery/03.webp
+- `/assets/images/page-assets/about/travelers/brick-vault-heritage-gallery.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package
+- `/assets/images/page-assets/about/travelers/guide-4x4-mosque-stop.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package
+- `/assets/images/page-assets/about/travelers/horseback-cultural-experience.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package
+- `/assets/images/page-assets/about/travelers/kabul-community-children.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package
+- `/assets/images/page-assets/about/travelers/kabul-rickshaw-street-scene.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package
+- `/assets/images/page-assets/about/travelers/mountain-road-tour.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package
+- `/assets/images/page-assets/about/travelers/traveler-afghanistan-sign.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package
+- `/assets/images/page-assets/about/travelers/traveler-tea-break.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package
+- `/assets/images/page-assets/activities/skiing/01.webp`: referenced: dist
+- `/assets/images/page-assets/faqs/transport.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package; merge target /assets/images/transport/airports/kabul-city/hero.webp
+- `/assets/images/page-assets/field-access/kabul-market-walk.webp`: referenced: dist, src/data literal
+- `/assets/images/page-assets/people/guides/edrees-and-tourist-nuristan-side-of-road.webp`: referenced: dist, src/data literal
+- `/assets/images/page-assets/people/guides/ramin-guiding.webp`: referenced: dist, src/data literal
+- `/assets/images/page-assets/people/guides/tour-and-guide.webp`: referenced: dist, src/data literal
+- `/assets/images/page-assets/website-ready/guesthouse-hospitality.webp`: referenced: src/data literal
+- `/assets/images/provinces/balkh/hero.webp`: referenced: dist, src/data literal, public text; touched by an open PR or the approval package
+- `/assets/images/provinces/helmand/hero.webp`: referenced: dist, src/data literal, public text; touched by an open PR or the approval package
+- `/assets/images/return-journeys/diaspora/25-with-brother-c3e67f107c.webp`: referenced: dist, src/data literal
+- `/assets/images/tours/afghanistan-discovery-tour-fall/hero.webp`: referenced: src/data partial; runtime path: client script builds /assets/images/<folder>/<tour>/hero.webp; touched by an open PR or the approval package
+- `/assets/images/tours/custom-cultural-expeditions/gallery-1.webp`: referenced: src/data literal; touched by an open PR or the approval package
+- `/assets/images/transport/roads/kabul-parwan-bamyan/03.webp`: referenced: src/data literal; touched by an open PR or the approval package; merge target /assets/images/page-assets/faqs/practical-travel.webp
+- `/assets/images/transport/roads/kabul-salang/01.webp`: referenced: dist, src/data literal; touched by an open PR or the approval package
+- `/assets/maps/afghanistan-map.webp`: referenced: src/data literal; touched by an open PR or the approval package
+
+### touched by an open PR or the approval package (85)
+- `/assets/images/attractions/bala-hisar-of-gardez/hero.webp`: touched by an open PR or the approval package
+- `/assets/images/attractions/chilsitoon-garden/gallery-1.webp`: touched by an open PR or the approval package
+- `/assets/images/attractions/hadda-archaeological-site/hero.webp`: touched by an open PR or the approval package
+- `/assets/images/attractions/kajaki-dam/gallery-1.webp`: touched by an open PR or the approval package
+- `/assets/images/attractions/khwaja-abdullah-ansari-shrine/hero.webp`: touched by an open PR or the approval package
+- `/assets/images/attractions/khwaja-abdullah-ansari-shrine/thumb.webp`: touched by an open PR or the approval package
+- `/assets/images/attractions/paghman-palace/thumb.webp`: touched by an open PR or the approval package
+- `/assets/images/attractions/tape-tajbeg-palace/gallery-2.webp`: touched by an open PR or the approval package
+- `/assets/images/attractions/tape-tajbeg-palace/hero.webp`: touched by an open PR or the approval package
+- `/assets/images/custom-tours/custom-expedition/overview.webp`: touched by an open PR or the approval package
+- `/assets/images/custom-tours/photography-tour/01.webp`: touched by an open PR or the approval package
+- `/assets/images/custom-tours/photography-tour/02.webp`: touched by an open PR or the approval package
+- `/assets/images/custom-tours/photography-tour/03.webp`: touched by an open PR or the approval package
+- `/assets/images/custom-tours/photography-tour/05.webp`: touched by an open PR or the approval package
+- `/assets/images/custom-tours/photography-tour/overview.webp`: touched by an open PR or the approval package
+- `/assets/images/custom-tours/scientific-expeditions/03.webp`: touched by an open PR or the approval package
+- `/assets/images/experiences/cultural/the-last-box-camera-photographer-of-kabul/gallery/01.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/afghanistan-discovery-tour-fall/01.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/afghanistan-discovery-tour-fall/02.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/afghanistan-discovery-tour-fall/03.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/afghanistan-discovery-tour-spring/03.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/bamyan-skiing-tour/01.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/central-afghanistan-discovery/03.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/kabul-surroundings/01.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/kabul-surroundings/02.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/kandahar-durrani-empire-tour/01.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/panjshir-valley-emeralds-history/01.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/panjshir-valley-emeralds-history/02.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/panjshir-valley-emeralds-history/03.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/summer-circuit/02.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/timurid-grandeur-herat-tour-add-minaret-e-jam/03.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/timurid-grandeur-herat-tour/03.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/treasures-of-silk-road-afghanistan/01.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/treasures-of-silk-road-afghanistan/02.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/treasures-of-silk-road-afghanistan/03.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/trek-the-wakhan-corridor/01.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/trek-the-wakhan-corridor/02.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/weekend-in-kabul/02.webp`: touched by an open PR or the approval package
+- `/assets/images/featured-tours/winter-circuit/01.webp`: touched by an open PR or the approval package
+- `/assets/images/food/chashma-e-dough/gallery-1.webp`: touched by an open PR or the approval package
+- `/assets/images/food/chashma-e-dough/gallery-2.webp`: touched by an open PR or the approval package
+- `/assets/images/food/chashma-e-dough/gallery-3.webp`: touched by an open PR or the approval package
+- `/assets/images/food/chashma-e-dough/gallery-4.webp`: touched by an open PR or the approval package
+- `/assets/images/food/chashma-e-dough/gallery-5.webp`: touched by an open PR or the approval package
+- `/assets/images/food/chashma-e-dough/gallery-6.webp`: touched by an open PR or the approval package
+- `/assets/images/food/dishes/ashak/thumb.webp`: touched by an open PR or the approval package
+- `/assets/images/food/dishes/kabob/gallery-1.webp`: touched by an open PR or the approval package
+- `/assets/images/food/dishes/yoghurt/hero.webp`: touched by an open PR or the approval package
+- `/assets/images/food/drinks/dogh/thumb.webp`: touched by an open PR or the approval package
+- `/assets/images/food/produce/farah-watermellons/thumb.webp`: touched by an open PR or the approval package
+- `/assets/images/food/produce/wardak-apples/gallery/01.webp`: touched by an open PR or the approval package
+- `/assets/images/food/sweets/firni/thumb.webp`: touched by an open PR or the approval package
+- `/assets/images/heroes/hero-hotels.webp`: touched by an open PR or the approval package
+- `/assets/images/heroes/hero.webp`: touched by an open PR or the approval package
+- `/assets/images/hubs/kabul-city/gallery-6.webp`: touched by an open PR or the approval package
+- `/assets/images/hubs/kabul-city/gallery-7.webp`: touched by an open PR or the approval package
+- `/assets/images/page-assets/website-ready/afghanistan-sign-group.webp`: touched by an open PR or the approval package
+- `/assets/images/page-assets/website-ready/blue-mosque-cultural-access.webp`: touched by an open PR or the approval package
+- `/assets/images/page-assets/website-ready/kabul-market-walk.webp`: touched by an open PR or the approval package
+- `/assets/images/provinces/badakhshan/gallery-1.webp`: touched by an open PR or the approval package
+- `/assets/images/provinces/baghlan/gallery-1.webp`: touched by an open PR or the approval package
+- `/assets/images/provinces/bamyan/gallery-3.webp`: touched by an open PR or the approval package
+- `/assets/images/provinces/ghazni/gallery-2.webp`: touched by an open PR or the approval package
+- `/assets/images/provinces/helmand/gallery-1.webp`: touched by an open PR or the approval package
+- `/assets/images/provinces/kandahar/kandahar-006.webp`: touched by an open PR or the approval package
+- `/assets/images/provinces/kandahar/kandahar-hero.webp`: touched by an open PR or the approval package
+- `/assets/images/provinces/kandahar/kandahar-hub-hero.webp`: touched by an open PR or the approval package
+- `/assets/images/provinces/kapisa/kapisa-001.webp`: touched by an open PR or the approval package
+- `/assets/images/provinces/paktika/paktika-003.webp`: touched by an open PR or the approval package
+- `/assets/images/provinces/panjshir/gallery-1.webp`: touched by an open PR or the approval package
+- `/assets/images/tours/afghanistan-discovery-tour-spring/gallery-1.webp`: touched by an open PR or the approval package
+- `/assets/images/tours/custom-adventure/gallery-1.webp`: touched by an open PR or the approval package
+- `/assets/images/tours/custom-adventure/gallery-2.webp`: touched by an open PR or the approval package
+- `/assets/images/tours/custom-cultural-expeditions/gallery-2.webp`: touched by an open PR or the approval package
+- `/assets/images/tours/great-game-1842-history-route/gallery-1.webp`: touched by an open PR or the approval package
+- `/assets/images/tours/photography-tour/gallery-1.webp`: touched by an open PR or the approval package
+- `/assets/images/tours/photography-tour/gallery-3.webp`: touched by an open PR or the approval package
+- `/assets/images/tours/scientific-expeditions/gallery-1.webp`: touched by an open PR or the approval package
+- `/assets/images/transport/premium/suv/02.webp`: touched by an open PR or the approval package
+- `/assets/images/transport/roads/bamyan-wardak-kabul/02.webp`: touched by an open PR or the approval package
+- `/assets/images/transport/roads/jalalabad-parun/01.webp`: touched by an open PR or the approval package
+- `/assets/images/transport/roads/kabul-jalalabad/01.webp`: touched by an open PR or the approval package
+- `/assets/images/transport/roads/salang-mazar/02.webp`: touched by an open PR or the approval package
+- `/assets/images/transport/standard/van/hero.webp`: touched by an open PR or the approval package
+- `/assets/maps/border-crossing-airports.webp`: touched by an open PR or the approval package
+
+### is the group keep copy (5)
+- `/assets/images/attractions/buddhist-cave-monasteries/gallery-1.webp`: is the group keep copy; referenced: dist
+- `/assets/images/experiences/activities/sightseeing/thumb.webp`: is the group keep copy; touched by an open PR or the approval package
+- `/assets/images/experiences/cultural/afghan-weddings/hero.webp`: is the group keep copy; referenced: dist, src/data literal
+- `/assets/images/featured-tours/timurid-grandeur-herat-tour-add-minaret-e-jam/thumbnail.webp`: is the group keep copy; referenced: src/data literal
+- `/assets/images/placeholders/tour-placeholder.webp`: is the group keep copy; referenced: src/data literal; fallback/icon/og/logo
+
+### runtime path (3)
+- `/assets/images/custom-tours/noshaq-expeditions/hero.webp`: runtime path: client script builds /assets/images/<folder>/<tour>/hero.webp; touched by an open PR or the approval package
+- `/assets/images/tours/custom-adventure/hero.webp`: runtime path: client script builds /assets/images/<folder>/<tour>/hero.webp; touched by an open PR or the approval package
+- `/assets/images/tours/custom-scenic/hero.webp`: runtime path: client script builds /assets/images/<folder>/<tour>/hero.webp; touched by an open PR or the approval package

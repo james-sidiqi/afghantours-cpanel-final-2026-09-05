@@ -1,0 +1,50 @@
+# Dependencies
+node_modules/
+
+# Astro generated files
+.astro/
+dist/
+
+# macOS
+# macOS metadata
+.DS_Store
+**/.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.save
+
+# AfghanTours temporary audit files
+media-cleanup-report*.txt
+media-reference-audit*.txt
+dynamic-media-paths.txt
+afghantours-file-map.txt
+afghantours-files-with-sizes.txt
+
+# Editor files
+.vscode/
+.idea/
+audit-out/
+
+# Booking/payments private store (never commit)
+afghantours-private/
+
+# Verified release output and local test artifacts
+release-out/
+previous-release/
+test-results/
+playwright-report/
+__pycache__/

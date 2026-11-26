@@ -1,0 +1,6 @@
+region_code,region_name,parent_code,region_slug,description,img_path,is_active,sort_order
+CENTRAL,Central Highlands,AFG,central,"Mountainous heartland including Kabul, Bamyan, and the historic corridors linking north and south.",/assets/images/regions/central.webp,1,1
+NORTH,Northern Afghanistan,AFG,north,"Fertile plains and ancient cities along the Amu Darya, including Balkh and the northern Silk Road.",/assets/images/regions/north.webp,1,2
+WEST,Western Afghanistan,AFG,west,"Silk Road crossroads around Herat, desert frontiers, and remote highlands including Ghor and Badghis.",/assets/images/regions/west.webp,1,3
+SOUTH,Southern Afghanistan,AFG,south,"Historic southern heartlands including Kandahar and Helmand, shaped by desert routes and river valleys.",/assets/images/regions/south.webp,1,4
+EAST,Eastern Afghanistan,AFG,east,"Rugged eastern valleys and passes bordering Pakistan, including Jalalabad and the forested provinces.",/assets/images/regions/east.webp,1,5

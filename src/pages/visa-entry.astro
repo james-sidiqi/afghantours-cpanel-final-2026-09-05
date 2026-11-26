@@ -1,0 +1,344 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const relatedLinks = [
+  { title: "Featured Tours", href: "/tours/", text: "Explore curated Afghanistan itineraries." },
+  { title: "Custom Journeys", href: "/tours/#custom-journeys", text: "Build a specialized route around your needs." },
+  { title: "Safety & Practical Information", href: "/safety/", text: "Understand travel expectations before arrival." },
+  { title: "Contact AfghanTours", href: "/contact/", text: "Speak with our Kabul-based team." },
+];
+
+const processSteps = [
+  "Documentation Preparation",
+  "Consular or Electronic Submission",
+  "Visa Collection / Approval",
+  "Flight to Afghanistan",
+  "Arrival at Kabul International Airport",
+  "Welcome by AfghanTours",
+  "Begin Your Journey",
+];
+---
+
+<BaseLayout
+  title="Afghanistan Visa & Entry Guide | AfghanTours"
+  description="Learn about Afghanistan visa pathways, Letters of Invitation, consular processing, electronic visa support, and entry documentation coordination with AfghanTours."
+  keywords="Afghanistan visa, Afghanistan tourist visa, Afghanistan LOI, Afghanistan travel requirements, Afghanistan entry guide, AfghanTours"
+>
+  <main class="bg-stone-950 text-white">
+    <!-- HERO -->
+    <section class="relative overflow-hidden bg-stone-950 py-24 md:py-32">
+      <div class="absolute inset-0 opacity-30">
+        <img
+          src="/assets/images/hubs/kabul-city/hero.webp"
+          alt="Kabul skyline and mountains"
+          class="h-full w-full object-cover"
+        />
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/85 to-stone-950/40"></div>
+
+      <div class="relative mx-auto max-w-6xl px-6">
+        <p class="text-xs font-black uppercase tracking-[0.3em] text-amber-400">
+          Travel Requisites
+        </p>
+        <h1 class="editorial-title mt-4 max-w-4xl text-5xl font-black md:text-7xl">
+          Visa & Entry Coordination Guide
+        </h1>
+        <p class="mt-6 max-w-3xl text-lg leading-8 text-stone-200">
+          Obtaining the appropriate entry permission is an important part of planning your journey to Afghanistan.
+          AfghanTours provides documentation support, including official Letters of Invitation, itinerary confirmations,
+          and guidance based on current consular procedures to help guests navigate the process with confidence.
+        </p>
+      </div>
+    </section>
+
+    <!-- OVERVIEW -->
+    <section class="bg-white py-20 text-stone-950">
+      <div class="mx-auto max-w-5xl px-6">
+        <p class="text-xs font-black uppercase tracking-[0.28em] text-amber-700">
+          Understanding the Process
+        </p>
+        <h2 class="editorial-title mt-3 text-4xl font-black md:text-5xl">
+          Entry Planning for Afghanistan
+        </h2>
+
+        <div class="mt-8 grid gap-8 text-lg leading-8 text-stone-700">
+          <p>
+            Travel to Afghanistan involves a process that differs from many standardized international visa systems.
+            Depending on nationality, routing, and current government procedures, travelers may obtain visas through
+            Afghan diplomatic missions abroad or through approved electronic application channels.
+          </p>
+
+          <p>
+            AfghanTours assists guests by preparing the supporting documentation commonly requested during the
+            application process and by sharing the most current information available through our local operational
+            networks.
+          </p>
+        </div>
+
+        <div class="mt-10 rounded-[1.5rem] border border-amber-200 bg-amber-50 p-6 text-stone-800">
+          <h3 class="text-xl font-black text-stone-950">Important Notice</h3>
+          <p class="mt-3 leading-7">
+            Visa policies, processing times, fees, and accepted application methods may change without notice.
+            AfghanTours provides documentation support and guidance, but does not issue visas and cannot guarantee
+            approval. Final visa decisions remain solely with the relevant Afghan consular or immigration authority.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- VISUAL JOURNEY -->
+    <section class="bg-[#0f1a18] py-20 text-white">
+      <div class="mx-auto max-w-6xl px-6">
+        <p class="text-xs font-black uppercase tracking-[0.28em] text-amber-400">
+          Journey Preparation
+        </p>
+        <h2 class="editorial-title mt-3 text-4xl font-black md:text-5xl">
+          From Paperwork to Arrival
+        </h2>
+
+        <div class="mt-10 grid gap-4 md:grid-cols-7">
+          {processSteps.map((step, index) => (
+            <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+              <p class="text-sm font-black text-amber-300">Step {index + 1}</p>
+              <p class="mt-2 text-sm font-bold leading-6 text-stone-100">{step}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- PATHWAYS -->
+    <section class="bg-[#fbf8f2] py-20 text-stone-950">
+      <div class="mx-auto max-w-6xl px-6">
+        <p class="text-xs font-black uppercase tracking-[0.28em] text-amber-700">
+          Primary Application Pathways
+        </p>
+        <h2 class="editorial-title mt-3 text-4xl font-black md:text-5xl">
+          Consular and Electronic Options
+        </h2>
+
+        <div class="mt-10 grid gap-6 md:grid-cols-2">
+          <article class="rounded-[1.5rem] bg-white p-7 shadow-sm">
+            <h3 class="text-2xl font-black">Track A — Consular Processing</h3>
+            <p class="mt-4 leading-7 text-stone-700">
+              Traditionally, the most commonly used route involves applying through an Afghan embassy or consulate
+              in a third-country transit hub. This pathway is often preferred by travelers seeking a physical visa
+              placed directly into their passport prior to arrival.
+            </p>
+          </article>
+
+          <article class="rounded-[1.5rem] bg-white p-7 shadow-sm">
+            <h3 class="text-2xl font-black">Track B — Electronic Visa Processing</h3>
+            <p class="mt-4 leading-7 text-stone-700">
+              Afghanistan has introduced electronic visa options for certain travelers and entry scenarios.
+              Procedures, eligibility requirements, accepted arrival points, and processing timelines may change
+              over time and should be verified before application.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- DUBAI / REGIONAL HUBS -->
+    <section class="bg-white py-20 text-stone-950">
+      <div class="mx-auto max-w-6xl px-6">
+        <p class="text-xs font-black uppercase tracking-[0.28em] text-amber-700">
+          Recommended Consular Transit Hubs
+        </p>
+        <h2 class="editorial-title mt-3 text-4xl font-black md:text-5xl">
+          Dubai and Regional Processing Routes
+        </h2>
+
+        <div class="mt-10 grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+          <article class="rounded-[1.5rem] bg-stone-100 p-7">
+            <h3 class="text-2xl font-black">Dubai Transit Route</h3>
+            <p class="mt-4 leading-7 text-stone-700">
+              Many international guests choose to route through Dubai due to its strong flight connectivity and
+              the availability of Afghan consular services.
+            </p>
+
+            <div class="mt-6 grid gap-4">
+              <div>
+                <h4 class="font-black">Step 1 — Documentation Preparation</h4>
+                <p class="mt-2 text-stone-700">
+                  AfghanTours provides the Letter of Invitation, itinerary confirmation, hotel confirmations where
+                  required, and local sponsor information when applicable.
+                </p>
+              </div>
+
+              <div>
+                <h4 class="font-black">Step 2 — Consular Submission</h4>
+                <p class="mt-2 text-stone-700">
+                  Travelers submit their passport, photographs, completed forms, and supporting documentation
+                  directly to the relevant consular office.
+                </p>
+              </div>
+
+              <div>
+                <h4 class="font-black">Step 3 — Visa Collection</h4>
+                <p class="mt-2 text-stone-700">
+                  Processing timelines vary based on nationality, workload, and current procedures. Travelers should
+                  allow adequate flexibility within their travel plans.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <aside class="rounded-[1.5rem] bg-stone-950 p-7 text-white">
+            <h3 class="text-2xl font-black">Other Regional Hubs</h3>
+            <div class="mt-5 grid gap-5 text-stone-200">
+              <p>
+                <strong class="text-amber-300">Istanbul, Turkey:</strong> A common transit point for travelers arriving
+                from Europe, North America, and the Middle East.
+              </p>
+              <p>
+                <strong class="text-amber-300">Islamabad, Pakistan:</strong> Often utilized by travelers moving through
+                South Asia and neighboring regions.
+              </p>
+              <p>
+                <strong class="text-amber-300">Other Consular Locations:</strong> Availability, services, and procedures
+                vary by mission and should always be verified before travel.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT WE PROVIDE -->
+    <section class="bg-[#0f1a18] py-20 text-white">
+      <div class="mx-auto max-w-6xl px-6">
+        <p class="text-xs font-black uppercase tracking-[0.28em] text-amber-400">
+          What AfghanTours Provides
+        </p>
+        <h2 class="editorial-title mt-3 text-4xl font-black md:text-5xl">
+          Documentation and Ground Coordination
+        </h2>
+
+        <div class="mt-10 grid gap-6 md:grid-cols-3">
+          <article class="rounded-[1.5rem] bg-white/10 p-6">
+            <h3 class="text-xl font-black">Documentation Support</h3>
+            <ul class="mt-4 space-y-2 text-stone-200">
+              <li>Official Letter of Invitation</li>
+              <li>Itinerary confirmations</li>
+              <li>Hotel confirmations</li>
+              <li>Local contact information</li>
+              <li>Sponsor details where applicable</li>
+            </ul>
+          </article>
+
+          <article class="rounded-[1.5rem] bg-white/10 p-6">
+            <h3 class="text-xl font-black">Travel Coordination</h3>
+            <ul class="mt-4 space-y-2 text-stone-200">
+              <li>Airport arrival planning</li>
+              <li>Domestic transportation planning</li>
+              <li>Accommodation coordination</li>
+              <li>Regional routing advice</li>
+              <li>Real-time operational updates</li>
+            </ul>
+          </article>
+
+          <article class="rounded-[1.5rem] bg-white/10 p-6">
+            <h3 class="text-xl font-black">Local Expertise</h3>
+            <p class="mt-4 leading-7 text-stone-200">
+              As a Kabul-based tour operator with experience coordinating travel across Afghanistan, AfghanTours helps
+              guests understand current procedures and prepare for their journey with confidence.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- AFTER ARRIVAL -->
+    <section class="bg-white py-20 text-stone-950">
+      <div class="mx-auto max-w-5xl px-6">
+        <p class="text-xs font-black uppercase tracking-[0.28em] text-amber-700">
+          After Arrival
+        </p>
+        <h2 class="editorial-title mt-3 text-4xl font-black md:text-5xl">
+          Arrival at Kabul International Airport
+        </h2>
+        <p class="mt-6 text-lg leading-8 text-stone-700">
+          Upon arrival at Kabul International Airport, guests are met by their AfghanTours guide and driver and
+          transferred directly to their hotel. Depending on arrival time, guests may receive a short orientation
+          briefing covering local customs, communications, transportation, and the itinerary ahead.
+        </p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="bg-[#fbf8f2] py-20 text-stone-950">
+      <div class="mx-auto max-w-5xl px-6">
+        <p class="text-xs font-black uppercase tracking-[0.28em] text-amber-700">
+          Frequently Asked Questions
+        </p>
+        <h2 class="editorial-title mt-3 text-4xl font-black md:text-5xl">
+          Visa & Entry Questions
+        </h2>
+
+        <div class="mt-10 grid gap-4">
+          {[
+            ["How long does visa processing take?", "Processing times vary by nationality, application method, consular workload, and current government procedures. Travelers should begin preparations well in advance."],
+            ["Are visa fees fixed?", "No. Fees may vary based on nationality, application channel, location, and current regulations."],
+            ["Does AfghanTours issue visas?", "No. AfghanTours does not issue visas and cannot guarantee visa approval. We provide documentation support and guidance throughout the process."],
+            ["What happens if requirements change?", "Our team monitors current procedures and will advise travelers of significant changes that may affect their applications."]
+          ].map(([q, a]) => (
+            <details class="rounded-2xl bg-white p-5">
+              <summary class="cursor-pointer font-black">{q}</summary>
+              <p class="mt-3 leading-7 text-stone-700">{a}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- RELATED -->
+    <section class="bg-white py-20 text-stone-950">
+      <div class="mx-auto max-w-6xl px-6">
+        <p class="text-xs font-black uppercase tracking-[0.28em] text-amber-700">
+          Related Resources
+        </p>
+        <h2 class="editorial-title mt-3 text-4xl font-black md:text-5xl">
+          Continue Planning
+        </h2>
+
+        <div class="mt-10 grid gap-5 md:grid-cols-4">
+          {relatedLinks.map((link) => (
+            <a href={link.href} class="rounded-[1.5rem] bg-stone-100 p-5 transition hover:bg-amber-100">
+              <h3 class="font-black text-stone-950">{link.title}</h3>
+              <p class="mt-2 text-sm leading-6 text-stone-700">{link.text}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="bg-stone-950 py-20 text-white">
+      <div class="mx-auto max-w-5xl px-6 text-center">
+        <p class="text-xs font-black uppercase tracking-[0.28em] text-amber-400">
+          Ready to Begin Planning?
+        </p>
+        <h2 class="editorial-title mt-3 text-4xl font-black md:text-5xl">
+          Prepare Your Journey With AfghanTours
+        </h2>
+        <p class="mx-auto mt-5 max-w-3xl text-lg leading-8 text-stone-200">
+          Whether you’re joining one of our featured itineraries or building a completely customized journey, our team
+          can help you understand current entry requirements and prepare the documentation needed for your trip.
+        </p>
+
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <a href="/tours/" class="rounded-full bg-amber-500 px-6 py-3 font-black text-stone-950">
+            Plan Your Journey
+          </a>
+          <a href="/tours/#custom-journeys" class="rounded-full border border-white/30 px-6 py-3 font-black text-white">
+            Request a Custom Itinerary
+          </a>
+          <a href="/contact/" class="rounded-full border border-white/30 px-6 py-3 font-black text-white">
+            Speak With AfghanTours
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

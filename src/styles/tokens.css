@@ -1,0 +1,65 @@
+:root {
+  /* Typography */
+  --font-display: Georgia, "Times New Roman", serif;
+  --font-body: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+
+  --text-kicker: 0.75rem;
+  --text-small: 0.875rem;
+  --text-body: 1rem;
+  --text-lead: 1.125rem;
+
+  --title-card: clamp(1.5rem, 2vw, 2rem);
+  --title-section: clamp(2.25rem, 4vw, 3.75rem);
+  --title-page: clamp(3rem, 5vw, 5rem);
+  --title-hero: clamp(3.5rem, 7vw, 6rem);
+
+  --line-body: 1.65;
+  --line-lead: 1.75;
+  --line-heading: 1.05;
+
+  /* Brand */
+  --at-ink: #101820;
+  --at-text: #374151;
+  --at-muted: #6b7280;
+  --at-gold: #d6a23a;
+  --at-gold-text: #9a6517;
+  --at-gold-light: #f3b72d;
+  --at-paper: #fbf6ed;
+  --at-sand: #efe8dc;
+  --at-white: #ffffff;
+  --at-footer: #06110d;
+
+  /* Layout */
+  --content-max: 1280px;
+  --prose-max: 780px;
+  --header-height: 76px;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+
+  /* Shape */
+  --radius-small: 0.875rem;
+  --radius-card: 1.5rem;
+  --radius-pill: 999px;
+
+  /* Borders + elevation */
+  --border-soft: rgba(16, 24, 32, 0.12);
+  --border-dark: rgba(255, 255, 255, 0.14);
+  --shadow-card: 0 12px 32px rgba(16, 24, 32, 0.08);
+  --shadow-raised: 0 18px 48px rgba(16, 24, 32, 0.14);
+
+  /* Motion */
+  --motion-fast: 160ms;
+  --motion-base: 240ms;
+  --motion-slow: 400ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
