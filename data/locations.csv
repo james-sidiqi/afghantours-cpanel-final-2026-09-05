@@ -58,3 +58,24 @@ CHSC,Chisht-e-Sharif,destination,HER,chisht-e-sharif,1,25,FALSE,1,0,,,,34.34731,
 MYMC,Maymana,destination,FRY,maymana,1,26,FALSE,1,0,,,,35.92139,64.78361
 KDZC,Kunduz City,destination,KDZ,kunduz-city,1,27,FALSE,1,0,,,,36.72895,68.85700
 ISKC,Ishkashim,destination,BDK,ishkashim,1,28,FALSE,1,0,,,,36.70917,71.57389
+KBLA,Kabul International Airport,airport,KBL,kabul-international-airport,0,200,FALSE,0,0,,,,34.5658,69.2125
+MAZA,Mazar-e-Sharif International Airport,airport,BAL,mazar-international-airport,0,201,FALSE,0,0,,,,36.7041,67.2105
+HERA,Herat International Airport,airport,HER,herat-international-airport,0,202,FALSE,0,0,,,,34.2100,62.2283
+KHTA,Khost International Airport,airport,KHT,khost-international-airport,0,203,FALSE,0,0,,,,33.2846,69.8073
+KDRA,Ahmad Shah Baba International Airport,airport,KDR,kandahar-international-airport,0,204,FALSE,0,0,,,,31.5058,65.8478
+TRKB,Torkham,border_crossing,NGH,torkham,0,220,FALSE,0,0,,,,,
+SPBB,Spin Boldak–Wesh,border_crossing,KDR,spin-boldak-wesh,0,221,FALSE,0,0,,,,,
+GHKB,Ghulam Khan,border_crossing,KHT,ghulam-khan,0,222,FALSE,0,0,,,,,
+DPTB,Dand-e-Patan,border_crossing,PTA,dand-e-patan,0,223,FALSE,0,0,,,,,
+ANGB,Angur Ada,border_crossing,PTK,angur-ada,0,224,FALSE,0,0,,,,,
+BDPB,Badini,border_crossing,ZBL,badini,0,225,FALSE,0,0,,,,,
+ISQB,Islam Qala,border_crossing,HER,islam-qala,0,226,FALSE,0,0,,,,,
+ZRNB,Pul-e-Abresham,border_crossing,NIM,pul-e-abresham,0,227,FALSE,0,0,,,,,
+ANFB,Abu Nasr Farahi,border_crossing,FRH,abu-nasr-farahi,0,228,FALSE,0,0,,,,,
+TGRB,Torghundi,border_crossing,HER,torghundi,0,229,FALSE,0,0,,,,,
+AQNB,Aqina,border_crossing,FRY,aqina,0,230,FALSE,0,0,,,,,
+HRTB,Hairatan,border_crossing,BAL,hairatan,0,231,FALSE,0,0,,,,,
+SKBB,Sher Khan Bandar,border_crossing,KDZ,sher-khan-bandar,0,232,FALSE,0,0,,,,,
+ISKB,Ishkashim Crossing,border_crossing,BDK,ishkashim-crossing,0,233,FALSE,0,0,,,,,
+SHGB,Shighnan,border_crossing,BDK,shighnan,0,234,FALSE,0,0,,,,,
+AIKB,Ai Khanoum,border_crossing,TKH,ai-khanoum,0,235,FALSE,0,0,,,,,
