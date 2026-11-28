@@ -47,9 +47,9 @@ BMYC,Bamyan,destination,BMY,bamyan-city,1,14,TRUE,0,0,/assets/images/hubs/bamyan
 MAZC,Mazar-e-Sharif,destination,BAL,mazar-e-sharif-city,1,15,TRUE,0,1,/assets/images/hubs/mazar-e-sharif/hero.webp,,/assets/images/transport/airports/mazar-e-sharif/hero.webp,36.70904,67.11087
 FAIC,Faizabad,destination,BDK,faizabad-city,1,16,TRUE,0,0,/assets/images/hubs/faizabad/hero.webp,,,37.11664,70.58002
 HERC,Herat,destination,HER,herat-city,1,17,TRUE,0,1,/assets/images/hubs/herat-city/hero.webp,,/assets/images/transport/airports/herat-city/hero.webp,34.34817,62.19967
-LSGC,Lashkar Gah,destination,HLM,lashkar-gah,1,18,FALSE,1,0,,,,,
-ZRNC,Zaranj,destination,NIM,zaranj,1,19,FALSE,1,0,,,,,
-FRHC,Farah City,destination,FRH,farah-city,1,20,FALSE,1,0,/assets/images/attractions/farah-citadel/hero.webp,,,,
-KHTC,Khost City,destination,KHT,khost-city,1,21,FALSE,1,0,/assets/images/attractions/khost-city-scenery/hero.webp,,,,
-PRNC,Parun,destination,NRS,parun,1,22,FALSE,1,0,,,,,
-YKLC,Yakawlang,destination,BMY,yakawlang,1,23,FALSE,1,0,,,,,
+LSGC,Lashkar Gah,destination,HLM,lashkar-gah,1,18,FALSE,1,0,,,,31.59382,64.37161
+ZRNC,Zaranj,destination,NIM,zaranj,1,19,FALSE,1,0,,,,30.95962,61.86037
+FRHC,Farah City,destination,FRH,farah-city,1,20,FALSE,1,0,/assets/images/attractions/farah-citadel/hero.webp,,,32.37451,62.11638
+KHTC,Khost City,destination,KHT,khost-city,1,21,FALSE,1,0,/assets/images/attractions/khost-city-scenery/hero.webp,,,33.33951,69.92041
+PRNC,Parun,destination,NRS,parun,1,22,FALSE,1,0,,,,35.42064,70.92261
+YKLC,Yakawlang,destination,BMY,yakawlang,1,23,FALSE,1,0,,,,34.73307,66.96304
